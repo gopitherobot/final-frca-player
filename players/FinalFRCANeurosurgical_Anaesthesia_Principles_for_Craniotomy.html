@@ -5,10 +5,19 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Neurosurgical Anaesthesia — Principles for Craniotomy</title>
 <style>
-
   :root {
-    --accent:    #6366f1;
-    --body-bg:   #f1f5f9;
+    --q-bg:       #1e3a5f;
+    --q-text:     #ffffff;
+    --q-label:    #60a5fa;
+    --a-bg:       #ffffff;
+    --a-border:   #e2e8f0;
+    --a-label:    #059669;
+    --active-q:   #6366f1;
+    --active-a:   #dbeafe;
+    --accent:     #6366f1;
+    --body-bg:    #f1f5f9;
+    --pre-bg:     #fef9c3;
+    --pre-border: #fcd34d;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
@@ -40,22 +49,9 @@
     margin-bottom: 4px;
     letter-spacing: 0.01em;
   }
-  .header-sub {
-    font-size: 0.72rem;
-    color: #94a3b8;
-    font-style: italic;
-  }
-  audio {
-    height: 36px;
-    accent-color: var(--accent);
-    flex-shrink: 0;
-  }
-  .back-link {
-    font-size: 0.8rem;
-    color: #94a3b8;
-    text-decoration: none;
-    white-space: nowrap;
-  }
+  .header-sub { font-size: 0.72rem; color: #94a3b8; font-style: italic; }
+  audio { height: 36px; accent-color: var(--accent); flex-shrink: 0; }
+  .back-link { font-size: 0.8rem; color: #94a3b8; text-decoration: none; white-space: nowrap; }
   .back-link:hover { color: #60a5fa; }
 
   /* ── Toolbar ── */
@@ -69,30 +65,17 @@
     border-bottom: 1px solid #334155;
   }
   .toolbar input {
-    flex: 1;
-    max-width: 380px;
+    flex: 1; max-width: 380px;
     padding: 5px 11px;
-    border: 1px solid #475569;
-    border-radius: 6px;
-    background: #0f172a;
-    color: #e2e8f0;
-    font-size: 0.83rem;
-    outline: none;
+    border: 1px solid #475569; border-radius: 6px;
+    background: #0f172a; color: #e2e8f0; font-size: 0.83rem; outline: none;
   }
   .toolbar input:focus { border-color: var(--accent); }
   .toolbar input::placeholder { color: #64748b; }
-  .stats {
-    font-size: 0.72rem;
-    color: #64748b;
-    white-space: nowrap;
-  }
+  .stats { font-size: 0.72rem; color: #64748b; white-space: nowrap; }
 
   /* ── Scroll area ── */
-  .scroll-area {
-    flex: 1;
-    overflow-y: auto;
-    padding: 20px;
-  }
+  .scroll-area { flex: 1; overflow-y: auto; padding: 20px; }
   .scroll-area::-webkit-scrollbar { width: 6px; }
   .scroll-area::-webkit-scrollbar-track { background: transparent; }
   .scroll-area::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
@@ -107,68 +90,77 @@
     display: flex;
     align-items: center;
   }
-  .subtitle-text {
-    font-size: 0.9rem;
-    color: #e2e8f0;
-    line-height: 1.5;
-    font-style: italic;
-  }
-  .subtitle-text.empty { color: #475569; }
+  #subtitle-text { font-size: 0.88rem; color: #e2e8f0; line-height: 1.5; font-style: italic; }
+  #subtitle-text.empty { color: #475569; }
 
-  /* ── Transcript blocks ── */
-  .t-block {
-    background: #ffffff;
-    border: 1px solid #e2e8f0;
-    border-radius: 10px;
-    margin-bottom: 14px;
-    overflow: hidden;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
-    display: flex;
-  }
-  .t-block.block-active {
-    border-color: var(--accent);
-    box-shadow: 0 0 0 2px rgba(37,99,235,0.15);
-  }
-  .t-gutter {
-    background: #0f172a;
-    width: 52px;
-    flex-shrink: 0;
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
-    padding-top: 14px;
-    cursor: pointer;
-  }
-  .t-gutter:hover { background: #1e293b; }
-  .t-timestamp {
-    font-size: 0.7rem;
-    color: #64748b;
-    font-family: monospace;
-    font-weight: 600;
-    letter-spacing: 0.02em;
-  }
-  .t-gutter.gutter-active .t-timestamp { color: var(--accent); }
-  .t-body {
-    flex: 1;
+  /* ── Preamble ── */
+  .preamble-block {
+    background: var(--pre-bg);
+    border-left: 4px solid var(--pre-border);
+    border-radius: 0 8px 8px 0;
     padding: 12px 16px;
-    line-height: 1.75;
-    font-size: 0.92rem;
-    color: #1e293b;
+    margin-bottom: 20px;
+    font-size: 0.88rem;
+    color: #78350f;
+    font-style: italic;
+    line-height: 1.7;
   }
 
-  /* ── Segments ── */
-  .segment {
+  /* ── Q&A pair ── */
+  .qa-pair { margin-bottom: 20px; border-radius: 10px; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+
+  /* Question block */
+  .q-block {
+    background: var(--q-bg);
+    padding: 14px 18px;
+    display: flex; gap: 14px; align-items: flex-start;
     cursor: pointer;
-    border-radius: 3px;
-    transition: background 0.1s;
+    transition: background 0.15s;
   }
-  .segment:hover { background: #eff6ff; }
-  .segment.active {
-    background: #bfdbfe;
-    outline: 2px solid #3b82f6;
-    outline-offset: 1px;
-    border-radius: 3px;
+  .q-block:hover { background: #1d4ed8; }
+  .q-block.q-active { background: var(--active-q); }
+  .q-label {
+    font-size: 0.7rem; font-weight: 700;
+    color: var(--q-label);
+    background: rgba(96,165,250,0.15);
+    border: 1px solid rgba(96,165,250,0.3);
+    border-radius: 5px; padding: 3px 7px;
+    white-space: nowrap; margin-top: 2px; letter-spacing: 0.05em;
+    flex-shrink: 0;
   }
+  .q-body { flex: 1; font-size: 0.97rem; font-weight: 600; color: var(--q-text); line-height: 1.55; }
+
+  /* Answer block */
+  .a-block {
+    background: var(--a-bg);
+    border: 1px solid var(--a-border); border-top: none;
+    padding: 14px 18px;
+    display: flex; gap: 14px; align-items: flex-start;
+  }
+  .a-label {
+    font-size: 0.7rem; font-weight: 700;
+    color: var(--a-label);
+    background: #d1fae5; border: 1px solid #6ee7b7;
+    border-radius: 5px; padding: 3px 9px;
+    white-space: nowrap; margin-top: 2px; letter-spacing: 0.05em;
+    flex-shrink: 0;
+  }
+  .a-body { flex: 1; list-style: none; padding: 0; }
+  .a-body li {
+    padding: 4px 0 4px 14px;
+    border-left: 3px solid transparent;
+    line-height: 1.7; font-size: 0.92rem; color: #1e293b;
+    border-radius: 0 4px 4px 0;
+    transition: background 0.15s;
+  }
+  .a-body li:not(:last-child) { border-bottom: 1px solid #f1f5f9; }
+
+  /* ── Segments (clickable) ── */
+  .segment { cursor: pointer; border-radius: 3px; }
+  .q-seg:hover { background: rgba(255,255,255,0.18); }
+  .a-seg:hover { background: #eff6ff; }
+  .segment.active { background: #bfdbfe; outline: 2px solid #3b82f6; outline-offset: 1px; }
+  .a-body li.li-active { background: var(--active-a); border-left-color: var(--accent); }
   .segment.search-match  { background: #fef9c3; }
   .segment.search-current { background: #fde047; outline: 2px solid #ca8a04; }
 
@@ -187,205 +179,510 @@
 
 <div class="toolbar">
   <input type="text" id="search" placeholder="Search transcript&#8230; (Enter = next match)">
-  <span class="stats" id="stats">225 segments &nbsp;|&nbsp; <span id="dur">loading&#8230;</span></span>
+  <span class="stats" id="stats">21 questions &nbsp;|&nbsp; 225 segments &nbsp;|&nbsp; <span id="dur">loading&#8230;</span></span>
 </div>
 
 <div class="scroll-area" id="scroll-area">
-<div class="t-block">
-  <div class="t-gutter" data-start="0.0"><span class="t-timestamp">0:00</span></div>
-  <div class="t-body"><span class="segment" data-start="0.0" data-end="6.32" title="0:00">Anasthesia for craniotomy. You've been asked to assess a 55-year-old gentleman who is scheduled </span><span class="segment" data-start="6.32" data-end="12.72" title="0:06">for craniotomy and debulking of a primary brain tumor. What are the key considerations in the </span><span class="segment" data-start="12.72" data-end="19.52" title="0:12">history when pre-assessing a neurosurgical patient? A structured approach is vital, mentioning </span><span class="segment" data-start="19.52" data-end="23.44" title="0:19">routine history first before focusing on the specific neurological history. </span><span class="segment" data-start="23.44" data-end="30.24" title="0:23">I would first of all focus on the general points of a history relevant to all patients, </span><span class="segment" data-start="30.88" data-end="35.76" title="0:30">and then concentrate on those factors that are specific to the neurosurgical condition. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="37.04"><span class="t-timestamp">0:37</span></div>
-  <div class="t-body"><span class="segment" data-start="37.04" data-end="42.88" title="0:37">Eventually, both the history and examination need to focus on the symptoms and signs of neurological </span><span class="segment" data-start="42.88" data-end="49.04" title="0:42">deficit, and whether the presenting features have been chronic, acute, or fluctuating. </span><span class="segment" data-start="49.2" data-end="55.36" title="0:49">The surgical condition may have resulted in clouding of consciousness or motor deficits, </span><span class="segment" data-start="55.36" data-end="60.0" title="0:55">and there may be signs or symptoms of raised intracranial pressure. </span><span class="segment" data-start="60.0" data-end="68.08" title="1:00">It is important to establish a baseline neurological evaluation, as an anesthesia and surgery </span><span class="segment" data-start="68.08" data-end="76.64" title="1:08">may profoundly affect postoperative neurological status. Any new medication started recently, </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="77.36"><span class="t-timestamp">1:17</span></div>
-  <div class="t-body"><span class="segment" data-start="77.36" data-end="84.0" title="1:17">such as Dexamethasone or Osmotic Diuretics to reduce cerebraladema should be noted, </span><span class="segment" data-start="84.0" data-end="89.36" title="1:24">with the duration of treatment and dose as they may cause hyperglycemia, </span><span class="segment" data-start="89.36" data-end="97.44" title="1:29">hypovolemia, and electrolyte imbalances. Anticonvulsants should be noted as they may affect </span><span class="segment" data-start="97.44" data-end="102.88" title="1:37">the metabolism of drugs, such as Vecuronium by Microsomal Enzyme Induction. </span><span class="segment" data-start="103.52" data-end="107.2" title="1:43">What investigations might you require for this patient? </span><span class="segment" data-start="109.44" data-end="114.88" title="1:49">An ECG to show any underlying cardiac abnormalities or ischemic changes. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="115.68"><span class="t-timestamp">1:55</span></div>
-  <div class="t-body"><span class="segment" data-start="115.68" data-end="122.08" title="1:55">Eurea and electrolytes to reveal any imbalance caused by diuretics or persistent vomiting. </span><span class="segment" data-start="123.52" data-end="129.28" title="2:03">If the patient has been on anticonvulsants, the liver function tests might be deranged. </span><span class="segment" data-start="130.16" data-end="135.68" title="2:10">Full blood count and calculation studies to ensure there are no bleeding problems </span><span class="segment" data-start="135.68" data-end="142.32" title="2:15">or low platelets that might interfere with hemostasis. I would expect imaging of the lesion to be </span><span class="segment" data-start="142.32" data-end="150.16" title="2:22">available for the surgeons in the form of CT or MRI scans. What pre-medication would you consider </span><span class="segment" data-start="150.16" data-end="158.64" title="2:30">in this patient? As with all areas of anesthetic practice, this needs to be individualised. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="159.44"><span class="t-timestamp">2:39</span></div>
-  <div class="t-body"><span class="segment" data-start="159.44" data-end="164.96" title="2:39">The risk of an extremely anxious patient becoming hyper-attensive and raising their </span><span class="segment" data-start="164.96" data-end="170.32" title="2:44">intracranial pressure has to be balanced against the risk of respiratory depression, </span><span class="segment" data-start="170.32" data-end="176.4" title="2:50">causing a rise in the arterial carbon dioxide that would also increase the intracranial pressure. </span><span class="segment" data-start="177.44" data-end="184.8" title="2:57">Therefore, benzodiazepines may be considered for anxiety, dexamethasone for cerebral edema, </span><span class="segment" data-start="185.12" data-end="190.08" title="3:05">and the use of anticonvulsants if not already started for potential seizures. </span><span class="segment" data-start="191.84" data-end="196.4" title="3:11">What would influence your choice of intravenous induction agent for a neurosurgical patient? </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="198.96"><span class="t-timestamp">3:18</span></div>
-  <div class="t-body"><span class="segment" data-start="198.96" data-end="205.52" title="3:18">The aims for patients with intracranial pathology are to prevent increases in intracranial pressure </span><span class="segment" data-start="205.52" data-end="211.12" title="3:25">during induction and maintenance of anesthesia and to maintain an adequate cerebral </span><span class="segment" data-start="211.12" data-end="216.72" title="3:31">perfusion pressure by preventing any sudden rise or fall in the men arterial pressure. </span><span class="segment" data-start="217.92" data-end="224.64" title="3:37">As the cerebral perfusion pressure is a product of men arterial pressure minus intracranial pressure. </span><span class="segment" data-start="226.88" data-end="234.16" title="3:46">Intravenous agents, propyl and thir pentone are most commonly used because they decrease cerebral </span><span class="segment" data-start="234.16" data-end="240.88" title="3:54">blood flow under the cerebral metabolic rate. However, induction of anesthesia may </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="240.88"><span class="t-timestamp">4:00</span></div>
-  <div class="t-body"><span class="segment" data-start="240.88" data-end="247.52" title="4:00">cause sudden falls in blood pressure and may require prompt correction with vasopressors and fluid. </span><span class="segment" data-start="248.8" data-end="255.04" title="4:08">Fire pentones barbiturate structure makes it a good induction agent in the patient at risk of </span><span class="segment" data-start="255.04" data-end="262.16" title="4:15">seizure activity. It tomodate also reduces the cerebral metabolic rate, but it maintains the blood </span><span class="segment" data-start="262.16" data-end="269.28" title="4:22">pressure. However, its use is limited because induction is less smooth and there are concerns </span><span class="segment" data-start="269.28" data-end="276.64" title="4:29">surrounding its effects on steroid synthesis. ketamine should be avoided as it causes a marked </span><span class="segment" data-start="276.64" data-end="284.4" title="4:36">increase in cerebral metabolic rate and cerebral blood flow. What volatile agents would you use </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="284.4"><span class="t-timestamp">4:44</span></div>
-  <div class="t-body"><span class="segment" data-start="284.4" data-end="293.04" title="4:44">for a neurosurgical patient? Volatile and aesthetic agents decrease the cerebral metabolic rate </span><span class="segment" data-start="293.44" data-end="301.6" title="4:53">up to 40%. But in contrast to the intravenous agents, they cause dose-related vasodilitation. </span><span class="segment" data-start="302.64" data-end="310.4" title="5:02">The most potent cerebral vasodilators are halothane and end-fluorane and they are no longer used. </span><span class="segment" data-start="311.12" data-end="318.24" title="5:11">Isofluorane and sever-fluorane are the most commonly used volatile agents in current practice </span><span class="segment" data-start="318.32" data-end="325.84" title="5:18">as they have the least effect on the cerebral blood flow. In effect, these agents uncouple cerebral </span><span class="segment" data-start="325.84" data-end="333.84" title="5:25">blood flow and cerebral metabolic rate. There is probably no place for nitrous oxide in neuroanesthetic </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="333.84"><span class="t-timestamp">5:33</span></div>
-  <div class="t-body"><span class="segment" data-start="333.84" data-end="341.12" title="5:33">practice as it has well documented detrimental effects such as a significant increase in cerebral </span><span class="segment" data-start="341.12" data-end="348.4" title="5:41">perfusion pressure in healthy subjects and to diffusion into air-filled spaces. However, </span><span class="segment" data-start="348.4" data-end="354.64" title="5:48">this is difficult to extrapolate into clinical practice as other agents influence the effects of </span><span class="segment" data-start="354.64" data-end="359.92" title="5:54">nitrous oxide, making it difficult to demonstrate an adverse clinical outcome. </span><span class="segment" data-start="361.68" data-end="365.12" title="6:01">Do the neuromuscular blocking agents affect intracranial pressure? </span><span class="segment" data-start="365.6" data-end="373.2" title="6:05">Non-depolarizing muscle relaxants do not directly affect the intracranial pressure. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="373.92"><span class="t-timestamp">6:13</span></div>
-  <div class="t-body"><span class="segment" data-start="373.92" data-end="380.64" title="6:13">However, the benzyle isocuinoliniums such as atrocurium can cause a histamine release that </span><span class="segment" data-start="380.64" data-end="387.36" title="6:20">can produce a reduction in the blood pressure. Also, all of the muscle relaxants have the potential </span><span class="segment" data-start="387.36" data-end="393.6" title="6:27">to cause anaphylaxis that would have potentially catastrophic effects on the intracranial pressure. </span><span class="segment" data-start="393.92" data-end="401.28" title="6:33">The depolarizing muscle relaxant, succcemethonium, can cause an increase in intracranial pressure. </span><span class="segment" data-start="402.0" data-end="409.92" title="6:42">In one study, a rise of 15 to 20 millimeters of mercury is quoted. However, this rise is limited </span><span class="segment" data-start="409.92" data-end="417.68" title="6:49">by deep anesthesia and succcemethonium is unequaled in achieving rapid total paralysis for a rapid </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="417.68"><span class="t-timestamp">6:57</span></div>
-  <div class="t-body"><span class="segment" data-start="417.68" data-end="426.4" title="6:57">sequence intubation and prompt airway control preventing aspiration. Hypocsia and hypercarbia </span><span class="segment" data-start="426.4" data-end="432.88" title="7:06">are more harmful to the brain than the transient elevation in intracranial pressure seen with succcemethonium. </span><span class="segment" data-start="434.56" data-end="438.08" title="7:14">Would be your preferred anaesthetic maintenance technique for this patient? </span><span class="segment" data-start="439.36" data-end="444.48" title="7:19">The aim is for a smooth induction avoiding coughing, hypocsia, hypercarbia and raised </span><span class="segment" data-start="444.48" data-end="452.4" title="7:24">intracranial pressure. Assuming that this patient does not require a rapid sequence induction </span><span class="segment" data-start="452.4" data-end="458.72" title="7:32">and does not have any anticipated airway difficulties, my preferred technique would be total </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="458.72"><span class="t-timestamp">7:38</span></div>
-  <div class="t-body"><span class="segment" data-start="458.72" data-end="466.32" title="7:38">intravenous anaesthesia using propyl and remyphentonyl and a non-depolarizing neuromuscular blocker </span><span class="segment" data-start="466.32" data-end="474.08" title="7:46">such as rachuronium. Remyphentonyl provides cardiovascular stability during times of intense </span><span class="segment" data-start="474.08" data-end="480.8" title="7:54">stimulation such as intubation and headpin application, preventing a rise in menatereal </span><span class="segment" data-start="480.8" data-end="488.48" title="8:00">pressure and intracranial pressure. Propyl and remyphentonyl are both short-acting and allow for </span><span class="segment" data-start="488.48" data-end="496.16" title="8:08">a rapid wake-up and assessment of neurological status postoperatively. Also, if neurophysiological </span><span class="segment" data-start="496.16" data-end="502.4" title="8:16">monitoring is required for the surgery, then further muscle relaxation can be avoided with adequate </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="502.4"><span class="t-timestamp">8:22</span></div>
-  <div class="t-body"><span class="segment" data-start="502.4" data-end="508.64" title="8:22">infusion doses of remyphentonyl. What monitoring would you use for this neurosurgical patient? </span><span class="segment" data-start="510.64" data-end="516.16" title="8:30">Mandatory monitoring for any neuroanesthetic procedure include ECG, </span><span class="segment" data-start="516.8" data-end="521.84" title="8:36">pulse oximetry, non-invasive blood pressure, capnography, </span><span class="segment" data-start="522.56" data-end="529.92" title="8:42">inspired oxygen concentration, expired volatile concentration depending upon the technique </span><span class="segment" data-start="530.0" data-end="536.96" title="8:50">and peripheral nerve stimulator. In many procedures, temperature and urine output monitoring is </span><span class="segment" data-start="536.96" data-end="543.76" title="8:56">required. Invasive arterial blood pressure for any craniotomy and central venous pressure </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="543.76"><span class="t-timestamp">9:03</span></div>
-  <div class="t-body"><span class="segment" data-start="543.76" data-end="550.24" title="9:03">monitoring will be required in patients at risk of air embolism, plus a pre-cordial Doppler ultrasound </span><span class="segment" data-start="550.24" data-end="558.56" title="9:10">may be used for air embolism detection. Intracranial pressure, sensory evoked potentials, </span><span class="segment" data-start="558.56" data-end="563.52" title="9:18">and jugular bulb oximeter monitors can be used to gain further information. </span><span class="segment" data-start="565.28" data-end="568.8" title="9:25">Can you tell me more about sensory evoked potentials than why they are monitored? </span><span class="segment" data-start="570.96" data-end="576.56" title="9:30">They are principally used to monitor the integrity of the sensory pathways during anesthesia, </span><span class="segment" data-start="577.2" data-end="583.68" title="9:37">particularly when they are at risk of damage due to the surgery. The electrical manifestation of </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="583.84"><span class="t-timestamp">9:43</span></div>
-  <div class="t-body"><span class="segment" data-start="583.84" data-end="591.04" title="9:43">the central nervous systems response to external stimuli is monitored. The low amplitude signal </span><span class="segment" data-start="591.04" data-end="597.44" title="9:51">is difficult to distinguish from background EEG activity. Therefore, the activity following </span><span class="segment" data-start="597.44" data-end="604.8" title="9:57">both repetitive, evoked, and spontaneous sensory stimulus is averaged, and the signal is then </span><span class="segment" data-start="604.8" data-end="613.52" title="10:04">extracted by summation and subtraction electronically. Brainstem auditory evoked potentials are used </span><span class="segment" data-start="613.52" data-end="621.68" title="10:13">for surgery near the auditory pathway or posterior fossa and brainstem. Visual evoked potentials </span><span class="segment" data-start="621.68" data-end="628.4" title="10:21">are used in any lesion close to the optic pathway. What positions are patients commonly placed </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="628.4"><span class="t-timestamp">10:28</span></div>
-  <div class="t-body"><span class="segment" data-start="628.4" data-end="633.84" title="10:28">in for neurosurgical operations, and what are the implications or special care you take with each </span><span class="segment" data-start="633.84" data-end="642.64" title="10:33">position? Neurosurgical procedures tend to be relatively long operations, therefore specific </span><span class="segment" data-start="642.64" data-end="649.28" title="10:42">attention should be taken to safeguard the pressure areas. Numatic calf compression boots </span><span class="segment" data-start="649.28" data-end="657.68" title="10:49">should be used where possible. A supine position is commonly used, and the important consideration here </span><span class="segment" data-start="657.68" data-end="664.96" title="10:57">is that there is good venous drainage. A 10 degree reverse trendellanberg tilt decreases the </span><span class="segment" data-start="664.96" data-end="672.4" title="11:04">intracranial pressure and leaves the cerebral perfusion pressure unchanged. Trichial tubes </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="672.4"><span class="t-timestamp">11:12</span></div>
-  <div class="t-body"><span class="segment" data-start="672.4" data-end="678.32" title="11:12">should be taped rather than tied to prevent obstruction to the flow of blood returning to the </span><span class="segment" data-start="678.32" data-end="686.72" title="11:18">heart from the head. The prone position is commonly used for spinal cord and posterior fossa surgery. </span><span class="segment" data-start="687.52" data-end="693.76" title="11:27">It is important with prone positioning to ensure that the patient is cardiovascular stable </span><span class="segment" data-start="693.76" data-end="698.88" title="11:33">prior to turning, and all intravenous and monitoring lines are well secured. </span><span class="segment" data-start="699.92" data-end="704.0" title="11:39">Care is required with respect to all of the pressure areas, </span><span class="segment" data-start="704.0" data-end="712.48" title="11:44">axili, breasts, iliac crests, groin and knees. There must be adequate support of the chest </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="712.48"><span class="t-timestamp">11:52</span></div>
-  <div class="t-body"><span class="segment" data-start="712.48" data-end="720.48" title="11:52">and pelvis to allow free movement of the abdomen and diaphragm. Support of the head is imperative, </span><span class="segment" data-start="720.48" data-end="726.48" title="12:00">so that it is not overextended or flexed at the neck, and there should be no pressure on the </span><span class="segment" data-start="726.48" data-end="734.32" title="12:06">eyes that could cause retinal ischemia and subsequent blindness. Sitting is a controversial </span><span class="segment" data-start="734.32" data-end="741.6" title="12:14">position used for surgery for tumors in the cerebellopontine angle and in the posterior third ventricular </span><span class="segment" data-start="741.6" data-end="749.92" title="12:21">region. The advantages of this position are optimized surgical access, improved surgical field, </span><span class="segment" data-start="750.48" data-end="758.24" title="12:30">and reduced tumour vascularity. The disadvantages are increased risk of air embolism, </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="758.24"><span class="t-timestamp">12:38</span></div>
-  <div class="t-body"><span class="segment" data-start="758.24" data-end="766.32" title="12:38">hemodynamic instability causing profound hypotension, tension pneumocéphilus and quadriplegia. </span><span class="segment" data-start="767.36" data-end="773.44" title="12:47">It has been suggested that the risks are higher if there is poor patient selection </span><span class="segment" data-start="773.44" data-end="778.08" title="12:53">and inexperienced teams making use of the position within adequate monitoring. </span><span class="segment" data-start="778.56" data-end="786.24" title="12:58">In dedicated neurosurgical departments, it may still have a place. However, the patients should </span><span class="segment" data-start="786.24" data-end="793.04" title="13:06">be evaluated with an echocardiogram searching for a patent foramen ovale and intraoperative </span><span class="segment" data-start="793.04" data-end="800.72" title="13:13">monitoring should include a pre-cordial Doppler probe. The lateral or park bench position is </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="800.72"><span class="t-timestamp">13:20</span></div>
-  <div class="t-body"><span class="segment" data-start="800.72" data-end="807.6" title="13:20">commonly used for spinal cord and lateral posterior phosphosurgery as it presents a lower risk of </span><span class="segment" data-start="807.6" data-end="815.44" title="13:27">venous air embolism than the sitting position. Consideration of all the pressure areas is important, </span><span class="segment" data-start="815.44" data-end="821.2" title="13:35">particularly the arms, the lower due to pressure and the upper arm due to traction. </span><span class="segment" data-start="822.08" data-end="828.64" title="13:42">Care is required that the patient is not moved after head fixation, as this could cause considerable </span><span class="segment" data-start="828.64" data-end="835.76" title="13:48">stress on the cervical spine and venous drainage. Could this patient be operated on whilst awake and </span><span class="segment" data-start="835.76" data-end="843.12" title="13:55">what advantages or disadvantages of this create? It is possible to perform an awake craniotomy </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="843.12"><span class="t-timestamp">14:03</span></div>
-  <div class="t-body"><span class="segment" data-start="843.12" data-end="850.08" title="14:03">on this patient, providing they are not confused and there are no communication difficulties </span><span class="segment" data-start="850.08" data-end="857.84" title="14:10">since absolute cooperation is required from the patient. Low occipital tumors requiring the </span><span class="segment" data-start="857.84" data-end="865.44" title="14:17">prone position are an absolute contraindication and extreme anxiety is a relative contraindication. </span><span class="segment" data-start="866.48" data-end="871.6" title="14:26">Patients would also be excluded if their lesions require significant </span><span class="segment" data-start="871.6" data-end="879.36" title="14:31">jurorous section as this is potentially painful. Also excluded would be patients for whom </span><span class="segment" data-start="879.36" data-end="886.32" title="14:39">physiological or anatomical factors such as orthopnea or joint pain would prevent them lying </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="886.32"><span class="t-timestamp">14:46</span></div>
-  <div class="t-body"><span class="segment" data-start="886.32" data-end="893.76" title="14:46">relatively flat and still for many hours. Ideally an experienced surgeon will keep the </span><span class="segment" data-start="893.76" data-end="900.72" title="14:53">operative time to a minimum. The advantages of awake craniotomy are that during surgery </span><span class="segment" data-start="900.72" data-end="907.68" title="15:00">undertaken on lesions in or adjacent to eloquent areas of the cortex, continuous reassurance can </span><span class="segment" data-start="907.68" data-end="913.76" title="15:07">be provided to the neurosurgeon that essential neurological function is not being compromised. </span><span class="segment" data-start="915.28" data-end="922.16" title="15:15">It is also used in surgery for Parkinson's disease and epilepsy, as it allows more accurate </span><span class="segment" data-start="922.16" data-end="928.64" title="15:22">intraoperative localization of the area requiring surgery. These advantages have to be </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="928.64"><span class="t-timestamp">15:28</span></div>
-  <div class="t-body"><span class="segment" data-start="928.64" data-end="934.0" title="15:28">balanced against the loss of control of ventilation and the assurance of immobility. </span><span class="segment" data-start="934.96" data-end="943.2" title="15:34">There is also a risk of seizures developing in approximately 16 to 18% of patients, most commonly </span><span class="segment" data-start="943.2" data-end="950.96" title="15:43">during epilepsy surgery and nausea and vomiting occurs in 8 to 50% of patients with the risk of </span><span class="segment" data-start="950.96" data-end="959.6" title="15:50">pulmonary aspiration. Respiratory depression and airway obstruction may occur due to sedation </span><span class="segment" data-start="959.6" data-end="967.36" title="15:59">and analgesic regimes. There is a 2 to 6% requirement for conversion to general anesthetic. </span><span class="segment" data-start="968.8" data-end="971.44" title="16:08">How may vascular neurosurgical lesions present? </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="972.08"><span class="t-timestamp">16:12</span></div>
-  <div class="t-body"><span class="segment" data-start="972.08" data-end="979.28" title="16:12">Subarachnoid hemorrhages may present with severe sudden onset headache, </span><span class="segment" data-start="980.0" data-end="986.16" title="16:20">loss of consciousness that may be transient or prolonged, vomiting and seizures. </span><span class="segment" data-start="987.28" data-end="994.4" title="16:27">Focal neurological signs due to pressure from hematoma or a large aneurysm may result in next </span><span class="segment" data-start="994.48" data-end="998.32" title="16:34">stiffness, reactive hypertension and pyrrexia. </span><span class="segment" data-start="999.68" data-end="1004.48" title="16:39">Arteriavenous malformations present with headache, seizures, </span><span class="segment" data-start="1005.04" data-end="1012.4" title="16:45">focal neurological signs due to the mass effect, high output cardiac failure and subarachnoid </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="1012.4"><span class="t-timestamp">16:52</span></div>
-  <div class="t-body"><span class="segment" data-start="1012.4" data-end="1018.24" title="16:52">or intracranial hemorrhage. What different treatment is available for these vascular lesions? </span><span class="segment" data-start="1018.72" data-end="1025.92" title="16:58">How would this affect your anesthetic? Intracranial aneurysms may either be surgically clipped via </span><span class="segment" data-start="1025.92" data-end="1033.44" title="17:05">a craniotomy or occluded by an interventional radiologist using coils or balloons and minimally </span><span class="segment" data-start="1033.44" data-end="1041.12" title="17:13">invasive techniques. For surgical clipping, the goals of anesthesia are to provide optimum </span><span class="segment" data-start="1041.12" data-end="1046.88" title="17:21">operating conditions for the surgeon by preventing an increase in transmural pressure </span><span class="segment" data-start="1046.88" data-end="1053.44" title="17:26">that may rupture the aneurysm and maintaining adequate cerebral perfusion pressure and cerebral </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="1053.44"><span class="t-timestamp">17:33</span></div>
-  <div class="t-body"><span class="segment" data-start="1053.44" data-end="1060.48" title="17:33">oxygenation. Therefore, consideration needs to be given to preventing a rise in mean arterial </span><span class="segment" data-start="1060.48" data-end="1066.08" title="17:40">pressure at times of stimulation such as intubation and headpin placement. </span><span class="segment" data-start="1068.16" data-end="1074.56" title="17:48">Controlled hypotension was a method used to reduce transmural tension in the aneurysm </span><span class="segment" data-start="1074.56" data-end="1080.72" title="17:54">prior to clipping, but most surgeons now prefer temporary clipping of major feeding arteries </span><span class="segment" data-start="1080.72" data-end="1088.24" title="18:00">at the time of clipping of the aneurysm. Routine monitoring should include ECG, pulse </span><span class="segment" data-start="1088.24" data-end="1096.56" title="18:08">oximetry, capnography, intra arterial blood pressure, central venous pressure, urine output </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="1096.56"><span class="t-timestamp">18:16</span></div>
-  <div class="t-body"><span class="segment" data-start="1096.56" data-end="1102.88" title="18:16">and temperature. Intracranial pressure monitoring, brain stem evoked potentials, </span><span class="segment" data-start="1102.88" data-end="1109.52" title="18:22">and venous jugular booboxymetry should be considered in patients at high risk of cerebral ischemia. </span><span class="segment" data-start="1111.2" data-end="1118.48" title="18:31">For interventional radiology, the same anesthetic goals are important. However, there is the caveat </span><span class="segment" data-start="1118.48" data-end="1124.56" title="18:38">that these procedures are performed in angiography suites, that are at remote sites, </span><span class="segment" data-start="1124.56" data-end="1130.88" title="18:44">away from main theatres and often cramped for space with reduced access to the patient </span><span class="segment" data-start="1130.96" data-end="1136.24" title="18:50">once the procedure has started. Rupter of the lesion can be catastrophic, </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="1136.8"><span class="t-timestamp">18:56</span></div>
-  <div class="t-body"><span class="segment" data-start="1136.8" data-end="1143.04" title="18:56">so the anesthetist should be prepared to reverse heprin anticoagulation with protamine and take </span><span class="segment" data-start="1143.04" data-end="1149.92" title="19:03">prompt measures to reduce the rises in intracranial pressure with hyperventilation and manitol </span><span class="segment" data-start="1149.92" data-end="1155.36" title="19:09">prior to surgery if appropriate. What can you tell me about surgery in the posterior fossa? </span><span class="segment" data-start="1155.68" data-end="1163.12" title="19:15">Tumors in this region are considered critical lesions because of the limited space in the </span><span class="segment" data-start="1163.12" data-end="1171.04" title="19:23">posterior fossa and the potential involvement of vital brain stem nuclei. Posteria fossa tumors </span><span class="segment" data-start="1171.04" data-end="1179.12" title="19:31">are more common in children, accounting for 50-70% of brain tumors compared to 15-20% of brain </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="1179.44"><span class="t-timestamp">19:39</span></div>
-  <div class="t-body"><span class="segment" data-start="1179.44" data-end="1186.72" title="19:39">tumors in adults. The clinical presentation depends on the site of the tumor, the biological </span><span class="segment" data-start="1186.72" data-end="1194.08" title="19:46">behavior and aggressiveness of the tumor and the rate of growth. The indications for surgery </span><span class="segment" data-start="1194.08" data-end="1200.0" title="19:54">are to decompress the posterior fossa and release pressure on the brain stem to avoid the risk of </span><span class="segment" data-start="1200.0" data-end="1206.4" title="20:00">herniation or to obtain a histopathological diagnosis allowing further management planning. </span><span class="segment" data-start="1206.64" data-end="1212.72" title="20:06">What specific complications are you aware of during and post surgery in the posterior fossa? </span><span class="segment" data-start="1214.88" data-end="1221.92" title="20:14">As with any surgical procedure there are the risks of infection, hemorrhage, chest infection, </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="1222.48"><span class="t-timestamp">20:22</span></div>
-  <div class="t-body"><span class="segment" data-start="1222.48" data-end="1229.6" title="20:22">a telectasis, peripheral nerve injuries, deep venous thrombosis and pulmonary embolism. </span><span class="segment" data-start="1230.56" data-end="1237.28" title="20:30">However, the specific complications that the anesthetist needs to be aware of during and post </span><span class="segment" data-start="1237.28" data-end="1242.0" title="20:37">operatively often relate to the position that the patient is in during the operation. </span><span class="segment" data-start="1242.88" data-end="1252.32" title="20:42">Venus air embolism, paradoxical air embolism, pneumocophilus, hemodynamic instability, macroglossia </span><span class="segment" data-start="1252.8" data-end="1262.24" title="20:52">quadriplegia. The commonly used positions are prone and lateral or park bench, occasionally the </span><span class="segment" data-start="1262.24" data-end="1269.12" title="21:02">sitting position is used. The sitting position deserves special consideration as it carries the </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="1269.12"><span class="t-timestamp">21:09</span></div>
-  <div class="t-body"><span class="segment" data-start="1269.12" data-end="1276.64" title="21:09">highest risk of specific complications, especially venous air embolism. Therefore, patients should be </span><span class="segment" data-start="1276.64" data-end="1283.92" title="21:16">screened for intracardiac connections between the left and right side of the heart prior to surgery </span><span class="segment" data-start="1283.92" data-end="1288.32" title="21:23">to identify those patients at risk of paradoxical air embolism. </span><span class="segment" data-start="1289.68" data-end="1295.2" title="21:29">Methods to reduce this risk should be taken, such as avoiding hypoverlemia, </span><span class="segment" data-start="1295.2" data-end="1301.44" title="21:35">use of compression stockings and possibly the application of peep, but this does increase the </span><span class="segment" data-start="1301.52" data-end="1309.68" title="21:41">risk of paradoxical air embolism. Despite these steps, the incidence of venous air embolism </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="1309.68"><span class="t-timestamp">21:49</span></div>
-  <div class="t-body"><span class="segment" data-start="1309.68" data-end="1317.6" title="21:49">is in the order of 30%. However, the risk of hemodynamically significant events is much lower </span><span class="segment" data-start="1317.6" data-end="1323.44" title="21:57">and relates to the volume and rate of air entrainment along with the patient's pre-anesthetic </span><span class="segment" data-start="1323.92" data-end="1332.56" title="22:03">pulmonary reserve. Hypotension is much more likely in the seated position because venous pooling </span><span class="segment" data-start="1332.56" data-end="1338.64" title="22:12">in the lower body, the effects of positive pressure ventilation, peep and the effects of the </span><span class="segment" data-start="1338.64" data-end="1345.76" title="22:18">anesthetic agents, impair venous return to the heart. The transition from supine to sitting </span><span class="segment" data-start="1345.76" data-end="1353.12" title="22:25">position following induction of anesthesia must be gradual as sudden hypotension would be undesirable. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="1354.16"><span class="t-timestamp">22:34</span></div>
-  <div class="t-body"><span class="segment" data-start="1354.16" data-end="1360.0" title="22:34">Hypotension commonly requires treatment with fluids and vasopressor agents. </span><span class="segment" data-start="1360.88" data-end="1367.68" title="22:40">Secondary cardiovascular responses by surgical stimulation of the brainstem may be sudden </span><span class="segment" data-start="1367.68" data-end="1372.24" title="22:47">and can be masked with the use of anticolynergics or beta blockers. </span><span class="segment" data-start="1373.68" data-end="1381.28" title="22:53">Macroglossia is thought to be due to extreme flexion and reduction in the auro-farangial volume, </span><span class="segment" data-start="1381.28" data-end="1385.36" title="23:01">which reduces lingual venous drainage or lymphatic drainage. </span><span class="segment" data-start="1386.24" data-end="1393.12" title="23:06">Extreme flexion is thought to be the cause of quadriplegia due to insufficient nutrient supply </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="1393.12"><span class="t-timestamp">23:13</span></div>
-  <div class="t-body"><span class="segment" data-start="1393.12" data-end="1400.96" title="23:13">and drainage of the cervical spinal cord. If there is delay in emergence from anesthesia postoperatively, </span><span class="segment" data-start="1400.96" data-end="1407.52" title="23:20">then alongside the usual differential diagnoses, symptomatic tension pneumocéphilus, </span><span class="segment" data-start="1408.08" data-end="1415.36" title="23:28">cerebral ischemia due to paradoxical air embolus and brainstem injury, hematoma or cerebral </span><span class="segment" data-start="1415.36" data-end="1420.72" title="23:35">adema need to be considered so that appropriate therapy can be instituted promptly. </span><span class="segment" data-start="1421.76" data-end="1429.04" title="23:41">Also postoperative respiratory compromise may be due to injury to brainstem respiratory centers, </span><span class="segment" data-start="1429.04" data-end="1436.0" title="23:49">airway obstruction from macroglossia or injury to lower cranial nerves 9, 10 or 12. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="1436.96"><span class="t-timestamp">23:56</span></div>
-  <div class="t-body"><span class="segment" data-start="1436.96" data-end="1440.24" title="23:56">How would you diagnose and manage a suspected venous air embolism? </span><span class="segment" data-start="1442.56" data-end="1448.96" title="24:02">To allow early diagnosis, you need to be aware when a patient is at high risk of a venous air </span><span class="segment" data-start="1448.96" data-end="1456.16" title="24:08">embolism and maintain a high index of suspicion. The main methods for detecting them are </span><span class="segment" data-start="1456.16" data-end="1462.64" title="24:16">pre-cordial Doppler transosophageal echocardiogram or transtherasic echocardiogram. </span><span class="segment" data-start="1463.52" data-end="1468.72" title="24:23">A drop in the end tidal carbon dioxide is indicative but not specific. </span><span class="segment" data-start="1469.92" data-end="1476.0" title="24:29">Once a significant venous air embolism has been detected, which is causing cardiovascular </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="1476.0"><span class="t-timestamp">24:36</span></div>
-  <div class="t-body"><span class="segment" data-start="1476.0" data-end="1482.96" title="24:36">instability, management would be preventing further air entrainments by flooding the wound with </span><span class="segment" data-start="1482.96" data-end="1489.52" title="24:42">saline or lowering the head and considering compression of the jugular vein, and respiratory </span><span class="segment" data-start="1489.52" data-end="1497.52" title="24:49">and cardiovascular support in the form of 100% oxygen, fluid volume and vasopressors or </span><span class="segment" data-start="1497.52" data-end="1504.24" title="24:57">ionotropes. Ideally, a central venous catheter should be cited prior to the procedure </span><span class="segment" data-start="1504.24" data-end="1508.4" title="25:04">and this should be used to aspirate the air from the right side of the heart. </span><span class="segment" data-start="1509.6" data-end="1513.2" title="25:09">How would you confirm the correct placement of the central venous pressure line? </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="1513.76"><span class="t-timestamp">25:13</span></div>
-  <div class="t-body"><span class="segment" data-start="1513.76" data-end="1521.84" title="25:13">There are three ways to confirm the correct placement of the catheter tip, which is just proximal </span><span class="segment" data-start="1521.84" data-end="1528.88" title="25:21">to the caveoatrial junction. Chest X-ray may be used, however there are possible difficulties </span><span class="segment" data-start="1528.88" data-end="1535.6" title="25:28">in interpreting the image. The pressure waveform from a pulmonary artery catheter will allow you </span><span class="segment" data-start="1535.68" data-end="1544.56" title="25:35">to identify the correct placement. The last way involves the use of an IV-ECG that has an ECG </span><span class="segment" data-start="1544.56" data-end="1551.12" title="25:44">electrode at the tip of the catheter and therefore allows you to identify the correct position </span><span class="segment" data-start="1551.12" data-end="1557.28" title="25:51">when a biffid P-wave occurs. This technique has the added risk of microshop. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="1558.24"><span class="t-timestamp">25:58</span></div>
-  <div class="t-body"><span class="segment" data-start="1558.24" data-end="1564.48" title="25:58">In all cases, there is a high chance that the catheter tip will move when the patient's position </span><span class="segment" data-start="1564.48" data-end="1571.04" title="26:04">is changed for surgery and therefore rechecking will be necessary making the latter two techniques </span><span class="segment" data-start="1571.04" data-end="1579.04" title="26:11">more appropriate. </span></div>
+<div class="preamble-block"><span class="segment a-seg" data-start="0.0" data-end="6.32" title="0:00">Anasthesia for craniotomy. You've been asked to assess a 55-year-old gentleman who is scheduled </span><span class="segment a-seg" data-start="6.32" data-end="12.72" title="0:06">for craniotomy and debulking of a primary brain tumor. What are the key considerations in the </span></div>
+<div class="qa-pair">
+<div class="q-block" data-start="12.72">
+  <div class="q-label">Q1</div>
+  <div class="q-body"><span class="segment q-seg" data-start="12.72" data-end="16.12" title="0:12">history when pre-assessing a neurosurgical patient? </span></div>
 </div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="16.12" data-end="19.52" title="0:16">A structured approach is vital, mentioning </span></li>
+<li><span class="segment a-seg" data-start="19.52" data-end="23.44" title="0:19">routine history first before focusing on the specific neurological history. </span></li>
+<li><span class="segment a-seg" data-start="23.44" data-end="30.24" title="0:23">I would first of all focus on the general points of a history relevant to all patients, </span></li>
+<li><span class="segment a-seg" data-start="30.88" data-end="35.76" title="0:30">and then concentrate on those factors that are specific to the neurosurgical condition. </span></li>
+<li><span class="segment a-seg" data-start="37.04" data-end="42.88" title="0:37">Eventually, both the history and examination need to focus on the symptoms and signs of neurological </span></li>
+<li><span class="segment a-seg" data-start="42.88" data-end="49.04" title="0:42">deficit, and whether the presenting features have been chronic, acute, or fluctuating. </span></li>
+<li><span class="segment a-seg" data-start="49.2" data-end="55.36" title="0:49">The surgical condition may have resulted in clouding of consciousness or motor deficits, </span></li>
+<li><span class="segment a-seg" data-start="55.36" data-end="60.0" title="0:55">and there may be signs or symptoms of raised intracranial pressure. </span></li>
+<li><span class="segment a-seg" data-start="60.0" data-end="68.08" title="1:00">It is important to establish a baseline neurological evaluation, as an anesthesia and surgery </span></li>
+<li><span class="segment a-seg" data-start="68.08" data-end="76.64" title="1:08">may profoundly affect postoperative neurological status. Any new medication started recently, </span></li>
+<li><span class="segment a-seg" data-start="77.36" data-end="84.0" title="1:17">such as Dexamethasone or Osmotic Diuretics to reduce cerebraladema should be noted, </span></li>
+<li><span class="segment a-seg" data-start="84.0" data-end="89.36" title="1:24">with the duration of treatment and dose as they may cause hyperglycemia, </span></li>
+<li><span class="segment a-seg" data-start="89.36" data-end="97.44" title="1:29">hypovolemia, and electrolyte imbalances. Anticonvulsants should be noted as they may affect </span></li>
+<li><span class="segment a-seg" data-start="97.44" data-end="102.88" title="1:37">the metabolism of drugs, such as Vecuronium by Microsomal Enzyme Induction. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="103.52">
+  <div class="q-label">Q2</div>
+  <div class="q-body"><span class="segment q-seg" data-start="103.52" data-end="107.2" title="1:43">What investigations might you require for this patient? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="109.44" data-end="114.88" title="1:49">An ECG to show any underlying cardiac abnormalities or ischemic changes. </span></li>
+<li><span class="segment a-seg" data-start="115.68" data-end="122.08" title="1:55">Eurea and electrolytes to reveal any imbalance caused by diuretics or persistent vomiting. </span></li>
+<li><span class="segment a-seg" data-start="123.52" data-end="129.28" title="2:03">If the patient has been on anticonvulsants, the liver function tests might be deranged. </span></li>
+<li><span class="segment a-seg" data-start="130.16" data-end="135.68" title="2:10">Full blood count and calculation studies to ensure there are no bleeding problems </span></li>
+<li><span class="segment a-seg" data-start="135.68" data-end="142.32" title="2:15">or low platelets that might interfere with hemostasis. I would expect imaging of the lesion to be </span></li>
+<li><span class="segment a-seg" data-start="142.32" data-end="150.16" title="2:22">available for the surgeons in the form of CT or MRI scans. What pre-medication would you consider </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="150.16">
+  <div class="q-label">Q3</div>
+  <div class="q-body"><span class="segment q-seg" data-start="150.16" data-end="151.856" title="2:30">in this patient? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="151.856" data-end="158.64" title="2:31">As with all areas of anesthetic practice, this needs to be individualised. </span></li>
+<li><span class="segment a-seg" data-start="159.44" data-end="164.96" title="2:39">The risk of an extremely anxious patient becoming hyper-attensive and raising their </span></li>
+<li><span class="segment a-seg" data-start="164.96" data-end="170.32" title="2:44">intracranial pressure has to be balanced against the risk of respiratory depression, </span></li>
+<li><span class="segment a-seg" data-start="170.32" data-end="176.4" title="2:50">causing a rise in the arterial carbon dioxide that would also increase the intracranial pressure. </span></li>
+<li><span class="segment a-seg" data-start="177.44" data-end="184.8" title="2:57">Therefore, benzodiazepines may be considered for anxiety, dexamethasone for cerebral edema, </span></li>
+<li><span class="segment a-seg" data-start="185.12" data-end="190.08" title="3:05">and the use of anticonvulsants if not already started for potential seizures. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="191.84">
+  <div class="q-label">Q4</div>
+  <div class="q-body"><span class="segment q-seg" data-start="191.84" data-end="196.4" title="3:11">What would influence your choice of intravenous induction agent for a neurosurgical patient? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="198.96" data-end="205.52" title="3:18">The aims for patients with intracranial pathology are to prevent increases in intracranial pressure </span></li>
+<li><span class="segment a-seg" data-start="205.52" data-end="211.12" title="3:25">during induction and maintenance of anesthesia and to maintain an adequate cerebral </span></li>
+<li><span class="segment a-seg" data-start="211.12" data-end="216.72" title="3:31">perfusion pressure by preventing any sudden rise or fall in the men arterial pressure. </span></li>
+<li><span class="segment a-seg" data-start="217.92" data-end="224.64" title="3:37">As the cerebral perfusion pressure is a product of men arterial pressure minus intracranial pressure. </span></li>
+<li><span class="segment a-seg" data-start="226.88" data-end="234.16" title="3:46">Intravenous agents, propyl and thir pentone are most commonly used because they decrease cerebral </span></li>
+<li><span class="segment a-seg" data-start="234.16" data-end="240.88" title="3:54">blood flow under the cerebral metabolic rate. However, induction of anesthesia may </span></li>
+<li><span class="segment a-seg" data-start="240.88" data-end="247.52" title="4:00">cause sudden falls in blood pressure and may require prompt correction with vasopressors and fluid. </span></li>
+<li><span class="segment a-seg" data-start="248.8" data-end="255.04" title="4:08">Fire pentones barbiturate structure makes it a good induction agent in the patient at risk of </span></li>
+<li><span class="segment a-seg" data-start="255.04" data-end="262.16" title="4:15">seizure activity. It tomodate also reduces the cerebral metabolic rate, but it maintains the blood </span></li>
+<li><span class="segment a-seg" data-start="262.16" data-end="269.28" title="4:22">pressure. However, its use is limited because induction is less smooth and there are concerns </span></li>
+<li><span class="segment a-seg" data-start="269.28" data-end="276.64" title="4:29">surrounding its effects on steroid synthesis. ketamine should be avoided as it causes a marked </span></li>
+<li><span class="segment a-seg" data-start="276.64" data-end="284.4" title="4:36">increase in cerebral metabolic rate and cerebral blood flow. What volatile agents would you use </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="284.4">
+  <div class="q-label">Q5</div>
+  <div class="q-body"><span class="segment q-seg" data-start="284.4" data-end="287.058" title="4:44">for a neurosurgical patient? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="287.058" data-end="293.04" title="4:47">Volatile and aesthetic agents decrease the cerebral metabolic rate </span></li>
+<li><span class="segment a-seg" data-start="293.44" data-end="301.6" title="4:53">up to 40%. But in contrast to the intravenous agents, they cause dose-related vasodilitation. </span></li>
+<li><span class="segment a-seg" data-start="302.64" data-end="310.4" title="5:02">The most potent cerebral vasodilators are halothane and end-fluorane and they are no longer used. </span></li>
+<li><span class="segment a-seg" data-start="311.12" data-end="318.24" title="5:11">Isofluorane and sever-fluorane are the most commonly used volatile agents in current practice </span></li>
+<li><span class="segment a-seg" data-start="318.32" data-end="325.84" title="5:18">as they have the least effect on the cerebral blood flow. In effect, these agents uncouple cerebral </span></li>
+<li><span class="segment a-seg" data-start="325.84" data-end="333.84" title="5:25">blood flow and cerebral metabolic rate. There is probably no place for nitrous oxide in neuroanesthetic </span></li>
+<li><span class="segment a-seg" data-start="333.84" data-end="341.12" title="5:33">practice as it has well documented detrimental effects such as a significant increase in cerebral </span></li>
+<li><span class="segment a-seg" data-start="341.12" data-end="348.4" title="5:41">perfusion pressure in healthy subjects and to diffusion into air-filled spaces. However, </span></li>
+<li><span class="segment a-seg" data-start="348.4" data-end="354.64" title="5:48">this is difficult to extrapolate into clinical practice as other agents influence the effects of </span></li>
+<li><span class="segment a-seg" data-start="354.64" data-end="359.92" title="5:54">nitrous oxide, making it difficult to demonstrate an adverse clinical outcome. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="361.68">
+  <div class="q-label">Q6</div>
+  <div class="q-body"><span class="segment q-seg" data-start="361.68" data-end="365.12" title="6:01">Do the neuromuscular blocking agents affect intracranial pressure? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="365.6" data-end="373.2" title="6:05">Non-depolarizing muscle relaxants do not directly affect the intracranial pressure. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="373.92">
+  <div class="q-label">Q7</div>
+  <div class="q-body"><span class="segment q-seg" data-start="373.92" data-end="380.64" title="6:13">However, the benzyle isocuinoliniums such as atrocurium can cause a histamine release that </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="380.64" data-end="387.36" title="6:20">can produce a reduction in the blood pressure. Also, all of the muscle relaxants have the potential </span></li>
+<li><span class="segment a-seg" data-start="387.36" data-end="393.6" title="6:27">to cause anaphylaxis that would have potentially catastrophic effects on the intracranial pressure. </span></li>
+<li><span class="segment a-seg" data-start="393.92" data-end="401.28" title="6:33">The depolarizing muscle relaxant, succcemethonium, can cause an increase in intracranial pressure. </span></li>
+<li><span class="segment a-seg" data-start="402.0" data-end="409.92" title="6:42">In one study, a rise of 15 to 20 millimeters of mercury is quoted. However, this rise is limited </span></li>
+<li><span class="segment a-seg" data-start="409.92" data-end="417.68" title="6:49">by deep anesthesia and succcemethonium is unequaled in achieving rapid total paralysis for a rapid </span></li>
+<li><span class="segment a-seg" data-start="417.68" data-end="426.4" title="6:57">sequence intubation and prompt airway control preventing aspiration. Hypocsia and hypercarbia </span></li>
+<li><span class="segment a-seg" data-start="426.4" data-end="432.88" title="7:06">are more harmful to the brain than the transient elevation in intracranial pressure seen with succcemethonium. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="434.56">
+  <div class="q-label">Q8</div>
+  <div class="q-body"><span class="segment q-seg" data-start="434.56" data-end="438.08" title="7:14">Would be your preferred anaesthetic maintenance technique for this patient? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="439.36" data-end="444.48" title="7:19">The aim is for a smooth induction avoiding coughing, hypocsia, hypercarbia and raised </span></li>
+<li><span class="segment a-seg" data-start="444.48" data-end="452.4" title="7:24">intracranial pressure. Assuming that this patient does not require a rapid sequence induction </span></li>
+<li><span class="segment a-seg" data-start="452.4" data-end="458.72" title="7:32">and does not have any anticipated airway difficulties, my preferred technique would be total </span></li>
+<li><span class="segment a-seg" data-start="458.72" data-end="466.32" title="7:38">intravenous anaesthesia using propyl and remyphentonyl and a non-depolarizing neuromuscular blocker </span></li>
+<li><span class="segment a-seg" data-start="466.32" data-end="474.08" title="7:46">such as rachuronium. Remyphentonyl provides cardiovascular stability during times of intense </span></li>
+<li><span class="segment a-seg" data-start="474.08" data-end="480.8" title="7:54">stimulation such as intubation and headpin application, preventing a rise in menatereal </span></li>
+<li><span class="segment a-seg" data-start="480.8" data-end="488.48" title="8:00">pressure and intracranial pressure. Propyl and remyphentonyl are both short-acting and allow for </span></li>
+<li><span class="segment a-seg" data-start="488.48" data-end="496.16" title="8:08">a rapid wake-up and assessment of neurological status postoperatively. Also, if neurophysiological </span></li>
+<li><span class="segment a-seg" data-start="496.16" data-end="502.4" title="8:16">monitoring is required for the surgery, then further muscle relaxation can be avoided with adequate </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="502.4">
+  <div class="q-label">Q9</div>
+  <div class="q-body"><span class="segment q-seg" data-start="502.4" data-end="508.64" title="8:22">infusion doses of remyphentonyl. What monitoring would you use for this neurosurgical patient? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="510.64" data-end="516.16" title="8:30">Mandatory monitoring for any neuroanesthetic procedure include ECG, </span></li>
+<li><span class="segment a-seg" data-start="516.8" data-end="521.84" title="8:36">pulse oximetry, non-invasive blood pressure, capnography, </span></li>
+<li><span class="segment a-seg" data-start="522.56" data-end="529.92" title="8:42">inspired oxygen concentration, expired volatile concentration depending upon the technique </span></li>
+<li><span class="segment a-seg" data-start="530.0" data-end="536.96" title="8:50">and peripheral nerve stimulator. In many procedures, temperature and urine output monitoring is </span></li>
+<li><span class="segment a-seg" data-start="536.96" data-end="543.76" title="8:56">required. Invasive arterial blood pressure for any craniotomy and central venous pressure </span></li>
+<li><span class="segment a-seg" data-start="543.76" data-end="550.24" title="9:03">monitoring will be required in patients at risk of air embolism, plus a pre-cordial Doppler ultrasound </span></li>
+<li><span class="segment a-seg" data-start="550.24" data-end="558.56" title="9:10">may be used for air embolism detection. Intracranial pressure, sensory evoked potentials, </span></li>
+<li><span class="segment a-seg" data-start="558.56" data-end="563.52" title="9:18">and jugular bulb oximeter monitors can be used to gain further information. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="565.28">
+  <div class="q-label">Q10</div>
+  <div class="q-body"><span class="segment q-seg" data-start="565.28" data-end="568.8" title="9:25">Can you tell me more about sensory evoked potentials than why they are monitored? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="570.96" data-end="576.56" title="9:30">They are principally used to monitor the integrity of the sensory pathways during anesthesia, </span></li>
+<li><span class="segment a-seg" data-start="577.2" data-end="583.68" title="9:37">particularly when they are at risk of damage due to the surgery. The electrical manifestation of </span></li>
+<li><span class="segment a-seg" data-start="583.84" data-end="591.04" title="9:43">the central nervous systems response to external stimuli is monitored. The low amplitude signal </span></li>
+<li><span class="segment a-seg" data-start="591.04" data-end="597.44" title="9:51">is difficult to distinguish from background EEG activity. Therefore, the activity following </span></li>
+<li><span class="segment a-seg" data-start="597.44" data-end="604.8" title="9:57">both repetitive, evoked, and spontaneous sensory stimulus is averaged, and the signal is then </span></li>
+<li><span class="segment a-seg" data-start="604.8" data-end="613.52" title="10:04">extracted by summation and subtraction electronically. Brainstem auditory evoked potentials are used </span></li>
+<li><span class="segment a-seg" data-start="613.52" data-end="621.68" title="10:13">for surgery near the auditory pathway or posterior fossa and brainstem. Visual evoked potentials </span></li>
+<li><span class="segment a-seg" data-start="621.68" data-end="628.4" title="10:21">are used in any lesion close to the optic pathway. What positions are patients commonly placed </span></li>
+<li><span class="segment a-seg" data-start="628.4" data-end="633.84" title="10:28">in for neurosurgical operations, and what are the implications or special care you take with each </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="633.84">
+  <div class="q-label">Q11</div>
+  <div class="q-body"><span class="segment q-seg" data-start="633.84" data-end="634.64" title="10:33">position? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="634.64" data-end="642.64" title="10:34">Neurosurgical procedures tend to be relatively long operations, therefore specific </span></li>
+<li><span class="segment a-seg" data-start="642.64" data-end="649.28" title="10:42">attention should be taken to safeguard the pressure areas. Numatic calf compression boots </span></li>
+<li><span class="segment a-seg" data-start="649.28" data-end="657.68" title="10:49">should be used where possible. A supine position is commonly used, and the important consideration here </span></li>
+<li><span class="segment a-seg" data-start="657.68" data-end="664.96" title="10:57">is that there is good venous drainage. A 10 degree reverse trendellanberg tilt decreases the </span></li>
+<li><span class="segment a-seg" data-start="664.96" data-end="672.4" title="11:04">intracranial pressure and leaves the cerebral perfusion pressure unchanged. Trichial tubes </span></li>
+<li><span class="segment a-seg" data-start="672.4" data-end="678.32" title="11:12">should be taped rather than tied to prevent obstruction to the flow of blood returning to the </span></li>
+<li><span class="segment a-seg" data-start="678.32" data-end="686.72" title="11:18">heart from the head. The prone position is commonly used for spinal cord and posterior fossa surgery. </span></li>
+<li><span class="segment a-seg" data-start="687.52" data-end="693.76" title="11:27">It is important with prone positioning to ensure that the patient is cardiovascular stable </span></li>
+<li><span class="segment a-seg" data-start="693.76" data-end="698.88" title="11:33">prior to turning, and all intravenous and monitoring lines are well secured. </span></li>
+<li><span class="segment a-seg" data-start="699.92" data-end="704.0" title="11:39">Care is required with respect to all of the pressure areas, </span></li>
+<li><span class="segment a-seg" data-start="704.0" data-end="712.48" title="11:44">axili, breasts, iliac crests, groin and knees. There must be adequate support of the chest </span></li>
+<li><span class="segment a-seg" data-start="712.48" data-end="720.48" title="11:52">and pelvis to allow free movement of the abdomen and diaphragm. Support of the head is imperative, </span></li>
+<li><span class="segment a-seg" data-start="720.48" data-end="726.48" title="12:00">so that it is not overextended or flexed at the neck, and there should be no pressure on the </span></li>
+<li><span class="segment a-seg" data-start="726.48" data-end="734.32" title="12:06">eyes that could cause retinal ischemia and subsequent blindness. Sitting is a controversial </span></li>
+<li><span class="segment a-seg" data-start="734.32" data-end="741.6" title="12:14">position used for surgery for tumors in the cerebellopontine angle and in the posterior third ventricular </span></li>
+<li><span class="segment a-seg" data-start="741.6" data-end="749.92" title="12:21">region. The advantages of this position are optimized surgical access, improved surgical field, </span></li>
+<li><span class="segment a-seg" data-start="750.48" data-end="758.24" title="12:30">and reduced tumour vascularity. The disadvantages are increased risk of air embolism, </span></li>
+<li><span class="segment a-seg" data-start="758.24" data-end="766.32" title="12:38">hemodynamic instability causing profound hypotension, tension pneumocéphilus and quadriplegia. </span></li>
+<li><span class="segment a-seg" data-start="767.36" data-end="773.44" title="12:47">It has been suggested that the risks are higher if there is poor patient selection </span></li>
+<li><span class="segment a-seg" data-start="773.44" data-end="778.08" title="12:53">and inexperienced teams making use of the position within adequate monitoring. </span></li>
+<li><span class="segment a-seg" data-start="778.56" data-end="786.24" title="12:58">In dedicated neurosurgical departments, it may still have a place. However, the patients should </span></li>
+<li><span class="segment a-seg" data-start="786.24" data-end="793.04" title="13:06">be evaluated with an echocardiogram searching for a patent foramen ovale and intraoperative </span></li>
+<li><span class="segment a-seg" data-start="793.04" data-end="800.72" title="13:13">monitoring should include a pre-cordial Doppler probe. The lateral or park bench position is </span></li>
+<li><span class="segment a-seg" data-start="800.72" data-end="807.6" title="13:20">commonly used for spinal cord and lateral posterior phosphosurgery as it presents a lower risk of </span></li>
+<li><span class="segment a-seg" data-start="807.6" data-end="815.44" title="13:27">venous air embolism than the sitting position. Consideration of all the pressure areas is important, </span></li>
+<li><span class="segment a-seg" data-start="815.44" data-end="821.2" title="13:35">particularly the arms, the lower due to pressure and the upper arm due to traction. </span></li>
+<li><span class="segment a-seg" data-start="822.08" data-end="828.64" title="13:42">Care is required that the patient is not moved after head fixation, as this could cause considerable </span></li>
+<li><span class="segment a-seg" data-start="828.64" data-end="835.76" title="13:48">stress on the cervical spine and venous drainage. Could this patient be operated on whilst awake and </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="835.76">
+  <div class="q-label">Q12</div>
+  <div class="q-body"><span class="segment q-seg" data-start="835.76" data-end="839.195" title="13:55">what advantages or disadvantages of this create? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="839.195" data-end="843.12" title="13:59">It is possible to perform an awake craniotomy </span></li>
+<li><span class="segment a-seg" data-start="843.12" data-end="850.08" title="14:03">on this patient, providing they are not confused and there are no communication difficulties </span></li>
+<li><span class="segment a-seg" data-start="850.08" data-end="857.84" title="14:10">since absolute cooperation is required from the patient. Low occipital tumors requiring the </span></li>
+<li><span class="segment a-seg" data-start="857.84" data-end="865.44" title="14:17">prone position are an absolute contraindication and extreme anxiety is a relative contraindication. </span></li>
+<li><span class="segment a-seg" data-start="866.48" data-end="871.6" title="14:26">Patients would also be excluded if their lesions require significant </span></li>
+<li><span class="segment a-seg" data-start="871.6" data-end="879.36" title="14:31">jurorous section as this is potentially painful. Also excluded would be patients for whom </span></li>
+<li><span class="segment a-seg" data-start="879.36" data-end="886.32" title="14:39">physiological or anatomical factors such as orthopnea or joint pain would prevent them lying </span></li>
+<li><span class="segment a-seg" data-start="886.32" data-end="893.76" title="14:46">relatively flat and still for many hours. Ideally an experienced surgeon will keep the </span></li>
+<li><span class="segment a-seg" data-start="893.76" data-end="900.72" title="14:53">operative time to a minimum. The advantages of awake craniotomy are that during surgery </span></li>
+<li><span class="segment a-seg" data-start="900.72" data-end="907.68" title="15:00">undertaken on lesions in or adjacent to eloquent areas of the cortex, continuous reassurance can </span></li>
+<li><span class="segment a-seg" data-start="907.68" data-end="913.76" title="15:07">be provided to the neurosurgeon that essential neurological function is not being compromised. </span></li>
+<li><span class="segment a-seg" data-start="915.28" data-end="922.16" title="15:15">It is also used in surgery for Parkinson's disease and epilepsy, as it allows more accurate </span></li>
+<li><span class="segment a-seg" data-start="922.16" data-end="928.64" title="15:22">intraoperative localization of the area requiring surgery. These advantages have to be </span></li>
+<li><span class="segment a-seg" data-start="928.64" data-end="934.0" title="15:28">balanced against the loss of control of ventilation and the assurance of immobility. </span></li>
+<li><span class="segment a-seg" data-start="934.96" data-end="943.2" title="15:34">There is also a risk of seizures developing in approximately 16 to 18% of patients, most commonly </span></li>
+<li><span class="segment a-seg" data-start="943.2" data-end="950.96" title="15:43">during epilepsy surgery and nausea and vomiting occurs in 8 to 50% of patients with the risk of </span></li>
+<li><span class="segment a-seg" data-start="950.96" data-end="959.6" title="15:50">pulmonary aspiration. Respiratory depression and airway obstruction may occur due to sedation </span></li>
+<li><span class="segment a-seg" data-start="959.6" data-end="967.36" title="15:59">and analgesic regimes. There is a 2 to 6% requirement for conversion to general anesthetic. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="968.8">
+  <div class="q-label">Q13</div>
+  <div class="q-body"><span class="segment q-seg" data-start="968.8" data-end="971.44" title="16:08">How may vascular neurosurgical lesions present? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="972.08" data-end="979.28" title="16:12">Subarachnoid hemorrhages may present with severe sudden onset headache, </span></li>
+<li><span class="segment a-seg" data-start="980.0" data-end="986.16" title="16:20">loss of consciousness that may be transient or prolonged, vomiting and seizures. </span></li>
+<li><span class="segment a-seg" data-start="987.28" data-end="994.4" title="16:27">Focal neurological signs due to pressure from hematoma or a large aneurysm may result in next </span></li>
+<li><span class="segment a-seg" data-start="994.48" data-end="998.32" title="16:34">stiffness, reactive hypertension and pyrrexia. </span></li>
+<li><span class="segment a-seg" data-start="999.68" data-end="1004.48" title="16:39">Arteriavenous malformations present with headache, seizures, </span></li>
+<li><span class="segment a-seg" data-start="1005.04" data-end="1012.4" title="16:45">focal neurological signs due to the mass effect, high output cardiac failure and subarachnoid </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="1012.4">
+  <div class="q-label">Q14</div>
+  <div class="q-body"><span class="segment q-seg" data-start="1012.4" data-end="1018.24" title="16:52">or intracranial hemorrhage. What different treatment is available for these vascular lesions? </span><span class="segment q-seg" data-start="1018.72" data-end="1021.806" title="16:58">How would this affect your anesthetic? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="1021.806" data-end="1025.92" title="17:01">Intracranial aneurysms may either be surgically clipped via </span></li>
+<li><span class="segment a-seg" data-start="1025.92" data-end="1033.44" title="17:05">a craniotomy or occluded by an interventional radiologist using coils or balloons and minimally </span></li>
+<li><span class="segment a-seg" data-start="1033.44" data-end="1041.12" title="17:13">invasive techniques. For surgical clipping, the goals of anesthesia are to provide optimum </span></li>
+<li><span class="segment a-seg" data-start="1041.12" data-end="1046.88" title="17:21">operating conditions for the surgeon by preventing an increase in transmural pressure </span></li>
+<li><span class="segment a-seg" data-start="1046.88" data-end="1053.44" title="17:26">that may rupture the aneurysm and maintaining adequate cerebral perfusion pressure and cerebral </span></li>
+<li><span class="segment a-seg" data-start="1053.44" data-end="1060.48" title="17:33">oxygenation. Therefore, consideration needs to be given to preventing a rise in mean arterial </span></li>
+<li><span class="segment a-seg" data-start="1060.48" data-end="1066.08" title="17:40">pressure at times of stimulation such as intubation and headpin placement. </span></li>
+<li><span class="segment a-seg" data-start="1068.16" data-end="1074.56" title="17:48">Controlled hypotension was a method used to reduce transmural tension in the aneurysm </span></li>
+<li><span class="segment a-seg" data-start="1074.56" data-end="1080.72" title="17:54">prior to clipping, but most surgeons now prefer temporary clipping of major feeding arteries </span></li>
+<li><span class="segment a-seg" data-start="1080.72" data-end="1088.24" title="18:00">at the time of clipping of the aneurysm. Routine monitoring should include ECG, pulse </span></li>
+<li><span class="segment a-seg" data-start="1088.24" data-end="1096.56" title="18:08">oximetry, capnography, intra arterial blood pressure, central venous pressure, urine output </span></li>
+<li><span class="segment a-seg" data-start="1096.56" data-end="1102.88" title="18:16">and temperature. Intracranial pressure monitoring, brain stem evoked potentials, </span></li>
+<li><span class="segment a-seg" data-start="1102.88" data-end="1109.52" title="18:22">and venous jugular booboxymetry should be considered in patients at high risk of cerebral ischemia. </span></li>
+<li><span class="segment a-seg" data-start="1111.2" data-end="1118.48" title="18:31">For interventional radiology, the same anesthetic goals are important. However, there is the caveat </span></li>
+<li><span class="segment a-seg" data-start="1118.48" data-end="1124.56" title="18:38">that these procedures are performed in angiography suites, that are at remote sites, </span></li>
+<li><span class="segment a-seg" data-start="1124.56" data-end="1130.88" title="18:44">away from main theatres and often cramped for space with reduced access to the patient </span></li>
+<li><span class="segment a-seg" data-start="1130.96" data-end="1136.24" title="18:50">once the procedure has started. Rupter of the lesion can be catastrophic, </span></li>
+<li><span class="segment a-seg" data-start="1136.8" data-end="1143.04" title="18:56">so the anesthetist should be prepared to reverse heprin anticoagulation with protamine and take </span></li>
+<li><span class="segment a-seg" data-start="1143.04" data-end="1149.92" title="19:03">prompt measures to reduce the rises in intracranial pressure with hyperventilation and manitol </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="1149.92">
+  <div class="q-label">Q15</div>
+  <div class="q-body"><span class="segment q-seg" data-start="1149.92" data-end="1155.36" title="19:09">prior to surgery if appropriate. What can you tell me about surgery in the posterior fossa? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="1155.68" data-end="1163.12" title="19:15">Tumors in this region are considered critical lesions because of the limited space in the </span></li>
+<li><span class="segment a-seg" data-start="1163.12" data-end="1171.04" title="19:23">posterior fossa and the potential involvement of vital brain stem nuclei. Posteria fossa tumors </span></li>
+<li><span class="segment a-seg" data-start="1171.04" data-end="1179.12" title="19:31">are more common in children, accounting for 50-70% of brain tumors compared to 15-20% of brain </span></li>
+<li><span class="segment a-seg" data-start="1179.44" data-end="1186.72" title="19:39">tumors in adults. The clinical presentation depends on the site of the tumor, the biological </span></li>
+<li><span class="segment a-seg" data-start="1186.72" data-end="1194.08" title="19:46">behavior and aggressiveness of the tumor and the rate of growth. The indications for surgery </span></li>
+<li><span class="segment a-seg" data-start="1194.08" data-end="1200.0" title="19:54">are to decompress the posterior fossa and release pressure on the brain stem to avoid the risk of </span></li>
+<li><span class="segment a-seg" data-start="1200.0" data-end="1206.4" title="20:00">herniation or to obtain a histopathological diagnosis allowing further management planning. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="1206.64">
+  <div class="q-label">Q16</div>
+  <div class="q-body"><span class="segment q-seg" data-start="1206.64" data-end="1212.72" title="20:06">What specific complications are you aware of during and post surgery in the posterior fossa? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="1214.88" data-end="1221.92" title="20:14">As with any surgical procedure there are the risks of infection, hemorrhage, chest infection, </span></li>
+<li><span class="segment a-seg" data-start="1222.48" data-end="1229.6" title="20:22">a telectasis, peripheral nerve injuries, deep venous thrombosis and pulmonary embolism. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="1230.56">
+  <div class="q-label">Q17</div>
+  <div class="q-body"><span class="segment q-seg" data-start="1230.56" data-end="1237.28" title="20:30">However, the specific complications that the anesthetist needs to be aware of during and post </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="1237.28" data-end="1242.0" title="20:37">operatively often relate to the position that the patient is in during the operation. </span></li>
+<li><span class="segment a-seg" data-start="1242.88" data-end="1252.32" title="20:42">Venus air embolism, paradoxical air embolism, pneumocophilus, hemodynamic instability, macroglossia </span></li>
+<li><span class="segment a-seg" data-start="1252.8" data-end="1262.24" title="20:52">quadriplegia. The commonly used positions are prone and lateral or park bench, occasionally the </span></li>
+<li><span class="segment a-seg" data-start="1262.24" data-end="1269.12" title="21:02">sitting position is used. The sitting position deserves special consideration as it carries the </span></li>
+<li><span class="segment a-seg" data-start="1269.12" data-end="1276.64" title="21:09">highest risk of specific complications, especially venous air embolism. Therefore, patients should be </span></li>
+<li><span class="segment a-seg" data-start="1276.64" data-end="1283.92" title="21:16">screened for intracardiac connections between the left and right side of the heart prior to surgery </span></li>
+<li><span class="segment a-seg" data-start="1283.92" data-end="1288.32" title="21:23">to identify those patients at risk of paradoxical air embolism. </span></li>
+<li><span class="segment a-seg" data-start="1289.68" data-end="1295.2" title="21:29">Methods to reduce this risk should be taken, such as avoiding hypoverlemia, </span></li>
+<li><span class="segment a-seg" data-start="1295.2" data-end="1301.44" title="21:35">use of compression stockings and possibly the application of peep, but this does increase the </span></li>
+<li><span class="segment a-seg" data-start="1301.52" data-end="1309.68" title="21:41">risk of paradoxical air embolism. Despite these steps, the incidence of venous air embolism </span></li>
+<li><span class="segment a-seg" data-start="1309.68" data-end="1317.6" title="21:49">is in the order of 30%. However, the risk of hemodynamically significant events is much lower </span></li>
+<li><span class="segment a-seg" data-start="1317.6" data-end="1323.44" title="21:57">and relates to the volume and rate of air entrainment along with the patient's pre-anesthetic </span></li>
+<li><span class="segment a-seg" data-start="1323.92" data-end="1332.56" title="22:03">pulmonary reserve. Hypotension is much more likely in the seated position because venous pooling </span></li>
+<li><span class="segment a-seg" data-start="1332.56" data-end="1338.64" title="22:12">in the lower body, the effects of positive pressure ventilation, peep and the effects of the </span></li>
+<li><span class="segment a-seg" data-start="1338.64" data-end="1345.76" title="22:18">anesthetic agents, impair venous return to the heart. The transition from supine to sitting </span></li>
+<li><span class="segment a-seg" data-start="1345.76" data-end="1353.12" title="22:25">position following induction of anesthesia must be gradual as sudden hypotension would be undesirable. </span></li>
+<li><span class="segment a-seg" data-start="1354.16" data-end="1360.0" title="22:34">Hypotension commonly requires treatment with fluids and vasopressor agents. </span></li>
+<li><span class="segment a-seg" data-start="1360.88" data-end="1367.68" title="22:40">Secondary cardiovascular responses by surgical stimulation of the brainstem may be sudden </span></li>
+<li><span class="segment a-seg" data-start="1367.68" data-end="1372.24" title="22:47">and can be masked with the use of anticolynergics or beta blockers. </span></li>
+<li><span class="segment a-seg" data-start="1373.68" data-end="1381.28" title="22:53">Macroglossia is thought to be due to extreme flexion and reduction in the auro-farangial volume, </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="1381.28">
+  <div class="q-label">Q18</div>
+  <div class="q-body"><span class="segment q-seg" data-start="1381.28" data-end="1385.36" title="23:01">which reduces lingual venous drainage or lymphatic drainage. </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="1386.24" data-end="1393.12" title="23:06">Extreme flexion is thought to be the cause of quadriplegia due to insufficient nutrient supply </span></li>
+<li><span class="segment a-seg" data-start="1393.12" data-end="1400.96" title="23:13">and drainage of the cervical spinal cord. If there is delay in emergence from anesthesia postoperatively, </span></li>
+<li><span class="segment a-seg" data-start="1400.96" data-end="1407.52" title="23:20">then alongside the usual differential diagnoses, symptomatic tension pneumocéphilus, </span></li>
+<li><span class="segment a-seg" data-start="1408.08" data-end="1415.36" title="23:28">cerebral ischemia due to paradoxical air embolus and brainstem injury, hematoma or cerebral </span></li>
+<li><span class="segment a-seg" data-start="1415.36" data-end="1420.72" title="23:35">adema need to be considered so that appropriate therapy can be instituted promptly. </span></li>
+<li><span class="segment a-seg" data-start="1421.76" data-end="1429.04" title="23:41">Also postoperative respiratory compromise may be due to injury to brainstem respiratory centers, </span></li>
+<li><span class="segment a-seg" data-start="1429.04" data-end="1436.0" title="23:49">airway obstruction from macroglossia or injury to lower cranial nerves 9, 10 or 12. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="1436.96">
+  <div class="q-label">Q19</div>
+  <div class="q-body"><span class="segment q-seg" data-start="1436.96" data-end="1440.24" title="23:56">How would you diagnose and manage a suspected venous air embolism? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="1442.56" data-end="1448.96" title="24:02">To allow early diagnosis, you need to be aware when a patient is at high risk of a venous air </span></li>
+<li><span class="segment a-seg" data-start="1448.96" data-end="1456.16" title="24:08">embolism and maintain a high index of suspicion. The main methods for detecting them are </span></li>
+<li><span class="segment a-seg" data-start="1456.16" data-end="1462.64" title="24:16">pre-cordial Doppler transosophageal echocardiogram or transtherasic echocardiogram. </span></li>
+<li><span class="segment a-seg" data-start="1463.52" data-end="1468.72" title="24:23">A drop in the end tidal carbon dioxide is indicative but not specific. </span></li>
+<li><span class="segment a-seg" data-start="1469.92" data-end="1476.0" title="24:29">Once a significant venous air embolism has been detected, which is causing cardiovascular </span></li>
+<li><span class="segment a-seg" data-start="1476.0" data-end="1482.96" title="24:36">instability, management would be preventing further air entrainments by flooding the wound with </span></li>
+<li><span class="segment a-seg" data-start="1482.96" data-end="1489.52" title="24:42">saline or lowering the head and considering compression of the jugular vein, and respiratory </span></li>
+<li><span class="segment a-seg" data-start="1489.52" data-end="1497.52" title="24:49">and cardiovascular support in the form of 100% oxygen, fluid volume and vasopressors or </span></li>
+<li><span class="segment a-seg" data-start="1497.52" data-end="1504.24" title="24:57">ionotropes. Ideally, a central venous catheter should be cited prior to the procedure </span></li>
+<li><span class="segment a-seg" data-start="1504.24" data-end="1508.4" title="25:04">and this should be used to aspirate the air from the right side of the heart. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="1509.6">
+  <div class="q-label">Q20</div>
+  <div class="q-body"><span class="segment q-seg" data-start="1509.6" data-end="1513.2" title="25:09">How would you confirm the correct placement of the central venous pressure line? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="1513.76" data-end="1521.84" title="25:13">There are three ways to confirm the correct placement of the catheter tip, which is just proximal </span></li>
+<li><span class="segment a-seg" data-start="1521.84" data-end="1528.88" title="25:21">to the caveoatrial junction. Chest X-ray may be used, however there are possible difficulties </span></li>
+<li><span class="segment a-seg" data-start="1528.88" data-end="1535.6" title="25:28">in interpreting the image. The pressure waveform from a pulmonary artery catheter will allow you </span></li>
+<li><span class="segment a-seg" data-start="1535.68" data-end="1544.56" title="25:35">to identify the correct placement. The last way involves the use of an IV-ECG that has an ECG </span></li>
+<li><span class="segment a-seg" data-start="1544.56" data-end="1551.12" title="25:44">electrode at the tip of the catheter and therefore allows you to identify the correct position </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="1551.12">
+  <div class="q-label">Q21</div>
+  <div class="q-body"><span class="segment q-seg" data-start="1551.12" data-end="1557.28" title="25:51">when a biffid P-wave occurs. This technique has the added risk of microshop. </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="1558.24" data-end="1564.48" title="25:58">In all cases, there is a high chance that the catheter tip will move when the patient's position </span></li>
+<li><span class="segment a-seg" data-start="1564.48" data-end="1571.04" title="26:04">is changed for surgery and therefore rechecking will be necessary making the latter two techniques </span></li>
+<li><span class="segment a-seg" data-start="1571.04" data-end="1579.04" title="26:11">more appropriate. </span></li>
+  </ul>
+</div>
+</div>
+
 </div>
 
 <div class="subtitle-bar">
-  <span class="subtitle-text empty" id="subtitle-text">Play audio to see live subtitles&#8230;</span>
+  <span id="subtitle-text" class="empty">Play audio to see live subtitles&#8230;</span>
 </div>
 
 <script>
-
-const audio    = document.getElementById('audio');
-const allSegs  = Array.from(document.querySelectorAll('.segment'));
-const allBlocks = Array.from(document.querySelectorAll('.t-block'));
+const audio      = document.getElementById('audio');
+const allSegs    = Array.from(document.querySelectorAll('.segment'));
 const subtitleEl = document.getElementById('subtitle-text');
-let activeSegEl   = null;
-let activeBlockEl = null;
-let searchMatches = [];
-let searchIdx     = 0;
+let activeSegEl  = null;
+let searchMatches = [], searchIdx = 0;
 
-// Duration display
 audio.addEventListener('loadedmetadata', () => {
   const m = Math.floor(audio.duration / 60);
   const s = Math.floor(audio.duration %% 60).toString().padStart(2,'0');
   document.getElementById('dur').textContent = m + ':' + s;
 });
 
-// Seek helper
-function seekTo(t) {
-  audio.currentTime = t;
-  audio.play();
-}
+function seekTo(t) { audio.currentTime = t; audio.play(); }
 
-// Block gutter click
-document.querySelectorAll('.t-gutter').forEach(g => {
-  g.addEventListener('click', () => seekTo(parseFloat(g.dataset.start)));
+// Q-block header click
+document.querySelectorAll('.q-block').forEach(q => {
+  q.addEventListener('click', e => {
+    if (!e.target.classList.contains('segment')) seekTo(parseFloat(q.dataset.start));
+  });
 });
 
-// Segment click
+// Individual segment click
 allSegs.forEach(s => {
-  s.addEventListener('click', e => {
-    e.stopPropagation();
-    seekTo(parseFloat(s.dataset.start));
-  });
+  s.addEventListener('click', e => { e.stopPropagation(); seekTo(parseFloat(s.dataset.start)); });
 });
 
 // Real-time tracking
 audio.addEventListener('timeupdate', () => {
   const t = audio.currentTime;
-
-  // Find active segment (last one whose start <= t)
   let found = null;
   for (let i = allSegs.length - 1; i >= 0; i--) {
     if (parseFloat(allSegs[i].dataset.start) <= t) { found = allSegs[i]; break; }
   }
-
   if (found && found !== activeSegEl) {
-    // Clear previous
-    if (activeSegEl) activeSegEl.classList.remove('active');
-    if (activeBlockEl) {
-      activeBlockEl.classList.remove('block-active');
-      const pg = activeBlockEl.querySelector('.t-gutter');
-      if (pg) pg.classList.remove('gutter-active');
+    if (activeSegEl) {
+      activeSegEl.classList.remove('active');
+      const pli = activeSegEl.closest('li');
+      if (pli) pli.classList.remove('li-active');
+      const pq = activeSegEl.closest('.q-block');
+      if (pq) pq.classList.remove('q-active');
     }
-    // Set new
     found.classList.add('active');
-    const block = found.closest('.t-block');
-    if (block) {
-      block.classList.add('block-active');
-      const g = block.querySelector('.t-gutter');
-      if (g) g.classList.add('gutter-active');
-      activeBlockEl = block;
-    }
+    const li = found.closest('li');
+    if (li) li.classList.add('li-active');
+    const qb = found.closest('.q-block');
+    if (qb) qb.classList.add('q-active');
     activeSegEl = found;
 
-    // Update subtitle
     subtitleEl.textContent = found.textContent.trim();
     subtitleEl.classList.remove('empty');
 
-    // Auto-scroll (only when not searching)
-    if (!document.getElementById('search').value) {
+    if (!document.getElementById('search').value)
       found.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }
   }
 });
 
@@ -401,17 +698,13 @@ searchInput.addEventListener('keydown', e => {
     el.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
 });
-
 function runSearch() {
   const q = searchInput.value.trim().toLowerCase();
   allSegs.forEach(s => s.classList.remove('search-match','search-current'));
   searchMatches = [];
   if (!q) return;
   allSegs.forEach(s => {
-    if (s.textContent.toLowerCase().includes(q)) {
-      s.classList.add('search-match');
-      searchMatches.push(s);
-    }
+    if (s.textContent.toLowerCase().includes(q)) { s.classList.add('search-match'); searchMatches.push(s); }
   });
   if (!searchMatches.length) return;
   searchIdx = 0;

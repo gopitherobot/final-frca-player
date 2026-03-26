@@ -5,10 +5,19 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Cardiac Anaesthesia — Preoperative Assessment of Patients with Cardiac Disease</title>
 <style>
-
   :root {
-    --accent:    #ef4444;
-    --body-bg:   #f1f5f9;
+    --q-bg:       #1e3a5f;
+    --q-text:     #ffffff;
+    --q-label:    #60a5fa;
+    --a-bg:       #ffffff;
+    --a-border:   #e2e8f0;
+    --a-label:    #059669;
+    --active-q:   #ef4444;
+    --active-a:   #dbeafe;
+    --accent:     #ef4444;
+    --body-bg:    #f1f5f9;
+    --pre-bg:     #fef9c3;
+    --pre-border: #fcd34d;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
@@ -40,22 +49,9 @@
     margin-bottom: 4px;
     letter-spacing: 0.01em;
   }
-  .header-sub {
-    font-size: 0.72rem;
-    color: #94a3b8;
-    font-style: italic;
-  }
-  audio {
-    height: 36px;
-    accent-color: var(--accent);
-    flex-shrink: 0;
-  }
-  .back-link {
-    font-size: 0.8rem;
-    color: #94a3b8;
-    text-decoration: none;
-    white-space: nowrap;
-  }
+  .header-sub { font-size: 0.72rem; color: #94a3b8; font-style: italic; }
+  audio { height: 36px; accent-color: var(--accent); flex-shrink: 0; }
+  .back-link { font-size: 0.8rem; color: #94a3b8; text-decoration: none; white-space: nowrap; }
   .back-link:hover { color: #60a5fa; }
 
   /* ── Toolbar ── */
@@ -69,30 +65,17 @@
     border-bottom: 1px solid #334155;
   }
   .toolbar input {
-    flex: 1;
-    max-width: 380px;
+    flex: 1; max-width: 380px;
     padding: 5px 11px;
-    border: 1px solid #475569;
-    border-radius: 6px;
-    background: #0f172a;
-    color: #e2e8f0;
-    font-size: 0.83rem;
-    outline: none;
+    border: 1px solid #475569; border-radius: 6px;
+    background: #0f172a; color: #e2e8f0; font-size: 0.83rem; outline: none;
   }
   .toolbar input:focus { border-color: var(--accent); }
   .toolbar input::placeholder { color: #64748b; }
-  .stats {
-    font-size: 0.72rem;
-    color: #64748b;
-    white-space: nowrap;
-  }
+  .stats { font-size: 0.72rem; color: #64748b; white-space: nowrap; }
 
   /* ── Scroll area ── */
-  .scroll-area {
-    flex: 1;
-    overflow-y: auto;
-    padding: 20px;
-  }
+  .scroll-area { flex: 1; overflow-y: auto; padding: 20px; }
   .scroll-area::-webkit-scrollbar { width: 6px; }
   .scroll-area::-webkit-scrollbar-track { background: transparent; }
   .scroll-area::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
@@ -107,68 +90,77 @@
     display: flex;
     align-items: center;
   }
-  .subtitle-text {
-    font-size: 0.9rem;
-    color: #e2e8f0;
-    line-height: 1.5;
-    font-style: italic;
-  }
-  .subtitle-text.empty { color: #475569; }
+  #subtitle-text { font-size: 0.88rem; color: #e2e8f0; line-height: 1.5; font-style: italic; }
+  #subtitle-text.empty { color: #475569; }
 
-  /* ── Transcript blocks ── */
-  .t-block {
-    background: #ffffff;
-    border: 1px solid #e2e8f0;
-    border-radius: 10px;
-    margin-bottom: 14px;
-    overflow: hidden;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
-    display: flex;
-  }
-  .t-block.block-active {
-    border-color: var(--accent);
-    box-shadow: 0 0 0 2px rgba(37,99,235,0.15);
-  }
-  .t-gutter {
-    background: #0f172a;
-    width: 52px;
-    flex-shrink: 0;
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
-    padding-top: 14px;
-    cursor: pointer;
-  }
-  .t-gutter:hover { background: #1e293b; }
-  .t-timestamp {
-    font-size: 0.7rem;
-    color: #64748b;
-    font-family: monospace;
-    font-weight: 600;
-    letter-spacing: 0.02em;
-  }
-  .t-gutter.gutter-active .t-timestamp { color: var(--accent); }
-  .t-body {
-    flex: 1;
+  /* ── Preamble ── */
+  .preamble-block {
+    background: var(--pre-bg);
+    border-left: 4px solid var(--pre-border);
+    border-radius: 0 8px 8px 0;
     padding: 12px 16px;
-    line-height: 1.75;
-    font-size: 0.92rem;
-    color: #1e293b;
+    margin-bottom: 20px;
+    font-size: 0.88rem;
+    color: #78350f;
+    font-style: italic;
+    line-height: 1.7;
   }
 
-  /* ── Segments ── */
-  .segment {
+  /* ── Q&A pair ── */
+  .qa-pair { margin-bottom: 20px; border-radius: 10px; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+
+  /* Question block */
+  .q-block {
+    background: var(--q-bg);
+    padding: 14px 18px;
+    display: flex; gap: 14px; align-items: flex-start;
     cursor: pointer;
-    border-radius: 3px;
-    transition: background 0.1s;
+    transition: background 0.15s;
   }
-  .segment:hover { background: #eff6ff; }
-  .segment.active {
-    background: #bfdbfe;
-    outline: 2px solid #3b82f6;
-    outline-offset: 1px;
-    border-radius: 3px;
+  .q-block:hover { background: #1d4ed8; }
+  .q-block.q-active { background: var(--active-q); }
+  .q-label {
+    font-size: 0.7rem; font-weight: 700;
+    color: var(--q-label);
+    background: rgba(96,165,250,0.15);
+    border: 1px solid rgba(96,165,250,0.3);
+    border-radius: 5px; padding: 3px 7px;
+    white-space: nowrap; margin-top: 2px; letter-spacing: 0.05em;
+    flex-shrink: 0;
   }
+  .q-body { flex: 1; font-size: 0.97rem; font-weight: 600; color: var(--q-text); line-height: 1.55; }
+
+  /* Answer block */
+  .a-block {
+    background: var(--a-bg);
+    border: 1px solid var(--a-border); border-top: none;
+    padding: 14px 18px;
+    display: flex; gap: 14px; align-items: flex-start;
+  }
+  .a-label {
+    font-size: 0.7rem; font-weight: 700;
+    color: var(--a-label);
+    background: #d1fae5; border: 1px solid #6ee7b7;
+    border-radius: 5px; padding: 3px 9px;
+    white-space: nowrap; margin-top: 2px; letter-spacing: 0.05em;
+    flex-shrink: 0;
+  }
+  .a-body { flex: 1; list-style: none; padding: 0; }
+  .a-body li {
+    padding: 4px 0 4px 14px;
+    border-left: 3px solid transparent;
+    line-height: 1.7; font-size: 0.92rem; color: #1e293b;
+    border-radius: 0 4px 4px 0;
+    transition: background 0.15s;
+  }
+  .a-body li:not(:last-child) { border-bottom: 1px solid #f1f5f9; }
+
+  /* ── Segments (clickable) ── */
+  .segment { cursor: pointer; border-radius: 3px; }
+  .q-seg:hover { background: rgba(255,255,255,0.18); }
+  .a-seg:hover { background: #eff6ff; }
+  .segment.active { background: #bfdbfe; outline: 2px solid #3b82f6; outline-offset: 1px; }
+  .a-body li.li-active { background: var(--active-a); border-left-color: var(--accent); }
   .segment.search-match  { background: #fef9c3; }
   .segment.search-current { background: #fde047; outline: 2px solid #ca8a04; }
 
@@ -187,178 +179,508 @@
 
 <div class="toolbar">
   <input type="text" id="search" placeholder="Search transcript&#8230; (Enter = next match)">
-  <span class="stats" id="stats">172 segments &nbsp;|&nbsp; <span id="dur">loading&#8230;</span></span>
+  <span class="stats" id="stats">28 questions &nbsp;|&nbsp; 172 segments &nbsp;|&nbsp; <span id="dur">loading&#8230;</span></span>
 </div>
 
 <div class="scroll-area" id="scroll-area">
-<div class="t-block">
-  <div class="t-gutter" data-start="0.0"><span class="t-timestamp">0:00</span></div>
-  <div class="t-body"><span class="segment" data-start="0.0" data-end="5.0" title="0:00">pre-operative assessment and management of patients with cardiac disease. </span><span class="segment" data-start="5.0" data-end="11.0" title="0:05">You're in the pre-assessment clinic seeing a 66-year-old gentleman for a right total hip replacement. </span><span class="segment" data-start="11.0" data-end="15.0" title="0:11">The pre-assessment nurse has told you that she is concerned </span><span class="segment" data-start="15.0" data-end="21.0" title="0:15">as she's identified a murmur and the patient suffers from angina and is notably breathless on minimal exertion. </span><span class="segment" data-start="21.0" data-end="25.0" title="0:21">What are the important issues that you would like to explore in the history? </span><span class="segment" data-start="25.0" data-end="29.0" title="0:25">A structured approach is vital, ensuring you mention the routine history </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="29.0"><span class="t-timestamp">0:29</span></div>
-  <div class="t-body"><span class="segment" data-start="29.0" data-end="35.0" title="0:29">so that you don't miss anything out before honing in on the specific cardiac details. </span><span class="segment" data-start="35.0" data-end="39.0" title="0:35">When taking a history, I would introduce myself to the patient </span><span class="segment" data-start="39.0" data-end="42.0" title="0:39">and ensure the time talking to the correct patient </span><span class="segment" data-start="42.0" data-end="46.0" title="0:42">and the tears expecting the operation that he is listed for. </span><span class="segment" data-start="46.0" data-end="49.0" title="0:46">Then there are a number of general points in the history </span><span class="segment" data-start="49.0" data-end="54.0" title="0:49">and to some points specific to the cardiac history. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="54.0"><span class="t-timestamp">0:54</span></div>
-  <div class="t-body"><span class="segment" data-start="54.0" data-end="59.0" title="0:54">The general history would involve inquiry into previous general anesthetics, </span><span class="segment" data-start="59.0" data-end="63.0" title="0:59">what they were for, and any problems with them or after them, </span><span class="segment" data-start="63.0" data-end="68.0" title="1:03">and any family history of problems with anesthetics. </span><span class="segment" data-start="68.0" data-end="73.0" title="1:08">What regular prescribed or non-prescribed medications does he take </span><span class="segment" data-start="73.0" data-end="76.0" title="1:13">and any allergies that he suffers from? </span><span class="segment" data-start="76.0" data-end="80.0" title="1:16">Whether he suffers with any problems with his gastrointestinal system, </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="80.0"><span class="t-timestamp">1:20</span></div>
-  <div class="t-body"><span class="segment" data-start="80.0" data-end="87.0" title="1:20">particularly heartburn or reflux, and when he last ate and drank. </span><span class="segment" data-start="87.0" data-end="92.0" title="1:27">Does he have problems with joints other than his hips, especially his neck, </span><span class="segment" data-start="92.0" data-end="97.0" title="1:32">focusing on problems with cervical spine flexion and extension? </span><span class="segment" data-start="97.0" data-end="102.0" title="1:37">Inquire whether he smokes and his weekly alcohol intake. </span><span class="segment" data-start="102.0" data-end="106.0" title="1:42">The cardiorespiratory systems are inextricably linked </span><span class="segment" data-start="106.0" data-end="110.0" title="1:46">and would form the focus of my attention in this patient. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="110.0"><span class="t-timestamp">1:50</span></div>
-  <div class="t-body"><span class="segment" data-start="110.0" data-end="115.0" title="1:50">Specific to his heart, I would inquire as to whether he suffered from hypertension </span><span class="segment" data-start="115.0" data-end="119.0" title="1:55">and was on treatment for it and how well controlled it was. </span><span class="segment" data-start="119.0" data-end="124.0" title="1:59">Had he ever had a myocardial infarction, and if so, what was done about it? </span><span class="segment" data-start="124.0" data-end="128.0" title="2:04">Had he had any clot-busting drugs or stents? </span><span class="segment" data-start="128.0" data-end="133.0" title="2:08">Does he suffer from angina, and if so, when, and how frequently does it occur? </span><span class="segment" data-start="133.0" data-end="136.0" title="2:13">And what does he do when it happens? </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="136.0"><span class="t-timestamp">2:16</span></div>
-  <div class="t-body"><span class="segment" data-start="136.0" data-end="138.0" title="2:16">How many pillows does he sleep with? </span><span class="segment" data-start="138.0" data-end="142.0" title="2:18">And does he become breathless if he slips off them to lying flat? </span><span class="segment" data-start="142.0" data-end="147.0" title="2:22">Does he ever get palpitations or become aware of his heart beating in a funny rhythm? </span><span class="segment" data-start="147.0" data-end="153.0" title="2:27">Has he suffered from sudden blackouts or loss of consciousness that had not been explained? </span><span class="segment" data-start="153.0" data-end="156.0" title="2:33">Had he ever been told that he had a murmur? </span><span class="segment" data-start="156.0" data-end="162.0" title="2:36">Does he suffer from asthma or COPD or any other problems with his breathing? </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="162.0"><span class="t-timestamp">2:42</span></div>
-  <div class="t-body"><span class="segment" data-start="162.0" data-end="166.0" title="2:42">How much exercise is he able to do before he is limited? </span><span class="segment" data-start="166.0" data-end="168.0" title="2:46">And what is it that limits him? </span><span class="segment" data-start="168.0" data-end="172.0" title="2:48">And through specific questioning, it should be possible to calculate </span><span class="segment" data-start="172.0" data-end="176.0" title="2:52">how many metabolic equivalents he is capable of. </span><span class="segment" data-start="176.0" data-end="178.0" title="2:56">You mentioned metabolic equivalents. </span><span class="segment" data-start="178.0" data-end="181.0" title="2:58">Can you tell me more about them and explain their significance? </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="181.0"><span class="t-timestamp">3:01</span></div>
-  <div class="t-body"><span class="segment" data-start="181.0" data-end="185.0" title="3:01">Metabolic equivalents is a means of approximating a patient's ability </span><span class="segment" data-start="185.0" data-end="190.0" title="3:05">to increase their oxygen delivery to tissues in response to a physical demand. </span><span class="segment" data-start="190.0" data-end="197.0" title="3:10">For example, one MET is based on the calculation of the basal oxygen requirement </span><span class="segment" data-start="197.0" data-end="202.0" title="3:17">of a 40-year-old male of 70 kilos at rest. </span><span class="segment" data-start="202.0" data-end="207.0" title="3:22">This equates to 3.5 mills of oxygen per kilo per minute. </span><span class="segment" data-start="207.0" data-end="212.0" title="3:27">By inquiring about what the patient is able to do in their daily activities, </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="212.0"><span class="t-timestamp">3:32</span></div>
-  <div class="t-body"><span class="segment" data-start="212.0" data-end="216.0" title="3:32">it is possible to estimate how many met they can achieve. </span><span class="segment" data-start="216.0" data-end="223.0" title="3:36">Three METs is equal to light household work or walking 100 yards on the flat. </span><span class="segment" data-start="223.0" data-end="227.0" title="3:43">Four METs is equal to climbing two flights of stairs. </span><span class="segment" data-start="227.0" data-end="230.0" title="3:47">Six METs is equal to a short run. </span><span class="segment" data-start="230.0" data-end="235.0" title="3:50">Greater than 10 METs is equal to strenuous exercise. </span><span class="segment" data-start="235.0" data-end="242.0" title="3:55">The significance of this is that less than four METs is deemed to be a poor exercise tolerance. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="242.0"><span class="t-timestamp">4:02</span></div>
-  <div class="t-body"><span class="segment" data-start="242.0" data-end="247.0" title="4:02">And this group of patients has a higher rate of perioperative and postoperative </span><span class="segment" data-start="247.0" data-end="250.0" title="4:07">cardiovascular and neurological complications. </span><span class="segment" data-start="250.0" data-end="255.0" title="4:10">However, often this system is limited due to patients' medical problems </span><span class="segment" data-start="255.0" data-end="261.0" title="4:15">like arthritis or visual impairment, which reduce their ability rather than the </span><span class="segment" data-start="261.0" data-end="264.0" title="4:21">cardiorespiratory problems. </span><span class="segment" data-start="264.0" data-end="271.0" title="4:24">What particular aspects in the history and examination would cause you to be particularly concerned about the murmur? </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="271.0"><span class="t-timestamp">4:31</span></div>
-  <div class="t-body"><span class="segment" data-start="271.0" data-end="275.0" title="4:31">There are three cardinal features with aortic stenosis. </span><span class="segment" data-start="275.0" data-end="280.0" title="4:35">These are angina, syncopal episodes and dyspnea. </span><span class="segment" data-start="280.0" data-end="286.0" title="4:40">However, the severity of these symptoms do not correlate well with a degree of the aortic disease. </span><span class="segment" data-start="286.0" data-end="293.0" title="4:46">Angina occurs due to the oxygen demand of hypertrophied myocardial muscle outstripping supply. </span><span class="segment" data-start="293.0" data-end="299.0" title="4:53">Angina occurs in approximately two-thirds of patients with critical aortic stenosis. </span><span class="segment" data-start="299.0" data-end="305.0" title="4:59">About 50% of these patients will also have significant coronary artery disease. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="305.0"><span class="t-timestamp">5:05</span></div>
-  <div class="t-body"><span class="segment" data-start="305.0" data-end="308.0" title="5:05">The precise mechanism of syncopy is unclear. </span><span class="segment" data-start="308.0" data-end="312.0" title="5:08">However, it would appear that with a relatively fixed cardiac output, </span><span class="segment" data-start="312.0" data-end="318.0" title="5:12">it is not possible to meet the increased demand placed on the cardiovascular system by standing or exercise, </span><span class="segment" data-start="318.0" data-end="323.0" title="5:18">which causes a fall in cerebral perfusion and a blackout. </span><span class="segment" data-start="323.0" data-end="330.0" title="5:23">Shortness of breath on exertion, orthotnear, paroxysmal nocturnal dyspnea and pulmonary edema </span><span class="segment" data-start="330.0" data-end="335.0" title="5:30">tend to be late symptoms and reflect pulmonary venous hypertension. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="335.0"><span class="t-timestamp">5:35</span></div>
-  <div class="t-body"><span class="segment" data-start="335.0" data-end="341.0" title="5:35">On examination, aortic stenosis classically has a slow rising and low volume pulse. </span><span class="segment" data-start="341.0" data-end="348.0" title="5:41">However, if aortic regurgitation is occurring simultaneously, then the pulse pressure may be increased. </span><span class="segment" data-start="348.0" data-end="355.0" title="5:48">A carotid and pre-cordial thrill may be palpated, especially on leaning forwards in expiration. </span><span class="segment" data-start="355.0" data-end="364.0" title="5:55">The murmur is a harsh, late peak systolic murmur, heard best at the second-intcostal space on the right-hand side </span><span class="segment" data-start="364.0" data-end="366.0" title="6:04">and radiates to the crotids. </span><span class="segment" data-start="366.0" data-end="373.0" title="6:06">However, these signs change as the severity of the aortic disease increases and the left ventricle fails. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="373.0"><span class="t-timestamp">6:13</span></div>
-  <div class="t-body"><span class="segment" data-start="373.0" data-end="378.0" title="6:13">Therefore, reducing the flow through the valve and the murmur becomes less audible. </span><span class="segment" data-start="378.0" data-end="385.0" title="6:18">Therefore, an echocardiogram is required in order to assess the severity of a valve lesion. </span><span class="segment" data-start="385.0" data-end="388.0" title="6:25">You've mentioned echocardiography. </span><span class="segment" data-start="388.0" data-end="396.0" title="6:28">How would you interpret the result of this investigation to form a risk level for different grades of aortic stenosis? </span><span class="segment" data-start="397.0" data-end="404.0" title="6:37">Echocardiography can be used to assess the anatomy of the aortic valve, grade the severity of the stenosis, </span><span class="segment" data-start="404.0" data-end="407.0" title="6:44">and assess the function of the left ventricle. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="407.0"><span class="t-timestamp">6:47</span></div>
-  <div class="t-body"><span class="segment" data-start="407.0" data-end="412.0" title="6:47">The best indicator of aortic stenosis severity is the valve area. </span><span class="segment" data-start="412.0" data-end="420.0" title="6:52">Myled stenosis is equal to an area of 1.2 to 1.8 cm squared. </span><span class="segment" data-start="420.0" data-end="427.0" title="7:00">Moderate stenosis is equal to an area of 0.8 to 1.2 cm squared. </span><span class="segment" data-start="427.0" data-end="434.0" title="7:07">Severe stenosis is equal to an area of 0.6 to 0.8 cm squared. </span><span class="segment" data-start="434.0" data-end="440.0" title="7:14">And critical stenosis is equal to an area of less than 0.6 cm squared. </span><span class="segment" data-start="440.0" data-end="446.0" title="7:20">Occasionally, the pressure gradient across the valve is used for grading severity. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="446.0"><span class="t-timestamp">7:26</span></div>
-  <div class="t-body"><span class="segment" data-start="446.0" data-end="454.0" title="7:26">However, this can be misleading, as in high output states, such as simultaneous aortic stenosis and regurgitation, </span><span class="segment" data-start="454.0" data-end="462.0" title="7:34">the severity will be overestimated, and more dangerously in low output states, where there is a failing left ventricle, </span><span class="segment" data-start="462.0" data-end="470.0" title="7:42">the flow across the valve will be reduced, and so will the gradient, thereby underestimating the disease severity. </span><span class="segment" data-start="470.0" data-end="478.0" title="7:50">Also, the left ventricular function will be graded, as normal, mildly, moderately, or severely impaired, </span><span class="segment" data-start="478.0" data-end="483.0" title="7:58">based on the subjective assessment of the echo images. </span><span class="segment" data-start="483.0" data-end="487.0" title="8:03">What blood investigation would you request? </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="487.0"><span class="t-timestamp">8:07</span></div>
-  <div class="t-body"><span class="segment" data-start="487.0" data-end="496.0" title="8:07">The routine investigations would include full blood count to exclude any significant enemia and any platelets or leukocyte abnormality. </span><span class="segment" data-start="496.0" data-end="503.0" title="8:16">Coagulation studies, especially if this patient is on warfarin, and the determination of blood group. </span><span class="segment" data-start="503.0" data-end="513.0" title="8:23">Measurement of serum electrolytes, urea, and creatinine, as these are likely to be disturbed by medication that the patient is taking, like diuretics. </span><span class="segment" data-start="513.0" data-end="518.0" title="8:33">Specific investigations may be required, depending on the history. </span><span class="segment" data-start="518.0" data-end="525.0" title="8:38">These would include liver function tests, and B-type natural urethric peptide, for example. </span><span class="segment" data-start="526.0" data-end="531.0" title="8:46">Can you tell me about B-type natural urethic peptide? </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="531.0"><span class="t-timestamp">8:51</span></div>
-  <div class="t-body"><span class="segment" data-start="531.0" data-end="539.0" title="8:51">B-type natural urethric peptide is a hormone secreted by cardiac meocytes in response to mechanical stretch. </span><span class="segment" data-start="539.0" data-end="547.0" title="8:59">It is increasingly being used as a biomarker for the diagnosis, management, and prognostication of cardiac failure. </span><span class="segment" data-start="547.0" data-end="558.0" title="9:07">It has been suggested that this marker could be used as a relatively non-invasive risk stratification tool, especially with a patient undergoing major or intermediate risk surgery, </span><span class="segment" data-start="558.0" data-end="564.0" title="9:18">who does not have the ability to function at greater than 4 mts without symptoms. </span><span class="segment" data-start="564.0" data-end="571.0" title="9:24">B-type natural urethric peptide levels can be elevated due to cardiac causes or pulmonary causes. </span><span class="segment" data-start="571.0" data-end="576.0" title="9:31">Also, there are other causes, for example, renal or septic shock. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="576.0"><span class="t-timestamp">9:36</span></div>
-  <div class="t-body"><span class="segment" data-start="576.0" data-end="581.0" title="9:36">However, the cause of the elevation does not appear to alter the prognostic value. </span><span class="segment" data-start="581.0" data-end="593.0" title="9:41">Also, if a threshold level of B-type natural urethric peptide that is consistent with a diagnosis of cardiac failure is found in a patient due to the undergoing elective surgery, </span><span class="segment" data-start="593.0" data-end="600.0" title="9:53">then this should be postponed until the patient's medical treatment has been fully optimized. </span><span class="segment" data-start="600.0" data-end="605.0" title="10:00">The history suggests of severe congestive cardiac failure and un-gyner. </span><span class="segment" data-start="605.0" data-end="612.0" title="10:05">How would you investigate this further to decide whether it is safe to proceed to anesthesia for this patient? </span><span class="segment" data-start="612.0" data-end="626.0" title="10:12">Initially, starting with non-invasive tests, an ECG should be performed, looking for any arrhythmia, evidence of ventricular hypertrophy, or of macardioluschemia and infarct. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="626.0"><span class="t-timestamp">10:26</span></div>
-  <div class="t-body"><span class="segment" data-start="626.0" data-end="639.0" title="10:26">Exercise tests, such as the exercise tolerance test, where the patient is exercised on a treadmill to a fixed, bruised protocol, while ECG readings are taken looking for ischemic changes, </span><span class="segment" data-start="639.0" data-end="647.0" title="10:39">or a simple six-minute walk test, where a patient is asked to walk around a circuit with an oxygen saturation probe attached, </span><span class="segment" data-start="647.0" data-end="653.0" title="10:47">and the distance achieved over six minutes is recorded, and the desaturation that occurred. </span><span class="segment" data-start="653.0" data-end="664.0" title="10:53">However, both of these tests are often limited due to disabilities like arthritis or visual impairment that prevents the patient from sustaining this level of exercise. </span><span class="segment" data-start="664.0" data-end="670.0" title="11:04">It is suggested that cardiopulmonary exercise testing is better in this respect. </span><span class="segment" data-start="670.0" data-end="679.0" title="11:10">Echocardiography can be used to establish and define the cardiac anatomy and assess ventricular and valvular function. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="679.0"><span class="t-timestamp">11:19</span></div>
-  <div class="t-body"><span class="segment" data-start="679.0" data-end="688.0" title="11:19">However, this assessment of left ventricular function represents a static measure and gives no indication of the patient's functional reserve. </span><span class="segment" data-start="688.0" data-end="705.0" title="11:28">More invasive tests to establish the extent, sites, and severity of coronary artery stenosis include coronary angiography or debutamine stress echocardiogram, which has the advantage of, as well as looking at the function of the heart, </span><span class="segment" data-start="705.0" data-end="710.0" title="11:45">and it establishes how well it performs and distressed due to the debutamine. </span><span class="segment" data-start="710.0" data-end="723.0" title="11:50">Also, diperidomol thalium scan tests can be used to identify areas of the myocardium that are under-pfused whilst the heart is under the relative stress of diperidomol. </span><span class="segment" data-start="723.0" data-end="728.0" title="12:03">Can you tell me about cardiopulmonary exercise testing, CPX? </span><span class="segment" data-start="728.0" data-end="751.0" title="12:08">Cardiopulmonary exercise testing is a means of objective testing to determine a patient's preoperative fitness, which correlates well with postoperative survival, and can be used to identify patients that are at increased risk of adverse postoperative outcome, for which surgery may be deemed inappropriate, or they can be warned of the high risks. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="751.0"><span class="t-timestamp">12:31</span></div>
-  <div class="t-body"><span class="segment" data-start="751.0" data-end="758.0" title="12:31">It examines the ability of the cardiovascular system to deliver oxygen to tissues during the stress of exercise. </span><span class="segment" data-start="758.0" data-end="768.0" title="12:38">This is done by asking the patient to exercise on an ergotter, usually a bike, but the hands can pedal instead if there are difficulties with a lower limbs. </span><span class="segment" data-start="768.0" data-end="783.0" title="12:48">At the same time as they are exercising, a number of variables are being measured, these are ECG, blood pressure, expired airflow, oxygen uptake from the air, and carbon dioxide output from the body. </span><span class="segment" data-start="783.0" data-end="796.0" title="13:03">From these variables, the volume of oxygen consumed, VO2, in mils per minute, and the volume of carbon dioxide produced, VCO2, in mils per minute, can be calculated. </span><span class="segment" data-start="796.0" data-end="809.0" title="13:16">If the VO2 and VCO2 are plotted on the same graph against time, there is a point where the rise in VCO2 becomes disproportionate to the rise in VO2. </span><span class="segment" data-start="809.0" data-end="815.0" title="13:29">This indicates the level of exercise where the body has reached its maximum aerobic capacity. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="815.0"><span class="t-timestamp">13:35</span></div>
-  <div class="t-body"><span class="segment" data-start="815.0" data-end="819.0" title="13:35">This point is termed the anaerobic threshold. </span><span class="segment" data-start="820.0" data-end="831.0" title="13:40">An anaerobic threshold of less than 11 mils per kilo per minute has been shown to have a higher risk of cardiac respiratory events or death postoperatively. </span><span class="segment" data-start="831.0" data-end="839.0" title="13:51">Interestingly, four metabolic equivalents equate to about 14 mils per kilo per minute of oxygen consumption. </span><span class="segment" data-start="839.0" data-end="851.0" title="13:59">The advantages of CPX testing are that it provides an objective number as opposed to a subjective assessment of the patient's ability to exercise and perform daily tasks. </span><span class="segment" data-start="851.0" data-end="861.0" title="14:11">It provides a means of assessment for patients that fall in the category of not being able to achieve formats or are unable to exercise due to other limitations. </span><span class="segment" data-start="861.0" data-end="871.0" title="14:21">Also, the intensity of the exercise required to reach the anaerobic threshold is much less than in other tests to achieve a meaningful result. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="871.0"><span class="t-timestamp">14:31</span></div>
-  <div class="t-body"><span class="segment" data-start="871.0" data-end="876.0" title="14:31">Are you aware of any risk scoring systems in anaesthesia? </span><span class="segment" data-start="876.0" data-end="887.0" title="14:36">The simplest and most commonly used scoring system is the American Society of Anesthesiologists scale to assess physical fitness for anaesthesia or ASA. </span><span class="segment" data-start="887.0" data-end="895.0" title="14:47">This system grades patients from one a normal healthy patient to five a moribund patient. </span><span class="segment" data-start="895.0" data-end="905.0" title="14:55">The absolute mortality for these grades ranges from 0.1% for grade one to 9.4% for grade five. </span><span class="segment" data-start="905.0" data-end="914.0" title="15:05">The Goldman cardiac risk index assesses the likelihood of perioptive cardiac event in patients having non-cardiac surgery. </span><span class="segment" data-start="914.0" data-end="920.0" title="15:14">Goldman identified nine independent factors and gave them weighted scores. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="920.0"><span class="t-timestamp">15:20</span></div>
-  <div class="t-body"><span class="segment" data-start="920.0" data-end="927.0" title="15:20">The total score for the patient is used as a guide to the instance of severe cardiovascular complications or death. </span><span class="segment" data-start="927.0" data-end="939.0" title="15:27">The highest being a score greater than 25 who have a 56% incidence of death and a 22% incidence of severe cardiovascular complications. </span><span class="segment" data-start="939.0" data-end="956.0" title="15:39">The nine independent factors and scores assigned are a third heart sound, 11 points, elevated jugular venous pressure, 11 points, myocardial infarction in the past six months, 10 points, </span><span class="segment" data-start="956.0" data-end="983.0" title="15:56">ECG shows premature contractions or not sinus rhythm, 7 points, ECG shows greater than five premature ventricular contractions, 7 points, age greater than 70 years, 5 points, emergency procedure, 4 points, intra-therasic, intra-abdominal or aortic surgery, 3 points, </span><span class="segment" data-start="983.0" data-end="988.0" title="16:23">poor general status or bedridden, 3 points. </span><span class="segment" data-start="988.0" data-end="993.0" title="16:28">Cardiac surgery is an area with numerous risk scoring systems. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="993.0"><span class="t-timestamp">16:33</span></div>
-  <div class="t-body"><span class="segment" data-start="993.0" data-end="1007.0" title="16:33">Originally the PASNA system was used, then as surgery and anesthesia developed, it was found that most present day cardiac surgeons outperformed PASNA by a factor of two, reducing its usefulness. </span><span class="segment" data-start="1007.0" data-end="1021.0" title="16:47">The European system for cardiac operative risk evaluation, Euroscore, was developed in the late 1990s and provides a more robust risk assessment that can be calculated at the bedside. </span><span class="segment" data-start="1021.0" data-end="1031.0" title="17:01">Intensive care is another area with multiple scoring systems such as Apache 1, 2 and 3, POSM and TIS. </span><span class="segment" data-start="1031.0" data-end="1051.0" title="17:11">These are used to help with risk stratification for individual patients and also to allow comparisons between different centers of care as it allows for variation in severity of illness for the different patients admitted to each unit and to try and standardize and match different patients in clinical trials. </span><span class="segment" data-start="1051.0" data-end="1057.0" title="17:31">How could you consider optimizing a patient like this for surgery? </span><span class="segment" data-start="1057.0" data-end="1063.0" title="17:37">Preoperative optimization could either be medical, surgical or intensive care. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="1063.0"><span class="t-timestamp">17:43</span></div>
-  <div class="t-body"><span class="segment" data-start="1063.0" data-end="1071.0" title="17:43">Medical optimization involves ensuring that any condition that the patient suffers from is being treated optimally. </span><span class="segment" data-start="1071.0" data-end="1086.0" title="17:51">For the cardiovascular system, this requires ensuring angina and ischemic heart disease is treated and ideally Canadian Class 1 or 2, which means that they can walk at least 150 yards or climb a flight of stairs before their angina is treated. </span><span class="segment" data-start="1086.0" data-end="1098.0" title="18:06">If they have suffered a recent macardial infarction, then at least six months should have passed before elective surgery is considered. </span><span class="segment" data-start="1098.0" data-end="1113.0" title="18:18">The patient's calculation status needs to be considered as they are often on aspirin, clippidogrel or even warfarin because of previous macardial infarction, angina, arrhythmia or coronary artery stenting. </span><span class="segment" data-start="1113.0" data-end="1128.0" title="18:33">The indication for these drugs needs to be considered and the risks of stopping them versus the benefits of continuing them during surgery needs to be decided between cardiologist, surgeon and nicetist and patient. </span><span class="segment" data-start="1128.0" data-end="1135.0" title="18:48">Arhythmias should be identified and managed and heart failure medication should be optimised. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="1135.0"><span class="t-timestamp">18:55</span></div>
-  <div class="t-body"><span class="segment" data-start="1135.0" data-end="1142.0" title="18:55">The use of perioptive beta blockade was initially thought to reduce the risk of perioptive macardial infarction. </span><span class="segment" data-start="1142.0" data-end="1153.0" title="19:02">However, recent research has indicated an increased risk of peri or post-operative stroke and other adverse events if the beta blockers are started pre-op. </span><span class="segment" data-start="1153.0" data-end="1167.0" title="19:13">Therefore, current advice is that beta blockers should be continued if the patient is already on them but should not be started with the exception of possibly major vascular surgery where the benefits may outweigh the risks. </span><span class="segment" data-start="1167.0" data-end="1181.0" title="19:27">Surgical optimisation would be considered when the coronary heart disease enters Canadian Class III and above when coronary stenting or coronary artery bypass grafting should be sought prior to elective surgery. </span><span class="segment" data-start="1181.0" data-end="1188.0" title="19:41">Also, vascular surgery may be considered particularly if severe or critical aortic stenosis is present. </span><span class="segment" data-start="1188.0" data-end="1195.0" title="19:48">The last surgical optimisation would be the consideration of a pacemaker for patients with arrhythmias. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="1196.0"><span class="t-timestamp">19:56</span></div>
-  <div class="t-body"><span class="segment" data-start="1196.0" data-end="1211.0" title="19:56">Intensive care optimisation involves the pre-optive use of fluid and ionotropes under the guidance of invasive monitoring to increase the cardiac output and oxygen delivery to tissues of patients who are undergoing high risk surgery. </span><span class="segment" data-start="1212.0" data-end="1221.0" title="20:12">Bland and shoemaker were the first to use this method in high risk surgical patients and found a significant reduction in mortality in the treatment group. </span><span class="segment" data-start="1221.0" data-end="1230.0" title="20:21">More recently, older and colleagues identified patients at high risk undergoing major abdominal surgery with CPX testing. </span><span class="segment" data-start="1230.0" data-end="1245.0" title="20:30">The patients with anaerobic threshold less than 11 were admitted to intensive care and invasive monitoring, fluid and ionotropes were used to optimise them pre-optively and mortality was reduced from 18% to 8.9%. </span></div>
+<div class="preamble-block"><span class="segment a-seg" data-start="0.0" data-end="5.0" title="0:00">pre-operative assessment and management of patients with cardiac disease. </span><span class="segment a-seg" data-start="5.0" data-end="11.0" title="0:05">You're in the pre-assessment clinic seeing a 66-year-old gentleman for a right total hip replacement. </span><span class="segment a-seg" data-start="11.0" data-end="15.0" title="0:11">The pre-assessment nurse has told you that she is concerned </span><span class="segment a-seg" data-start="15.0" data-end="21.0" title="0:15">as she's identified a murmur and the patient suffers from angina and is notably breathless on minimal exertion. </span></div>
+<div class="qa-pair">
+<div class="q-block" data-start="21.0">
+  <div class="q-label">Q1</div>
+  <div class="q-body"><span class="segment q-seg" data-start="21.0" data-end="25.0" title="0:21">What are the important issues that you would like to explore in the history? </span></div>
 </div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="25.0" data-end="29.0" title="0:25">A structured approach is vital, ensuring you mention the routine history </span></li>
+<li><span class="segment a-seg" data-start="29.0" data-end="35.0" title="0:29">so that you don't miss anything out before honing in on the specific cardiac details. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="35.0">
+  <div class="q-label">Q2</div>
+  <div class="q-body"><span class="segment q-seg" data-start="35.0" data-end="39.0" title="0:35">When taking a history, I would introduce myself to the patient </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="39.0" data-end="42.0" title="0:39">and ensure the time talking to the correct patient </span></li>
+<li><span class="segment a-seg" data-start="42.0" data-end="46.0" title="0:42">and the tears expecting the operation that he is listed for. </span></li>
+<li><span class="segment a-seg" data-start="46.0" data-end="49.0" title="0:46">Then there are a number of general points in the history </span></li>
+<li><span class="segment a-seg" data-start="49.0" data-end="54.0" title="0:49">and to some points specific to the cardiac history. </span></li>
+<li><span class="segment a-seg" data-start="54.0" data-end="59.0" title="0:54">The general history would involve inquiry into previous general anesthetics, </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="59.0">
+  <div class="q-label">Q3</div>
+  <div class="q-body"><span class="segment q-seg" data-start="59.0" data-end="63.0" title="0:59">what they were for, and any problems with them or after them, </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="63.0" data-end="68.0" title="1:03">and any family history of problems with anesthetics. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="68.0">
+  <div class="q-label">Q4</div>
+  <div class="q-body"><span class="segment q-seg" data-start="68.0" data-end="73.0" title="1:08">What regular prescribed or non-prescribed medications does he take </span><span class="segment q-seg" data-start="73.0" data-end="76.0" title="1:13">and any allergies that he suffers from? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="76.0" data-end="80.0" title="1:16">Whether he suffers with any problems with his gastrointestinal system, </span></li>
+<li><span class="segment a-seg" data-start="80.0" data-end="87.0" title="1:20">particularly heartburn or reflux, and when he last ate and drank. </span></li>
+<li><span class="segment a-seg" data-start="87.0" data-end="92.0" title="1:27">Does he have problems with joints other than his hips, especially his neck, </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="92.0">
+  <div class="q-label">Q5</div>
+  <div class="q-body"><span class="segment q-seg" data-start="92.0" data-end="97.0" title="1:32">focusing on problems with cervical spine flexion and extension? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="97.0" data-end="102.0" title="1:37">Inquire whether he smokes and his weekly alcohol intake. </span></li>
+<li><span class="segment a-seg" data-start="102.0" data-end="106.0" title="1:42">The cardiorespiratory systems are inextricably linked </span></li>
+<li><span class="segment a-seg" data-start="106.0" data-end="110.0" title="1:46">and would form the focus of my attention in this patient. </span></li>
+<li><span class="segment a-seg" data-start="110.0" data-end="115.0" title="1:50">Specific to his heart, I would inquire as to whether he suffered from hypertension </span></li>
+<li><span class="segment a-seg" data-start="115.0" data-end="119.0" title="1:55">and was on treatment for it and how well controlled it was. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="119.0">
+  <div class="q-label">Q6</div>
+  <div class="q-body"><span class="segment q-seg" data-start="119.0" data-end="124.0" title="1:59">Had he ever had a myocardial infarction, and if so, what was done about it? </span><span class="segment q-seg" data-start="124.0" data-end="128.0" title="2:04">Had he had any clot-busting drugs or stents? </span><span class="segment q-seg" data-start="128.0" data-end="133.0" title="2:08">Does he suffer from angina, and if so, when, and how frequently does it occur? </span><span class="segment q-seg" data-start="133.0" data-end="136.0" title="2:13">And what does he do when it happens? </span><span class="segment q-seg" data-start="136.0" data-end="138.0" title="2:16">How many pillows does he sleep with? </span><span class="segment q-seg" data-start="138.0" data-end="142.0" title="2:18">And does he become breathless if he slips off them to lying flat? </span><span class="segment q-seg" data-start="142.0" data-end="147.0" title="2:22">Does he ever get palpitations or become aware of his heart beating in a funny rhythm? </span><span class="segment q-seg" data-start="147.0" data-end="153.0" title="2:27">Has he suffered from sudden blackouts or loss of consciousness that had not been explained? </span><span class="segment q-seg" data-start="153.0" data-end="156.0" title="2:33">Had he ever been told that he had a murmur? </span><span class="segment q-seg" data-start="156.0" data-end="162.0" title="2:36">Does he suffer from asthma or COPD or any other problems with his breathing? </span><span class="segment q-seg" data-start="162.0" data-end="166.0" title="2:42">How much exercise is he able to do before he is limited? </span><span class="segment q-seg" data-start="166.0" data-end="168.0" title="2:46">And what is it that limits him? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="168.0" data-end="172.0" title="2:48">And through specific questioning, it should be possible to calculate </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="172.0">
+  <div class="q-label">Q7</div>
+  <div class="q-body"><span class="segment q-seg" data-start="172.0" data-end="176.0" title="2:52">how many metabolic equivalents he is capable of. </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="176.0" data-end="178.0" title="2:56">You mentioned metabolic equivalents. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="178.0">
+  <div class="q-label">Q8</div>
+  <div class="q-body"><span class="segment q-seg" data-start="178.0" data-end="181.0" title="2:58">Can you tell me more about them and explain their significance? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="181.0" data-end="185.0" title="3:01">Metabolic equivalents is a means of approximating a patient's ability </span></li>
+<li><span class="segment a-seg" data-start="185.0" data-end="190.0" title="3:05">to increase their oxygen delivery to tissues in response to a physical demand. </span></li>
+<li><span class="segment a-seg" data-start="190.0" data-end="197.0" title="3:10">For example, one MET is based on the calculation of the basal oxygen requirement </span></li>
+<li><span class="segment a-seg" data-start="197.0" data-end="202.0" title="3:17">of a 40-year-old male of 70 kilos at rest. </span></li>
+<li><span class="segment a-seg" data-start="202.0" data-end="207.0" title="3:22">This equates to 3.5 mills of oxygen per kilo per minute. </span></li>
+<li><span class="segment a-seg" data-start="207.0" data-end="212.0" title="3:27">By inquiring about what the patient is able to do in their daily activities, </span></li>
+<li><span class="segment a-seg" data-start="212.0" data-end="216.0" title="3:32">it is possible to estimate how many met they can achieve. </span></li>
+<li><span class="segment a-seg" data-start="216.0" data-end="223.0" title="3:36">Three METs is equal to light household work or walking 100 yards on the flat. </span></li>
+<li><span class="segment a-seg" data-start="223.0" data-end="227.0" title="3:43">Four METs is equal to climbing two flights of stairs. </span></li>
+<li><span class="segment a-seg" data-start="227.0" data-end="230.0" title="3:47">Six METs is equal to a short run. </span></li>
+<li><span class="segment a-seg" data-start="230.0" data-end="235.0" title="3:50">Greater than 10 METs is equal to strenuous exercise. </span></li>
+<li><span class="segment a-seg" data-start="235.0" data-end="242.0" title="3:55">The significance of this is that less than four METs is deemed to be a poor exercise tolerance. </span></li>
+<li><span class="segment a-seg" data-start="242.0" data-end="247.0" title="4:02">And this group of patients has a higher rate of perioperative and postoperative </span></li>
+<li><span class="segment a-seg" data-start="247.0" data-end="250.0" title="4:07">cardiovascular and neurological complications. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="250.0">
+  <div class="q-label">Q9</div>
+  <div class="q-body"><span class="segment q-seg" data-start="250.0" data-end="255.0" title="4:10">However, often this system is limited due to patients' medical problems </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="255.0" data-end="261.0" title="4:15">like arthritis or visual impairment, which reduce their ability rather than the </span></li>
+<li><span class="segment a-seg" data-start="261.0" data-end="264.0" title="4:21">cardiorespiratory problems. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="264.0">
+  <div class="q-label">Q10</div>
+  <div class="q-body"><span class="segment q-seg" data-start="264.0" data-end="271.0" title="4:24">What particular aspects in the history and examination would cause you to be particularly concerned about the murmur? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="271.0" data-end="275.0" title="4:31">There are three cardinal features with aortic stenosis. </span></li>
+<li><span class="segment a-seg" data-start="275.0" data-end="280.0" title="4:35">These are angina, syncopal episodes and dyspnea. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="280.0">
+  <div class="q-label">Q11</div>
+  <div class="q-body"><span class="segment q-seg" data-start="280.0" data-end="286.0" title="4:40">However, the severity of these symptoms do not correlate well with a degree of the aortic disease. </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="286.0" data-end="293.0" title="4:46">Angina occurs due to the oxygen demand of hypertrophied myocardial muscle outstripping supply. </span></li>
+<li><span class="segment a-seg" data-start="293.0" data-end="299.0" title="4:53">Angina occurs in approximately two-thirds of patients with critical aortic stenosis. </span></li>
+<li><span class="segment a-seg" data-start="299.0" data-end="305.0" title="4:59">About 50% of these patients will also have significant coronary artery disease. </span></li>
+<li><span class="segment a-seg" data-start="305.0" data-end="308.0" title="5:05">The precise mechanism of syncopy is unclear. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="308.0">
+  <div class="q-label">Q12</div>
+  <div class="q-body"><span class="segment q-seg" data-start="308.0" data-end="312.0" title="5:08">However, it would appear that with a relatively fixed cardiac output, </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="312.0" data-end="318.0" title="5:12">it is not possible to meet the increased demand placed on the cardiovascular system by standing or exercise, </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="318.0">
+  <div class="q-label">Q13</div>
+  <div class="q-body"><span class="segment q-seg" data-start="318.0" data-end="323.0" title="5:18">which causes a fall in cerebral perfusion and a blackout. </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="323.0" data-end="330.0" title="5:23">Shortness of breath on exertion, orthotnear, paroxysmal nocturnal dyspnea and pulmonary edema </span></li>
+<li><span class="segment a-seg" data-start="330.0" data-end="335.0" title="5:30">tend to be late symptoms and reflect pulmonary venous hypertension. </span></li>
+<li><span class="segment a-seg" data-start="335.0" data-end="341.0" title="5:35">On examination, aortic stenosis classically has a slow rising and low volume pulse. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="341.0">
+  <div class="q-label">Q14</div>
+  <div class="q-body"><span class="segment q-seg" data-start="341.0" data-end="348.0" title="5:41">However, if aortic regurgitation is occurring simultaneously, then the pulse pressure may be increased. </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="348.0" data-end="355.0" title="5:48">A carotid and pre-cordial thrill may be palpated, especially on leaning forwards in expiration. </span></li>
+<li><span class="segment a-seg" data-start="355.0" data-end="364.0" title="5:55">The murmur is a harsh, late peak systolic murmur, heard best at the second-intcostal space on the right-hand side </span></li>
+<li><span class="segment a-seg" data-start="364.0" data-end="366.0" title="6:04">and radiates to the crotids. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="366.0">
+  <div class="q-label">Q15</div>
+  <div class="q-body"><span class="segment q-seg" data-start="366.0" data-end="373.0" title="6:06">However, these signs change as the severity of the aortic disease increases and the left ventricle fails. </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="373.0" data-end="378.0" title="6:13">Therefore, reducing the flow through the valve and the murmur becomes less audible. </span></li>
+<li><span class="segment a-seg" data-start="378.0" data-end="385.0" title="6:18">Therefore, an echocardiogram is required in order to assess the severity of a valve lesion. </span></li>
+<li><span class="segment a-seg" data-start="385.0" data-end="388.0" title="6:25">You've mentioned echocardiography. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="388.0">
+  <div class="q-label">Q16</div>
+  <div class="q-body"><span class="segment q-seg" data-start="388.0" data-end="396.0" title="6:28">How would you interpret the result of this investigation to form a risk level for different grades of aortic stenosis? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="397.0" data-end="404.0" title="6:37">Echocardiography can be used to assess the anatomy of the aortic valve, grade the severity of the stenosis, </span></li>
+<li><span class="segment a-seg" data-start="404.0" data-end="407.0" title="6:44">and assess the function of the left ventricle. </span></li>
+<li><span class="segment a-seg" data-start="407.0" data-end="412.0" title="6:47">The best indicator of aortic stenosis severity is the valve area. </span></li>
+<li><span class="segment a-seg" data-start="412.0" data-end="420.0" title="6:52">Myled stenosis is equal to an area of 1.2 to 1.8 cm squared. </span></li>
+<li><span class="segment a-seg" data-start="420.0" data-end="427.0" title="7:00">Moderate stenosis is equal to an area of 0.8 to 1.2 cm squared. </span></li>
+<li><span class="segment a-seg" data-start="427.0" data-end="434.0" title="7:07">Severe stenosis is equal to an area of 0.6 to 0.8 cm squared. </span></li>
+<li><span class="segment a-seg" data-start="434.0" data-end="440.0" title="7:14">And critical stenosis is equal to an area of less than 0.6 cm squared. </span></li>
+<li><span class="segment a-seg" data-start="440.0" data-end="446.0" title="7:20">Occasionally, the pressure gradient across the valve is used for grading severity. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="446.0">
+  <div class="q-label">Q17</div>
+  <div class="q-body"><span class="segment q-seg" data-start="446.0" data-end="454.0" title="7:26">However, this can be misleading, as in high output states, such as simultaneous aortic stenosis and regurgitation, </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="454.0" data-end="462.0" title="7:34">the severity will be overestimated, and more dangerously in low output states, where there is a failing left ventricle, </span></li>
+<li><span class="segment a-seg" data-start="462.0" data-end="470.0" title="7:42">the flow across the valve will be reduced, and so will the gradient, thereby underestimating the disease severity. </span></li>
+<li><span class="segment a-seg" data-start="470.0" data-end="478.0" title="7:50">Also, the left ventricular function will be graded, as normal, mildly, moderately, or severely impaired, </span></li>
+<li><span class="segment a-seg" data-start="478.0" data-end="483.0" title="7:58">based on the subjective assessment of the echo images. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="483.0">
+  <div class="q-label">Q18</div>
+  <div class="q-body"><span class="segment q-seg" data-start="483.0" data-end="487.0" title="8:03">What blood investigation would you request? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="487.0" data-end="496.0" title="8:07">The routine investigations would include full blood count to exclude any significant enemia and any platelets or leukocyte abnormality. </span></li>
+<li><span class="segment a-seg" data-start="496.0" data-end="503.0" title="8:16">Coagulation studies, especially if this patient is on warfarin, and the determination of blood group. </span></li>
+<li><span class="segment a-seg" data-start="503.0" data-end="513.0" title="8:23">Measurement of serum electrolytes, urea, and creatinine, as these are likely to be disturbed by medication that the patient is taking, like diuretics. </span></li>
+<li><span class="segment a-seg" data-start="513.0" data-end="518.0" title="8:33">Specific investigations may be required, depending on the history. </span></li>
+<li><span class="segment a-seg" data-start="518.0" data-end="525.0" title="8:38">These would include liver function tests, and B-type natural urethric peptide, for example. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="526.0">
+  <div class="q-label">Q19</div>
+  <div class="q-body"><span class="segment q-seg" data-start="526.0" data-end="531.0" title="8:46">Can you tell me about B-type natural urethic peptide? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="531.0" data-end="539.0" title="8:51">B-type natural urethric peptide is a hormone secreted by cardiac meocytes in response to mechanical stretch. </span></li>
+<li><span class="segment a-seg" data-start="539.0" data-end="547.0" title="8:59">It is increasingly being used as a biomarker for the diagnosis, management, and prognostication of cardiac failure. </span></li>
+<li><span class="segment a-seg" data-start="547.0" data-end="558.0" title="9:07">It has been suggested that this marker could be used as a relatively non-invasive risk stratification tool, especially with a patient undergoing major or intermediate risk surgery, </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="558.0">
+  <div class="q-label">Q20</div>
+  <div class="q-body"><span class="segment q-seg" data-start="558.0" data-end="564.0" title="9:18">who does not have the ability to function at greater than 4 mts without symptoms. </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="564.0" data-end="571.0" title="9:24">B-type natural urethric peptide levels can be elevated due to cardiac causes or pulmonary causes. </span></li>
+<li><span class="segment a-seg" data-start="571.0" data-end="576.0" title="9:31">Also, there are other causes, for example, renal or septic shock. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="576.0">
+  <div class="q-label">Q21</div>
+  <div class="q-body"><span class="segment q-seg" data-start="576.0" data-end="581.0" title="9:36">However, the cause of the elevation does not appear to alter the prognostic value. </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="581.0" data-end="593.0" title="9:41">Also, if a threshold level of B-type natural urethric peptide that is consistent with a diagnosis of cardiac failure is found in a patient due to the undergoing elective surgery, </span></li>
+<li><span class="segment a-seg" data-start="593.0" data-end="600.0" title="9:53">then this should be postponed until the patient's medical treatment has been fully optimized. </span></li>
+<li><span class="segment a-seg" data-start="600.0" data-end="605.0" title="10:00">The history suggests of severe congestive cardiac failure and un-gyner. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="605.0">
+  <div class="q-label">Q22</div>
+  <div class="q-body"><span class="segment q-seg" data-start="605.0" data-end="612.0" title="10:05">How would you investigate this further to decide whether it is safe to proceed to anesthesia for this patient? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="612.0" data-end="626.0" title="10:12">Initially, starting with non-invasive tests, an ECG should be performed, looking for any arrhythmia, evidence of ventricular hypertrophy, or of macardioluschemia and infarct. </span></li>
+<li><span class="segment a-seg" data-start="626.0" data-end="639.0" title="10:26">Exercise tests, such as the exercise tolerance test, where the patient is exercised on a treadmill to a fixed, bruised protocol, while ECG readings are taken looking for ischemic changes, </span></li>
+<li><span class="segment a-seg" data-start="639.0" data-end="647.0" title="10:39">or a simple six-minute walk test, where a patient is asked to walk around a circuit with an oxygen saturation probe attached, </span></li>
+<li><span class="segment a-seg" data-start="647.0" data-end="653.0" title="10:47">and the distance achieved over six minutes is recorded, and the desaturation that occurred. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="653.0">
+  <div class="q-label">Q23</div>
+  <div class="q-body"><span class="segment q-seg" data-start="653.0" data-end="664.0" title="10:53">However, both of these tests are often limited due to disabilities like arthritis or visual impairment that prevents the patient from sustaining this level of exercise. </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="664.0" data-end="670.0" title="11:04">It is suggested that cardiopulmonary exercise testing is better in this respect. </span></li>
+<li><span class="segment a-seg" data-start="670.0" data-end="679.0" title="11:10">Echocardiography can be used to establish and define the cardiac anatomy and assess ventricular and valvular function. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="679.0">
+  <div class="q-label">Q24</div>
+  <div class="q-body"><span class="segment q-seg" data-start="679.0" data-end="688.0" title="11:19">However, this assessment of left ventricular function represents a static measure and gives no indication of the patient's functional reserve. </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="688.0" data-end="705.0" title="11:28">More invasive tests to establish the extent, sites, and severity of coronary artery stenosis include coronary angiography or debutamine stress echocardiogram, which has the advantage of, as well as looking at the function of the heart, </span></li>
+<li><span class="segment a-seg" data-start="705.0" data-end="710.0" title="11:45">and it establishes how well it performs and distressed due to the debutamine. </span></li>
+<li><span class="segment a-seg" data-start="710.0" data-end="723.0" title="11:50">Also, diperidomol thalium scan tests can be used to identify areas of the myocardium that are under-pfused whilst the heart is under the relative stress of diperidomol. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="723.0">
+  <div class="q-label">Q25</div>
+  <div class="q-body"><span class="segment q-seg" data-start="723.0" data-end="728.0" title="12:03">Can you tell me about cardiopulmonary exercise testing, CPX? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="728.0" data-end="751.0" title="12:08">Cardiopulmonary exercise testing is a means of objective testing to determine a patient's preoperative fitness, which correlates well with postoperative survival, and can be used to identify patients that are at increased risk of adverse postoperative outcome, for which surgery may be deemed inappropriate, or they can be warned of the high risks. </span></li>
+<li><span class="segment a-seg" data-start="751.0" data-end="758.0" title="12:31">It examines the ability of the cardiovascular system to deliver oxygen to tissues during the stress of exercise. </span></li>
+<li><span class="segment a-seg" data-start="758.0" data-end="768.0" title="12:38">This is done by asking the patient to exercise on an ergotter, usually a bike, but the hands can pedal instead if there are difficulties with a lower limbs. </span></li>
+<li><span class="segment a-seg" data-start="768.0" data-end="783.0" title="12:48">At the same time as they are exercising, a number of variables are being measured, these are ECG, blood pressure, expired airflow, oxygen uptake from the air, and carbon dioxide output from the body. </span></li>
+<li><span class="segment a-seg" data-start="783.0" data-end="796.0" title="13:03">From these variables, the volume of oxygen consumed, VO2, in mils per minute, and the volume of carbon dioxide produced, VCO2, in mils per minute, can be calculated. </span></li>
+<li><span class="segment a-seg" data-start="796.0" data-end="809.0" title="13:16">If the VO2 and VCO2 are plotted on the same graph against time, there is a point where the rise in VCO2 becomes disproportionate to the rise in VO2. </span></li>
+<li><span class="segment a-seg" data-start="809.0" data-end="815.0" title="13:29">This indicates the level of exercise where the body has reached its maximum aerobic capacity. </span></li>
+<li><span class="segment a-seg" data-start="815.0" data-end="819.0" title="13:35">This point is termed the anaerobic threshold. </span></li>
+<li><span class="segment a-seg" data-start="820.0" data-end="831.0" title="13:40">An anaerobic threshold of less than 11 mils per kilo per minute has been shown to have a higher risk of cardiac respiratory events or death postoperatively. </span></li>
+<li><span class="segment a-seg" data-start="831.0" data-end="839.0" title="13:51">Interestingly, four metabolic equivalents equate to about 14 mils per kilo per minute of oxygen consumption. </span></li>
+<li><span class="segment a-seg" data-start="839.0" data-end="851.0" title="13:59">The advantages of CPX testing are that it provides an objective number as opposed to a subjective assessment of the patient's ability to exercise and perform daily tasks. </span></li>
+<li><span class="segment a-seg" data-start="851.0" data-end="861.0" title="14:11">It provides a means of assessment for patients that fall in the category of not being able to achieve formats or are unable to exercise due to other limitations. </span></li>
+<li><span class="segment a-seg" data-start="861.0" data-end="871.0" title="14:21">Also, the intensity of the exercise required to reach the anaerobic threshold is much less than in other tests to achieve a meaningful result. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="871.0">
+  <div class="q-label">Q26</div>
+  <div class="q-body"><span class="segment q-seg" data-start="871.0" data-end="876.0" title="14:31">Are you aware of any risk scoring systems in anaesthesia? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="876.0" data-end="887.0" title="14:36">The simplest and most commonly used scoring system is the American Society of Anesthesiologists scale to assess physical fitness for anaesthesia or ASA. </span></li>
+<li><span class="segment a-seg" data-start="887.0" data-end="895.0" title="14:47">This system grades patients from one a normal healthy patient to five a moribund patient. </span></li>
+<li><span class="segment a-seg" data-start="895.0" data-end="905.0" title="14:55">The absolute mortality for these grades ranges from 0.1% for grade one to 9.4% for grade five. </span></li>
+<li><span class="segment a-seg" data-start="905.0" data-end="914.0" title="15:05">The Goldman cardiac risk index assesses the likelihood of perioptive cardiac event in patients having non-cardiac surgery. </span></li>
+<li><span class="segment a-seg" data-start="914.0" data-end="920.0" title="15:14">Goldman identified nine independent factors and gave them weighted scores. </span></li>
+<li><span class="segment a-seg" data-start="920.0" data-end="927.0" title="15:20">The total score for the patient is used as a guide to the instance of severe cardiovascular complications or death. </span></li>
+<li><span class="segment a-seg" data-start="927.0" data-end="939.0" title="15:27">The highest being a score greater than 25 who have a 56% incidence of death and a 22% incidence of severe cardiovascular complications. </span></li>
+<li><span class="segment a-seg" data-start="939.0" data-end="956.0" title="15:39">The nine independent factors and scores assigned are a third heart sound, 11 points, elevated jugular venous pressure, 11 points, myocardial infarction in the past six months, 10 points, </span></li>
+<li><span class="segment a-seg" data-start="956.0" data-end="983.0" title="15:56">ECG shows premature contractions or not sinus rhythm, 7 points, ECG shows greater than five premature ventricular contractions, 7 points, age greater than 70 years, 5 points, emergency procedure, 4 points, intra-therasic, intra-abdominal or aortic surgery, 3 points, </span></li>
+<li><span class="segment a-seg" data-start="983.0" data-end="988.0" title="16:23">poor general status or bedridden, 3 points. </span></li>
+<li><span class="segment a-seg" data-start="988.0" data-end="993.0" title="16:28">Cardiac surgery is an area with numerous risk scoring systems. </span></li>
+<li><span class="segment a-seg" data-start="993.0" data-end="1007.0" title="16:33">Originally the PASNA system was used, then as surgery and anesthesia developed, it was found that most present day cardiac surgeons outperformed PASNA by a factor of two, reducing its usefulness. </span></li>
+<li><span class="segment a-seg" data-start="1007.0" data-end="1021.0" title="16:47">The European system for cardiac operative risk evaluation, Euroscore, was developed in the late 1990s and provides a more robust risk assessment that can be calculated at the bedside. </span></li>
+<li><span class="segment a-seg" data-start="1021.0" data-end="1031.0" title="17:01">Intensive care is another area with multiple scoring systems such as Apache 1, 2 and 3, POSM and TIS. </span></li>
+<li><span class="segment a-seg" data-start="1031.0" data-end="1051.0" title="17:11">These are used to help with risk stratification for individual patients and also to allow comparisons between different centers of care as it allows for variation in severity of illness for the different patients admitted to each unit and to try and standardize and match different patients in clinical trials. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="1051.0">
+  <div class="q-label">Q27</div>
+  <div class="q-body"><span class="segment q-seg" data-start="1051.0" data-end="1057.0" title="17:31">How could you consider optimizing a patient like this for surgery? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="1057.0" data-end="1063.0" title="17:37">Preoperative optimization could either be medical, surgical or intensive care. </span></li>
+<li><span class="segment a-seg" data-start="1063.0" data-end="1071.0" title="17:43">Medical optimization involves ensuring that any condition that the patient suffers from is being treated optimally. </span></li>
+<li><span class="segment a-seg" data-start="1071.0" data-end="1086.0" title="17:51">For the cardiovascular system, this requires ensuring angina and ischemic heart disease is treated and ideally Canadian Class 1 or 2, which means that they can walk at least 150 yards or climb a flight of stairs before their angina is treated. </span></li>
+<li><span class="segment a-seg" data-start="1086.0" data-end="1098.0" title="18:06">If they have suffered a recent macardial infarction, then at least six months should have passed before elective surgery is considered. </span></li>
+<li><span class="segment a-seg" data-start="1098.0" data-end="1113.0" title="18:18">The patient's calculation status needs to be considered as they are often on aspirin, clippidogrel or even warfarin because of previous macardial infarction, angina, arrhythmia or coronary artery stenting. </span></li>
+<li><span class="segment a-seg" data-start="1113.0" data-end="1128.0" title="18:33">The indication for these drugs needs to be considered and the risks of stopping them versus the benefits of continuing them during surgery needs to be decided between cardiologist, surgeon and nicetist and patient. </span></li>
+<li><span class="segment a-seg" data-start="1128.0" data-end="1135.0" title="18:48">Arhythmias should be identified and managed and heart failure medication should be optimised. </span></li>
+<li><span class="segment a-seg" data-start="1135.0" data-end="1142.0" title="18:55">The use of perioptive beta blockade was initially thought to reduce the risk of perioptive macardial infarction. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="1142.0">
+  <div class="q-label">Q28</div>
+  <div class="q-body"><span class="segment q-seg" data-start="1142.0" data-end="1153.0" title="19:02">However, recent research has indicated an increased risk of peri or post-operative stroke and other adverse events if the beta blockers are started pre-op. </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="1153.0" data-end="1167.0" title="19:13">Therefore, current advice is that beta blockers should be continued if the patient is already on them but should not be started with the exception of possibly major vascular surgery where the benefits may outweigh the risks. </span></li>
+<li><span class="segment a-seg" data-start="1167.0" data-end="1181.0" title="19:27">Surgical optimisation would be considered when the coronary heart disease enters Canadian Class III and above when coronary stenting or coronary artery bypass grafting should be sought prior to elective surgery. </span></li>
+<li><span class="segment a-seg" data-start="1181.0" data-end="1188.0" title="19:41">Also, vascular surgery may be considered particularly if severe or critical aortic stenosis is present. </span></li>
+<li><span class="segment a-seg" data-start="1188.0" data-end="1195.0" title="19:48">The last surgical optimisation would be the consideration of a pacemaker for patients with arrhythmias. </span></li>
+<li><span class="segment a-seg" data-start="1196.0" data-end="1211.0" title="19:56">Intensive care optimisation involves the pre-optive use of fluid and ionotropes under the guidance of invasive monitoring to increase the cardiac output and oxygen delivery to tissues of patients who are undergoing high risk surgery. </span></li>
+<li><span class="segment a-seg" data-start="1212.0" data-end="1221.0" title="20:12">Bland and shoemaker were the first to use this method in high risk surgical patients and found a significant reduction in mortality in the treatment group. </span></li>
+<li><span class="segment a-seg" data-start="1221.0" data-end="1230.0" title="20:21">More recently, older and colleagues identified patients at high risk undergoing major abdominal surgery with CPX testing. </span></li>
+<li><span class="segment a-seg" data-start="1230.0" data-end="1245.0" title="20:30">The patients with anaerobic threshold less than 11 were admitted to intensive care and invasive monitoring, fluid and ionotropes were used to optimise them pre-optively and mortality was reduced from 18% to 8.9%. </span></li>
+  </ul>
+</div>
+</div>
+
 </div>
 
 <div class="subtitle-bar">
-  <span class="subtitle-text empty" id="subtitle-text">Play audio to see live subtitles&#8230;</span>
+  <span id="subtitle-text" class="empty">Play audio to see live subtitles&#8230;</span>
 </div>
 
 <script>
-
-const audio    = document.getElementById('audio');
-const allSegs  = Array.from(document.querySelectorAll('.segment'));
-const allBlocks = Array.from(document.querySelectorAll('.t-block'));
+const audio      = document.getElementById('audio');
+const allSegs    = Array.from(document.querySelectorAll('.segment'));
 const subtitleEl = document.getElementById('subtitle-text');
-let activeSegEl   = null;
-let activeBlockEl = null;
-let searchMatches = [];
-let searchIdx     = 0;
+let activeSegEl  = null;
+let searchMatches = [], searchIdx = 0;
 
-// Duration display
 audio.addEventListener('loadedmetadata', () => {
   const m = Math.floor(audio.duration / 60);
   const s = Math.floor(audio.duration %% 60).toString().padStart(2,'0');
   document.getElementById('dur').textContent = m + ':' + s;
 });
 
-// Seek helper
-function seekTo(t) {
-  audio.currentTime = t;
-  audio.play();
-}
+function seekTo(t) { audio.currentTime = t; audio.play(); }
 
-// Block gutter click
-document.querySelectorAll('.t-gutter').forEach(g => {
-  g.addEventListener('click', () => seekTo(parseFloat(g.dataset.start)));
+// Q-block header click
+document.querySelectorAll('.q-block').forEach(q => {
+  q.addEventListener('click', e => {
+    if (!e.target.classList.contains('segment')) seekTo(parseFloat(q.dataset.start));
+  });
 });
 
-// Segment click
+// Individual segment click
 allSegs.forEach(s => {
-  s.addEventListener('click', e => {
-    e.stopPropagation();
-    seekTo(parseFloat(s.dataset.start));
-  });
+  s.addEventListener('click', e => { e.stopPropagation(); seekTo(parseFloat(s.dataset.start)); });
 });
 
 // Real-time tracking
 audio.addEventListener('timeupdate', () => {
   const t = audio.currentTime;
-
-  // Find active segment (last one whose start <= t)
   let found = null;
   for (let i = allSegs.length - 1; i >= 0; i--) {
     if (parseFloat(allSegs[i].dataset.start) <= t) { found = allSegs[i]; break; }
   }
-
   if (found && found !== activeSegEl) {
-    // Clear previous
-    if (activeSegEl) activeSegEl.classList.remove('active');
-    if (activeBlockEl) {
-      activeBlockEl.classList.remove('block-active');
-      const pg = activeBlockEl.querySelector('.t-gutter');
-      if (pg) pg.classList.remove('gutter-active');
+    if (activeSegEl) {
+      activeSegEl.classList.remove('active');
+      const pli = activeSegEl.closest('li');
+      if (pli) pli.classList.remove('li-active');
+      const pq = activeSegEl.closest('.q-block');
+      if (pq) pq.classList.remove('q-active');
     }
-    // Set new
     found.classList.add('active');
-    const block = found.closest('.t-block');
-    if (block) {
-      block.classList.add('block-active');
-      const g = block.querySelector('.t-gutter');
-      if (g) g.classList.add('gutter-active');
-      activeBlockEl = block;
-    }
+    const li = found.closest('li');
+    if (li) li.classList.add('li-active');
+    const qb = found.closest('.q-block');
+    if (qb) qb.classList.add('q-active');
     activeSegEl = found;
 
-    // Update subtitle
     subtitleEl.textContent = found.textContent.trim();
     subtitleEl.classList.remove('empty');
 
-    // Auto-scroll (only when not searching)
-    if (!document.getElementById('search').value) {
+    if (!document.getElementById('search').value)
       found.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }
   }
 });
 
@@ -374,17 +696,13 @@ searchInput.addEventListener('keydown', e => {
     el.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
 });
-
 function runSearch() {
   const q = searchInput.value.trim().toLowerCase();
   allSegs.forEach(s => s.classList.remove('search-match','search-current'));
   searchMatches = [];
   if (!q) return;
   allSegs.forEach(s => {
-    if (s.textContent.toLowerCase().includes(q)) {
-      s.classList.add('search-match');
-      searchMatches.push(s);
-    }
+    if (s.textContent.toLowerCase().includes(q)) { s.classList.add('search-match'); searchMatches.push(s); }
   });
   if (!searchMatches.length) return;
   searchIdx = 0;

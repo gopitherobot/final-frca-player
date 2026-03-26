@@ -5,10 +5,19 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Intensive Care Medicine — ARDS and Ventilation Difficulties</title>
 <style>
-
   :root {
-    --accent:    #0ea5e9;
-    --body-bg:   #f1f5f9;
+    --q-bg:       #1e3a5f;
+    --q-text:     #ffffff;
+    --q-label:    #60a5fa;
+    --a-bg:       #ffffff;
+    --a-border:   #e2e8f0;
+    --a-label:    #059669;
+    --active-q:   #0ea5e9;
+    --active-a:   #dbeafe;
+    --accent:     #0ea5e9;
+    --body-bg:    #f1f5f9;
+    --pre-bg:     #fef9c3;
+    --pre-border: #fcd34d;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
@@ -40,22 +49,9 @@
     margin-bottom: 4px;
     letter-spacing: 0.01em;
   }
-  .header-sub {
-    font-size: 0.72rem;
-    color: #94a3b8;
-    font-style: italic;
-  }
-  audio {
-    height: 36px;
-    accent-color: var(--accent);
-    flex-shrink: 0;
-  }
-  .back-link {
-    font-size: 0.8rem;
-    color: #94a3b8;
-    text-decoration: none;
-    white-space: nowrap;
-  }
+  .header-sub { font-size: 0.72rem; color: #94a3b8; font-style: italic; }
+  audio { height: 36px; accent-color: var(--accent); flex-shrink: 0; }
+  .back-link { font-size: 0.8rem; color: #94a3b8; text-decoration: none; white-space: nowrap; }
   .back-link:hover { color: #60a5fa; }
 
   /* ── Toolbar ── */
@@ -69,30 +65,17 @@
     border-bottom: 1px solid #334155;
   }
   .toolbar input {
-    flex: 1;
-    max-width: 380px;
+    flex: 1; max-width: 380px;
     padding: 5px 11px;
-    border: 1px solid #475569;
-    border-radius: 6px;
-    background: #0f172a;
-    color: #e2e8f0;
-    font-size: 0.83rem;
-    outline: none;
+    border: 1px solid #475569; border-radius: 6px;
+    background: #0f172a; color: #e2e8f0; font-size: 0.83rem; outline: none;
   }
   .toolbar input:focus { border-color: var(--accent); }
   .toolbar input::placeholder { color: #64748b; }
-  .stats {
-    font-size: 0.72rem;
-    color: #64748b;
-    white-space: nowrap;
-  }
+  .stats { font-size: 0.72rem; color: #64748b; white-space: nowrap; }
 
   /* ── Scroll area ── */
-  .scroll-area {
-    flex: 1;
-    overflow-y: auto;
-    padding: 20px;
-  }
+  .scroll-area { flex: 1; overflow-y: auto; padding: 20px; }
   .scroll-area::-webkit-scrollbar { width: 6px; }
   .scroll-area::-webkit-scrollbar-track { background: transparent; }
   .scroll-area::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
@@ -107,68 +90,77 @@
     display: flex;
     align-items: center;
   }
-  .subtitle-text {
-    font-size: 0.9rem;
-    color: #e2e8f0;
-    line-height: 1.5;
-    font-style: italic;
-  }
-  .subtitle-text.empty { color: #475569; }
+  #subtitle-text { font-size: 0.88rem; color: #e2e8f0; line-height: 1.5; font-style: italic; }
+  #subtitle-text.empty { color: #475569; }
 
-  /* ── Transcript blocks ── */
-  .t-block {
-    background: #ffffff;
-    border: 1px solid #e2e8f0;
-    border-radius: 10px;
-    margin-bottom: 14px;
-    overflow: hidden;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
-    display: flex;
-  }
-  .t-block.block-active {
-    border-color: var(--accent);
-    box-shadow: 0 0 0 2px rgba(37,99,235,0.15);
-  }
-  .t-gutter {
-    background: #0f172a;
-    width: 52px;
-    flex-shrink: 0;
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
-    padding-top: 14px;
-    cursor: pointer;
-  }
-  .t-gutter:hover { background: #1e293b; }
-  .t-timestamp {
-    font-size: 0.7rem;
-    color: #64748b;
-    font-family: monospace;
-    font-weight: 600;
-    letter-spacing: 0.02em;
-  }
-  .t-gutter.gutter-active .t-timestamp { color: var(--accent); }
-  .t-body {
-    flex: 1;
+  /* ── Preamble ── */
+  .preamble-block {
+    background: var(--pre-bg);
+    border-left: 4px solid var(--pre-border);
+    border-radius: 0 8px 8px 0;
     padding: 12px 16px;
-    line-height: 1.75;
-    font-size: 0.92rem;
-    color: #1e293b;
+    margin-bottom: 20px;
+    font-size: 0.88rem;
+    color: #78350f;
+    font-style: italic;
+    line-height: 1.7;
   }
 
-  /* ── Segments ── */
-  .segment {
+  /* ── Q&A pair ── */
+  .qa-pair { margin-bottom: 20px; border-radius: 10px; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+
+  /* Question block */
+  .q-block {
+    background: var(--q-bg);
+    padding: 14px 18px;
+    display: flex; gap: 14px; align-items: flex-start;
     cursor: pointer;
-    border-radius: 3px;
-    transition: background 0.1s;
+    transition: background 0.15s;
   }
-  .segment:hover { background: #eff6ff; }
-  .segment.active {
-    background: #bfdbfe;
-    outline: 2px solid #3b82f6;
-    outline-offset: 1px;
-    border-radius: 3px;
+  .q-block:hover { background: #1d4ed8; }
+  .q-block.q-active { background: var(--active-q); }
+  .q-label {
+    font-size: 0.7rem; font-weight: 700;
+    color: var(--q-label);
+    background: rgba(96,165,250,0.15);
+    border: 1px solid rgba(96,165,250,0.3);
+    border-radius: 5px; padding: 3px 7px;
+    white-space: nowrap; margin-top: 2px; letter-spacing: 0.05em;
+    flex-shrink: 0;
   }
+  .q-body { flex: 1; font-size: 0.97rem; font-weight: 600; color: var(--q-text); line-height: 1.55; }
+
+  /* Answer block */
+  .a-block {
+    background: var(--a-bg);
+    border: 1px solid var(--a-border); border-top: none;
+    padding: 14px 18px;
+    display: flex; gap: 14px; align-items: flex-start;
+  }
+  .a-label {
+    font-size: 0.7rem; font-weight: 700;
+    color: var(--a-label);
+    background: #d1fae5; border: 1px solid #6ee7b7;
+    border-radius: 5px; padding: 3px 9px;
+    white-space: nowrap; margin-top: 2px; letter-spacing: 0.05em;
+    flex-shrink: 0;
+  }
+  .a-body { flex: 1; list-style: none; padding: 0; }
+  .a-body li {
+    padding: 4px 0 4px 14px;
+    border-left: 3px solid transparent;
+    line-height: 1.7; font-size: 0.92rem; color: #1e293b;
+    border-radius: 0 4px 4px 0;
+    transition: background 0.15s;
+  }
+  .a-body li:not(:last-child) { border-bottom: 1px solid #f1f5f9; }
+
+  /* ── Segments (clickable) ── */
+  .segment { cursor: pointer; border-radius: 3px; }
+  .q-seg:hover { background: rgba(255,255,255,0.18); }
+  .a-seg:hover { background: #eff6ff; }
+  .segment.active { background: #bfdbfe; outline: 2px solid #3b82f6; outline-offset: 1px; }
+  .a-body li.li-active { background: var(--active-a); border-left-color: var(--accent); }
   .segment.search-match  { background: #fef9c3; }
   .segment.search-current { background: #fde047; outline: 2px solid #ca8a04; }
 
@@ -187,205 +179,590 @@
 
 <div class="toolbar">
   <input type="text" id="search" placeholder="Search transcript&#8230; (Enter = next match)">
-  <span class="stats" id="stats">227 segments &nbsp;|&nbsp; <span id="dur">loading&#8230;</span></span>
+  <span class="stats" id="stats">30 questions &nbsp;|&nbsp; 227 segments &nbsp;|&nbsp; <span id="dur">loading&#8230;</span></span>
 </div>
 
 <div class="scroll-area" id="scroll-area">
-<div class="t-block">
-  <div class="t-gutter" data-start="0.0"><span class="t-timestamp">0:00</span></div>
-  <div class="t-body"><span class="segment" data-start="0.0" data-end="3.72" title="0:00">ARDS and ventilation difficulties. </span><span class="segment" data-start="3.72" data-end="9.74" title="0:03">The management of ARDS is a core topic in intensive care and will also be relevant to all who </span><span class="segment" data-start="9.74" data-end="14.36" title="0:09">will have to inestitise high risk and critically ill patients. </span><span class="segment" data-start="14.36" data-end="20.04" title="0:14">In the vivas, it may be a clinical scenario or follow a discussion of respiratory physiology, </span><span class="segment" data-start="20.04" data-end="24.16" title="0:20">for example, the different causes of hypoxia. </span><span class="segment" data-start="24.16" data-end="26.48" title="0:24">What are the causes of hypoxia? </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="26.48"><span class="t-timestamp">0:26</span></div>
-  <div class="t-body"><span class="segment" data-start="26.48" data-end="30.48" title="0:26">Give me a clinical example of each. </span><span class="segment" data-start="30.48" data-end="39.04" title="0:30">Hypoxia is an inadequate tissue oxygen supply or use and has four main causes. </span><span class="segment" data-start="39.04" data-end="45.56" title="0:39">Hypoxic, anemic, ischemic and cytopathic. </span><span class="segment" data-start="45.56" data-end="54.8" title="0:45">Hypoxic hypoxia is a reduction of oxygen uptake by the lung, for example, after a pneumonia. </span><span class="segment" data-start="54.8" data-end="62.68" title="0:54">Anemic hypoxia is reduced arterial oxygen content, secondary to loss of hemoglobin, </span><span class="segment" data-start="62.68" data-end="72.04" title="1:02">or presence of abnormal hemoglobin, examples are major hemorrhage and carbon monoxide poisoning. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="72.04"><span class="t-timestamp">1:12</span></div>
-  <div class="t-body"><span class="segment" data-start="72.04" data-end="80.12" title="1:12">Ischemic hypoxia is reduced oxygen delivery, secondary to reduced cardiac output or local </span><span class="segment" data-start="80.12" data-end="88.24" title="1:20">vascular occlusion, for example, cardiogenic shock or arterial thromboembolism. </span><span class="segment" data-start="88.24" data-end="96.08" title="1:28">Cytopathic hypoxia results from disrupted cellular metabolism, for example, cyanide poisoning </span><span class="segment" data-start="96.08" data-end="100.64" title="1:36">of mitochondrial respiratory chain enzymes. </span><span class="segment" data-start="100.64" data-end="104.04" title="1:40">Different types may coexist. </span><span class="segment" data-start="104.04" data-end="106.68" title="1:44">I'm interested in hypoxic hypoxia. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="106.68"><span class="t-timestamp">1:46</span></div>
-  <div class="t-body"><span class="segment" data-start="106.68" data-end="110.04" title="1:46">How does this occur? </span><span class="segment" data-start="110.04" data-end="112.44" title="1:50">There are several mechanisms. </span><span class="segment" data-start="112.44" data-end="117.6" title="1:52">First, the inspired oxygen concentration may be reduced. </span><span class="segment" data-start="117.6" data-end="122.92" title="1:57">Second, overall, minute ventilation may be reduced. </span><span class="segment" data-start="122.92" data-end="128.92" title="2:02">Then there are the effects of ventilation perfusion mismatching and of shunt with venous </span><span class="segment" data-start="128.92" data-end="130.52" title="2:08">admixture. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="130.52"><span class="t-timestamp">2:10</span></div>
-  <div class="t-body"><span class="segment" data-start="130.52" data-end="139.04" title="2:10">Finally, reduced diffusing capacity may also contribute in some situations. </span><span class="segment" data-start="139.04" data-end="141.84" title="2:19">Tell me a little more about VQ mismatch and shunt. </span><span class="segment" data-start="141.84" data-end="145.12" title="2:21">Do you think these are important concepts? </span><span class="segment" data-start="145.12" data-end="147.72" title="2:25">Yes, I do. </span><span class="segment" data-start="147.72" data-end="153.76" title="2:27">The alveolus is the functional unit of gas exchange, and if we make the assumption that </span><span class="segment" data-start="153.76" data-end="162.44" title="2:33">if cardiac output and inspired oxygen concentration as stable, then arterial gas tensions are determined </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="162.44"><span class="t-timestamp">2:42</span></div>
-  <div class="t-body"><span class="segment" data-start="162.44" data-end="169.92" title="2:42">by the balance between ventilation and perfusion across all alveoli. </span><span class="segment" data-start="169.92" data-end="173.44" title="2:49">But what about diffusion? </span><span class="segment" data-start="173.44" data-end="180.76" title="2:53">In most pathological conditions, gas exchange is not diffusion limited, since the alveola </span><span class="segment" data-start="180.76" data-end="184.48" title="3:00">capillary barrier is so gas permeable. </span><span class="segment" data-start="184.48" data-end="191.4" title="3:04">In practical terms, extra pulmonary factors, such as cardiac output, mixed venous </span><span class="segment" data-start="191.4" data-end="198.48" title="3:11">oxygenation and CO2 production, will have a greater effect on arterial gases than any </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="198.48"><span class="t-timestamp">3:18</span></div>
-  <div class="t-body"><span class="segment" data-start="198.48" data-end="200.92" title="3:18">impairment of diffusion. </span><span class="segment" data-start="200.92" data-end="203.8" title="3:20">OK, back to VQ. </span><span class="segment" data-start="203.8" data-end="209.8" title="3:23">Can you explain how hypoxia may arise in terms of VQ mismatching? </span><span class="segment" data-start="209.8" data-end="217.68" title="3:29">Full saturation of mixed venous blood requires a sufficiently high alveola P02. </span><span class="segment" data-start="217.68" data-end="224.12" title="3:37">In poorly ventilated, well-perfused alveoli, there is insufficient oxygen delivered to the </span><span class="segment" data-start="224.12" data-end="229.72" title="3:44">alveoli to saturate pulmonary venous blood fully. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="229.72"><span class="t-timestamp">3:49</span></div>
-  <div class="t-body"><span class="segment" data-start="229.72" data-end="238.04" title="3:49">In cases of trusshunt, where there is no ventilation and perfusion is maintained, no oxygen is </span><span class="segment" data-start="238.04" data-end="241.32" title="3:58">taken up into the pulmonary venous blood. </span><span class="segment" data-start="241.56" data-end="249.88" title="4:01">So, as the number of units with a low ventilation to perfusion ratio increases, the total oxygen </span><span class="segment" data-start="249.88" data-end="254.16" title="4:09">content of pulmonary venous blood will fall. </span><span class="segment" data-start="254.16" data-end="263.08" title="4:14">Incidentally, this is also how hypoventilation causes hypoxemia, since alveola oxygen falls </span><span class="segment" data-start="263.08" data-end="271.68" title="4:23">and CO2 rises and is also important if dead space volume approaches tidal volume. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="271.68"><span class="t-timestamp">4:31</span></div>
-  <div class="t-body"><span class="segment" data-start="271.68" data-end="273.28" title="4:31">I'm not sure I understand that. </span><span class="segment" data-start="273.28" data-end="276.68" title="4:33">Can you explain yourself? </span><span class="segment" data-start="276.68" data-end="283.56" title="4:36">If the dead space increases, then a greater portion of the tidal volume does not participate </span><span class="segment" data-start="283.56" data-end="285.84" title="4:43">in gas exchange. </span><span class="segment" data-start="285.84" data-end="293.48" title="4:45">The effective alveola minute ventilation is reduced, and this means that alveola CO2 </span><span class="segment" data-start="293.48" data-end="302.76" title="4:53">rises and also in poorly ventilated alveoli ventilation to perfusion ratio falls. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="302.76"><span class="t-timestamp">5:02</span></div>
-  <div class="t-body"><span class="segment" data-start="302.76" data-end="312.2" title="5:02">Overall, alveola oxygen content falls and therefore so does pulmonary oxygen uptake. </span><span class="segment" data-start="312.2" data-end="314.4" title="5:12">It's good you've mentioned dead space. </span><span class="segment" data-start="314.4" data-end="320.48" title="5:14">Are you aware of any clinical conditions in which dead space fractions relate to mortality? </span><span class="segment" data-start="320.48" data-end="325.88" title="5:20">As far as I know, there are two where this has been demonstrated. </span><span class="segment" data-start="325.88" data-end="329.48" title="5:25">Pulmonary embolism and ARDS. </span><span class="segment" data-start="329.48" data-end="335.44" title="5:29">In both, increased dead space is associated with increased mortality. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="335.44"><span class="t-timestamp">5:35</span></div>
-  <div class="t-body"><span class="segment" data-start="335.44" data-end="336.44" title="5:35">Good. </span><span class="segment" data-start="336.44" data-end="340.28" title="5:36">Now we're going to talk a little about ARDS. </span><span class="segment" data-start="340.28" data-end="344.36" title="5:40">What is the generally except definition? </span><span class="segment" data-start="344.36" data-end="350.64" title="5:44">The generally accepted definition is that of the American European Consensus Conference </span><span class="segment" data-start="350.64" data-end="353.08" title="5:50">in 1994. </span><span class="segment" data-start="353.08" data-end="362.32" title="5:53">It has four components, an acute onset, bilateral infiltrates on chest x-ray, absence of left </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="362.32"><span class="t-timestamp">6:02</span></div>
-  <div class="t-body"><span class="segment" data-start="362.32" data-end="374.32" title="6:02">atrial hyper tension, and a PF ratio of under 200mm of mercury or 26.7 kilopascals. </span><span class="segment" data-start="374.32" data-end="378.0" title="6:14">Are there any difficulties with this definition? </span><span class="segment" data-start="378.0" data-end="385.44" title="6:18">Firstly, there is an element of subjectivity in assessing infiltrates on chest x-rays. </span><span class="segment" data-start="385.44" data-end="392.04" title="6:25">Secondly, it can be difficult to exclude left atrial hyper tension clinically and </span><span class="segment" data-start="392.04" data-end="399.44" title="6:32">a pulmonary artery occlusion pressure of more than 18 may coexist with ARDS. </span><span class="segment" data-start="399.44" data-end="407.08" title="6:39">Finally, the PF ratio may be significantly affected by ventilator settings and some argue </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="407.08"><span class="t-timestamp">6:47</span></div>
-  <div class="t-body"><span class="segment" data-start="407.08" data-end="411.84" title="6:47">the definition should specify standard settings. </span><span class="segment" data-start="411.84" data-end="415.24" title="6:51">What are the causes? </span><span class="segment" data-start="415.24" data-end="416.96" title="6:55">There are many. </span><span class="segment" data-start="416.96" data-end="423.72" title="6:56">Conveniently considered into categories, pulmonary and extra pulmonary. </span><span class="segment" data-start="423.72" data-end="430.32" title="7:03">Extra pulmonary causes are direct insults to the lung, like pneumonia and aspiration, </span><span class="segment" data-start="430.32" data-end="435.72" title="7:10">or more rarely smoke inhalation or pulmonary contusion. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="435.72"><span class="t-timestamp">7:15</span></div>
-  <div class="t-body"><span class="segment" data-start="435.72" data-end="444.52" title="7:15">Extra pulmonary or indirect insults are most commonly sepsis or severe trauma, but also transfusion </span><span class="segment" data-start="444.52" data-end="451.16" title="7:24">reactions, burns, pancreatitis or drug reactions. </span><span class="segment" data-start="451.16" data-end="454.72" title="7:31">There is a classification help. </span><span class="segment" data-start="454.72" data-end="461.2" title="7:34">There is a lot of debate about whether or not pulmonary and extra pulmonary ARDS are different </span><span class="segment" data-start="461.2" data-end="465.8" title="7:41">diseases, and I don't think that this has been resolved. </span><span class="segment" data-start="465.8" data-end="471.32" title="7:45">For practical purposes, most treat them in the same way. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="471.32"><span class="t-timestamp">7:51</span></div>
-  <div class="t-body"><span class="segment" data-start="471.32" data-end="475.08" title="7:51">What is a pathophysiology? </span><span class="segment" data-start="475.08" data-end="479.32" title="7:55">There are two stages that may be distinguished histologically. </span><span class="segment" data-start="479.32" data-end="484.72" title="7:59">The exudative phase, followed by the fibro-proliferative phase. </span><span class="segment" data-start="484.72" data-end="492.68" title="8:04">First, there is an acute inflammatory reaction in the lung, and the alveoli fill with neutrophils, </span><span class="segment" data-start="492.68" data-end="496.8" title="8:12">blood, and protein-rich pulmonary edema. </span><span class="segment" data-start="496.8" data-end="503.96" title="8:16">There is associated alveola epithelial and capillary endothelial damage, with loss of alveola </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="503.96"><span class="t-timestamp">8:23</span></div>
-  <div class="t-body"><span class="segment" data-start="503.96" data-end="509.64" title="8:23">cells, and structural integrity and compilary thrombosis. </span><span class="segment" data-start="509.64" data-end="518.36" title="8:29">Days or weeks later, chronic inflammation, fibrosis, and neovascularization occur. </span><span class="segment" data-start="518.36" data-end="520.96" title="8:38">So how does ARDS cause hypoxia? </span><span class="segment" data-start="520.96" data-end="525.24" title="8:40">Can you relate this to our earlier discussion? </span><span class="segment" data-start="525.24" data-end="532.08" title="8:45">There is widespread and profound ventilation perfusion mismatching as a result of the inflammatory </span><span class="segment" data-start="532.08" data-end="537.96" title="8:52">reaction, which may be superimposed on a direct lung injury. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="537.96"><span class="t-timestamp">8:57</span></div>
-  <div class="t-body"><span class="segment" data-start="537.96" data-end="546.48" title="8:57">Both shunt and dead space increase, as alveoli and capillaries respectively are occluded. </span><span class="segment" data-start="546.48" data-end="553.72" title="9:06">If severe, right ventricular failure and low cardiac output contribute further to venous </span><span class="segment" data-start="553.72" data-end="556.96" title="9:13">admixture and hypoxia. </span><span class="segment" data-start="556.96" data-end="560.16" title="9:16">Now I'd like you to consider this scenario. </span><span class="segment" data-start="560.16" data-end="564.44" title="9:20">You're asked to see a previously fit 25-year-old man who was unwell in recovery after femoral </span><span class="segment" data-start="564.44" data-end="567.6" title="9:24">nailing under GA with an LMA. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="567.6"><span class="t-timestamp">9:27</span></div>
-  <div class="t-body"><span class="segment" data-start="567.6" data-end="574.08" title="9:27">His respiratory rate is 30, and saturations 91% on 15 litres with a reservoir mask. </span><span class="segment" data-start="574.08" data-end="578.28" title="9:34">Apart from obvious distress and attackicardia, examination is unremarkable. </span><span class="segment" data-start="578.28" data-end="580.6" title="9:38">What could be the problem? </span><span class="segment" data-start="580.6" data-end="585.68" title="9:40">Some opening statements might seem too obvious, but they do serve to tell the examiner that </span><span class="segment" data-start="585.68" data-end="591.08" title="9:45">you are able to recognise a critically ill patient promptly and appreciate situations </span><span class="segment" data-start="591.08" data-end="593.44" title="9:51">calling for urgent action. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="593.44"><span class="t-timestamp">9:53</span></div>
-  <div class="t-body"><span class="segment" data-start="593.44" data-end="601.36" title="9:53">If asked to be a differential in these situations, stick to what is most likely given the history. </span><span class="segment" data-start="601.36" data-end="607.88" title="10:01">This young man is clearly extremely unwell, given his very high respiratory rate under low </span><span class="segment" data-start="607.88" data-end="609.88" title="10:07">saturations. </span><span class="segment" data-start="609.88" data-end="616.2" title="10:09">It is possible that postoperative respiratory distress could arise from incomplete </span><span class="segment" data-start="616.2" data-end="624.36" title="10:16">reversal of neuromuscular blockade, if used, and I would exclude this with a nerve stimulator. </span><span class="segment" data-start="624.36" data-end="628.52" title="10:24">He was not paralyzed during anesthesia. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="628.52"><span class="t-timestamp">10:28</span></div>
-  <div class="t-body"><span class="segment" data-start="628.52" data-end="634.8" title="10:28">In that case, I would consider other causes of acute respiratory distress. </span><span class="segment" data-start="634.8" data-end="643.64" title="10:34">When the history, possible causes include aspiration, fatembellism, and if transfused intraoperatively </span><span class="segment" data-start="643.64" data-end="647.44" title="10:43">transfusion-related acute lung injury. </span><span class="segment" data-start="647.44" data-end="653.32" title="10:47">It could also be related to thoracic injuries which might not have been recognised or their </span><span class="segment" data-start="653.32" data-end="662.0" title="10:53">severity appreciated initially, or a PE, though these are less likely given the normal examination. </span><span class="segment" data-start="662.0" data-end="662.76" title="11:02">What would you do? </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="664.88"><span class="t-timestamp">11:04</span></div>
-  <div class="t-body"><span class="segment" data-start="664.88" data-end="670.78" title="11:04">I'm going to need assistance from intensive care, so I will call them and in the meantime </span><span class="segment" data-start="670.78" data-end="679.12" title="11:10">arrange a chest x-ray to help with the diagnosis and do an arterial blood gas to assess severity. </span><span class="segment" data-start="679.12" data-end="685.88" title="11:19">In some centres, non-invasive ventilation might be tried, but in my experience, patients </span><span class="segment" data-start="685.88" data-end="690.4" title="11:25">like this require intubation and ventilation. </span><span class="segment" data-start="690.4" data-end="692.64" title="11:30">How are you going to set up the ventilator? </span><span class="segment" data-start="692.64" data-end="697.52" title="11:32">If you are going to quote any trials to support what you say, then you must have a clear </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="697.52"><span class="t-timestamp">11:37</span></div>
-  <div class="t-body"><span class="segment" data-start="697.52" data-end="701.6" title="11:37">idea of what the trial shared and any major criticisms. </span><span class="segment" data-start="701.6" data-end="706.88" title="11:41">There a full critical appraisal is not required. </span><span class="segment" data-start="706.88" data-end="711.8" title="11:46">Working on the assumption that this patient has an acute lung injury, I would be guided </span><span class="segment" data-start="711.8" data-end="719.96" title="11:51">by the ventilation strategy used in the art net trial from 2000 of low tidal volumes. </span><span class="segment" data-start="719.96" data-end="726.48" title="11:59">I would use pressure control ventilation to aim for a tidal volume of 6 ml per kilo </span><span class="segment" data-start="726.48" data-end="733.76" title="12:06">of ideal body weight, providing plateau pressures are under 30 cm of water. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="733.76"><span class="t-timestamp">12:13</span></div>
-  <div class="t-body"><span class="segment" data-start="733.76" data-end="741.6" title="12:13">I would set a positive end-expiratory pressure at 10 to 12 cm of water and titrate the fraction </span><span class="segment" data-start="741.6" data-end="747.64" title="12:21">of inspired oxygen to a PA-02 of 8 kPa. </span><span class="segment" data-start="747.64" data-end="756.04" title="12:27">If the PA-02 increased, I would increase respiratory rate but would not aim for a normal CO2. </span><span class="segment" data-start="756.04" data-end="757.04" title="12:36">Indeed. </span><span class="segment" data-start="757.04" data-end="762.0" title="12:37">Well, there's a lot we could discuss there, but I'm sure glad to hear we don't have time. </span><span class="segment" data-start="762.0" data-end="767.52" title="12:42">Moving on, what are the principles of management of ARDS in ICU? </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="767.52"><span class="t-timestamp">12:47</span></div>
-  <div class="t-body"><span class="segment" data-start="767.52" data-end="772.2" title="12:47">There is specific and supportive care. </span><span class="segment" data-start="772.2" data-end="779.0" title="12:52">Public care includes treating the cause of ARDS and preventing further lung damage with </span><span class="segment" data-start="779.0" data-end="782.88" title="12:59">a lung protective ventilator strategy. </span><span class="segment" data-start="782.88" data-end="791.16" title="13:02">Fluid balance is important as the art net fluids and catheter study of 2006 suggests that </span><span class="segment" data-start="791.16" data-end="797.16" title="13:11">keeping the lung dry is associated with better outcomes. </span><span class="segment" data-start="797.16" data-end="805.04" title="13:17">Active care includes deep vein thrombosis and ulcer prophylaxis, control of blood glucose </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="805.04"><span class="t-timestamp">13:25</span></div>
-  <div class="t-body"><span class="segment" data-start="805.04" data-end="808.52" title="13:25">and elevation of the head of the bed. </span><span class="segment" data-start="808.52" data-end="811.0" title="13:28">Are the specific treatments for ARDS itself? </span><span class="segment" data-start="811.0" data-end="814.44" title="13:31">What about fish oil? </span><span class="segment" data-start="814.44" data-end="819.24" title="13:34">As yet there is no proven therapy for established ARDS. </span><span class="segment" data-start="819.24" data-end="826.88" title="13:39">There are two small studies of entral omega-3 fatty acids showing reduced mortality, but </span><span class="segment" data-start="826.88" data-end="829.44" title="13:46">other conflicting evidence. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="829.44"><span class="t-timestamp">13:49</span></div>
-  <div class="t-body"><span class="segment" data-start="829.44" data-end="836.88" title="13:49">Other therapies under investigation include beta agonists to help clear alveolar edema, </span><span class="segment" data-start="836.88" data-end="844.44" title="13:56">exogenous-suffactant to replace the endogenous deficit and fibrenelitics or activated protein </span><span class="segment" data-start="844.44" data-end="849.08" title="14:04">C to reduce alveolar and capillary thrombosis. </span><span class="segment" data-start="849.08" data-end="850.68" title="14:09">Anything else? </span><span class="segment" data-start="850.68" data-end="854.68" title="14:10">I'm sure I remember giving steroids in my ICU days. </span><span class="segment" data-start="855.68" data-end="861.76" title="14:15">Again, there is conflicting evidence and considerable controversy regarding steroids </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="861.76"><span class="t-timestamp">14:21</span></div>
-  <div class="t-body"><span class="segment" data-start="861.76" data-end="864.16" title="14:21">in ARDS. </span><span class="segment" data-start="864.16" data-end="870.84" title="14:24">If given at moderate doses within the first week or ten days and tapered slowly, there </span><span class="segment" data-start="870.84" data-end="876.88" title="14:30">appear to be benefits in gas exchange and reduced time on the ventilator. </span><span class="segment" data-start="876.88" data-end="882.92" title="14:36">Given later, any benefit is outweighed by more neuromuscular problems and increased </span><span class="segment" data-start="882.92" data-end="885.24" title="14:42">mortality. </span><span class="segment" data-start="885.24" data-end="889.4" title="14:45">What is lung protective ventilation? </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="889.4"><span class="t-timestamp">14:49</span></div>
-  <div class="t-body"><span class="segment" data-start="889.4" data-end="895.2" title="14:49">It is a ventilation strategy that is based on the premise that ventilation causes injury </span><span class="segment" data-start="895.2" data-end="898.72" title="14:55">to the sick lung in a number of ways. </span><span class="segment" data-start="898.72" data-end="908.28" title="14:58">The major causes of injury are volutroma, barotroma, atelectotroma and biotroma. </span><span class="segment" data-start="908.28" data-end="912.04" title="15:08">What do these terms mean? </span><span class="segment" data-start="912.04" data-end="918.52" title="15:12">In ARDS, not all of the lung is equally involved in the pathological process. </span><span class="segment" data-start="918.52" data-end="926.72" title="15:18">Essentially, excessive tidal volume and inflation pressure over-distant healthy alveoli, hence </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="926.72"><span class="t-timestamp">15:26</span></div>
-  <div class="t-body"><span class="segment" data-start="926.72" data-end="934.36" title="15:26">volume and barotroma, and affected lung is subjected to cyclical opening and closing, </span><span class="segment" data-start="934.36" data-end="937.08" title="15:34">hence a tolectotroma. </span><span class="segment" data-start="937.08" data-end="943.6" title="15:37">The damage to the alveola capillary unit leads to increased permeability, release of </span><span class="segment" data-start="943.6" data-end="950.28" title="15:43">inflammatory mediators and translocation of pathogens, hence biotroma. </span><span class="segment" data-start="950.28" data-end="954.92" title="15:50">So what can you do to avoid this? </span><span class="segment" data-start="954.92" data-end="961.08" title="15:54">The general principle is to open the lung and keep it open while avoiding excessively </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="961.08"><span class="t-timestamp">16:01</span></div>
-  <div class="t-body"><span class="segment" data-start="961.08" data-end="964.4" title="16:01">high tidal volumes and pressures. </span><span class="segment" data-start="964.4" data-end="972.16" title="16:04">The landmark trial is the ARDS net trial of 2000, which used targets of 6 mil per kilo </span><span class="segment" data-start="972.16" data-end="981.04" title="16:12">ideal body weight for tidal volume and plateau pressures of less than 30 centimetres of water. </span><span class="segment" data-start="981.04" data-end="987.4" title="16:21">The exact role of positive end-expiratory pressure and recruitment maneuvers are more </span><span class="segment" data-start="987.4" data-end="993.92" title="16:27">open for discussion, but most would set people at 10 to 15 centimetres of water to begin </span><span class="segment" data-start="993.92" data-end="998.28" title="16:33">with, depending on the degree of hypoxia. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="998.28"><span class="t-timestamp">16:38</span></div>
-  <div class="t-body"><span class="segment" data-start="998.28" data-end="1001.88" title="16:38">Despite your best efforts, this gas exchange continues to deteriorate. </span><span class="segment" data-start="1001.88" data-end="1005.16" title="16:41">What are your options? </span><span class="segment" data-start="1005.16" data-end="1011.08" title="16:45">In the first instance, I would reconsider the diagnosis and look for complications such </span><span class="segment" data-start="1011.08" data-end="1015.52" title="16:51">as pneumothorax, pneumonia or heart failure. </span><span class="segment" data-start="1015.52" data-end="1022.36" title="16:55">I would also accept a lower target PA02 in an otherwise healthy individual and review </span><span class="segment" data-start="1022.36" data-end="1026.48" title="17:02">the ventilator settings with a senior colleague. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="1026.48"><span class="t-timestamp">17:06</span></div>
-  <div class="t-body"><span class="segment" data-start="1026.48" data-end="1029.96" title="17:06">All commendable, but unfortunately ineffective in this case. </span><span class="segment" data-start="1029.96" data-end="1031.44" title="17:09">What next? </span><span class="segment" data-start="1031.44" data-end="1037.96" title="17:11">Well, my first line rescue strategy is prone ventilation. </span><span class="segment" data-start="1037.96" data-end="1043.84" title="17:17">Although there is little evidence of an effect on mortality, a significant number of patients </span><span class="segment" data-start="1043.84" data-end="1050.84" title="17:23">will respond to pruning, especially if done early and maintained for long periods up </span><span class="segment" data-start="1050.84" data-end="1053.96" title="17:30">to 18 to 20 hours at a time. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="1053.96"><span class="t-timestamp">17:33</span></div>
-  <div class="t-body"><span class="segment" data-start="1053.96" data-end="1054.96" title="17:33">Good. </span><span class="segment" data-start="1054.96" data-end="1058.8" title="17:34">Have you come across any problems with prone ventilation? </span><span class="segment" data-start="1058.8" data-end="1063.4" title="17:38">If asked about your personal experience, talk about your personal experience. </span><span class="segment" data-start="1063.4" data-end="1069.48" title="17:43">It is easy to tell if someone is talking from a book or making it up. </span><span class="segment" data-start="1069.48" data-end="1076.68" title="17:49">The main problems I have seen are facial edema and with nursing and practical procedures. </span><span class="segment" data-start="1076.68" data-end="1083.12" title="17:56">With staff who are familiar with the process, dislodgement of tubes and lines is fortunately </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="1083.12"><span class="t-timestamp">18:03</span></div>
-  <div class="t-body"><span class="segment" data-start="1083.12" data-end="1084.12" title="18:03">rare. </span><span class="segment" data-start="1084.12" data-end="1088.44" title="18:04">Is there anything else you could try? </span><span class="segment" data-start="1088.44" data-end="1095.08" title="18:08">As with pruning, other rescue therapies are largely unsupported by evidence with respect </span><span class="segment" data-start="1095.08" data-end="1102.12" title="18:15">to overall mortality or suitability for specific patients or situations. </span><span class="segment" data-start="1102.12" data-end="1109.44" title="18:22">They include steroids, as mentioned earlier, inhaled nitric oxide or prostaciclin, high </span><span class="segment" data-start="1109.44" data-end="1117.68" title="18:29">frequency oscillation ventilation, the interventional lung assist device, or full ECMO. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="1117.68"><span class="t-timestamp">18:37</span></div>
-  <div class="t-body"><span class="segment" data-start="1117.68" data-end="1123.42" title="18:37">There is recent evidence to suggest centres seeing high numbers of ventilated patients </span><span class="segment" data-start="1123.42" data-end="1130.42" title="18:43">have a better outcome, although regional referral centres do not exist in the UK. </span><span class="segment" data-start="1130.42" data-end="1135.02" title="18:50">What is the mortality associated with ARDS? </span><span class="segment" data-start="1135.02" data-end="1142.5" title="18:55">In recent randomized control trials, the mortality has been around 25 to 30%, but community </span><span class="segment" data-start="1142.5" data-end="1147.66" title="19:02">surveys show mortality of about 35 to 40%. </span><span class="segment" data-start="1147.66" data-end="1155.26" title="19:07">This may reflect the difficulty of translating research findings into clinical practice. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="1155.26"><span class="t-timestamp">19:15</span></div>
-  <div class="t-body"><span class="segment" data-start="1155.26" data-end="1158.5" title="19:15">What are the predictors of outcome? </span><span class="segment" data-start="1158.5" data-end="1165.78" title="19:18">The age of the patient and the number of non-pulmonary organ failures are the best predictors. </span><span class="segment" data-start="1165.78" data-end="1171.82" title="19:25">Elderly patients with shock do badly, as do those with hepatic failure. </span><span class="segment" data-start="1171.82" data-end="1179.94" title="19:31">Surprisingly, the initial PF ratio is not predictive unless it is under 50 or fails to improve </span><span class="segment" data-start="1179.94" data-end="1182.54" title="19:39">during the first week. </span><span class="segment" data-start="1182.54" data-end="1185.58" title="19:42">What is the mode of death in ARDS? </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="1185.58"><span class="t-timestamp">19:45</span></div>
-  <div class="t-body"><span class="segment" data-start="1185.58" data-end="1190.9" title="19:45">Well, it is rarely intractable severe hypoxia. </span><span class="segment" data-start="1190.9" data-end="1195.62" title="19:50">Death is usually due to other organ failures and sepsis. </span><span class="segment" data-start="1195.62" data-end="1200.1" title="19:55">What is function like in survivors of ARDS? </span><span class="segment" data-start="1200.1" data-end="1203.62" title="20:00">There are persistent problems in many survivors. </span><span class="segment" data-start="1203.62" data-end="1208.9" title="20:03">Lung function deficits are present in most, although this is rarely a problem in day-to-day </span><span class="segment" data-start="1208.9" data-end="1214.34" title="20:08">life and returned to nearly normal within the first year. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="1214.34"><span class="t-timestamp">20:14</span></div>
-  <div class="t-body"><span class="segment" data-start="1214.34" data-end="1219.98" title="20:14">Cognitive and neuromuscular complications can be frequent and severe and are more likely </span><span class="segment" data-start="1219.98" data-end="1225.66" title="20:19">to prevent return to work or precipitate loss of independence. </span><span class="segment" data-start="1225.66" data-end="1229.9" title="20:25">Doctors do have a reduced health-related quality of life. </span><span class="segment" data-start="1229.9" data-end="1230.9" title="20:29">Thank you. </span><span class="segment" data-start="1230.9" data-end="1231.18" title="20:30">We'll finish there. </span></div>
+<div class="preamble-block"><span class="segment a-seg" data-start="0.0" data-end="3.72" title="0:00">ARDS and ventilation difficulties. </span><span class="segment a-seg" data-start="3.72" data-end="9.74" title="0:03">The management of ARDS is a core topic in intensive care and will also be relevant to all who </span><span class="segment a-seg" data-start="9.74" data-end="14.36" title="0:09">will have to inestitise high risk and critically ill patients. </span><span class="segment a-seg" data-start="14.36" data-end="20.04" title="0:14">In the vivas, it may be a clinical scenario or follow a discussion of respiratory physiology, </span><span class="segment a-seg" data-start="20.04" data-end="24.16" title="0:20">for example, the different causes of hypoxia. </span></div>
+<div class="qa-pair">
+<div class="q-block" data-start="24.16">
+  <div class="q-label">Q1</div>
+  <div class="q-body"><span class="segment q-seg" data-start="24.16" data-end="26.48" title="0:24">What are the causes of hypoxia? </span><span class="segment q-seg" data-start="26.48" data-end="30.48" title="0:26">Give me a clinical example of each. </span></div>
 </div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="30.48" data-end="39.04" title="0:30">Hypoxia is an inadequate tissue oxygen supply or use and has four main causes. </span></li>
+<li><span class="segment a-seg" data-start="39.04" data-end="45.56" title="0:39">Hypoxic, anemic, ischemic and cytopathic. </span></li>
+<li><span class="segment a-seg" data-start="45.56" data-end="54.8" title="0:45">Hypoxic hypoxia is a reduction of oxygen uptake by the lung, for example, after a pneumonia. </span></li>
+<li><span class="segment a-seg" data-start="54.8" data-end="62.68" title="0:54">Anemic hypoxia is reduced arterial oxygen content, secondary to loss of hemoglobin, </span></li>
+<li><span class="segment a-seg" data-start="62.68" data-end="72.04" title="1:02">or presence of abnormal hemoglobin, examples are major hemorrhage and carbon monoxide poisoning. </span></li>
+<li><span class="segment a-seg" data-start="72.04" data-end="80.12" title="1:12">Ischemic hypoxia is reduced oxygen delivery, secondary to reduced cardiac output or local </span></li>
+<li><span class="segment a-seg" data-start="80.12" data-end="88.24" title="1:20">vascular occlusion, for example, cardiogenic shock or arterial thromboembolism. </span></li>
+<li><span class="segment a-seg" data-start="88.24" data-end="96.08" title="1:28">Cytopathic hypoxia results from disrupted cellular metabolism, for example, cyanide poisoning </span></li>
+<li><span class="segment a-seg" data-start="96.08" data-end="100.64" title="1:36">of mitochondrial respiratory chain enzymes. </span></li>
+<li><span class="segment a-seg" data-start="100.64" data-end="104.04" title="1:40">Different types may coexist. </span></li>
+<li><span class="segment a-seg" data-start="104.04" data-end="106.68" title="1:44">I'm interested in hypoxic hypoxia. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="106.68">
+  <div class="q-label">Q2</div>
+  <div class="q-body"><span class="segment q-seg" data-start="106.68" data-end="110.04" title="1:46">How does this occur? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="110.04" data-end="112.44" title="1:50">There are several mechanisms. </span></li>
+<li><span class="segment a-seg" data-start="112.44" data-end="117.6" title="1:52">First, the inspired oxygen concentration may be reduced. </span></li>
+<li><span class="segment a-seg" data-start="117.6" data-end="122.92" title="1:57">Second, overall, minute ventilation may be reduced. </span></li>
+<li><span class="segment a-seg" data-start="122.92" data-end="128.92" title="2:02">Then there are the effects of ventilation perfusion mismatching and of shunt with venous </span></li>
+<li><span class="segment a-seg" data-start="128.92" data-end="130.52" title="2:08">admixture. </span></li>
+<li><span class="segment a-seg" data-start="130.52" data-end="139.04" title="2:10">Finally, reduced diffusing capacity may also contribute in some situations. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="139.04">
+  <div class="q-label">Q3</div>
+  <div class="q-body"><span class="segment q-seg" data-start="139.04" data-end="141.84" title="2:19">Tell me a little more about VQ mismatch and shunt. </span><span class="segment q-seg" data-start="141.84" data-end="145.12" title="2:21">Do you think these are important concepts? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="145.12" data-end="147.72" title="2:25">Yes, I do. </span></li>
+<li><span class="segment a-seg" data-start="147.72" data-end="153.76" title="2:27">The alveolus is the functional unit of gas exchange, and if we make the assumption that </span></li>
+<li><span class="segment a-seg" data-start="153.76" data-end="162.44" title="2:33">if cardiac output and inspired oxygen concentration as stable, then arterial gas tensions are determined </span></li>
+<li><span class="segment a-seg" data-start="162.44" data-end="169.92" title="2:42">by the balance between ventilation and perfusion across all alveoli. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="169.92">
+  <div class="q-label">Q4</div>
+  <div class="q-body"><span class="segment q-seg" data-start="169.92" data-end="173.44" title="2:49">But what about diffusion? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="173.44" data-end="180.76" title="2:53">In most pathological conditions, gas exchange is not diffusion limited, since the alveola </span></li>
+<li><span class="segment a-seg" data-start="180.76" data-end="184.48" title="3:00">capillary barrier is so gas permeable. </span></li>
+<li><span class="segment a-seg" data-start="184.48" data-end="191.4" title="3:04">In practical terms, extra pulmonary factors, such as cardiac output, mixed venous </span></li>
+<li><span class="segment a-seg" data-start="191.4" data-end="198.48" title="3:11">oxygenation and CO2 production, will have a greater effect on arterial gases than any </span></li>
+<li><span class="segment a-seg" data-start="198.48" data-end="200.92" title="3:18">impairment of diffusion. </span></li>
+<li><span class="segment a-seg" data-start="200.92" data-end="203.8" title="3:20">OK, back to VQ. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="203.8">
+  <div class="q-label">Q5</div>
+  <div class="q-body"><span class="segment q-seg" data-start="203.8" data-end="209.8" title="3:23">Can you explain how hypoxia may arise in terms of VQ mismatching? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="209.8" data-end="217.68" title="3:29">Full saturation of mixed venous blood requires a sufficiently high alveola P02. </span></li>
+<li><span class="segment a-seg" data-start="217.68" data-end="224.12" title="3:37">In poorly ventilated, well-perfused alveoli, there is insufficient oxygen delivered to the </span></li>
+<li><span class="segment a-seg" data-start="224.12" data-end="229.72" title="3:44">alveoli to saturate pulmonary venous blood fully. </span></li>
+<li><span class="segment a-seg" data-start="229.72" data-end="238.04" title="3:49">In cases of trusshunt, where there is no ventilation and perfusion is maintained, no oxygen is </span></li>
+<li><span class="segment a-seg" data-start="238.04" data-end="241.32" title="3:58">taken up into the pulmonary venous blood. </span></li>
+<li><span class="segment a-seg" data-start="241.56" data-end="249.88" title="4:01">So, as the number of units with a low ventilation to perfusion ratio increases, the total oxygen </span></li>
+<li><span class="segment a-seg" data-start="249.88" data-end="254.16" title="4:09">content of pulmonary venous blood will fall. </span></li>
+<li><span class="segment a-seg" data-start="254.16" data-end="263.08" title="4:14">Incidentally, this is also how hypoventilation causes hypoxemia, since alveola oxygen falls </span></li>
+<li><span class="segment a-seg" data-start="263.08" data-end="271.68" title="4:23">and CO2 rises and is also important if dead space volume approaches tidal volume. </span></li>
+<li><span class="segment a-seg" data-start="271.68" data-end="273.28" title="4:31">I'm not sure I understand that. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="273.28">
+  <div class="q-label">Q6</div>
+  <div class="q-body"><span class="segment q-seg" data-start="273.28" data-end="276.68" title="4:33">Can you explain yourself? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="276.68" data-end="283.56" title="4:36">If the dead space increases, then a greater portion of the tidal volume does not participate </span></li>
+<li><span class="segment a-seg" data-start="283.56" data-end="285.84" title="4:43">in gas exchange. </span></li>
+<li><span class="segment a-seg" data-start="285.84" data-end="293.48" title="4:45">The effective alveola minute ventilation is reduced, and this means that alveola CO2 </span></li>
+<li><span class="segment a-seg" data-start="293.48" data-end="302.76" title="4:53">rises and also in poorly ventilated alveoli ventilation to perfusion ratio falls. </span></li>
+<li><span class="segment a-seg" data-start="302.76" data-end="312.2" title="5:02">Overall, alveola oxygen content falls and therefore so does pulmonary oxygen uptake. </span></li>
+<li><span class="segment a-seg" data-start="312.2" data-end="314.4" title="5:12">It's good you've mentioned dead space. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="314.4">
+  <div class="q-label">Q7</div>
+  <div class="q-body"><span class="segment q-seg" data-start="314.4" data-end="320.48" title="5:14">Are you aware of any clinical conditions in which dead space fractions relate to mortality? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="320.48" data-end="325.88" title="5:20">As far as I know, there are two where this has been demonstrated. </span></li>
+<li><span class="segment a-seg" data-start="325.88" data-end="329.48" title="5:25">Pulmonary embolism and ARDS. </span></li>
+<li><span class="segment a-seg" data-start="329.48" data-end="335.44" title="5:29">In both, increased dead space is associated with increased mortality. </span></li>
+<li><span class="segment a-seg" data-start="335.44" data-end="336.44" title="5:35">Good. </span></li>
+<li><span class="segment a-seg" data-start="336.44" data-end="340.28" title="5:36">Now we're going to talk a little about ARDS. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="340.28">
+  <div class="q-label">Q8</div>
+  <div class="q-body"><span class="segment q-seg" data-start="340.28" data-end="344.36" title="5:40">What is the generally except definition? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="344.36" data-end="350.64" title="5:44">The generally accepted definition is that of the American European Consensus Conference </span></li>
+<li><span class="segment a-seg" data-start="350.64" data-end="353.08" title="5:50">in 1994. </span></li>
+<li><span class="segment a-seg" data-start="353.08" data-end="362.32" title="5:53">It has four components, an acute onset, bilateral infiltrates on chest x-ray, absence of left </span></li>
+<li><span class="segment a-seg" data-start="362.32" data-end="374.32" title="6:02">atrial hyper tension, and a PF ratio of under 200mm of mercury or 26.7 kilopascals. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="374.32">
+  <div class="q-label">Q9</div>
+  <div class="q-body"><span class="segment q-seg" data-start="374.32" data-end="378.0" title="6:14">Are there any difficulties with this definition? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="378.0" data-end="385.44" title="6:18">Firstly, there is an element of subjectivity in assessing infiltrates on chest x-rays. </span></li>
+<li><span class="segment a-seg" data-start="385.44" data-end="392.04" title="6:25">Secondly, it can be difficult to exclude left atrial hyper tension clinically and </span></li>
+<li><span class="segment a-seg" data-start="392.04" data-end="399.44" title="6:32">a pulmonary artery occlusion pressure of more than 18 may coexist with ARDS. </span></li>
+<li><span class="segment a-seg" data-start="399.44" data-end="407.08" title="6:39">Finally, the PF ratio may be significantly affected by ventilator settings and some argue </span></li>
+<li><span class="segment a-seg" data-start="407.08" data-end="411.84" title="6:47">the definition should specify standard settings. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="411.84">
+  <div class="q-label">Q10</div>
+  <div class="q-body"><span class="segment q-seg" data-start="411.84" data-end="415.24" title="6:51">What are the causes? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="415.24" data-end="416.96" title="6:55">There are many. </span></li>
+<li><span class="segment a-seg" data-start="416.96" data-end="423.72" title="6:56">Conveniently considered into categories, pulmonary and extra pulmonary. </span></li>
+<li><span class="segment a-seg" data-start="423.72" data-end="430.32" title="7:03">Extra pulmonary causes are direct insults to the lung, like pneumonia and aspiration, </span></li>
+<li><span class="segment a-seg" data-start="430.32" data-end="435.72" title="7:10">or more rarely smoke inhalation or pulmonary contusion. </span></li>
+<li><span class="segment a-seg" data-start="435.72" data-end="444.52" title="7:15">Extra pulmonary or indirect insults are most commonly sepsis or severe trauma, but also transfusion </span></li>
+<li><span class="segment a-seg" data-start="444.52" data-end="451.16" title="7:24">reactions, burns, pancreatitis or drug reactions. </span></li>
+<li><span class="segment a-seg" data-start="451.16" data-end="454.72" title="7:31">There is a classification help. </span></li>
+<li><span class="segment a-seg" data-start="454.72" data-end="461.2" title="7:34">There is a lot of debate about whether or not pulmonary and extra pulmonary ARDS are different </span></li>
+<li><span class="segment a-seg" data-start="461.2" data-end="465.8" title="7:41">diseases, and I don't think that this has been resolved. </span></li>
+<li><span class="segment a-seg" data-start="465.8" data-end="471.32" title="7:45">For practical purposes, most treat them in the same way. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="471.32">
+  <div class="q-label">Q11</div>
+  <div class="q-body"><span class="segment q-seg" data-start="471.32" data-end="475.08" title="7:51">What is a pathophysiology? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="475.08" data-end="479.32" title="7:55">There are two stages that may be distinguished histologically. </span></li>
+<li><span class="segment a-seg" data-start="479.32" data-end="484.72" title="7:59">The exudative phase, followed by the fibro-proliferative phase. </span></li>
+<li><span class="segment a-seg" data-start="484.72" data-end="492.68" title="8:04">First, there is an acute inflammatory reaction in the lung, and the alveoli fill with neutrophils, </span></li>
+<li><span class="segment a-seg" data-start="492.68" data-end="496.8" title="8:12">blood, and protein-rich pulmonary edema. </span></li>
+<li><span class="segment a-seg" data-start="496.8" data-end="503.96" title="8:16">There is associated alveola epithelial and capillary endothelial damage, with loss of alveola </span></li>
+<li><span class="segment a-seg" data-start="503.96" data-end="509.64" title="8:23">cells, and structural integrity and compilary thrombosis. </span></li>
+<li><span class="segment a-seg" data-start="509.64" data-end="518.36" title="8:29">Days or weeks later, chronic inflammation, fibrosis, and neovascularization occur. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="518.36">
+  <div class="q-label">Q12</div>
+  <div class="q-body"><span class="segment q-seg" data-start="518.36" data-end="520.96" title="8:38">So how does ARDS cause hypoxia? </span><span class="segment q-seg" data-start="520.96" data-end="525.24" title="8:40">Can you relate this to our earlier discussion? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="525.24" data-end="532.08" title="8:45">There is widespread and profound ventilation perfusion mismatching as a result of the inflammatory </span></li>
+<li><span class="segment a-seg" data-start="532.08" data-end="537.96" title="8:52">reaction, which may be superimposed on a direct lung injury. </span></li>
+<li><span class="segment a-seg" data-start="537.96" data-end="546.48" title="8:57">Both shunt and dead space increase, as alveoli and capillaries respectively are occluded. </span></li>
+<li><span class="segment a-seg" data-start="546.48" data-end="553.72" title="9:06">If severe, right ventricular failure and low cardiac output contribute further to venous </span></li>
+<li><span class="segment a-seg" data-start="553.72" data-end="556.96" title="9:13">admixture and hypoxia. </span></li>
+<li><span class="segment a-seg" data-start="556.96" data-end="560.16" title="9:16">Now I'd like you to consider this scenario. </span></li>
+<li><span class="segment a-seg" data-start="560.16" data-end="564.44" title="9:20">You're asked to see a previously fit 25-year-old man who was unwell in recovery after femoral </span></li>
+<li><span class="segment a-seg" data-start="564.44" data-end="567.6" title="9:24">nailing under GA with an LMA. </span></li>
+<li><span class="segment a-seg" data-start="567.6" data-end="574.08" title="9:27">His respiratory rate is 30, and saturations 91% on 15 litres with a reservoir mask. </span></li>
+<li><span class="segment a-seg" data-start="574.08" data-end="578.28" title="9:34">Apart from obvious distress and attackicardia, examination is unremarkable. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="578.28">
+  <div class="q-label">Q13</div>
+  <div class="q-body"><span class="segment q-seg" data-start="578.28" data-end="580.6" title="9:38">What could be the problem? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="580.6" data-end="585.68" title="9:40">Some opening statements might seem too obvious, but they do serve to tell the examiner that </span></li>
+<li><span class="segment a-seg" data-start="585.68" data-end="591.08" title="9:45">you are able to recognise a critically ill patient promptly and appreciate situations </span></li>
+<li><span class="segment a-seg" data-start="591.08" data-end="593.44" title="9:51">calling for urgent action. </span></li>
+<li><span class="segment a-seg" data-start="593.44" data-end="601.36" title="9:53">If asked to be a differential in these situations, stick to what is most likely given the history. </span></li>
+<li><span class="segment a-seg" data-start="601.36" data-end="607.88" title="10:01">This young man is clearly extremely unwell, given his very high respiratory rate under low </span></li>
+<li><span class="segment a-seg" data-start="607.88" data-end="609.88" title="10:07">saturations. </span></li>
+<li><span class="segment a-seg" data-start="609.88" data-end="616.2" title="10:09">It is possible that postoperative respiratory distress could arise from incomplete </span></li>
+<li><span class="segment a-seg" data-start="616.2" data-end="624.36" title="10:16">reversal of neuromuscular blockade, if used, and I would exclude this with a nerve stimulator. </span></li>
+<li><span class="segment a-seg" data-start="624.36" data-end="628.52" title="10:24">He was not paralyzed during anesthesia. </span></li>
+<li><span class="segment a-seg" data-start="628.52" data-end="634.8" title="10:28">In that case, I would consider other causes of acute respiratory distress. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="634.8">
+  <div class="q-label">Q14</div>
+  <div class="q-body"><span class="segment q-seg" data-start="634.8" data-end="643.64" title="10:34">When the history, possible causes include aspiration, fatembellism, and if transfused intraoperatively </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="643.64" data-end="647.44" title="10:43">transfusion-related acute lung injury. </span></li>
+<li><span class="segment a-seg" data-start="647.44" data-end="653.32" title="10:47">It could also be related to thoracic injuries which might not have been recognised or their </span></li>
+<li><span class="segment a-seg" data-start="653.32" data-end="662.0" title="10:53">severity appreciated initially, or a PE, though these are less likely given the normal examination. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="662.0">
+  <div class="q-label">Q15</div>
+  <div class="q-body"><span class="segment q-seg" data-start="662.0" data-end="662.76" title="11:02">What would you do? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="664.88" data-end="670.78" title="11:04">I'm going to need assistance from intensive care, so I will call them and in the meantime </span></li>
+<li><span class="segment a-seg" data-start="670.78" data-end="679.12" title="11:10">arrange a chest x-ray to help with the diagnosis and do an arterial blood gas to assess severity. </span></li>
+<li><span class="segment a-seg" data-start="679.12" data-end="685.88" title="11:19">In some centres, non-invasive ventilation might be tried, but in my experience, patients </span></li>
+<li><span class="segment a-seg" data-start="685.88" data-end="690.4" title="11:25">like this require intubation and ventilation. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="690.4">
+  <div class="q-label">Q16</div>
+  <div class="q-body"><span class="segment q-seg" data-start="690.4" data-end="692.64" title="11:30">How are you going to set up the ventilator? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="692.64" data-end="697.52" title="11:32">If you are going to quote any trials to support what you say, then you must have a clear </span></li>
+<li><span class="segment a-seg" data-start="697.52" data-end="701.6" title="11:37">idea of what the trial shared and any major criticisms. </span></li>
+<li><span class="segment a-seg" data-start="701.6" data-end="706.88" title="11:41">There a full critical appraisal is not required. </span></li>
+<li><span class="segment a-seg" data-start="706.88" data-end="711.8" title="11:46">Working on the assumption that this patient has an acute lung injury, I would be guided </span></li>
+<li><span class="segment a-seg" data-start="711.8" data-end="719.96" title="11:51">by the ventilation strategy used in the art net trial from 2000 of low tidal volumes. </span></li>
+<li><span class="segment a-seg" data-start="719.96" data-end="726.48" title="11:59">I would use pressure control ventilation to aim for a tidal volume of 6 ml per kilo </span></li>
+<li><span class="segment a-seg" data-start="726.48" data-end="733.76" title="12:06">of ideal body weight, providing plateau pressures are under 30 cm of water. </span></li>
+<li><span class="segment a-seg" data-start="733.76" data-end="741.6" title="12:13">I would set a positive end-expiratory pressure at 10 to 12 cm of water and titrate the fraction </span></li>
+<li><span class="segment a-seg" data-start="741.6" data-end="747.64" title="12:21">of inspired oxygen to a PA-02 of 8 kPa. </span></li>
+<li><span class="segment a-seg" data-start="747.64" data-end="756.04" title="12:27">If the PA-02 increased, I would increase respiratory rate but would not aim for a normal CO2. </span></li>
+<li><span class="segment a-seg" data-start="756.04" data-end="757.04" title="12:36">Indeed. </span></li>
+<li><span class="segment a-seg" data-start="757.04" data-end="762.0" title="12:37">Well, there's a lot we could discuss there, but I'm sure glad to hear we don't have time. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="762.0">
+  <div class="q-label">Q17</div>
+  <div class="q-body"><span class="segment q-seg" data-start="762.0" data-end="767.52" title="12:42">Moving on, what are the principles of management of ARDS in ICU? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="767.52" data-end="772.2" title="12:47">There is specific and supportive care. </span></li>
+<li><span class="segment a-seg" data-start="772.2" data-end="779.0" title="12:52">Public care includes treating the cause of ARDS and preventing further lung damage with </span></li>
+<li><span class="segment a-seg" data-start="779.0" data-end="782.88" title="12:59">a lung protective ventilator strategy. </span></li>
+<li><span class="segment a-seg" data-start="782.88" data-end="791.16" title="13:02">Fluid balance is important as the art net fluids and catheter study of 2006 suggests that </span></li>
+<li><span class="segment a-seg" data-start="791.16" data-end="797.16" title="13:11">keeping the lung dry is associated with better outcomes. </span></li>
+<li><span class="segment a-seg" data-start="797.16" data-end="805.04" title="13:17">Active care includes deep vein thrombosis and ulcer prophylaxis, control of blood glucose </span></li>
+<li><span class="segment a-seg" data-start="805.04" data-end="808.52" title="13:25">and elevation of the head of the bed. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="808.52">
+  <div class="q-label">Q18</div>
+  <div class="q-body"><span class="segment q-seg" data-start="808.52" data-end="811.0" title="13:28">Are the specific treatments for ARDS itself? </span><span class="segment q-seg" data-start="811.0" data-end="814.44" title="13:31">What about fish oil? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="814.44" data-end="819.24" title="13:34">As yet there is no proven therapy for established ARDS. </span></li>
+<li><span class="segment a-seg" data-start="819.24" data-end="826.88" title="13:39">There are two small studies of entral omega-3 fatty acids showing reduced mortality, but </span></li>
+<li><span class="segment a-seg" data-start="826.88" data-end="829.44" title="13:46">other conflicting evidence. </span></li>
+<li><span class="segment a-seg" data-start="829.44" data-end="836.88" title="13:49">Other therapies under investigation include beta agonists to help clear alveolar edema, </span></li>
+<li><span class="segment a-seg" data-start="836.88" data-end="844.44" title="13:56">exogenous-suffactant to replace the endogenous deficit and fibrenelitics or activated protein </span></li>
+<li><span class="segment a-seg" data-start="844.44" data-end="849.08" title="14:04">C to reduce alveolar and capillary thrombosis. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="849.08">
+  <div class="q-label">Q19</div>
+  <div class="q-body"><span class="segment q-seg" data-start="849.08" data-end="850.68" title="14:09">Anything else? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="850.68" data-end="854.68" title="14:10">I'm sure I remember giving steroids in my ICU days. </span></li>
+<li><span class="segment a-seg" data-start="855.68" data-end="861.76" title="14:15">Again, there is conflicting evidence and considerable controversy regarding steroids </span></li>
+<li><span class="segment a-seg" data-start="861.76" data-end="864.16" title="14:21">in ARDS. </span></li>
+<li><span class="segment a-seg" data-start="864.16" data-end="870.84" title="14:24">If given at moderate doses within the first week or ten days and tapered slowly, there </span></li>
+<li><span class="segment a-seg" data-start="870.84" data-end="876.88" title="14:30">appear to be benefits in gas exchange and reduced time on the ventilator. </span></li>
+<li><span class="segment a-seg" data-start="876.88" data-end="882.92" title="14:36">Given later, any benefit is outweighed by more neuromuscular problems and increased </span></li>
+<li><span class="segment a-seg" data-start="882.92" data-end="885.24" title="14:42">mortality. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="885.24">
+  <div class="q-label">Q20</div>
+  <div class="q-body"><span class="segment q-seg" data-start="885.24" data-end="889.4" title="14:45">What is lung protective ventilation? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="889.4" data-end="895.2" title="14:49">It is a ventilation strategy that is based on the premise that ventilation causes injury </span></li>
+<li><span class="segment a-seg" data-start="895.2" data-end="898.72" title="14:55">to the sick lung in a number of ways. </span></li>
+<li><span class="segment a-seg" data-start="898.72" data-end="908.28" title="14:58">The major causes of injury are volutroma, barotroma, atelectotroma and biotroma. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="908.28">
+  <div class="q-label">Q21</div>
+  <div class="q-body"><span class="segment q-seg" data-start="908.28" data-end="912.04" title="15:08">What do these terms mean? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="912.04" data-end="918.52" title="15:12">In ARDS, not all of the lung is equally involved in the pathological process. </span></li>
+<li><span class="segment a-seg" data-start="918.52" data-end="926.72" title="15:18">Essentially, excessive tidal volume and inflation pressure over-distant healthy alveoli, hence </span></li>
+<li><span class="segment a-seg" data-start="926.72" data-end="934.36" title="15:26">volume and barotroma, and affected lung is subjected to cyclical opening and closing, </span></li>
+<li><span class="segment a-seg" data-start="934.36" data-end="937.08" title="15:34">hence a tolectotroma. </span></li>
+<li><span class="segment a-seg" data-start="937.08" data-end="943.6" title="15:37">The damage to the alveola capillary unit leads to increased permeability, release of </span></li>
+<li><span class="segment a-seg" data-start="943.6" data-end="950.28" title="15:43">inflammatory mediators and translocation of pathogens, hence biotroma. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="950.28">
+  <div class="q-label">Q22</div>
+  <div class="q-body"><span class="segment q-seg" data-start="950.28" data-end="954.92" title="15:50">So what can you do to avoid this? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="954.92" data-end="961.08" title="15:54">The general principle is to open the lung and keep it open while avoiding excessively </span></li>
+<li><span class="segment a-seg" data-start="961.08" data-end="964.4" title="16:01">high tidal volumes and pressures. </span></li>
+<li><span class="segment a-seg" data-start="964.4" data-end="972.16" title="16:04">The landmark trial is the ARDS net trial of 2000, which used targets of 6 mil per kilo </span></li>
+<li><span class="segment a-seg" data-start="972.16" data-end="981.04" title="16:12">ideal body weight for tidal volume and plateau pressures of less than 30 centimetres of water. </span></li>
+<li><span class="segment a-seg" data-start="981.04" data-end="987.4" title="16:21">The exact role of positive end-expiratory pressure and recruitment maneuvers are more </span></li>
+<li><span class="segment a-seg" data-start="987.4" data-end="993.92" title="16:27">open for discussion, but most would set people at 10 to 15 centimetres of water to begin </span></li>
+<li><span class="segment a-seg" data-start="993.92" data-end="998.28" title="16:33">with, depending on the degree of hypoxia. </span></li>
+<li><span class="segment a-seg" data-start="998.28" data-end="1001.88" title="16:38">Despite your best efforts, this gas exchange continues to deteriorate. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="1001.88">
+  <div class="q-label">Q23</div>
+  <div class="q-body"><span class="segment q-seg" data-start="1001.88" data-end="1005.16" title="16:41">What are your options? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="1005.16" data-end="1011.08" title="16:45">In the first instance, I would reconsider the diagnosis and look for complications such </span></li>
+<li><span class="segment a-seg" data-start="1011.08" data-end="1015.52" title="16:51">as pneumothorax, pneumonia or heart failure. </span></li>
+<li><span class="segment a-seg" data-start="1015.52" data-end="1022.36" title="16:55">I would also accept a lower target PA02 in an otherwise healthy individual and review </span></li>
+<li><span class="segment a-seg" data-start="1022.36" data-end="1026.48" title="17:02">the ventilator settings with a senior colleague. </span></li>
+<li><span class="segment a-seg" data-start="1026.48" data-end="1029.96" title="17:06">All commendable, but unfortunately ineffective in this case. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="1029.96">
+  <div class="q-label">Q24</div>
+  <div class="q-body"><span class="segment q-seg" data-start="1029.96" data-end="1031.44" title="17:09">What next? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="1031.44" data-end="1037.96" title="17:11">Well, my first line rescue strategy is prone ventilation. </span></li>
+<li><span class="segment a-seg" data-start="1037.96" data-end="1043.84" title="17:17">Although there is little evidence of an effect on mortality, a significant number of patients </span></li>
+<li><span class="segment a-seg" data-start="1043.84" data-end="1050.84" title="17:23">will respond to pruning, especially if done early and maintained for long periods up </span></li>
+<li><span class="segment a-seg" data-start="1050.84" data-end="1053.96" title="17:30">to 18 to 20 hours at a time. </span></li>
+<li><span class="segment a-seg" data-start="1053.96" data-end="1054.96" title="17:33">Good. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="1054.96">
+  <div class="q-label">Q25</div>
+  <div class="q-body"><span class="segment q-seg" data-start="1054.96" data-end="1058.8" title="17:34">Have you come across any problems with prone ventilation? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="1058.8" data-end="1063.4" title="17:38">If asked about your personal experience, talk about your personal experience. </span></li>
+<li><span class="segment a-seg" data-start="1063.4" data-end="1069.48" title="17:43">It is easy to tell if someone is talking from a book or making it up. </span></li>
+<li><span class="segment a-seg" data-start="1069.48" data-end="1076.68" title="17:49">The main problems I have seen are facial edema and with nursing and practical procedures. </span></li>
+<li><span class="segment a-seg" data-start="1076.68" data-end="1083.12" title="17:56">With staff who are familiar with the process, dislodgement of tubes and lines is fortunately </span></li>
+<li><span class="segment a-seg" data-start="1083.12" data-end="1084.12" title="18:03">rare. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="1084.12">
+  <div class="q-label">Q26</div>
+  <div class="q-body"><span class="segment q-seg" data-start="1084.12" data-end="1088.44" title="18:04">Is there anything else you could try? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="1088.44" data-end="1095.08" title="18:08">As with pruning, other rescue therapies are largely unsupported by evidence with respect </span></li>
+<li><span class="segment a-seg" data-start="1095.08" data-end="1102.12" title="18:15">to overall mortality or suitability for specific patients or situations. </span></li>
+<li><span class="segment a-seg" data-start="1102.12" data-end="1109.44" title="18:22">They include steroids, as mentioned earlier, inhaled nitric oxide or prostaciclin, high </span></li>
+<li><span class="segment a-seg" data-start="1109.44" data-end="1117.68" title="18:29">frequency oscillation ventilation, the interventional lung assist device, or full ECMO. </span></li>
+<li><span class="segment a-seg" data-start="1117.68" data-end="1123.42" title="18:37">There is recent evidence to suggest centres seeing high numbers of ventilated patients </span></li>
+<li><span class="segment a-seg" data-start="1123.42" data-end="1130.42" title="18:43">have a better outcome, although regional referral centres do not exist in the UK. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="1130.42">
+  <div class="q-label">Q27</div>
+  <div class="q-body"><span class="segment q-seg" data-start="1130.42" data-end="1135.02" title="18:50">What is the mortality associated with ARDS? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="1135.02" data-end="1142.5" title="18:55">In recent randomized control trials, the mortality has been around 25 to 30%, but community </span></li>
+<li><span class="segment a-seg" data-start="1142.5" data-end="1147.66" title="19:02">surveys show mortality of about 35 to 40%. </span></li>
+<li><span class="segment a-seg" data-start="1147.66" data-end="1155.26" title="19:07">This may reflect the difficulty of translating research findings into clinical practice. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="1155.26">
+  <div class="q-label">Q28</div>
+  <div class="q-body"><span class="segment q-seg" data-start="1155.26" data-end="1158.5" title="19:15">What are the predictors of outcome? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="1158.5" data-end="1165.78" title="19:18">The age of the patient and the number of non-pulmonary organ failures are the best predictors. </span></li>
+<li><span class="segment a-seg" data-start="1165.78" data-end="1171.82" title="19:25">Elderly patients with shock do badly, as do those with hepatic failure. </span></li>
+<li><span class="segment a-seg" data-start="1171.82" data-end="1179.94" title="19:31">Surprisingly, the initial PF ratio is not predictive unless it is under 50 or fails to improve </span></li>
+<li><span class="segment a-seg" data-start="1179.94" data-end="1182.54" title="19:39">during the first week. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="1182.54">
+  <div class="q-label">Q29</div>
+  <div class="q-body"><span class="segment q-seg" data-start="1182.54" data-end="1185.58" title="19:42">What is the mode of death in ARDS? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="1185.58" data-end="1190.9" title="19:45">Well, it is rarely intractable severe hypoxia. </span></li>
+<li><span class="segment a-seg" data-start="1190.9" data-end="1195.62" title="19:50">Death is usually due to other organ failures and sepsis. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="1195.62">
+  <div class="q-label">Q30</div>
+  <div class="q-body"><span class="segment q-seg" data-start="1195.62" data-end="1200.1" title="19:55">What is function like in survivors of ARDS? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="1200.1" data-end="1203.62" title="20:00">There are persistent problems in many survivors. </span></li>
+<li><span class="segment a-seg" data-start="1203.62" data-end="1208.9" title="20:03">Lung function deficits are present in most, although this is rarely a problem in day-to-day </span></li>
+<li><span class="segment a-seg" data-start="1208.9" data-end="1214.34" title="20:08">life and returned to nearly normal within the first year. </span></li>
+<li><span class="segment a-seg" data-start="1214.34" data-end="1219.98" title="20:14">Cognitive and neuromuscular complications can be frequent and severe and are more likely </span></li>
+<li><span class="segment a-seg" data-start="1219.98" data-end="1225.66" title="20:19">to prevent return to work or precipitate loss of independence. </span></li>
+<li><span class="segment a-seg" data-start="1225.66" data-end="1229.9" title="20:25">Doctors do have a reduced health-related quality of life. </span></li>
+<li><span class="segment a-seg" data-start="1229.9" data-end="1230.9" title="20:29">Thank you. </span></li>
+<li><span class="segment a-seg" data-start="1230.9" data-end="1231.18" title="20:30">We'll finish there. </span></li>
+  </ul>
+</div>
+</div>
+
 </div>
 
 <div class="subtitle-bar">
-  <span class="subtitle-text empty" id="subtitle-text">Play audio to see live subtitles&#8230;</span>
+  <span id="subtitle-text" class="empty">Play audio to see live subtitles&#8230;</span>
 </div>
 
 <script>
-
-const audio    = document.getElementById('audio');
-const allSegs  = Array.from(document.querySelectorAll('.segment'));
-const allBlocks = Array.from(document.querySelectorAll('.t-block'));
+const audio      = document.getElementById('audio');
+const allSegs    = Array.from(document.querySelectorAll('.segment'));
 const subtitleEl = document.getElementById('subtitle-text');
-let activeSegEl   = null;
-let activeBlockEl = null;
-let searchMatches = [];
-let searchIdx     = 0;
+let activeSegEl  = null;
+let searchMatches = [], searchIdx = 0;
 
-// Duration display
 audio.addEventListener('loadedmetadata', () => {
   const m = Math.floor(audio.duration / 60);
   const s = Math.floor(audio.duration %% 60).toString().padStart(2,'0');
   document.getElementById('dur').textContent = m + ':' + s;
 });
 
-// Seek helper
-function seekTo(t) {
-  audio.currentTime = t;
-  audio.play();
-}
+function seekTo(t) { audio.currentTime = t; audio.play(); }
 
-// Block gutter click
-document.querySelectorAll('.t-gutter').forEach(g => {
-  g.addEventListener('click', () => seekTo(parseFloat(g.dataset.start)));
+// Q-block header click
+document.querySelectorAll('.q-block').forEach(q => {
+  q.addEventListener('click', e => {
+    if (!e.target.classList.contains('segment')) seekTo(parseFloat(q.dataset.start));
+  });
 });
 
-// Segment click
+// Individual segment click
 allSegs.forEach(s => {
-  s.addEventListener('click', e => {
-    e.stopPropagation();
-    seekTo(parseFloat(s.dataset.start));
-  });
+  s.addEventListener('click', e => { e.stopPropagation(); seekTo(parseFloat(s.dataset.start)); });
 });
 
 // Real-time tracking
 audio.addEventListener('timeupdate', () => {
   const t = audio.currentTime;
-
-  // Find active segment (last one whose start <= t)
   let found = null;
   for (let i = allSegs.length - 1; i >= 0; i--) {
     if (parseFloat(allSegs[i].dataset.start) <= t) { found = allSegs[i]; break; }
   }
-
   if (found && found !== activeSegEl) {
-    // Clear previous
-    if (activeSegEl) activeSegEl.classList.remove('active');
-    if (activeBlockEl) {
-      activeBlockEl.classList.remove('block-active');
-      const pg = activeBlockEl.querySelector('.t-gutter');
-      if (pg) pg.classList.remove('gutter-active');
+    if (activeSegEl) {
+      activeSegEl.classList.remove('active');
+      const pli = activeSegEl.closest('li');
+      if (pli) pli.classList.remove('li-active');
+      const pq = activeSegEl.closest('.q-block');
+      if (pq) pq.classList.remove('q-active');
     }
-    // Set new
     found.classList.add('active');
-    const block = found.closest('.t-block');
-    if (block) {
-      block.classList.add('block-active');
-      const g = block.querySelector('.t-gutter');
-      if (g) g.classList.add('gutter-active');
-      activeBlockEl = block;
-    }
+    const li = found.closest('li');
+    if (li) li.classList.add('li-active');
+    const qb = found.closest('.q-block');
+    if (qb) qb.classList.add('q-active');
     activeSegEl = found;
 
-    // Update subtitle
     subtitleEl.textContent = found.textContent.trim();
     subtitleEl.classList.remove('empty');
 
-    // Auto-scroll (only when not searching)
-    if (!document.getElementById('search').value) {
+    if (!document.getElementById('search').value)
       found.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }
   }
 });
 
@@ -401,17 +778,13 @@ searchInput.addEventListener('keydown', e => {
     el.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
 });
-
 function runSearch() {
   const q = searchInput.value.trim().toLowerCase();
   allSegs.forEach(s => s.classList.remove('search-match','search-current'));
   searchMatches = [];
   if (!q) return;
   allSegs.forEach(s => {
-    if (s.textContent.toLowerCase().includes(q)) {
-      s.classList.add('search-match');
-      searchMatches.push(s);
-    }
+    if (s.textContent.toLowerCase().includes(q)) { s.classList.add('search-match'); searchMatches.push(s); }
   });
   if (!searchMatches.length) return;
   searchIdx = 0;

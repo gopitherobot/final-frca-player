@@ -5,10 +5,19 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Regional Anaesthesia — Cranial Nerves</title>
 <style>
-
   :root {
-    --accent:    #2563eb;
-    --body-bg:   #f1f5f9;
+    --q-bg:       #1e3a5f;
+    --q-text:     #ffffff;
+    --q-label:    #60a5fa;
+    --a-bg:       #ffffff;
+    --a-border:   #e2e8f0;
+    --a-label:    #059669;
+    --active-q:   #2563eb;
+    --active-a:   #dbeafe;
+    --accent:     #2563eb;
+    --body-bg:    #f1f5f9;
+    --pre-bg:     #fef9c3;
+    --pre-border: #fcd34d;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
@@ -40,22 +49,9 @@
     margin-bottom: 4px;
     letter-spacing: 0.01em;
   }
-  .header-sub {
-    font-size: 0.72rem;
-    color: #94a3b8;
-    font-style: italic;
-  }
-  audio {
-    height: 36px;
-    accent-color: var(--accent);
-    flex-shrink: 0;
-  }
-  .back-link {
-    font-size: 0.8rem;
-    color: #94a3b8;
-    text-decoration: none;
-    white-space: nowrap;
-  }
+  .header-sub { font-size: 0.72rem; color: #94a3b8; font-style: italic; }
+  audio { height: 36px; accent-color: var(--accent); flex-shrink: 0; }
+  .back-link { font-size: 0.8rem; color: #94a3b8; text-decoration: none; white-space: nowrap; }
   .back-link:hover { color: #60a5fa; }
 
   /* ── Toolbar ── */
@@ -69,30 +65,17 @@
     border-bottom: 1px solid #334155;
   }
   .toolbar input {
-    flex: 1;
-    max-width: 380px;
+    flex: 1; max-width: 380px;
     padding: 5px 11px;
-    border: 1px solid #475569;
-    border-radius: 6px;
-    background: #0f172a;
-    color: #e2e8f0;
-    font-size: 0.83rem;
-    outline: none;
+    border: 1px solid #475569; border-radius: 6px;
+    background: #0f172a; color: #e2e8f0; font-size: 0.83rem; outline: none;
   }
   .toolbar input:focus { border-color: var(--accent); }
   .toolbar input::placeholder { color: #64748b; }
-  .stats {
-    font-size: 0.72rem;
-    color: #64748b;
-    white-space: nowrap;
-  }
+  .stats { font-size: 0.72rem; color: #64748b; white-space: nowrap; }
 
   /* ── Scroll area ── */
-  .scroll-area {
-    flex: 1;
-    overflow-y: auto;
-    padding: 20px;
-  }
+  .scroll-area { flex: 1; overflow-y: auto; padding: 20px; }
   .scroll-area::-webkit-scrollbar { width: 6px; }
   .scroll-area::-webkit-scrollbar-track { background: transparent; }
   .scroll-area::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
@@ -107,68 +90,77 @@
     display: flex;
     align-items: center;
   }
-  .subtitle-text {
-    font-size: 0.9rem;
-    color: #e2e8f0;
-    line-height: 1.5;
-    font-style: italic;
-  }
-  .subtitle-text.empty { color: #475569; }
+  #subtitle-text { font-size: 0.88rem; color: #e2e8f0; line-height: 1.5; font-style: italic; }
+  #subtitle-text.empty { color: #475569; }
 
-  /* ── Transcript blocks ── */
-  .t-block {
-    background: #ffffff;
-    border: 1px solid #e2e8f0;
-    border-radius: 10px;
-    margin-bottom: 14px;
-    overflow: hidden;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
-    display: flex;
-  }
-  .t-block.block-active {
-    border-color: var(--accent);
-    box-shadow: 0 0 0 2px rgba(37,99,235,0.15);
-  }
-  .t-gutter {
-    background: #0f172a;
-    width: 52px;
-    flex-shrink: 0;
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
-    padding-top: 14px;
-    cursor: pointer;
-  }
-  .t-gutter:hover { background: #1e293b; }
-  .t-timestamp {
-    font-size: 0.7rem;
-    color: #64748b;
-    font-family: monospace;
-    font-weight: 600;
-    letter-spacing: 0.02em;
-  }
-  .t-gutter.gutter-active .t-timestamp { color: var(--accent); }
-  .t-body {
-    flex: 1;
+  /* ── Preamble ── */
+  .preamble-block {
+    background: var(--pre-bg);
+    border-left: 4px solid var(--pre-border);
+    border-radius: 0 8px 8px 0;
     padding: 12px 16px;
-    line-height: 1.75;
-    font-size: 0.92rem;
-    color: #1e293b;
+    margin-bottom: 20px;
+    font-size: 0.88rem;
+    color: #78350f;
+    font-style: italic;
+    line-height: 1.7;
   }
 
-  /* ── Segments ── */
-  .segment {
+  /* ── Q&A pair ── */
+  .qa-pair { margin-bottom: 20px; border-radius: 10px; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+
+  /* Question block */
+  .q-block {
+    background: var(--q-bg);
+    padding: 14px 18px;
+    display: flex; gap: 14px; align-items: flex-start;
     cursor: pointer;
-    border-radius: 3px;
-    transition: background 0.1s;
+    transition: background 0.15s;
   }
-  .segment:hover { background: #eff6ff; }
-  .segment.active {
-    background: #bfdbfe;
-    outline: 2px solid #3b82f6;
-    outline-offset: 1px;
-    border-radius: 3px;
+  .q-block:hover { background: #1d4ed8; }
+  .q-block.q-active { background: var(--active-q); }
+  .q-label {
+    font-size: 0.7rem; font-weight: 700;
+    color: var(--q-label);
+    background: rgba(96,165,250,0.15);
+    border: 1px solid rgba(96,165,250,0.3);
+    border-radius: 5px; padding: 3px 7px;
+    white-space: nowrap; margin-top: 2px; letter-spacing: 0.05em;
+    flex-shrink: 0;
   }
+  .q-body { flex: 1; font-size: 0.97rem; font-weight: 600; color: var(--q-text); line-height: 1.55; }
+
+  /* Answer block */
+  .a-block {
+    background: var(--a-bg);
+    border: 1px solid var(--a-border); border-top: none;
+    padding: 14px 18px;
+    display: flex; gap: 14px; align-items: flex-start;
+  }
+  .a-label {
+    font-size: 0.7rem; font-weight: 700;
+    color: var(--a-label);
+    background: #d1fae5; border: 1px solid #6ee7b7;
+    border-radius: 5px; padding: 3px 9px;
+    white-space: nowrap; margin-top: 2px; letter-spacing: 0.05em;
+    flex-shrink: 0;
+  }
+  .a-body { flex: 1; list-style: none; padding: 0; }
+  .a-body li {
+    padding: 4px 0 4px 14px;
+    border-left: 3px solid transparent;
+    line-height: 1.7; font-size: 0.92rem; color: #1e293b;
+    border-radius: 0 4px 4px 0;
+    transition: background 0.15s;
+  }
+  .a-body li:not(:last-child) { border-bottom: 1px solid #f1f5f9; }
+
+  /* ── Segments (clickable) ── */
+  .segment { cursor: pointer; border-radius: 3px; }
+  .q-seg:hover { background: rgba(255,255,255,0.18); }
+  .a-seg:hover { background: #eff6ff; }
+  .segment.active { background: #bfdbfe; outline: 2px solid #3b82f6; outline-offset: 1px; }
+  .a-body li.li-active { background: var(--active-a); border-left-color: var(--accent); }
   .segment.search-match  { background: #fef9c3; }
   .segment.search-current { background: #fde047; outline: 2px solid #ca8a04; }
 
@@ -187,163 +179,270 @@
 
 <div class="toolbar">
   <input type="text" id="search" placeholder="Search transcript&#8230; (Enter = next match)">
-  <span class="stats" id="stats">141 segments &nbsp;|&nbsp; <span id="dur">loading&#8230;</span></span>
+  <span class="stats" id="stats">6 questions &nbsp;|&nbsp; 141 segments &nbsp;|&nbsp; <span id="dur">loading&#8230;</span></span>
 </div>
 
 <div class="scroll-area" id="scroll-area">
-<div class="t-block">
-  <div class="t-gutter" data-start="0.0"><span class="t-timestamp">0:00</span></div>
-  <div class="t-body"><span class="segment" data-start="0.0" data-end="8.0" title="0:00">The Anatomy of the Cranial Nerves is rather dry and cumbersome to remember. </span><span class="segment" data-start="8.0" data-end="12.0" title="0:08">The following podcasts aim to give a concise description. </span><span class="segment" data-start="12.0" data-end="17.0" title="0:12">Describe the Anatomy of the Optic Nerve. </span><span class="segment" data-start="17.0" data-end="22.0" title="0:17">The Optic Nerve is the second cranial nerve and mediates vision. </span><span class="segment" data-start="22.0" data-end="29.0" title="0:22">It is a nerve mainly consisting of afferent fibers which originate from the innermost layer </span><span class="segment" data-start="29.0" data-end="32.0" title="0:29">retina called the stratum opticum. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="32.0"><span class="t-timestamp">0:32</span></div>
-  <div class="t-body"><span class="segment" data-start="32.0" data-end="39.0" title="0:32">The fibers are axons of the cells in the retina which eventually receive myelin sheaths </span><span class="segment" data-start="39.0" data-end="41.0" title="0:39">and form the optic nerve. </span><span class="segment" data-start="41.0" data-end="49.0" title="0:41">The optic nerve runs through the optic canal, enters the cranial cavity and joins the optic </span><span class="segment" data-start="49.0" data-end="50.0" title="0:49">chiasma. </span><span class="segment" data-start="50.0" data-end="57.0" title="0:50">The optic chiasma is a flattened bundle of nerve fibers situated near the floor of the </span><span class="segment" data-start="57.0" data-end="58.0" title="0:57">third ventricle. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="58.0"><span class="t-timestamp">0:58</span></div>
-  <div class="t-body"><span class="segment" data-start="58.0" data-end="65.0" title="0:58">In the optic chiasma, the fibers from the nasal half of the retina cross the median plane </span><span class="segment" data-start="65.0" data-end="69.0" title="1:05">and enter the optic tract of the opposite side. </span><span class="segment" data-start="69.0" data-end="77.0" title="1:09">However, the temporal fibers remain on the same side and enter the optic tract on the same </span><span class="segment" data-start="77.0" data-end="78.0" title="1:17">side. </span><span class="segment" data-start="78.0" data-end="84.0" title="1:18">The tract continues backwards and terminates in the lateral geniculate body. </span><span class="segment" data-start="84.0" data-end="91.0" title="1:24">A small proportion of nerve fibers pass further on to terminate in the pre-tectal nucleus, </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="91.0"><span class="t-timestamp">1:31</span></div>
-  <div class="t-body"><span class="segment" data-start="91.0" data-end="96.0" title="1:31">superior caliculus and the hypothalamus. </span><span class="segment" data-start="96.0" data-end="102.0" title="1:36">Briefly describe the anatomy of the third, fourth and sixth cranial nerves. </span><span class="segment" data-start="102.0" data-end="108.0" title="1:42">The third cranial nerve is the ocular motor nerve and it is the motor supply to all of the </span><span class="segment" data-start="108.0" data-end="115.0" title="1:48">extraocular muscles except the superior oblique and the lateral rectus. </span><span class="segment" data-start="115.0" data-end="122.0" title="1:55">In addition, it also carries parasympathetic supply to the sphincter pupilli and the silery </span><span class="segment" data-start="122.0" data-end="123.0" title="2:02">muscles. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="123.0"><span class="t-timestamp">2:03</span></div>
-  <div class="t-body"><span class="segment" data-start="123.0" data-end="131.0" title="2:03">In the posterior fossa, the nerve passes from the upper midbrain between the cerebral peduncles </span><span class="segment" data-start="131.0" data-end="135.0" title="2:11">and lies close to the edge of the tentarium cerebelli. </span><span class="segment" data-start="135.0" data-end="142.0" title="2:15">An acute rise in intracranial pressure compresses the nerve against the tentarium leading to </span><span class="segment" data-start="142.0" data-end="145.0" title="2:22">Ipsilateral pupillary dilatation. </span><span class="segment" data-start="145.0" data-end="152.0" title="2:25">The nerve leaves the skull via the superior orbital fissure and divides into the superior </span><span class="segment" data-start="152.0" data-end="155.0" title="2:32">and inferior branches. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="155.0"><span class="t-timestamp">2:35</span></div>
-  <div class="t-body"><span class="segment" data-start="155.0" data-end="162.0" title="2:35">The trochlear nerve supplies the superior oblique muscle and the abducins nerve supplies the </span><span class="segment" data-start="162.0" data-end="164.0" title="2:42">lateral rectus muscle. </span><span class="segment" data-start="164.0" data-end="169.0" title="2:44">Describe the anatomy of the trideminal nerve. </span><span class="segment" data-start="169.0" data-end="175.5" title="2:49">The trideminal nerve is the fifth cranial nerve and provides sensory and motor innovation </span><span class="segment" data-start="175.5" data-end="177.0" title="2:55">to the face. </span><span class="segment" data-start="177.0" data-end="181.0" title="2:57">It has three sensory and one motor nucleus. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="181.0"><span class="t-timestamp">3:01</span></div>
-  <div class="t-body"><span class="segment" data-start="181.0" data-end="188.0" title="3:01">The first sensory nucleus lies lateral to the motor nucleus in the upper ponds and </span><span class="segment" data-start="188.0" data-end="192.0" title="3:08">receives fibers transmitting touch sensation. </span><span class="segment" data-start="192.0" data-end="200.0" title="3:12">The second nucleus receives proprioceptive fibers and lies in the midbrain. </span><span class="segment" data-start="200.0" data-end="206.0" title="3:20">Pain and temperature are perceived via the spinal tract of the trideminal nerve. </span><span class="segment" data-start="206.0" data-end="211.0" title="3:26">The motor nucleus is situated in the upper part of the ponds. </span><span class="segment" data-start="211.0" data-end="219.0" title="3:31">The trideminal ganglion, also called the semilunaganglion due to its shape, lies near the apex </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="219.0"><span class="t-timestamp">3:39</span></div>
-  <div class="t-body"><span class="segment" data-start="219.0" data-end="222.0" title="3:39">of the petrous temporal bone. </span><span class="segment" data-start="222.0" data-end="229.0" title="3:42">The sensory fibers pass through the ganglion whereas the motor fibers pass below the ganglion. </span><span class="segment" data-start="229.0" data-end="236.0" title="3:49">The three main divisions of the nerve arising from the trideminal ganglion are the ophthalmic </span><span class="segment" data-start="236.0" data-end="245.0" title="3:56">division, V1, the maxillary division, V2, and the mandibular division, V3. </span><span class="segment" data-start="245.0" data-end="252.0" title="4:05">The ophthalmic division of the trideminal nerve divides into the lacrimal, nasosylary </span><span class="segment" data-start="252.0" data-end="258.0" title="4:12">and frontal branches just before the superior orbital fissure. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="258.0"><span class="t-timestamp">4:18</span></div>
-  <div class="t-body"><span class="segment" data-start="258.0" data-end="266.0" title="4:18">The frontal nerve further divides into the supraorbital and supratrochlear nerves. </span><span class="segment" data-start="266.0" data-end="272.0" title="4:26">The ophthalmic division also transmits some sympathetic and parasympathetic fibers. </span><span class="segment" data-start="272.0" data-end="283.0" title="4:32">In summary, the ophthalmic division supplies the skin of the nose, the forehead, eyelids, scalp, conjunctiver, </span><span class="segment" data-start="283.0" data-end="286.0" title="4:43">lacrimal apparatus, and the globe. </span><span class="segment" data-start="286.0" data-end="293.0" title="4:46">The maxillary division runs below the ophthalmic and leaves the base of the skull of either </span><span class="segment" data-start="293.0" data-end="294.0" title="4:53">ferramin rotundum. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="294.0"><span class="t-timestamp">4:54</span></div>
-  <div class="t-body"><span class="segment" data-start="294.0" data-end="301.0" title="4:54">It gives the superior dental nerve, zygomatic and sphenopalatine branches. </span><span class="segment" data-start="301.0" data-end="308.0" title="5:01">Eventually, it leaves the infraorbital ferramin as the infraorbital nerve. </span><span class="segment" data-start="308.0" data-end="316.0" title="5:08">The maxillary branch provides sensory supply to the skin over the temples, lower eyelids, </span><span class="segment" data-start="316.0" data-end="319.0" title="5:16">part of the cheek, and the upper lips. </span><span class="segment" data-start="319.0" data-end="324.0" title="5:19">The mandibular division has both sensory and motor routes. </span><span class="segment" data-start="324.0" data-end="331.0" title="5:24">The sensory division leaves the skull of either ferramin ovale and gives the lingula, </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="331.0"><span class="t-timestamp">5:31</span></div>
-  <div class="t-body"><span class="segment" data-start="331.0" data-end="336.0" title="5:31">ariculotemporal, buckle, and mental nerves. </span><span class="segment" data-start="336.0" data-end="343.0" title="5:36">The motor route supplies the muscles of massacation, namely the masseter and the lateral </span><span class="segment" data-start="343.0" data-end="345.0" title="5:43">terrogides. </span><span class="segment" data-start="345.0" data-end="349.0" title="5:45">Describe the anatomy of the facial nerve. </span><span class="segment" data-start="349.0" data-end="356.0" title="5:49">The facial nerve is the seventh cranial nerve and has both sensory and motor routes. </span><span class="segment" data-start="356.0" data-end="363.0" title="5:56">The motor nucleus lies in the deep part of the ponds and is ventrometial to the spinal </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="363.0"><span class="t-timestamp">6:03</span></div>
-  <div class="t-body"><span class="segment" data-start="363.0" data-end="368.0" title="6:03">tract of the trigeminal nerve and it is the origin of the motor route. </span><span class="segment" data-start="368.0" data-end="375.0" title="6:08">The motor route lies close to the abducine's nucleus and eventually emerges at the cordal </span><span class="segment" data-start="375.0" data-end="383.0" title="6:15">border of the ponds between the olive and cerebellipaduncles at the cerebellopontine angle. </span><span class="segment" data-start="383.0" data-end="390.0" title="6:23">The sensory nucleus is the upper part of the tractors solitarius of the medulla oblongata. </span><span class="segment" data-start="390.0" data-end="394.0" title="6:30">It receives fibers from the sensory route. </span><span class="segment" data-start="394.0" data-end="400.0" title="6:34">The routes of the facial nerve pass literally and forward towards the internal auditory </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="400.0"><span class="t-timestamp">6:40</span></div>
-  <div class="t-body"><span class="segment" data-start="400.0" data-end="401.0" title="6:40">meetus. </span><span class="segment" data-start="401.0" data-end="408.0" title="6:41">In the internal auditory meetus, the motor route lies in a groove on the upper anterior </span><span class="segment" data-start="408.0" data-end="411.0" title="6:48">surface of the vestibulococlear nerve. </span><span class="segment" data-start="411.0" data-end="414.0" title="6:51">The sensory route lies between them. </span><span class="segment" data-start="414.0" data-end="421.0" title="6:54">The facial nerve then enters the facial canal and descends to the stylo-mastoid foramen. </span><span class="segment" data-start="421.0" data-end="427.6" title="7:01">The geniculate ganglion is situated at the point where the nerve bends sharply before it </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="427.6"><span class="t-timestamp">7:07</span></div>
-  <div class="t-body"><span class="segment" data-start="427.6" data-end="434.0" title="7:07">emerges from the stylo-mastoid foramen and runs forward into the parotid gland. </span><span class="segment" data-start="434.0" data-end="439.0" title="7:14">At the neck of the mandible, it divides into its five branches. </span><span class="segment" data-start="439.0" data-end="445.0" title="7:19">The greater patrosal nerve, consisting of taste fibers, arises from the genicula ganglion </span><span class="segment" data-start="445.0" data-end="452.0" title="7:25">and also contains pre-ganglionic parasympathetic fibers which are travelling to the terrogopalatine </span><span class="segment" data-start="452.0" data-end="453.0" title="7:32">ganglion. </span><span class="segment" data-start="453.0" data-end="459.0" title="7:33">The branches of the facial nerve in the facial canal are the nerve to the stupedius and the </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="459.0"><span class="t-timestamp">7:39</span></div>
-  <div class="t-body"><span class="segment" data-start="459.0" data-end="461.0" title="7:39">cordotimpony. </span><span class="segment" data-start="461.0" data-end="468.0" title="7:41">As the nerve leaves the stylo-mastoid foramen, it gives the posterior aricular, digastric and </span><span class="segment" data-start="468.0" data-end="471.0" title="7:48">stylohyoid branches. </span><span class="segment" data-start="471.0" data-end="481.0" title="7:51">On the face it gives the temporal, zygomatic, buckle, marginal mandibular and cervical branches. </span><span class="segment" data-start="481.0" data-end="485.0" title="8:01">Describe the anatomy of the vagus nerve. </span><span class="segment" data-start="485.0" data-end="491.0" title="8:05">The vagus nerve has the most extensive course of distribution compared to any other cranial </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="491.0"><span class="t-timestamp">8:11</span></div>
-  <div class="t-body"><span class="segment" data-start="491.0" data-end="492.0" title="8:11">nerve. </span><span class="segment" data-start="492.0" data-end="496.0" title="8:12">It consists of motor and sensory fibers. </span><span class="segment" data-start="496.0" data-end="501.0" title="8:16">They are connected to four nuclei in the medulla oblongata. </span><span class="segment" data-start="501.0" data-end="508.68" title="8:21">These four nuclei are the dorsal nucleus of the vagus, nucleus ambiguous, nucleus of the </span><span class="segment" data-start="508.68" data-end="514.8" title="8:28">tractus solitarius, and the spinal nucleus of the trigeminal nerve. </span><span class="segment" data-start="514.8" data-end="520.8" title="8:34">The roots derived from these ganglion unite to form the large cord of the vagus nerve and </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="520.8"><span class="t-timestamp">8:40</span></div>
-  <div class="t-body"><span class="segment" data-start="520.8" data-end="524.8" title="8:40">it exits the skull via the jugular foramen. </span><span class="segment" data-start="524.8" data-end="531.28" title="8:44">Before it exits the foramen, it forms the superior ganglion and on its exit forms another </span><span class="segment" data-start="531.28" data-end="534.64" title="8:51">swelling called the inferior ganglion. </span><span class="segment" data-start="534.64" data-end="540.56" title="8:54">The vagus nerve also gets some twigs from the accessory nerve and its fibers are distributed </span><span class="segment" data-start="540.56" data-end="546.2" title="9:00">via the farongial and recurrent larongial branches of the vagus nerve. </span><span class="segment" data-start="546.2" data-end="552.12" title="9:06">The vagus nerve passes vertically down the neck, invested in the corroded sheath and </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="552.12"><span class="t-timestamp">9:12</span></div>
-  <div class="t-body"><span class="segment" data-start="552.12" data-end="558.2" title="9:12">lying between the internal jugular vein and internal corroded artery. </span><span class="segment" data-start="558.2" data-end="564.12" title="9:18">At the upper border of the thyroid cartilage it lies between the internal jugular vein </span><span class="segment" data-start="564.12" data-end="567.04" title="9:24">and the common corroded artery. </span><span class="segment" data-start="567.04" data-end="573.24" title="9:27">On the right side the vagus nerve lies posterior to the internal jugular vein and crosses </span><span class="segment" data-start="573.24" data-end="576.8" title="9:33">the first part of the subclavian artery. </span><span class="segment" data-start="576.8" data-end="582.28" title="9:36">It enters the thorax and lies to the right of the trachea and posterior medial to the </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="582.28"><span class="t-timestamp">9:42</span></div>
-  <div class="t-body"><span class="segment" data-start="582.28" data-end="587.04" title="9:42">brachiocafalic vein and the superior venocaver. </span><span class="segment" data-start="587.04" data-end="591.96" title="9:47">The right pluror and right lung are lateral to the nerve. </span><span class="segment" data-start="591.96" data-end="597.8" title="9:51">It then passes behind the right main broncus to reach the posterior aspect of the root </span><span class="segment" data-start="597.8" data-end="599.72" title="9:57">of the right lung. </span><span class="segment" data-start="599.72" data-end="608.08" title="9:59">Eventually it forms the right posterior pulmonary plexus and the posterior esophageal plexus. </span><span class="segment" data-start="608.08" data-end="614.28" title="10:08">Continuing further down the posterior esophageal plexus receives branches from the left vagus </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="614.28"><span class="t-timestamp">10:14</span></div>
-  <div class="t-body"><span class="segment" data-start="614.28" data-end="621.0" title="10:14">nerve and descends into the abdomen via the diaphragm and is now called the posterior vagal </span><span class="segment" data-start="621.0" data-end="622.52" title="10:21">trunk. </span><span class="segment" data-start="622.52" data-end="628.4" title="10:22">It then divides into the small gastric and a large celiac branch. </span><span class="segment" data-start="628.4" data-end="634.52" title="10:28">The gastric branch supplies most of the stomach and the celiac branch gives off branches </span><span class="segment" data-start="634.52" data-end="638.44" title="10:34">to the various abdominal plexi. </span><span class="segment" data-start="638.44" data-end="645.08" title="10:38">On the left side the vagus nerve enters the thorax between the left common corroded artery </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="645.08"><span class="t-timestamp">10:45</span></div>
-  <div class="t-body"><span class="segment" data-start="645.08" data-end="647.88" title="10:45">and left subclavian arteries. </span><span class="segment" data-start="647.88" data-end="653.88" title="10:47">It descends into the thorax and crosses the left side of the archiveaorta. </span><span class="segment" data-start="653.88" data-end="659.2" title="10:53">At this point it lies posterior to the left frenic nerve. </span><span class="segment" data-start="659.2" data-end="665.04" title="10:59">It then passes behind the root of the left lung and forms the left posterior pulmonary </span><span class="segment" data-start="665.04" data-end="667.08" title="11:05">plexus. </span><span class="segment" data-start="667.08" data-end="673.36" title="11:07">From this plexus two branches descend to the anterior of the esophagus and with a twig </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="673.36"><span class="t-timestamp">11:13</span></div>
-  <div class="t-body"><span class="segment" data-start="673.36" data-end="680.28" title="11:13">from the right posterior pulmonary plexus form the anterior esophageal plexus. </span><span class="segment" data-start="680.28" data-end="686.88" title="11:20">Some branches continue further down and enter the abdomen as the anterior vagal trunk, </span><span class="segment" data-start="686.88" data-end="693.56" title="11:26">which supplies the cardiac anterum and divides to form the left and right groups of branches </span><span class="segment" data-start="693.56" data-end="700.08" title="11:33">which supply parts of the lesser curvature, pylorus and duodenum. </span><span class="segment" data-start="700.08" data-end="706.36" title="11:40">Briefly describe the anatomy of the 9th, 11th and 12th cranial nerves. </span><span class="segment" data-start="706.36" data-end="711.72" title="11:46">The glossopharyngeal nerve passes from the medulla through the jugular foramen and </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="711.72"><span class="t-timestamp">11:51</span></div>
-  <div class="t-body"><span class="segment" data-start="711.72" data-end="717.32" title="11:51">between the internal and external corroded arteries into the pharynx. </span><span class="segment" data-start="717.32" data-end="723.6" title="11:57">It conveys sensation from the pharynx, back of the tongue, middle ear, corroded body </span><span class="segment" data-start="723.6" data-end="729.2" title="12:03">and sinus and parasympathetic fibers to the parotid gland. </span><span class="segment" data-start="729.2" data-end="735.88" title="12:09">The accessory nerve arises from the upper five cervical segments of the spinal cord. </span><span class="segment" data-start="735.88" data-end="739.56" title="12:15">It passes upwards through the pharynmin magnum. </span><span class="segment" data-start="739.56" data-end="745.64" title="12:19">In the cranial cavity it is joined by the small cranial root and leaves the skull by the </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="745.64"><span class="t-timestamp">12:25</span></div>
-  <div class="t-body"><span class="segment" data-start="745.64" data-end="752.16" title="12:25">jugular foramen to provide the motor supply to the sternoclider mastoid and trapezius. </span><span class="segment" data-start="752.16" data-end="758.04" title="12:32">The hypoglosal nerve supplies the motor supply to all of the tongue muscles except the </span><span class="segment" data-start="758.04" data-end="759.36" title="12:38">palato glossus. </span></div>
+<div class="preamble-block"><span class="segment a-seg" data-start="0.0" data-end="8.0" title="0:00">The Anatomy of the Cranial Nerves is rather dry and cumbersome to remember. </span><span class="segment a-seg" data-start="8.0" data-end="12.0" title="0:08">The following podcasts aim to give a concise description. </span></div>
+<div class="qa-pair">
+<div class="q-block" data-start="12.0">
+  <div class="q-label">Q1</div>
+  <div class="q-body"><span class="segment q-seg" data-start="12.0" data-end="17.0" title="0:12">Describe the Anatomy of the Optic Nerve. </span></div>
 </div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="17.0" data-end="22.0" title="0:17">The Optic Nerve is the second cranial nerve and mediates vision. </span></li>
+<li><span class="segment a-seg" data-start="22.0" data-end="29.0" title="0:22">It is a nerve mainly consisting of afferent fibers which originate from the innermost layer </span></li>
+<li><span class="segment a-seg" data-start="29.0" data-end="32.0" title="0:29">retina called the stratum opticum. </span></li>
+<li><span class="segment a-seg" data-start="32.0" data-end="39.0" title="0:32">The fibers are axons of the cells in the retina which eventually receive myelin sheaths </span></li>
+<li><span class="segment a-seg" data-start="39.0" data-end="41.0" title="0:39">and form the optic nerve. </span></li>
+<li><span class="segment a-seg" data-start="41.0" data-end="49.0" title="0:41">The optic nerve runs through the optic canal, enters the cranial cavity and joins the optic </span></li>
+<li><span class="segment a-seg" data-start="49.0" data-end="50.0" title="0:49">chiasma. </span></li>
+<li><span class="segment a-seg" data-start="50.0" data-end="57.0" title="0:50">The optic chiasma is a flattened bundle of nerve fibers situated near the floor of the </span></li>
+<li><span class="segment a-seg" data-start="57.0" data-end="58.0" title="0:57">third ventricle. </span></li>
+<li><span class="segment a-seg" data-start="58.0" data-end="65.0" title="0:58">In the optic chiasma, the fibers from the nasal half of the retina cross the median plane </span></li>
+<li><span class="segment a-seg" data-start="65.0" data-end="69.0" title="1:05">and enter the optic tract of the opposite side. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="69.0">
+  <div class="q-label">Q2</div>
+  <div class="q-body"><span class="segment q-seg" data-start="69.0" data-end="77.0" title="1:09">However, the temporal fibers remain on the same side and enter the optic tract on the same </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="77.0" data-end="78.0" title="1:17">side. </span></li>
+<li><span class="segment a-seg" data-start="78.0" data-end="84.0" title="1:18">The tract continues backwards and terminates in the lateral geniculate body. </span></li>
+<li><span class="segment a-seg" data-start="84.0" data-end="91.0" title="1:24">A small proportion of nerve fibers pass further on to terminate in the pre-tectal nucleus, </span></li>
+<li><span class="segment a-seg" data-start="91.0" data-end="96.0" title="1:31">superior caliculus and the hypothalamus. </span></li>
+<li><span class="segment a-seg" data-start="96.0" data-end="102.0" title="1:36">Briefly describe the anatomy of the third, fourth and sixth cranial nerves. </span></li>
+<li><span class="segment a-seg" data-start="102.0" data-end="108.0" title="1:42">The third cranial nerve is the ocular motor nerve and it is the motor supply to all of the </span></li>
+<li><span class="segment a-seg" data-start="108.0" data-end="115.0" title="1:48">extraocular muscles except the superior oblique and the lateral rectus. </span></li>
+<li><span class="segment a-seg" data-start="115.0" data-end="122.0" title="1:55">In addition, it also carries parasympathetic supply to the sphincter pupilli and the silery </span></li>
+<li><span class="segment a-seg" data-start="122.0" data-end="123.0" title="2:02">muscles. </span></li>
+<li><span class="segment a-seg" data-start="123.0" data-end="131.0" title="2:03">In the posterior fossa, the nerve passes from the upper midbrain between the cerebral peduncles </span></li>
+<li><span class="segment a-seg" data-start="131.0" data-end="135.0" title="2:11">and lies close to the edge of the tentarium cerebelli. </span></li>
+<li><span class="segment a-seg" data-start="135.0" data-end="142.0" title="2:15">An acute rise in intracranial pressure compresses the nerve against the tentarium leading to </span></li>
+<li><span class="segment a-seg" data-start="142.0" data-end="145.0" title="2:22">Ipsilateral pupillary dilatation. </span></li>
+<li><span class="segment a-seg" data-start="145.0" data-end="152.0" title="2:25">The nerve leaves the skull via the superior orbital fissure and divides into the superior </span></li>
+<li><span class="segment a-seg" data-start="152.0" data-end="155.0" title="2:32">and inferior branches. </span></li>
+<li><span class="segment a-seg" data-start="155.0" data-end="162.0" title="2:35">The trochlear nerve supplies the superior oblique muscle and the abducins nerve supplies the </span></li>
+<li><span class="segment a-seg" data-start="162.0" data-end="164.0" title="2:42">lateral rectus muscle. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="164.0">
+  <div class="q-label">Q3</div>
+  <div class="q-body"><span class="segment q-seg" data-start="164.0" data-end="169.0" title="2:44">Describe the anatomy of the trideminal nerve. </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="169.0" data-end="175.5" title="2:49">The trideminal nerve is the fifth cranial nerve and provides sensory and motor innovation </span></li>
+<li><span class="segment a-seg" data-start="175.5" data-end="177.0" title="2:55">to the face. </span></li>
+<li><span class="segment a-seg" data-start="177.0" data-end="181.0" title="2:57">It has three sensory and one motor nucleus. </span></li>
+<li><span class="segment a-seg" data-start="181.0" data-end="188.0" title="3:01">The first sensory nucleus lies lateral to the motor nucleus in the upper ponds and </span></li>
+<li><span class="segment a-seg" data-start="188.0" data-end="192.0" title="3:08">receives fibers transmitting touch sensation. </span></li>
+<li><span class="segment a-seg" data-start="192.0" data-end="200.0" title="3:12">The second nucleus receives proprioceptive fibers and lies in the midbrain. </span></li>
+<li><span class="segment a-seg" data-start="200.0" data-end="206.0" title="3:20">Pain and temperature are perceived via the spinal tract of the trideminal nerve. </span></li>
+<li><span class="segment a-seg" data-start="206.0" data-end="211.0" title="3:26">The motor nucleus is situated in the upper part of the ponds. </span></li>
+<li><span class="segment a-seg" data-start="211.0" data-end="219.0" title="3:31">The trideminal ganglion, also called the semilunaganglion due to its shape, lies near the apex </span></li>
+<li><span class="segment a-seg" data-start="219.0" data-end="222.0" title="3:39">of the petrous temporal bone. </span></li>
+<li><span class="segment a-seg" data-start="222.0" data-end="229.0" title="3:42">The sensory fibers pass through the ganglion whereas the motor fibers pass below the ganglion. </span></li>
+<li><span class="segment a-seg" data-start="229.0" data-end="236.0" title="3:49">The three main divisions of the nerve arising from the trideminal ganglion are the ophthalmic </span></li>
+<li><span class="segment a-seg" data-start="236.0" data-end="245.0" title="3:56">division, V1, the maxillary division, V2, and the mandibular division, V3. </span></li>
+<li><span class="segment a-seg" data-start="245.0" data-end="252.0" title="4:05">The ophthalmic division of the trideminal nerve divides into the lacrimal, nasosylary </span></li>
+<li><span class="segment a-seg" data-start="252.0" data-end="258.0" title="4:12">and frontal branches just before the superior orbital fissure. </span></li>
+<li><span class="segment a-seg" data-start="258.0" data-end="266.0" title="4:18">The frontal nerve further divides into the supraorbital and supratrochlear nerves. </span></li>
+<li><span class="segment a-seg" data-start="266.0" data-end="272.0" title="4:26">The ophthalmic division also transmits some sympathetic and parasympathetic fibers. </span></li>
+<li><span class="segment a-seg" data-start="272.0" data-end="283.0" title="4:32">In summary, the ophthalmic division supplies the skin of the nose, the forehead, eyelids, scalp, conjunctiver, </span></li>
+<li><span class="segment a-seg" data-start="283.0" data-end="286.0" title="4:43">lacrimal apparatus, and the globe. </span></li>
+<li><span class="segment a-seg" data-start="286.0" data-end="293.0" title="4:46">The maxillary division runs below the ophthalmic and leaves the base of the skull of either </span></li>
+<li><span class="segment a-seg" data-start="293.0" data-end="294.0" title="4:53">ferramin rotundum. </span></li>
+<li><span class="segment a-seg" data-start="294.0" data-end="301.0" title="4:54">It gives the superior dental nerve, zygomatic and sphenopalatine branches. </span></li>
+<li><span class="segment a-seg" data-start="301.0" data-end="308.0" title="5:01">Eventually, it leaves the infraorbital ferramin as the infraorbital nerve. </span></li>
+<li><span class="segment a-seg" data-start="308.0" data-end="316.0" title="5:08">The maxillary branch provides sensory supply to the skin over the temples, lower eyelids, </span></li>
+<li><span class="segment a-seg" data-start="316.0" data-end="319.0" title="5:16">part of the cheek, and the upper lips. </span></li>
+<li><span class="segment a-seg" data-start="319.0" data-end="324.0" title="5:19">The mandibular division has both sensory and motor routes. </span></li>
+<li><span class="segment a-seg" data-start="324.0" data-end="331.0" title="5:24">The sensory division leaves the skull of either ferramin ovale and gives the lingula, </span></li>
+<li><span class="segment a-seg" data-start="331.0" data-end="336.0" title="5:31">ariculotemporal, buckle, and mental nerves. </span></li>
+<li><span class="segment a-seg" data-start="336.0" data-end="343.0" title="5:36">The motor route supplies the muscles of massacation, namely the masseter and the lateral </span></li>
+<li><span class="segment a-seg" data-start="343.0" data-end="345.0" title="5:43">terrogides. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="345.0">
+  <div class="q-label">Q4</div>
+  <div class="q-body"><span class="segment q-seg" data-start="345.0" data-end="349.0" title="5:45">Describe the anatomy of the facial nerve. </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="349.0" data-end="356.0" title="5:49">The facial nerve is the seventh cranial nerve and has both sensory and motor routes. </span></li>
+<li><span class="segment a-seg" data-start="356.0" data-end="363.0" title="5:56">The motor nucleus lies in the deep part of the ponds and is ventrometial to the spinal </span></li>
+<li><span class="segment a-seg" data-start="363.0" data-end="368.0" title="6:03">tract of the trigeminal nerve and it is the origin of the motor route. </span></li>
+<li><span class="segment a-seg" data-start="368.0" data-end="375.0" title="6:08">The motor route lies close to the abducine's nucleus and eventually emerges at the cordal </span></li>
+<li><span class="segment a-seg" data-start="375.0" data-end="383.0" title="6:15">border of the ponds between the olive and cerebellipaduncles at the cerebellopontine angle. </span></li>
+<li><span class="segment a-seg" data-start="383.0" data-end="390.0" title="6:23">The sensory nucleus is the upper part of the tractors solitarius of the medulla oblongata. </span></li>
+<li><span class="segment a-seg" data-start="390.0" data-end="394.0" title="6:30">It receives fibers from the sensory route. </span></li>
+<li><span class="segment a-seg" data-start="394.0" data-end="400.0" title="6:34">The routes of the facial nerve pass literally and forward towards the internal auditory </span></li>
+<li><span class="segment a-seg" data-start="400.0" data-end="401.0" title="6:40">meetus. </span></li>
+<li><span class="segment a-seg" data-start="401.0" data-end="408.0" title="6:41">In the internal auditory meetus, the motor route lies in a groove on the upper anterior </span></li>
+<li><span class="segment a-seg" data-start="408.0" data-end="411.0" title="6:48">surface of the vestibulococlear nerve. </span></li>
+<li><span class="segment a-seg" data-start="411.0" data-end="414.0" title="6:51">The sensory route lies between them. </span></li>
+<li><span class="segment a-seg" data-start="414.0" data-end="421.0" title="6:54">The facial nerve then enters the facial canal and descends to the stylo-mastoid foramen. </span></li>
+<li><span class="segment a-seg" data-start="421.0" data-end="427.6" title="7:01">The geniculate ganglion is situated at the point where the nerve bends sharply before it </span></li>
+<li><span class="segment a-seg" data-start="427.6" data-end="434.0" title="7:07">emerges from the stylo-mastoid foramen and runs forward into the parotid gland. </span></li>
+<li><span class="segment a-seg" data-start="434.0" data-end="439.0" title="7:14">At the neck of the mandible, it divides into its five branches. </span></li>
+<li><span class="segment a-seg" data-start="439.0" data-end="445.0" title="7:19">The greater patrosal nerve, consisting of taste fibers, arises from the genicula ganglion </span></li>
+<li><span class="segment a-seg" data-start="445.0" data-end="452.0" title="7:25">and also contains pre-ganglionic parasympathetic fibers which are travelling to the terrogopalatine </span></li>
+<li><span class="segment a-seg" data-start="452.0" data-end="453.0" title="7:32">ganglion. </span></li>
+<li><span class="segment a-seg" data-start="453.0" data-end="459.0" title="7:33">The branches of the facial nerve in the facial canal are the nerve to the stupedius and the </span></li>
+<li><span class="segment a-seg" data-start="459.0" data-end="461.0" title="7:39">cordotimpony. </span></li>
+<li><span class="segment a-seg" data-start="461.0" data-end="468.0" title="7:41">As the nerve leaves the stylo-mastoid foramen, it gives the posterior aricular, digastric and </span></li>
+<li><span class="segment a-seg" data-start="468.0" data-end="471.0" title="7:48">stylohyoid branches. </span></li>
+<li><span class="segment a-seg" data-start="471.0" data-end="481.0" title="7:51">On the face it gives the temporal, zygomatic, buckle, marginal mandibular and cervical branches. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="481.0">
+  <div class="q-label">Q5</div>
+  <div class="q-body"><span class="segment q-seg" data-start="481.0" data-end="485.0" title="8:01">Describe the anatomy of the vagus nerve. </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="485.0" data-end="491.0" title="8:05">The vagus nerve has the most extensive course of distribution compared to any other cranial </span></li>
+<li><span class="segment a-seg" data-start="491.0" data-end="492.0" title="8:11">nerve. </span></li>
+<li><span class="segment a-seg" data-start="492.0" data-end="496.0" title="8:12">It consists of motor and sensory fibers. </span></li>
+<li><span class="segment a-seg" data-start="496.0" data-end="501.0" title="8:16">They are connected to four nuclei in the medulla oblongata. </span></li>
+<li><span class="segment a-seg" data-start="501.0" data-end="508.68" title="8:21">These four nuclei are the dorsal nucleus of the vagus, nucleus ambiguous, nucleus of the </span></li>
+<li><span class="segment a-seg" data-start="508.68" data-end="514.8" title="8:28">tractus solitarius, and the spinal nucleus of the trigeminal nerve. </span></li>
+<li><span class="segment a-seg" data-start="514.8" data-end="520.8" title="8:34">The roots derived from these ganglion unite to form the large cord of the vagus nerve and </span></li>
+<li><span class="segment a-seg" data-start="520.8" data-end="524.8" title="8:40">it exits the skull via the jugular foramen. </span></li>
+<li><span class="segment a-seg" data-start="524.8" data-end="531.28" title="8:44">Before it exits the foramen, it forms the superior ganglion and on its exit forms another </span></li>
+<li><span class="segment a-seg" data-start="531.28" data-end="534.64" title="8:51">swelling called the inferior ganglion. </span></li>
+<li><span class="segment a-seg" data-start="534.64" data-end="540.56" title="8:54">The vagus nerve also gets some twigs from the accessory nerve and its fibers are distributed </span></li>
+<li><span class="segment a-seg" data-start="540.56" data-end="546.2" title="9:00">via the farongial and recurrent larongial branches of the vagus nerve. </span></li>
+<li><span class="segment a-seg" data-start="546.2" data-end="552.12" title="9:06">The vagus nerve passes vertically down the neck, invested in the corroded sheath and </span></li>
+<li><span class="segment a-seg" data-start="552.12" data-end="558.2" title="9:12">lying between the internal jugular vein and internal corroded artery. </span></li>
+<li><span class="segment a-seg" data-start="558.2" data-end="564.12" title="9:18">At the upper border of the thyroid cartilage it lies between the internal jugular vein </span></li>
+<li><span class="segment a-seg" data-start="564.12" data-end="567.04" title="9:24">and the common corroded artery. </span></li>
+<li><span class="segment a-seg" data-start="567.04" data-end="573.24" title="9:27">On the right side the vagus nerve lies posterior to the internal jugular vein and crosses </span></li>
+<li><span class="segment a-seg" data-start="573.24" data-end="576.8" title="9:33">the first part of the subclavian artery. </span></li>
+<li><span class="segment a-seg" data-start="576.8" data-end="582.28" title="9:36">It enters the thorax and lies to the right of the trachea and posterior medial to the </span></li>
+<li><span class="segment a-seg" data-start="582.28" data-end="587.04" title="9:42">brachiocafalic vein and the superior venocaver. </span></li>
+<li><span class="segment a-seg" data-start="587.04" data-end="591.96" title="9:47">The right pluror and right lung are lateral to the nerve. </span></li>
+<li><span class="segment a-seg" data-start="591.96" data-end="597.8" title="9:51">It then passes behind the right main broncus to reach the posterior aspect of the root </span></li>
+<li><span class="segment a-seg" data-start="597.8" data-end="599.72" title="9:57">of the right lung. </span></li>
+<li><span class="segment a-seg" data-start="599.72" data-end="608.08" title="9:59">Eventually it forms the right posterior pulmonary plexus and the posterior esophageal plexus. </span></li>
+<li><span class="segment a-seg" data-start="608.08" data-end="614.28" title="10:08">Continuing further down the posterior esophageal plexus receives branches from the left vagus </span></li>
+<li><span class="segment a-seg" data-start="614.28" data-end="621.0" title="10:14">nerve and descends into the abdomen via the diaphragm and is now called the posterior vagal </span></li>
+<li><span class="segment a-seg" data-start="621.0" data-end="622.52" title="10:21">trunk. </span></li>
+<li><span class="segment a-seg" data-start="622.52" data-end="628.4" title="10:22">It then divides into the small gastric and a large celiac branch. </span></li>
+<li><span class="segment a-seg" data-start="628.4" data-end="634.52" title="10:28">The gastric branch supplies most of the stomach and the celiac branch gives off branches </span></li>
+<li><span class="segment a-seg" data-start="634.52" data-end="638.44" title="10:34">to the various abdominal plexi. </span></li>
+<li><span class="segment a-seg" data-start="638.44" data-end="645.08" title="10:38">On the left side the vagus nerve enters the thorax between the left common corroded artery </span></li>
+<li><span class="segment a-seg" data-start="645.08" data-end="647.88" title="10:45">and left subclavian arteries. </span></li>
+<li><span class="segment a-seg" data-start="647.88" data-end="653.88" title="10:47">It descends into the thorax and crosses the left side of the archiveaorta. </span></li>
+<li><span class="segment a-seg" data-start="653.88" data-end="659.2" title="10:53">At this point it lies posterior to the left frenic nerve. </span></li>
+<li><span class="segment a-seg" data-start="659.2" data-end="665.04" title="10:59">It then passes behind the root of the left lung and forms the left posterior pulmonary </span></li>
+<li><span class="segment a-seg" data-start="665.04" data-end="667.08" title="11:05">plexus. </span></li>
+<li><span class="segment a-seg" data-start="667.08" data-end="673.36" title="11:07">From this plexus two branches descend to the anterior of the esophagus and with a twig </span></li>
+<li><span class="segment a-seg" data-start="673.36" data-end="680.28" title="11:13">from the right posterior pulmonary plexus form the anterior esophageal plexus. </span></li>
+<li><span class="segment a-seg" data-start="680.28" data-end="686.88" title="11:20">Some branches continue further down and enter the abdomen as the anterior vagal trunk, </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="686.88">
+  <div class="q-label">Q6</div>
+  <div class="q-body"><span class="segment q-seg" data-start="686.88" data-end="693.56" title="11:26">which supplies the cardiac anterum and divides to form the left and right groups of branches </span><span class="segment q-seg" data-start="693.56" data-end="700.08" title="11:33">which supply parts of the lesser curvature, pylorus and duodenum. </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="700.08" data-end="706.36" title="11:40">Briefly describe the anatomy of the 9th, 11th and 12th cranial nerves. </span></li>
+<li><span class="segment a-seg" data-start="706.36" data-end="711.72" title="11:46">The glossopharyngeal nerve passes from the medulla through the jugular foramen and </span></li>
+<li><span class="segment a-seg" data-start="711.72" data-end="717.32" title="11:51">between the internal and external corroded arteries into the pharynx. </span></li>
+<li><span class="segment a-seg" data-start="717.32" data-end="723.6" title="11:57">It conveys sensation from the pharynx, back of the tongue, middle ear, corroded body </span></li>
+<li><span class="segment a-seg" data-start="723.6" data-end="729.2" title="12:03">and sinus and parasympathetic fibers to the parotid gland. </span></li>
+<li><span class="segment a-seg" data-start="729.2" data-end="735.88" title="12:09">The accessory nerve arises from the upper five cervical segments of the spinal cord. </span></li>
+<li><span class="segment a-seg" data-start="735.88" data-end="739.56" title="12:15">It passes upwards through the pharynmin magnum. </span></li>
+<li><span class="segment a-seg" data-start="739.56" data-end="745.64" title="12:19">In the cranial cavity it is joined by the small cranial root and leaves the skull by the </span></li>
+<li><span class="segment a-seg" data-start="745.64" data-end="752.16" title="12:25">jugular foramen to provide the motor supply to the sternoclider mastoid and trapezius. </span></li>
+<li><span class="segment a-seg" data-start="752.16" data-end="758.04" title="12:32">The hypoglosal nerve supplies the motor supply to all of the tongue muscles except the </span></li>
+<li><span class="segment a-seg" data-start="758.04" data-end="759.36" title="12:38">palato glossus. </span></li>
+  </ul>
+</div>
+</div>
+
 </div>
 
 <div class="subtitle-bar">
-  <span class="subtitle-text empty" id="subtitle-text">Play audio to see live subtitles&#8230;</span>
+  <span id="subtitle-text" class="empty">Play audio to see live subtitles&#8230;</span>
 </div>
 
 <script>
-
-const audio    = document.getElementById('audio');
-const allSegs  = Array.from(document.querySelectorAll('.segment'));
-const allBlocks = Array.from(document.querySelectorAll('.t-block'));
+const audio      = document.getElementById('audio');
+const allSegs    = Array.from(document.querySelectorAll('.segment'));
 const subtitleEl = document.getElementById('subtitle-text');
-let activeSegEl   = null;
-let activeBlockEl = null;
-let searchMatches = [];
-let searchIdx     = 0;
+let activeSegEl  = null;
+let searchMatches = [], searchIdx = 0;
 
-// Duration display
 audio.addEventListener('loadedmetadata', () => {
   const m = Math.floor(audio.duration / 60);
   const s = Math.floor(audio.duration %% 60).toString().padStart(2,'0');
   document.getElementById('dur').textContent = m + ':' + s;
 });
 
-// Seek helper
-function seekTo(t) {
-  audio.currentTime = t;
-  audio.play();
-}
+function seekTo(t) { audio.currentTime = t; audio.play(); }
 
-// Block gutter click
-document.querySelectorAll('.t-gutter').forEach(g => {
-  g.addEventListener('click', () => seekTo(parseFloat(g.dataset.start)));
+// Q-block header click
+document.querySelectorAll('.q-block').forEach(q => {
+  q.addEventListener('click', e => {
+    if (!e.target.classList.contains('segment')) seekTo(parseFloat(q.dataset.start));
+  });
 });
 
-// Segment click
+// Individual segment click
 allSegs.forEach(s => {
-  s.addEventListener('click', e => {
-    e.stopPropagation();
-    seekTo(parseFloat(s.dataset.start));
-  });
+  s.addEventListener('click', e => { e.stopPropagation(); seekTo(parseFloat(s.dataset.start)); });
 });
 
 // Real-time tracking
 audio.addEventListener('timeupdate', () => {
   const t = audio.currentTime;
-
-  // Find active segment (last one whose start <= t)
   let found = null;
   for (let i = allSegs.length - 1; i >= 0; i--) {
     if (parseFloat(allSegs[i].dataset.start) <= t) { found = allSegs[i]; break; }
   }
-
   if (found && found !== activeSegEl) {
-    // Clear previous
-    if (activeSegEl) activeSegEl.classList.remove('active');
-    if (activeBlockEl) {
-      activeBlockEl.classList.remove('block-active');
-      const pg = activeBlockEl.querySelector('.t-gutter');
-      if (pg) pg.classList.remove('gutter-active');
+    if (activeSegEl) {
+      activeSegEl.classList.remove('active');
+      const pli = activeSegEl.closest('li');
+      if (pli) pli.classList.remove('li-active');
+      const pq = activeSegEl.closest('.q-block');
+      if (pq) pq.classList.remove('q-active');
     }
-    // Set new
     found.classList.add('active');
-    const block = found.closest('.t-block');
-    if (block) {
-      block.classList.add('block-active');
-      const g = block.querySelector('.t-gutter');
-      if (g) g.classList.add('gutter-active');
-      activeBlockEl = block;
-    }
+    const li = found.closest('li');
+    if (li) li.classList.add('li-active');
+    const qb = found.closest('.q-block');
+    if (qb) qb.classList.add('q-active');
     activeSegEl = found;
 
-    // Update subtitle
     subtitleEl.textContent = found.textContent.trim();
     subtitleEl.classList.remove('empty');
 
-    // Auto-scroll (only when not searching)
-    if (!document.getElementById('search').value) {
+    if (!document.getElementById('search').value)
       found.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }
   }
 });
 
@@ -359,17 +458,13 @@ searchInput.addEventListener('keydown', e => {
     el.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
 });
-
 function runSearch() {
   const q = searchInput.value.trim().toLowerCase();
   allSegs.forEach(s => s.classList.remove('search-match','search-current'));
   searchMatches = [];
   if (!q) return;
   allSegs.forEach(s => {
-    if (s.textContent.toLowerCase().includes(q)) {
-      s.classList.add('search-match');
-      searchMatches.push(s);
-    }
+    if (s.textContent.toLowerCase().includes(q)) { s.classList.add('search-match'); searchMatches.push(s); }
   });
   if (!searchMatches.length) return;
   searchIdx = 0;

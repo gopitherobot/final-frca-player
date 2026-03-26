@@ -5,10 +5,19 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Neurosurgical Anaesthesia — Depth of Anaesthesia Monitoring</title>
 <style>
-
   :root {
-    --accent:    #6366f1;
-    --body-bg:   #f1f5f9;
+    --q-bg:       #1e3a5f;
+    --q-text:     #ffffff;
+    --q-label:    #60a5fa;
+    --a-bg:       #ffffff;
+    --a-border:   #e2e8f0;
+    --a-label:    #059669;
+    --active-q:   #6366f1;
+    --active-a:   #dbeafe;
+    --accent:     #6366f1;
+    --body-bg:    #f1f5f9;
+    --pre-bg:     #fef9c3;
+    --pre-border: #fcd34d;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
@@ -40,22 +49,9 @@
     margin-bottom: 4px;
     letter-spacing: 0.01em;
   }
-  .header-sub {
-    font-size: 0.72rem;
-    color: #94a3b8;
-    font-style: italic;
-  }
-  audio {
-    height: 36px;
-    accent-color: var(--accent);
-    flex-shrink: 0;
-  }
-  .back-link {
-    font-size: 0.8rem;
-    color: #94a3b8;
-    text-decoration: none;
-    white-space: nowrap;
-  }
+  .header-sub { font-size: 0.72rem; color: #94a3b8; font-style: italic; }
+  audio { height: 36px; accent-color: var(--accent); flex-shrink: 0; }
+  .back-link { font-size: 0.8rem; color: #94a3b8; text-decoration: none; white-space: nowrap; }
   .back-link:hover { color: #60a5fa; }
 
   /* ── Toolbar ── */
@@ -69,30 +65,17 @@
     border-bottom: 1px solid #334155;
   }
   .toolbar input {
-    flex: 1;
-    max-width: 380px;
+    flex: 1; max-width: 380px;
     padding: 5px 11px;
-    border: 1px solid #475569;
-    border-radius: 6px;
-    background: #0f172a;
-    color: #e2e8f0;
-    font-size: 0.83rem;
-    outline: none;
+    border: 1px solid #475569; border-radius: 6px;
+    background: #0f172a; color: #e2e8f0; font-size: 0.83rem; outline: none;
   }
   .toolbar input:focus { border-color: var(--accent); }
   .toolbar input::placeholder { color: #64748b; }
-  .stats {
-    font-size: 0.72rem;
-    color: #64748b;
-    white-space: nowrap;
-  }
+  .stats { font-size: 0.72rem; color: #64748b; white-space: nowrap; }
 
   /* ── Scroll area ── */
-  .scroll-area {
-    flex: 1;
-    overflow-y: auto;
-    padding: 20px;
-  }
+  .scroll-area { flex: 1; overflow-y: auto; padding: 20px; }
   .scroll-area::-webkit-scrollbar { width: 6px; }
   .scroll-area::-webkit-scrollbar-track { background: transparent; }
   .scroll-area::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
@@ -107,68 +90,77 @@
     display: flex;
     align-items: center;
   }
-  .subtitle-text {
-    font-size: 0.9rem;
-    color: #e2e8f0;
-    line-height: 1.5;
-    font-style: italic;
-  }
-  .subtitle-text.empty { color: #475569; }
+  #subtitle-text { font-size: 0.88rem; color: #e2e8f0; line-height: 1.5; font-style: italic; }
+  #subtitle-text.empty { color: #475569; }
 
-  /* ── Transcript blocks ── */
-  .t-block {
-    background: #ffffff;
-    border: 1px solid #e2e8f0;
-    border-radius: 10px;
-    margin-bottom: 14px;
-    overflow: hidden;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
-    display: flex;
-  }
-  .t-block.block-active {
-    border-color: var(--accent);
-    box-shadow: 0 0 0 2px rgba(37,99,235,0.15);
-  }
-  .t-gutter {
-    background: #0f172a;
-    width: 52px;
-    flex-shrink: 0;
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
-    padding-top: 14px;
-    cursor: pointer;
-  }
-  .t-gutter:hover { background: #1e293b; }
-  .t-timestamp {
-    font-size: 0.7rem;
-    color: #64748b;
-    font-family: monospace;
-    font-weight: 600;
-    letter-spacing: 0.02em;
-  }
-  .t-gutter.gutter-active .t-timestamp { color: var(--accent); }
-  .t-body {
-    flex: 1;
+  /* ── Preamble ── */
+  .preamble-block {
+    background: var(--pre-bg);
+    border-left: 4px solid var(--pre-border);
+    border-radius: 0 8px 8px 0;
     padding: 12px 16px;
-    line-height: 1.75;
-    font-size: 0.92rem;
-    color: #1e293b;
+    margin-bottom: 20px;
+    font-size: 0.88rem;
+    color: #78350f;
+    font-style: italic;
+    line-height: 1.7;
   }
 
-  /* ── Segments ── */
-  .segment {
+  /* ── Q&A pair ── */
+  .qa-pair { margin-bottom: 20px; border-radius: 10px; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+
+  /* Question block */
+  .q-block {
+    background: var(--q-bg);
+    padding: 14px 18px;
+    display: flex; gap: 14px; align-items: flex-start;
     cursor: pointer;
-    border-radius: 3px;
-    transition: background 0.1s;
+    transition: background 0.15s;
   }
-  .segment:hover { background: #eff6ff; }
-  .segment.active {
-    background: #bfdbfe;
-    outline: 2px solid #3b82f6;
-    outline-offset: 1px;
-    border-radius: 3px;
+  .q-block:hover { background: #1d4ed8; }
+  .q-block.q-active { background: var(--active-q); }
+  .q-label {
+    font-size: 0.7rem; font-weight: 700;
+    color: var(--q-label);
+    background: rgba(96,165,250,0.15);
+    border: 1px solid rgba(96,165,250,0.3);
+    border-radius: 5px; padding: 3px 7px;
+    white-space: nowrap; margin-top: 2px; letter-spacing: 0.05em;
+    flex-shrink: 0;
   }
+  .q-body { flex: 1; font-size: 0.97rem; font-weight: 600; color: var(--q-text); line-height: 1.55; }
+
+  /* Answer block */
+  .a-block {
+    background: var(--a-bg);
+    border: 1px solid var(--a-border); border-top: none;
+    padding: 14px 18px;
+    display: flex; gap: 14px; align-items: flex-start;
+  }
+  .a-label {
+    font-size: 0.7rem; font-weight: 700;
+    color: var(--a-label);
+    background: #d1fae5; border: 1px solid #6ee7b7;
+    border-radius: 5px; padding: 3px 9px;
+    white-space: nowrap; margin-top: 2px; letter-spacing: 0.05em;
+    flex-shrink: 0;
+  }
+  .a-body { flex: 1; list-style: none; padding: 0; }
+  .a-body li {
+    padding: 4px 0 4px 14px;
+    border-left: 3px solid transparent;
+    line-height: 1.7; font-size: 0.92rem; color: #1e293b;
+    border-radius: 0 4px 4px 0;
+    transition: background 0.15s;
+  }
+  .a-body li:not(:last-child) { border-bottom: 1px solid #f1f5f9; }
+
+  /* ── Segments (clickable) ── */
+  .segment { cursor: pointer; border-radius: 3px; }
+  .q-seg:hover { background: rgba(255,255,255,0.18); }
+  .a-seg:hover { background: #eff6ff; }
+  .segment.active { background: #bfdbfe; outline: 2px solid #3b82f6; outline-offset: 1px; }
+  .a-body li.li-active { background: var(--active-a); border-left-color: var(--accent); }
   .segment.search-match  { background: #fef9c3; }
   .segment.search-current { background: #fde047; outline: 2px solid #ca8a04; }
 
@@ -187,214 +179,543 @@
 
 <div class="toolbar">
   <input type="text" id="search" placeholder="Search transcript&#8230; (Enter = next match)">
-  <span class="stats" id="stats">245 segments &nbsp;|&nbsp; <span id="dur">loading&#8230;</span></span>
+  <span class="stats" id="stats">23 questions &nbsp;|&nbsp; 245 segments &nbsp;|&nbsp; <span id="dur">loading&#8230;</span></span>
 </div>
 
 <div class="scroll-area" id="scroll-area">
-<div class="t-block">
-  <div class="t-gutter" data-start="0.0"><span class="t-timestamp">0:00</span></div>
-  <div class="t-body"><span class="segment" data-start="0.0" data-end="2.0" title="0:00">depth of anesthesia monitoring. </span><span class="segment" data-start="2.0" data-end="7.44" title="0:02">This is an important topic that you will be expected to know about, especially in </span><span class="segment" data-start="7.44" data-end="12.28" title="0:07">view of recent TV documentaries and films on the subject, which have brought it to the </span><span class="segment" data-start="12.28" data-end="14.28" title="0:12">attention of the general public. </span><span class="segment" data-start="14.28" data-end="17.2" title="0:14">What is awareness? </span><span class="segment" data-start="17.2" data-end="21.72" title="0:17">There are a few definitions that you should be able to recite and convince the examinists </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="21.72"><span class="t-timestamp">0:21</span></div>
-  <div class="t-body"><span class="segment" data-start="21.72" data-end="25.88" title="0:21">that you have an understanding of this subject. </span><span class="segment" data-start="26.28" data-end="31.6" title="0:26">Anesthetic awareness is a serious complication and one of the most feared complications of </span><span class="segment" data-start="31.6" data-end="34.24" title="0:31">general anesthesia. </span><span class="segment" data-start="34.24" data-end="41.92" title="0:34">Awareness can be classified into explicit memory, implicit memory and deliberate awareness. </span><span class="segment" data-start="41.92" data-end="48.64" title="0:41">Explicit memory can be defined as the intentional or conscious recollection of experiences. </span><span class="segment" data-start="48.64" data-end="54.2" title="0:48">Anesthetic awareness specifically refers to explicit memory of intraoperative events, </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="54.2"><span class="t-timestamp">0:54</span></div>
-  <div class="t-body"><span class="segment" data-start="54.2" data-end="58.12" title="0:54">which involve spontaneous or conscious recall. </span><span class="segment" data-start="58.12" data-end="64.0" title="0:58">The explicit recall may occur with or without the sensation of pain and recollections may </span><span class="segment" data-start="64.0" data-end="71.36" title="1:04">be vivid, such as operating room conversation or vague, such as dreams or unpleasant sensations </span><span class="segment" data-start="71.36" data-end="75.28" title="1:11">associated with the operation. </span><span class="segment" data-start="75.28" data-end="79.08" title="1:15">Implicit memory is perception without conscious recall. </span><span class="segment" data-start="79.08" data-end="85.08" title="1:19">The patient denies recall but may remember something under hypnosis or with repeated </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="85.08"><span class="t-timestamp">1:25</span></div>
-  <div class="t-body"><span class="segment" data-start="85.08" data-end="87.32" title="1:25">questioning. </span><span class="segment" data-start="87.32" data-end="93.28" title="1:27">Deliberate awareness occurs when surgery is conducted under local or regional anesthesia. </span><span class="segment" data-start="93.28" data-end="98.72" title="1:33">It also occurs during some neurosurgical procedures when the patient is woken up to assess where </span><span class="segment" data-start="98.72" data-end="103.68" title="1:38">the surgery has affected or will affect important areas. </span><span class="segment" data-start="103.68" data-end="108.64" title="1:43">This however is less common now since the introduction of devices to monitor evoked </span><span class="segment" data-start="108.64" data-end="115.84" title="1:48">potentials intraoperatively. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="115.84"><span class="t-timestamp">1:55</span></div>
-  <div class="t-body"><span class="segment" data-start="115.84" data-end="120.52" title="1:55">The incidence of awareness varies significantly depending on the clinical situation and the </span><span class="segment" data-start="120.52" data-end="123.32" title="2:00">type of anesthetic given. </span><span class="segment" data-start="123.32" data-end="129.04" title="2:03">Overall the incidence of awareness with explicit recall of severe pain is commonly quoted as </span><span class="segment" data-start="129.04" data-end="136.0" title="2:09">being approximately 1 in 3,000 cases, that 0.03%. </span><span class="segment" data-start="136.0" data-end="141.36" title="2:16">The incidence of awareness without recall of pain is much commoner and has been quoted </span><span class="segment" data-start="141.36" data-end="145.52" title="2:21">as being from 0.1 to 0.7%. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="145.52"><span class="t-timestamp">2:25</span></div>
-  <div class="t-body"><span class="segment" data-start="145.52" data-end="150.0" title="2:25">That's 1 in 142 to 1 in 1,000 cases. </span><span class="segment" data-start="150.0" data-end="155.28" title="2:30">However, it is important to note that some of these figures may be exaggerated by memories </span><span class="segment" data-start="155.28" data-end="160.16" title="2:35">generated during awakening or in recovery. </span><span class="segment" data-start="160.16" data-end="165.4" title="2:40">Awareness is almost twice as likely when neuromuscular blockade is used. </span><span class="segment" data-start="165.4" data-end="170.6" title="2:45">What are the consequences of awareness for the patient? </span><span class="segment" data-start="170.6" data-end="177.44" title="2:50">Awareness may have serious psychological repercussions for the patient, including insomnia, depression, </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="177.44"><span class="t-timestamp">2:57</span></div>
-  <div class="t-body"><span class="segment" data-start="177.44" data-end="182.96" title="2:57">post-traumatic stress disorder and a fear of future surgery. </span><span class="segment" data-start="182.96" data-end="186.92" title="3:02">What are the causes and risk factors for awareness? </span><span class="segment" data-start="186.92" data-end="192.52" title="3:06">Try to classify the causes and risk factors into a way that you will easily remember. </span><span class="segment" data-start="192.52" data-end="194.8" title="3:12">There are many ways to do this. </span><span class="segment" data-start="194.8" data-end="200.8" title="3:14">One might be patient factors, anesthetic factors and surgical factors. </span><span class="segment" data-start="200.8" data-end="206.44" title="3:20">Ultimately, awareness results from an inadequate anesthetic dose. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="206.44"><span class="t-timestamp">3:26</span></div>
-  <div class="t-body"><span class="segment" data-start="206.44" data-end="212.08" title="3:26">Light anesthetics, especially where a patient has received a muscle relaxant, are associated </span><span class="segment" data-start="212.08" data-end="215.36" title="3:32">with the highest risk of awareness. </span><span class="segment" data-start="215.36" data-end="219.88" title="3:35">There are four main reasons why an anesthetic may be too light. </span><span class="segment" data-start="219.88" data-end="224.28" title="3:39">Firstly, selecting an inadequate anesthetic dose. </span><span class="segment" data-start="224.28" data-end="230.28" title="3:44">This may occur when a volatile agent is accidentally not given or started late. </span><span class="segment" data-start="230.28" data-end="236.28" title="3:50">There may also be an inadequate dose when an anesthetic agent is withheld from a hypotensive </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="236.28"><span class="t-timestamp">3:56</span></div>
-  <div class="t-body"><span class="segment" data-start="236.28" data-end="241.2" title="3:56">patient in an attempt to maintain the blood pressure. </span><span class="segment" data-start="241.2" data-end="246.56" title="4:01">It is important to remember when selecting a dose that patients vary significantly and </span><span class="segment" data-start="246.56" data-end="250.92" title="4:06">often the chosen dose is based on patient averages. </span><span class="segment" data-start="250.92" data-end="258.04" title="4:10">Mac is a population average and varies with age, gender and race. </span><span class="segment" data-start="258.04" data-end="264.36" title="4:18">Secondly, some patients may have an element of resistance to anesthetic agents. </span><span class="segment" data-start="264.36" data-end="272.24" title="4:24">Examples would include patients with pyrexia, hyperthyroidism, obesity, young age, alcohol </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="272.24"><span class="t-timestamp">4:32</span></div>
-  <div class="t-body"><span class="segment" data-start="272.24" data-end="276.36" title="4:32">excess and those using recreational drugs. </span><span class="segment" data-start="276.36" data-end="281.32" title="4:36">Thirdly, there may be an equipment malfunction. </span><span class="segment" data-start="281.32" data-end="287.24" title="4:41">Breathing systems may become disconnected and vaporizers may become empty and go unnoticed. </span><span class="segment" data-start="287.24" data-end="292.44" title="4:47">For these reasons, a pressure-fail alarm should always be used when ventilating patients </span><span class="segment" data-start="292.52" data-end="299.64" title="4:52">and volatile agent monitors with high and low alarm settings are widely available for use. </span><span class="segment" data-start="299.64" data-end="305.64" title="4:59">If total intravenous anesthesia is being used, the infusion pump may malfunction or the </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="305.64"><span class="t-timestamp">5:05</span></div>
-  <div class="t-body"><span class="segment" data-start="305.64" data-end="308.0" title="5:05">cannula might tissue. </span><span class="segment" data-start="308.0" data-end="311.24" title="5:08">All of these may lead to a state of awareness. </span><span class="segment" data-start="311.24" data-end="317.84" title="5:11">Finally, signs of awareness which would normally lead the anesthetist to increase the anesthetic </span><span class="segment" data-start="317.84" data-end="322.12" title="5:17">dose may be masked in some disease states. </span><span class="segment" data-start="322.12" data-end="328.4" title="5:22">For example, patients taking beta blockers are less capable of mounting attackycardia. </span><span class="segment" data-start="328.4" data-end="333.28" title="5:28">When discussing causes and risk factors for awareness, it is important to mention the </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="333.28"><span class="t-timestamp">5:33</span></div>
-  <div class="t-body"><span class="segment" data-start="333.28" data-end="338.96" title="5:33">type of surgery and the type of anesthetic being given. </span><span class="segment" data-start="338.96" data-end="342.56" title="5:38">Certain operations carry a much higher risk of awareness. </span><span class="segment" data-start="342.56" data-end="347.64" title="5:42">These are generally situations where there is a risk of patient instability, so therefore </span><span class="segment" data-start="347.64" data-end="351.8" title="5:47">an insufficient dose of anesthetic agent may be given. </span><span class="segment" data-start="351.8" data-end="358.4" title="5:51">These would include emergency general anesthetics as aeron sections, high risk cardiac surgery </span><span class="segment" data-start="358.4" data-end="364.0" title="5:58">and acute trauma with hypoverlemia, where the incidence of awareness is quoted as being </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="364.0"><span class="t-timestamp">6:04</span></div>
-  <div class="t-body"><span class="segment" data-start="364.0" data-end="370.28" title="6:04">up to 1.5% depending on the severity of the trauma. </span><span class="segment" data-start="370.28" data-end="376.28" title="6:10">Patients with airway issues including unexpected difficult intubation, or those undergoing rigid </span><span class="segment" data-start="376.28" data-end="382.56" title="6:16">bronchoscopy are also at higher risk of awareness due to a failure to give any further anesthetic </span><span class="segment" data-start="382.56" data-end="388.84" title="6:22">agent during the period where it is difficult to intubate or ventilate the patient. </span><span class="segment" data-start="388.84" data-end="393.16" title="6:28">What methods are you aware of for monitoring depth of anesthesia? </span><span class="segment" data-start="393.16" data-end="398.2" title="6:33">Think of a way to classify these as there are many and you will then be less likely to </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="398.2"><span class="t-timestamp">6:38</span></div>
-  <div class="t-body"><span class="segment" data-start="398.2" data-end="402.36" title="6:38">forget the main important ones. </span><span class="segment" data-start="402.36" data-end="409.44" title="6:42">These could be classified into simple techniques, those which use a form of EEG monitoring and </span><span class="segment" data-start="409.44" data-end="412.0" title="6:49">other techniques. </span><span class="segment" data-start="412.0" data-end="418.04" title="6:52">Simple techniques would include monitoring for clinical signs such as tachycardia, hypertension, </span><span class="segment" data-start="418.04" data-end="421.44" title="6:58">tachyupnea, sweating and lacrimation. </span><span class="segment" data-start="421.44" data-end="427.28" title="7:01">Entidal agent monitoring is a simple monitor that is routinely used in most anesthetics </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="427.28"><span class="t-timestamp">7:07</span></div>
-  <div class="t-body"><span class="segment" data-start="427.28" data-end="430.08" title="7:07">given in the United Kingdom. </span><span class="segment" data-start="430.08" data-end="435.36" title="7:10">While this does not actually measure depth of anesthesia, it is a useful adjunct to ensure </span><span class="segment" data-start="435.36" data-end="439.64" title="7:15">attainment of the desired concentration of anesthesia. </span><span class="segment" data-start="439.64" data-end="444.92" title="7:19">It does, however, have its limitations and should therefore only be used as a guide in </span><span class="segment" data-start="444.92" data-end="449.08" title="7:24">conjunction with other clinical signs. </span><span class="segment" data-start="449.08" data-end="455.88" title="7:29">Techniques which use a form of EEG monitoring would include pure EEG analysis, cerebral function </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="455.88"><span class="t-timestamp">7:35</span></div>
-  <div class="t-body"><span class="segment" data-start="455.88" data-end="465.84" title="7:35">monitors, frequency domain analysis, compressed spectral array, bi-spectoral analysis and entropy. </span><span class="segment" data-start="465.84" data-end="472.24" title="7:45">Other techniques include the isolated forearm technique, lower esophageal contractility, </span><span class="segment" data-start="472.24" data-end="479.12" title="7:52">somatosensory evoked potentials and frontalis scalp EMG. </span><span class="segment" data-start="479.12" data-end="485.0" title="7:59">Pure EEG tracings are obtained using a standard 19 electrode method. </span><span class="segment" data-start="485.0" data-end="490.2" title="8:05">They are therefore time-consuming, impractical and require an expert to interpret them, </span><span class="segment" data-start="490.2" data-end="494.44" title="8:10">which limits their usefulness for monitoring depth of anesthesia. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="494.44"><span class="t-timestamp">8:14</span></div>
-  <div class="t-body"><span class="segment" data-start="494.44" data-end="500.4" title="8:14">They also suffer from the fact that different anesthetic agents generate different EEG patterns </span><span class="segment" data-start="500.4" data-end="509.28" title="8:20">and that various events such as hypoxia, hypotension and hypercarbia also affect the EEG pattern. </span><span class="segment" data-start="509.28" data-end="514.84" title="8:29">Both of these further complicate interpretation making it impractical to use these for routine </span><span class="segment" data-start="514.84" data-end="516.88" title="8:34">monitoring. </span><span class="segment" data-start="516.88" data-end="522.56" title="8:36">Serial function monitors, frequency domain analysis and compressed spectral array are all </span><span class="segment" data-start="522.56" data-end="529.84" title="8:42">monitors which process and modify the conventional EEG to simplify the information. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="529.84"><span class="t-timestamp">8:49</span></div>
-  <div class="t-body"><span class="segment" data-start="529.84" data-end="537.04" title="8:49">Furrier analysis is used to process the raw EEG data into its component sign waves. </span><span class="segment" data-start="537.04" data-end="542.32" title="8:57">This is then further analyzed with respect to the frequency distribution, the power contained </span><span class="segment" data-start="542.32" data-end="547.68" title="9:02">within a waveform i.e. its amplitude and the relationships between waves of different </span><span class="segment" data-start="547.68" data-end="549.68" title="9:07">frequencies. </span><span class="segment" data-start="549.68" data-end="555.04" title="9:09">The output is displayed in different ways but overall leads to a trace that is easier </span><span class="segment" data-start="555.04" data-end="557.96" title="9:15">to interpret than the raw EEG. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="557.96"><span class="t-timestamp">9:17</span></div>
-  <div class="t-body"><span class="segment" data-start="557.96" data-end="565.16" title="9:17">However, none of these monitors are widely available for depth of anesthesia monitoring. </span><span class="segment" data-start="565.16" data-end="570.76" title="9:25">How useful is the monitor for lower esophageal contractility? </span><span class="segment" data-start="570.76" data-end="576.56" title="9:30">There are two types of smooth muscle contraction that can be detected in the lower esophagus. </span><span class="segment" data-start="576.56" data-end="582.12" title="9:36">These are spontaneous contractions and provoked contractions. </span><span class="segment" data-start="582.12" data-end="587.8" title="9:42">Both of these reduce in latency and amplitude during a general anesthetic. </span><span class="segment" data-start="587.8" data-end="592.68" title="9:47">The provoked contractions result from a sudden distinction of the esophagus which can be </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="592.68"><span class="t-timestamp">9:52</span></div>
-  <div class="t-body"><span class="segment" data-start="592.68" data-end="598.28" title="9:52">achieved by rapidly inflating a balloon catheter placed in the lower esophagus. </span><span class="segment" data-start="598.28" data-end="604.28" title="9:58">The contraction caused is detected by a more distally placed pressure transducer. </span><span class="segment" data-start="604.28" data-end="609.6" title="10:04">The evidence for using this as a depth of anesthesia monitor is fairly limited and it </span><span class="segment" data-start="609.6" data-end="614.04" title="10:09">is generally thought not to be very reliable. </span><span class="segment" data-start="614.04" data-end="617.64" title="10:14">What do you know about the isolated forearm technique? </span><span class="segment" data-start="617.64" data-end="624.04" title="10:17">This is small print information so don't worry if you are being asked this. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="624.04"><span class="t-timestamp">10:24</span></div>
-  <div class="t-body"><span class="segment" data-start="624.04" data-end="629.56" title="10:24">This is a technique which is mainly historical and of interest for research. </span><span class="segment" data-start="629.56" data-end="634.44" title="10:29">A tornocay is placed on the patient's upper arm and is inflated above systolic blood </span><span class="segment" data-start="634.44" data-end="637.6" title="10:34">pressure prior to giving muscle relaxants. </span><span class="segment" data-start="637.6" data-end="643.64" title="10:37">Therefore the arm with the tornocay applied theoretically receives no muscle relaxant. </span><span class="segment" data-start="643.64" data-end="649.52" title="10:43">Prior to induction of anesthesia the patient is informed to move their arm if they are awake. </span><span class="segment" data-start="649.6" data-end="656.16" title="10:49">However research has shown that movement of the arm may not necessarily indicate explicit awareness. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="656.16"><span class="t-timestamp">10:56</span></div>
-  <div class="t-body"><span class="segment" data-start="656.16" data-end="661.68" title="10:56">I.e. the patient may have no recollection of moving their arm interpretively. </span><span class="segment" data-start="661.68" data-end="668.0" title="11:01">It could also be argued that a response to command or spontaneous movement during surgery </span><span class="segment" data-start="668.0" data-end="673.28" title="11:08">is a late sign when attempting to prevent awareness and therefore this technique is not </span><span class="segment" data-start="673.28" data-end="675.72" title="11:13">particularly helpful. </span><span class="segment" data-start="675.72" data-end="682.28" title="11:15">After 15 to 20 minutes the tornocay has to be let down to prevent limb ischemia and therefore </span><span class="segment" data-start="682.28" data-end="684.6" title="11:22">temporary limb paralysis. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="684.6"><span class="t-timestamp">11:24</span></div>
-  <div class="t-body"><span class="segment" data-start="684.6" data-end="689.08" title="11:24">It can be reinflated if further relaxant is required. </span><span class="segment" data-start="689.08" data-end="694.2" title="11:29">How useful are a vote potentials at estimating depth of anesthesia? </span><span class="segment" data-start="694.2" data-end="698.52" title="11:34">Of all the other techniques this is the one to know something about. </span><span class="segment" data-start="698.52" data-end="703.88" title="11:38">There is renewed research particularly in auditory vote potentials for use as a depth of </span><span class="segment" data-start="703.88" data-end="707.56" title="11:43">anesthesia monitor. </span><span class="segment" data-start="707.56" data-end="713.28" title="11:47">Evoked potential monitors measure electrical activity in certain areas of the brain in response </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="713.28"><span class="t-timestamp">11:53</span></div>
-  <div class="t-body"><span class="segment" data-start="713.28" data-end="717.72" title="11:53">to stimulation of specific sensory pathways. </span><span class="segment" data-start="717.72" data-end="723.8" title="11:57">A super maximal stimulus is applied to a peripheral nerve whilst a recording scalp electrode </span><span class="segment" data-start="723.8" data-end="727.68" title="12:03">is placed over the appropriate sensory area. </span><span class="segment" data-start="727.68" data-end="733.24" title="12:07">Most anesthetic agents increase the latency and decrease the amplitude of these responses </span><span class="segment" data-start="733.32" data-end="736.52" title="12:13">in a dose dependent manner. </span><span class="segment" data-start="736.52" data-end="741.96" title="12:16">Visual evoked potentials are less reliable than auditory evoked potentials. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="741.96"><span class="t-timestamp">12:21</span></div>
-  <div class="t-body"><span class="segment" data-start="741.96" data-end="748.8" title="12:21">When using auditory evoked potentials a repetitive auditory stimulus at 6 to 10 hertz is played </span><span class="segment" data-start="748.8" data-end="751.72" title="12:28">to the patient through headphones. </span><span class="segment" data-start="751.72" data-end="755.96" title="12:31">A response waveform can then be plotted against time. </span><span class="segment" data-start="755.96" data-end="762.2" title="12:35">The repeated sampling enables the signal to be identified from the background EEG. </span><span class="segment" data-start="762.2" data-end="767.16" title="12:42">The waveform formed consists of three waveform peaks. </span><span class="segment" data-start="767.16" data-end="770.04" title="12:47">Firstly, the brain stem response. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="770.04"><span class="t-timestamp">12:50</span></div>
-  <div class="t-body"><span class="segment" data-start="770.04" data-end="773.16" title="12:50">Secondly, the mid-cautical response. </span><span class="segment" data-start="773.16" data-end="776.52" title="12:53">And finally, the late-cautical response. </span><span class="segment" data-start="776.52" data-end="782.76" title="12:56">The brain stem and late-cautical responses do not correspond with depth of anesthesia. </span><span class="segment" data-start="782.76" data-end="785.88" title="13:02">However, the mid-cautical response does. </span><span class="segment" data-start="785.88" data-end="792.12" title="13:05">There is a decrease in amplitude and an increase in latency of waves in a dose dependent manner. </span><span class="segment" data-start="792.36" data-end="798.44" title="13:12">By processing the raw waveform, the auditory evoked potential index can be calculated, </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="798.44"><span class="t-timestamp">13:18</span></div>
-  <div class="t-body"><span class="segment" data-start="798.44" data-end="804.44" title="13:18">which gives a number which might be more meaningful to interpret than the raw waveform. </span><span class="segment" data-start="804.44" data-end="808.36" title="13:24">A value of greater than 80 would indicate an awake patient, </span><span class="segment" data-start="808.36" data-end="813.32" title="13:28">and a value of less than 50 would indicate an anesthetized patient. </span><span class="segment" data-start="813.32" data-end="821.32" title="13:33">There is a sudden increase in the AEP index when a patient changes from being asleep to being awake. </span><span class="segment" data-start="821.32" data-end="827.64" title="13:41">Therefore, it can be easier to distinguish between an asleep patient and an awake patient </span><span class="segment" data-start="827.64" data-end="830.12" title="13:47">than with other monitors, such as the BIS. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="831.08"><span class="t-timestamp">13:51</span></div>
-  <div class="t-body"><span class="segment" data-start="831.08" data-end="836.6" title="13:51">However, there is interpatient variability for the index value at which this change takes place. </span><span class="segment" data-start="837.24" data-end="841.96" title="13:57">Therefore, it is difficult to define a sensitive and specific cutoff value, </span><span class="segment" data-start="841.96" data-end="847.24" title="14:01">whilst in an individual patient, the pattern is very reproducible with awakening repeatedly </span><span class="segment" data-start="847.24" data-end="849.24" title="14:07">occurring at the same index values. </span><span class="segment" data-start="849.72" data-end="852.68" title="14:09">What do you know about BIS monitoring? </span><span class="segment" data-start="852.68" data-end="856.28" title="14:12">Are you aware of any recent studies into the use of BIS? </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="856.28"><span class="t-timestamp">14:16</span></div>
-  <div class="t-body"><span class="segment" data-start="856.28" data-end="863.88" title="14:16">There are two or three reasonably important recent studies that you will probably be expected to have </span><span class="segment" data-start="863.88" data-end="866.76" title="14:23">heard of, even if you don't know the details well. </span><span class="segment" data-start="869.8" data-end="876.04" title="14:29">The BIS monitor displays a real-time EEG trace from the fronto temporal electrodes, </span><span class="segment" data-start="876.04" data-end="880.36" title="14:36">which is then processed into a number on a scale of 0 to 100. </span><span class="segment" data-start="881.16" data-end="888.52" title="14:41">A 100 represents normal cortical activity, 0 represents complete absence of cortical activity, </span><span class="segment" data-start="888.52" data-end="893.8" title="14:48">and a value of less than 60 is thought to represent a value below which there is a very low </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="893.8"><span class="t-timestamp">14:53</span></div>
-  <div class="t-body"><span class="segment" data-start="893.8" data-end="896.04" title="14:53">probability of post-operative recall. </span><span class="segment" data-start="897.4" data-end="899.88" title="14:57">There are several limitations to BIS monitoring. </span><span class="segment" data-start="900.68" data-end="903.8" title="15:00">Firstly, there is no gold standard to compare BIS 2. </span><span class="segment" data-start="904.44" data-end="907.48" title="15:04">It is therefore difficult to evaluate its effectiveness. </span><span class="segment" data-start="908.44" data-end="913.08" title="15:08">The values themselves tend to have significant interpatient variability, </span><span class="segment" data-start="913.08" data-end="919.72" title="15:13">whilst one patient is asleep at a BIS value of 75, another may still be awake at a value of 70. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="920.68"><span class="t-timestamp">15:20</span></div>
-  <div class="t-body"><span class="segment" data-start="920.68" data-end="926.6" title="15:20">The BIS values show a continuum from awake to asleep, and therefore there is no clear cut point, </span><span class="segment" data-start="927.24" data-end="932.68" title="15:27">unlike auditory evoke potentials, where transition is made from asleep to awake. </span><span class="segment" data-start="934.2" data-end="940.44" title="15:34">BIS values demonstrate a dose response relationship with inhalational and hypnotic </span><span class="segment" data-start="940.44" data-end="945.8" title="15:40">intravenous agents, which is independent of the agent used and correlates with clinical </span><span class="segment" data-start="945.8" data-end="951.72" title="15:45">assessments of level of consciousness. The one exception to this is when using ketamine, </span><span class="segment" data-start="951.72" data-end="957.08" title="15:51">which causes EEG activation and therefore complicates BIS interpretation. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="957.48"><span class="t-timestamp">15:57</span></div>
-  <div class="t-body"><span class="segment" data-start="957.48" data-end="964.76" title="15:57">Studies have shown that BIS values decrease when muscle relaxation drugs are given, </span><span class="segment" data-start="964.76" data-end="970.2" title="16:04">suggesting that the patient is at a deeper level of anesthesia, whilst the values do not change </span><span class="segment" data-start="970.2" data-end="975.72" title="16:10">when opiate drugs or nitrous oxide are given, suggesting no change in depth of anesthesia. </span><span class="segment" data-start="976.6" data-end="981.64" title="16:16">These findings are obviously conflicting with what we know from clinical experience, </span><span class="segment" data-start="981.64" data-end="986.68" title="16:21">and should therefore make the anesthetist cautious if delivering an anesthetic to a targeted </span><span class="segment" data-start="986.68" data-end="992.76" title="16:26">number. There are two major recent trials assessing the effectiveness of BIS monitoring. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="993.48"><span class="t-timestamp">16:33</span></div>
-  <div class="t-body"><span class="segment" data-start="993.48" data-end="998.92" title="16:33">The first dimension is the B-aware trial, published in the Lancet in 2004. </span><span class="segment" data-start="999.64" data-end="1004.28" title="16:39">This was a large, prospective, randomized, double-blind, multi-center trial. </span><span class="segment" data-start="1005.0" data-end="1010.6" title="16:45">The trial group were high-awareness risk patients undergoing a variety of procedures, </span><span class="segment" data-start="1010.6" data-end="1016.44" title="16:50">including cardiac, trauma and obstetric surgery. They were randomly assigned to receive </span><span class="segment" data-start="1016.44" data-end="1020.84" title="16:56">standard general anesthetics or a general anesthetic with BIS monitoring. </span><span class="segment" data-start="1022.12" data-end="1027.16" title="17:02">The patients were blinded to the protocol they received, as were the observers who assessed </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="1027.16"><span class="t-timestamp">17:07</span></div>
-  <div class="t-body"><span class="segment" data-start="1027.16" data-end="1035.64" title="17:07">them for awareness at two to six hours, 24 to 36 hours, and 30 days. The overall outcome from </span><span class="segment" data-start="1035.64" data-end="1041.8" title="17:15">the study suggested that BIS guided anesthesia reduced the incidence of awareness with recall </span><span class="segment" data-start="1042.04" data-end="1050.28" title="17:22">approximately 82%. They also incidentally reported that the use of BIS led to a reduction of </span><span class="segment" data-start="1050.28" data-end="1059.0" title="17:30">the administration of volatile gases. The group, therefore concluded by recommending the use of BIS </span><span class="segment" data-start="1059.0" data-end="1065.72" title="17:39">in high-risk patients. It was estimated that if we were to routinely use awareness monitoring for </span><span class="segment" data-start="1065.72" data-end="1071.48" title="17:45">most patients in the United Kingdom, it would cost approximately £30 million annually. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="1072.12"><span class="t-timestamp">17:52</span></div>
-  <div class="t-body"><span class="segment" data-start="1072.12" data-end="1077.8" title="17:52">One of the most recent trials published was the B-Unaware trial, which was published in the </span><span class="segment" data-start="1077.8" data-end="1084.44" title="17:57">New England Journal of Medicine in 2008. This trial was based in Washington, the United States. </span><span class="segment" data-start="1085.16" data-end="1090.52" title="18:05">Once again all the patients included were considered to be at high risk of awareness under anesthesia. </span><span class="segment" data-start="1091.32" data-end="1096.28" title="18:11">There were various inclusion criteria which were based on factors such as previous history of </span><span class="segment" data-start="1096.28" data-end="1105.32" title="18:16">awareness, history of difficult intubation, ASA grades 4 or 5, Aortic stenosis or end-stage lung disease. </span><span class="segment" data-start="1106.36" data-end="1110.76" title="18:26">The patients were due to have a general anesthetic with a volatile agent, with or without </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="1110.76"><span class="t-timestamp">18:30</span></div>
-  <div class="t-body"><span class="segment" data-start="1110.76" data-end="1117.96" title="18:30">nitrous oxide. The patients were randomly split into two groups. The first used BIS monitoring </span><span class="segment" data-start="1117.96" data-end="1124.52" title="18:37">and target values between 40 and 60. The second group used entied agent monitoring targeting </span><span class="segment" data-start="1124.52" data-end="1132.12" title="18:44">max of between 0.7 and 1.3. Alarms were set to alert when values were outside of these ranges. </span><span class="segment" data-start="1133.16" data-end="1140.52" title="18:53">Awareness was assessed using questionnaires, a well-accepted method, at 24 hours, 72 hours, </span><span class="segment" data-start="1140.52" data-end="1146.92" title="19:00">and 30 days. Patients and investigators were unaware of the groups to which they had been assigned. </span><span class="segment" data-start="1147.56" data-end="1153.08" title="19:07">There were two definite cases of awareness in each group. The trial did not reproduce the </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="1153.08"><span class="t-timestamp">19:13</span></div>
-  <div class="t-body"><span class="segment" data-start="1153.08" data-end="1158.6" title="19:13">results of the previous B-aware trial and therefore did not share a reduction in the incidence of </span><span class="segment" data-start="1158.6" data-end="1165.08" title="19:18">awareness with BIS monitoring. Also the use of BIS did not result in a reduction in administration </span><span class="segment" data-start="1165.08" data-end="1171.72" title="19:25">of volatile anesthetic agents. Therefore findings do not support the use of BIS as part of monitoring </span><span class="segment" data-start="1172.04" data-end="1180.84" title="19:32">in standard practice. Can you tell me what entropy is? Entropy can be defined as being a quantitative </span><span class="segment" data-start="1180.84" data-end="1188.12" title="19:40">measurement of disorder in a system. Entropy monitoring for depth of anesthesia relies on assessing </span><span class="segment" data-start="1188.12" data-end="1195.64" title="19:48">the degree of irregularity in the EEG signals. The amount of irregularity decreases with increasing </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="1195.64"><span class="t-timestamp">19:55</span></div>
-  <div class="t-body"><span class="segment" data-start="1195.64" data-end="1202.28" title="19:55">brain levels of anesthetic drugs. The monitor itself is similar to a BIS monitor in that it consists </span><span class="segment" data-start="1202.28" data-end="1209.32" title="20:02">of EEG electrodes placed on the patient's forehead. The monitor processes the data collected and </span><span class="segment" data-start="1209.32" data-end="1217.0" title="20:09">produces two different numbers. These are response entropy, RE, and state entropy, SE. </span><span class="segment" data-start="1218.12" data-end="1224.04" title="20:18">The difference between these relates to the frequency band pass used. The response </span><span class="segment" data-start="1224.04" data-end="1230.28" title="20:24">entropy looks at higher frequency waves and this enables a faster response time from the monitor. </span><span class="segment" data-start="1231.08" data-end="1235.96" title="20:31">Studies have confirmed that entropy scores do relate to depth of anesthesia. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="1237.24"><span class="t-timestamp">20:37</span></div>
-  <div class="t-body"><span class="segment" data-start="1237.24" data-end="1239.8" title="20:37">How does entropy measurement compare with BIS? </span><span class="segment" data-start="1242.44" data-end="1247.4" title="20:42">Various studies have been performed trying to compare entropy and b's in measurement of depth </span><span class="segment" data-start="1247.4" data-end="1254.2" title="20:47">of anesthesia. Overall it seems that they both perform similarly and that there is concordance </span><span class="segment" data-start="1254.2" data-end="1261.48" title="20:54">between both and clinically observed depth of anesthesia. It is notable that both BIS scores and </span><span class="segment" data-start="1261.48" data-end="1268.68" title="21:01">entropy scores are unchanged by nitrous oxide use. What did you be doing in your day-to-day practice </span><span class="segment" data-start="1268.68" data-end="1276.44" title="21:08">to reduce the risk of awareness in your patients? The Royal College of Anesthetists published </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="1276.44"><span class="t-timestamp">21:16</span></div>
-  <div class="t-body"><span class="segment" data-start="1276.44" data-end="1284.92" title="21:16">recommendations in January 2006. They stated that close vigilance of all aspects of the patient </span><span class="segment" data-start="1284.92" data-end="1291.72" title="21:24">and anesthetic equipment, together with observations of changes to normal physiological variables, </span><span class="segment" data-start="1291.72" data-end="1295.08" title="21:31">should remain the principal factors in monitoring of awareness. </span><span class="segment" data-start="1296.52" data-end="1303.32" title="21:36">Therefore we should strive to give a good anesthetic firstly, checking all equipment thoroughly, </span><span class="segment" data-start="1303.4" data-end="1309.56" title="21:43">then select an appropriate anesthetic dose and identify those patients with increased requirements, </span><span class="segment" data-start="1310.28" data-end="1316.28" title="21:50">then monitor the Mach of the volatile throughout. We need to have an idea of what the Mach should be </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="1316.28"><span class="t-timestamp">21:56</span></div>
-  <div class="t-body"><span class="segment" data-start="1316.28" data-end="1322.68" title="21:56">for that particular patient. It is important to remember that because Mach is a laboratory </span><span class="segment" data-start="1322.68" data-end="1329.32" title="22:02">derived average, it is only a guide and one should not strive to follow Mach numbers if clinical </span><span class="segment" data-start="1329.32" data-end="1337.08" title="22:09">signs indicate otherwise. It has been suggested that a Mach of greater than 0.8 significantly reduces </span><span class="segment" data-start="1337.08" data-end="1344.2" title="22:17">the risk of awareness. The risk of awareness can also be reduced by considering an awake regional </span><span class="segment" data-start="1344.2" data-end="1351.24" title="22:24">technique, considering the use of benzodiazepines and avoiding neuromuscular blockade whenever possible. </span></div>
+<div class="preamble-block"><span class="segment a-seg" data-start="0.0" data-end="2.0" title="0:00">depth of anesthesia monitoring. </span><span class="segment a-seg" data-start="2.0" data-end="7.44" title="0:02">This is an important topic that you will be expected to know about, especially in </span><span class="segment a-seg" data-start="7.44" data-end="12.28" title="0:07">view of recent TV documentaries and films on the subject, which have brought it to the </span><span class="segment a-seg" data-start="12.28" data-end="14.28" title="0:12">attention of the general public. </span></div>
+<div class="qa-pair">
+<div class="q-block" data-start="14.28">
+  <div class="q-label">Q1</div>
+  <div class="q-body"><span class="segment q-seg" data-start="14.28" data-end="17.2" title="0:14">What is awareness? </span></div>
 </div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="17.2" data-end="21.72" title="0:17">There are a few definitions that you should be able to recite and convince the examinists </span></li>
+<li><span class="segment a-seg" data-start="21.72" data-end="25.88" title="0:21">that you have an understanding of this subject. </span></li>
+<li><span class="segment a-seg" data-start="26.28" data-end="31.6" title="0:26">Anesthetic awareness is a serious complication and one of the most feared complications of </span></li>
+<li><span class="segment a-seg" data-start="31.6" data-end="34.24" title="0:31">general anesthesia. </span></li>
+<li><span class="segment a-seg" data-start="34.24" data-end="41.92" title="0:34">Awareness can be classified into explicit memory, implicit memory and deliberate awareness. </span></li>
+<li><span class="segment a-seg" data-start="41.92" data-end="48.64" title="0:41">Explicit memory can be defined as the intentional or conscious recollection of experiences. </span></li>
+<li><span class="segment a-seg" data-start="48.64" data-end="54.2" title="0:48">Anesthetic awareness specifically refers to explicit memory of intraoperative events, </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="54.2">
+  <div class="q-label">Q2</div>
+  <div class="q-body"><span class="segment q-seg" data-start="54.2" data-end="58.12" title="0:54">which involve spontaneous or conscious recall. </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="58.12" data-end="64.0" title="0:58">The explicit recall may occur with or without the sensation of pain and recollections may </span></li>
+<li><span class="segment a-seg" data-start="64.0" data-end="71.36" title="1:04">be vivid, such as operating room conversation or vague, such as dreams or unpleasant sensations </span></li>
+<li><span class="segment a-seg" data-start="71.36" data-end="75.28" title="1:11">associated with the operation. </span></li>
+<li><span class="segment a-seg" data-start="75.28" data-end="79.08" title="1:15">Implicit memory is perception without conscious recall. </span></li>
+<li><span class="segment a-seg" data-start="79.08" data-end="85.08" title="1:19">The patient denies recall but may remember something under hypnosis or with repeated </span></li>
+<li><span class="segment a-seg" data-start="85.08" data-end="87.32" title="1:25">questioning. </span></li>
+<li><span class="segment a-seg" data-start="87.32" data-end="93.28" title="1:27">Deliberate awareness occurs when surgery is conducted under local or regional anesthesia. </span></li>
+<li><span class="segment a-seg" data-start="93.28" data-end="98.72" title="1:33">It also occurs during some neurosurgical procedures when the patient is woken up to assess where </span></li>
+<li><span class="segment a-seg" data-start="98.72" data-end="103.68" title="1:38">the surgery has affected or will affect important areas. </span></li>
+<li><span class="segment a-seg" data-start="103.68" data-end="108.64" title="1:43">This however is less common now since the introduction of devices to monitor evoked </span></li>
+<li><span class="segment a-seg" data-start="108.64" data-end="115.84" title="1:48">potentials intraoperatively. </span></li>
+<li><span class="segment a-seg" data-start="115.84" data-end="120.52" title="1:55">The incidence of awareness varies significantly depending on the clinical situation and the </span></li>
+<li><span class="segment a-seg" data-start="120.52" data-end="123.32" title="2:00">type of anesthetic given. </span></li>
+<li><span class="segment a-seg" data-start="123.32" data-end="129.04" title="2:03">Overall the incidence of awareness with explicit recall of severe pain is commonly quoted as </span></li>
+<li><span class="segment a-seg" data-start="129.04" data-end="136.0" title="2:09">being approximately 1 in 3,000 cases, that 0.03%. </span></li>
+<li><span class="segment a-seg" data-start="136.0" data-end="141.36" title="2:16">The incidence of awareness without recall of pain is much commoner and has been quoted </span></li>
+<li><span class="segment a-seg" data-start="141.36" data-end="145.52" title="2:21">as being from 0.1 to 0.7%. </span></li>
+<li><span class="segment a-seg" data-start="145.52" data-end="150.0" title="2:25">That's 1 in 142 to 1 in 1,000 cases. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="150.0">
+  <div class="q-label">Q3</div>
+  <div class="q-body"><span class="segment q-seg" data-start="150.0" data-end="155.28" title="2:30">However, it is important to note that some of these figures may be exaggerated by memories </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="155.28" data-end="160.16" title="2:35">generated during awakening or in recovery. </span></li>
+<li><span class="segment a-seg" data-start="160.16" data-end="165.4" title="2:40">Awareness is almost twice as likely when neuromuscular blockade is used. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="165.4">
+  <div class="q-label">Q4</div>
+  <div class="q-body"><span class="segment q-seg" data-start="165.4" data-end="170.6" title="2:45">What are the consequences of awareness for the patient? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="170.6" data-end="177.44" title="2:50">Awareness may have serious psychological repercussions for the patient, including insomnia, depression, </span></li>
+<li><span class="segment a-seg" data-start="177.44" data-end="182.96" title="2:57">post-traumatic stress disorder and a fear of future surgery. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="182.96">
+  <div class="q-label">Q5</div>
+  <div class="q-body"><span class="segment q-seg" data-start="182.96" data-end="186.92" title="3:02">What are the causes and risk factors for awareness? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="186.92" data-end="192.52" title="3:06">Try to classify the causes and risk factors into a way that you will easily remember. </span></li>
+<li><span class="segment a-seg" data-start="192.52" data-end="194.8" title="3:12">There are many ways to do this. </span></li>
+<li><span class="segment a-seg" data-start="194.8" data-end="200.8" title="3:14">One might be patient factors, anesthetic factors and surgical factors. </span></li>
+<li><span class="segment a-seg" data-start="200.8" data-end="206.44" title="3:20">Ultimately, awareness results from an inadequate anesthetic dose. </span></li>
+<li><span class="segment a-seg" data-start="206.44" data-end="212.08" title="3:26">Light anesthetics, especially where a patient has received a muscle relaxant, are associated </span></li>
+<li><span class="segment a-seg" data-start="212.08" data-end="215.36" title="3:32">with the highest risk of awareness. </span></li>
+<li><span class="segment a-seg" data-start="215.36" data-end="219.88" title="3:35">There are four main reasons why an anesthetic may be too light. </span></li>
+<li><span class="segment a-seg" data-start="219.88" data-end="224.28" title="3:39">Firstly, selecting an inadequate anesthetic dose. </span></li>
+<li><span class="segment a-seg" data-start="224.28" data-end="230.28" title="3:44">This may occur when a volatile agent is accidentally not given or started late. </span></li>
+<li><span class="segment a-seg" data-start="230.28" data-end="236.28" title="3:50">There may also be an inadequate dose when an anesthetic agent is withheld from a hypotensive </span></li>
+<li><span class="segment a-seg" data-start="236.28" data-end="241.2" title="3:56">patient in an attempt to maintain the blood pressure. </span></li>
+<li><span class="segment a-seg" data-start="241.2" data-end="246.56" title="4:01">It is important to remember when selecting a dose that patients vary significantly and </span></li>
+<li><span class="segment a-seg" data-start="246.56" data-end="250.92" title="4:06">often the chosen dose is based on patient averages. </span></li>
+<li><span class="segment a-seg" data-start="250.92" data-end="258.04" title="4:10">Mac is a population average and varies with age, gender and race. </span></li>
+<li><span class="segment a-seg" data-start="258.04" data-end="264.36" title="4:18">Secondly, some patients may have an element of resistance to anesthetic agents. </span></li>
+<li><span class="segment a-seg" data-start="264.36" data-end="272.24" title="4:24">Examples would include patients with pyrexia, hyperthyroidism, obesity, young age, alcohol </span></li>
+<li><span class="segment a-seg" data-start="272.24" data-end="276.36" title="4:32">excess and those using recreational drugs. </span></li>
+<li><span class="segment a-seg" data-start="276.36" data-end="281.32" title="4:36">Thirdly, there may be an equipment malfunction. </span></li>
+<li><span class="segment a-seg" data-start="281.32" data-end="287.24" title="4:41">Breathing systems may become disconnected and vaporizers may become empty and go unnoticed. </span></li>
+<li><span class="segment a-seg" data-start="287.24" data-end="292.44" title="4:47">For these reasons, a pressure-fail alarm should always be used when ventilating patients </span></li>
+<li><span class="segment a-seg" data-start="292.52" data-end="299.64" title="4:52">and volatile agent monitors with high and low alarm settings are widely available for use. </span></li>
+<li><span class="segment a-seg" data-start="299.64" data-end="305.64" title="4:59">If total intravenous anesthesia is being used, the infusion pump may malfunction or the </span></li>
+<li><span class="segment a-seg" data-start="305.64" data-end="308.0" title="5:05">cannula might tissue. </span></li>
+<li><span class="segment a-seg" data-start="308.0" data-end="311.24" title="5:08">All of these may lead to a state of awareness. </span></li>
+<li><span class="segment a-seg" data-start="311.24" data-end="317.84" title="5:11">Finally, signs of awareness which would normally lead the anesthetist to increase the anesthetic </span></li>
+<li><span class="segment a-seg" data-start="317.84" data-end="322.12" title="5:17">dose may be masked in some disease states. </span></li>
+<li><span class="segment a-seg" data-start="322.12" data-end="328.4" title="5:22">For example, patients taking beta blockers are less capable of mounting attackycardia. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="328.4">
+  <div class="q-label">Q6</div>
+  <div class="q-body"><span class="segment q-seg" data-start="328.4" data-end="333.28" title="5:28">When discussing causes and risk factors for awareness, it is important to mention the </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="333.28" data-end="338.96" title="5:33">type of surgery and the type of anesthetic being given. </span></li>
+<li><span class="segment a-seg" data-start="338.96" data-end="342.56" title="5:38">Certain operations carry a much higher risk of awareness. </span></li>
+<li><span class="segment a-seg" data-start="342.56" data-end="347.64" title="5:42">These are generally situations where there is a risk of patient instability, so therefore </span></li>
+<li><span class="segment a-seg" data-start="347.64" data-end="351.8" title="5:47">an insufficient dose of anesthetic agent may be given. </span></li>
+<li><span class="segment a-seg" data-start="351.8" data-end="358.4" title="5:51">These would include emergency general anesthetics as aeron sections, high risk cardiac surgery </span></li>
+<li><span class="segment a-seg" data-start="358.4" data-end="364.0" title="5:58">and acute trauma with hypoverlemia, where the incidence of awareness is quoted as being </span></li>
+<li><span class="segment a-seg" data-start="364.0" data-end="370.28" title="6:04">up to 1.5% depending on the severity of the trauma. </span></li>
+<li><span class="segment a-seg" data-start="370.28" data-end="376.28" title="6:10">Patients with airway issues including unexpected difficult intubation, or those undergoing rigid </span></li>
+<li><span class="segment a-seg" data-start="376.28" data-end="382.56" title="6:16">bronchoscopy are also at higher risk of awareness due to a failure to give any further anesthetic </span></li>
+<li><span class="segment a-seg" data-start="382.56" data-end="388.84" title="6:22">agent during the period where it is difficult to intubate or ventilate the patient. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="388.84">
+  <div class="q-label">Q7</div>
+  <div class="q-body"><span class="segment q-seg" data-start="388.84" data-end="393.16" title="6:28">What methods are you aware of for monitoring depth of anesthesia? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="393.16" data-end="398.2" title="6:33">Think of a way to classify these as there are many and you will then be less likely to </span></li>
+<li><span class="segment a-seg" data-start="398.2" data-end="402.36" title="6:38">forget the main important ones. </span></li>
+<li><span class="segment a-seg" data-start="402.36" data-end="409.44" title="6:42">These could be classified into simple techniques, those which use a form of EEG monitoring and </span></li>
+<li><span class="segment a-seg" data-start="409.44" data-end="412.0" title="6:49">other techniques. </span></li>
+<li><span class="segment a-seg" data-start="412.0" data-end="418.04" title="6:52">Simple techniques would include monitoring for clinical signs such as tachycardia, hypertension, </span></li>
+<li><span class="segment a-seg" data-start="418.04" data-end="421.44" title="6:58">tachyupnea, sweating and lacrimation. </span></li>
+<li><span class="segment a-seg" data-start="421.44" data-end="427.28" title="7:01">Entidal agent monitoring is a simple monitor that is routinely used in most anesthetics </span></li>
+<li><span class="segment a-seg" data-start="427.28" data-end="430.08" title="7:07">given in the United Kingdom. </span></li>
+<li><span class="segment a-seg" data-start="430.08" data-end="435.36" title="7:10">While this does not actually measure depth of anesthesia, it is a useful adjunct to ensure </span></li>
+<li><span class="segment a-seg" data-start="435.36" data-end="439.64" title="7:15">attainment of the desired concentration of anesthesia. </span></li>
+<li><span class="segment a-seg" data-start="439.64" data-end="444.92" title="7:19">It does, however, have its limitations and should therefore only be used as a guide in </span></li>
+<li><span class="segment a-seg" data-start="444.92" data-end="449.08" title="7:24">conjunction with other clinical signs. </span></li>
+<li><span class="segment a-seg" data-start="449.08" data-end="455.88" title="7:29">Techniques which use a form of EEG monitoring would include pure EEG analysis, cerebral function </span></li>
+<li><span class="segment a-seg" data-start="455.88" data-end="465.84" title="7:35">monitors, frequency domain analysis, compressed spectral array, bi-spectoral analysis and entropy. </span></li>
+<li><span class="segment a-seg" data-start="465.84" data-end="472.24" title="7:45">Other techniques include the isolated forearm technique, lower esophageal contractility, </span></li>
+<li><span class="segment a-seg" data-start="472.24" data-end="479.12" title="7:52">somatosensory evoked potentials and frontalis scalp EMG. </span></li>
+<li><span class="segment a-seg" data-start="479.12" data-end="485.0" title="7:59">Pure EEG tracings are obtained using a standard 19 electrode method. </span></li>
+<li><span class="segment a-seg" data-start="485.0" data-end="490.2" title="8:05">They are therefore time-consuming, impractical and require an expert to interpret them, </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="490.2">
+  <div class="q-label">Q8</div>
+  <div class="q-body"><span class="segment q-seg" data-start="490.2" data-end="494.44" title="8:10">which limits their usefulness for monitoring depth of anesthesia. </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="494.44" data-end="500.4" title="8:14">They also suffer from the fact that different anesthetic agents generate different EEG patterns </span></li>
+<li><span class="segment a-seg" data-start="500.4" data-end="509.28" title="8:20">and that various events such as hypoxia, hypotension and hypercarbia also affect the EEG pattern. </span></li>
+<li><span class="segment a-seg" data-start="509.28" data-end="514.84" title="8:29">Both of these further complicate interpretation making it impractical to use these for routine </span></li>
+<li><span class="segment a-seg" data-start="514.84" data-end="516.88" title="8:34">monitoring. </span></li>
+<li><span class="segment a-seg" data-start="516.88" data-end="522.56" title="8:36">Serial function monitors, frequency domain analysis and compressed spectral array are all </span></li>
+<li><span class="segment a-seg" data-start="522.56" data-end="529.84" title="8:42">monitors which process and modify the conventional EEG to simplify the information. </span></li>
+<li><span class="segment a-seg" data-start="529.84" data-end="537.04" title="8:49">Furrier analysis is used to process the raw EEG data into its component sign waves. </span></li>
+<li><span class="segment a-seg" data-start="537.04" data-end="542.32" title="8:57">This is then further analyzed with respect to the frequency distribution, the power contained </span></li>
+<li><span class="segment a-seg" data-start="542.32" data-end="547.68" title="9:02">within a waveform i.e. its amplitude and the relationships between waves of different </span></li>
+<li><span class="segment a-seg" data-start="547.68" data-end="549.68" title="9:07">frequencies. </span></li>
+<li><span class="segment a-seg" data-start="549.68" data-end="555.04" title="9:09">The output is displayed in different ways but overall leads to a trace that is easier </span></li>
+<li><span class="segment a-seg" data-start="555.04" data-end="557.96" title="9:15">to interpret than the raw EEG. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="557.96">
+  <div class="q-label">Q9</div>
+  <div class="q-body"><span class="segment q-seg" data-start="557.96" data-end="565.16" title="9:17">However, none of these monitors are widely available for depth of anesthesia monitoring. </span><span class="segment q-seg" data-start="565.16" data-end="570.76" title="9:25">How useful is the monitor for lower esophageal contractility? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="570.76" data-end="576.56" title="9:30">There are two types of smooth muscle contraction that can be detected in the lower esophagus. </span></li>
+<li><span class="segment a-seg" data-start="576.56" data-end="582.12" title="9:36">These are spontaneous contractions and provoked contractions. </span></li>
+<li><span class="segment a-seg" data-start="582.12" data-end="587.8" title="9:42">Both of these reduce in latency and amplitude during a general anesthetic. </span></li>
+<li><span class="segment a-seg" data-start="587.8" data-end="592.68" title="9:47">The provoked contractions result from a sudden distinction of the esophagus which can be </span></li>
+<li><span class="segment a-seg" data-start="592.68" data-end="598.28" title="9:52">achieved by rapidly inflating a balloon catheter placed in the lower esophagus. </span></li>
+<li><span class="segment a-seg" data-start="598.28" data-end="604.28" title="9:58">The contraction caused is detected by a more distally placed pressure transducer. </span></li>
+<li><span class="segment a-seg" data-start="604.28" data-end="609.6" title="10:04">The evidence for using this as a depth of anesthesia monitor is fairly limited and it </span></li>
+<li><span class="segment a-seg" data-start="609.6" data-end="614.04" title="10:09">is generally thought not to be very reliable. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="614.04">
+  <div class="q-label">Q10</div>
+  <div class="q-body"><span class="segment q-seg" data-start="614.04" data-end="617.64" title="10:14">What do you know about the isolated forearm technique? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="617.64" data-end="624.04" title="10:17">This is small print information so don't worry if you are being asked this. </span></li>
+<li><span class="segment a-seg" data-start="624.04" data-end="629.56" title="10:24">This is a technique which is mainly historical and of interest for research. </span></li>
+<li><span class="segment a-seg" data-start="629.56" data-end="634.44" title="10:29">A tornocay is placed on the patient's upper arm and is inflated above systolic blood </span></li>
+<li><span class="segment a-seg" data-start="634.44" data-end="637.6" title="10:34">pressure prior to giving muscle relaxants. </span></li>
+<li><span class="segment a-seg" data-start="637.6" data-end="643.64" title="10:37">Therefore the arm with the tornocay applied theoretically receives no muscle relaxant. </span></li>
+<li><span class="segment a-seg" data-start="643.64" data-end="649.52" title="10:43">Prior to induction of anesthesia the patient is informed to move their arm if they are awake. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="649.6">
+  <div class="q-label">Q11</div>
+  <div class="q-body"><span class="segment q-seg" data-start="649.6" data-end="656.16" title="10:49">However research has shown that movement of the arm may not necessarily indicate explicit awareness. </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="656.16" data-end="661.68" title="10:56">I.e. the patient may have no recollection of moving their arm interpretively. </span></li>
+<li><span class="segment a-seg" data-start="661.68" data-end="668.0" title="11:01">It could also be argued that a response to command or spontaneous movement during surgery </span></li>
+<li><span class="segment a-seg" data-start="668.0" data-end="673.28" title="11:08">is a late sign when attempting to prevent awareness and therefore this technique is not </span></li>
+<li><span class="segment a-seg" data-start="673.28" data-end="675.72" title="11:13">particularly helpful. </span></li>
+<li><span class="segment a-seg" data-start="675.72" data-end="682.28" title="11:15">After 15 to 20 minutes the tornocay has to be let down to prevent limb ischemia and therefore </span></li>
+<li><span class="segment a-seg" data-start="682.28" data-end="684.6" title="11:22">temporary limb paralysis. </span></li>
+<li><span class="segment a-seg" data-start="684.6" data-end="689.08" title="11:24">It can be reinflated if further relaxant is required. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="689.08">
+  <div class="q-label">Q12</div>
+  <div class="q-body"><span class="segment q-seg" data-start="689.08" data-end="694.2" title="11:29">How useful are a vote potentials at estimating depth of anesthesia? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="694.2" data-end="698.52" title="11:34">Of all the other techniques this is the one to know something about. </span></li>
+<li><span class="segment a-seg" data-start="698.52" data-end="703.88" title="11:38">There is renewed research particularly in auditory vote potentials for use as a depth of </span></li>
+<li><span class="segment a-seg" data-start="703.88" data-end="707.56" title="11:43">anesthesia monitor. </span></li>
+<li><span class="segment a-seg" data-start="707.56" data-end="713.28" title="11:47">Evoked potential monitors measure electrical activity in certain areas of the brain in response </span></li>
+<li><span class="segment a-seg" data-start="713.28" data-end="717.72" title="11:53">to stimulation of specific sensory pathways. </span></li>
+<li><span class="segment a-seg" data-start="717.72" data-end="723.8" title="11:57">A super maximal stimulus is applied to a peripheral nerve whilst a recording scalp electrode </span></li>
+<li><span class="segment a-seg" data-start="723.8" data-end="727.68" title="12:03">is placed over the appropriate sensory area. </span></li>
+<li><span class="segment a-seg" data-start="727.68" data-end="733.24" title="12:07">Most anesthetic agents increase the latency and decrease the amplitude of these responses </span></li>
+<li><span class="segment a-seg" data-start="733.32" data-end="736.52" title="12:13">in a dose dependent manner. </span></li>
+<li><span class="segment a-seg" data-start="736.52" data-end="741.96" title="12:16">Visual evoked potentials are less reliable than auditory evoked potentials. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="741.96">
+  <div class="q-label">Q13</div>
+  <div class="q-body"><span class="segment q-seg" data-start="741.96" data-end="748.8" title="12:21">When using auditory evoked potentials a repetitive auditory stimulus at 6 to 10 hertz is played </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="748.8" data-end="751.72" title="12:28">to the patient through headphones. </span></li>
+<li><span class="segment a-seg" data-start="751.72" data-end="755.96" title="12:31">A response waveform can then be plotted against time. </span></li>
+<li><span class="segment a-seg" data-start="755.96" data-end="762.2" title="12:35">The repeated sampling enables the signal to be identified from the background EEG. </span></li>
+<li><span class="segment a-seg" data-start="762.2" data-end="767.16" title="12:42">The waveform formed consists of three waveform peaks. </span></li>
+<li><span class="segment a-seg" data-start="767.16" data-end="770.04" title="12:47">Firstly, the brain stem response. </span></li>
+<li><span class="segment a-seg" data-start="770.04" data-end="773.16" title="12:50">Secondly, the mid-cautical response. </span></li>
+<li><span class="segment a-seg" data-start="773.16" data-end="776.52" title="12:53">And finally, the late-cautical response. </span></li>
+<li><span class="segment a-seg" data-start="776.52" data-end="782.76" title="12:56">The brain stem and late-cautical responses do not correspond with depth of anesthesia. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="782.76">
+  <div class="q-label">Q14</div>
+  <div class="q-body"><span class="segment q-seg" data-start="782.76" data-end="785.88" title="13:02">However, the mid-cautical response does. </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="785.88" data-end="792.12" title="13:05">There is a decrease in amplitude and an increase in latency of waves in a dose dependent manner. </span></li>
+<li><span class="segment a-seg" data-start="792.36" data-end="798.44" title="13:12">By processing the raw waveform, the auditory evoked potential index can be calculated, </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="798.44">
+  <div class="q-label">Q15</div>
+  <div class="q-body"><span class="segment q-seg" data-start="798.44" data-end="804.44" title="13:18">which gives a number which might be more meaningful to interpret than the raw waveform. </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="804.44" data-end="808.36" title="13:24">A value of greater than 80 would indicate an awake patient, </span></li>
+<li><span class="segment a-seg" data-start="808.36" data-end="813.32" title="13:28">and a value of less than 50 would indicate an anesthetized patient. </span></li>
+<li><span class="segment a-seg" data-start="813.32" data-end="821.32" title="13:33">There is a sudden increase in the AEP index when a patient changes from being asleep to being awake. </span></li>
+<li><span class="segment a-seg" data-start="821.32" data-end="827.64" title="13:41">Therefore, it can be easier to distinguish between an asleep patient and an awake patient </span></li>
+<li><span class="segment a-seg" data-start="827.64" data-end="830.12" title="13:47">than with other monitors, such as the BIS. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="831.08">
+  <div class="q-label">Q16</div>
+  <div class="q-body"><span class="segment q-seg" data-start="831.08" data-end="836.6" title="13:51">However, there is interpatient variability for the index value at which this change takes place. </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="837.24" data-end="841.96" title="13:57">Therefore, it is difficult to define a sensitive and specific cutoff value, </span></li>
+<li><span class="segment a-seg" data-start="841.96" data-end="847.24" title="14:01">whilst in an individual patient, the pattern is very reproducible with awakening repeatedly </span></li>
+<li><span class="segment a-seg" data-start="847.24" data-end="849.24" title="14:07">occurring at the same index values. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="849.72">
+  <div class="q-label">Q17</div>
+  <div class="q-body"><span class="segment q-seg" data-start="849.72" data-end="852.68" title="14:09">What do you know about BIS monitoring? </span><span class="segment q-seg" data-start="852.68" data-end="856.28" title="14:12">Are you aware of any recent studies into the use of BIS? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="856.28" data-end="863.88" title="14:16">There are two or three reasonably important recent studies that you will probably be expected to have </span></li>
+<li><span class="segment a-seg" data-start="863.88" data-end="866.76" title="14:23">heard of, even if you don't know the details well. </span></li>
+<li><span class="segment a-seg" data-start="869.8" data-end="876.04" title="14:29">The BIS monitor displays a real-time EEG trace from the fronto temporal electrodes, </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="876.04">
+  <div class="q-label">Q18</div>
+  <div class="q-body"><span class="segment q-seg" data-start="876.04" data-end="880.36" title="14:36">which is then processed into a number on a scale of 0 to 100. </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="881.16" data-end="888.52" title="14:41">A 100 represents normal cortical activity, 0 represents complete absence of cortical activity, </span></li>
+<li><span class="segment a-seg" data-start="888.52" data-end="893.8" title="14:48">and a value of less than 60 is thought to represent a value below which there is a very low </span></li>
+<li><span class="segment a-seg" data-start="893.8" data-end="896.04" title="14:53">probability of post-operative recall. </span></li>
+<li><span class="segment a-seg" data-start="897.4" data-end="899.88" title="14:57">There are several limitations to BIS monitoring. </span></li>
+<li><span class="segment a-seg" data-start="900.68" data-end="903.8" title="15:00">Firstly, there is no gold standard to compare BIS 2. </span></li>
+<li><span class="segment a-seg" data-start="904.44" data-end="907.48" title="15:04">It is therefore difficult to evaluate its effectiveness. </span></li>
+<li><span class="segment a-seg" data-start="908.44" data-end="913.08" title="15:08">The values themselves tend to have significant interpatient variability, </span></li>
+<li><span class="segment a-seg" data-start="913.08" data-end="919.72" title="15:13">whilst one patient is asleep at a BIS value of 75, another may still be awake at a value of 70. </span></li>
+<li><span class="segment a-seg" data-start="920.68" data-end="926.6" title="15:20">The BIS values show a continuum from awake to asleep, and therefore there is no clear cut point, </span></li>
+<li><span class="segment a-seg" data-start="927.24" data-end="932.68" title="15:27">unlike auditory evoke potentials, where transition is made from asleep to awake. </span></li>
+<li><span class="segment a-seg" data-start="934.2" data-end="940.44" title="15:34">BIS values demonstrate a dose response relationship with inhalational and hypnotic </span></li>
+<li><span class="segment a-seg" data-start="940.44" data-end="945.8" title="15:40">intravenous agents, which is independent of the agent used and correlates with clinical </span></li>
+<li><span class="segment a-seg" data-start="945.8" data-end="951.72" title="15:45">assessments of level of consciousness. The one exception to this is when using ketamine, </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="951.72">
+  <div class="q-label">Q19</div>
+  <div class="q-body"><span class="segment q-seg" data-start="951.72" data-end="957.08" title="15:51">which causes EEG activation and therefore complicates BIS interpretation. </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="957.48" data-end="964.76" title="15:57">Studies have shown that BIS values decrease when muscle relaxation drugs are given, </span></li>
+<li><span class="segment a-seg" data-start="964.76" data-end="970.2" title="16:04">suggesting that the patient is at a deeper level of anesthesia, whilst the values do not change </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="970.2">
+  <div class="q-label">Q20</div>
+  <div class="q-body"><span class="segment q-seg" data-start="970.2" data-end="975.72" title="16:10">when opiate drugs or nitrous oxide are given, suggesting no change in depth of anesthesia. </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="976.6" data-end="981.64" title="16:16">These findings are obviously conflicting with what we know from clinical experience, </span></li>
+<li><span class="segment a-seg" data-start="981.64" data-end="986.68" title="16:21">and should therefore make the anesthetist cautious if delivering an anesthetic to a targeted </span></li>
+<li><span class="segment a-seg" data-start="986.68" data-end="992.76" title="16:26">number. There are two major recent trials assessing the effectiveness of BIS monitoring. </span></li>
+<li><span class="segment a-seg" data-start="993.48" data-end="998.92" title="16:33">The first dimension is the B-aware trial, published in the Lancet in 2004. </span></li>
+<li><span class="segment a-seg" data-start="999.64" data-end="1004.28" title="16:39">This was a large, prospective, randomized, double-blind, multi-center trial. </span></li>
+<li><span class="segment a-seg" data-start="1005.0" data-end="1010.6" title="16:45">The trial group were high-awareness risk patients undergoing a variety of procedures, </span></li>
+<li><span class="segment a-seg" data-start="1010.6" data-end="1016.44" title="16:50">including cardiac, trauma and obstetric surgery. They were randomly assigned to receive </span></li>
+<li><span class="segment a-seg" data-start="1016.44" data-end="1020.84" title="16:56">standard general anesthetics or a general anesthetic with BIS monitoring. </span></li>
+<li><span class="segment a-seg" data-start="1022.12" data-end="1027.16" title="17:02">The patients were blinded to the protocol they received, as were the observers who assessed </span></li>
+<li><span class="segment a-seg" data-start="1027.16" data-end="1035.64" title="17:07">them for awareness at two to six hours, 24 to 36 hours, and 30 days. The overall outcome from </span></li>
+<li><span class="segment a-seg" data-start="1035.64" data-end="1041.8" title="17:15">the study suggested that BIS guided anesthesia reduced the incidence of awareness with recall </span></li>
+<li><span class="segment a-seg" data-start="1042.04" data-end="1050.28" title="17:22">approximately 82%. They also incidentally reported that the use of BIS led to a reduction of </span></li>
+<li><span class="segment a-seg" data-start="1050.28" data-end="1059.0" title="17:30">the administration of volatile gases. The group, therefore concluded by recommending the use of BIS </span></li>
+<li><span class="segment a-seg" data-start="1059.0" data-end="1065.72" title="17:39">in high-risk patients. It was estimated that if we were to routinely use awareness monitoring for </span></li>
+<li><span class="segment a-seg" data-start="1065.72" data-end="1071.48" title="17:45">most patients in the United Kingdom, it would cost approximately £30 million annually. </span></li>
+<li><span class="segment a-seg" data-start="1072.12" data-end="1077.8" title="17:52">One of the most recent trials published was the B-Unaware trial, which was published in the </span></li>
+<li><span class="segment a-seg" data-start="1077.8" data-end="1084.44" title="17:57">New England Journal of Medicine in 2008. This trial was based in Washington, the United States. </span></li>
+<li><span class="segment a-seg" data-start="1085.16" data-end="1090.52" title="18:05">Once again all the patients included were considered to be at high risk of awareness under anesthesia. </span></li>
+<li><span class="segment a-seg" data-start="1091.32" data-end="1096.28" title="18:11">There were various inclusion criteria which were based on factors such as previous history of </span></li>
+<li><span class="segment a-seg" data-start="1096.28" data-end="1105.32" title="18:16">awareness, history of difficult intubation, ASA grades 4 or 5, Aortic stenosis or end-stage lung disease. </span></li>
+<li><span class="segment a-seg" data-start="1106.36" data-end="1110.76" title="18:26">The patients were due to have a general anesthetic with a volatile agent, with or without </span></li>
+<li><span class="segment a-seg" data-start="1110.76" data-end="1117.96" title="18:30">nitrous oxide. The patients were randomly split into two groups. The first used BIS monitoring </span></li>
+<li><span class="segment a-seg" data-start="1117.96" data-end="1124.52" title="18:37">and target values between 40 and 60. The second group used entied agent monitoring targeting </span></li>
+<li><span class="segment a-seg" data-start="1124.52" data-end="1132.12" title="18:44">max of between 0.7 and 1.3. Alarms were set to alert when values were outside of these ranges. </span></li>
+<li><span class="segment a-seg" data-start="1133.16" data-end="1140.52" title="18:53">Awareness was assessed using questionnaires, a well-accepted method, at 24 hours, 72 hours, </span></li>
+<li><span class="segment a-seg" data-start="1140.52" data-end="1146.92" title="19:00">and 30 days. Patients and investigators were unaware of the groups to which they had been assigned. </span></li>
+<li><span class="segment a-seg" data-start="1147.56" data-end="1153.08" title="19:07">There were two definite cases of awareness in each group. The trial did not reproduce the </span></li>
+<li><span class="segment a-seg" data-start="1153.08" data-end="1158.6" title="19:13">results of the previous B-aware trial and therefore did not share a reduction in the incidence of </span></li>
+<li><span class="segment a-seg" data-start="1158.6" data-end="1165.08" title="19:18">awareness with BIS monitoring. Also the use of BIS did not result in a reduction in administration </span></li>
+<li><span class="segment a-seg" data-start="1165.08" data-end="1171.72" title="19:25">of volatile anesthetic agents. Therefore findings do not support the use of BIS as part of monitoring </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="1172.04">
+  <div class="q-label">Q21</div>
+  <div class="q-body"><span class="segment q-seg" data-start="1172.04" data-end="1176.929" title="19:32">in standard practice. Can you tell me what entropy is? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="1176.929" data-end="1180.84" title="19:36">Entropy can be defined as being a quantitative </span></li>
+<li><span class="segment a-seg" data-start="1180.84" data-end="1188.12" title="19:40">measurement of disorder in a system. Entropy monitoring for depth of anesthesia relies on assessing </span></li>
+<li><span class="segment a-seg" data-start="1188.12" data-end="1195.64" title="19:48">the degree of irregularity in the EEG signals. The amount of irregularity decreases with increasing </span></li>
+<li><span class="segment a-seg" data-start="1195.64" data-end="1202.28" title="19:55">brain levels of anesthetic drugs. The monitor itself is similar to a BIS monitor in that it consists </span></li>
+<li><span class="segment a-seg" data-start="1202.28" data-end="1209.32" title="20:02">of EEG electrodes placed on the patient's forehead. The monitor processes the data collected and </span></li>
+<li><span class="segment a-seg" data-start="1209.32" data-end="1217.0" title="20:09">produces two different numbers. These are response entropy, RE, and state entropy, SE. </span></li>
+<li><span class="segment a-seg" data-start="1218.12" data-end="1224.04" title="20:18">The difference between these relates to the frequency band pass used. The response </span></li>
+<li><span class="segment a-seg" data-start="1224.04" data-end="1230.28" title="20:24">entropy looks at higher frequency waves and this enables a faster response time from the monitor. </span></li>
+<li><span class="segment a-seg" data-start="1231.08" data-end="1235.96" title="20:31">Studies have confirmed that entropy scores do relate to depth of anesthesia. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="1237.24">
+  <div class="q-label">Q22</div>
+  <div class="q-body"><span class="segment q-seg" data-start="1237.24" data-end="1239.8" title="20:37">How does entropy measurement compare with BIS? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="1242.44" data-end="1247.4" title="20:42">Various studies have been performed trying to compare entropy and b's in measurement of depth </span></li>
+<li><span class="segment a-seg" data-start="1247.4" data-end="1254.2" title="20:47">of anesthesia. Overall it seems that they both perform similarly and that there is concordance </span></li>
+<li><span class="segment a-seg" data-start="1254.2" data-end="1261.48" title="20:54">between both and clinically observed depth of anesthesia. It is notable that both BIS scores and </span></li>
+<li><span class="segment a-seg" data-start="1261.48" data-end="1268.68" title="21:01">entropy scores are unchanged by nitrous oxide use. What did you be doing in your day-to-day practice </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="1268.68">
+  <div class="q-label">Q23</div>
+  <div class="q-body"><span class="segment q-seg" data-start="1268.68" data-end="1273.336" title="21:08">to reduce the risk of awareness in your patients? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="1273.336" data-end="1276.44" title="21:13">The Royal College of Anesthetists published </span></li>
+<li><span class="segment a-seg" data-start="1276.44" data-end="1284.92" title="21:16">recommendations in January 2006. They stated that close vigilance of all aspects of the patient </span></li>
+<li><span class="segment a-seg" data-start="1284.92" data-end="1291.72" title="21:24">and anesthetic equipment, together with observations of changes to normal physiological variables, </span></li>
+<li><span class="segment a-seg" data-start="1291.72" data-end="1295.08" title="21:31">should remain the principal factors in monitoring of awareness. </span></li>
+<li><span class="segment a-seg" data-start="1296.52" data-end="1303.32" title="21:36">Therefore we should strive to give a good anesthetic firstly, checking all equipment thoroughly, </span></li>
+<li><span class="segment a-seg" data-start="1303.4" data-end="1309.56" title="21:43">then select an appropriate anesthetic dose and identify those patients with increased requirements, </span></li>
+<li><span class="segment a-seg" data-start="1310.28" data-end="1316.28" title="21:50">then monitor the Mach of the volatile throughout. We need to have an idea of what the Mach should be </span></li>
+<li><span class="segment a-seg" data-start="1316.28" data-end="1322.68" title="21:56">for that particular patient. It is important to remember that because Mach is a laboratory </span></li>
+<li><span class="segment a-seg" data-start="1322.68" data-end="1329.32" title="22:02">derived average, it is only a guide and one should not strive to follow Mach numbers if clinical </span></li>
+<li><span class="segment a-seg" data-start="1329.32" data-end="1337.08" title="22:09">signs indicate otherwise. It has been suggested that a Mach of greater than 0.8 significantly reduces </span></li>
+<li><span class="segment a-seg" data-start="1337.08" data-end="1344.2" title="22:17">the risk of awareness. The risk of awareness can also be reduced by considering an awake regional </span></li>
+<li><span class="segment a-seg" data-start="1344.2" data-end="1351.24" title="22:24">technique, considering the use of benzodiazepines and avoiding neuromuscular blockade whenever possible. </span></li>
+  </ul>
+</div>
+</div>
+
 </div>
 
 <div class="subtitle-bar">
-  <span class="subtitle-text empty" id="subtitle-text">Play audio to see live subtitles&#8230;</span>
+  <span id="subtitle-text" class="empty">Play audio to see live subtitles&#8230;</span>
 </div>
 
 <script>
-
-const audio    = document.getElementById('audio');
-const allSegs  = Array.from(document.querySelectorAll('.segment'));
-const allBlocks = Array.from(document.querySelectorAll('.t-block'));
+const audio      = document.getElementById('audio');
+const allSegs    = Array.from(document.querySelectorAll('.segment'));
 const subtitleEl = document.getElementById('subtitle-text');
-let activeSegEl   = null;
-let activeBlockEl = null;
-let searchMatches = [];
-let searchIdx     = 0;
+let activeSegEl  = null;
+let searchMatches = [], searchIdx = 0;
 
-// Duration display
 audio.addEventListener('loadedmetadata', () => {
   const m = Math.floor(audio.duration / 60);
   const s = Math.floor(audio.duration %% 60).toString().padStart(2,'0');
   document.getElementById('dur').textContent = m + ':' + s;
 });
 
-// Seek helper
-function seekTo(t) {
-  audio.currentTime = t;
-  audio.play();
-}
+function seekTo(t) { audio.currentTime = t; audio.play(); }
 
-// Block gutter click
-document.querySelectorAll('.t-gutter').forEach(g => {
-  g.addEventListener('click', () => seekTo(parseFloat(g.dataset.start)));
+// Q-block header click
+document.querySelectorAll('.q-block').forEach(q => {
+  q.addEventListener('click', e => {
+    if (!e.target.classList.contains('segment')) seekTo(parseFloat(q.dataset.start));
+  });
 });
 
-// Segment click
+// Individual segment click
 allSegs.forEach(s => {
-  s.addEventListener('click', e => {
-    e.stopPropagation();
-    seekTo(parseFloat(s.dataset.start));
-  });
+  s.addEventListener('click', e => { e.stopPropagation(); seekTo(parseFloat(s.dataset.start)); });
 });
 
 // Real-time tracking
 audio.addEventListener('timeupdate', () => {
   const t = audio.currentTime;
-
-  // Find active segment (last one whose start <= t)
   let found = null;
   for (let i = allSegs.length - 1; i >= 0; i--) {
     if (parseFloat(allSegs[i].dataset.start) <= t) { found = allSegs[i]; break; }
   }
-
   if (found && found !== activeSegEl) {
-    // Clear previous
-    if (activeSegEl) activeSegEl.classList.remove('active');
-    if (activeBlockEl) {
-      activeBlockEl.classList.remove('block-active');
-      const pg = activeBlockEl.querySelector('.t-gutter');
-      if (pg) pg.classList.remove('gutter-active');
+    if (activeSegEl) {
+      activeSegEl.classList.remove('active');
+      const pli = activeSegEl.closest('li');
+      if (pli) pli.classList.remove('li-active');
+      const pq = activeSegEl.closest('.q-block');
+      if (pq) pq.classList.remove('q-active');
     }
-    // Set new
     found.classList.add('active');
-    const block = found.closest('.t-block');
-    if (block) {
-      block.classList.add('block-active');
-      const g = block.querySelector('.t-gutter');
-      if (g) g.classList.add('gutter-active');
-      activeBlockEl = block;
-    }
+    const li = found.closest('li');
+    if (li) li.classList.add('li-active');
+    const qb = found.closest('.q-block');
+    if (qb) qb.classList.add('q-active');
     activeSegEl = found;
 
-    // Update subtitle
     subtitleEl.textContent = found.textContent.trim();
     subtitleEl.classList.remove('empty');
 
-    // Auto-scroll (only when not searching)
-    if (!document.getElementById('search').value) {
+    if (!document.getElementById('search').value)
       found.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }
   }
 });
 
@@ -410,17 +731,13 @@ searchInput.addEventListener('keydown', e => {
     el.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
 });
-
 function runSearch() {
   const q = searchInput.value.trim().toLowerCase();
   allSegs.forEach(s => s.classList.remove('search-match','search-current'));
   searchMatches = [];
   if (!q) return;
   allSegs.forEach(s => {
-    if (s.textContent.toLowerCase().includes(q)) {
-      s.classList.add('search-match');
-      searchMatches.push(s);
-    }
+    if (s.textContent.toLowerCase().includes(q)) { s.classList.add('search-match'); searchMatches.push(s); }
   });
   if (!searchMatches.length) return;
   searchIdx = 0;

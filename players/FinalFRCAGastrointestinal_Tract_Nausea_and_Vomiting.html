@@ -5,10 +5,19 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Gastrointestinal Tract — Nausea and Vomiting</title>
 <style>
-
   :root {
-    --accent:    #f97316;
-    --body-bg:   #f1f5f9;
+    --q-bg:       #1e3a5f;
+    --q-text:     #ffffff;
+    --q-label:    #60a5fa;
+    --a-bg:       #ffffff;
+    --a-border:   #e2e8f0;
+    --a-label:    #059669;
+    --active-q:   #f97316;
+    --active-a:   #dbeafe;
+    --accent:     #f97316;
+    --body-bg:    #f1f5f9;
+    --pre-bg:     #fef9c3;
+    --pre-border: #fcd34d;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
@@ -40,22 +49,9 @@
     margin-bottom: 4px;
     letter-spacing: 0.01em;
   }
-  .header-sub {
-    font-size: 0.72rem;
-    color: #94a3b8;
-    font-style: italic;
-  }
-  audio {
-    height: 36px;
-    accent-color: var(--accent);
-    flex-shrink: 0;
-  }
-  .back-link {
-    font-size: 0.8rem;
-    color: #94a3b8;
-    text-decoration: none;
-    white-space: nowrap;
-  }
+  .header-sub { font-size: 0.72rem; color: #94a3b8; font-style: italic; }
+  audio { height: 36px; accent-color: var(--accent); flex-shrink: 0; }
+  .back-link { font-size: 0.8rem; color: #94a3b8; text-decoration: none; white-space: nowrap; }
   .back-link:hover { color: #60a5fa; }
 
   /* ── Toolbar ── */
@@ -69,30 +65,17 @@
     border-bottom: 1px solid #334155;
   }
   .toolbar input {
-    flex: 1;
-    max-width: 380px;
+    flex: 1; max-width: 380px;
     padding: 5px 11px;
-    border: 1px solid #475569;
-    border-radius: 6px;
-    background: #0f172a;
-    color: #e2e8f0;
-    font-size: 0.83rem;
-    outline: none;
+    border: 1px solid #475569; border-radius: 6px;
+    background: #0f172a; color: #e2e8f0; font-size: 0.83rem; outline: none;
   }
   .toolbar input:focus { border-color: var(--accent); }
   .toolbar input::placeholder { color: #64748b; }
-  .stats {
-    font-size: 0.72rem;
-    color: #64748b;
-    white-space: nowrap;
-  }
+  .stats { font-size: 0.72rem; color: #64748b; white-space: nowrap; }
 
   /* ── Scroll area ── */
-  .scroll-area {
-    flex: 1;
-    overflow-y: auto;
-    padding: 20px;
-  }
+  .scroll-area { flex: 1; overflow-y: auto; padding: 20px; }
   .scroll-area::-webkit-scrollbar { width: 6px; }
   .scroll-area::-webkit-scrollbar-track { background: transparent; }
   .scroll-area::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
@@ -107,68 +90,77 @@
     display: flex;
     align-items: center;
   }
-  .subtitle-text {
-    font-size: 0.9rem;
-    color: #e2e8f0;
-    line-height: 1.5;
-    font-style: italic;
-  }
-  .subtitle-text.empty { color: #475569; }
+  #subtitle-text { font-size: 0.88rem; color: #e2e8f0; line-height: 1.5; font-style: italic; }
+  #subtitle-text.empty { color: #475569; }
 
-  /* ── Transcript blocks ── */
-  .t-block {
-    background: #ffffff;
-    border: 1px solid #e2e8f0;
-    border-radius: 10px;
-    margin-bottom: 14px;
-    overflow: hidden;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
-    display: flex;
-  }
-  .t-block.block-active {
-    border-color: var(--accent);
-    box-shadow: 0 0 0 2px rgba(37,99,235,0.15);
-  }
-  .t-gutter {
-    background: #0f172a;
-    width: 52px;
-    flex-shrink: 0;
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
-    padding-top: 14px;
-    cursor: pointer;
-  }
-  .t-gutter:hover { background: #1e293b; }
-  .t-timestamp {
-    font-size: 0.7rem;
-    color: #64748b;
-    font-family: monospace;
-    font-weight: 600;
-    letter-spacing: 0.02em;
-  }
-  .t-gutter.gutter-active .t-timestamp { color: var(--accent); }
-  .t-body {
-    flex: 1;
+  /* ── Preamble ── */
+  .preamble-block {
+    background: var(--pre-bg);
+    border-left: 4px solid var(--pre-border);
+    border-radius: 0 8px 8px 0;
     padding: 12px 16px;
-    line-height: 1.75;
-    font-size: 0.92rem;
-    color: #1e293b;
+    margin-bottom: 20px;
+    font-size: 0.88rem;
+    color: #78350f;
+    font-style: italic;
+    line-height: 1.7;
   }
 
-  /* ── Segments ── */
-  .segment {
+  /* ── Q&A pair ── */
+  .qa-pair { margin-bottom: 20px; border-radius: 10px; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+
+  /* Question block */
+  .q-block {
+    background: var(--q-bg);
+    padding: 14px 18px;
+    display: flex; gap: 14px; align-items: flex-start;
     cursor: pointer;
-    border-radius: 3px;
-    transition: background 0.1s;
+    transition: background 0.15s;
   }
-  .segment:hover { background: #eff6ff; }
-  .segment.active {
-    background: #bfdbfe;
-    outline: 2px solid #3b82f6;
-    outline-offset: 1px;
-    border-radius: 3px;
+  .q-block:hover { background: #1d4ed8; }
+  .q-block.q-active { background: var(--active-q); }
+  .q-label {
+    font-size: 0.7rem; font-weight: 700;
+    color: var(--q-label);
+    background: rgba(96,165,250,0.15);
+    border: 1px solid rgba(96,165,250,0.3);
+    border-radius: 5px; padding: 3px 7px;
+    white-space: nowrap; margin-top: 2px; letter-spacing: 0.05em;
+    flex-shrink: 0;
   }
+  .q-body { flex: 1; font-size: 0.97rem; font-weight: 600; color: var(--q-text); line-height: 1.55; }
+
+  /* Answer block */
+  .a-block {
+    background: var(--a-bg);
+    border: 1px solid var(--a-border); border-top: none;
+    padding: 14px 18px;
+    display: flex; gap: 14px; align-items: flex-start;
+  }
+  .a-label {
+    font-size: 0.7rem; font-weight: 700;
+    color: var(--a-label);
+    background: #d1fae5; border: 1px solid #6ee7b7;
+    border-radius: 5px; padding: 3px 9px;
+    white-space: nowrap; margin-top: 2px; letter-spacing: 0.05em;
+    flex-shrink: 0;
+  }
+  .a-body { flex: 1; list-style: none; padding: 0; }
+  .a-body li {
+    padding: 4px 0 4px 14px;
+    border-left: 3px solid transparent;
+    line-height: 1.7; font-size: 0.92rem; color: #1e293b;
+    border-radius: 0 4px 4px 0;
+    transition: background 0.15s;
+  }
+  .a-body li:not(:last-child) { border-bottom: 1px solid #f1f5f9; }
+
+  /* ── Segments (clickable) ── */
+  .segment { cursor: pointer; border-radius: 3px; }
+  .q-seg:hover { background: rgba(255,255,255,0.18); }
+  .a-seg:hover { background: #eff6ff; }
+  .segment.active { background: #bfdbfe; outline: 2px solid #3b82f6; outline-offset: 1px; }
+  .a-body li.li-active { background: var(--active-a); border-left-color: var(--accent); }
   .segment.search-match  { background: #fef9c3; }
   .segment.search-current { background: #fde047; outline: 2px solid #ca8a04; }
 
@@ -187,139 +179,334 @@
 
 <div class="toolbar">
   <input type="text" id="search" placeholder="Search transcript&#8230; (Enter = next match)">
-  <span class="stats" id="stats">95 segments &nbsp;|&nbsp; <span id="dur">loading&#8230;</span></span>
+  <span class="stats" id="stats">17 questions &nbsp;|&nbsp; 95 segments &nbsp;|&nbsp; <span id="dur">loading&#8230;</span></span>
 </div>
 
 <div class="scroll-area" id="scroll-area">
-<div class="t-block">
-  <div class="t-gutter" data-start="0.0"><span class="t-timestamp">0:00</span></div>
-  <div class="t-body"><span class="segment" data-start="0.0" data-end="1.64" title="0:00">nausea and vomiting. </span><span class="segment" data-start="1.64" data-end="7.0" title="0:01">This is pretty much one of my final vibers, so this one's from experience. </span><span class="segment" data-start="7.0" data-end="10.0" title="0:07">We're going to talk about nausea and vomiting. </span><span class="segment" data-start="10.0" data-end="15.0" title="0:10">Can you tell me which groups of patients are more likely to suffer from this complication? </span><span class="segment" data-start="16.0" data-end="24.0" title="0:16">There are patient factors, surgical factors, anesthetic and disease factors. </span><span class="segment" data-start="24.0" data-end="32.0" title="0:24">Patient factors include being female, which carries a 2-4 times increase in risk over that in males. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="32.0"><span class="t-timestamp">0:32</span></div>
-  <div class="t-body"><span class="segment" data-start="32.0" data-end="41.0" title="0:32">Also, vomiting is higher during and after menstruation during the luteal phase and decreased after the menopause. </span><span class="segment" data-start="41.0" data-end="46.0" title="0:41">It is generally more common in pregnancy, especially the first trimester. </span><span class="segment" data-start="46.0" data-end="54.0" title="0:46">It may be greater in obese subjects, in younger patients and in patients who mobilize and eat and drink early. </span><span class="segment" data-start="54.0" data-end="59.0" title="0:54">Smoking decreases the incidence of nausea and vomiting in the patient. </span><span class="segment" data-start="59.0" data-end="66.0" title="0:59">A past history of post-operative nausea and vomiting or motion sickness increases the risk. </span><span class="segment" data-start="66.0" data-end="71.0" title="1:06">Sight of surgery influences the risk of post-operative nausea and vomiting. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="71.0"><span class="t-timestamp">1:11</span></div>
-  <div class="t-body"><span class="segment" data-start="71.0" data-end="80.0" title="1:11">Increased risk includes middle ear, intracranial, squint, intra-abdominal and gynecological surgery. </span><span class="segment" data-start="80.0" data-end="86.0" title="1:20">If surgery is prolonged or particularly painful, this can also contribute. </span><span class="segment" data-start="86.0" data-end="91.0" title="1:26">What about anesthetic factors and disease factors? </span><span class="segment" data-start="91.0" data-end="102.0" title="1:31">Anesthetic factors include the use of emetic drugs such as nitrous oxide, opioids and sympathetic amethics and inhalational agents. </span><span class="segment" data-start="102.0" data-end="110.0" title="1:42">Prolonged anesthesia and spinal anesthesia and the associated hypotension also increase the risk. </span><span class="segment" data-start="110.0" data-end="119.0" title="1:50">Intraoperative dehydration and gastric dilation caused by poor ventilation increase the likelihood of nausea and vomiting. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="119.0"><span class="t-timestamp">1:59</span></div>
-  <div class="t-body"><span class="segment" data-start="119.0" data-end="131.0" title="1:59">Certain diseases such as intestinal obstruction make vomiting highly likely and hypoglycemia, hypoxia and uremia are also implicated. </span><span class="segment" data-start="131.0" data-end="135.0" title="2:11">So what things can we do to prevent post-operative nausea and vomiting? </span><span class="segment" data-start="135.0" data-end="142.0" title="2:15">There is a lot to cover here, so classify as pre, intra and post-operatively. </span><span class="segment" data-start="142.0" data-end="152.0" title="2:22">Preoperatively it is important to address dehydration and correct this. Any anxiety should also be delayed at this point. </span><span class="segment" data-start="152.0" data-end="160.0" title="2:32">Intraoperatively patients at high risk should have an anesthetic that minimises the risk of nausea and vomiting. </span><span class="segment" data-start="160.0" data-end="165.0" title="2:40">They should have proper fall as an induction agent if there is no contraindication. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="165.0"><span class="t-timestamp">2:45</span></div>
-  <div class="t-body"><span class="segment" data-start="165.0" data-end="170.0" title="2:45">Nitrous oxide should be avoided as should volatile anesthetic agents. </span><span class="segment" data-start="170.0" data-end="180.0" title="2:50">A total intravenous anesthetic should be considered. The use of neostigmean should be kept to a minimum as should sympathetic amethics. </span><span class="segment" data-start="180.0" data-end="190.0" title="3:00">Pain should be avoided by using opiate sparing techniques, use of paracetamol, diklofenac and local anaesthetic techniques should be considered. </span><span class="segment" data-start="190.0" data-end="196.0" title="3:10">The length of surgery should be kept to a minimum and antio-metics should be used. </span><span class="segment" data-start="196.0" data-end="203.0" title="3:16">Right, so what are the commonly used drugs that can be used to prevent post-operative nausea and vomiting? </span><span class="segment" data-start="203.0" data-end="212.0" title="3:23">In our hospital, the commonly used drugs are cyclazine, ondanzotron and dexamethasone, but others are used. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="212.0"><span class="t-timestamp">3:32</span></div>
-  <div class="t-body"><span class="segment" data-start="212.0" data-end="224.0" title="3:32">The classes of drugs are anti-histamines, anti-muscularinics, anti-dopamin urgics, anti-ceratin energetics, cannabinoids and corticosteroids. </span><span class="segment" data-start="224.0" data-end="228.0" title="3:44">They can be classified by site of action. </span><span class="segment" data-start="228.0" data-end="231.0" title="3:48">Would you like to do that for me then? </span><span class="segment" data-start="231.0" data-end="245.0" title="3:51">Peripherally, there are visceral afference in the gut wall and myonteric plexus, and these are mediated by serotonin, 5HT3, where drugs such as ondanzotron and granisotron work. </span><span class="segment" data-start="245.0" data-end="249.0" title="4:05">These afference relate to the chemoreceptor trigazone. </span><span class="segment" data-start="249.0" data-end="259.0" title="4:09">The chemoreceptor trigazone, situated in the medulla, in the area post-dreamer on the floor of the fourth ventricle, lies outside the blood-brained barrier. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="259.0"><span class="t-timestamp">4:19</span></div>
-  <div class="t-body"><span class="segment" data-start="259.0" data-end="270.0" title="4:19">It receives afference from the vestibular apparatus, and is affected by certain drugs, such as opiates, folatiles and sympathetic drugs. </span><span class="segment" data-start="270.0" data-end="276.0" title="4:30">Dopamine receptor antagonists act here to stimulate the chemoreceptor trigazone. </span><span class="segment" data-start="276.0" data-end="281.0" title="4:36">NK1 receptors are also abundant at this site. </span><span class="segment" data-start="281.0" data-end="292.0" title="4:41">There is a vestibular input to the vomiting center and anticholinergics, such as hyacine and anti-histamines, such as cyclazine, act here. </span><span class="segment" data-start="292.0" data-end="300.0" title="4:52">The vomiting center is the site of central integration and lies in the reticular formation in the medulla oblongata. </span><span class="segment" data-start="300.0" data-end="306.0" title="5:00">It receives afference from the chemoreceptor trigazone, gut and cerebral cortex. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="306.0"><span class="t-timestamp">5:06</span></div>
-  <div class="t-body"><span class="segment" data-start="306.0" data-end="316.0" title="5:06">This area contains muscarinic and histamine receptors, and therefore drugs which act at the vestibular apparatus also work here. </span><span class="segment" data-start="316.0" data-end="320.0" title="5:16">Some drugs do not have a defined site of action. </span><span class="segment" data-start="320.0" data-end="328.0" title="5:20">These include propifol, whose anti-emetic actions are thought to be due to action on the chemoreceptor trigazone. </span><span class="segment" data-start="328.0" data-end="341.0" title="5:28">Corticosteroids, such as dexamethasone, have an unknown site of action, but may be due to reduced turnover of 5HT3, or a decreased permeability of the blood-brain barrier. </span><span class="segment" data-start="341.0" data-end="347.0" title="5:41">Cannabinoids, such as nabalone, are thought to act at the chemoreceptor trigazone. </span><span class="segment" data-start="347.0" data-end="356.0" title="5:47">But receptors CB1 and CB2 have been found at other sites, and it may exert the anti-emetic effect via these sites. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="356.0"><span class="t-timestamp">5:56</span></div>
-  <div class="t-body"><span class="segment" data-start="356.0" data-end="363.0" title="5:56">You mentioned that the chemoreceptor trigazone sits outside the blood-brain barrier. Why is this? </span><span class="segment" data-start="363.0" data-end="372.0" title="6:03">This is so that the area can be directly exposed to blood-borne chemicals and response to these is not delayed. </span><span class="segment" data-start="372.0" data-end="376.0" title="6:12">Can you tell me which drugs you would use and why? </span><span class="segment" data-start="376.0" data-end="384.0" title="6:16">We have a protocol in our department which grade people as low, moderate or high-risk, fornaursure and vomiting. </span><span class="segment" data-start="384.0" data-end="397.0" title="6:24">In low-risk patients, no antioemetics are used. For moderate-risk patients, cyclosine 50mg is given at induction and avoidance of emetic drugs and procedures. </span><span class="segment" data-start="397.0" data-end="411.0" title="6:37">In high-risk patients, multimodal therapies used with on-dancer-tron 4mg and cyclosine 50mg being given and consideration to using dexamethasone 8mg. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="411.0"><span class="t-timestamp">6:51</span></div>
-  <div class="t-body"><span class="segment" data-start="411.0" data-end="420.0" title="6:51">The other techniques such as using total intravenous anesthesia and regional techniques are also employed as I explained earlier. </span><span class="segment" data-start="420.0" data-end="424.0" title="7:00">Can you tell me the side effects of these drugs? </span><span class="segment" data-start="424.0" data-end="431.0" title="7:04">Anti-muscularinic drugs cause an anti-silogog effect, so dry mouth and eyes is common. </span><span class="segment" data-start="431.0" data-end="438.0" title="7:11">They also cause sedation, amnesia and can precipitate a central antichelinergic syndrome. </span><span class="segment" data-start="438.0" data-end="448.0" title="7:18">Glicopyralate is the only drug which does not cause the central side effects as it is a coternary structure and does not cross the blood-brain barrier. </span><span class="segment" data-start="448.0" data-end="455.0" title="7:28">Anti-histamines can have an anti-colonergic effect and cause tachycardia post-injection. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="455.0"><span class="t-timestamp">7:35</span></div>
-  <div class="t-body"><span class="segment" data-start="455.0" data-end="465.0" title="7:35">Anti-dopaminergic drugs can cause dystonic and extra-pyromidal effects. They can rarely precipitate the neuro-electric malignant syndrome. </span><span class="segment" data-start="465.0" data-end="470.0" title="7:45">What about the other drugs such as corticosteroids and cannabinoids? </span><span class="segment" data-start="470.0" data-end="484.0" title="7:50">Corticosteroids have little side effects in one-off use, but can cause steroid psychosis and metabolic disturbances such as fluid retention, hypokalemia and hypoglycemia. </span><span class="segment" data-start="484.0" data-end="493.0" title="8:04">Cannabinoids cause sedation and psychosis and the use is limited to chemotherapy patients in view of the side effects. </span><span class="segment" data-start="493.0" data-end="497.0" title="8:13">What are combination of drugs used? </span><span class="segment" data-start="497.0" data-end="511.0" title="8:17">This improves the efficacy of the drugs over monotherapy as the cause of nausea and vomiting is likely to be multifactorial and using drugs that act at different sites is likely to have the best outcome. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="511.0"><span class="t-timestamp">8:31</span></div>
-  <div class="t-body"><span class="segment" data-start="511.0" data-end="516.0" title="8:31">The number needed to treat is about five in the best multimodal therapy. </span><span class="segment" data-start="516.0" data-end="525.0" title="8:36">However, this does vary according to the underlying rate of post-operative nausea and vomiting in the patient and surgical risk group. </span><span class="segment" data-start="525.0" data-end="535.0" title="8:45">For example, the number needed to treat to prevent post-operative nausea and vomiting in gynecological surgery is much lower than that in general surgery. </span><span class="segment" data-start="535.0" data-end="539.0" title="8:55">What does the term number need to treat mean? </span><span class="segment" data-start="539.0" data-end="545.0" title="8:59">This is the number of patients that need to be treated to have a reduction in symptoms. </span><span class="segment" data-start="545.0" data-end="554.0" title="9:05">It gives an indication as to the size of the treatment effect and is calculated as one divided by the absolute risk reduction. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="554.0"><span class="t-timestamp">9:14</span></div>
-  <div class="t-body"><span class="segment" data-start="554.0" data-end="560.0" title="9:14">Do you know of any other non-pharmacological ways of reducing nausea and vomiting? </span><span class="segment" data-start="560.0" data-end="574.0" title="9:20">Ginger is thought to help with nausea and vomiting as is hypnotherapy, acupuncture at the P6 point, proximal to the wrist crease between the flexor-carpy radialis and parmaris-longus tendons, </span><span class="segment" data-start="574.0" data-end="577.0" title="9:34">reduces the incidence of vomiting. </span><span class="segment" data-start="577.0" data-end="582.0" title="9:37">What are the sequence of events that happen to allow vomiting? </span><span class="segment" data-start="582.0" data-end="595.0" title="9:42">Vomiting is the retrograde passage of gastric contents through the mouth and in order for this to happen, the body must undergo a sequence of events to prevent aspiration from happening. </span><span class="segment" data-start="595.0" data-end="601.0" title="9:55">The afferent limb of the reflex of vomiting is coordinated in the vomiting centre. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="601.0"><span class="t-timestamp">10:01</span></div>
-  <div class="t-body"><span class="segment" data-start="601.0" data-end="613.0" title="10:01">The efferent limb has motor output via the cranial nerves to the upper gastrointestinal tract and through the spinal nerves to the diaphragm and abdominal muscles. </span><span class="segment" data-start="613.0" data-end="625.0" title="10:13">A sensation of nausea is experienced, followed by sympathetic activity such as hyperventilation, sweating, peripheral vasoconstriction and tachycardia. </span><span class="segment" data-start="625.0" data-end="629.0" title="10:25">Salvation is as a result of parasympathetic activity. </span><span class="segment" data-start="629.0" data-end="634.0" title="10:29">The glottis closes and the breath is held in mid-inspiration. </span><span class="segment" data-start="634.0" data-end="646.0" title="10:34">Vagal impulses cause a relaxation of the proximal stomach and then a retrograde giant contraction causing small bowel contents to be forced into the stomach. </span><span class="segment" data-start="646.0" data-end="657.0" title="10:46">Expulsion is preceded by wretching in many cases and the esophageal sphincters and diaphragm relax allowing the gastric contents to be expelled. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="657.0"><span class="t-timestamp">10:57</span></div>
-  <div class="t-body"><span class="segment" data-start="657.0" data-end="663.0" title="10:57">Why do we want to reduce the incidence of nausea-involmeting in patients? </span><span class="segment" data-start="663.0" data-end="672.0" title="11:03">Nauseaerinvolmeting is the most common side effect of anesthesia and surgery and causes considerable patient morbidity. </span><span class="segment" data-start="672.0" data-end="678.0" title="11:12">The patient is at risk of aspiration, especially if they are drowsy after the surgery. </span><span class="segment" data-start="678.0" data-end="683.0" title="11:18">They are also at risk of dehydration and electrolyte imbalance. </span><span class="segment" data-start="683.0" data-end="694.0" title="11:23">The act of vomiting increases the intracranial and intracular pressure as well as worsening pain and increasing the risk of wound dehycens and herniation. </span><span class="segment" data-start="694.0" data-end="698.0" title="11:34">Tell me about the electrolyte imbalances. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="698.0"><span class="t-timestamp">11:38</span></div>
-  <div class="t-body"><span class="segment" data-start="698.0" data-end="708.0" title="11:38">In vomiting, the gastric content is lost and this contains hydrogen, potassium, sodium ions and water. </span><span class="segment" data-start="708.0" data-end="712.0" title="11:48">So what happens to compensate for this loss? </span><span class="segment" data-start="712.0" data-end="720.0" title="11:52">There is renal compensation to restore the pH and this causes an alkaline urine due to bicarbonate loss. </span><span class="segment" data-start="720.0" data-end="735.0" title="12:00">To compensate for the volume loss, there is aldosterone release in response to the sodium and extracellular fluid depletion to cause sodium and water retention at the kidneys in exchange for potassium and hydrogen ions. </span><span class="segment" data-start="735.0" data-end="740.0" title="12:15">A metabolic alkylosis develops in profound vomiting. </span></div>
+<div class="preamble-block"><span class="segment a-seg" data-start="0.0" data-end="1.64" title="0:00">nausea and vomiting. </span><span class="segment a-seg" data-start="1.64" data-end="7.0" title="0:01">This is pretty much one of my final vibers, so this one's from experience. </span><span class="segment a-seg" data-start="7.0" data-end="10.0" title="0:07">We're going to talk about nausea and vomiting. </span></div>
+<div class="qa-pair">
+<div class="q-block" data-start="10.0">
+  <div class="q-label">Q1</div>
+  <div class="q-body"><span class="segment q-seg" data-start="10.0" data-end="15.0" title="0:10">Can you tell me which groups of patients are more likely to suffer from this complication? </span></div>
 </div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="16.0" data-end="24.0" title="0:16">There are patient factors, surgical factors, anesthetic and disease factors. </span></li>
+<li><span class="segment a-seg" data-start="24.0" data-end="32.0" title="0:24">Patient factors include being female, which carries a 2-4 times increase in risk over that in males. </span></li>
+<li><span class="segment a-seg" data-start="32.0" data-end="41.0" title="0:32">Also, vomiting is higher during and after menstruation during the luteal phase and decreased after the menopause. </span></li>
+<li><span class="segment a-seg" data-start="41.0" data-end="46.0" title="0:41">It is generally more common in pregnancy, especially the first trimester. </span></li>
+<li><span class="segment a-seg" data-start="46.0" data-end="54.0" title="0:46">It may be greater in obese subjects, in younger patients and in patients who mobilize and eat and drink early. </span></li>
+<li><span class="segment a-seg" data-start="54.0" data-end="59.0" title="0:54">Smoking decreases the incidence of nausea and vomiting in the patient. </span></li>
+<li><span class="segment a-seg" data-start="59.0" data-end="66.0" title="0:59">A past history of post-operative nausea and vomiting or motion sickness increases the risk. </span></li>
+<li><span class="segment a-seg" data-start="66.0" data-end="71.0" title="1:06">Sight of surgery influences the risk of post-operative nausea and vomiting. </span></li>
+<li><span class="segment a-seg" data-start="71.0" data-end="80.0" title="1:11">Increased risk includes middle ear, intracranial, squint, intra-abdominal and gynecological surgery. </span></li>
+<li><span class="segment a-seg" data-start="80.0" data-end="86.0" title="1:20">If surgery is prolonged or particularly painful, this can also contribute. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="86.0">
+  <div class="q-label">Q2</div>
+  <div class="q-body"><span class="segment q-seg" data-start="86.0" data-end="91.0" title="1:26">What about anesthetic factors and disease factors? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="91.0" data-end="102.0" title="1:31">Anesthetic factors include the use of emetic drugs such as nitrous oxide, opioids and sympathetic amethics and inhalational agents. </span></li>
+<li><span class="segment a-seg" data-start="102.0" data-end="110.0" title="1:42">Prolonged anesthesia and spinal anesthesia and the associated hypotension also increase the risk. </span></li>
+<li><span class="segment a-seg" data-start="110.0" data-end="119.0" title="1:50">Intraoperative dehydration and gastric dilation caused by poor ventilation increase the likelihood of nausea and vomiting. </span></li>
+<li><span class="segment a-seg" data-start="119.0" data-end="131.0" title="1:59">Certain diseases such as intestinal obstruction make vomiting highly likely and hypoglycemia, hypoxia and uremia are also implicated. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="131.0">
+  <div class="q-label">Q3</div>
+  <div class="q-body"><span class="segment q-seg" data-start="131.0" data-end="135.0" title="2:11">So what things can we do to prevent post-operative nausea and vomiting? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="135.0" data-end="142.0" title="2:15">There is a lot to cover here, so classify as pre, intra and post-operatively. </span></li>
+<li><span class="segment a-seg" data-start="142.0" data-end="152.0" title="2:22">Preoperatively it is important to address dehydration and correct this. Any anxiety should also be delayed at this point. </span></li>
+<li><span class="segment a-seg" data-start="152.0" data-end="160.0" title="2:32">Intraoperatively patients at high risk should have an anesthetic that minimises the risk of nausea and vomiting. </span></li>
+<li><span class="segment a-seg" data-start="160.0" data-end="165.0" title="2:40">They should have proper fall as an induction agent if there is no contraindication. </span></li>
+<li><span class="segment a-seg" data-start="165.0" data-end="170.0" title="2:45">Nitrous oxide should be avoided as should volatile anesthetic agents. </span></li>
+<li><span class="segment a-seg" data-start="170.0" data-end="180.0" title="2:50">A total intravenous anesthetic should be considered. The use of neostigmean should be kept to a minimum as should sympathetic amethics. </span></li>
+<li><span class="segment a-seg" data-start="180.0" data-end="190.0" title="3:00">Pain should be avoided by using opiate sparing techniques, use of paracetamol, diklofenac and local anaesthetic techniques should be considered. </span></li>
+<li><span class="segment a-seg" data-start="190.0" data-end="196.0" title="3:10">The length of surgery should be kept to a minimum and antio-metics should be used. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="196.0">
+  <div class="q-label">Q4</div>
+  <div class="q-body"><span class="segment q-seg" data-start="196.0" data-end="203.0" title="3:16">Right, so what are the commonly used drugs that can be used to prevent post-operative nausea and vomiting? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="203.0" data-end="212.0" title="3:23">In our hospital, the commonly used drugs are cyclazine, ondanzotron and dexamethasone, but others are used. </span></li>
+<li><span class="segment a-seg" data-start="212.0" data-end="224.0" title="3:32">The classes of drugs are anti-histamines, anti-muscularinics, anti-dopamin urgics, anti-ceratin energetics, cannabinoids and corticosteroids. </span></li>
+<li><span class="segment a-seg" data-start="224.0" data-end="228.0" title="3:44">They can be classified by site of action. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="228.0">
+  <div class="q-label">Q5</div>
+  <div class="q-body"><span class="segment q-seg" data-start="228.0" data-end="231.0" title="3:48">Would you like to do that for me then? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="231.0" data-end="245.0" title="3:51">Peripherally, there are visceral afference in the gut wall and myonteric plexus, and these are mediated by serotonin, 5HT3, where drugs such as ondanzotron and granisotron work. </span></li>
+<li><span class="segment a-seg" data-start="245.0" data-end="249.0" title="4:05">These afference relate to the chemoreceptor trigazone. </span></li>
+<li><span class="segment a-seg" data-start="249.0" data-end="259.0" title="4:09">The chemoreceptor trigazone, situated in the medulla, in the area post-dreamer on the floor of the fourth ventricle, lies outside the blood-brained barrier. </span></li>
+<li><span class="segment a-seg" data-start="259.0" data-end="270.0" title="4:19">It receives afference from the vestibular apparatus, and is affected by certain drugs, such as opiates, folatiles and sympathetic drugs. </span></li>
+<li><span class="segment a-seg" data-start="270.0" data-end="276.0" title="4:30">Dopamine receptor antagonists act here to stimulate the chemoreceptor trigazone. </span></li>
+<li><span class="segment a-seg" data-start="276.0" data-end="281.0" title="4:36">NK1 receptors are also abundant at this site. </span></li>
+<li><span class="segment a-seg" data-start="281.0" data-end="292.0" title="4:41">There is a vestibular input to the vomiting center and anticholinergics, such as hyacine and anti-histamines, such as cyclazine, act here. </span></li>
+<li><span class="segment a-seg" data-start="292.0" data-end="300.0" title="4:52">The vomiting center is the site of central integration and lies in the reticular formation in the medulla oblongata. </span></li>
+<li><span class="segment a-seg" data-start="300.0" data-end="306.0" title="5:00">It receives afference from the chemoreceptor trigazone, gut and cerebral cortex. </span></li>
+<li><span class="segment a-seg" data-start="306.0" data-end="316.0" title="5:06">This area contains muscarinic and histamine receptors, and therefore drugs which act at the vestibular apparatus also work here. </span></li>
+<li><span class="segment a-seg" data-start="316.0" data-end="320.0" title="5:16">Some drugs do not have a defined site of action. </span></li>
+<li><span class="segment a-seg" data-start="320.0" data-end="328.0" title="5:20">These include propifol, whose anti-emetic actions are thought to be due to action on the chemoreceptor trigazone. </span></li>
+<li><span class="segment a-seg" data-start="328.0" data-end="341.0" title="5:28">Corticosteroids, such as dexamethasone, have an unknown site of action, but may be due to reduced turnover of 5HT3, or a decreased permeability of the blood-brain barrier. </span></li>
+<li><span class="segment a-seg" data-start="341.0" data-end="347.0" title="5:41">Cannabinoids, such as nabalone, are thought to act at the chemoreceptor trigazone. </span></li>
+<li><span class="segment a-seg" data-start="347.0" data-end="356.0" title="5:47">But receptors CB1 and CB2 have been found at other sites, and it may exert the anti-emetic effect via these sites. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="356.0">
+  <div class="q-label">Q6</div>
+  <div class="q-body"><span class="segment q-seg" data-start="356.0" data-end="363.0" title="5:56">You mentioned that the chemoreceptor trigazone sits outside the blood-brain barrier. Why is this? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="363.0" data-end="372.0" title="6:03">This is so that the area can be directly exposed to blood-borne chemicals and response to these is not delayed. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="372.0">
+  <div class="q-label">Q7</div>
+  <div class="q-body"><span class="segment q-seg" data-start="372.0" data-end="376.0" title="6:12">Can you tell me which drugs you would use and why? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="376.0" data-end="384.0" title="6:16">We have a protocol in our department which grade people as low, moderate or high-risk, fornaursure and vomiting. </span></li>
+<li><span class="segment a-seg" data-start="384.0" data-end="397.0" title="6:24">In low-risk patients, no antioemetics are used. For moderate-risk patients, cyclosine 50mg is given at induction and avoidance of emetic drugs and procedures. </span></li>
+<li><span class="segment a-seg" data-start="397.0" data-end="411.0" title="6:37">In high-risk patients, multimodal therapies used with on-dancer-tron 4mg and cyclosine 50mg being given and consideration to using dexamethasone 8mg. </span></li>
+<li><span class="segment a-seg" data-start="411.0" data-end="420.0" title="6:51">The other techniques such as using total intravenous anesthesia and regional techniques are also employed as I explained earlier. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="420.0">
+  <div class="q-label">Q8</div>
+  <div class="q-body"><span class="segment q-seg" data-start="420.0" data-end="424.0" title="7:00">Can you tell me the side effects of these drugs? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="424.0" data-end="431.0" title="7:04">Anti-muscularinic drugs cause an anti-silogog effect, so dry mouth and eyes is common. </span></li>
+<li><span class="segment a-seg" data-start="431.0" data-end="438.0" title="7:11">They also cause sedation, amnesia and can precipitate a central antichelinergic syndrome. </span></li>
+<li><span class="segment a-seg" data-start="438.0" data-end="448.0" title="7:18">Glicopyralate is the only drug which does not cause the central side effects as it is a coternary structure and does not cross the blood-brain barrier. </span></li>
+<li><span class="segment a-seg" data-start="448.0" data-end="455.0" title="7:28">Anti-histamines can have an anti-colonergic effect and cause tachycardia post-injection. </span></li>
+<li><span class="segment a-seg" data-start="455.0" data-end="465.0" title="7:35">Anti-dopaminergic drugs can cause dystonic and extra-pyromidal effects. They can rarely precipitate the neuro-electric malignant syndrome. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="465.0">
+  <div class="q-label">Q9</div>
+  <div class="q-body"><span class="segment q-seg" data-start="465.0" data-end="470.0" title="7:45">What about the other drugs such as corticosteroids and cannabinoids? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="470.0" data-end="484.0" title="7:50">Corticosteroids have little side effects in one-off use, but can cause steroid psychosis and metabolic disturbances such as fluid retention, hypokalemia and hypoglycemia. </span></li>
+<li><span class="segment a-seg" data-start="484.0" data-end="493.0" title="8:04">Cannabinoids cause sedation and psychosis and the use is limited to chemotherapy patients in view of the side effects. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="493.0">
+  <div class="q-label">Q10</div>
+  <div class="q-body"><span class="segment q-seg" data-start="493.0" data-end="497.0" title="8:13">What are combination of drugs used? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="497.0" data-end="511.0" title="8:17">This improves the efficacy of the drugs over monotherapy as the cause of nausea and vomiting is likely to be multifactorial and using drugs that act at different sites is likely to have the best outcome. </span></li>
+<li><span class="segment a-seg" data-start="511.0" data-end="516.0" title="8:31">The number needed to treat is about five in the best multimodal therapy. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="516.0">
+  <div class="q-label">Q11</div>
+  <div class="q-body"><span class="segment q-seg" data-start="516.0" data-end="525.0" title="8:36">However, this does vary according to the underlying rate of post-operative nausea and vomiting in the patient and surgical risk group. </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="525.0" data-end="535.0" title="8:45">For example, the number needed to treat to prevent post-operative nausea and vomiting in gynecological surgery is much lower than that in general surgery. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="535.0">
+  <div class="q-label">Q12</div>
+  <div class="q-body"><span class="segment q-seg" data-start="535.0" data-end="539.0" title="8:55">What does the term number need to treat mean? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="539.0" data-end="545.0" title="8:59">This is the number of patients that need to be treated to have a reduction in symptoms. </span></li>
+<li><span class="segment a-seg" data-start="545.0" data-end="554.0" title="9:05">It gives an indication as to the size of the treatment effect and is calculated as one divided by the absolute risk reduction. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="554.0">
+  <div class="q-label">Q13</div>
+  <div class="q-body"><span class="segment q-seg" data-start="554.0" data-end="560.0" title="9:14">Do you know of any other non-pharmacological ways of reducing nausea and vomiting? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="560.0" data-end="574.0" title="9:20">Ginger is thought to help with nausea and vomiting as is hypnotherapy, acupuncture at the P6 point, proximal to the wrist crease between the flexor-carpy radialis and parmaris-longus tendons, </span></li>
+<li><span class="segment a-seg" data-start="574.0" data-end="577.0" title="9:34">reduces the incidence of vomiting. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="577.0">
+  <div class="q-label">Q14</div>
+  <div class="q-body"><span class="segment q-seg" data-start="577.0" data-end="582.0" title="9:37">What are the sequence of events that happen to allow vomiting? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="582.0" data-end="595.0" title="9:42">Vomiting is the retrograde passage of gastric contents through the mouth and in order for this to happen, the body must undergo a sequence of events to prevent aspiration from happening. </span></li>
+<li><span class="segment a-seg" data-start="595.0" data-end="601.0" title="9:55">The afferent limb of the reflex of vomiting is coordinated in the vomiting centre. </span></li>
+<li><span class="segment a-seg" data-start="601.0" data-end="613.0" title="10:01">The efferent limb has motor output via the cranial nerves to the upper gastrointestinal tract and through the spinal nerves to the diaphragm and abdominal muscles. </span></li>
+<li><span class="segment a-seg" data-start="613.0" data-end="625.0" title="10:13">A sensation of nausea is experienced, followed by sympathetic activity such as hyperventilation, sweating, peripheral vasoconstriction and tachycardia. </span></li>
+<li><span class="segment a-seg" data-start="625.0" data-end="629.0" title="10:25">Salvation is as a result of parasympathetic activity. </span></li>
+<li><span class="segment a-seg" data-start="629.0" data-end="634.0" title="10:29">The glottis closes and the breath is held in mid-inspiration. </span></li>
+<li><span class="segment a-seg" data-start="634.0" data-end="646.0" title="10:34">Vagal impulses cause a relaxation of the proximal stomach and then a retrograde giant contraction causing small bowel contents to be forced into the stomach. </span></li>
+<li><span class="segment a-seg" data-start="646.0" data-end="657.0" title="10:46">Expulsion is preceded by wretching in many cases and the esophageal sphincters and diaphragm relax allowing the gastric contents to be expelled. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="657.0">
+  <div class="q-label">Q15</div>
+  <div class="q-body"><span class="segment q-seg" data-start="657.0" data-end="663.0" title="10:57">Why do we want to reduce the incidence of nausea-involmeting in patients? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="663.0" data-end="672.0" title="11:03">Nauseaerinvolmeting is the most common side effect of anesthesia and surgery and causes considerable patient morbidity. </span></li>
+<li><span class="segment a-seg" data-start="672.0" data-end="678.0" title="11:12">The patient is at risk of aspiration, especially if they are drowsy after the surgery. </span></li>
+<li><span class="segment a-seg" data-start="678.0" data-end="683.0" title="11:18">They are also at risk of dehydration and electrolyte imbalance. </span></li>
+<li><span class="segment a-seg" data-start="683.0" data-end="694.0" title="11:23">The act of vomiting increases the intracranial and intracular pressure as well as worsening pain and increasing the risk of wound dehycens and herniation. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="694.0">
+  <div class="q-label">Q16</div>
+  <div class="q-body"><span class="segment q-seg" data-start="694.0" data-end="698.0" title="11:34">Tell me about the electrolyte imbalances. </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="698.0" data-end="708.0" title="11:38">In vomiting, the gastric content is lost and this contains hydrogen, potassium, sodium ions and water. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="708.0">
+  <div class="q-label">Q17</div>
+  <div class="q-body"><span class="segment q-seg" data-start="708.0" data-end="712.0" title="11:48">So what happens to compensate for this loss? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="712.0" data-end="720.0" title="11:52">There is renal compensation to restore the pH and this causes an alkaline urine due to bicarbonate loss. </span></li>
+<li><span class="segment a-seg" data-start="720.0" data-end="735.0" title="12:00">To compensate for the volume loss, there is aldosterone release in response to the sodium and extracellular fluid depletion to cause sodium and water retention at the kidneys in exchange for potassium and hydrogen ions. </span></li>
+<li><span class="segment a-seg" data-start="735.0" data-end="740.0" title="12:15">A metabolic alkylosis develops in profound vomiting. </span></li>
+  </ul>
+</div>
+</div>
+
 </div>
 
 <div class="subtitle-bar">
-  <span class="subtitle-text empty" id="subtitle-text">Play audio to see live subtitles&#8230;</span>
+  <span id="subtitle-text" class="empty">Play audio to see live subtitles&#8230;</span>
 </div>
 
 <script>
-
-const audio    = document.getElementById('audio');
-const allSegs  = Array.from(document.querySelectorAll('.segment'));
-const allBlocks = Array.from(document.querySelectorAll('.t-block'));
+const audio      = document.getElementById('audio');
+const allSegs    = Array.from(document.querySelectorAll('.segment'));
 const subtitleEl = document.getElementById('subtitle-text');
-let activeSegEl   = null;
-let activeBlockEl = null;
-let searchMatches = [];
-let searchIdx     = 0;
+let activeSegEl  = null;
+let searchMatches = [], searchIdx = 0;
 
-// Duration display
 audio.addEventListener('loadedmetadata', () => {
   const m = Math.floor(audio.duration / 60);
   const s = Math.floor(audio.duration %% 60).toString().padStart(2,'0');
   document.getElementById('dur').textContent = m + ':' + s;
 });
 
-// Seek helper
-function seekTo(t) {
-  audio.currentTime = t;
-  audio.play();
-}
+function seekTo(t) { audio.currentTime = t; audio.play(); }
 
-// Block gutter click
-document.querySelectorAll('.t-gutter').forEach(g => {
-  g.addEventListener('click', () => seekTo(parseFloat(g.dataset.start)));
+// Q-block header click
+document.querySelectorAll('.q-block').forEach(q => {
+  q.addEventListener('click', e => {
+    if (!e.target.classList.contains('segment')) seekTo(parseFloat(q.dataset.start));
+  });
 });
 
-// Segment click
+// Individual segment click
 allSegs.forEach(s => {
-  s.addEventListener('click', e => {
-    e.stopPropagation();
-    seekTo(parseFloat(s.dataset.start));
-  });
+  s.addEventListener('click', e => { e.stopPropagation(); seekTo(parseFloat(s.dataset.start)); });
 });
 
 // Real-time tracking
 audio.addEventListener('timeupdate', () => {
   const t = audio.currentTime;
-
-  // Find active segment (last one whose start <= t)
   let found = null;
   for (let i = allSegs.length - 1; i >= 0; i--) {
     if (parseFloat(allSegs[i].dataset.start) <= t) { found = allSegs[i]; break; }
   }
-
   if (found && found !== activeSegEl) {
-    // Clear previous
-    if (activeSegEl) activeSegEl.classList.remove('active');
-    if (activeBlockEl) {
-      activeBlockEl.classList.remove('block-active');
-      const pg = activeBlockEl.querySelector('.t-gutter');
-      if (pg) pg.classList.remove('gutter-active');
+    if (activeSegEl) {
+      activeSegEl.classList.remove('active');
+      const pli = activeSegEl.closest('li');
+      if (pli) pli.classList.remove('li-active');
+      const pq = activeSegEl.closest('.q-block');
+      if (pq) pq.classList.remove('q-active');
     }
-    // Set new
     found.classList.add('active');
-    const block = found.closest('.t-block');
-    if (block) {
-      block.classList.add('block-active');
-      const g = block.querySelector('.t-gutter');
-      if (g) g.classList.add('gutter-active');
-      activeBlockEl = block;
-    }
+    const li = found.closest('li');
+    if (li) li.classList.add('li-active');
+    const qb = found.closest('.q-block');
+    if (qb) qb.classList.add('q-active');
     activeSegEl = found;
 
-    // Update subtitle
     subtitleEl.textContent = found.textContent.trim();
     subtitleEl.classList.remove('empty');
 
-    // Auto-scroll (only when not searching)
-    if (!document.getElementById('search').value) {
+    if (!document.getElementById('search').value)
       found.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }
   }
 });
 
@@ -335,17 +522,13 @@ searchInput.addEventListener('keydown', e => {
     el.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
 });
-
 function runSearch() {
   const q = searchInput.value.trim().toLowerCase();
   allSegs.forEach(s => s.classList.remove('search-match','search-current'));
   searchMatches = [];
   if (!q) return;
   allSegs.forEach(s => {
-    if (s.textContent.toLowerCase().includes(q)) {
-      s.classList.add('search-match');
-      searchMatches.push(s);
-    }
+    if (s.textContent.toLowerCase().includes(q)) { s.classList.add('search-match'); searchMatches.push(s); }
   });
   if (!searchMatches.length) return;
   searchIdx = 0;

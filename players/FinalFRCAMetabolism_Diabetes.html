@@ -5,10 +5,19 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Metabolism — Diabetes</title>
 <style>
-
   :root {
-    --accent:    #10b981;
-    --body-bg:   #f1f5f9;
+    --q-bg:       #1e3a5f;
+    --q-text:     #ffffff;
+    --q-label:    #60a5fa;
+    --a-bg:       #ffffff;
+    --a-border:   #e2e8f0;
+    --a-label:    #059669;
+    --active-q:   #10b981;
+    --active-a:   #dbeafe;
+    --accent:     #10b981;
+    --body-bg:    #f1f5f9;
+    --pre-bg:     #fef9c3;
+    --pre-border: #fcd34d;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
@@ -40,22 +49,9 @@
     margin-bottom: 4px;
     letter-spacing: 0.01em;
   }
-  .header-sub {
-    font-size: 0.72rem;
-    color: #94a3b8;
-    font-style: italic;
-  }
-  audio {
-    height: 36px;
-    accent-color: var(--accent);
-    flex-shrink: 0;
-  }
-  .back-link {
-    font-size: 0.8rem;
-    color: #94a3b8;
-    text-decoration: none;
-    white-space: nowrap;
-  }
+  .header-sub { font-size: 0.72rem; color: #94a3b8; font-style: italic; }
+  audio { height: 36px; accent-color: var(--accent); flex-shrink: 0; }
+  .back-link { font-size: 0.8rem; color: #94a3b8; text-decoration: none; white-space: nowrap; }
   .back-link:hover { color: #60a5fa; }
 
   /* ── Toolbar ── */
@@ -69,30 +65,17 @@
     border-bottom: 1px solid #334155;
   }
   .toolbar input {
-    flex: 1;
-    max-width: 380px;
+    flex: 1; max-width: 380px;
     padding: 5px 11px;
-    border: 1px solid #475569;
-    border-radius: 6px;
-    background: #0f172a;
-    color: #e2e8f0;
-    font-size: 0.83rem;
-    outline: none;
+    border: 1px solid #475569; border-radius: 6px;
+    background: #0f172a; color: #e2e8f0; font-size: 0.83rem; outline: none;
   }
   .toolbar input:focus { border-color: var(--accent); }
   .toolbar input::placeholder { color: #64748b; }
-  .stats {
-    font-size: 0.72rem;
-    color: #64748b;
-    white-space: nowrap;
-  }
+  .stats { font-size: 0.72rem; color: #64748b; white-space: nowrap; }
 
   /* ── Scroll area ── */
-  .scroll-area {
-    flex: 1;
-    overflow-y: auto;
-    padding: 20px;
-  }
+  .scroll-area { flex: 1; overflow-y: auto; padding: 20px; }
   .scroll-area::-webkit-scrollbar { width: 6px; }
   .scroll-area::-webkit-scrollbar-track { background: transparent; }
   .scroll-area::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
@@ -107,68 +90,77 @@
     display: flex;
     align-items: center;
   }
-  .subtitle-text {
-    font-size: 0.9rem;
-    color: #e2e8f0;
-    line-height: 1.5;
-    font-style: italic;
-  }
-  .subtitle-text.empty { color: #475569; }
+  #subtitle-text { font-size: 0.88rem; color: #e2e8f0; line-height: 1.5; font-style: italic; }
+  #subtitle-text.empty { color: #475569; }
 
-  /* ── Transcript blocks ── */
-  .t-block {
-    background: #ffffff;
-    border: 1px solid #e2e8f0;
-    border-radius: 10px;
-    margin-bottom: 14px;
-    overflow: hidden;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
-    display: flex;
-  }
-  .t-block.block-active {
-    border-color: var(--accent);
-    box-shadow: 0 0 0 2px rgba(37,99,235,0.15);
-  }
-  .t-gutter {
-    background: #0f172a;
-    width: 52px;
-    flex-shrink: 0;
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
-    padding-top: 14px;
-    cursor: pointer;
-  }
-  .t-gutter:hover { background: #1e293b; }
-  .t-timestamp {
-    font-size: 0.7rem;
-    color: #64748b;
-    font-family: monospace;
-    font-weight: 600;
-    letter-spacing: 0.02em;
-  }
-  .t-gutter.gutter-active .t-timestamp { color: var(--accent); }
-  .t-body {
-    flex: 1;
+  /* ── Preamble ── */
+  .preamble-block {
+    background: var(--pre-bg);
+    border-left: 4px solid var(--pre-border);
+    border-radius: 0 8px 8px 0;
     padding: 12px 16px;
-    line-height: 1.75;
-    font-size: 0.92rem;
-    color: #1e293b;
+    margin-bottom: 20px;
+    font-size: 0.88rem;
+    color: #78350f;
+    font-style: italic;
+    line-height: 1.7;
   }
 
-  /* ── Segments ── */
-  .segment {
+  /* ── Q&A pair ── */
+  .qa-pair { margin-bottom: 20px; border-radius: 10px; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+
+  /* Question block */
+  .q-block {
+    background: var(--q-bg);
+    padding: 14px 18px;
+    display: flex; gap: 14px; align-items: flex-start;
     cursor: pointer;
-    border-radius: 3px;
-    transition: background 0.1s;
+    transition: background 0.15s;
   }
-  .segment:hover { background: #eff6ff; }
-  .segment.active {
-    background: #bfdbfe;
-    outline: 2px solid #3b82f6;
-    outline-offset: 1px;
-    border-radius: 3px;
+  .q-block:hover { background: #1d4ed8; }
+  .q-block.q-active { background: var(--active-q); }
+  .q-label {
+    font-size: 0.7rem; font-weight: 700;
+    color: var(--q-label);
+    background: rgba(96,165,250,0.15);
+    border: 1px solid rgba(96,165,250,0.3);
+    border-radius: 5px; padding: 3px 7px;
+    white-space: nowrap; margin-top: 2px; letter-spacing: 0.05em;
+    flex-shrink: 0;
   }
+  .q-body { flex: 1; font-size: 0.97rem; font-weight: 600; color: var(--q-text); line-height: 1.55; }
+
+  /* Answer block */
+  .a-block {
+    background: var(--a-bg);
+    border: 1px solid var(--a-border); border-top: none;
+    padding: 14px 18px;
+    display: flex; gap: 14px; align-items: flex-start;
+  }
+  .a-label {
+    font-size: 0.7rem; font-weight: 700;
+    color: var(--a-label);
+    background: #d1fae5; border: 1px solid #6ee7b7;
+    border-radius: 5px; padding: 3px 9px;
+    white-space: nowrap; margin-top: 2px; letter-spacing: 0.05em;
+    flex-shrink: 0;
+  }
+  .a-body { flex: 1; list-style: none; padding: 0; }
+  .a-body li {
+    padding: 4px 0 4px 14px;
+    border-left: 3px solid transparent;
+    line-height: 1.7; font-size: 0.92rem; color: #1e293b;
+    border-radius: 0 4px 4px 0;
+    transition: background 0.15s;
+  }
+  .a-body li:not(:last-child) { border-bottom: 1px solid #f1f5f9; }
+
+  /* ── Segments (clickable) ── */
+  .segment { cursor: pointer; border-radius: 3px; }
+  .q-seg:hover { background: rgba(255,255,255,0.18); }
+  .a-seg:hover { background: #eff6ff; }
+  .segment.active { background: #bfdbfe; outline: 2px solid #3b82f6; outline-offset: 1px; }
+  .a-body li.li-active { background: var(--active-a); border-left-color: var(--accent); }
   .segment.search-match  { background: #fef9c3; }
   .segment.search-current { background: #fde047; outline: 2px solid #ca8a04; }
 
@@ -187,145 +179,276 @@
 
 <div class="toolbar">
   <input type="text" id="search" placeholder="Search transcript&#8230; (Enter = next match)">
-  <span class="stats" id="stats">104 segments &nbsp;|&nbsp; <span id="dur">loading&#8230;</span></span>
+  <span class="stats" id="stats">12 questions &nbsp;|&nbsp; 104 segments &nbsp;|&nbsp; <span id="dur">loading&#8230;</span></span>
 </div>
 
 <div class="scroll-area" id="scroll-area">
-<div class="t-block">
-  <div class="t-gutter" data-start="0.0"><span class="t-timestamp">0:00</span></div>
-  <div class="t-body"><span class="segment" data-start="0.0" data-end="7.0" title="0:00">Diabetes. An elderly patient with IDDM is scheduled for an exylo femoral bypass graft. </span><span class="segment" data-start="7.0" data-end="10.0" title="0:07">Or be your anaesthetic management for this patient. </span><span class="segment" data-start="10.0" data-end="16.0" title="0:10">Try and classify this answer, dividing into preoperatively, perioperatively and postoperatively. </span><span class="segment" data-start="16.0" data-end="19.0" title="0:16">Works well here. </span><span class="segment" data-start="19.0" data-end="25.0" title="0:19">I will discuss this patient's management by thinking about preoperative assessment, </span><span class="segment" data-start="25.0" data-end="30.0" title="0:25">perioperative management and postoperative instructions. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="30.0"><span class="t-timestamp">0:30</span></div>
-  <div class="t-body"><span class="segment" data-start="30.0" data-end="33.0" title="0:30">I would start with my preoperative assessment. </span><span class="segment" data-start="33.0" data-end="40.0" title="0:33">In addition to my standard preoperative assessment, there are two further areas I would concentrate on. </span><span class="segment" data-start="40.0" data-end="48.0" title="0:40">The first is glycemic control, and the second is assessment of diabetic complications. </span><span class="segment" data-start="48.0" data-end="57.0" title="0:48">Starting with glycemic control, I would ask about the patient's recent diabetic control at home and in hospital </span><span class="segment" data-start="57.0" data-end="61.0" title="0:57">and reviewing any relevant charts at the patient's bedside. </span><span class="segment" data-start="61.0" data-end="68.0" title="1:01">I would also make an assessment of hydration and acid-based balance by clinical examination, </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="68.0"><span class="t-timestamp">1:08</span></div>
-  <div class="t-body"><span class="segment" data-start="68.0" data-end="75.0" title="1:08">review of fluid balance charts and by checking an arterial blood gas if appropriate. </span><span class="segment" data-start="76.0" data-end="86.0" title="1:16">Current hypoglycemic agents should be reviewed, including insulin regimes and any oral hypoglycemic agents. </span><span class="segment" data-start="86.0" data-end="93.0" title="1:26">In the acute setting, poorly controlled sugars can cause symptomatic hypoglycemic episodes, </span><span class="segment" data-start="93.0" data-end="101.0" title="1:33">or severe dehydration with an acidosis caused by either lactate or by keto acids. </span><span class="segment" data-start="102.0" data-end="112.0" title="1:42">High blood sugars perioperatively are linked with an increase in wound infection rate and in cardiac surgery with poor neurological outcome. </span><span class="segment" data-start="112.0" data-end="120.0" title="1:52">In patients with poor diabetic control, the surgery should be postponed unless it's immediately life-saving. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="120.0"><span class="t-timestamp">2:00</span></div>
-  <div class="t-body"><span class="segment" data-start="120.0" data-end="128.0" title="2:00">In the long term, poor glycemic control is associated with more micro-vascular complications of the disease. </span><span class="segment" data-start="129.0" data-end="131.0" title="2:09">What diabetic complications would you look for? </span><span class="segment" data-start="131.0" data-end="134.0" title="2:11">Try and discuss these in order of relevance. </span><span class="segment" data-start="136.0" data-end="146.0" title="2:16">Firstly, I would assess the patient for coronary artery disease as it is four to five times more common and may be asymptomatic. </span><span class="segment" data-start="146.0" data-end="151.0" title="2:26">The second complication I would assess is autonomic neuropathy. </span><span class="segment" data-start="151.0" data-end="157.0" title="2:31">There are two major manifestations of this, which are of particular concern to the anesthetist. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="157.0"><span class="t-timestamp">2:37</span></div>
-  <div class="t-body"><span class="segment" data-start="157.0" data-end="164.0" title="2:37">The first is disordered cardiovascular responses and orthostatic hypotension. </span><span class="segment" data-start="164.0" data-end="171.0" title="2:44">They may have unexpected tachy arrhythmias or hypotension unresponsive to effedrin. </span><span class="segment" data-start="171.0" data-end="181.0" title="2:51">Hypotension tends to be poorly tolerated in these patients, particularly if there is underlying cardiovascular or cerebral vascular pathology. </span><span class="segment" data-start="181.0" data-end="184.0" title="3:01">Gastro-Paresis is another concern. </span><span class="segment" data-start="184.0" data-end="193.0" title="3:04">Despite fasting, gastric volumes can be quite large, thus increasing the risk of reflux and aspiration on induction. </span><span class="segment" data-start="193.0" data-end="198.0" title="3:13">How would you assess for the presence of autonomic neuropathy? </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="198.0"><span class="t-timestamp">3:18</span></div>
-  <div class="t-body"><span class="segment" data-start="198.0" data-end="205.0" title="3:18">You can assess for autonomic neuropathy by asking the patient to perform a valsalva maneuver. </span><span class="segment" data-start="205.0" data-end="219.0" title="3:25">In the presence of autonomic neuropathy, the blood pressure will drop and because the ability to compensate is lost, the blood pressure will stay low until the intra-therasic pressure is released. </span><span class="segment" data-start="219.0" data-end="223.0" title="3:39">What other diabetic complications would you ask about? </span><span class="segment" data-start="223.0" data-end="229.0" title="3:43">The third complication I would ask about is diabetic nephropathy. </span><span class="segment" data-start="229.0" data-end="238.0" title="3:49">If there is any evidence of this, for example, microalbuminuria, then the risk of postoperative renal failure is greatly increased. </span><span class="segment" data-start="238.0" data-end="246.0" title="3:58">I would ensure that appropriate hemodynamic monitoring was in place and that fluid balance is maintained. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="246.0"><span class="t-timestamp">4:06</span></div>
-  <div class="t-body"><span class="segment" data-start="246.0" data-end="250.0" title="4:06">Next, I would assess the respiratory system. </span><span class="segment" data-start="250.0" data-end="256.0" title="4:10">Diabetes is associated with a reduced FEV1 and FEC. </span><span class="segment" data-start="256.0" data-end="266.0" title="4:16">There is also a higher incidence of chest infections postoperatively and in the obese patients, COPD is more prevalent. </span><span class="segment" data-start="266.0" data-end="274.0" title="4:26">I would then ask about stiff joints as 30 to 40% of patients will have some limited joint mobility. </span><span class="segment" data-start="274.0" data-end="280.0" title="4:34">This may lead to difficulties with larynxoscopy and tracheal intubation. </span><span class="segment" data-start="280.0" data-end="292.0" title="4:40">I would ask the patients about eye complications as patients with retinopathy are at high risk of developing vitreous hemorrhage during hypotensive episodes. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="292.0"><span class="t-timestamp">4:52</span></div>
-  <div class="t-body"><span class="segment" data-start="292.0" data-end="301.0" title="4:52">I would then ascertain if there were any associated endocrine disorders such as hypodrenalism or thyroid disease. </span><span class="segment" data-start="301.0" data-end="306.0" title="5:01">How would you manage this man's glucose control intraoperatively? </span><span class="segment" data-start="306.0" data-end="321.0" title="5:06">To manage his glucose control perioperatively, I would ask him to omit his long-acting insulin and run an insulin, glucose and potassium infusion for the period of starvation starting on the ward. </span><span class="segment" data-start="321.0" data-end="324.0" title="5:21">He should be the first patient on the morning list. </span><span class="segment" data-start="324.0" data-end="335.0" title="5:24">His blood glucose levels should be monitored regularly throughout the perioperative period, aiming for sugars of between 7 and 10 in order to avoid hypoglycemia. </span><span class="segment" data-start="336.0" data-end="338.0" title="5:36">How would you necessitate this man? </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="338.0"><span class="t-timestamp">5:38</span></div>
-  <div class="t-body"><span class="segment" data-start="338.0" data-end="344.0" title="5:38">Think of any diabetic patient you have necessitated for a major operation here. </span><span class="segment" data-start="344.0" data-end="355.0" title="5:44">This is a major operation in an elderly diabetic gentleman who is likely to have other comorbidities as well as complications of his diabetes. </span><span class="segment" data-start="355.0" data-end="368.0" title="5:55">Prior to induction, I would insert an arterial line for optimal control of his blood pressure and would insert a central line under urinary catheter for accurate fluid balance. </span><span class="segment" data-start="368.0" data-end="378.0" title="6:08">He will need a general amacetic and if there is any suggestion of autonomic instability and gastric parisis, he will need a rapid sequence induction. </span><span class="segment" data-start="378.0" data-end="389.0" title="6:18">A high dose opiate technique would help to minimise the sympathetic and hormonal response to the surgery and will help to maintain hemodynamic stability. </span><span class="segment" data-start="389.0" data-end="401.0" title="6:29">His blood sugars should be checked hourly throughout the procedure and the insulin infusion rate adjusted to maintain blood glucose levels of less than 10. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="401.0"><span class="t-timestamp">6:41</span></div>
-  <div class="t-body"><span class="segment" data-start="401.0" data-end="406.0" title="6:41">What instructions would he give to their recovery staff regarding his glucose control? </span><span class="segment" data-start="407.0" data-end="421.0" title="6:47">I would ask the recovery staff to continue checking his blood sugars hourly and adjusting his insulin glucose and potassium infusions according to an appropriately prescribed insulin sliding scale. </span><span class="segment" data-start="421.0" data-end="435.0" title="7:01">I would ask that they hand over to the ward staff that the insulin glucose and potassium infusions should continue until he is eating and drinking and able to take his insulin as per normal. </span><span class="segment" data-start="435.0" data-end="439.0" title="7:15">How would you define diabetic ketoacidosis? </span><span class="segment" data-start="439.0" data-end="452.0" title="7:19">Diabetic ketoacidosis is a state of insulin insufficiency that results in high blood sugar levels and the accumulation of organic acids in the blood. </span><span class="segment" data-start="452.0" data-end="465.0" title="7:32">It is a serious, often life-threatening complication of diabetes and is characterized by the triad of hyperglycemia, metabolic acidosis and ketonemia. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="465.0"><span class="t-timestamp">7:45</span></div>
-  <div class="t-body"><span class="segment" data-start="465.0" data-end="469.0" title="7:45">What is the mechanism for ketone production and diabetes? </span><span class="segment" data-start="469.0" data-end="480.0" title="7:49">This is testing knowledge of some of the steps in intermediary metabolism. You need at least be able to explain the final steps which lead to metabolic acidosis. </span><span class="segment" data-start="481.0" data-end="486.0" title="8:01">Ketones are produced from acetile CoA in the liver mitochondria. </span><span class="segment" data-start="486.0" data-end="497.0" title="8:06">Acetyl CoA is the end product of beta oxidation of fatty acids and the product of condensation of two pyruvate molecules. </span><span class="segment" data-start="497.0" data-end="507.0" title="8:17">Acetyl CoA can be combined with oxaloacetate and then enter into the citric acid cycle of aerobic metabolism. </span><span class="segment" data-start="508.0" data-end="522.0" title="8:28">In states of excess fatty acid breakdown such as diabetic ketoacidosis and starvation, then there is not enough oxaloacetate to combine with all of the astile CoA molecules. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="522.0"><span class="t-timestamp">8:42</span></div>
-  <div class="t-body"><span class="segment" data-start="522.0" data-end="529.0" title="8:42">The excess acetile CoA molecules are diverted into ketone production. </span><span class="segment" data-start="529.0" data-end="540.0" title="8:49">The accumulation of the ketoacids, beta hydroxybutyrate and acetate are what result in the development of a metabolic acidosis. </span><span class="segment" data-start="540.0" data-end="544.0" title="9:00">How might a patient with diabetic ketoacidosis present? </span><span class="segment" data-start="544.0" data-end="548.0" title="9:04">Think history, then findings on examination. </span><span class="segment" data-start="549.0" data-end="563.0" title="9:09">A patient with diabetic ketoacidosis will present with symptoms and signs of uncontrolled diabetes, namely polyurea, polydipsia, weight loss and dehydration. </span><span class="segment" data-start="563.0" data-end="569.0" title="9:23">They may complain of abdominal pain, diarrhea, nausea and vomiting. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="569.0"><span class="t-timestamp">9:29</span></div>
-  <div class="t-body"><span class="segment" data-start="569.0" data-end="575.0" title="9:29">On examination they will appear dehydrated with dry skin and a dry mouth. </span><span class="segment" data-start="575.0" data-end="585.0" title="9:35">Their conscious level may be impaired. They will be hyperventilating due to the metabolic acidosis and this is known as cusmol breathing. </span><span class="segment" data-start="585.0" data-end="594.0" title="9:45">There may be the distinct odor of ketones noted on the breath. They will be tachycardic and may be hypotensive. </span><span class="segment" data-start="594.0" data-end="596.0" title="9:54">How would you manage this patient? </span><span class="segment" data-start="597.0" data-end="604.0" title="9:57">Break this down into history, examination, investigations, monitoring and specific treatment. </span><span class="segment" data-start="604.0" data-end="611.0" title="10:04">I would take a history and examine the patient looking for the signs and symptoms already mentioned. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="611.0"><span class="t-timestamp">10:11</span></div>
-  <div class="t-body"><span class="segment" data-start="611.0" data-end="619.0" title="10:11">The investigations I would request would be as follows. I would check an arterial blood gas for acid-based balance. </span><span class="segment" data-start="620.0" data-end="630.0" title="10:20">I would check the urea and electrolytes and check for sodium levels which may be low as an osmolar compensation for the high glucose level. </span><span class="segment" data-start="630.0" data-end="641.0" title="10:30">I would check the potassium level which may be high on presentation, although total body potassium will be low due to the absence of insulin. </span><span class="segment" data-start="641.0" data-end="649.0" title="10:41">I would assess the anion gap, expecting it to be high due to the unmeasured ketones causing an acidosis. </span><span class="segment" data-start="649.0" data-end="656.0" title="10:49">I would assess the urea and creatinine for signs of renal impairment or renal failure. </span><span class="segment" data-start="656.0" data-end="670.0" title="10:56">I would check the urine for ketones. I would also request a full blood count, blood, urine and disputum cultures, a chest x-ray and a 12 lead ECG in order to determine the cause. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="671.0"><span class="t-timestamp">11:11</span></div>
-  <div class="t-body"><span class="segment" data-start="671.0" data-end="680.0" title="11:11">I would want to institute some monitoring for this patient, namely ECG, blood pressure, pulse oxymetry and temperature. </span><span class="segment" data-start="680.0" data-end="687.0" title="11:20">I would place a urinary catheter to measure urine output and check blood sugars regularly. </span><span class="segment" data-start="687.0" data-end="695.0" title="11:27">I would inform the high dependency unit of the presence of a sick patient with diabetic ketonesidosis and request transfer. </span><span class="segment" data-start="696.0" data-end="700.0" title="11:36">Which specific treatment would you institute? </span><span class="segment" data-start="700.0" data-end="713.0" title="11:40">The fluid loss should be replaced with normal saline, starting with 1 to 2 litres in the first hour and reducing to 300 to 500 ml per hour thereafter, titrated against response. </span><span class="segment" data-start="713.0" data-end="717.0" title="11:53">A central line may be necessary to guide treatment. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="718.0"><span class="t-timestamp">11:58</span></div>
-  <div class="t-body"><span class="segment" data-start="718.0" data-end="727.0" title="11:58">An insulin bolus of .1 units per kilo should be given, followed by an infusion of .1 units per kilo per hour. </span><span class="segment" data-start="727.0" data-end="734.0" title="12:07">The blood sugar levels should be checked hourly thereafter and the insulin infusion adjusted accordingly. </span><span class="segment" data-start="734.0" data-end="742.0" title="12:14">Potassium should be added to the replacement fluid when the serum level reaches 4.5 ml per litre. </span><span class="segment" data-start="742.0" data-end="749.0" title="12:22">When the blood sugar level falls below 14 ml per litre, a glucose infusion should be started. </span><span class="segment" data-start="749.0" data-end="752.0" title="12:29">Would you give the patient by carbonate? </span><span class="segment" data-start="752.0" data-end="755.0" title="12:32">This is a contentious issue. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="755.0"><span class="t-timestamp">12:35</span></div>
-  <div class="t-body"><span class="segment" data-start="755.0" data-end="766.0" title="12:35">By carbonate has been used in the treatment of diabetic ketonesidosis if the pH is less than 7, but it has several inherent problems. </span><span class="segment" data-start="766.0" data-end="771.0" title="12:46">The formulations that are currently available deliver a large sodium load. </span><span class="segment" data-start="771.0" data-end="777.0" title="12:51">Also, giving by carbonate will increase carbon dioxide production. </span><span class="segment" data-start="777.0" data-end="784.0" title="12:57">By carbonate does not cross the blood-brain barrier, so will worsen cerebral intracellular acidosis. </span><span class="segment" data-start="784.0" data-end="791.0" title="13:04">By carbonate will also worsen hypocholemia, which might provoke cardiac arrhythmias. </span><span class="segment" data-start="791.0" data-end="797.0" title="13:11">As the keto acids disappear, a metabolic alkylosis may develop. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="797.0"><span class="t-timestamp">13:17</span></div>
-  <div class="t-body"><span class="segment" data-start="797.0" data-end="803.0" title="13:17">By carbonate also causes a left shift of the oxyhemoglobin disassociation curve. </span><span class="segment" data-start="803.0" data-end="813.0" title="13:23">There is no evidence of any outcome benefit to using by carbonate if the patient's pH is greater than 6.8. </span></div>
+<div class="preamble-block"><span class="segment a-seg" data-start="0.0" data-end="7.0" title="0:00">Diabetes. An elderly patient with IDDM is scheduled for an exylo femoral bypass graft. </span><span class="segment a-seg" data-start="7.0" data-end="10.0" title="0:07">Or be your anaesthetic management for this patient. </span><span class="segment a-seg" data-start="10.0" data-end="16.0" title="0:10">Try and classify this answer, dividing into preoperatively, perioperatively and postoperatively. </span><span class="segment a-seg" data-start="16.0" data-end="19.0" title="0:16">Works well here. </span><span class="segment a-seg" data-start="19.0" data-end="25.0" title="0:19">I will discuss this patient's management by thinking about preoperative assessment, </span><span class="segment a-seg" data-start="25.0" data-end="30.0" title="0:25">perioperative management and postoperative instructions. </span><span class="segment a-seg" data-start="30.0" data-end="33.0" title="0:30">I would start with my preoperative assessment. </span><span class="segment a-seg" data-start="33.0" data-end="40.0" title="0:33">In addition to my standard preoperative assessment, there are two further areas I would concentrate on. </span><span class="segment a-seg" data-start="40.0" data-end="48.0" title="0:40">The first is glycemic control, and the second is assessment of diabetic complications. </span><span class="segment a-seg" data-start="48.0" data-end="57.0" title="0:48">Starting with glycemic control, I would ask about the patient's recent diabetic control at home and in hospital </span><span class="segment a-seg" data-start="57.0" data-end="61.0" title="0:57">and reviewing any relevant charts at the patient's bedside. </span><span class="segment a-seg" data-start="61.0" data-end="68.0" title="1:01">I would also make an assessment of hydration and acid-based balance by clinical examination, </span><span class="segment a-seg" data-start="68.0" data-end="75.0" title="1:08">review of fluid balance charts and by checking an arterial blood gas if appropriate. </span><span class="segment a-seg" data-start="76.0" data-end="86.0" title="1:16">Current hypoglycemic agents should be reviewed, including insulin regimes and any oral hypoglycemic agents. </span><span class="segment a-seg" data-start="86.0" data-end="93.0" title="1:26">In the acute setting, poorly controlled sugars can cause symptomatic hypoglycemic episodes, </span><span class="segment a-seg" data-start="93.0" data-end="101.0" title="1:33">or severe dehydration with an acidosis caused by either lactate or by keto acids. </span><span class="segment a-seg" data-start="102.0" data-end="112.0" title="1:42">High blood sugars perioperatively are linked with an increase in wound infection rate and in cardiac surgery with poor neurological outcome. </span><span class="segment a-seg" data-start="112.0" data-end="120.0" title="1:52">In patients with poor diabetic control, the surgery should be postponed unless it's immediately life-saving. </span><span class="segment a-seg" data-start="120.0" data-end="128.0" title="2:00">In the long term, poor glycemic control is associated with more micro-vascular complications of the disease. </span></div>
+<div class="qa-pair">
+<div class="q-block" data-start="129.0">
+  <div class="q-label">Q1</div>
+  <div class="q-body"><span class="segment q-seg" data-start="129.0" data-end="131.0" title="2:09">What diabetic complications would you look for? </span></div>
 </div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="131.0" data-end="134.0" title="2:11">Try and discuss these in order of relevance. </span></li>
+<li><span class="segment a-seg" data-start="136.0" data-end="146.0" title="2:16">Firstly, I would assess the patient for coronary artery disease as it is four to five times more common and may be asymptomatic. </span></li>
+<li><span class="segment a-seg" data-start="146.0" data-end="151.0" title="2:26">The second complication I would assess is autonomic neuropathy. </span></li>
+<li><span class="segment a-seg" data-start="151.0" data-end="157.0" title="2:31">There are two major manifestations of this, which are of particular concern to the anesthetist. </span></li>
+<li><span class="segment a-seg" data-start="157.0" data-end="164.0" title="2:37">The first is disordered cardiovascular responses and orthostatic hypotension. </span></li>
+<li><span class="segment a-seg" data-start="164.0" data-end="171.0" title="2:44">They may have unexpected tachy arrhythmias or hypotension unresponsive to effedrin. </span></li>
+<li><span class="segment a-seg" data-start="171.0" data-end="181.0" title="2:51">Hypotension tends to be poorly tolerated in these patients, particularly if there is underlying cardiovascular or cerebral vascular pathology. </span></li>
+<li><span class="segment a-seg" data-start="181.0" data-end="184.0" title="3:01">Gastro-Paresis is another concern. </span></li>
+<li><span class="segment a-seg" data-start="184.0" data-end="193.0" title="3:04">Despite fasting, gastric volumes can be quite large, thus increasing the risk of reflux and aspiration on induction. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="193.0">
+  <div class="q-label">Q2</div>
+  <div class="q-body"><span class="segment q-seg" data-start="193.0" data-end="198.0" title="3:13">How would you assess for the presence of autonomic neuropathy? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="198.0" data-end="205.0" title="3:18">You can assess for autonomic neuropathy by asking the patient to perform a valsalva maneuver. </span></li>
+<li><span class="segment a-seg" data-start="205.0" data-end="219.0" title="3:25">In the presence of autonomic neuropathy, the blood pressure will drop and because the ability to compensate is lost, the blood pressure will stay low until the intra-therasic pressure is released. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="219.0">
+  <div class="q-label">Q3</div>
+  <div class="q-body"><span class="segment q-seg" data-start="219.0" data-end="223.0" title="3:39">What other diabetic complications would you ask about? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="223.0" data-end="229.0" title="3:43">The third complication I would ask about is diabetic nephropathy. </span></li>
+<li><span class="segment a-seg" data-start="229.0" data-end="238.0" title="3:49">If there is any evidence of this, for example, microalbuminuria, then the risk of postoperative renal failure is greatly increased. </span></li>
+<li><span class="segment a-seg" data-start="238.0" data-end="246.0" title="3:58">I would ensure that appropriate hemodynamic monitoring was in place and that fluid balance is maintained. </span></li>
+<li><span class="segment a-seg" data-start="246.0" data-end="250.0" title="4:06">Next, I would assess the respiratory system. </span></li>
+<li><span class="segment a-seg" data-start="250.0" data-end="256.0" title="4:10">Diabetes is associated with a reduced FEV1 and FEC. </span></li>
+<li><span class="segment a-seg" data-start="256.0" data-end="266.0" title="4:16">There is also a higher incidence of chest infections postoperatively and in the obese patients, COPD is more prevalent. </span></li>
+<li><span class="segment a-seg" data-start="266.0" data-end="274.0" title="4:26">I would then ask about stiff joints as 30 to 40% of patients will have some limited joint mobility. </span></li>
+<li><span class="segment a-seg" data-start="274.0" data-end="280.0" title="4:34">This may lead to difficulties with larynxoscopy and tracheal intubation. </span></li>
+<li><span class="segment a-seg" data-start="280.0" data-end="292.0" title="4:40">I would ask the patients about eye complications as patients with retinopathy are at high risk of developing vitreous hemorrhage during hypotensive episodes. </span></li>
+<li><span class="segment a-seg" data-start="292.0" data-end="301.0" title="4:52">I would then ascertain if there were any associated endocrine disorders such as hypodrenalism or thyroid disease. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="301.0">
+  <div class="q-label">Q4</div>
+  <div class="q-body"><span class="segment q-seg" data-start="301.0" data-end="306.0" title="5:01">How would you manage this man's glucose control intraoperatively? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="306.0" data-end="321.0" title="5:06">To manage his glucose control perioperatively, I would ask him to omit his long-acting insulin and run an insulin, glucose and potassium infusion for the period of starvation starting on the ward. </span></li>
+<li><span class="segment a-seg" data-start="321.0" data-end="324.0" title="5:21">He should be the first patient on the morning list. </span></li>
+<li><span class="segment a-seg" data-start="324.0" data-end="335.0" title="5:24">His blood glucose levels should be monitored regularly throughout the perioperative period, aiming for sugars of between 7 and 10 in order to avoid hypoglycemia. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="336.0">
+  <div class="q-label">Q5</div>
+  <div class="q-body"><span class="segment q-seg" data-start="336.0" data-end="338.0" title="5:36">How would you necessitate this man? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="338.0" data-end="344.0" title="5:38">Think of any diabetic patient you have necessitated for a major operation here. </span></li>
+<li><span class="segment a-seg" data-start="344.0" data-end="355.0" title="5:44">This is a major operation in an elderly diabetic gentleman who is likely to have other comorbidities as well as complications of his diabetes. </span></li>
+<li><span class="segment a-seg" data-start="355.0" data-end="368.0" title="5:55">Prior to induction, I would insert an arterial line for optimal control of his blood pressure and would insert a central line under urinary catheter for accurate fluid balance. </span></li>
+<li><span class="segment a-seg" data-start="368.0" data-end="378.0" title="6:08">He will need a general amacetic and if there is any suggestion of autonomic instability and gastric parisis, he will need a rapid sequence induction. </span></li>
+<li><span class="segment a-seg" data-start="378.0" data-end="389.0" title="6:18">A high dose opiate technique would help to minimise the sympathetic and hormonal response to the surgery and will help to maintain hemodynamic stability. </span></li>
+<li><span class="segment a-seg" data-start="389.0" data-end="401.0" title="6:29">His blood sugars should be checked hourly throughout the procedure and the insulin infusion rate adjusted to maintain blood glucose levels of less than 10. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="401.0">
+  <div class="q-label">Q6</div>
+  <div class="q-body"><span class="segment q-seg" data-start="401.0" data-end="406.0" title="6:41">What instructions would he give to their recovery staff regarding his glucose control? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="407.0" data-end="421.0" title="6:47">I would ask the recovery staff to continue checking his blood sugars hourly and adjusting his insulin glucose and potassium infusions according to an appropriately prescribed insulin sliding scale. </span></li>
+<li><span class="segment a-seg" data-start="421.0" data-end="435.0" title="7:01">I would ask that they hand over to the ward staff that the insulin glucose and potassium infusions should continue until he is eating and drinking and able to take his insulin as per normal. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="435.0">
+  <div class="q-label">Q7</div>
+  <div class="q-body"><span class="segment q-seg" data-start="435.0" data-end="439.0" title="7:15">How would you define diabetic ketoacidosis? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="439.0" data-end="452.0" title="7:19">Diabetic ketoacidosis is a state of insulin insufficiency that results in high blood sugar levels and the accumulation of organic acids in the blood. </span></li>
+<li><span class="segment a-seg" data-start="452.0" data-end="465.0" title="7:32">It is a serious, often life-threatening complication of diabetes and is characterized by the triad of hyperglycemia, metabolic acidosis and ketonemia. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="465.0">
+  <div class="q-label">Q8</div>
+  <div class="q-body"><span class="segment q-seg" data-start="465.0" data-end="469.0" title="7:45">What is the mechanism for ketone production and diabetes? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="469.0" data-end="480.0" title="7:49">This is testing knowledge of some of the steps in intermediary metabolism. You need at least be able to explain the final steps which lead to metabolic acidosis. </span></li>
+<li><span class="segment a-seg" data-start="481.0" data-end="486.0" title="8:01">Ketones are produced from acetile CoA in the liver mitochondria. </span></li>
+<li><span class="segment a-seg" data-start="486.0" data-end="497.0" title="8:06">Acetyl CoA is the end product of beta oxidation of fatty acids and the product of condensation of two pyruvate molecules. </span></li>
+<li><span class="segment a-seg" data-start="497.0" data-end="507.0" title="8:17">Acetyl CoA can be combined with oxaloacetate and then enter into the citric acid cycle of aerobic metabolism. </span></li>
+<li><span class="segment a-seg" data-start="508.0" data-end="522.0" title="8:28">In states of excess fatty acid breakdown such as diabetic ketoacidosis and starvation, then there is not enough oxaloacetate to combine with all of the astile CoA molecules. </span></li>
+<li><span class="segment a-seg" data-start="522.0" data-end="529.0" title="8:42">The excess acetile CoA molecules are diverted into ketone production. </span></li>
+<li><span class="segment a-seg" data-start="529.0" data-end="540.0" title="8:49">The accumulation of the ketoacids, beta hydroxybutyrate and acetate are what result in the development of a metabolic acidosis. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="540.0">
+  <div class="q-label">Q9</div>
+  <div class="q-body"><span class="segment q-seg" data-start="540.0" data-end="544.0" title="9:00">How might a patient with diabetic ketoacidosis present? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="544.0" data-end="548.0" title="9:04">Think history, then findings on examination. </span></li>
+<li><span class="segment a-seg" data-start="549.0" data-end="563.0" title="9:09">A patient with diabetic ketoacidosis will present with symptoms and signs of uncontrolled diabetes, namely polyurea, polydipsia, weight loss and dehydration. </span></li>
+<li><span class="segment a-seg" data-start="563.0" data-end="569.0" title="9:23">They may complain of abdominal pain, diarrhea, nausea and vomiting. </span></li>
+<li><span class="segment a-seg" data-start="569.0" data-end="575.0" title="9:29">On examination they will appear dehydrated with dry skin and a dry mouth. </span></li>
+<li><span class="segment a-seg" data-start="575.0" data-end="585.0" title="9:35">Their conscious level may be impaired. They will be hyperventilating due to the metabolic acidosis and this is known as cusmol breathing. </span></li>
+<li><span class="segment a-seg" data-start="585.0" data-end="594.0" title="9:45">There may be the distinct odor of ketones noted on the breath. They will be tachycardic and may be hypotensive. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="594.0">
+  <div class="q-label">Q10</div>
+  <div class="q-body"><span class="segment q-seg" data-start="594.0" data-end="596.0" title="9:54">How would you manage this patient? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="597.0" data-end="604.0" title="9:57">Break this down into history, examination, investigations, monitoring and specific treatment. </span></li>
+<li><span class="segment a-seg" data-start="604.0" data-end="611.0" title="10:04">I would take a history and examine the patient looking for the signs and symptoms already mentioned. </span></li>
+<li><span class="segment a-seg" data-start="611.0" data-end="619.0" title="10:11">The investigations I would request would be as follows. I would check an arterial blood gas for acid-based balance. </span></li>
+<li><span class="segment a-seg" data-start="620.0" data-end="630.0" title="10:20">I would check the urea and electrolytes and check for sodium levels which may be low as an osmolar compensation for the high glucose level. </span></li>
+<li><span class="segment a-seg" data-start="630.0" data-end="641.0" title="10:30">I would check the potassium level which may be high on presentation, although total body potassium will be low due to the absence of insulin. </span></li>
+<li><span class="segment a-seg" data-start="641.0" data-end="649.0" title="10:41">I would assess the anion gap, expecting it to be high due to the unmeasured ketones causing an acidosis. </span></li>
+<li><span class="segment a-seg" data-start="649.0" data-end="656.0" title="10:49">I would assess the urea and creatinine for signs of renal impairment or renal failure. </span></li>
+<li><span class="segment a-seg" data-start="656.0" data-end="670.0" title="10:56">I would check the urine for ketones. I would also request a full blood count, blood, urine and disputum cultures, a chest x-ray and a 12 lead ECG in order to determine the cause. </span></li>
+<li><span class="segment a-seg" data-start="671.0" data-end="680.0" title="11:11">I would want to institute some monitoring for this patient, namely ECG, blood pressure, pulse oxymetry and temperature. </span></li>
+<li><span class="segment a-seg" data-start="680.0" data-end="687.0" title="11:20">I would place a urinary catheter to measure urine output and check blood sugars regularly. </span></li>
+<li><span class="segment a-seg" data-start="687.0" data-end="695.0" title="11:27">I would inform the high dependency unit of the presence of a sick patient with diabetic ketonesidosis and request transfer. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="696.0">
+  <div class="q-label">Q11</div>
+  <div class="q-body"><span class="segment q-seg" data-start="696.0" data-end="700.0" title="11:36">Which specific treatment would you institute? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="700.0" data-end="713.0" title="11:40">The fluid loss should be replaced with normal saline, starting with 1 to 2 litres in the first hour and reducing to 300 to 500 ml per hour thereafter, titrated against response. </span></li>
+<li><span class="segment a-seg" data-start="713.0" data-end="717.0" title="11:53">A central line may be necessary to guide treatment. </span></li>
+<li><span class="segment a-seg" data-start="718.0" data-end="727.0" title="11:58">An insulin bolus of .1 units per kilo should be given, followed by an infusion of .1 units per kilo per hour. </span></li>
+<li><span class="segment a-seg" data-start="727.0" data-end="734.0" title="12:07">The blood sugar levels should be checked hourly thereafter and the insulin infusion adjusted accordingly. </span></li>
+<li><span class="segment a-seg" data-start="734.0" data-end="742.0" title="12:14">Potassium should be added to the replacement fluid when the serum level reaches 4.5 ml per litre. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="742.0">
+  <div class="q-label">Q12</div>
+  <div class="q-body"><span class="segment q-seg" data-start="742.0" data-end="749.0" title="12:22">When the blood sugar level falls below 14 ml per litre, a glucose infusion should be started. </span><span class="segment q-seg" data-start="749.0" data-end="752.0" title="12:29">Would you give the patient by carbonate? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="752.0" data-end="755.0" title="12:32">This is a contentious issue. </span></li>
+<li><span class="segment a-seg" data-start="755.0" data-end="766.0" title="12:35">By carbonate has been used in the treatment of diabetic ketonesidosis if the pH is less than 7, but it has several inherent problems. </span></li>
+<li><span class="segment a-seg" data-start="766.0" data-end="771.0" title="12:46">The formulations that are currently available deliver a large sodium load. </span></li>
+<li><span class="segment a-seg" data-start="771.0" data-end="777.0" title="12:51">Also, giving by carbonate will increase carbon dioxide production. </span></li>
+<li><span class="segment a-seg" data-start="777.0" data-end="784.0" title="12:57">By carbonate does not cross the blood-brain barrier, so will worsen cerebral intracellular acidosis. </span></li>
+<li><span class="segment a-seg" data-start="784.0" data-end="791.0" title="13:04">By carbonate will also worsen hypocholemia, which might provoke cardiac arrhythmias. </span></li>
+<li><span class="segment a-seg" data-start="791.0" data-end="797.0" title="13:11">As the keto acids disappear, a metabolic alkylosis may develop. </span></li>
+<li><span class="segment a-seg" data-start="797.0" data-end="803.0" title="13:17">By carbonate also causes a left shift of the oxyhemoglobin disassociation curve. </span></li>
+<li><span class="segment a-seg" data-start="803.0" data-end="813.0" title="13:23">There is no evidence of any outcome benefit to using by carbonate if the patient's pH is greater than 6.8. </span></li>
+  </ul>
+</div>
+</div>
+
 </div>
 
 <div class="subtitle-bar">
-  <span class="subtitle-text empty" id="subtitle-text">Play audio to see live subtitles&#8230;</span>
+  <span id="subtitle-text" class="empty">Play audio to see live subtitles&#8230;</span>
 </div>
 
 <script>
-
-const audio    = document.getElementById('audio');
-const allSegs  = Array.from(document.querySelectorAll('.segment'));
-const allBlocks = Array.from(document.querySelectorAll('.t-block'));
+const audio      = document.getElementById('audio');
+const allSegs    = Array.from(document.querySelectorAll('.segment'));
 const subtitleEl = document.getElementById('subtitle-text');
-let activeSegEl   = null;
-let activeBlockEl = null;
-let searchMatches = [];
-let searchIdx     = 0;
+let activeSegEl  = null;
+let searchMatches = [], searchIdx = 0;
 
-// Duration display
 audio.addEventListener('loadedmetadata', () => {
   const m = Math.floor(audio.duration / 60);
   const s = Math.floor(audio.duration %% 60).toString().padStart(2,'0');
   document.getElementById('dur').textContent = m + ':' + s;
 });
 
-// Seek helper
-function seekTo(t) {
-  audio.currentTime = t;
-  audio.play();
-}
+function seekTo(t) { audio.currentTime = t; audio.play(); }
 
-// Block gutter click
-document.querySelectorAll('.t-gutter').forEach(g => {
-  g.addEventListener('click', () => seekTo(parseFloat(g.dataset.start)));
+// Q-block header click
+document.querySelectorAll('.q-block').forEach(q => {
+  q.addEventListener('click', e => {
+    if (!e.target.classList.contains('segment')) seekTo(parseFloat(q.dataset.start));
+  });
 });
 
-// Segment click
+// Individual segment click
 allSegs.forEach(s => {
-  s.addEventListener('click', e => {
-    e.stopPropagation();
-    seekTo(parseFloat(s.dataset.start));
-  });
+  s.addEventListener('click', e => { e.stopPropagation(); seekTo(parseFloat(s.dataset.start)); });
 });
 
 // Real-time tracking
 audio.addEventListener('timeupdate', () => {
   const t = audio.currentTime;
-
-  // Find active segment (last one whose start <= t)
   let found = null;
   for (let i = allSegs.length - 1; i >= 0; i--) {
     if (parseFloat(allSegs[i].dataset.start) <= t) { found = allSegs[i]; break; }
   }
-
   if (found && found !== activeSegEl) {
-    // Clear previous
-    if (activeSegEl) activeSegEl.classList.remove('active');
-    if (activeBlockEl) {
-      activeBlockEl.classList.remove('block-active');
-      const pg = activeBlockEl.querySelector('.t-gutter');
-      if (pg) pg.classList.remove('gutter-active');
+    if (activeSegEl) {
+      activeSegEl.classList.remove('active');
+      const pli = activeSegEl.closest('li');
+      if (pli) pli.classList.remove('li-active');
+      const pq = activeSegEl.closest('.q-block');
+      if (pq) pq.classList.remove('q-active');
     }
-    // Set new
     found.classList.add('active');
-    const block = found.closest('.t-block');
-    if (block) {
-      block.classList.add('block-active');
-      const g = block.querySelector('.t-gutter');
-      if (g) g.classList.add('gutter-active');
-      activeBlockEl = block;
-    }
+    const li = found.closest('li');
+    if (li) li.classList.add('li-active');
+    const qb = found.closest('.q-block');
+    if (qb) qb.classList.add('q-active');
     activeSegEl = found;
 
-    // Update subtitle
     subtitleEl.textContent = found.textContent.trim();
     subtitleEl.classList.remove('empty');
 
-    // Auto-scroll (only when not searching)
-    if (!document.getElementById('search').value) {
+    if (!document.getElementById('search').value)
       found.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }
   }
 });
 
@@ -341,17 +464,13 @@ searchInput.addEventListener('keydown', e => {
     el.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
 });
-
 function runSearch() {
   const q = searchInput.value.trim().toLowerCase();
   allSegs.forEach(s => s.classList.remove('search-match','search-current'));
   searchMatches = [];
   if (!q) return;
   allSegs.forEach(s => {
-    if (s.textContent.toLowerCase().includes(q)) {
-      s.classList.add('search-match');
-      searchMatches.push(s);
-    }
+    if (s.textContent.toLowerCase().includes(q)) { s.classList.add('search-match'); searchMatches.push(s); }
   });
   if (!searchMatches.length) return;
   searchIdx = 0;

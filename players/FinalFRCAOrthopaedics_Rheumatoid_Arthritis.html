@@ -5,10 +5,19 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Orthopaedics — Rheumatoid Arthritis</title>
 <style>
-
   :root {
-    --accent:    #64748b;
-    --body-bg:   #f1f5f9;
+    --q-bg:       #1e3a5f;
+    --q-text:     #ffffff;
+    --q-label:    #60a5fa;
+    --a-bg:       #ffffff;
+    --a-border:   #e2e8f0;
+    --a-label:    #059669;
+    --active-q:   #64748b;
+    --active-a:   #dbeafe;
+    --accent:     #64748b;
+    --body-bg:    #f1f5f9;
+    --pre-bg:     #fef9c3;
+    --pre-border: #fcd34d;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
@@ -40,22 +49,9 @@
     margin-bottom: 4px;
     letter-spacing: 0.01em;
   }
-  .header-sub {
-    font-size: 0.72rem;
-    color: #94a3b8;
-    font-style: italic;
-  }
-  audio {
-    height: 36px;
-    accent-color: var(--accent);
-    flex-shrink: 0;
-  }
-  .back-link {
-    font-size: 0.8rem;
-    color: #94a3b8;
-    text-decoration: none;
-    white-space: nowrap;
-  }
+  .header-sub { font-size: 0.72rem; color: #94a3b8; font-style: italic; }
+  audio { height: 36px; accent-color: var(--accent); flex-shrink: 0; }
+  .back-link { font-size: 0.8rem; color: #94a3b8; text-decoration: none; white-space: nowrap; }
   .back-link:hover { color: #60a5fa; }
 
   /* ── Toolbar ── */
@@ -69,30 +65,17 @@
     border-bottom: 1px solid #334155;
   }
   .toolbar input {
-    flex: 1;
-    max-width: 380px;
+    flex: 1; max-width: 380px;
     padding: 5px 11px;
-    border: 1px solid #475569;
-    border-radius: 6px;
-    background: #0f172a;
-    color: #e2e8f0;
-    font-size: 0.83rem;
-    outline: none;
+    border: 1px solid #475569; border-radius: 6px;
+    background: #0f172a; color: #e2e8f0; font-size: 0.83rem; outline: none;
   }
   .toolbar input:focus { border-color: var(--accent); }
   .toolbar input::placeholder { color: #64748b; }
-  .stats {
-    font-size: 0.72rem;
-    color: #64748b;
-    white-space: nowrap;
-  }
+  .stats { font-size: 0.72rem; color: #64748b; white-space: nowrap; }
 
   /* ── Scroll area ── */
-  .scroll-area {
-    flex: 1;
-    overflow-y: auto;
-    padding: 20px;
-  }
+  .scroll-area { flex: 1; overflow-y: auto; padding: 20px; }
   .scroll-area::-webkit-scrollbar { width: 6px; }
   .scroll-area::-webkit-scrollbar-track { background: transparent; }
   .scroll-area::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
@@ -107,68 +90,77 @@
     display: flex;
     align-items: center;
   }
-  .subtitle-text {
-    font-size: 0.9rem;
-    color: #e2e8f0;
-    line-height: 1.5;
-    font-style: italic;
-  }
-  .subtitle-text.empty { color: #475569; }
+  #subtitle-text { font-size: 0.88rem; color: #e2e8f0; line-height: 1.5; font-style: italic; }
+  #subtitle-text.empty { color: #475569; }
 
-  /* ── Transcript blocks ── */
-  .t-block {
-    background: #ffffff;
-    border: 1px solid #e2e8f0;
-    border-radius: 10px;
-    margin-bottom: 14px;
-    overflow: hidden;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
-    display: flex;
-  }
-  .t-block.block-active {
-    border-color: var(--accent);
-    box-shadow: 0 0 0 2px rgba(37,99,235,0.15);
-  }
-  .t-gutter {
-    background: #0f172a;
-    width: 52px;
-    flex-shrink: 0;
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
-    padding-top: 14px;
-    cursor: pointer;
-  }
-  .t-gutter:hover { background: #1e293b; }
-  .t-timestamp {
-    font-size: 0.7rem;
-    color: #64748b;
-    font-family: monospace;
-    font-weight: 600;
-    letter-spacing: 0.02em;
-  }
-  .t-gutter.gutter-active .t-timestamp { color: var(--accent); }
-  .t-body {
-    flex: 1;
+  /* ── Preamble ── */
+  .preamble-block {
+    background: var(--pre-bg);
+    border-left: 4px solid var(--pre-border);
+    border-radius: 0 8px 8px 0;
     padding: 12px 16px;
-    line-height: 1.75;
-    font-size: 0.92rem;
-    color: #1e293b;
+    margin-bottom: 20px;
+    font-size: 0.88rem;
+    color: #78350f;
+    font-style: italic;
+    line-height: 1.7;
   }
 
-  /* ── Segments ── */
-  .segment {
+  /* ── Q&A pair ── */
+  .qa-pair { margin-bottom: 20px; border-radius: 10px; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+
+  /* Question block */
+  .q-block {
+    background: var(--q-bg);
+    padding: 14px 18px;
+    display: flex; gap: 14px; align-items: flex-start;
     cursor: pointer;
-    border-radius: 3px;
-    transition: background 0.1s;
+    transition: background 0.15s;
   }
-  .segment:hover { background: #eff6ff; }
-  .segment.active {
-    background: #bfdbfe;
-    outline: 2px solid #3b82f6;
-    outline-offset: 1px;
-    border-radius: 3px;
+  .q-block:hover { background: #1d4ed8; }
+  .q-block.q-active { background: var(--active-q); }
+  .q-label {
+    font-size: 0.7rem; font-weight: 700;
+    color: var(--q-label);
+    background: rgba(96,165,250,0.15);
+    border: 1px solid rgba(96,165,250,0.3);
+    border-radius: 5px; padding: 3px 7px;
+    white-space: nowrap; margin-top: 2px; letter-spacing: 0.05em;
+    flex-shrink: 0;
   }
+  .q-body { flex: 1; font-size: 0.97rem; font-weight: 600; color: var(--q-text); line-height: 1.55; }
+
+  /* Answer block */
+  .a-block {
+    background: var(--a-bg);
+    border: 1px solid var(--a-border); border-top: none;
+    padding: 14px 18px;
+    display: flex; gap: 14px; align-items: flex-start;
+  }
+  .a-label {
+    font-size: 0.7rem; font-weight: 700;
+    color: var(--a-label);
+    background: #d1fae5; border: 1px solid #6ee7b7;
+    border-radius: 5px; padding: 3px 9px;
+    white-space: nowrap; margin-top: 2px; letter-spacing: 0.05em;
+    flex-shrink: 0;
+  }
+  .a-body { flex: 1; list-style: none; padding: 0; }
+  .a-body li {
+    padding: 4px 0 4px 14px;
+    border-left: 3px solid transparent;
+    line-height: 1.7; font-size: 0.92rem; color: #1e293b;
+    border-radius: 0 4px 4px 0;
+    transition: background 0.15s;
+  }
+  .a-body li:not(:last-child) { border-bottom: 1px solid #f1f5f9; }
+
+  /* ── Segments (clickable) ── */
+  .segment { cursor: pointer; border-radius: 3px; }
+  .q-seg:hover { background: rgba(255,255,255,0.18); }
+  .a-seg:hover { background: #eff6ff; }
+  .segment.active { background: #bfdbfe; outline: 2px solid #3b82f6; outline-offset: 1px; }
+  .a-body li.li-active { background: var(--active-a); border-left-color: var(--accent); }
   .segment.search-match  { background: #fef9c3; }
   .segment.search-current { background: #fde047; outline: 2px solid #ca8a04; }
 
@@ -187,217 +179,631 @@
 
 <div class="toolbar">
   <input type="text" id="search" placeholder="Search transcript&#8230; (Enter = next match)">
-  <span class="stats" id="stats">252 segments &nbsp;|&nbsp; <span id="dur">loading&#8230;</span></span>
+  <span class="stats" id="stats">31 questions &nbsp;|&nbsp; 252 segments &nbsp;|&nbsp; <span id="dur">loading&#8230;</span></span>
 </div>
 
 <div class="scroll-area" id="scroll-area">
-<div class="t-block">
-  <div class="t-gutter" data-start="0.0"><span class="t-timestamp">0:00</span></div>
-  <div class="t-body"><span class="segment" data-start="0.0" data-end="2.0" title="0:00">Rumor toward arthritis. </span><span class="segment" data-start="3.2" data-end="6.8" title="0:03">You're on the ward reviewing a 55-year-old female patient </span><span class="segment" data-start="6.8" data-end="10.0" title="0:06">who is on your list for a total knee replacement tomorrow. </span><span class="segment" data-start="10.8" data-end="14.2" title="0:10">She's keen to tell you that she has severe rumour toward arthritis </span><span class="segment" data-start="14.2" data-end="16.6" title="0:14">which is particularly bad in her hands. </span><span class="segment" data-start="18.2" data-end="20.4" title="0:18">What can you tell me about this condition? </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="21.2"><span class="t-timestamp">0:21</span></div>
-  <div class="t-body"><span class="segment" data-start="21.2" data-end="25.6" title="0:21">The examiners will be looking for some background medical knowledge to start with. </span><span class="segment" data-start="26.6" data-end="31.4" title="0:26">Rumor toward arthritis is a systemic chronic inflammatory disease </span><span class="segment" data-start="31.4" data-end="35.4" title="0:31">that affects 1-2% of the UK population. </span><span class="segment" data-start="35.4" data-end="41.0" title="0:35">It is more prevalent in women, affecting females three times more than men. </span><span class="segment" data-start="41.0" data-end="46.0" title="0:41">The onset is generally between 30-55 years of age. </span><span class="segment" data-start="46.0" data-end="49.6" title="0:46">The exact cause of the condition is unknown </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="49.6"><span class="t-timestamp">0:49</span></div>
-  <div class="t-body"><span class="segment" data-start="49.6" data-end="53.4" title="0:49">that it is thought to involve an autoimmune process. </span><span class="segment" data-start="54.0" data-end="60.0" title="0:54">About 70% of cases are positive for HLA-DR4 </span><span class="segment" data-start="60.0" data-end="65.0" title="1:00">and 80% of sufferers are zero positive for rheumatoid factor. </span><span class="segment" data-start="66.0" data-end="67.8" title="1:06">How does the arthritis present? </span><span class="segment" data-start="69.6" data-end="73.6" title="1:09">The patient develops a symmetrical polyarthritis. </span><span class="segment" data-start="73.6" data-end="76.8" title="1:13">This may be a varying extent and severity. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="77.4"><span class="t-timestamp">1:17</span></div>
-  <div class="t-body"><span class="segment" data-start="77.4" data-end="83.0" title="1:17">Rumor toward arthritis tends to affect the hands, feet, knees, </span><span class="segment" data-start="83.0" data-end="85.8" title="1:23">elbows, shoulders and neck. </span><span class="segment" data-start="86.4" data-end="89.0" title="1:26">What is the pathological process that occurs? </span><span class="segment" data-start="91.0" data-end="97.4" title="1:31">The pathological process involves sign-of-itis of joints and tendon sheets. </span><span class="segment" data-start="98.2" data-end="102.6" title="1:38">Loss of articular cartilage and erosion of juxtaparticular bone </span><span class="segment" data-start="102.6" data-end="104.6" title="1:42">leads to joint destruction. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="105.0"><span class="t-timestamp">1:45</span></div>
-  <div class="t-body"><span class="segment" data-start="105.0" data-end="106.8" title="1:45">What is stills disease? </span><span class="segment" data-start="109.0" data-end="112.4" title="1:49">This is the most common childhood form of the disease. </span><span class="segment" data-start="112.4" data-end="115.2" title="1:52">It can be particularly debilitating. </span><span class="segment" data-start="115.2" data-end="118.8" title="1:55">Going back to our case, what might be your concerns regarding </span><span class="segment" data-start="118.8" data-end="121.8" title="1:58">anesthetising a woman with rheumatoid arthritis? </span><span class="segment" data-start="123.2" data-end="126.6" title="2:03">I would want to fully assess the extent of the disease </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="126.6"><span class="t-timestamp">2:06</span></div>
-  <div class="t-body"><span class="segment" data-start="126.6" data-end="130.4" title="2:06">since rheumatoid arthritis is a multi-system condition </span><span class="segment" data-start="130.4" data-end="134.0" title="2:10">which can have a number of implications for the anesthetist. </span><span class="segment" data-start="134.4" data-end="141.0" title="2:14">I would be particularly concerned about any airway, respiratory, cardiac, muscular skeletal </span><span class="segment" data-start="141.0" data-end="142.8" title="2:21">or hematological problems. </span><span class="segment" data-start="143.4" data-end="145.8" title="2:23">I would need to review her drug therapy </span><span class="segment" data-start="145.8" data-end="148.8" title="2:25">since this may also influence the anesthetic. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="149.2"><span class="t-timestamp">2:29</span></div>
-  <div class="t-body"><span class="segment" data-start="149.2" data-end="153.2" title="2:29">If the woman had not told you that she'd been diagnosed with rheumatoid arthritis, </span><span class="segment" data-start="153.2" data-end="155.4" title="2:33">what might be some of the symptoms of the condition? </span><span class="segment" data-start="157.4" data-end="162.6" title="2:37">Rheumatoid arthritis generally presents with symmetrical joint problems. </span><span class="segment" data-start="162.6" data-end="166.0" title="2:42">Patients experience pain and stiffness. </span><span class="segment" data-start="166.0" data-end="169.8" title="2:46">This is worse in the morning and improves with activity. </span><span class="segment" data-start="170.2" data-end="175.2" title="2:50">The symptoms may occur as flare-ups interspersed with good periods. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="175.2"><span class="t-timestamp">2:55</span></div>
-  <div class="t-body"><span class="segment" data-start="175.2" data-end="179.0" title="2:55">The patient may have noticed progressive joint deformities, </span><span class="segment" data-start="179.0" data-end="181.4" title="2:59">particularly affecting the hands. </span><span class="segment" data-start="182.4" data-end="188.0" title="3:02">The patient may also describe fatigue, weight loss and low mood. </span><span class="segment" data-start="188.6" data-end="193.2" title="3:08">About half of sufferers have extra-articular complications </span><span class="segment" data-start="193.2" data-end="198.8" title="3:13">which can involve the airway, respiratory, cardiovascular, neurological, </span><span class="segment" data-start="198.8" data-end="201.6" title="3:18">renal and hematological systems. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="202.2"><span class="t-timestamp">3:22</span></div>
-  <div class="t-body"><span class="segment" data-start="202.2" data-end="206.0" title="3:22">So what signs might you observe in the muscular skeletal system particularly? </span><span class="segment" data-start="208.4" data-end="213.0" title="3:28">The patients may have hand or feet signs, such as ulnar deviation, </span><span class="segment" data-start="213.0" data-end="218.0" title="3:33">butanea or swannector formities and z-shaped thumbs. </span><span class="segment" data-start="218.4" data-end="221.0" title="3:38">Subcutaneous nodules might be visible. </span><span class="segment" data-start="221.8" data-end="223.6" title="3:41">What would you ask the woman in your history? </span><span class="segment" data-start="225.4" data-end="228.6" title="3:45">I would take a general and a specific history. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="229.0"><span class="t-timestamp">3:49</span></div>
-  <div class="t-body"><span class="segment" data-start="229.0" data-end="233.2" title="3:49">In the specific history, I would be looking to ascertain how and when </span><span class="segment" data-start="233.2" data-end="235.6" title="3:53">the rheumatoid arthritis was diagnosed. </span><span class="segment" data-start="236.0" data-end="239.4" title="3:56">I would ask which joints were involved and to what extent? </span><span class="segment" data-start="240.0" data-end="244.4" title="4:00">In particular, I would discuss the range of neck and hand movement. </span><span class="segment" data-start="244.6" data-end="248.8" title="4:04">I would also want to know about the drug treatments that the patient has tried </span><span class="segment" data-start="248.8" data-end="250.4" title="4:08">and is currently taking. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="250.6"><span class="t-timestamp">4:10</span></div>
-  <div class="t-body"><span class="segment" data-start="250.6" data-end="253.0" title="4:10">So what can you tell me about rheumatoid neck disease? </span><span class="segment" data-start="254.0" data-end="259.4" title="4:14">The Atlanto Axial joint may be affected in rheumatoid arthritis </span><span class="segment" data-start="259.4" data-end="265.4" title="4:19">due to the erosion of the transverse ligament and the breakdown of the adontoid peg. </span><span class="segment" data-start="265.6" data-end="271.4" title="4:25">About 25% of patients develop Atlanto axial subluxation. </span><span class="segment" data-start="271.6" data-end="277.6" title="4:31">This can lead to acute spinal cord compression or compression of the vertebral arteries. </span><span class="segment" data-start="278.2" data-end="286.0" title="4:38">Anterior axial subluxation is the most common type of subluxation and is worsened by neck flexion. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="287.2"><span class="t-timestamp">4:47</span></div>
-  <div class="t-body"><span class="segment" data-start="287.2" data-end="293.0" title="4:47">A fixed flexion deformity of the neck may also occur due to fusion of the spine. </span><span class="segment" data-start="293.2" data-end="297.8" title="4:53">Osteoporosis is further worsened by steroid medication. </span><span class="segment" data-start="298.4" data-end="304.6" title="4:58">All of these problems may challenge the anesthetist since manipulation of the airway may be difficult </span><span class="segment" data-start="304.6" data-end="306.8" title="5:04">and should be kept to a minimum. </span><span class="segment" data-start="307.2" data-end="309.2" title="5:07">Let's go back to your history. </span><span class="segment" data-start="309.6" data-end="314.2" title="5:09">Is there anything else you might want to discuss regarding the musculoskeletal system? </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="315.6"><span class="t-timestamp">5:15</span></div>
-  <div class="t-body"><span class="segment" data-start="315.6" data-end="321.8" title="5:15">I would want to ascertain whether either the temporal mandipula or cryocrytinoid joints are involved </span><span class="segment" data-start="321.8" data-end="326.6" title="5:21">since this might have implications for intubation and airway management. </span><span class="segment" data-start="326.8" data-end="331.8" title="5:26">With regards to the temporal mandipula joint, I would ask about mouth opening. </span><span class="segment" data-start="332.0" data-end="337.2" title="5:32">The symptoms of cryocrytinoid involvement might include dyspnea, </span><span class="segment" data-start="337.4" data-end="342.0" title="5:37">horseness, stride or and rarely upper airway obstruction. </span><span class="segment" data-start="343.4" data-end="348.4" title="5:43">For a total knee replacement, I would consider performing a spinal anesthetic. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="348.6"><span class="t-timestamp">5:48</span></div>
-  <div class="t-body"><span class="segment" data-start="348.6" data-end="354.8" title="5:48">I would therefore want to find out whether the patient had had any back involvement or operations. </span><span class="segment" data-start="355.2" data-end="361.2" title="5:55">I would also ask whether they would be able to get into a suitable position for this technique to be performed. </span><span class="segment" data-start="361.6" data-end="364.6" title="6:01">What other body systems might you ask about and why? </span><span class="segment" data-start="366.4" data-end="375.0" title="6:06">I would inquire about the respiratory, cardiovascular, hematological, renal and neurological systems. </span><span class="segment" data-start="375.6" data-end="381.8" title="6:15">With regards to the respiratory system, I would be looking for any evidence of pulmonary fibrosis, </span><span class="segment" data-start="381.8" data-end="388.6" title="6:21">vasculitis, pulmonary hypertension, pulmonary nodules and plural effusions. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="389.0"><span class="t-timestamp">6:29</span></div>
-  <div class="t-body"><span class="segment" data-start="389.0" data-end="393.8" title="6:29">I would try and ascertain whether the rib joints had developed any arthritic changes. </span><span class="segment" data-start="394.0" data-end="399.8" title="6:34">Furthermore, the drugs given for the arthritis might have had unwanted pulmonary effects, </span><span class="segment" data-start="399.8" data-end="402.4" title="6:39">such as fibrotic changes. </span><span class="segment" data-start="402.6" data-end="408.2" title="6:42">Rumor toyed arthritis can affect the cardiovascular system in a number of ways. </span><span class="segment" data-start="408.4" data-end="416.0" title="6:48">The patient is at an increased risk of arteriosclerosis, myocardial infarction and stroke. </span><span class="segment" data-start="416.4" data-end="420.8" title="6:56">Miterol valve disease is present in up to 5% of patients. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="421.4"><span class="t-timestamp">7:01</span></div>
-  <div class="t-body"><span class="segment" data-start="421.4" data-end="426.4" title="7:01">Perocardial disease, such as effusions and inflammation may occur. </span><span class="segment" data-start="426.6" data-end="430.6" title="7:06">Cardiac conduction defects may also develop. </span><span class="segment" data-start="431.6" data-end="437.6" title="7:11">The hematological system can be affected by the development of anemia of chronic disease. </span><span class="segment" data-start="437.8" data-end="445.6" title="7:17">Sometimes the platelet count is elevated in association with the generalized inflammatory response during a flare-up. </span><span class="segment" data-start="445.6" data-end="448.0" title="7:25">A leukopenia may also be seen. </span><span class="segment" data-start="448.2" data-end="450.2" title="7:28">And what about the nervous system? </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="451.6"><span class="t-timestamp">7:31</span></div>
-  <div class="t-body"><span class="segment" data-start="451.6" data-end="456.8" title="7:31">The patient might develop a peripheral neuropathy from the rheumatoid arthritis </span><span class="segment" data-start="456.8" data-end="459.8" title="7:36">or the drugs given to modify the condition. </span><span class="segment" data-start="460.0" data-end="464.8" title="7:40">It is important to discuss and document any neurological changes, </span><span class="segment" data-start="465.0" data-end="469.4" title="7:45">especially if a regional or central neuroaxial block is considered, </span><span class="segment" data-start="469.6" data-end="473.0" title="7:49">or if the cervical spine may need to be manipulated. </span><span class="segment" data-start="473.4" data-end="475.4" title="7:53">You mentioned the renal system. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="475.6"><span class="t-timestamp">7:55</span></div>
-  <div class="t-body"><span class="segment" data-start="475.6" data-end="479.0" title="7:55">Can you tell me anything about the changes that might occur? </span><span class="segment" data-start="480.0" data-end="486.2" title="8:00">The patient may develop renal amyloid or a vasculopathy from the rheumatoid arthritis. </span><span class="segment" data-start="486.4" data-end="490.4" title="8:06">This might be identified as acute or chronic renal failure. </span><span class="segment" data-start="490.6" data-end="493.4" title="8:10">Can rheumatoid arthritis affect the liver? </span><span class="segment" data-start="494.6" data-end="495.8" title="8:14">Yes. </span><span class="segment" data-start="496.0" data-end="501.4" title="8:16">Felties syndrome occurs when the inflammatory mediators associated with rheumatoid </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="501.4"><span class="t-timestamp">8:21</span></div>
-  <div class="t-body"><span class="segment" data-start="501.4" data-end="504.2" title="8:21">cause nodular hepatocyte enlargement. </span><span class="segment" data-start="504.4" data-end="508.8" title="8:24">This can be associated with splenomegaly and leukopenia. </span><span class="segment" data-start="509.0" data-end="511.8" title="8:29">What about the eyes and skin? </span><span class="segment" data-start="512.8" data-end="515.0" title="8:32">The sclerom may be involved. </span><span class="segment" data-start="515.2" data-end="520.2" title="8:35">Episcleritis is a feature of rheumatoid arthritis as is dry eyes. </span><span class="segment" data-start="520.4" data-end="525.2" title="8:40">It is therefore important to protect the eyes during general anesthesia </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="525.4"><span class="t-timestamp">8:45</span></div>
-  <div class="t-body"><span class="segment" data-start="525.4" data-end="529.4" title="8:45">to reduce the risk of corneal ulceration or abrasion. </span><span class="segment" data-start="529.4" data-end="533.6" title="8:49">With regards to the skin, rheumatoid nodules are common. </span><span class="segment" data-start="533.8" data-end="537.4" title="8:53">Steroids can cause thin, papery skin to develop, </span><span class="segment" data-start="537.6" data-end="541.6" title="8:57">which needs to be handled extremely carefully to avoid trauma. </span><span class="segment" data-start="541.8" data-end="545.0" title="9:01">Let's consider the drugs that this patient might be taking. </span><span class="segment" data-start="545.2" data-end="548.6" title="9:05">Can you suggest any drugs in their unwanted side effects? </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="548.8"><span class="t-timestamp">9:08</span></div>
-  <div class="t-body"><span class="segment" data-start="548.8" data-end="555.8" title="9:08">Remember not to forget painkillers and immunosuppressants or disease modifying agents. </span><span class="segment" data-start="556.4" data-end="561.4" title="9:16">The patient might be taking regular non-steroidal anti-inflammatory medications </span><span class="segment" data-start="561.6" data-end="562.8" title="9:21">for pain relief. </span><span class="segment" data-start="563.0" data-end="567.6" title="9:23">These can cause renal impairment, gastrointestinal ulceration, </span><span class="segment" data-start="567.8" data-end="574.4" title="9:27">reduced platelet function, and exacerbation of asthma ins susceptible individuals. </span><span class="segment" data-start="574.6" data-end="580.6" title="9:34">Azerthiaprine, metatrexate, gold and penicillamine are all used to suppress </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="580.8"><span class="t-timestamp">9:40</span></div>
-  <div class="t-body"><span class="segment" data-start="580.8" data-end="584.4" title="9:40">the immune system in patients with rheumatoid arthritis. </span><span class="segment" data-start="584.4" data-end="590.4" title="9:44">These drugs can cause bone marrow suppression, lung toxicity, liver dysfunction, </span><span class="segment" data-start="590.6" data-end="596.8" title="9:50">thrombocytopenia, anemia, and renal side effects. </span><span class="segment" data-start="597.0" data-end="601.6" title="9:57">Steroids are frequently given to patients with rheumatoid arthritis. </span><span class="segment" data-start="601.8" data-end="608.2" title="10:01">They may have many side effects, including hypertension, diabetes, obesity, </span><span class="segment" data-start="608.4" data-end="615.4" title="10:08">adrenal suppression, fragile skin, peptic ulcer disease, and electrolyte changes. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="615.6"><span class="t-timestamp">10:15</span></div>
-  <div class="t-body"><span class="segment" data-start="615.6" data-end="622.0" title="10:15">Anticyterchine agents can give flu-like symptoms and cause bone marrow suppression. </span><span class="segment" data-start="622.2" data-end="625.4" title="10:22">Having ascertained this woman has developed hypertension and diabetes </span><span class="segment" data-start="625.6" data-end="628.0" title="10:25">since taking regular steroid medication, </span><span class="segment" data-start="628.2" data-end="632.6" title="10:28">you find that there are no other extroticular features of rheumatoid disease. </span><span class="segment" data-start="632.8" data-end="637.6" title="10:32">What further information would you want to know in your general history? </span><span class="segment" data-start="637.8" data-end="642.8" title="10:37">I would inquire about previous anesthetics and whether there is any family history </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="643.0"><span class="t-timestamp">10:43</span></div>
-  <div class="t-body"><span class="segment" data-start="643.0" data-end="645.0" title="10:43">of any problems with anesthetics. </span><span class="segment" data-start="645.2" data-end="650.0" title="10:45">I would then ask the woman about other medical conditions in a stepwise approach </span><span class="segment" data-start="650.2" data-end="651.8" title="10:50">through the body systems. </span><span class="segment" data-start="652.0" data-end="656.8" title="10:52">I would particularly focus on the blood pressure and diabetic control </span><span class="segment" data-start="657.0" data-end="659.2" title="10:57">and the cardiovascular history. </span><span class="segment" data-start="659.4" data-end="663.2" title="10:59">I would then talk about the medications that the woman was taking </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="663.4"><span class="t-timestamp">11:03</span></div>
-  <div class="t-body"><span class="segment" data-start="663.4" data-end="665.8" title="11:03">and ask whether she had any allergies. </span><span class="segment" data-start="666.0" data-end="672.0" title="11:06">Finally, I would discuss starvation history and ask about the woman's dentition. </span><span class="segment" data-start="672.2" data-end="676.2" title="11:12">What examination would you perform on this woman? </span><span class="segment" data-start="676.4" data-end="682.6" title="11:16">I would examine the cardio-respiratory, neurological and muscular skeletal systems. </span><span class="segment" data-start="682.8" data-end="687.2" title="11:22">I would include a thorough airway assessment in my respiratory examination. </span><span class="segment" data-start="687.4" data-end="690.4" title="11:27">I would also look at the condition of the patient's skin </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="690.6"><span class="t-timestamp">11:30</span></div>
-  <div class="t-body"><span class="segment" data-start="690.6" data-end="693.2" title="11:30">and assess their ability to use a PCA </span><span class="segment" data-start="693.2" data-end="698.4" title="11:33">if the disease causes significant pain or deformity of the hands. </span><span class="segment" data-start="698.6" data-end="703.4" title="11:38">How would you investigate this patient prior to surgery? </span><span class="segment" data-start="703.6" data-end="708.4" title="11:43">I would want to review an ECG and blood tests as a minimum. </span><span class="segment" data-start="708.6" data-end="712.8" title="11:48">With regards to the blood tests, I would check the full blood count, </span><span class="segment" data-start="713.0" data-end="716.6" title="11:53">renal function, electrolytes, liver function, </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="716.8"><span class="t-timestamp">11:56</span></div>
-  <div class="t-body"><span class="segment" data-start="716.8" data-end="720.6" title="11:56">and ensure that a valid group and save were available. </span><span class="segment" data-start="720.8" data-end="725.8" title="12:00">If I had identified features of respiratory disease in my history or examination, </span><span class="segment" data-start="726.0" data-end="730.4" title="12:06">I might request a chest x-ray or pulmonary function tests. </span><span class="segment" data-start="730.6" data-end="734.8" title="12:10">If I suspected the rheumatoid disease might be affecting the neck, </span><span class="segment" data-start="735.0" data-end="740.2" title="12:15">I would consider performing a neck x-ray in flexion and extension. </span><span class="segment" data-start="740.4" data-end="744.4" title="12:20">If this were abnormal, an MRI might be needed. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="744.6"><span class="t-timestamp">12:24</span></div>
-  <div class="t-body"><span class="segment" data-start="744.6" data-end="749.6" title="12:24">With regards to the airway, indirect larynxoscopy might be required. </span><span class="segment" data-start="749.6" data-end="753.8" title="12:29">If I suspected that the cryoceretenoid movement was impaired. </span><span class="segment" data-start="754.0" data-end="757.0" title="12:34">From your thorough assessment, you have found this 55-year-old woman </span><span class="segment" data-start="757.2" data-end="762.6" title="12:37">has rheumatoid arthritis that appears to mainly affect her hands and knees. </span><span class="segment" data-start="762.8" data-end="766.0" title="12:42">She has hypertension and diabetes. </span><span class="segment" data-start="766.2" data-end="768.8" title="12:46">She takes 20 milligrams of prednisolone daily, </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="769.0"><span class="t-timestamp">12:49</span></div>
-  <div class="t-body"><span class="segment" data-start="769.0" data-end="773.8" title="12:49">along with paracetamol and dichlofenac, when her arthritis is particularly bad. </span><span class="segment" data-start="774.0" data-end="776.4" title="12:54">Her skin appears fragile. </span><span class="segment" data-start="776.6" data-end="780.2" title="12:56">What would be your preferred anaesthetic technique for this patient? </span><span class="segment" data-start="780.4" data-end="784.6" title="13:00">Try and be decisive about what you would want to do for this patient. </span><span class="segment" data-start="784.8" data-end="788.0" title="13:04">The examiner wants to see that you have been in this position before </span><span class="segment" data-start="788.2" data-end="791.8" title="13:08">and that you are confident of your abilities. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="792.0"><span class="t-timestamp">13:12</span></div>
-  <div class="t-body"><span class="segment" data-start="792.0" data-end="795.4" title="13:12">I would consider performing a spine l anaesthetic technique </span><span class="segment" data-start="795.6" data-end="799.2" title="13:15">with local anaesthetic and introthical opioid. </span><span class="segment" data-start="799.4" data-end="803.4" title="13:19">In addition, I would perform femoral and sciatic nerve blocks </span><span class="segment" data-start="803.4" data-end="806.8" title="13:23">to provide additional postoperative analgesia. </span><span class="segment" data-start="807.0" data-end="810.0" title="13:27">I would offer the patient introtoperative sedation. </span><span class="segment" data-start="810.2" data-end="813.8" title="13:30">I would chart regular paracetamol and dichlofenac </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="814.0"><span class="t-timestamp">13:34</span></div>
-  <div class="t-body"><span class="segment" data-start="814.0" data-end="817.0" title="13:34">with tramadol for breakthrough analgesia. </span><span class="segment" data-start="817.2" data-end="820.2" title="13:37">What are the potential problems with this technique? </span><span class="segment" data-start="820.4" data-end="823.4" title="13:40">The examiner is not trying to catch you out here. </span><span class="segment" data-start="823.6" data-end="830.2" title="13:43">They want to know that you can appreciate that there are pros and cons to every anaesthetic. </span><span class="segment" data-start="830.4" data-end="834.8" title="13:50">The spinal might be difficult to perform due to a number of factors. </span><span class="segment" data-start="835.0" data-end="838.0" title="13:55">These include problems with patient positioning </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="838.2"><span class="t-timestamp">13:58</span></div>
-  <div class="t-body"><span class="segment" data-start="838.2" data-end="841.0" title="13:58">and altered anatomical landmarks. </span><span class="segment" data-start="841.2" data-end="844.6" title="14:01">There is also a potential increased risk of infection </span><span class="segment" data-start="844.8" data-end="848.0" title="14:04">and so aceptic technique is vital. </span><span class="segment" data-start="848.2" data-end="852.4" title="14:08">The spinal with opioid poses risks of nerve damage </span><span class="segment" data-start="852.6" data-end="854.8" title="14:12">at a rate of 1 in 10,000, </span><span class="segment" data-start="855.0" data-end="859.0" title="14:15">post-dueral puncture headache at a rate of 1 in 100, </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="859.0"><span class="t-timestamp">14:19</span></div>
-  <div class="t-body"><span class="segment" data-start="859.0" data-end="861.8" title="14:19">postoperative nausea and vomiting, </span><span class="segment" data-start="862.0" data-end="865.8" title="14:22">respiratory depression and urinary retention. </span><span class="segment" data-start="866.0" data-end="870.4" title="14:26">It is important that the nurses looking after the patient postoperatively </span><span class="segment" data-start="870.6" data-end="873.6" title="14:30">are aware of these potential complications. </span><span class="segment" data-start="873.8" data-end="876.6" title="14:33">With regards to the peripheral nerve blocks, </span><span class="segment" data-start="876.8" data-end="881.4" title="14:36">these may also be challenging because of altered anatomical landmarks. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="881.6"><span class="t-timestamp">14:41</span></div>
-  <div class="t-body"><span class="segment" data-start="881.6" data-end="885.6" title="14:41">I would use both a peripheral nerve stimulator and ultrasound </span><span class="segment" data-start="885.8" data-end="887.8" title="14:45">to aid location of the nerves. </span><span class="segment" data-start="887.8" data-end="892.4" title="14:47">Further risks include nerve damage, 1 in 5,000, </span><span class="segment" data-start="892.6" data-end="898.2" title="14:52">failure, intravascular injection and a local anaesthetic toxicity. </span><span class="segment" data-start="898.4" data-end="904.0" title="14:58">What other anaesthetic techniques might be appropriate for this case? </span><span class="segment" data-start="904.2" data-end="908.4" title="15:04">The patient could have a general anaesthetic with peripheral nerve blockade </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="908.6"><span class="t-timestamp">15:08</span></div>
-  <div class="t-body"><span class="segment" data-start="908.6" data-end="910.6" title="15:08">and a morphine PCA. </span><span class="segment" data-start="910.8" data-end="915.2" title="15:10">The general anaesthetic will require consideration of the need for intubation. </span><span class="segment" data-start="915.4" data-end="920.0" title="15:15">The risk of aspiration should be weighed up against the potential difficulty </span><span class="segment" data-start="920.2" data-end="924.8" title="15:20">of intubation and the risks associated with manipulation of the neck. </span><span class="segment" data-start="925.0" data-end="928.0" title="15:25">There are many different ways of maintaining an airway </span><span class="segment" data-start="928.2" data-end="932.4" title="15:28">which include an awake fiber optic intubation, gas induction, </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="932.6"><span class="t-timestamp">15:32</span></div>
-  <div class="t-body"><span class="segment" data-start="932.6" data-end="936.0" title="15:32">IV induction, rapid sequence induction </span><span class="segment" data-start="936.2" data-end="941.6" title="15:36">and insertion of either an endotracheal tube or an LMA. </span><span class="segment" data-start="941.8" data-end="947.4" title="15:41">A morphine PCA might also be appropriate for severe postoperative pain. </span><span class="segment" data-start="947.6" data-end="953.2" title="15:47">Disadvantages of this include nausea and vomiting, respiratory depression </span><span class="segment" data-start="953.4" data-end="958.4" title="15:53">and potential under usage due to the patient being unable to manipulate the device </span><span class="segment" data-start="958.6" data-end="960.4" title="15:58">due to their arthritis. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="960.6"><span class="t-timestamp">16:00</span></div>
-  <div class="t-body"><span class="segment" data-start="960.6" data-end="964.4" title="16:00">Are you aware of any recent publications regarding postoperative analgesia </span><span class="segment" data-start="964.6" data-end="967.2" title="16:04">for total knee replacement? </span><span class="segment" data-start="967.6" data-end="971.8" title="16:07">A review article published in Anesthesia in 2008 </span><span class="segment" data-start="972.0" data-end="977.0" title="16:12">by the Prospect Working Group made a number of recommendations. </span><span class="segment" data-start="977.2" data-end="981.2" title="16:17">They suggested that a general anaesthetic with a femoral nerve block </span><span class="segment" data-start="981.4" data-end="984.8" title="16:21">or a spinal with opioid and a femoral nerve block </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="985.0"><span class="t-timestamp">16:25</span></div>
-  <div class="t-body"><span class="segment" data-start="985.0" data-end="988.8" title="16:25">were the anaesthetic options of choice for a total knee replacement </span><span class="segment" data-start="989.0" data-end="990.8" title="16:29">based on current evidence. </span><span class="segment" data-start="991.0" data-end="996.2" title="16:31">They advised paracetamol, non-steroidal anti-inflammatory medications, </span><span class="segment" data-start="996.2" data-end="1001.0" title="16:36">residual femoral nerve block and opioid titrated to pain levels </span><span class="segment" data-start="1001.2" data-end="1004.2" title="16:41">should provide adequate postoperative analgesia. </span><span class="segment" data-start="1004.4" data-end="1010.4" title="16:44">They were unable to advise regarding sciatic nerve blocks due to a lack of evidence. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="1010.6"><span class="t-timestamp">16:50</span></div>
-  <div class="t-body"><span class="segment" data-start="1010.6" data-end="1013.8" title="16:50">How would you manage the steroid cover for this patient? </span><span class="segment" data-start="1014.0" data-end="1017.4" title="16:54">This question is relevant for any patient on steroids. </span><span class="segment" data-start="1017.6" data-end="1021.6" title="16:57">Try and be as clear as possible. </span><span class="segment" data-start="1021.8" data-end="1028.2" title="17:01">Long-term steroid therapy suppresses the hypothelamic pituitary adrenal axis. </span><span class="segment" data-start="1028.4" data-end="1031.8" title="17:08">This axis is activated by major stress. </span><span class="segment" data-start="1032.0" data-end="1036.4" title="17:12">It is therefore important to consider steroid replacement therapy </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="1036.6"><span class="t-timestamp">17:16</span></div>
-  <div class="t-body"><span class="segment" data-start="1036.6" data-end="1042.0" title="17:16">for patients presenting for surgery to avoid perioperative hemodynamic instability </span><span class="segment" data-start="1042.2" data-end="1044.4" title="17:22">due to a lack of cortisol. </span><span class="segment" data-start="1044.6" data-end="1048.6" title="17:24">Patients who take less than 10 milligrams of prednisolone daily </span><span class="segment" data-start="1048.8" data-end="1051.8" title="17:28">do not require steroid replacement. </span><span class="segment" data-start="1052.0" data-end="1055.6" title="17:32">Patients who take more than 10 milligrams of prednisolone daily </span><span class="segment" data-start="1055.8" data-end="1058.4" title="17:35">or have done so within the last three months </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="1058.6"><span class="t-timestamp">17:38</span></div>
-  <div class="t-body"><span class="segment" data-start="1058.6" data-end="1061.0" title="17:38">should receive replacement therapy. </span><span class="segment" data-start="1061.2" data-end="1067.8" title="17:41">For minor surgery, this involves only 25 milligrams of hydrocortisone at induction. </span><span class="segment" data-start="1068.0" data-end="1073.4" title="17:48">For moderate surgery, the patient should receive their normal preoperative dose of steroids </span><span class="segment" data-start="1073.6" data-end="1077.8" title="17:53">followed by a further 25 milligrams of hydrocortisone at induction </span><span class="segment" data-start="1078.0" data-end="1082.2" title="17:58">and 100 milligrams of hydrocortisone the next day. </span><span class="segment" data-start="1082.4" data-end="1088.2" title="18:02">For major surgery, the patient should again take their normal preoperative dose of steroids. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="1088.4"><span class="t-timestamp">18:08</span></div>
-  <div class="t-body"><span class="segment" data-start="1088.4" data-end="1093.4" title="18:08">The anesthetist should then give 25 milligrams of hydrocortisone at induction </span><span class="segment" data-start="1093.6" data-end="1098.8" title="18:13">followed by 100 milligrams of hydrocortisone daily for two to three days </span><span class="segment" data-start="1099.0" data-end="1103.0" title="18:19">or until normal gastrointestinal function has returned. </span><span class="segment" data-start="1103.2" data-end="1107.6" title="18:23">If this patient were taking a different steroid, how would you convert the dose? </span><span class="segment" data-start="1108.8" data-end="1114.6" title="18:28">10 milligrams of prednisolone is equal to 1.5 milligrams of dexamethasone, </span><span class="segment" data-start="1114.8" data-end="1120.8" title="18:34">8 milligrams of methyl prednisolone, and 40 milligrams of hydrocortisone. </span></div>
+<div class="preamble-block"><span class="segment a-seg" data-start="0.0" data-end="2.0" title="0:00">Rumor toward arthritis. </span><span class="segment a-seg" data-start="3.2" data-end="6.8" title="0:03">You're on the ward reviewing a 55-year-old female patient </span></div>
+<div class="qa-pair">
+<div class="q-block" data-start="6.8">
+  <div class="q-label">Q1</div>
+  <div class="q-body"><span class="segment q-seg" data-start="6.8" data-end="10.0" title="0:06">who is on your list for a total knee replacement tomorrow. </span></div>
 </div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="10.8" data-end="14.2" title="0:10">She's keen to tell you that she has severe rumour toward arthritis </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="14.2">
+  <div class="q-label">Q2</div>
+  <div class="q-body"><span class="segment q-seg" data-start="14.2" data-end="16.6" title="0:14">which is particularly bad in her hands. </span><span class="segment q-seg" data-start="18.2" data-end="20.4" title="0:18">What can you tell me about this condition? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="21.2" data-end="25.6" title="0:21">The examiners will be looking for some background medical knowledge to start with. </span></li>
+<li><span class="segment a-seg" data-start="26.6" data-end="31.4" title="0:26">Rumor toward arthritis is a systemic chronic inflammatory disease </span></li>
+<li><span class="segment a-seg" data-start="31.4" data-end="35.4" title="0:31">that affects 1-2% of the UK population. </span></li>
+<li><span class="segment a-seg" data-start="35.4" data-end="41.0" title="0:35">It is more prevalent in women, affecting females three times more than men. </span></li>
+<li><span class="segment a-seg" data-start="41.0" data-end="46.0" title="0:41">The onset is generally between 30-55 years of age. </span></li>
+<li><span class="segment a-seg" data-start="46.0" data-end="49.6" title="0:46">The exact cause of the condition is unknown </span></li>
+<li><span class="segment a-seg" data-start="49.6" data-end="53.4" title="0:49">that it is thought to involve an autoimmune process. </span></li>
+<li><span class="segment a-seg" data-start="54.0" data-end="60.0" title="0:54">About 70% of cases are positive for HLA-DR4 </span></li>
+<li><span class="segment a-seg" data-start="60.0" data-end="65.0" title="1:00">and 80% of sufferers are zero positive for rheumatoid factor. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="66.0">
+  <div class="q-label">Q3</div>
+  <div class="q-body"><span class="segment q-seg" data-start="66.0" data-end="67.8" title="1:06">How does the arthritis present? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="69.6" data-end="73.6" title="1:09">The patient develops a symmetrical polyarthritis. </span></li>
+<li><span class="segment a-seg" data-start="73.6" data-end="76.8" title="1:13">This may be a varying extent and severity. </span></li>
+<li><span class="segment a-seg" data-start="77.4" data-end="83.0" title="1:17">Rumor toward arthritis tends to affect the hands, feet, knees, </span></li>
+<li><span class="segment a-seg" data-start="83.0" data-end="85.8" title="1:23">elbows, shoulders and neck. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="86.4">
+  <div class="q-label">Q4</div>
+  <div class="q-body"><span class="segment q-seg" data-start="86.4" data-end="89.0" title="1:26">What is the pathological process that occurs? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="91.0" data-end="97.4" title="1:31">The pathological process involves sign-of-itis of joints and tendon sheets. </span></li>
+<li><span class="segment a-seg" data-start="98.2" data-end="102.6" title="1:38">Loss of articular cartilage and erosion of juxtaparticular bone </span></li>
+<li><span class="segment a-seg" data-start="102.6" data-end="104.6" title="1:42">leads to joint destruction. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="105.0">
+  <div class="q-label">Q5</div>
+  <div class="q-body"><span class="segment q-seg" data-start="105.0" data-end="106.8" title="1:45">What is stills disease? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="109.0" data-end="112.4" title="1:49">This is the most common childhood form of the disease. </span></li>
+<li><span class="segment a-seg" data-start="112.4" data-end="115.2" title="1:52">It can be particularly debilitating. </span></li>
+<li><span class="segment a-seg" data-start="115.2" data-end="118.8" title="1:55">Going back to our case, what might be your concerns regarding </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="118.8">
+  <div class="q-label">Q6</div>
+  <div class="q-body"><span class="segment q-seg" data-start="118.8" data-end="121.8" title="1:58">anesthetising a woman with rheumatoid arthritis? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="123.2" data-end="126.6" title="2:03">I would want to fully assess the extent of the disease </span></li>
+<li><span class="segment a-seg" data-start="126.6" data-end="130.4" title="2:06">since rheumatoid arthritis is a multi-system condition </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="130.4">
+  <div class="q-label">Q7</div>
+  <div class="q-body"><span class="segment q-seg" data-start="130.4" data-end="134.0" title="2:10">which can have a number of implications for the anesthetist. </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="134.4" data-end="141.0" title="2:14">I would be particularly concerned about any airway, respiratory, cardiac, muscular skeletal </span></li>
+<li><span class="segment a-seg" data-start="141.0" data-end="142.8" title="2:21">or hematological problems. </span></li>
+<li><span class="segment a-seg" data-start="143.4" data-end="145.8" title="2:23">I would need to review her drug therapy </span></li>
+<li><span class="segment a-seg" data-start="145.8" data-end="148.8" title="2:25">since this may also influence the anesthetic. </span></li>
+<li><span class="segment a-seg" data-start="149.2" data-end="153.2" title="2:29">If the woman had not told you that she'd been diagnosed with rheumatoid arthritis, </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="153.2">
+  <div class="q-label">Q8</div>
+  <div class="q-body"><span class="segment q-seg" data-start="153.2" data-end="155.4" title="2:33">what might be some of the symptoms of the condition? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="157.4" data-end="162.6" title="2:37">Rheumatoid arthritis generally presents with symmetrical joint problems. </span></li>
+<li><span class="segment a-seg" data-start="162.6" data-end="166.0" title="2:42">Patients experience pain and stiffness. </span></li>
+<li><span class="segment a-seg" data-start="166.0" data-end="169.8" title="2:46">This is worse in the morning and improves with activity. </span></li>
+<li><span class="segment a-seg" data-start="170.2" data-end="175.2" title="2:50">The symptoms may occur as flare-ups interspersed with good periods. </span></li>
+<li><span class="segment a-seg" data-start="175.2" data-end="179.0" title="2:55">The patient may have noticed progressive joint deformities, </span></li>
+<li><span class="segment a-seg" data-start="179.0" data-end="181.4" title="2:59">particularly affecting the hands. </span></li>
+<li><span class="segment a-seg" data-start="182.4" data-end="188.0" title="3:02">The patient may also describe fatigue, weight loss and low mood. </span></li>
+<li><span class="segment a-seg" data-start="188.6" data-end="193.2" title="3:08">About half of sufferers have extra-articular complications </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="193.2">
+  <div class="q-label">Q9</div>
+  <div class="q-body"><span class="segment q-seg" data-start="193.2" data-end="198.8" title="3:13">which can involve the airway, respiratory, cardiovascular, neurological, </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="198.8" data-end="201.6" title="3:18">renal and hematological systems. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="202.2">
+  <div class="q-label">Q10</div>
+  <div class="q-body"><span class="segment q-seg" data-start="202.2" data-end="206.0" title="3:22">So what signs might you observe in the muscular skeletal system particularly? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="208.4" data-end="213.0" title="3:28">The patients may have hand or feet signs, such as ulnar deviation, </span></li>
+<li><span class="segment a-seg" data-start="213.0" data-end="218.0" title="3:33">butanea or swannector formities and z-shaped thumbs. </span></li>
+<li><span class="segment a-seg" data-start="218.4" data-end="221.0" title="3:38">Subcutaneous nodules might be visible. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="221.8">
+  <div class="q-label">Q11</div>
+  <div class="q-body"><span class="segment q-seg" data-start="221.8" data-end="223.6" title="3:41">What would you ask the woman in your history? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="225.4" data-end="228.6" title="3:45">I would take a general and a specific history. </span></li>
+<li><span class="segment a-seg" data-start="229.0" data-end="233.2" title="3:49">In the specific history, I would be looking to ascertain how and when </span></li>
+<li><span class="segment a-seg" data-start="233.2" data-end="235.6" title="3:53">the rheumatoid arthritis was diagnosed. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="236.0">
+  <div class="q-label">Q12</div>
+  <div class="q-body"><span class="segment q-seg" data-start="236.0" data-end="239.4" title="3:56">I would ask which joints were involved and to what extent? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="240.0" data-end="244.4" title="4:00">In particular, I would discuss the range of neck and hand movement. </span></li>
+<li><span class="segment a-seg" data-start="244.6" data-end="248.8" title="4:04">I would also want to know about the drug treatments that the patient has tried </span></li>
+<li><span class="segment a-seg" data-start="248.8" data-end="250.4" title="4:08">and is currently taking. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="250.6">
+  <div class="q-label">Q13</div>
+  <div class="q-body"><span class="segment q-seg" data-start="250.6" data-end="253.0" title="4:10">So what can you tell me about rheumatoid neck disease? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="254.0" data-end="259.4" title="4:14">The Atlanto Axial joint may be affected in rheumatoid arthritis </span></li>
+<li><span class="segment a-seg" data-start="259.4" data-end="265.4" title="4:19">due to the erosion of the transverse ligament and the breakdown of the adontoid peg. </span></li>
+<li><span class="segment a-seg" data-start="265.6" data-end="271.4" title="4:25">About 25% of patients develop Atlanto axial subluxation. </span></li>
+<li><span class="segment a-seg" data-start="271.6" data-end="277.6" title="4:31">This can lead to acute spinal cord compression or compression of the vertebral arteries. </span></li>
+<li><span class="segment a-seg" data-start="278.2" data-end="286.0" title="4:38">Anterior axial subluxation is the most common type of subluxation and is worsened by neck flexion. </span></li>
+<li><span class="segment a-seg" data-start="287.2" data-end="293.0" title="4:47">A fixed flexion deformity of the neck may also occur due to fusion of the spine. </span></li>
+<li><span class="segment a-seg" data-start="293.2" data-end="297.8" title="4:53">Osteoporosis is further worsened by steroid medication. </span></li>
+<li><span class="segment a-seg" data-start="298.4" data-end="304.6" title="4:58">All of these problems may challenge the anesthetist since manipulation of the airway may be difficult </span></li>
+<li><span class="segment a-seg" data-start="304.6" data-end="306.8" title="5:04">and should be kept to a minimum. </span></li>
+<li><span class="segment a-seg" data-start="307.2" data-end="309.2" title="5:07">Let's go back to your history. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="309.6">
+  <div class="q-label">Q14</div>
+  <div class="q-body"><span class="segment q-seg" data-start="309.6" data-end="314.2" title="5:09">Is there anything else you might want to discuss regarding the musculoskeletal system? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="315.6" data-end="321.8" title="5:15">I would want to ascertain whether either the temporal mandipula or cryocrytinoid joints are involved </span></li>
+<li><span class="segment a-seg" data-start="321.8" data-end="326.6" title="5:21">since this might have implications for intubation and airway management. </span></li>
+<li><span class="segment a-seg" data-start="326.8" data-end="331.8" title="5:26">With regards to the temporal mandipula joint, I would ask about mouth opening. </span></li>
+<li><span class="segment a-seg" data-start="332.0" data-end="337.2" title="5:32">The symptoms of cryocrytinoid involvement might include dyspnea, </span></li>
+<li><span class="segment a-seg" data-start="337.4" data-end="342.0" title="5:37">horseness, stride or and rarely upper airway obstruction. </span></li>
+<li><span class="segment a-seg" data-start="343.4" data-end="348.4" title="5:43">For a total knee replacement, I would consider performing a spinal anesthetic. </span></li>
+<li><span class="segment a-seg" data-start="348.6" data-end="354.8" title="5:48">I would therefore want to find out whether the patient had had any back involvement or operations. </span></li>
+<li><span class="segment a-seg" data-start="355.2" data-end="361.2" title="5:55">I would also ask whether they would be able to get into a suitable position for this technique to be performed. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="361.6">
+  <div class="q-label">Q15</div>
+  <div class="q-body"><span class="segment q-seg" data-start="361.6" data-end="364.6" title="6:01">What other body systems might you ask about and why? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="366.4" data-end="375.0" title="6:06">I would inquire about the respiratory, cardiovascular, hematological, renal and neurological systems. </span></li>
+<li><span class="segment a-seg" data-start="375.6" data-end="381.8" title="6:15">With regards to the respiratory system, I would be looking for any evidence of pulmonary fibrosis, </span></li>
+<li><span class="segment a-seg" data-start="381.8" data-end="388.6" title="6:21">vasculitis, pulmonary hypertension, pulmonary nodules and plural effusions. </span></li>
+<li><span class="segment a-seg" data-start="389.0" data-end="393.8" title="6:29">I would try and ascertain whether the rib joints had developed any arthritic changes. </span></li>
+<li><span class="segment a-seg" data-start="394.0" data-end="399.8" title="6:34">Furthermore, the drugs given for the arthritis might have had unwanted pulmonary effects, </span></li>
+<li><span class="segment a-seg" data-start="399.8" data-end="402.4" title="6:39">such as fibrotic changes. </span></li>
+<li><span class="segment a-seg" data-start="402.6" data-end="408.2" title="6:42">Rumor toyed arthritis can affect the cardiovascular system in a number of ways. </span></li>
+<li><span class="segment a-seg" data-start="408.4" data-end="416.0" title="6:48">The patient is at an increased risk of arteriosclerosis, myocardial infarction and stroke. </span></li>
+<li><span class="segment a-seg" data-start="416.4" data-end="420.8" title="6:56">Miterol valve disease is present in up to 5% of patients. </span></li>
+<li><span class="segment a-seg" data-start="421.4" data-end="426.4" title="7:01">Perocardial disease, such as effusions and inflammation may occur. </span></li>
+<li><span class="segment a-seg" data-start="426.6" data-end="430.6" title="7:06">Cardiac conduction defects may also develop. </span></li>
+<li><span class="segment a-seg" data-start="431.6" data-end="437.6" title="7:11">The hematological system can be affected by the development of anemia of chronic disease. </span></li>
+<li><span class="segment a-seg" data-start="437.8" data-end="445.6" title="7:17">Sometimes the platelet count is elevated in association with the generalized inflammatory response during a flare-up. </span></li>
+<li><span class="segment a-seg" data-start="445.6" data-end="448.0" title="7:25">A leukopenia may also be seen. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="448.2">
+  <div class="q-label">Q16</div>
+  <div class="q-body"><span class="segment q-seg" data-start="448.2" data-end="450.2" title="7:28">And what about the nervous system? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="451.6" data-end="456.8" title="7:31">The patient might develop a peripheral neuropathy from the rheumatoid arthritis </span></li>
+<li><span class="segment a-seg" data-start="456.8" data-end="459.8" title="7:36">or the drugs given to modify the condition. </span></li>
+<li><span class="segment a-seg" data-start="460.0" data-end="464.8" title="7:40">It is important to discuss and document any neurological changes, </span></li>
+<li><span class="segment a-seg" data-start="465.0" data-end="469.4" title="7:45">especially if a regional or central neuroaxial block is considered, </span></li>
+<li><span class="segment a-seg" data-start="469.6" data-end="473.0" title="7:49">or if the cervical spine may need to be manipulated. </span></li>
+<li><span class="segment a-seg" data-start="473.4" data-end="475.4" title="7:53">You mentioned the renal system. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="475.6">
+  <div class="q-label">Q17</div>
+  <div class="q-body"><span class="segment q-seg" data-start="475.6" data-end="479.0" title="7:55">Can you tell me anything about the changes that might occur? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="480.0" data-end="486.2" title="8:00">The patient may develop renal amyloid or a vasculopathy from the rheumatoid arthritis. </span></li>
+<li><span class="segment a-seg" data-start="486.4" data-end="490.4" title="8:06">This might be identified as acute or chronic renal failure. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="490.6">
+  <div class="q-label">Q18</div>
+  <div class="q-body"><span class="segment q-seg" data-start="490.6" data-end="493.4" title="8:10">Can rheumatoid arthritis affect the liver? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="494.6" data-end="495.8" title="8:14">Yes. </span></li>
+<li><span class="segment a-seg" data-start="496.0" data-end="501.4" title="8:16">Felties syndrome occurs when the inflammatory mediators associated with rheumatoid </span></li>
+<li><span class="segment a-seg" data-start="501.4" data-end="504.2" title="8:21">cause nodular hepatocyte enlargement. </span></li>
+<li><span class="segment a-seg" data-start="504.4" data-end="508.8" title="8:24">This can be associated with splenomegaly and leukopenia. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="509.0">
+  <div class="q-label">Q19</div>
+  <div class="q-body"><span class="segment q-seg" data-start="509.0" data-end="511.8" title="8:29">What about the eyes and skin? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="512.8" data-end="515.0" title="8:32">The sclerom may be involved. </span></li>
+<li><span class="segment a-seg" data-start="515.2" data-end="520.2" title="8:35">Episcleritis is a feature of rheumatoid arthritis as is dry eyes. </span></li>
+<li><span class="segment a-seg" data-start="520.4" data-end="525.2" title="8:40">It is therefore important to protect the eyes during general anesthesia </span></li>
+<li><span class="segment a-seg" data-start="525.4" data-end="529.4" title="8:45">to reduce the risk of corneal ulceration or abrasion. </span></li>
+<li><span class="segment a-seg" data-start="529.4" data-end="533.6" title="8:49">With regards to the skin, rheumatoid nodules are common. </span></li>
+<li><span class="segment a-seg" data-start="533.8" data-end="537.4" title="8:53">Steroids can cause thin, papery skin to develop, </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="537.6">
+  <div class="q-label">Q20</div>
+  <div class="q-body"><span class="segment q-seg" data-start="537.6" data-end="541.6" title="8:57">which needs to be handled extremely carefully to avoid trauma. </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="541.8" data-end="545.0" title="9:01">Let's consider the drugs that this patient might be taking. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="545.2">
+  <div class="q-label">Q21</div>
+  <div class="q-body"><span class="segment q-seg" data-start="545.2" data-end="548.6" title="9:05">Can you suggest any drugs in their unwanted side effects? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="548.8" data-end="555.8" title="9:08">Remember not to forget painkillers and immunosuppressants or disease modifying agents. </span></li>
+<li><span class="segment a-seg" data-start="556.4" data-end="561.4" title="9:16">The patient might be taking regular non-steroidal anti-inflammatory medications </span></li>
+<li><span class="segment a-seg" data-start="561.6" data-end="562.8" title="9:21">for pain relief. </span></li>
+<li><span class="segment a-seg" data-start="563.0" data-end="567.6" title="9:23">These can cause renal impairment, gastrointestinal ulceration, </span></li>
+<li><span class="segment a-seg" data-start="567.8" data-end="574.4" title="9:27">reduced platelet function, and exacerbation of asthma ins susceptible individuals. </span></li>
+<li><span class="segment a-seg" data-start="574.6" data-end="580.6" title="9:34">Azerthiaprine, metatrexate, gold and penicillamine are all used to suppress </span></li>
+<li><span class="segment a-seg" data-start="580.8" data-end="584.4" title="9:40">the immune system in patients with rheumatoid arthritis. </span></li>
+<li><span class="segment a-seg" data-start="584.4" data-end="590.4" title="9:44">These drugs can cause bone marrow suppression, lung toxicity, liver dysfunction, </span></li>
+<li><span class="segment a-seg" data-start="590.6" data-end="596.8" title="9:50">thrombocytopenia, anemia, and renal side effects. </span></li>
+<li><span class="segment a-seg" data-start="597.0" data-end="601.6" title="9:57">Steroids are frequently given to patients with rheumatoid arthritis. </span></li>
+<li><span class="segment a-seg" data-start="601.8" data-end="608.2" title="10:01">They may have many side effects, including hypertension, diabetes, obesity, </span></li>
+<li><span class="segment a-seg" data-start="608.4" data-end="615.4" title="10:08">adrenal suppression, fragile skin, peptic ulcer disease, and electrolyte changes. </span></li>
+<li><span class="segment a-seg" data-start="615.6" data-end="622.0" title="10:15">Anticyterchine agents can give flu-like symptoms and cause bone marrow suppression. </span></li>
+<li><span class="segment a-seg" data-start="622.2" data-end="625.4" title="10:22">Having ascertained this woman has developed hypertension and diabetes </span></li>
+<li><span class="segment a-seg" data-start="625.6" data-end="628.0" title="10:25">since taking regular steroid medication, </span></li>
+<li><span class="segment a-seg" data-start="628.2" data-end="632.6" title="10:28">you find that there are no other extroticular features of rheumatoid disease. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="632.8">
+  <div class="q-label">Q22</div>
+  <div class="q-body"><span class="segment q-seg" data-start="632.8" data-end="637.6" title="10:32">What further information would you want to know in your general history? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="637.8" data-end="642.8" title="10:37">I would inquire about previous anesthetics and whether there is any family history </span></li>
+<li><span class="segment a-seg" data-start="643.0" data-end="645.0" title="10:43">of any problems with anesthetics. </span></li>
+<li><span class="segment a-seg" data-start="645.2" data-end="650.0" title="10:45">I would then ask the woman about other medical conditions in a stepwise approach </span></li>
+<li><span class="segment a-seg" data-start="650.2" data-end="651.8" title="10:50">through the body systems. </span></li>
+<li><span class="segment a-seg" data-start="652.0" data-end="656.8" title="10:52">I would particularly focus on the blood pressure and diabetic control </span></li>
+<li><span class="segment a-seg" data-start="657.0" data-end="659.2" title="10:57">and the cardiovascular history. </span></li>
+<li><span class="segment a-seg" data-start="659.4" data-end="663.2" title="10:59">I would then talk about the medications that the woman was taking </span></li>
+<li><span class="segment a-seg" data-start="663.4" data-end="665.8" title="11:03">and ask whether she had any allergies. </span></li>
+<li><span class="segment a-seg" data-start="666.0" data-end="672.0" title="11:06">Finally, I would discuss starvation history and ask about the woman's dentition. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="672.2">
+  <div class="q-label">Q23</div>
+  <div class="q-body"><span class="segment q-seg" data-start="672.2" data-end="676.2" title="11:12">What examination would you perform on this woman? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="676.4" data-end="682.6" title="11:16">I would examine the cardio-respiratory, neurological and muscular skeletal systems. </span></li>
+<li><span class="segment a-seg" data-start="682.8" data-end="687.2" title="11:22">I would include a thorough airway assessment in my respiratory examination. </span></li>
+<li><span class="segment a-seg" data-start="687.4" data-end="690.4" title="11:27">I would also look at the condition of the patient's skin </span></li>
+<li><span class="segment a-seg" data-start="690.6" data-end="693.2" title="11:30">and assess their ability to use a PCA </span></li>
+<li><span class="segment a-seg" data-start="693.2" data-end="698.4" title="11:33">if the disease causes significant pain or deformity of the hands. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="698.6">
+  <div class="q-label">Q24</div>
+  <div class="q-body"><span class="segment q-seg" data-start="698.6" data-end="703.4" title="11:38">How would you investigate this patient prior to surgery? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="703.6" data-end="708.4" title="11:43">I would want to review an ECG and blood tests as a minimum. </span></li>
+<li><span class="segment a-seg" data-start="708.6" data-end="712.8" title="11:48">With regards to the blood tests, I would check the full blood count, </span></li>
+<li><span class="segment a-seg" data-start="713.0" data-end="716.6" title="11:53">renal function, electrolytes, liver function, </span></li>
+<li><span class="segment a-seg" data-start="716.8" data-end="720.6" title="11:56">and ensure that a valid group and save were available. </span></li>
+<li><span class="segment a-seg" data-start="720.8" data-end="725.8" title="12:00">If I had identified features of respiratory disease in my history or examination, </span></li>
+<li><span class="segment a-seg" data-start="726.0" data-end="730.4" title="12:06">I might request a chest x-ray or pulmonary function tests. </span></li>
+<li><span class="segment a-seg" data-start="730.6" data-end="734.8" title="12:10">If I suspected the rheumatoid disease might be affecting the neck, </span></li>
+<li><span class="segment a-seg" data-start="735.0" data-end="740.2" title="12:15">I would consider performing a neck x-ray in flexion and extension. </span></li>
+<li><span class="segment a-seg" data-start="740.4" data-end="744.4" title="12:20">If this were abnormal, an MRI might be needed. </span></li>
+<li><span class="segment a-seg" data-start="744.6" data-end="749.6" title="12:24">With regards to the airway, indirect larynxoscopy might be required. </span></li>
+<li><span class="segment a-seg" data-start="749.6" data-end="753.8" title="12:29">If I suspected that the cryoceretenoid movement was impaired. </span></li>
+<li><span class="segment a-seg" data-start="754.0" data-end="757.0" title="12:34">From your thorough assessment, you have found this 55-year-old woman </span></li>
+<li><span class="segment a-seg" data-start="757.2" data-end="762.6" title="12:37">has rheumatoid arthritis that appears to mainly affect her hands and knees. </span></li>
+<li><span class="segment a-seg" data-start="762.8" data-end="766.0" title="12:42">She has hypertension and diabetes. </span></li>
+<li><span class="segment a-seg" data-start="766.2" data-end="768.8" title="12:46">She takes 20 milligrams of prednisolone daily, </span></li>
+<li><span class="segment a-seg" data-start="769.0" data-end="773.8" title="12:49">along with paracetamol and dichlofenac, when her arthritis is particularly bad. </span></li>
+<li><span class="segment a-seg" data-start="774.0" data-end="776.4" title="12:54">Her skin appears fragile. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="776.6">
+  <div class="q-label">Q25</div>
+  <div class="q-body"><span class="segment q-seg" data-start="776.6" data-end="780.2" title="12:56">What would be your preferred anaesthetic technique for this patient? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="780.4" data-end="784.6" title="13:00">Try and be decisive about what you would want to do for this patient. </span></li>
+<li><span class="segment a-seg" data-start="784.8" data-end="788.0" title="13:04">The examiner wants to see that you have been in this position before </span></li>
+<li><span class="segment a-seg" data-start="788.2" data-end="791.8" title="13:08">and that you are confident of your abilities. </span></li>
+<li><span class="segment a-seg" data-start="792.0" data-end="795.4" title="13:12">I would consider performing a spine l anaesthetic technique </span></li>
+<li><span class="segment a-seg" data-start="795.6" data-end="799.2" title="13:15">with local anaesthetic and introthical opioid. </span></li>
+<li><span class="segment a-seg" data-start="799.4" data-end="803.4" title="13:19">In addition, I would perform femoral and sciatic nerve blocks </span></li>
+<li><span class="segment a-seg" data-start="803.4" data-end="806.8" title="13:23">to provide additional postoperative analgesia. </span></li>
+<li><span class="segment a-seg" data-start="807.0" data-end="810.0" title="13:27">I would offer the patient introtoperative sedation. </span></li>
+<li><span class="segment a-seg" data-start="810.2" data-end="813.8" title="13:30">I would chart regular paracetamol and dichlofenac </span></li>
+<li><span class="segment a-seg" data-start="814.0" data-end="817.0" title="13:34">with tramadol for breakthrough analgesia. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="817.2">
+  <div class="q-label">Q26</div>
+  <div class="q-body"><span class="segment q-seg" data-start="817.2" data-end="820.2" title="13:37">What are the potential problems with this technique? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="820.4" data-end="823.4" title="13:40">The examiner is not trying to catch you out here. </span></li>
+<li><span class="segment a-seg" data-start="823.6" data-end="830.2" title="13:43">They want to know that you can appreciate that there are pros and cons to every anaesthetic. </span></li>
+<li><span class="segment a-seg" data-start="830.4" data-end="834.8" title="13:50">The spinal might be difficult to perform due to a number of factors. </span></li>
+<li><span class="segment a-seg" data-start="835.0" data-end="838.0" title="13:55">These include problems with patient positioning </span></li>
+<li><span class="segment a-seg" data-start="838.2" data-end="841.0" title="13:58">and altered anatomical landmarks. </span></li>
+<li><span class="segment a-seg" data-start="841.2" data-end="844.6" title="14:01">There is also a potential increased risk of infection </span></li>
+<li><span class="segment a-seg" data-start="844.8" data-end="848.0" title="14:04">and so aceptic technique is vital. </span></li>
+<li><span class="segment a-seg" data-start="848.2" data-end="852.4" title="14:08">The spinal with opioid poses risks of nerve damage </span></li>
+<li><span class="segment a-seg" data-start="852.6" data-end="854.8" title="14:12">at a rate of 1 in 10,000, </span></li>
+<li><span class="segment a-seg" data-start="855.0" data-end="859.0" title="14:15">post-dueral puncture headache at a rate of 1 in 100, </span></li>
+<li><span class="segment a-seg" data-start="859.0" data-end="861.8" title="14:19">postoperative nausea and vomiting, </span></li>
+<li><span class="segment a-seg" data-start="862.0" data-end="865.8" title="14:22">respiratory depression and urinary retention. </span></li>
+<li><span class="segment a-seg" data-start="866.0" data-end="870.4" title="14:26">It is important that the nurses looking after the patient postoperatively </span></li>
+<li><span class="segment a-seg" data-start="870.6" data-end="873.6" title="14:30">are aware of these potential complications. </span></li>
+<li><span class="segment a-seg" data-start="873.8" data-end="876.6" title="14:33">With regards to the peripheral nerve blocks, </span></li>
+<li><span class="segment a-seg" data-start="876.8" data-end="881.4" title="14:36">these may also be challenging because of altered anatomical landmarks. </span></li>
+<li><span class="segment a-seg" data-start="881.6" data-end="885.6" title="14:41">I would use both a peripheral nerve stimulator and ultrasound </span></li>
+<li><span class="segment a-seg" data-start="885.8" data-end="887.8" title="14:45">to aid location of the nerves. </span></li>
+<li><span class="segment a-seg" data-start="887.8" data-end="892.4" title="14:47">Further risks include nerve damage, 1 in 5,000, </span></li>
+<li><span class="segment a-seg" data-start="892.6" data-end="898.2" title="14:52">failure, intravascular injection and a local anaesthetic toxicity. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="898.4">
+  <div class="q-label">Q27</div>
+  <div class="q-body"><span class="segment q-seg" data-start="898.4" data-end="904.0" title="14:58">What other anaesthetic techniques might be appropriate for this case? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="904.2" data-end="908.4" title="15:04">The patient could have a general anaesthetic with peripheral nerve blockade </span></li>
+<li><span class="segment a-seg" data-start="908.6" data-end="910.6" title="15:08">and a morphine PCA. </span></li>
+<li><span class="segment a-seg" data-start="910.8" data-end="915.2" title="15:10">The general anaesthetic will require consideration of the need for intubation. </span></li>
+<li><span class="segment a-seg" data-start="915.4" data-end="920.0" title="15:15">The risk of aspiration should be weighed up against the potential difficulty </span></li>
+<li><span class="segment a-seg" data-start="920.2" data-end="924.8" title="15:20">of intubation and the risks associated with manipulation of the neck. </span></li>
+<li><span class="segment a-seg" data-start="925.0" data-end="928.0" title="15:25">There are many different ways of maintaining an airway </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="928.2">
+  <div class="q-label">Q28</div>
+  <div class="q-body"><span class="segment q-seg" data-start="928.2" data-end="932.4" title="15:28">which include an awake fiber optic intubation, gas induction, </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="932.6" data-end="936.0" title="15:32">IV induction, rapid sequence induction </span></li>
+<li><span class="segment a-seg" data-start="936.2" data-end="941.6" title="15:36">and insertion of either an endotracheal tube or an LMA. </span></li>
+<li><span class="segment a-seg" data-start="941.8" data-end="947.4" title="15:41">A morphine PCA might also be appropriate for severe postoperative pain. </span></li>
+<li><span class="segment a-seg" data-start="947.6" data-end="953.2" title="15:47">Disadvantages of this include nausea and vomiting, respiratory depression </span></li>
+<li><span class="segment a-seg" data-start="953.4" data-end="958.4" title="15:53">and potential under usage due to the patient being unable to manipulate the device </span></li>
+<li><span class="segment a-seg" data-start="958.6" data-end="960.4" title="15:58">due to their arthritis. </span></li>
+<li><span class="segment a-seg" data-start="960.6" data-end="964.4" title="16:00">Are you aware of any recent publications regarding postoperative analgesia </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="964.6">
+  <div class="q-label">Q29</div>
+  <div class="q-body"><span class="segment q-seg" data-start="964.6" data-end="967.2" title="16:04">for total knee replacement? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="967.6" data-end="971.8" title="16:07">A review article published in Anesthesia in 2008 </span></li>
+<li><span class="segment a-seg" data-start="972.0" data-end="977.0" title="16:12">by the Prospect Working Group made a number of recommendations. </span></li>
+<li><span class="segment a-seg" data-start="977.2" data-end="981.2" title="16:17">They suggested that a general anaesthetic with a femoral nerve block </span></li>
+<li><span class="segment a-seg" data-start="981.4" data-end="984.8" title="16:21">or a spinal with opioid and a femoral nerve block </span></li>
+<li><span class="segment a-seg" data-start="985.0" data-end="988.8" title="16:25">were the anaesthetic options of choice for a total knee replacement </span></li>
+<li><span class="segment a-seg" data-start="989.0" data-end="990.8" title="16:29">based on current evidence. </span></li>
+<li><span class="segment a-seg" data-start="991.0" data-end="996.2" title="16:31">They advised paracetamol, non-steroidal anti-inflammatory medications, </span></li>
+<li><span class="segment a-seg" data-start="996.2" data-end="1001.0" title="16:36">residual femoral nerve block and opioid titrated to pain levels </span></li>
+<li><span class="segment a-seg" data-start="1001.2" data-end="1004.2" title="16:41">should provide adequate postoperative analgesia. </span></li>
+<li><span class="segment a-seg" data-start="1004.4" data-end="1010.4" title="16:44">They were unable to advise regarding sciatic nerve blocks due to a lack of evidence. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="1010.6">
+  <div class="q-label">Q30</div>
+  <div class="q-body"><span class="segment q-seg" data-start="1010.6" data-end="1013.8" title="16:50">How would you manage the steroid cover for this patient? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="1014.0" data-end="1017.4" title="16:54">This question is relevant for any patient on steroids. </span></li>
+<li><span class="segment a-seg" data-start="1017.6" data-end="1021.6" title="16:57">Try and be as clear as possible. </span></li>
+<li><span class="segment a-seg" data-start="1021.8" data-end="1028.2" title="17:01">Long-term steroid therapy suppresses the hypothelamic pituitary adrenal axis. </span></li>
+<li><span class="segment a-seg" data-start="1028.4" data-end="1031.8" title="17:08">This axis is activated by major stress. </span></li>
+<li><span class="segment a-seg" data-start="1032.0" data-end="1036.4" title="17:12">It is therefore important to consider steroid replacement therapy </span></li>
+<li><span class="segment a-seg" data-start="1036.6" data-end="1042.0" title="17:16">for patients presenting for surgery to avoid perioperative hemodynamic instability </span></li>
+<li><span class="segment a-seg" data-start="1042.2" data-end="1044.4" title="17:22">due to a lack of cortisol. </span></li>
+<li><span class="segment a-seg" data-start="1044.6" data-end="1048.6" title="17:24">Patients who take less than 10 milligrams of prednisolone daily </span></li>
+<li><span class="segment a-seg" data-start="1048.8" data-end="1051.8" title="17:28">do not require steroid replacement. </span></li>
+<li><span class="segment a-seg" data-start="1052.0" data-end="1055.6" title="17:32">Patients who take more than 10 milligrams of prednisolone daily </span></li>
+<li><span class="segment a-seg" data-start="1055.8" data-end="1058.4" title="17:35">or have done so within the last three months </span></li>
+<li><span class="segment a-seg" data-start="1058.6" data-end="1061.0" title="17:38">should receive replacement therapy. </span></li>
+<li><span class="segment a-seg" data-start="1061.2" data-end="1067.8" title="17:41">For minor surgery, this involves only 25 milligrams of hydrocortisone at induction. </span></li>
+<li><span class="segment a-seg" data-start="1068.0" data-end="1073.4" title="17:48">For moderate surgery, the patient should receive their normal preoperative dose of steroids </span></li>
+<li><span class="segment a-seg" data-start="1073.6" data-end="1077.8" title="17:53">followed by a further 25 milligrams of hydrocortisone at induction </span></li>
+<li><span class="segment a-seg" data-start="1078.0" data-end="1082.2" title="17:58">and 100 milligrams of hydrocortisone the next day. </span></li>
+<li><span class="segment a-seg" data-start="1082.4" data-end="1088.2" title="18:02">For major surgery, the patient should again take their normal preoperative dose of steroids. </span></li>
+<li><span class="segment a-seg" data-start="1088.4" data-end="1093.4" title="18:08">The anesthetist should then give 25 milligrams of hydrocortisone at induction </span></li>
+<li><span class="segment a-seg" data-start="1093.6" data-end="1098.8" title="18:13">followed by 100 milligrams of hydrocortisone daily for two to three days </span></li>
+<li><span class="segment a-seg" data-start="1099.0" data-end="1103.0" title="18:19">or until normal gastrointestinal function has returned. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="1103.2">
+  <div class="q-label">Q31</div>
+  <div class="q-body"><span class="segment q-seg" data-start="1103.2" data-end="1107.6" title="18:23">If this patient were taking a different steroid, how would you convert the dose? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="1108.8" data-end="1114.6" title="18:28">10 milligrams of prednisolone is equal to 1.5 milligrams of dexamethasone, </span></li>
+<li><span class="segment a-seg" data-start="1114.8" data-end="1120.8" title="18:34">8 milligrams of methyl prednisolone, and 40 milligrams of hydrocortisone. </span></li>
+  </ul>
+</div>
+</div>
+
 </div>
 
 <div class="subtitle-bar">
-  <span class="subtitle-text empty" id="subtitle-text">Play audio to see live subtitles&#8230;</span>
+  <span id="subtitle-text" class="empty">Play audio to see live subtitles&#8230;</span>
 </div>
 
 <script>
-
-const audio    = document.getElementById('audio');
-const allSegs  = Array.from(document.querySelectorAll('.segment'));
-const allBlocks = Array.from(document.querySelectorAll('.t-block'));
+const audio      = document.getElementById('audio');
+const allSegs    = Array.from(document.querySelectorAll('.segment'));
 const subtitleEl = document.getElementById('subtitle-text');
-let activeSegEl   = null;
-let activeBlockEl = null;
-let searchMatches = [];
-let searchIdx     = 0;
+let activeSegEl  = null;
+let searchMatches = [], searchIdx = 0;
 
-// Duration display
 audio.addEventListener('loadedmetadata', () => {
   const m = Math.floor(audio.duration / 60);
   const s = Math.floor(audio.duration %% 60).toString().padStart(2,'0');
   document.getElementById('dur').textContent = m + ':' + s;
 });
 
-// Seek helper
-function seekTo(t) {
-  audio.currentTime = t;
-  audio.play();
-}
+function seekTo(t) { audio.currentTime = t; audio.play(); }
 
-// Block gutter click
-document.querySelectorAll('.t-gutter').forEach(g => {
-  g.addEventListener('click', () => seekTo(parseFloat(g.dataset.start)));
+// Q-block header click
+document.querySelectorAll('.q-block').forEach(q => {
+  q.addEventListener('click', e => {
+    if (!e.target.classList.contains('segment')) seekTo(parseFloat(q.dataset.start));
+  });
 });
 
-// Segment click
+// Individual segment click
 allSegs.forEach(s => {
-  s.addEventListener('click', e => {
-    e.stopPropagation();
-    seekTo(parseFloat(s.dataset.start));
-  });
+  s.addEventListener('click', e => { e.stopPropagation(); seekTo(parseFloat(s.dataset.start)); });
 });
 
 // Real-time tracking
 audio.addEventListener('timeupdate', () => {
   const t = audio.currentTime;
-
-  // Find active segment (last one whose start <= t)
   let found = null;
   for (let i = allSegs.length - 1; i >= 0; i--) {
     if (parseFloat(allSegs[i].dataset.start) <= t) { found = allSegs[i]; break; }
   }
-
   if (found && found !== activeSegEl) {
-    // Clear previous
-    if (activeSegEl) activeSegEl.classList.remove('active');
-    if (activeBlockEl) {
-      activeBlockEl.classList.remove('block-active');
-      const pg = activeBlockEl.querySelector('.t-gutter');
-      if (pg) pg.classList.remove('gutter-active');
+    if (activeSegEl) {
+      activeSegEl.classList.remove('active');
+      const pli = activeSegEl.closest('li');
+      if (pli) pli.classList.remove('li-active');
+      const pq = activeSegEl.closest('.q-block');
+      if (pq) pq.classList.remove('q-active');
     }
-    // Set new
     found.classList.add('active');
-    const block = found.closest('.t-block');
-    if (block) {
-      block.classList.add('block-active');
-      const g = block.querySelector('.t-gutter');
-      if (g) g.classList.add('gutter-active');
-      activeBlockEl = block;
-    }
+    const li = found.closest('li');
+    if (li) li.classList.add('li-active');
+    const qb = found.closest('.q-block');
+    if (qb) qb.classList.add('q-active');
     activeSegEl = found;
 
-    // Update subtitle
     subtitleEl.textContent = found.textContent.trim();
     subtitleEl.classList.remove('empty');
 
-    // Auto-scroll (only when not searching)
-    if (!document.getElementById('search').value) {
+    if (!document.getElementById('search').value)
       found.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }
   }
 });
 
@@ -413,17 +819,13 @@ searchInput.addEventListener('keydown', e => {
     el.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
 });
-
 function runSearch() {
   const q = searchInput.value.trim().toLowerCase();
   allSegs.forEach(s => s.classList.remove('search-match','search-current'));
   searchMatches = [];
   if (!q) return;
   allSegs.forEach(s => {
-    if (s.textContent.toLowerCase().includes(q)) {
-      s.classList.add('search-match');
-      searchMatches.push(s);
-    }
+    if (s.textContent.toLowerCase().includes(q)) { s.classList.add('search-match'); searchMatches.push(s); }
   });
   if (!searchMatches.length) return;
   searchIdx = 0;

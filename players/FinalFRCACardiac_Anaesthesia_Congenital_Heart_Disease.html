@@ -5,10 +5,19 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Cardiac Anaesthesia — Congenital Heart Disease</title>
 <style>
-
   :root {
-    --accent:    #ef4444;
-    --body-bg:   #f1f5f9;
+    --q-bg:       #1e3a5f;
+    --q-text:     #ffffff;
+    --q-label:    #60a5fa;
+    --a-bg:       #ffffff;
+    --a-border:   #e2e8f0;
+    --a-label:    #059669;
+    --active-q:   #ef4444;
+    --active-a:   #dbeafe;
+    --accent:     #ef4444;
+    --body-bg:    #f1f5f9;
+    --pre-bg:     #fef9c3;
+    --pre-border: #fcd34d;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
@@ -40,22 +49,9 @@
     margin-bottom: 4px;
     letter-spacing: 0.01em;
   }
-  .header-sub {
-    font-size: 0.72rem;
-    color: #94a3b8;
-    font-style: italic;
-  }
-  audio {
-    height: 36px;
-    accent-color: var(--accent);
-    flex-shrink: 0;
-  }
-  .back-link {
-    font-size: 0.8rem;
-    color: #94a3b8;
-    text-decoration: none;
-    white-space: nowrap;
-  }
+  .header-sub { font-size: 0.72rem; color: #94a3b8; font-style: italic; }
+  audio { height: 36px; accent-color: var(--accent); flex-shrink: 0; }
+  .back-link { font-size: 0.8rem; color: #94a3b8; text-decoration: none; white-space: nowrap; }
   .back-link:hover { color: #60a5fa; }
 
   /* ── Toolbar ── */
@@ -69,30 +65,17 @@
     border-bottom: 1px solid #334155;
   }
   .toolbar input {
-    flex: 1;
-    max-width: 380px;
+    flex: 1; max-width: 380px;
     padding: 5px 11px;
-    border: 1px solid #475569;
-    border-radius: 6px;
-    background: #0f172a;
-    color: #e2e8f0;
-    font-size: 0.83rem;
-    outline: none;
+    border: 1px solid #475569; border-radius: 6px;
+    background: #0f172a; color: #e2e8f0; font-size: 0.83rem; outline: none;
   }
   .toolbar input:focus { border-color: var(--accent); }
   .toolbar input::placeholder { color: #64748b; }
-  .stats {
-    font-size: 0.72rem;
-    color: #64748b;
-    white-space: nowrap;
-  }
+  .stats { font-size: 0.72rem; color: #64748b; white-space: nowrap; }
 
   /* ── Scroll area ── */
-  .scroll-area {
-    flex: 1;
-    overflow-y: auto;
-    padding: 20px;
-  }
+  .scroll-area { flex: 1; overflow-y: auto; padding: 20px; }
   .scroll-area::-webkit-scrollbar { width: 6px; }
   .scroll-area::-webkit-scrollbar-track { background: transparent; }
   .scroll-area::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
@@ -107,68 +90,77 @@
     display: flex;
     align-items: center;
   }
-  .subtitle-text {
-    font-size: 0.9rem;
-    color: #e2e8f0;
-    line-height: 1.5;
-    font-style: italic;
-  }
-  .subtitle-text.empty { color: #475569; }
+  #subtitle-text { font-size: 0.88rem; color: #e2e8f0; line-height: 1.5; font-style: italic; }
+  #subtitle-text.empty { color: #475569; }
 
-  /* ── Transcript blocks ── */
-  .t-block {
-    background: #ffffff;
-    border: 1px solid #e2e8f0;
-    border-radius: 10px;
-    margin-bottom: 14px;
-    overflow: hidden;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
-    display: flex;
-  }
-  .t-block.block-active {
-    border-color: var(--accent);
-    box-shadow: 0 0 0 2px rgba(37,99,235,0.15);
-  }
-  .t-gutter {
-    background: #0f172a;
-    width: 52px;
-    flex-shrink: 0;
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
-    padding-top: 14px;
-    cursor: pointer;
-  }
-  .t-gutter:hover { background: #1e293b; }
-  .t-timestamp {
-    font-size: 0.7rem;
-    color: #64748b;
-    font-family: monospace;
-    font-weight: 600;
-    letter-spacing: 0.02em;
-  }
-  .t-gutter.gutter-active .t-timestamp { color: var(--accent); }
-  .t-body {
-    flex: 1;
+  /* ── Preamble ── */
+  .preamble-block {
+    background: var(--pre-bg);
+    border-left: 4px solid var(--pre-border);
+    border-radius: 0 8px 8px 0;
     padding: 12px 16px;
-    line-height: 1.75;
-    font-size: 0.92rem;
-    color: #1e293b;
+    margin-bottom: 20px;
+    font-size: 0.88rem;
+    color: #78350f;
+    font-style: italic;
+    line-height: 1.7;
   }
 
-  /* ── Segments ── */
-  .segment {
+  /* ── Q&A pair ── */
+  .qa-pair { margin-bottom: 20px; border-radius: 10px; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+
+  /* Question block */
+  .q-block {
+    background: var(--q-bg);
+    padding: 14px 18px;
+    display: flex; gap: 14px; align-items: flex-start;
     cursor: pointer;
-    border-radius: 3px;
-    transition: background 0.1s;
+    transition: background 0.15s;
   }
-  .segment:hover { background: #eff6ff; }
-  .segment.active {
-    background: #bfdbfe;
-    outline: 2px solid #3b82f6;
-    outline-offset: 1px;
-    border-radius: 3px;
+  .q-block:hover { background: #1d4ed8; }
+  .q-block.q-active { background: var(--active-q); }
+  .q-label {
+    font-size: 0.7rem; font-weight: 700;
+    color: var(--q-label);
+    background: rgba(96,165,250,0.15);
+    border: 1px solid rgba(96,165,250,0.3);
+    border-radius: 5px; padding: 3px 7px;
+    white-space: nowrap; margin-top: 2px; letter-spacing: 0.05em;
+    flex-shrink: 0;
   }
+  .q-body { flex: 1; font-size: 0.97rem; font-weight: 600; color: var(--q-text); line-height: 1.55; }
+
+  /* Answer block */
+  .a-block {
+    background: var(--a-bg);
+    border: 1px solid var(--a-border); border-top: none;
+    padding: 14px 18px;
+    display: flex; gap: 14px; align-items: flex-start;
+  }
+  .a-label {
+    font-size: 0.7rem; font-weight: 700;
+    color: var(--a-label);
+    background: #d1fae5; border: 1px solid #6ee7b7;
+    border-radius: 5px; padding: 3px 9px;
+    white-space: nowrap; margin-top: 2px; letter-spacing: 0.05em;
+    flex-shrink: 0;
+  }
+  .a-body { flex: 1; list-style: none; padding: 0; }
+  .a-body li {
+    padding: 4px 0 4px 14px;
+    border-left: 3px solid transparent;
+    line-height: 1.7; font-size: 0.92rem; color: #1e293b;
+    border-radius: 0 4px 4px 0;
+    transition: background 0.15s;
+  }
+  .a-body li:not(:last-child) { border-bottom: 1px solid #f1f5f9; }
+
+  /* ── Segments (clickable) ── */
+  .segment { cursor: pointer; border-radius: 3px; }
+  .q-seg:hover { background: rgba(255,255,255,0.18); }
+  .a-seg:hover { background: #eff6ff; }
+  .segment.active { background: #bfdbfe; outline: 2px solid #3b82f6; outline-offset: 1px; }
+  .a-body li.li-active { background: var(--active-a); border-left-color: var(--accent); }
   .segment.search-match  { background: #fef9c3; }
   .segment.search-current { background: #fde047; outline: 2px solid #ca8a04; }
 
@@ -187,151 +179,323 @@
 
 <div class="toolbar">
   <input type="text" id="search" placeholder="Search transcript&#8230; (Enter = next match)">
-  <span class="stats" id="stats">115 segments &nbsp;|&nbsp; <span id="dur">loading&#8230;</span></span>
+  <span class="stats" id="stats">14 questions &nbsp;|&nbsp; 115 segments &nbsp;|&nbsp; <span id="dur">loading&#8230;</span></span>
 </div>
 
 <div class="scroll-area" id="scroll-area">
-<div class="t-block">
-  <div class="t-gutter" data-start="0.0"><span class="t-timestamp">0:00</span></div>
-  <div class="t-body"><span class="segment" data-start="0.0" data-end="1.6" title="0:00">Congenital heart disease </span><span class="segment" data-start="2.4" data-end="7.92" title="0:02">Congenital heart disease is a broad topic which can be categorised in very general terms. </span><span class="segment" data-start="8.32" data-end="12.88" title="0:08">The number of children with congenital heart disease surviving to adulthood is increasing. </span><span class="segment" data-start="13.2" data-end="16.72" title="0:13">There are now more adults with congenital heart disease than children. </span><span class="segment" data-start="17.36" data-end="23.6" title="0:17">It is therefore a topic of increasing interest even to those who do not intend to work in pediatric centres. </span><span class="segment" data-start="24.56" data-end="27.92" title="0:24">Should your virus start with a general question or instruction, </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="27.92"><span class="t-timestamp">0:27</span></div>
-  <div class="t-body"><span class="segment" data-start="27.92" data-end="33.2" title="0:27">it is important to have a clear structure prepared as it is very easy to become confused </span><span class="segment" data-start="33.2" data-end="37.76" title="0:33">while discussing congenital heart disease. The examiner may start with </span><span class="segment" data-start="37.76" data-end="39.68" title="0:37">Tell me about congenital heart disease. </span><span class="segment" data-start="41.68" data-end="48.32" title="0:41">Structural congenital heart disease occurs as a result of failure of normal heart or circulatory </span><span class="segment" data-start="48.32" data-end="55.12" title="0:48">development. It occurs in approximately 1% of all-life births and more frequently if one </span><span class="segment" data-start="55.12" data-end="60.32" title="0:55">considers rhythm disturbances. It can present in childhood or adulthood. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="61.12"><span class="t-timestamp">1:01</span></div>
-  <div class="t-body"><span class="segment" data-start="61.12" data-end="66.48" title="1:01">The mode of presentation varies depending on the structural abnormality and its severity. </span><span class="segment" data-start="67.52" data-end="73.2" title="1:07">Congenital heart disease can be an isolated phenomenon or can be associated with syndromes </span><span class="segment" data-start="73.36" data-end="79.84" title="1:13">which may be multi-systemic. For instance, Down syndrome is associated with atrial and ventricular </span><span class="segment" data-start="79.84" data-end="86.4" title="1:19">septal defects and follows tetralogy while Turner's syndrome is associated with co-actation of the </span><span class="segment" data-start="86.4" data-end="93.44" title="1:26">aorta. In most cases, the cause of congenital heart diseases are known, although factors that </span><span class="segment" data-start="93.44" data-end="101.12" title="1:33">can contribute include genetics, maternal health during pregnancy, for instance diabetes, </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="101.12"><span class="t-timestamp">1:41</span></div>
-  <div class="t-body"><span class="segment" data-start="101.12" data-end="108.4" title="1:41">systemic lupus erythomatosis and autoimmune disease. Also, drugs taken in pregnancy, </span><span class="segment" data-start="108.4" data-end="115.36" title="1:48">such as anti-epileptic medication, recreational drugs or alcohol are known to cause certain heart </span><span class="segment" data-start="115.36" data-end="123.12" title="1:55">defects. About half of children born with congenital heart defects will have a minor defect and will </span><span class="segment" data-start="123.12" data-end="129.6" title="2:03">not need any intervention, but the rest will need surgical or medical treatment such as diuretics </span><span class="segment" data-start="129.6" data-end="135.76" title="2:09">for heart failure or non-steeroidal anti-inflammatories to close a patent ductus arteriosus. </span><span class="segment" data-start="137.44" data-end="144.16" title="2:17">The surgical management of complicated congenital heart disease can either be curative or palliative. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="144.88"><span class="t-timestamp">2:24</span></div>
-  <div class="t-body"><span class="segment" data-start="144.88" data-end="151.12" title="2:24">Palliative surgical treatment aims to achieve adequate physiological function rather than normal </span><span class="segment" data-start="151.12" data-end="158.4" title="2:31">anatomy. The most common heart defects are ventricular septal defects which account for </span><span class="segment" data-start="158.4" data-end="166.48" title="2:38">approximately 30% of all congenital heart defects. Patent ductus arteriosus makes up approximately </span><span class="segment" data-start="166.48" data-end="173.28" title="2:46">9% of all cases and atrial septal defects make approximately 7.5% of cases. </span><span class="segment" data-start="174.16" data-end="176.48" title="2:54">How would you classify congenital heart disease? </span><span class="segment" data-start="178.64" data-end="184.24" title="2:58">Congenital heart defects can be classified as cyanotic or asionotic. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="185.12"><span class="t-timestamp">3:05</span></div>
-  <div class="t-body"><span class="segment" data-start="185.12" data-end="190.8" title="3:05">Cyanotic heart disease occurs as a result of blood shunting from the right or venous side of the </span><span class="segment" data-start="190.8" data-end="199.76" title="3:10">heart to the left or arterial side causing hypoxia and cyanosis. Cyanotic heart conditions include </span><span class="segment" data-start="199.76" data-end="207.36" title="3:19">the tetrology of fallow and pulmonary atreasia. Cyanotic heart conditions include the tetrology of </span><span class="segment" data-start="207.36" data-end="215.04" title="3:27">fallow and pulmonary atreasia. A cyanotic heart disease occurs where there is abnormal left to </span><span class="segment" data-start="215.04" data-end="222.72" title="3:35">right mixing of blood, for instance in atrial septal defects, ventricular septal defects and patent </span><span class="segment" data-start="222.72" data-end="228.48" title="3:42">ductus arteriosus. What are the longer term consequences of each of these conditions? </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="228.8"><span class="t-timestamp">3:48</span></div>
-  <div class="t-body"><span class="segment" data-start="228.8" data-end="237.76" title="3:48">The consequences of cyanotic heart disease include polycythemia, heart failure, paradoxical </span><span class="segment" data-start="237.76" data-end="245.68" title="3:57">embelly, cerebrovascular accidents, brain abscess, infective endocarditis and impaired growth </span><span class="segment" data-start="245.68" data-end="253.04" title="4:05">and development. A cyanotic heart disease causes pulmonary overflow which can then lead to pulmonary </span><span class="segment" data-start="253.04" data-end="259.2" title="4:13">edema and pulmonary hypertension. Ultimately this can lead to right heart failure. </span><span class="segment" data-start="261.04" data-end="266.88" title="4:21">With disease progression in a cyanotic heart disease the pressures in the right side of the heart </span><span class="segment" data-start="266.88" data-end="272.64" title="4:26">can increase. When they exceed those of the left side of the heart then the blood flow across a </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="272.64"><span class="t-timestamp">4:32</span></div>
-  <div class="t-body"><span class="segment" data-start="272.64" data-end="280.88" title="4:32">defect can reverse becoming a right to left shunt. This situation is called isonmengas syndrome. </span><span class="segment" data-start="280.96" data-end="285.04" title="4:40">This condition is cyanotic as venous blood bypasses the lungs. </span><span class="segment" data-start="285.92" data-end="290.56" title="4:45">This initial classification of congenital heart disease may satisfy the examiner, </span><span class="segment" data-start="290.56" data-end="295.36" title="4:50">however if they are keen to press on they may ask for more information about the classification </span><span class="segment" data-start="295.36" data-end="300.88" title="4:55">of congenital heart disease. Do you know of any further ways of classifying congenital heart disease? </span><span class="segment" data-start="302.96" data-end="309.28" title="5:02">Congenital heart disease can also be classified as duct-dependent or non-duct-dependent </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="309.28"><span class="t-timestamp">5:09</span></div>
-  <div class="t-body"><span class="segment" data-start="309.28" data-end="315.36" title="5:09">circulations. These can then be further classified according to whether they are cyanotic or </span><span class="segment" data-start="315.36" data-end="325.28" title="5:15">a-cianotic. What is meant by a duct-dependent circulation? The ductus arteriosus forms a connection </span><span class="segment" data-start="325.28" data-end="331.76" title="5:25">between the descending aorta and the left pulmonary artery in utero. Its function is to allow </span><span class="segment" data-start="331.76" data-end="338.8" title="5:31">blood to bypass the relatively redundant pulmonary circulation. This duct usually closes during the </span><span class="segment" data-start="338.8" data-end="346.64" title="5:38">first few days of life. D duct-dependent circulations require the ductus arteriosus to remain patent </span><span class="segment" data-start="346.64" data-end="354.48" title="5:46">postnatally in order for the patient to survive. For instance, a-cianotic duct-dependent lesions </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="354.48"><span class="t-timestamp">5:54</span></div>
-  <div class="t-body"><span class="segment" data-start="354.48" data-end="361.44" title="5:54">rely on the ductus arteriosus for systemic perfusion such as in hypoplastic left heart syndrome </span><span class="segment" data-start="361.52" data-end="369.44" title="6:01">or an interrupted aortic arch. Conversely, cyanotic duct-dependent lesions rely on the ductus </span><span class="segment" data-start="369.44" data-end="375.84" title="6:09">arteriosus for pulmonary blood flow for instance in pulmonary atreasia or transposition of the </span><span class="segment" data-start="375.84" data-end="383.28" title="6:15">great vessels. This is possibly because blood flow across the ductus arteriosus can occur in either </span><span class="segment" data-start="383.28" data-end="390.0" title="6:23">direction depending on the pressure gradient placed across it. This last point is very difficult </span><span class="segment" data-start="390.0" data-end="395.2" title="6:30">to explain without drawing a basic diagram to show how the blood flowing in either direction </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="395.2"><span class="t-timestamp">6:35</span></div>
-  <div class="t-body"><span class="segment" data-start="395.2" data-end="401.68" title="6:35">along the DA can supply either the pulmonary or systemic circulation. How might a baby with a duct </span><span class="segment" data-start="401.68" data-end="410.24" title="6:41">dependent circulation present? Babies in whom a duct-dependent circulation has not been diagnosed </span><span class="segment" data-start="410.24" data-end="417.2" title="6:50">antinatially may present in extremists when the ductus arteriosus closes. They may be cold, </span><span class="segment" data-start="417.2" data-end="424.0" title="6:57">clammy, peripherally shut down and peria rest. Is there anything you can do to prevent that happening </span><span class="segment" data-start="424.0" data-end="432.48" title="7:04">or even reverse it? The duct can be kept open temporarily by the use of prostaglandin E1 </span><span class="segment" data-start="432.48" data-end="438.48" title="7:12">or radiologically guided stents. This allows time for further management of the child's condition </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="438.48"><span class="t-timestamp">7:18</span></div>
-  <div class="t-body"><span class="segment" data-start="438.48" data-end="444.64" title="7:18">to be instigated. It is unlikely that the examiner will press any further along this line in the </span><span class="segment" data-start="444.64" data-end="450.48" title="7:24">management of a baby with CHD. They may however decide to quiz you about the management of an </span><span class="segment" data-start="450.48" data-end="455.6" title="7:30">adult with congenital heart disease presenting for surgery. Don't forget that the basis of your </span><span class="segment" data-start="455.6" data-end="461.76" title="7:35">answers still involves giving a safe and balanced anesthetic. Previous papers have discussed the </span><span class="segment" data-start="461.76" data-end="468.08" title="7:41">anesthetic management of patients with ASTs. The scenario has usually progressed to a patient who </span><span class="segment" data-start="468.08" data-end="474.16" title="7:48">becomes cyanotic in spite of a high oxygen delivery. Remember that blood flows across duct </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="474.16"><span class="t-timestamp">7:54</span></div>
-  <div class="t-body"><span class="segment" data-start="474.16" data-end="480.0" title="7:54">or defects along pressure gradients. It is therefore possible for patients with abnormal left </span><span class="segment" data-start="480.0" data-end="486.0" title="8:00">to right blood flow to reverse the direction and flow to right to left shunt if the systemic </span><span class="segment" data-start="486.0" data-end="492.88" title="8:06">vascular resistance drops or the pulmonary vascular pressure rises. What considerations would you take </span><span class="segment" data-start="492.88" data-end="497.36" title="8:12">into account when a needs-tising a patient who is known to have congenital heart disease? </span><span class="segment" data-start="497.44" data-end="505.28" title="8:17">The implications for anesthesia in an adult patient with congenital heart disease will depend </span><span class="segment" data-start="505.28" data-end="511.76" title="8:25">upon many factors. I would want to know specifically what the nature of the disease is. For instance, </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="511.76"><span class="t-timestamp">8:31</span></div>
-  <div class="t-body"><span class="segment" data-start="511.76" data-end="518.56" title="8:31">do they have an atroceptal defect, a ventriculoseptal defect, or more complicated conditions such as a </span><span class="segment" data-start="518.56" data-end="525.12" title="8:38">fontan circulation? If there is a shunt present, I would like to know in which direction the abnormal </span><span class="segment" data-start="525.12" data-end="530.88" title="8:45">flow passes. I would like to establish the current anatomy of the patient's circulation, </span><span class="segment" data-start="530.88" data-end="535.84" title="8:50">particularly if they have complicated congenital heart disease or have undergone surgery. </span><span class="segment" data-start="536.56" data-end="541.92" title="8:56">I would also like to know whether the patient has an isolated congenital heart disease problem </span><span class="segment" data-start="541.92" data-end="547.04" title="9:01">or whether it is associated with other conditions that might lead to learning difficulties </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="547.04"><span class="t-timestamp">9:07</span></div>
-  <div class="t-body"><span class="segment" data-start="547.04" data-end="554.32" title="9:07">or intellectual impairment. I would then want to know how severe their congenital heart disease is. </span><span class="segment" data-start="554.32" data-end="559.68" title="9:14">I would gauge this by taking a thorough history, paying particular attention to the patient's </span><span class="segment" data-start="559.68" data-end="566.16" title="9:19">exercise tolerance, examination, looking for signs of heart failure, and organising relevant </span><span class="segment" data-start="566.16" data-end="573.44" title="9:26">investigations such as echocardiography. I would also establish what is normal for that patient. </span><span class="segment" data-start="573.44" data-end="580.16" title="9:33">For instance, if they normally have oxygen saturation levels of around 90 to 92%, I would not aim </span><span class="segment" data-start="580.16" data-end="586.24" title="9:40">to try and achieve higher levels post-operatively. Why would you worry about which direction the shunt flows? </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="588.64"><span class="t-timestamp">9:48</span></div>
-  <div class="t-body"><span class="segment" data-start="588.64" data-end="594.56" title="9:48">If a shunt persists, the direction of the shunt will dictate the principal risks to the patient. </span><span class="segment" data-start="595.12" data-end="601.92" title="9:55">For instance, a right to left shunt increases the risks of paradoxical embolus. It also causes </span><span class="segment" data-start="601.92" data-end="608.0" title="10:01">polycythemia and low oxygen saturations, which may not be correctable with oxygen therapy. </span><span class="segment" data-start="608.72" data-end="614.24" title="10:08">If there is a left to right shunt, then there is a significant risk of pulmonary hypertension </span><span class="segment" data-start="614.24" data-end="621.2" title="10:14">and right heart failure. I would also bear in mind that a cyanotic heart conditions can become </span><span class="segment" data-start="621.2" data-end="627.76" title="10:21">cyanotic if the shunt reverses as may occur if the systemic vascular resistance drops or the </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="627.76"><span class="t-timestamp">10:27</span></div>
-  <div class="t-body"><span class="segment" data-start="627.76" data-end="634.16" title="10:27">pulmonary vascular resistance rises. You mentioned a fontan circulation earlier. What is that? </span><span class="segment" data-start="634.56" data-end="642.56" title="10:34">The fontan circulation is a palliative procedure that leads to patients having a univentricular </span><span class="segment" data-start="642.56" data-end="650.24" title="10:42">circulation. Blood flows directly from the vena cavi into the pulmonary artery. It only passes into </span><span class="segment" data-start="650.24" data-end="656.56" title="10:50">the heart after passing through the lungs. The remaining ventricle then pumps blood around the body. </span><span class="segment" data-start="656.56" data-end="660.4" title="10:56">Are there any particular problems this poses for an anesthetic? </span><span class="segment" data-start="660.72" data-end="669.2" title="11:00">The main considerations are the need for adequate venous return. This is because the preload to </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="669.2"><span class="t-timestamp">11:09</span></div>
-  <div class="t-body"><span class="segment" data-start="669.2" data-end="676.08" title="11:09">the systemic ventricle depends in large parts on the passive return of blood. Therefore, the patient </span><span class="segment" data-start="676.08" data-end="682.96" title="11:16">needs to be adequately fluid resuscitated. Secondly, excessive increases in pulmonary vascular </span><span class="segment" data-start="682.96" data-end="689.44" title="11:22">resistance should be avoided or at least minimized. This is because blood flow across the lungs </span><span class="segment" data-start="689.44" data-end="694.72" title="11:29">depends on a pressure gradient between the blood returning in the vena cavi and to the single </span><span class="segment" data-start="694.72" data-end="700.48" title="11:34">atrium for the trans pulmonary gradient. Because there is no right ventricle assisting this </span><span class="segment" data-start="700.48" data-end="706.72" title="11:40">gradient, blood flow through the lungs is essentially passive. Therefore, any increase in pulmonary </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="706.72"><span class="t-timestamp">11:46</span></div>
-  <div class="t-body"><span class="segment" data-start="706.72" data-end="714.32" title="11:46">vascular resistance will decrease flow significantly. For a similar reason, positive pressure ventilation </span><span class="segment" data-start="714.56" data-end="721.6" title="11:54">should be avoided where possible. Lastly, in a univentricular system, it is useful to work out which </span><span class="segment" data-start="721.6" data-end="728.72" title="12:01">ventricle remains, as a morphological right ventricle pumping systemic blood may start to fail early </span><span class="segment" data-start="728.72" data-end="735.68" title="12:08">in adulthood posing further problems. Because of these factors, regional anesthesia should be </span><span class="segment" data-start="735.68" data-end="744.08" title="12:15">considered when appropriate. What about prophylactic antibiotics? I would follow nice guidelines on </span><span class="segment" data-start="744.08" data-end="749.52" title="12:24">this matter and involve the patient or their guardian in any decisions about antibiotic </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="749.52"><span class="t-timestamp">12:29</span></div>
-  <div class="t-body"><span class="segment" data-start="749.52" data-end="756.96" title="12:29">prophylaxists for endocarditis. </span></div>
+<div class="preamble-block"><span class="segment a-seg" data-start="0.0" data-end="1.6" title="0:00">Congenital heart disease </span><span class="segment a-seg" data-start="2.4" data-end="7.92" title="0:02">Congenital heart disease is a broad topic which can be categorised in very general terms. </span><span class="segment a-seg" data-start="8.32" data-end="12.88" title="0:08">The number of children with congenital heart disease surviving to adulthood is increasing. </span><span class="segment a-seg" data-start="13.2" data-end="16.72" title="0:13">There are now more adults with congenital heart disease than children. </span><span class="segment a-seg" data-start="17.36" data-end="23.6" title="0:17">It is therefore a topic of increasing interest even to those who do not intend to work in pediatric centres. </span><span class="segment a-seg" data-start="24.56" data-end="27.92" title="0:24">Should your virus start with a general question or instruction, </span><span class="segment a-seg" data-start="27.92" data-end="33.2" title="0:27">it is important to have a clear structure prepared as it is very easy to become confused </span><span class="segment a-seg" data-start="33.2" data-end="37.76" title="0:33">while discussing congenital heart disease. The examiner may start with </span></div>
+<div class="qa-pair">
+<div class="q-block" data-start="37.76">
+  <div class="q-label">Q1</div>
+  <div class="q-body"><span class="segment q-seg" data-start="37.76" data-end="39.68" title="0:37">Tell me about congenital heart disease. </span></div>
 </div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="41.68" data-end="48.32" title="0:41">Structural congenital heart disease occurs as a result of failure of normal heart or circulatory </span></li>
+<li><span class="segment a-seg" data-start="48.32" data-end="55.12" title="0:48">development. It occurs in approximately 1% of all-life births and more frequently if one </span></li>
+<li><span class="segment a-seg" data-start="55.12" data-end="60.32" title="0:55">considers rhythm disturbances. It can present in childhood or adulthood. </span></li>
+<li><span class="segment a-seg" data-start="61.12" data-end="66.48" title="1:01">The mode of presentation varies depending on the structural abnormality and its severity. </span></li>
+<li><span class="segment a-seg" data-start="67.52" data-end="73.2" title="1:07">Congenital heart disease can be an isolated phenomenon or can be associated with syndromes </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="73.36">
+  <div class="q-label">Q2</div>
+  <div class="q-body"><span class="segment q-seg" data-start="73.36" data-end="79.84" title="1:13">which may be multi-systemic. For instance, Down syndrome is associated with atrial and ventricular </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="79.84" data-end="86.4" title="1:19">septal defects and follows tetralogy while Turner's syndrome is associated with co-actation of the </span></li>
+<li><span class="segment a-seg" data-start="86.4" data-end="93.44" title="1:26">aorta. In most cases, the cause of congenital heart diseases are known, although factors that </span></li>
+<li><span class="segment a-seg" data-start="93.44" data-end="101.12" title="1:33">can contribute include genetics, maternal health during pregnancy, for instance diabetes, </span></li>
+<li><span class="segment a-seg" data-start="101.12" data-end="108.4" title="1:41">systemic lupus erythomatosis and autoimmune disease. Also, drugs taken in pregnancy, </span></li>
+<li><span class="segment a-seg" data-start="108.4" data-end="115.36" title="1:48">such as anti-epileptic medication, recreational drugs or alcohol are known to cause certain heart </span></li>
+<li><span class="segment a-seg" data-start="115.36" data-end="123.12" title="1:55">defects. About half of children born with congenital heart defects will have a minor defect and will </span></li>
+<li><span class="segment a-seg" data-start="123.12" data-end="129.6" title="2:03">not need any intervention, but the rest will need surgical or medical treatment such as diuretics </span></li>
+<li><span class="segment a-seg" data-start="129.6" data-end="135.76" title="2:09">for heart failure or non-steeroidal anti-inflammatories to close a patent ductus arteriosus. </span></li>
+<li><span class="segment a-seg" data-start="137.44" data-end="144.16" title="2:17">The surgical management of complicated congenital heart disease can either be curative or palliative. </span></li>
+<li><span class="segment a-seg" data-start="144.88" data-end="151.12" title="2:24">Palliative surgical treatment aims to achieve adequate physiological function rather than normal </span></li>
+<li><span class="segment a-seg" data-start="151.12" data-end="158.4" title="2:31">anatomy. The most common heart defects are ventricular septal defects which account for </span></li>
+<li><span class="segment a-seg" data-start="158.4" data-end="166.48" title="2:38">approximately 30% of all congenital heart defects. Patent ductus arteriosus makes up approximately </span></li>
+<li><span class="segment a-seg" data-start="166.48" data-end="173.28" title="2:46">9% of all cases and atrial septal defects make approximately 7.5% of cases. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="174.16">
+  <div class="q-label">Q3</div>
+  <div class="q-body"><span class="segment q-seg" data-start="174.16" data-end="176.48" title="2:54">How would you classify congenital heart disease? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="178.64" data-end="184.24" title="2:58">Congenital heart defects can be classified as cyanotic or asionotic. </span></li>
+<li><span class="segment a-seg" data-start="185.12" data-end="190.8" title="3:05">Cyanotic heart disease occurs as a result of blood shunting from the right or venous side of the </span></li>
+<li><span class="segment a-seg" data-start="190.8" data-end="199.76" title="3:10">heart to the left or arterial side causing hypoxia and cyanosis. Cyanotic heart conditions include </span></li>
+<li><span class="segment a-seg" data-start="199.76" data-end="207.36" title="3:19">the tetrology of fallow and pulmonary atreasia. Cyanotic heart conditions include the tetrology of </span></li>
+<li><span class="segment a-seg" data-start="207.36" data-end="215.04" title="3:27">fallow and pulmonary atreasia. A cyanotic heart disease occurs where there is abnormal left to </span></li>
+<li><span class="segment a-seg" data-start="215.04" data-end="222.72" title="3:35">right mixing of blood, for instance in atrial septal defects, ventricular septal defects and patent </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="222.72">
+  <div class="q-label">Q4</div>
+  <div class="q-body"><span class="segment q-seg" data-start="222.72" data-end="228.48" title="3:42">ductus arteriosus. What are the longer term consequences of each of these conditions? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="228.8" data-end="237.76" title="3:48">The consequences of cyanotic heart disease include polycythemia, heart failure, paradoxical </span></li>
+<li><span class="segment a-seg" data-start="237.76" data-end="245.68" title="3:57">embelly, cerebrovascular accidents, brain abscess, infective endocarditis and impaired growth </span></li>
+<li><span class="segment a-seg" data-start="245.68" data-end="253.04" title="4:05">and development. A cyanotic heart disease causes pulmonary overflow which can then lead to pulmonary </span></li>
+<li><span class="segment a-seg" data-start="253.04" data-end="259.2" title="4:13">edema and pulmonary hypertension. Ultimately this can lead to right heart failure. </span></li>
+<li><span class="segment a-seg" data-start="261.04" data-end="266.88" title="4:21">With disease progression in a cyanotic heart disease the pressures in the right side of the heart </span></li>
+<li><span class="segment a-seg" data-start="266.88" data-end="272.64" title="4:26">can increase. When they exceed those of the left side of the heart then the blood flow across a </span></li>
+<li><span class="segment a-seg" data-start="272.64" data-end="280.88" title="4:32">defect can reverse becoming a right to left shunt. This situation is called isonmengas syndrome. </span></li>
+<li><span class="segment a-seg" data-start="280.96" data-end="285.04" title="4:40">This condition is cyanotic as venous blood bypasses the lungs. </span></li>
+<li><span class="segment a-seg" data-start="285.92" data-end="290.56" title="4:45">This initial classification of congenital heart disease may satisfy the examiner, </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="290.56">
+  <div class="q-label">Q5</div>
+  <div class="q-body"><span class="segment q-seg" data-start="290.56" data-end="295.36" title="4:50">however if they are keen to press on they may ask for more information about the classification </span><span class="segment q-seg" data-start="295.36" data-end="300.88" title="4:55">of congenital heart disease. Do you know of any further ways of classifying congenital heart disease? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="302.96" data-end="309.28" title="5:02">Congenital heart disease can also be classified as duct-dependent or non-duct-dependent </span></li>
+<li><span class="segment a-seg" data-start="309.28" data-end="315.36" title="5:09">circulations. These can then be further classified according to whether they are cyanotic or </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="315.36">
+  <div class="q-label">Q6</div>
+  <div class="q-body"><span class="segment q-seg" data-start="315.36" data-end="321.029" title="5:15">a-cianotic. What is meant by a duct-dependent circulation? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="321.029" data-end="325.28" title="5:21">The ductus arteriosus forms a connection </span></li>
+<li><span class="segment a-seg" data-start="325.28" data-end="331.76" title="5:25">between the descending aorta and the left pulmonary artery in utero. Its function is to allow </span></li>
+<li><span class="segment a-seg" data-start="331.76" data-end="338.8" title="5:31">blood to bypass the relatively redundant pulmonary circulation. This duct usually closes during the </span></li>
+<li><span class="segment a-seg" data-start="338.8" data-end="346.64" title="5:38">first few days of life. D duct-dependent circulations require the ductus arteriosus to remain patent </span></li>
+<li><span class="segment a-seg" data-start="346.64" data-end="354.48" title="5:46">postnatally in order for the patient to survive. For instance, a-cianotic duct-dependent lesions </span></li>
+<li><span class="segment a-seg" data-start="354.48" data-end="361.44" title="5:54">rely on the ductus arteriosus for systemic perfusion such as in hypoplastic left heart syndrome </span></li>
+<li><span class="segment a-seg" data-start="361.52" data-end="369.44" title="6:01">or an interrupted aortic arch. Conversely, cyanotic duct-dependent lesions rely on the ductus </span></li>
+<li><span class="segment a-seg" data-start="369.44" data-end="375.84" title="6:09">arteriosus for pulmonary blood flow for instance in pulmonary atreasia or transposition of the </span></li>
+<li><span class="segment a-seg" data-start="375.84" data-end="383.28" title="6:15">great vessels. This is possibly because blood flow across the ductus arteriosus can occur in either </span></li>
+<li><span class="segment a-seg" data-start="383.28" data-end="390.0" title="6:23">direction depending on the pressure gradient placed across it. This last point is very difficult </span></li>
+<li><span class="segment a-seg" data-start="390.0" data-end="395.2" title="6:30">to explain without drawing a basic diagram to show how the blood flowing in either direction </span></li>
+<li><span class="segment a-seg" data-start="395.2" data-end="401.68" title="6:35">along the DA can supply either the pulmonary or systemic circulation. How might a baby with a duct </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="401.68">
+  <div class="q-label">Q7</div>
+  <div class="q-body"><span class="segment q-seg" data-start="401.68" data-end="403.655" title="6:41">dependent circulation present? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="403.655" data-end="410.24" title="6:43">Babies in whom a duct-dependent circulation has not been diagnosed </span></li>
+<li><span class="segment a-seg" data-start="410.24" data-end="417.2" title="6:50">antinatially may present in extremists when the ductus arteriosus closes. They may be cold, </span></li>
+<li><span class="segment a-seg" data-start="417.2" data-end="424.0" title="6:57">clammy, peripherally shut down and peria rest. Is there anything you can do to prevent that happening </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="424.0">
+  <div class="q-label">Q8</div>
+  <div class="q-body"><span class="segment q-seg" data-start="424.0" data-end="425.995" title="7:04">or even reverse it? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="425.995" data-end="432.48" title="7:05">The duct can be kept open temporarily by the use of prostaglandin E1 </span></li>
+<li><span class="segment a-seg" data-start="432.48" data-end="438.48" title="7:12">or radiologically guided stents. This allows time for further management of the child's condition </span></li>
+<li><span class="segment a-seg" data-start="438.48" data-end="444.64" title="7:18">to be instigated. It is unlikely that the examiner will press any further along this line in the </span></li>
+<li><span class="segment a-seg" data-start="444.64" data-end="450.48" title="7:24">management of a baby with CHD. They may however decide to quiz you about the management of an </span></li>
+<li><span class="segment a-seg" data-start="450.48" data-end="455.6" title="7:30">adult with congenital heart disease presenting for surgery. Don't forget that the basis of your </span></li>
+<li><span class="segment a-seg" data-start="455.6" data-end="461.76" title="7:35">answers still involves giving a safe and balanced anesthetic. Previous papers have discussed the </span></li>
+<li><span class="segment a-seg" data-start="461.76" data-end="468.08" title="7:41">anesthetic management of patients with ASTs. The scenario has usually progressed to a patient who </span></li>
+<li><span class="segment a-seg" data-start="468.08" data-end="474.16" title="7:48">becomes cyanotic in spite of a high oxygen delivery. Remember that blood flows across duct </span></li>
+<li><span class="segment a-seg" data-start="474.16" data-end="480.0" title="7:54">or defects along pressure gradients. It is therefore possible for patients with abnormal left </span></li>
+<li><span class="segment a-seg" data-start="480.0" data-end="486.0" title="8:00">to right blood flow to reverse the direction and flow to right to left shunt if the systemic </span></li>
+<li><span class="segment a-seg" data-start="486.0" data-end="492.88" title="8:06">vascular resistance drops or the pulmonary vascular pressure rises. What considerations would you take </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="492.88">
+  <div class="q-label">Q9</div>
+  <div class="q-body"><span class="segment q-seg" data-start="492.88" data-end="497.36" title="8:12">into account when a needs-tising a patient who is known to have congenital heart disease? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="497.44" data-end="505.28" title="8:17">The implications for anesthesia in an adult patient with congenital heart disease will depend </span></li>
+<li><span class="segment a-seg" data-start="505.28" data-end="511.76" title="8:25">upon many factors. I would want to know specifically what the nature of the disease is. For instance, </span></li>
+<li><span class="segment a-seg" data-start="511.76" data-end="518.56" title="8:31">do they have an atroceptal defect, a ventriculoseptal defect, or more complicated conditions such as a </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="518.56">
+  <div class="q-label">Q10</div>
+  <div class="q-body"><span class="segment q-seg" data-start="518.56" data-end="519.289" title="8:38">fontan circulation? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="519.289" data-end="525.12" title="8:39">If there is a shunt present, I would like to know in which direction the abnormal </span></li>
+<li><span class="segment a-seg" data-start="525.12" data-end="530.88" title="8:45">flow passes. I would like to establish the current anatomy of the patient's circulation, </span></li>
+<li><span class="segment a-seg" data-start="530.88" data-end="535.84" title="8:50">particularly if they have complicated congenital heart disease or have undergone surgery. </span></li>
+<li><span class="segment a-seg" data-start="536.56" data-end="541.92" title="8:56">I would also like to know whether the patient has an isolated congenital heart disease problem </span></li>
+<li><span class="segment a-seg" data-start="541.92" data-end="547.04" title="9:01">or whether it is associated with other conditions that might lead to learning difficulties </span></li>
+<li><span class="segment a-seg" data-start="547.04" data-end="554.32" title="9:07">or intellectual impairment. I would then want to know how severe their congenital heart disease is. </span></li>
+<li><span class="segment a-seg" data-start="554.32" data-end="559.68" title="9:14">I would gauge this by taking a thorough history, paying particular attention to the patient's </span></li>
+<li><span class="segment a-seg" data-start="559.68" data-end="566.16" title="9:19">exercise tolerance, examination, looking for signs of heart failure, and organising relevant </span></li>
+<li><span class="segment a-seg" data-start="566.16" data-end="573.44" title="9:26">investigations such as echocardiography. I would also establish what is normal for that patient. </span></li>
+<li><span class="segment a-seg" data-start="573.44" data-end="580.16" title="9:33">For instance, if they normally have oxygen saturation levels of around 90 to 92%, I would not aim </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="580.16">
+  <div class="q-label">Q11</div>
+  <div class="q-body"><span class="segment q-seg" data-start="580.16" data-end="586.24" title="9:40">to try and achieve higher levels post-operatively. Why would you worry about which direction the shunt flows? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="588.64" data-end="594.56" title="9:48">If a shunt persists, the direction of the shunt will dictate the principal risks to the patient. </span></li>
+<li><span class="segment a-seg" data-start="595.12" data-end="601.92" title="9:55">For instance, a right to left shunt increases the risks of paradoxical embolus. It also causes </span></li>
+<li><span class="segment a-seg" data-start="601.92" data-end="608.0" title="10:01">polycythemia and low oxygen saturations, which may not be correctable with oxygen therapy. </span></li>
+<li><span class="segment a-seg" data-start="608.72" data-end="614.24" title="10:08">If there is a left to right shunt, then there is a significant risk of pulmonary hypertension </span></li>
+<li><span class="segment a-seg" data-start="614.24" data-end="621.2" title="10:14">and right heart failure. I would also bear in mind that a cyanotic heart conditions can become </span></li>
+<li><span class="segment a-seg" data-start="621.2" data-end="627.76" title="10:21">cyanotic if the shunt reverses as may occur if the systemic vascular resistance drops or the </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="627.76">
+  <div class="q-label">Q12</div>
+  <div class="q-body"><span class="segment q-seg" data-start="627.76" data-end="634.16" title="10:27">pulmonary vascular resistance rises. You mentioned a fontan circulation earlier. What is that? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="634.56" data-end="642.56" title="10:34">The fontan circulation is a palliative procedure that leads to patients having a univentricular </span></li>
+<li><span class="segment a-seg" data-start="642.56" data-end="650.24" title="10:42">circulation. Blood flows directly from the vena cavi into the pulmonary artery. It only passes into </span></li>
+<li><span class="segment a-seg" data-start="650.24" data-end="656.56" title="10:50">the heart after passing through the lungs. The remaining ventricle then pumps blood around the body. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="656.56">
+  <div class="q-label">Q13</div>
+  <div class="q-body"><span class="segment q-seg" data-start="656.56" data-end="660.4" title="10:56">Are there any particular problems this poses for an anesthetic? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="660.72" data-end="669.2" title="11:00">The main considerations are the need for adequate venous return. This is because the preload to </span></li>
+<li><span class="segment a-seg" data-start="669.2" data-end="676.08" title="11:09">the systemic ventricle depends in large parts on the passive return of blood. Therefore, the patient </span></li>
+<li><span class="segment a-seg" data-start="676.08" data-end="682.96" title="11:16">needs to be adequately fluid resuscitated. Secondly, excessive increases in pulmonary vascular </span></li>
+<li><span class="segment a-seg" data-start="682.96" data-end="689.44" title="11:22">resistance should be avoided or at least minimized. This is because blood flow across the lungs </span></li>
+<li><span class="segment a-seg" data-start="689.44" data-end="694.72" title="11:29">depends on a pressure gradient between the blood returning in the vena cavi and to the single </span></li>
+<li><span class="segment a-seg" data-start="694.72" data-end="700.48" title="11:34">atrium for the trans pulmonary gradient. Because there is no right ventricle assisting this </span></li>
+<li><span class="segment a-seg" data-start="700.48" data-end="706.72" title="11:40">gradient, blood flow through the lungs is essentially passive. Therefore, any increase in pulmonary </span></li>
+<li><span class="segment a-seg" data-start="706.72" data-end="714.32" title="11:46">vascular resistance will decrease flow significantly. For a similar reason, positive pressure ventilation </span></li>
+<li><span class="segment a-seg" data-start="714.56" data-end="721.6" title="11:54">should be avoided where possible. Lastly, in a univentricular system, it is useful to work out which </span></li>
+<li><span class="segment a-seg" data-start="721.6" data-end="728.72" title="12:01">ventricle remains, as a morphological right ventricle pumping systemic blood may start to fail early </span></li>
+<li><span class="segment a-seg" data-start="728.72" data-end="735.68" title="12:08">in adulthood posing further problems. Because of these factors, regional anesthesia should be </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="735.68">
+  <div class="q-label">Q14</div>
+  <div class="q-body"><span class="segment q-seg" data-start="735.68" data-end="740.203" title="12:15">considered when appropriate. What about prophylactic antibiotics? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="740.203" data-end="744.08" title="12:20">I would follow nice guidelines on </span></li>
+<li><span class="segment a-seg" data-start="744.08" data-end="749.52" title="12:24">this matter and involve the patient or their guardian in any decisions about antibiotic </span></li>
+<li><span class="segment a-seg" data-start="749.52" data-end="756.96" title="12:29">prophylaxists for endocarditis. </span></li>
+  </ul>
+</div>
+</div>
+
 </div>
 
 <div class="subtitle-bar">
-  <span class="subtitle-text empty" id="subtitle-text">Play audio to see live subtitles&#8230;</span>
+  <span id="subtitle-text" class="empty">Play audio to see live subtitles&#8230;</span>
 </div>
 
 <script>
-
-const audio    = document.getElementById('audio');
-const allSegs  = Array.from(document.querySelectorAll('.segment'));
-const allBlocks = Array.from(document.querySelectorAll('.t-block'));
+const audio      = document.getElementById('audio');
+const allSegs    = Array.from(document.querySelectorAll('.segment'));
 const subtitleEl = document.getElementById('subtitle-text');
-let activeSegEl   = null;
-let activeBlockEl = null;
-let searchMatches = [];
-let searchIdx     = 0;
+let activeSegEl  = null;
+let searchMatches = [], searchIdx = 0;
 
-// Duration display
 audio.addEventListener('loadedmetadata', () => {
   const m = Math.floor(audio.duration / 60);
   const s = Math.floor(audio.duration %% 60).toString().padStart(2,'0');
   document.getElementById('dur').textContent = m + ':' + s;
 });
 
-// Seek helper
-function seekTo(t) {
-  audio.currentTime = t;
-  audio.play();
-}
+function seekTo(t) { audio.currentTime = t; audio.play(); }
 
-// Block gutter click
-document.querySelectorAll('.t-gutter').forEach(g => {
-  g.addEventListener('click', () => seekTo(parseFloat(g.dataset.start)));
+// Q-block header click
+document.querySelectorAll('.q-block').forEach(q => {
+  q.addEventListener('click', e => {
+    if (!e.target.classList.contains('segment')) seekTo(parseFloat(q.dataset.start));
+  });
 });
 
-// Segment click
+// Individual segment click
 allSegs.forEach(s => {
-  s.addEventListener('click', e => {
-    e.stopPropagation();
-    seekTo(parseFloat(s.dataset.start));
-  });
+  s.addEventListener('click', e => { e.stopPropagation(); seekTo(parseFloat(s.dataset.start)); });
 });
 
 // Real-time tracking
 audio.addEventListener('timeupdate', () => {
   const t = audio.currentTime;
-
-  // Find active segment (last one whose start <= t)
   let found = null;
   for (let i = allSegs.length - 1; i >= 0; i--) {
     if (parseFloat(allSegs[i].dataset.start) <= t) { found = allSegs[i]; break; }
   }
-
   if (found && found !== activeSegEl) {
-    // Clear previous
-    if (activeSegEl) activeSegEl.classList.remove('active');
-    if (activeBlockEl) {
-      activeBlockEl.classList.remove('block-active');
-      const pg = activeBlockEl.querySelector('.t-gutter');
-      if (pg) pg.classList.remove('gutter-active');
+    if (activeSegEl) {
+      activeSegEl.classList.remove('active');
+      const pli = activeSegEl.closest('li');
+      if (pli) pli.classList.remove('li-active');
+      const pq = activeSegEl.closest('.q-block');
+      if (pq) pq.classList.remove('q-active');
     }
-    // Set new
     found.classList.add('active');
-    const block = found.closest('.t-block');
-    if (block) {
-      block.classList.add('block-active');
-      const g = block.querySelector('.t-gutter');
-      if (g) g.classList.add('gutter-active');
-      activeBlockEl = block;
-    }
+    const li = found.closest('li');
+    if (li) li.classList.add('li-active');
+    const qb = found.closest('.q-block');
+    if (qb) qb.classList.add('q-active');
     activeSegEl = found;
 
-    // Update subtitle
     subtitleEl.textContent = found.textContent.trim();
     subtitleEl.classList.remove('empty');
 
-    // Auto-scroll (only when not searching)
-    if (!document.getElementById('search').value) {
+    if (!document.getElementById('search').value)
       found.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }
   }
 });
 
@@ -347,17 +511,13 @@ searchInput.addEventListener('keydown', e => {
     el.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
 });
-
 function runSearch() {
   const q = searchInput.value.trim().toLowerCase();
   allSegs.forEach(s => s.classList.remove('search-match','search-current'));
   searchMatches = [];
   if (!q) return;
   allSegs.forEach(s => {
-    if (s.textContent.toLowerCase().includes(q)) {
-      s.classList.add('search-match');
-      searchMatches.push(s);
-    }
+    if (s.textContent.toLowerCase().includes(q)) { s.classList.add('search-match'); searchMatches.push(s); }
   });
   if (!searchMatches.length) return;
   searchIdx = 0;

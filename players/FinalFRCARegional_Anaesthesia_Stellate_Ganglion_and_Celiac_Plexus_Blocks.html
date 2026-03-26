@@ -5,10 +5,19 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Regional Anaesthesia — Stellate Ganglion and Celiac Plexus Blocks</title>
 <style>
-
   :root {
-    --accent:    #2563eb;
-    --body-bg:   #f1f5f9;
+    --q-bg:       #1e3a5f;
+    --q-text:     #ffffff;
+    --q-label:    #60a5fa;
+    --a-bg:       #ffffff;
+    --a-border:   #e2e8f0;
+    --a-label:    #059669;
+    --active-q:   #2563eb;
+    --active-a:   #dbeafe;
+    --accent:     #2563eb;
+    --body-bg:    #f1f5f9;
+    --pre-bg:     #fef9c3;
+    --pre-border: #fcd34d;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
@@ -40,22 +49,9 @@
     margin-bottom: 4px;
     letter-spacing: 0.01em;
   }
-  .header-sub {
-    font-size: 0.72rem;
-    color: #94a3b8;
-    font-style: italic;
-  }
-  audio {
-    height: 36px;
-    accent-color: var(--accent);
-    flex-shrink: 0;
-  }
-  .back-link {
-    font-size: 0.8rem;
-    color: #94a3b8;
-    text-decoration: none;
-    white-space: nowrap;
-  }
+  .header-sub { font-size: 0.72rem; color: #94a3b8; font-style: italic; }
+  audio { height: 36px; accent-color: var(--accent); flex-shrink: 0; }
+  .back-link { font-size: 0.8rem; color: #94a3b8; text-decoration: none; white-space: nowrap; }
   .back-link:hover { color: #60a5fa; }
 
   /* ── Toolbar ── */
@@ -69,30 +65,17 @@
     border-bottom: 1px solid #334155;
   }
   .toolbar input {
-    flex: 1;
-    max-width: 380px;
+    flex: 1; max-width: 380px;
     padding: 5px 11px;
-    border: 1px solid #475569;
-    border-radius: 6px;
-    background: #0f172a;
-    color: #e2e8f0;
-    font-size: 0.83rem;
-    outline: none;
+    border: 1px solid #475569; border-radius: 6px;
+    background: #0f172a; color: #e2e8f0; font-size: 0.83rem; outline: none;
   }
   .toolbar input:focus { border-color: var(--accent); }
   .toolbar input::placeholder { color: #64748b; }
-  .stats {
-    font-size: 0.72rem;
-    color: #64748b;
-    white-space: nowrap;
-  }
+  .stats { font-size: 0.72rem; color: #64748b; white-space: nowrap; }
 
   /* ── Scroll area ── */
-  .scroll-area {
-    flex: 1;
-    overflow-y: auto;
-    padding: 20px;
-  }
+  .scroll-area { flex: 1; overflow-y: auto; padding: 20px; }
   .scroll-area::-webkit-scrollbar { width: 6px; }
   .scroll-area::-webkit-scrollbar-track { background: transparent; }
   .scroll-area::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
@@ -107,68 +90,77 @@
     display: flex;
     align-items: center;
   }
-  .subtitle-text {
-    font-size: 0.9rem;
-    color: #e2e8f0;
-    line-height: 1.5;
-    font-style: italic;
-  }
-  .subtitle-text.empty { color: #475569; }
+  #subtitle-text { font-size: 0.88rem; color: #e2e8f0; line-height: 1.5; font-style: italic; }
+  #subtitle-text.empty { color: #475569; }
 
-  /* ── Transcript blocks ── */
-  .t-block {
-    background: #ffffff;
-    border: 1px solid #e2e8f0;
-    border-radius: 10px;
-    margin-bottom: 14px;
-    overflow: hidden;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
-    display: flex;
-  }
-  .t-block.block-active {
-    border-color: var(--accent);
-    box-shadow: 0 0 0 2px rgba(37,99,235,0.15);
-  }
-  .t-gutter {
-    background: #0f172a;
-    width: 52px;
-    flex-shrink: 0;
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
-    padding-top: 14px;
-    cursor: pointer;
-  }
-  .t-gutter:hover { background: #1e293b; }
-  .t-timestamp {
-    font-size: 0.7rem;
-    color: #64748b;
-    font-family: monospace;
-    font-weight: 600;
-    letter-spacing: 0.02em;
-  }
-  .t-gutter.gutter-active .t-timestamp { color: var(--accent); }
-  .t-body {
-    flex: 1;
+  /* ── Preamble ── */
+  .preamble-block {
+    background: var(--pre-bg);
+    border-left: 4px solid var(--pre-border);
+    border-radius: 0 8px 8px 0;
     padding: 12px 16px;
-    line-height: 1.75;
-    font-size: 0.92rem;
-    color: #1e293b;
+    margin-bottom: 20px;
+    font-size: 0.88rem;
+    color: #78350f;
+    font-style: italic;
+    line-height: 1.7;
   }
 
-  /* ── Segments ── */
-  .segment {
+  /* ── Q&A pair ── */
+  .qa-pair { margin-bottom: 20px; border-radius: 10px; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+
+  /* Question block */
+  .q-block {
+    background: var(--q-bg);
+    padding: 14px 18px;
+    display: flex; gap: 14px; align-items: flex-start;
     cursor: pointer;
-    border-radius: 3px;
-    transition: background 0.1s;
+    transition: background 0.15s;
   }
-  .segment:hover { background: #eff6ff; }
-  .segment.active {
-    background: #bfdbfe;
-    outline: 2px solid #3b82f6;
-    outline-offset: 1px;
-    border-radius: 3px;
+  .q-block:hover { background: #1d4ed8; }
+  .q-block.q-active { background: var(--active-q); }
+  .q-label {
+    font-size: 0.7rem; font-weight: 700;
+    color: var(--q-label);
+    background: rgba(96,165,250,0.15);
+    border: 1px solid rgba(96,165,250,0.3);
+    border-radius: 5px; padding: 3px 7px;
+    white-space: nowrap; margin-top: 2px; letter-spacing: 0.05em;
+    flex-shrink: 0;
   }
+  .q-body { flex: 1; font-size: 0.97rem; font-weight: 600; color: var(--q-text); line-height: 1.55; }
+
+  /* Answer block */
+  .a-block {
+    background: var(--a-bg);
+    border: 1px solid var(--a-border); border-top: none;
+    padding: 14px 18px;
+    display: flex; gap: 14px; align-items: flex-start;
+  }
+  .a-label {
+    font-size: 0.7rem; font-weight: 700;
+    color: var(--a-label);
+    background: #d1fae5; border: 1px solid #6ee7b7;
+    border-radius: 5px; padding: 3px 9px;
+    white-space: nowrap; margin-top: 2px; letter-spacing: 0.05em;
+    flex-shrink: 0;
+  }
+  .a-body { flex: 1; list-style: none; padding: 0; }
+  .a-body li {
+    padding: 4px 0 4px 14px;
+    border-left: 3px solid transparent;
+    line-height: 1.7; font-size: 0.92rem; color: #1e293b;
+    border-radius: 0 4px 4px 0;
+    transition: background 0.15s;
+  }
+  .a-body li:not(:last-child) { border-bottom: 1px solid #f1f5f9; }
+
+  /* ── Segments (clickable) ── */
+  .segment { cursor: pointer; border-radius: 3px; }
+  .q-seg:hover { background: rgba(255,255,255,0.18); }
+  .a-seg:hover { background: #eff6ff; }
+  .segment.active { background: #bfdbfe; outline: 2px solid #3b82f6; outline-offset: 1px; }
+  .a-body li.li-active { background: var(--active-a); border-left-color: var(--accent); }
   .segment.search-match  { background: #fef9c3; }
   .segment.search-current { background: #fde047; outline: 2px solid #ca8a04; }
 
@@ -187,154 +179,326 @@
 
 <div class="toolbar">
   <input type="text" id="search" placeholder="Search transcript&#8230; (Enter = next match)">
-  <span class="stats" id="stats">124 segments &nbsp;|&nbsp; <span id="dur">loading&#8230;</span></span>
+  <span class="stats" id="stats">13 questions &nbsp;|&nbsp; 124 segments &nbsp;|&nbsp; <span id="dur">loading&#8230;</span></span>
 </div>
 
 <div class="scroll-area" id="scroll-area">
-<div class="t-block">
-  <div class="t-gutter" data-start="0.0"><span class="t-timestamp">0:00</span></div>
-  <div class="t-body"><span class="segment" data-start="0.0" data-end="3.2" title="0:00">stellate ganglion and celiac plexus blocks. </span><span class="segment" data-start="4.08" data-end="6.96" title="0:04">Can you describe the anatomy of the stellate ganglion? </span><span class="segment" data-start="6.96" data-end="11.84" title="0:06">Before the viber, learn to draw a simple line diagram to describe the anatomy. </span><span class="segment" data-start="11.84" data-end="15.44" title="0:11">This will help you to remember the position and relations of the ganglion </span><span class="segment" data-start="15.44" data-end="18.0" title="0:15">and can be quickly reproduced in the viber, </span><span class="segment" data-start="18.0" data-end="21.2" title="0:18">rather than trying to recall the information veribaly. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="22.4"><span class="t-timestamp">0:22</span></div>
-  <div class="t-body"><span class="segment" data-start="22.4" data-end="28.8" title="0:22">The stellate ganglion consists of a fusion of the inferior cervical and the first thoracic ganglion. </span><span class="segment" data-start="29.12" data-end="34.48" title="0:29">It lies adjacent to the vertebral column between the carotid chief and the fascia </span><span class="segment" data-start="34.48" data-end="40.4" title="0:34">overlying the pre-vertebral muscles at the level of the seventh cervical and first thoracic vertebrae. </span><span class="segment" data-start="41.36" data-end="46.88" title="0:41">It is closely related to the neck of the first rib and importantly the dome of the plurra </span><span class="segment" data-start="46.88" data-end="50.8" title="0:46">and the vertebral archery which both lie anterior to it. </span><span class="segment" data-start="51.52" data-end="54.72" title="0:51">Can you describe a technique for performing a stellate ganglion block? </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="55.28"><span class="t-timestamp">0:55</span></div>
-  <div class="t-body"><span class="segment" data-start="55.28" data-end="58.16" title="0:55">You may not have performed a stellate ganglion block. </span><span class="segment" data-start="58.16" data-end="62.16" title="0:58">You will find it easier to remember the surface anatomy if you have at least attempted to </span><span class="segment" data-start="62.16" data-end="66.4" title="1:02">pop H-hazardic-nax tubricle. Try it out on a sturdy buddy. </span><span class="segment" data-start="68.24" data-end="75.44" title="1:08">The aim is to place local anesthetic solution at cervical level 6 with cordal spread blocking the ganglion </span><span class="segment" data-start="76.08" data-end="80.8" title="1:16">because a direct approach risks entering the dome of the lung or the vertebral archery. </span><span class="segment" data-start="81.76" data-end="84.24" title="1:21">I will describe the anterior approach to the ganglion. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="84.88"><span class="t-timestamp">1:24</span></div>
-  <div class="t-body"><span class="segment" data-start="84.88" data-end="91.04" title="1:24">The patient is placed in the supine position with the neck extended and rotated away from the </span><span class="segment" data-start="91.04" data-end="96.48" title="1:31">side of the block. The carotid pulsation is palpated at the level of the crycord cartilage. </span><span class="segment" data-start="97.36" data-end="103.52" title="1:37">The sternoclider mastoid muscle and the carotid archery are displaced laterally so that the </span><span class="segment" data-start="103.52" data-end="110.64" title="1:43">transverse process of C6 can be palpated. This is known as Shazen-nax tubricle. </span><span class="segment" data-start="110.64" data-end="118.0" title="1:50">After injecting local anesthetic into the skin, a 25 gauge needle is inserted at 90 degrees </span><span class="segment" data-start="118.0" data-end="124.48" title="1:58">to the skin and advanced towards the tubricle until bone is contacted. It is then withdrawn by </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="124.48"><span class="t-timestamp">2:04</span></div>
-  <div class="t-body"><span class="segment" data-start="124.48" data-end="132.64" title="2:04">2mm. Position is confirmed florescopically. It is really important to aspirate for blood and </span><span class="segment" data-start="132.64" data-end="139.76" title="2:12">then inject 0.5 mills of solution as a testos. A dreneline containing testos may be used to rule </span><span class="segment" data-start="139.84" data-end="147.12" title="2:19">out intravenous placement. If there are no adverse effects, 15-20 mills of low concentration </span><span class="segment" data-start="147.12" data-end="157.76" title="2:27">local anesthetic solution such as 0.5% lidocaine or 0.125% bupivocaine is injected in 5 mill increments. </span><span class="segment" data-start="158.8" data-end="163.36" title="2:38">It is best to sit the patient up to aid spread down towards the stellate ganglion. </span><span class="segment" data-start="164.32" data-end="168.8" title="2:44">Signs of a good block are the same as the signs of hornocindrome, </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="169.52"><span class="t-timestamp">2:49</span></div>
-  <div class="t-body"><span class="segment" data-start="169.52" data-end="176.64" title="2:49">Ipsilatrophosis, Myosis, Anhydrosis, Conjunctival injection and Enopthalmus. </span><span class="segment" data-start="177.52" data-end="184.16" title="2:57">Patients may also get a block nose on the same side due to vasodilitation of the nasal mucosa, </span><span class="segment" data-start="184.16" data-end="191.92" title="3:04">known as Gutmins sign. Warm, dry skin on the arm and hands suggest a good sympathetic block to </span><span class="segment" data-start="191.92" data-end="198.48" title="3:11">the upper limb. Can he name some indications for stellate ganglion block? Remember to categorise your </span><span class="segment" data-start="198.48" data-end="205.2" title="3:18">answer. Firstly, the stellate ganglion can be blocked in order to treat neuropathic pain. </span><span class="segment" data-start="205.92" data-end="212.0" title="3:25">Examples of this are complex regial pain syndromes of the upper limb, acute herpes zoster and </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="212.0"><span class="t-timestamp">3:32</span></div>
-  <div class="t-body"><span class="segment" data-start="212.0" data-end="218.0" title="3:32">post-herpatic neuralgia, central pain following stroke and phantom limb pain. </span><span class="segment" data-start="218.4" data-end="224.96" title="3:38">It can also be used to treat ischemic conditions in the upper limb, such as vascular insufficiency, </span><span class="segment" data-start="224.96" data-end="233.12" title="3:44">vascular or re-implantation surgery, reino's disease and inadvertent inter arterial injection of </span><span class="segment" data-start="233.12" data-end="241.12" title="3:53">fire pentane. It can also be used for the treatment of visceral pain from the heart in refractory </span><span class="segment" data-start="241.12" data-end="246.4" title="4:01">and jyna. While sympathetic blocks thought to work in the treatment of neuropathic pain, </span><span class="segment" data-start="248.48" data-end="254.32" title="4:08">the sympathetic nervous system seems to have a role in the generation of pain. In certain pain </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="254.32"><span class="t-timestamp">4:14</span></div>
-  <div class="t-body"><span class="segment" data-start="254.32" data-end="260.4" title="4:14">states there is an abnormal response of the primary no-seceptive afference to sympathetic stimulation. </span><span class="segment" data-start="261.6" data-end="267.44" title="4:21">Peripheral and central sensitization occurs with reduced excitatory thresholds and the </span><span class="segment" data-start="267.44" data-end="275.68" title="4:27">production of ectopic impulses. The afferent fibers also have increased adrenoseptose sensitivity </span><span class="segment" data-start="275.76" data-end="282.0" title="4:35">so that noradrenaline released from sympathetic nerve terminals causes further sensitization. </span><span class="segment" data-start="283.36" data-end="289.2" title="4:43">This sympathetically mediated pain is sometimes seen in complex regial pain syndrome. </span><span class="segment" data-start="290.08" data-end="294.8" title="4:50">Sympathetic blocks are often used in CRPS for exactly that reason, </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="295.76"><span class="t-timestamp">4:55</span></div>
-  <div class="t-body"><span class="segment" data-start="295.76" data-end="301.28" title="4:55">though only about one third of patients with CRPS have sympathetic mediated pain. </span><span class="segment" data-start="302.16" data-end="306.64" title="5:02">Can you describe the specific side effects and complications of the stellate ganglion block? </span><span class="segment" data-start="308.8" data-end="314.16" title="5:08">The side effects of a stellate ganglion block include blocking other nearby nerves, </span><span class="segment" data-start="314.16" data-end="317.04" title="5:14">such as the recurrent laryngeal nerve causing whorceness, </span><span class="segment" data-start="317.76" data-end="322.56" title="5:17">branches of the cervical or brachial plexus causing motor and sensory deficits, </span><span class="segment" data-start="323.12" data-end="329.76" title="5:23">and frenic nerve paulzy, which is why bilateral blocks should not be performed simultaneously. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="330.08"><span class="t-timestamp">5:30</span></div>
-  <div class="t-body"><span class="segment" data-start="330.08" data-end="337.2" title="5:30">Inadvertained injection can also occur, for example, into the vertebral or carotid arteries </span><span class="segment" data-start="337.2" data-end="342.4" title="5:37">causing seizures and interethical injection causing a very high spinal block. </span><span class="segment" data-start="343.76" data-end="348.4" title="5:43">Other complications include damaged blood vessels causing hematoma, </span><span class="segment" data-start="348.4" data-end="354.48" title="5:48">damaged the vagus nerve or brachial plexus or to the dome of the pluror causing a pneumothorax, </span><span class="segment" data-start="355.28" data-end="358.48" title="5:55">a soft-rugial puncture-may occur and chylothorax. </span><span class="segment" data-start="359.68" data-end="365.52" title="5:59">Infection can also be introduced causing abscesses, osteitis or meningitis. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="366.16"><span class="t-timestamp">6:06</span></div>
-  <div class="t-body"><span class="segment" data-start="366.16" data-end="368.16" title="6:06">Let's move on to a different part of the body now. </span><span class="segment" data-start="369.52" data-end="372.0" title="6:09">Can you describe the anatomy of the celiac plexus? </span><span class="segment" data-start="374.24" data-end="380.72" title="6:14">The celiac plexus is the main junction for autonomic nerves supplying the upper abdominal organs </span><span class="segment" data-start="380.72" data-end="386.0" title="6:20">and consists of the bilateral celiac ganglia with a network of interconnecting fibres. </span><span class="segment" data-start="387.36" data-end="393.28" title="6:27">Some sympathetic pre-ganglionic fibres do not signapse within the sympathetic chain, </span><span class="segment" data-start="393.28" data-end="399.2" title="6:33">but exit the chain as a splank-knit nerve and signapse in the pre-verchable celiac ganglia. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="400.16"><span class="t-timestamp">6:40</span></div>
-  <div class="t-body"><span class="segment" data-start="400.16" data-end="407.92" title="6:40">The celiac plexus is made up of fibres from T5 to T10, which form the greater splank-knit nerve. </span><span class="segment" data-start="408.88" data-end="414.0" title="6:48">Fibres from T9 to T11, which form the lesser splank-knit nerve, </span><span class="segment" data-start="414.96" data-end="419.2" title="6:54">as well as fibres from T12 in the least splank-knit nerve. </span><span class="segment" data-start="420.64" data-end="423.84" title="7:00">The plexus also receives fibres from the vagus nerve. </span><span class="segment" data-start="424.88" data-end="432.16" title="7:04">The celiac ganglia lie anterior to the aorta on either side of the body of L1 and posterior to </span><span class="segment" data-start="432.16" data-end="435.92" title="7:12">the pancreas. Why might we want to perform a celiac plexus block? </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="438.0"><span class="t-timestamp">7:18</span></div>
-  <div class="t-body"><span class="segment" data-start="438.0" data-end="444.32" title="7:18">The sympathetic plexuses receive no-susceptive impulses from all viscera via un-mylinated </span><span class="segment" data-start="444.32" data-end="450.96" title="7:24">afferent fibres. These impulses can be blocked with local anaesthetic or neuro-litic techniques. </span><span class="segment" data-start="451.84" data-end="457.28" title="7:31">The celiac plexus receives afference from the pancreas, so the block is usually performed </span><span class="segment" data-start="457.28" data-end="464.64" title="7:37">for pain associated with pancreatic cancer or pancreatitis. There is a risk of paraplegia of </span><span class="segment" data-start="464.64" data-end="469.84" title="7:44">about two per thousand blocks, so the risks and benefits must be balanced carefully. </span><span class="segment" data-start="470.88" data-end="476.08" title="7:50">Also, the block may only last for a few months, and so may need to be repeated. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="476.8"><span class="t-timestamp">7:56</span></div>
-  <div class="t-body"><span class="segment" data-start="476.8" data-end="483.52" title="7:56">Do you know what a diagnostic block is? A diagnostic block is performed with local anaesthetic </span><span class="segment" data-start="483.52" data-end="489.52" title="8:03">only, and is used to try to locate the source of pain or investigate how amenable it will be </span><span class="segment" data-start="489.6" data-end="497.68" title="8:09">to treatment. If it is successful, there is the possibility of progressing to therapeutic or </span><span class="segment" data-start="497.68" data-end="502.8" title="8:17">neuro-litic treatment in the future. What agents can we use in a therapeutic block? </span><span class="segment" data-start="505.2" data-end="509.6" title="8:25">We may use local anaesthetic agents with or without corticosteroids. </span><span class="segment" data-start="510.4" data-end="514.56" title="8:30">Why do therapeutic blocks with local anaesthetic alone last for longer than the </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="514.56"><span class="t-timestamp">8:34</span></div>
-  <div class="t-body"><span class="segment" data-start="514.56" data-end="517.36" title="8:34">expect duration of action of local anaesthetic agents? </span><span class="segment" data-start="519.68" data-end="525.2" title="8:39">This may be due to the prevention of reflex, muscle or sympathetic nervous effects, </span><span class="segment" data-start="525.2" data-end="532.8" title="8:45">and breaking the cycle of sympathetically mediated pain. Also, they may cause reduced </span><span class="segment" data-start="532.8" data-end="540.88" title="8:52">spouting of neurons in spinal ganglia, reduced ephabetic transmission, and reduced hyper-excitability </span><span class="segment" data-start="540.96" data-end="544.64" title="9:00">of pain fibers. How can we achieve a neuro-litic block? </span><span class="segment" data-start="546.48" data-end="550.96" title="9:06">We can use chemical, thermal or cryogenic techniques to destroy nerve tissue. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="551.6"><span class="t-timestamp">9:11</span></div>
-  <div class="t-body"><span class="segment" data-start="551.6" data-end="558.72" title="9:11">The commonly used chemical agents are phenol, 5 or 6 percent, ethanol, 50 to 100 percent. </span><span class="segment" data-start="559.6" data-end="564.8" title="9:19">These chemicals must be used with care, as they are obviously toxic to all tissue, </span><span class="segment" data-start="564.8" data-end="570.4" title="9:24">not just the nerves that we are targeting. How would you prepare a patient for a celiac plexus block? </span><span class="segment" data-start="571.36" data-end="576.48" title="9:31">Firstly, I would take a medical anaesthetic history and perform a clinical examination. </span><span class="segment" data-start="577.28" data-end="582.32" title="9:37">I would gain informed consent and discuss the risks and benefits of the treatment, </span><span class="segment" data-start="582.32" data-end="587.92" title="9:42">including the potential side effects and complications. I would ensure that there are no </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="587.92"><span class="t-timestamp">9:47</span></div>
-  <div class="t-body"><span class="segment" data-start="587.92" data-end="594.32" title="9:47">contraindications, such as local infection or coagulopathy. I would secure intravenous access, </span><span class="segment" data-start="594.96" data-end="599.36" title="9:54">fluid load the patient to reduce the risk of high-potension, and make sure that full </span><span class="segment" data-start="599.36" data-end="605.36" title="9:59">airway and resuscitation equipment was immediately available. I would attach the patient to the </span><span class="segment" data-start="605.36" data-end="611.04" title="10:05">minimal standards of monitoring according to the Royal College of Anestas Guidelines, and ensure </span><span class="segment" data-start="611.04" data-end="616.32" title="10:11">that I had a skilled assistant. The block should be done under strict aseptic conditions, </span><span class="segment" data-start="617.04" data-end="622.56" title="10:17">using antiseptic solutions sterile gauves, mask and gown, and sterile disposable needles. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="623.52"><span class="t-timestamp">10:23</span></div>
-  <div class="t-body"><span class="segment" data-start="623.52" data-end="629.28" title="10:23">The block also requires the use of an image intensifier with contrast to confirm correct </span><span class="segment" data-start="629.28" data-end="634.16" title="10:29">needle placement. Your patient is prepared and you are scrubbed with a radiographer and image </span><span class="segment" data-start="634.16" data-end="639.92" title="10:34">intensifier in position. Can you describe the technique for performing a celiac plexus block? </span><span class="segment" data-start="641.92" data-end="647.52" title="10:41">The patient is in the prone position. The insertion point is just below the tip of the 12th rib, </span><span class="segment" data-start="647.52" data-end="654.4" title="10:47">approximately 8cm lateral from the midline. The block is bilateral. After local anaesthetic </span><span class="segment" data-start="654.4" data-end="661.36" title="10:54">infiltration of the superficial layers, a 100 to 150 millimetre needle is inserted and directed </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="661.36"><span class="t-timestamp">11:01</span></div>
-  <div class="t-body"><span class="segment" data-start="661.36" data-end="667.76" title="11:01">immediately towards the body of L1. The needle is inserted until it comes into contact with bone. </span><span class="segment" data-start="668.32" data-end="674.48" title="11:08">This is usually the side of the body of L1, and then it is withdrawn and redirected anteriorly. </span><span class="segment" data-start="675.44" data-end="683.68" title="11:15">It is then advanced 2 to 3cm more. Position is confirmed with radiopech dye in the paragolic gutter, </span><span class="segment" data-start="683.68" data-end="690.16" title="11:23">spreading cord ad and kephalad with no lateral spread. It is really important to aspirate </span><span class="segment" data-start="690.16" data-end="696.32" title="11:30">before injecting and then use a small testos first. 10 millimetres of local anaesthetic solution </span><span class="segment" data-start="696.32" data-end="702.0" title="11:36">each side, with or without a neurolithic agent, is then injected under image and tensified </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="702.0"><span class="t-timestamp">11:42</span></div>
-  <div class="t-body"><span class="segment" data-start="702.0" data-end="707.44" title="11:42">guidance. What are the specific complications associated with the celiac plexus block? </span><span class="segment" data-start="708.08" data-end="715.2" title="11:48">Remember to categorize your answer. The complications may be divided into those associated </span><span class="segment" data-start="715.2" data-end="720.88" title="11:55">with the misplaced needle and those caused by the drugs used. The needle may enter the inferior </span><span class="segment" data-start="720.88" data-end="728.24" title="12:00">vena cava, the aorta or the celiac artery, causing retropotinial hemorrhage. The kidneys or </span><span class="segment" data-start="728.24" data-end="736.0" title="12:08">adrenal glands can be damaged, as can any upper abdominal organ puncture, with abscess or sysformation. </span><span class="segment" data-start="737.2" data-end="743.36" title="12:17">Complication caused by the drugs used include hypotension due to sympathetic blockade, </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="744.0"><span class="t-timestamp">12:24</span></div>
-  <div class="t-body"><span class="segment" data-start="744.0" data-end="750.32" title="12:24">even after a unilateral block. Paraplegia may occur from injecting phenol into the arteries that </span><span class="segment" data-start="750.32" data-end="756.48" title="12:30">supply the spinal cord. Sexual dysfunction is an important complication to mention, which can </span><span class="segment" data-start="756.48" data-end="762.8" title="12:36">occur if injected solution spreads to the sympathetic chain bilaterally. And lumbar nerve </span><span class="segment" data-start="762.8" data-end="768.24" title="12:42">root irritation may occur if injected solution tracks back towards the lumbar plexus. </span></div>
+<div class="preamble-block"><span class="segment a-seg" data-start="0.0" data-end="3.2" title="0:00">stellate ganglion and celiac plexus blocks. </span></div>
+<div class="qa-pair">
+<div class="q-block" data-start="4.08">
+  <div class="q-label">Q1</div>
+  <div class="q-body"><span class="segment q-seg" data-start="4.08" data-end="6.96" title="0:04">Can you describe the anatomy of the stellate ganglion? </span></div>
 </div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="6.96" data-end="11.84" title="0:06">Before the viber, learn to draw a simple line diagram to describe the anatomy. </span></li>
+<li><span class="segment a-seg" data-start="11.84" data-end="15.44" title="0:11">This will help you to remember the position and relations of the ganglion </span></li>
+<li><span class="segment a-seg" data-start="15.44" data-end="18.0" title="0:15">and can be quickly reproduced in the viber, </span></li>
+<li><span class="segment a-seg" data-start="18.0" data-end="21.2" title="0:18">rather than trying to recall the information veribaly. </span></li>
+<li><span class="segment a-seg" data-start="22.4" data-end="28.8" title="0:22">The stellate ganglion consists of a fusion of the inferior cervical and the first thoracic ganglion. </span></li>
+<li><span class="segment a-seg" data-start="29.12" data-end="34.48" title="0:29">It lies adjacent to the vertebral column between the carotid chief and the fascia </span></li>
+<li><span class="segment a-seg" data-start="34.48" data-end="40.4" title="0:34">overlying the pre-vertebral muscles at the level of the seventh cervical and first thoracic vertebrae. </span></li>
+<li><span class="segment a-seg" data-start="41.36" data-end="46.88" title="0:41">It is closely related to the neck of the first rib and importantly the dome of the plurra </span></li>
+<li><span class="segment a-seg" data-start="46.88" data-end="50.8" title="0:46">and the vertebral archery which both lie anterior to it. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="51.52">
+  <div class="q-label">Q2</div>
+  <div class="q-body"><span class="segment q-seg" data-start="51.52" data-end="54.72" title="0:51">Can you describe a technique for performing a stellate ganglion block? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="55.28" data-end="58.16" title="0:55">You may not have performed a stellate ganglion block. </span></li>
+<li><span class="segment a-seg" data-start="58.16" data-end="62.16" title="0:58">You will find it easier to remember the surface anatomy if you have at least attempted to </span></li>
+<li><span class="segment a-seg" data-start="62.16" data-end="66.4" title="1:02">pop H-hazardic-nax tubricle. Try it out on a sturdy buddy. </span></li>
+<li><span class="segment a-seg" data-start="68.24" data-end="75.44" title="1:08">The aim is to place local anesthetic solution at cervical level 6 with cordal spread blocking the ganglion </span></li>
+<li><span class="segment a-seg" data-start="76.08" data-end="80.8" title="1:16">because a direct approach risks entering the dome of the lung or the vertebral archery. </span></li>
+<li><span class="segment a-seg" data-start="81.76" data-end="84.24" title="1:21">I will describe the anterior approach to the ganglion. </span></li>
+<li><span class="segment a-seg" data-start="84.88" data-end="91.04" title="1:24">The patient is placed in the supine position with the neck extended and rotated away from the </span></li>
+<li><span class="segment a-seg" data-start="91.04" data-end="96.48" title="1:31">side of the block. The carotid pulsation is palpated at the level of the crycord cartilage. </span></li>
+<li><span class="segment a-seg" data-start="97.36" data-end="103.52" title="1:37">The sternoclider mastoid muscle and the carotid archery are displaced laterally so that the </span></li>
+<li><span class="segment a-seg" data-start="103.52" data-end="110.64" title="1:43">transverse process of C6 can be palpated. This is known as Shazen-nax tubricle. </span></li>
+<li><span class="segment a-seg" data-start="110.64" data-end="118.0" title="1:50">After injecting local anesthetic into the skin, a 25 gauge needle is inserted at 90 degrees </span></li>
+<li><span class="segment a-seg" data-start="118.0" data-end="124.48" title="1:58">to the skin and advanced towards the tubricle until bone is contacted. It is then withdrawn by </span></li>
+<li><span class="segment a-seg" data-start="124.48" data-end="132.64" title="2:04">2mm. Position is confirmed florescopically. It is really important to aspirate for blood and </span></li>
+<li><span class="segment a-seg" data-start="132.64" data-end="139.76" title="2:12">then inject 0.5 mills of solution as a testos. A dreneline containing testos may be used to rule </span></li>
+<li><span class="segment a-seg" data-start="139.84" data-end="147.12" title="2:19">out intravenous placement. If there are no adverse effects, 15-20 mills of low concentration </span></li>
+<li><span class="segment a-seg" data-start="147.12" data-end="157.76" title="2:27">local anesthetic solution such as 0.5% lidocaine or 0.125% bupivocaine is injected in 5 mill increments. </span></li>
+<li><span class="segment a-seg" data-start="158.8" data-end="163.36" title="2:38">It is best to sit the patient up to aid spread down towards the stellate ganglion. </span></li>
+<li><span class="segment a-seg" data-start="164.32" data-end="168.8" title="2:44">Signs of a good block are the same as the signs of hornocindrome, </span></li>
+<li><span class="segment a-seg" data-start="169.52" data-end="176.64" title="2:49">Ipsilatrophosis, Myosis, Anhydrosis, Conjunctival injection and Enopthalmus. </span></li>
+<li><span class="segment a-seg" data-start="177.52" data-end="184.16" title="2:57">Patients may also get a block nose on the same side due to vasodilitation of the nasal mucosa, </span></li>
+<li><span class="segment a-seg" data-start="184.16" data-end="191.92" title="3:04">known as Gutmins sign. Warm, dry skin on the arm and hands suggest a good sympathetic block to </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="191.92">
+  <div class="q-label">Q3</div>
+  <div class="q-body"><span class="segment q-seg" data-start="191.92" data-end="196.84" title="3:11">the upper limb. Can he name some indications for stellate ganglion block? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="196.84" data-end="198.48" title="3:16">Remember to categorise your </span></li>
+<li><span class="segment a-seg" data-start="198.48" data-end="205.2" title="3:18">answer. Firstly, the stellate ganglion can be blocked in order to treat neuropathic pain. </span></li>
+<li><span class="segment a-seg" data-start="205.92" data-end="212.0" title="3:25">Examples of this are complex regial pain syndromes of the upper limb, acute herpes zoster and </span></li>
+<li><span class="segment a-seg" data-start="212.0" data-end="218.0" title="3:32">post-herpatic neuralgia, central pain following stroke and phantom limb pain. </span></li>
+<li><span class="segment a-seg" data-start="218.4" data-end="224.96" title="3:38">It can also be used to treat ischemic conditions in the upper limb, such as vascular insufficiency, </span></li>
+<li><span class="segment a-seg" data-start="224.96" data-end="233.12" title="3:44">vascular or re-implantation surgery, reino's disease and inadvertent inter arterial injection of </span></li>
+<li><span class="segment a-seg" data-start="233.12" data-end="241.12" title="3:53">fire pentane. It can also be used for the treatment of visceral pain from the heart in refractory </span></li>
+<li><span class="segment a-seg" data-start="241.12" data-end="246.4" title="4:01">and jyna. While sympathetic blocks thought to work in the treatment of neuropathic pain, </span></li>
+<li><span class="segment a-seg" data-start="248.48" data-end="254.32" title="4:08">the sympathetic nervous system seems to have a role in the generation of pain. In certain pain </span></li>
+<li><span class="segment a-seg" data-start="254.32" data-end="260.4" title="4:14">states there is an abnormal response of the primary no-seceptive afference to sympathetic stimulation. </span></li>
+<li><span class="segment a-seg" data-start="261.6" data-end="267.44" title="4:21">Peripheral and central sensitization occurs with reduced excitatory thresholds and the </span></li>
+<li><span class="segment a-seg" data-start="267.44" data-end="275.68" title="4:27">production of ectopic impulses. The afferent fibers also have increased adrenoseptose sensitivity </span></li>
+<li><span class="segment a-seg" data-start="275.76" data-end="282.0" title="4:35">so that noradrenaline released from sympathetic nerve terminals causes further sensitization. </span></li>
+<li><span class="segment a-seg" data-start="283.36" data-end="289.2" title="4:43">This sympathetically mediated pain is sometimes seen in complex regial pain syndrome. </span></li>
+<li><span class="segment a-seg" data-start="290.08" data-end="294.8" title="4:50">Sympathetic blocks are often used in CRPS for exactly that reason, </span></li>
+<li><span class="segment a-seg" data-start="295.76" data-end="301.28" title="4:55">though only about one third of patients with CRPS have sympathetic mediated pain. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="302.16">
+  <div class="q-label">Q4</div>
+  <div class="q-body"><span class="segment q-seg" data-start="302.16" data-end="306.64" title="5:02">Can you describe the specific side effects and complications of the stellate ganglion block? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="308.8" data-end="314.16" title="5:08">The side effects of a stellate ganglion block include blocking other nearby nerves, </span></li>
+<li><span class="segment a-seg" data-start="314.16" data-end="317.04" title="5:14">such as the recurrent laryngeal nerve causing whorceness, </span></li>
+<li><span class="segment a-seg" data-start="317.76" data-end="322.56" title="5:17">branches of the cervical or brachial plexus causing motor and sensory deficits, </span></li>
+<li><span class="segment a-seg" data-start="323.12" data-end="329.76" title="5:23">and frenic nerve paulzy, which is why bilateral blocks should not be performed simultaneously. </span></li>
+<li><span class="segment a-seg" data-start="330.08" data-end="337.2" title="5:30">Inadvertained injection can also occur, for example, into the vertebral or carotid arteries </span></li>
+<li><span class="segment a-seg" data-start="337.2" data-end="342.4" title="5:37">causing seizures and interethical injection causing a very high spinal block. </span></li>
+<li><span class="segment a-seg" data-start="343.76" data-end="348.4" title="5:43">Other complications include damaged blood vessels causing hematoma, </span></li>
+<li><span class="segment a-seg" data-start="348.4" data-end="354.48" title="5:48">damaged the vagus nerve or brachial plexus or to the dome of the pluror causing a pneumothorax, </span></li>
+<li><span class="segment a-seg" data-start="355.28" data-end="358.48" title="5:55">a soft-rugial puncture-may occur and chylothorax. </span></li>
+<li><span class="segment a-seg" data-start="359.68" data-end="365.52" title="5:59">Infection can also be introduced causing abscesses, osteitis or meningitis. </span></li>
+<li><span class="segment a-seg" data-start="366.16" data-end="368.16" title="6:06">Let's move on to a different part of the body now. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="369.52">
+  <div class="q-label">Q5</div>
+  <div class="q-body"><span class="segment q-seg" data-start="369.52" data-end="372.0" title="6:09">Can you describe the anatomy of the celiac plexus? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="374.24" data-end="380.72" title="6:14">The celiac plexus is the main junction for autonomic nerves supplying the upper abdominal organs </span></li>
+<li><span class="segment a-seg" data-start="380.72" data-end="386.0" title="6:20">and consists of the bilateral celiac ganglia with a network of interconnecting fibres. </span></li>
+<li><span class="segment a-seg" data-start="387.36" data-end="393.28" title="6:27">Some sympathetic pre-ganglionic fibres do not signapse within the sympathetic chain, </span></li>
+<li><span class="segment a-seg" data-start="393.28" data-end="399.2" title="6:33">but exit the chain as a splank-knit nerve and signapse in the pre-verchable celiac ganglia. </span></li>
+<li><span class="segment a-seg" data-start="400.16" data-end="407.92" title="6:40">The celiac plexus is made up of fibres from T5 to T10, which form the greater splank-knit nerve. </span></li>
+<li><span class="segment a-seg" data-start="408.88" data-end="414.0" title="6:48">Fibres from T9 to T11, which form the lesser splank-knit nerve, </span></li>
+<li><span class="segment a-seg" data-start="414.96" data-end="419.2" title="6:54">as well as fibres from T12 in the least splank-knit nerve. </span></li>
+<li><span class="segment a-seg" data-start="420.64" data-end="423.84" title="7:00">The plexus also receives fibres from the vagus nerve. </span></li>
+<li><span class="segment a-seg" data-start="424.88" data-end="432.16" title="7:04">The celiac ganglia lie anterior to the aorta on either side of the body of L1 and posterior to </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="432.16">
+  <div class="q-label">Q6</div>
+  <div class="q-body"><span class="segment q-seg" data-start="432.16" data-end="435.92" title="7:12">the pancreas. Why might we want to perform a celiac plexus block? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="438.0" data-end="444.32" title="7:18">The sympathetic plexuses receive no-susceptive impulses from all viscera via un-mylinated </span></li>
+<li><span class="segment a-seg" data-start="444.32" data-end="450.96" title="7:24">afferent fibres. These impulses can be blocked with local anaesthetic or neuro-litic techniques. </span></li>
+<li><span class="segment a-seg" data-start="451.84" data-end="457.28" title="7:31">The celiac plexus receives afference from the pancreas, so the block is usually performed </span></li>
+<li><span class="segment a-seg" data-start="457.28" data-end="464.64" title="7:37">for pain associated with pancreatic cancer or pancreatitis. There is a risk of paraplegia of </span></li>
+<li><span class="segment a-seg" data-start="464.64" data-end="469.84" title="7:44">about two per thousand blocks, so the risks and benefits must be balanced carefully. </span></li>
+<li><span class="segment a-seg" data-start="470.88" data-end="476.08" title="7:50">Also, the block may only last for a few months, and so may need to be repeated. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="476.8">
+  <div class="q-label">Q7</div>
+  <div class="q-body"><span class="segment q-seg" data-start="476.8" data-end="480.16" title="7:56">Do you know what a diagnostic block is? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="480.16" data-end="483.52" title="8:00">A diagnostic block is performed with local anaesthetic </span></li>
+<li><span class="segment a-seg" data-start="483.52" data-end="489.52" title="8:03">only, and is used to try to locate the source of pain or investigate how amenable it will be </span></li>
+<li><span class="segment a-seg" data-start="489.6" data-end="497.68" title="8:09">to treatment. If it is successful, there is the possibility of progressing to therapeutic or </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="497.68">
+  <div class="q-label">Q8</div>
+  <div class="q-body"><span class="segment q-seg" data-start="497.68" data-end="502.8" title="8:17">neuro-litic treatment in the future. What agents can we use in a therapeutic block? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="505.2" data-end="509.6" title="8:25">We may use local anaesthetic agents with or without corticosteroids. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="510.4">
+  <div class="q-label">Q9</div>
+  <div class="q-body"><span class="segment q-seg" data-start="510.4" data-end="514.56" title="8:30">Why do therapeutic blocks with local anaesthetic alone last for longer than the </span><span class="segment q-seg" data-start="514.56" data-end="517.36" title="8:34">expect duration of action of local anaesthetic agents? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="519.68" data-end="525.2" title="8:39">This may be due to the prevention of reflex, muscle or sympathetic nervous effects, </span></li>
+<li><span class="segment a-seg" data-start="525.2" data-end="532.8" title="8:45">and breaking the cycle of sympathetically mediated pain. Also, they may cause reduced </span></li>
+<li><span class="segment a-seg" data-start="532.8" data-end="540.88" title="8:52">spouting of neurons in spinal ganglia, reduced ephabetic transmission, and reduced hyper-excitability </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="540.96">
+  <div class="q-label">Q10</div>
+  <div class="q-body"><span class="segment q-seg" data-start="540.96" data-end="544.64" title="9:00">of pain fibers. How can we achieve a neuro-litic block? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="546.48" data-end="550.96" title="9:06">We can use chemical, thermal or cryogenic techniques to destroy nerve tissue. </span></li>
+<li><span class="segment a-seg" data-start="551.6" data-end="558.72" title="9:11">The commonly used chemical agents are phenol, 5 or 6 percent, ethanol, 50 to 100 percent. </span></li>
+<li><span class="segment a-seg" data-start="559.6" data-end="564.8" title="9:19">These chemicals must be used with care, as they are obviously toxic to all tissue, </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="564.8">
+  <div class="q-label">Q11</div>
+  <div class="q-body"><span class="segment q-seg" data-start="564.8" data-end="570.4" title="9:24">not just the nerves that we are targeting. How would you prepare a patient for a celiac plexus block? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="571.36" data-end="576.48" title="9:31">Firstly, I would take a medical anaesthetic history and perform a clinical examination. </span></li>
+<li><span class="segment a-seg" data-start="577.28" data-end="582.32" title="9:37">I would gain informed consent and discuss the risks and benefits of the treatment, </span></li>
+<li><span class="segment a-seg" data-start="582.32" data-end="587.92" title="9:42">including the potential side effects and complications. I would ensure that there are no </span></li>
+<li><span class="segment a-seg" data-start="587.92" data-end="594.32" title="9:47">contraindications, such as local infection or coagulopathy. I would secure intravenous access, </span></li>
+<li><span class="segment a-seg" data-start="594.96" data-end="599.36" title="9:54">fluid load the patient to reduce the risk of high-potension, and make sure that full </span></li>
+<li><span class="segment a-seg" data-start="599.36" data-end="605.36" title="9:59">airway and resuscitation equipment was immediately available. I would attach the patient to the </span></li>
+<li><span class="segment a-seg" data-start="605.36" data-end="611.04" title="10:05">minimal standards of monitoring according to the Royal College of Anestas Guidelines, and ensure </span></li>
+<li><span class="segment a-seg" data-start="611.04" data-end="616.32" title="10:11">that I had a skilled assistant. The block should be done under strict aseptic conditions, </span></li>
+<li><span class="segment a-seg" data-start="617.04" data-end="622.56" title="10:17">using antiseptic solutions sterile gauves, mask and gown, and sterile disposable needles. </span></li>
+<li><span class="segment a-seg" data-start="623.52" data-end="629.28" title="10:23">The block also requires the use of an image intensifier with contrast to confirm correct </span></li>
+<li><span class="segment a-seg" data-start="629.28" data-end="634.16" title="10:29">needle placement. Your patient is prepared and you are scrubbed with a radiographer and image </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="634.16">
+  <div class="q-label">Q12</div>
+  <div class="q-body"><span class="segment q-seg" data-start="634.16" data-end="639.92" title="10:34">intensifier in position. Can you describe the technique for performing a celiac plexus block? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="641.92" data-end="647.52" title="10:41">The patient is in the prone position. The insertion point is just below the tip of the 12th rib, </span></li>
+<li><span class="segment a-seg" data-start="647.52" data-end="654.4" title="10:47">approximately 8cm lateral from the midline. The block is bilateral. After local anaesthetic </span></li>
+<li><span class="segment a-seg" data-start="654.4" data-end="661.36" title="10:54">infiltration of the superficial layers, a 100 to 150 millimetre needle is inserted and directed </span></li>
+<li><span class="segment a-seg" data-start="661.36" data-end="667.76" title="11:01">immediately towards the body of L1. The needle is inserted until it comes into contact with bone. </span></li>
+<li><span class="segment a-seg" data-start="668.32" data-end="674.48" title="11:08">This is usually the side of the body of L1, and then it is withdrawn and redirected anteriorly. </span></li>
+<li><span class="segment a-seg" data-start="675.44" data-end="683.68" title="11:15">It is then advanced 2 to 3cm more. Position is confirmed with radiopech dye in the paragolic gutter, </span></li>
+<li><span class="segment a-seg" data-start="683.68" data-end="690.16" title="11:23">spreading cord ad and kephalad with no lateral spread. It is really important to aspirate </span></li>
+<li><span class="segment a-seg" data-start="690.16" data-end="696.32" title="11:30">before injecting and then use a small testos first. 10 millimetres of local anaesthetic solution </span></li>
+<li><span class="segment a-seg" data-start="696.32" data-end="702.0" title="11:36">each side, with or without a neurolithic agent, is then injected under image and tensified </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="702.0">
+  <div class="q-label">Q13</div>
+  <div class="q-body"><span class="segment q-seg" data-start="702.0" data-end="707.44" title="11:42">guidance. What are the specific complications associated with the celiac plexus block? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="708.08" data-end="715.2" title="11:48">Remember to categorize your answer. The complications may be divided into those associated </span></li>
+<li><span class="segment a-seg" data-start="715.2" data-end="720.88" title="11:55">with the misplaced needle and those caused by the drugs used. The needle may enter the inferior </span></li>
+<li><span class="segment a-seg" data-start="720.88" data-end="728.24" title="12:00">vena cava, the aorta or the celiac artery, causing retropotinial hemorrhage. The kidneys or </span></li>
+<li><span class="segment a-seg" data-start="728.24" data-end="736.0" title="12:08">adrenal glands can be damaged, as can any upper abdominal organ puncture, with abscess or sysformation. </span></li>
+<li><span class="segment a-seg" data-start="737.2" data-end="743.36" title="12:17">Complication caused by the drugs used include hypotension due to sympathetic blockade, </span></li>
+<li><span class="segment a-seg" data-start="744.0" data-end="750.32" title="12:24">even after a unilateral block. Paraplegia may occur from injecting phenol into the arteries that </span></li>
+<li><span class="segment a-seg" data-start="750.32" data-end="756.48" title="12:30">supply the spinal cord. Sexual dysfunction is an important complication to mention, which can </span></li>
+<li><span class="segment a-seg" data-start="756.48" data-end="762.8" title="12:36">occur if injected solution spreads to the sympathetic chain bilaterally. And lumbar nerve </span></li>
+<li><span class="segment a-seg" data-start="762.8" data-end="768.24" title="12:42">root irritation may occur if injected solution tracks back towards the lumbar plexus. </span></li>
+  </ul>
+</div>
+</div>
+
 </div>
 
 <div class="subtitle-bar">
-  <span class="subtitle-text empty" id="subtitle-text">Play audio to see live subtitles&#8230;</span>
+  <span id="subtitle-text" class="empty">Play audio to see live subtitles&#8230;</span>
 </div>
 
 <script>
-
-const audio    = document.getElementById('audio');
-const allSegs  = Array.from(document.querySelectorAll('.segment'));
-const allBlocks = Array.from(document.querySelectorAll('.t-block'));
+const audio      = document.getElementById('audio');
+const allSegs    = Array.from(document.querySelectorAll('.segment'));
 const subtitleEl = document.getElementById('subtitle-text');
-let activeSegEl   = null;
-let activeBlockEl = null;
-let searchMatches = [];
-let searchIdx     = 0;
+let activeSegEl  = null;
+let searchMatches = [], searchIdx = 0;
 
-// Duration display
 audio.addEventListener('loadedmetadata', () => {
   const m = Math.floor(audio.duration / 60);
   const s = Math.floor(audio.duration %% 60).toString().padStart(2,'0');
   document.getElementById('dur').textContent = m + ':' + s;
 });
 
-// Seek helper
-function seekTo(t) {
-  audio.currentTime = t;
-  audio.play();
-}
+function seekTo(t) { audio.currentTime = t; audio.play(); }
 
-// Block gutter click
-document.querySelectorAll('.t-gutter').forEach(g => {
-  g.addEventListener('click', () => seekTo(parseFloat(g.dataset.start)));
+// Q-block header click
+document.querySelectorAll('.q-block').forEach(q => {
+  q.addEventListener('click', e => {
+    if (!e.target.classList.contains('segment')) seekTo(parseFloat(q.dataset.start));
+  });
 });
 
-// Segment click
+// Individual segment click
 allSegs.forEach(s => {
-  s.addEventListener('click', e => {
-    e.stopPropagation();
-    seekTo(parseFloat(s.dataset.start));
-  });
+  s.addEventListener('click', e => { e.stopPropagation(); seekTo(parseFloat(s.dataset.start)); });
 });
 
 // Real-time tracking
 audio.addEventListener('timeupdate', () => {
   const t = audio.currentTime;
-
-  // Find active segment (last one whose start <= t)
   let found = null;
   for (let i = allSegs.length - 1; i >= 0; i--) {
     if (parseFloat(allSegs[i].dataset.start) <= t) { found = allSegs[i]; break; }
   }
-
   if (found && found !== activeSegEl) {
-    // Clear previous
-    if (activeSegEl) activeSegEl.classList.remove('active');
-    if (activeBlockEl) {
-      activeBlockEl.classList.remove('block-active');
-      const pg = activeBlockEl.querySelector('.t-gutter');
-      if (pg) pg.classList.remove('gutter-active');
+    if (activeSegEl) {
+      activeSegEl.classList.remove('active');
+      const pli = activeSegEl.closest('li');
+      if (pli) pli.classList.remove('li-active');
+      const pq = activeSegEl.closest('.q-block');
+      if (pq) pq.classList.remove('q-active');
     }
-    // Set new
     found.classList.add('active');
-    const block = found.closest('.t-block');
-    if (block) {
-      block.classList.add('block-active');
-      const g = block.querySelector('.t-gutter');
-      if (g) g.classList.add('gutter-active');
-      activeBlockEl = block;
-    }
+    const li = found.closest('li');
+    if (li) li.classList.add('li-active');
+    const qb = found.closest('.q-block');
+    if (qb) qb.classList.add('q-active');
     activeSegEl = found;
 
-    // Update subtitle
     subtitleEl.textContent = found.textContent.trim();
     subtitleEl.classList.remove('empty');
 
-    // Auto-scroll (only when not searching)
-    if (!document.getElementById('search').value) {
+    if (!document.getElementById('search').value)
       found.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }
   }
 });
 
@@ -350,17 +514,13 @@ searchInput.addEventListener('keydown', e => {
     el.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
 });
-
 function runSearch() {
   const q = searchInput.value.trim().toLowerCase();
   allSegs.forEach(s => s.classList.remove('search-match','search-current'));
   searchMatches = [];
   if (!q) return;
   allSegs.forEach(s => {
-    if (s.textContent.toLowerCase().includes(q)) {
-      s.classList.add('search-match');
-      searchMatches.push(s);
-    }
+    if (s.textContent.toLowerCase().includes(q)) { s.classList.add('search-match'); searchMatches.push(s); }
   });
   if (!searchMatches.length) return;
   searchIdx = 0;

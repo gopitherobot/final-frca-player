@@ -5,10 +5,19 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Regional Anaesthesia — Brachial Plexus Interscalene and Axillary Blocks</title>
 <style>
-
   :root {
-    --accent:    #2563eb;
-    --body-bg:   #f1f5f9;
+    --q-bg:       #1e3a5f;
+    --q-text:     #ffffff;
+    --q-label:    #60a5fa;
+    --a-bg:       #ffffff;
+    --a-border:   #e2e8f0;
+    --a-label:    #059669;
+    --active-q:   #2563eb;
+    --active-a:   #dbeafe;
+    --accent:     #2563eb;
+    --body-bg:    #f1f5f9;
+    --pre-bg:     #fef9c3;
+    --pre-border: #fcd34d;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
@@ -40,22 +49,9 @@
     margin-bottom: 4px;
     letter-spacing: 0.01em;
   }
-  .header-sub {
-    font-size: 0.72rem;
-    color: #94a3b8;
-    font-style: italic;
-  }
-  audio {
-    height: 36px;
-    accent-color: var(--accent);
-    flex-shrink: 0;
-  }
-  .back-link {
-    font-size: 0.8rem;
-    color: #94a3b8;
-    text-decoration: none;
-    white-space: nowrap;
-  }
+  .header-sub { font-size: 0.72rem; color: #94a3b8; font-style: italic; }
+  audio { height: 36px; accent-color: var(--accent); flex-shrink: 0; }
+  .back-link { font-size: 0.8rem; color: #94a3b8; text-decoration: none; white-space: nowrap; }
   .back-link:hover { color: #60a5fa; }
 
   /* ── Toolbar ── */
@@ -69,30 +65,17 @@
     border-bottom: 1px solid #334155;
   }
   .toolbar input {
-    flex: 1;
-    max-width: 380px;
+    flex: 1; max-width: 380px;
     padding: 5px 11px;
-    border: 1px solid #475569;
-    border-radius: 6px;
-    background: #0f172a;
-    color: #e2e8f0;
-    font-size: 0.83rem;
-    outline: none;
+    border: 1px solid #475569; border-radius: 6px;
+    background: #0f172a; color: #e2e8f0; font-size: 0.83rem; outline: none;
   }
   .toolbar input:focus { border-color: var(--accent); }
   .toolbar input::placeholder { color: #64748b; }
-  .stats {
-    font-size: 0.72rem;
-    color: #64748b;
-    white-space: nowrap;
-  }
+  .stats { font-size: 0.72rem; color: #64748b; white-space: nowrap; }
 
   /* ── Scroll area ── */
-  .scroll-area {
-    flex: 1;
-    overflow-y: auto;
-    padding: 20px;
-  }
+  .scroll-area { flex: 1; overflow-y: auto; padding: 20px; }
   .scroll-area::-webkit-scrollbar { width: 6px; }
   .scroll-area::-webkit-scrollbar-track { background: transparent; }
   .scroll-area::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
@@ -107,68 +90,77 @@
     display: flex;
     align-items: center;
   }
-  .subtitle-text {
-    font-size: 0.9rem;
-    color: #e2e8f0;
-    line-height: 1.5;
-    font-style: italic;
-  }
-  .subtitle-text.empty { color: #475569; }
+  #subtitle-text { font-size: 0.88rem; color: #e2e8f0; line-height: 1.5; font-style: italic; }
+  #subtitle-text.empty { color: #475569; }
 
-  /* ── Transcript blocks ── */
-  .t-block {
-    background: #ffffff;
-    border: 1px solid #e2e8f0;
-    border-radius: 10px;
-    margin-bottom: 14px;
-    overflow: hidden;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
-    display: flex;
-  }
-  .t-block.block-active {
-    border-color: var(--accent);
-    box-shadow: 0 0 0 2px rgba(37,99,235,0.15);
-  }
-  .t-gutter {
-    background: #0f172a;
-    width: 52px;
-    flex-shrink: 0;
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
-    padding-top: 14px;
-    cursor: pointer;
-  }
-  .t-gutter:hover { background: #1e293b; }
-  .t-timestamp {
-    font-size: 0.7rem;
-    color: #64748b;
-    font-family: monospace;
-    font-weight: 600;
-    letter-spacing: 0.02em;
-  }
-  .t-gutter.gutter-active .t-timestamp { color: var(--accent); }
-  .t-body {
-    flex: 1;
+  /* ── Preamble ── */
+  .preamble-block {
+    background: var(--pre-bg);
+    border-left: 4px solid var(--pre-border);
+    border-radius: 0 8px 8px 0;
     padding: 12px 16px;
-    line-height: 1.75;
-    font-size: 0.92rem;
-    color: #1e293b;
+    margin-bottom: 20px;
+    font-size: 0.88rem;
+    color: #78350f;
+    font-style: italic;
+    line-height: 1.7;
   }
 
-  /* ── Segments ── */
-  .segment {
+  /* ── Q&A pair ── */
+  .qa-pair { margin-bottom: 20px; border-radius: 10px; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+
+  /* Question block */
+  .q-block {
+    background: var(--q-bg);
+    padding: 14px 18px;
+    display: flex; gap: 14px; align-items: flex-start;
     cursor: pointer;
-    border-radius: 3px;
-    transition: background 0.1s;
+    transition: background 0.15s;
   }
-  .segment:hover { background: #eff6ff; }
-  .segment.active {
-    background: #bfdbfe;
-    outline: 2px solid #3b82f6;
-    outline-offset: 1px;
-    border-radius: 3px;
+  .q-block:hover { background: #1d4ed8; }
+  .q-block.q-active { background: var(--active-q); }
+  .q-label {
+    font-size: 0.7rem; font-weight: 700;
+    color: var(--q-label);
+    background: rgba(96,165,250,0.15);
+    border: 1px solid rgba(96,165,250,0.3);
+    border-radius: 5px; padding: 3px 7px;
+    white-space: nowrap; margin-top: 2px; letter-spacing: 0.05em;
+    flex-shrink: 0;
   }
+  .q-body { flex: 1; font-size: 0.97rem; font-weight: 600; color: var(--q-text); line-height: 1.55; }
+
+  /* Answer block */
+  .a-block {
+    background: var(--a-bg);
+    border: 1px solid var(--a-border); border-top: none;
+    padding: 14px 18px;
+    display: flex; gap: 14px; align-items: flex-start;
+  }
+  .a-label {
+    font-size: 0.7rem; font-weight: 700;
+    color: var(--a-label);
+    background: #d1fae5; border: 1px solid #6ee7b7;
+    border-radius: 5px; padding: 3px 9px;
+    white-space: nowrap; margin-top: 2px; letter-spacing: 0.05em;
+    flex-shrink: 0;
+  }
+  .a-body { flex: 1; list-style: none; padding: 0; }
+  .a-body li {
+    padding: 4px 0 4px 14px;
+    border-left: 3px solid transparent;
+    line-height: 1.7; font-size: 0.92rem; color: #1e293b;
+    border-radius: 0 4px 4px 0;
+    transition: background 0.15s;
+  }
+  .a-body li:not(:last-child) { border-bottom: 1px solid #f1f5f9; }
+
+  /* ── Segments (clickable) ── */
+  .segment { cursor: pointer; border-radius: 3px; }
+  .q-seg:hover { background: rgba(255,255,255,0.18); }
+  .a-seg:hover { background: #eff6ff; }
+  .segment.active { background: #bfdbfe; outline: 2px solid #3b82f6; outline-offset: 1px; }
+  .a-body li.li-active { background: var(--active-a); border-left-color: var(--accent); }
   .segment.search-match  { background: #fef9c3; }
   .segment.search-current { background: #fde047; outline: 2px solid #ca8a04; }
 
@@ -187,151 +179,348 @@
 
 <div class="toolbar">
   <input type="text" id="search" placeholder="Search transcript&#8230; (Enter = next match)">
-  <span class="stats" id="stats">118 segments &nbsp;|&nbsp; <span id="dur">loading&#8230;</span></span>
+  <span class="stats" id="stats">16 questions &nbsp;|&nbsp; 118 segments &nbsp;|&nbsp; <span id="dur">loading&#8230;</span></span>
 </div>
 
 <div class="scroll-area" id="scroll-area">
-<div class="t-block">
-  <div class="t-gutter" data-start="0.0"><span class="t-timestamp">0:00</span></div>
-  <div class="t-body"><span class="segment" data-start="0.0" data-end="5.0" title="0:00">Brake heel plexus, interscaling and auxiliary blocks. </span><span class="segment" data-start="5.0" data-end="9.0" title="0:05">What clinical approaches do you know to block the Brake heel plexus? </span><span class="segment" data-start="9.0" data-end="16.0" title="0:09">For a complete answer to this question, a demonstration of an understanding of the anatomy of the Brake heel plexus is important. </span><span class="segment" data-start="16.0" data-end="22.0" title="0:16">The examiners may interrupt, in which case there are four well-recognised approaches. </span><span class="segment" data-start="22.0" data-end="29.0" title="0:22">Interscaling, supercalificular, infraculophicular and auxiliary. </span><span class="segment" data-start="29.0" data-end="40.0" title="0:29">The Brake heel plexus is formed from the anterior primary ray my of C5 to T1 and provides all motor and sensory innovation to the upper limb. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="40.0"><span class="t-timestamp">0:40</span></div>
-  <div class="t-body"><span class="segment" data-start="40.0" data-end="50.0" title="0:40">The nerves that make up the plexus lie in a sheath that extends from the tubercles of the transverse processes of the cervical vertebrae to the axilla. </span><span class="segment" data-start="50.0" data-end="55.0" title="0:50">It is within this sheath that we would inject our local anaesthetic. </span><span class="segment" data-start="55.0" data-end="63.0" title="0:55">As these five roots pass between scolinas, anterior and medius, C5 and C6 join to form the upper trunk. </span><span class="segment" data-start="63.0" data-end="71.0" title="1:03">The root of C7 continues as the middle trunk and C8 and T1 unite to form the lower trunk. </span><span class="segment" data-start="71.0" data-end="77.0" title="1:11">The interscaling approach aims to anesthetise the trunks of the plexus. </span><span class="segment" data-start="77.0" data-end="85.0" title="1:17">The three trunks continue downwards and, laterally, in the posterior triangle of the neck to cross over the first rib. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="85.0"><span class="t-timestamp">1:25</span></div>
-  <div class="t-body"><span class="segment" data-start="85.0" data-end="90.0" title="1:25">The supercalificular approach allows injection of local anaesthetic at this point. </span><span class="segment" data-start="90.0" data-end="99.0" title="1:30">At the lateral border of the rib, the trunks each divide into anterior and posterior divisions, six divisions in total, </span><span class="segment" data-start="99.0" data-end="107.0" title="1:39">and continue beneath the clavicle into the apex of the axilla to form the cords of the bachial plexus. </span><span class="segment" data-start="107.0" data-end="115.0" title="1:47">As the divisions travel beneath the clavicle, they can be blocked by adopting the infraclavicular approach. </span><span class="segment" data-start="115.0" data-end="122.0" title="1:55">Within the axilla, the anterior divisions of the upper and middle trunks form the lateral cord, </span><span class="segment" data-start="122.0" data-end="128.0" title="2:02">which eventually forms the lateral head of the median nerve and the musculocutaneous nerve. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="128.0"><span class="t-timestamp">2:08</span></div>
-  <div class="t-body"><span class="segment" data-start="128.0" data-end="137.0" title="2:08">The anterior division of the lower trunk forms the medial cord from which the ulnar nerve and medial head of the median nerve are formed. </span><span class="segment" data-start="137.0" data-end="146.0" title="2:17">The posterior cord is made up of the posterior divisions of all three trunks, and its main branch is the radial nerve. </span><span class="segment" data-start="146.0" data-end="152.0" title="2:26">The names of the cords correspond to their relationship to the axillary artery. </span><span class="segment" data-start="153.0" data-end="160.0" title="2:33">The axillary approach provides the ability to block the plexus at its most distal point. </span><span class="segment" data-start="160.0" data-end="166.0" title="2:40">For what type of surgery would an interscaleine break your plexus block be appropriate? </span><span class="segment" data-start="166.0" data-end="176.0" title="2:46">An interscaling block provides good analgesia for shoulder and upper arm surgery and provides good relief from tornocaine pain. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="176.0"><span class="t-timestamp">2:56</span></div>
-  <div class="t-body"><span class="segment" data-start="176.0" data-end="185.0" title="2:56">Frequently, the lower trunks are missed by the local anaesthetic, which makes this approach less suitable for hand surgery. </span><span class="segment" data-start="185.0" data-end="192.0" title="3:05">You have a patient listed for shoulder surgery. How would you perform an interscaleine block? </span><span class="segment" data-start="192.0" data-end="202.0" title="3:12">I would firstly obtain informed consent from the patient and make sure the surgical site is marked and corresponds to the shoulder being operated on. </span><span class="segment" data-start="202.0" data-end="208.0" title="3:22">I would ensure that full monitoring is established and that resuscitation equipment is easily available. </span><span class="segment" data-start="208.0" data-end="214.0" title="3:28">I would then cite an intravenous cannula in the contra-lateral arm. </span><span class="segment" data-start="214.0" data-end="221.0" title="3:34">The patient should be positioned supine, tilting their head slightly away from the side to be blocked. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="221.0"><span class="t-timestamp">3:41</span></div>
-  <div class="t-body"><span class="segment" data-start="221.0" data-end="229.0" title="3:41">I would ensure a sepsis by wearing a gown and sterile gloves cleaning the skin with an appropriate cleaning solution. </span><span class="segment" data-start="229.0" data-end="234.0" title="3:49">I would then palpate for the interscaling groove at the level of the crycord cartilage. </span><span class="segment" data-start="234.0" data-end="242.0" title="3:54">If it was difficult to identify, I could ask the patient to sniff, which would make the scalene muscles appear more prominent. </span><span class="segment" data-start="242.0" data-end="256.0" title="4:02">I could also scan the area using ultrasound, which would allow me to identify the interscaling groove with the plexus trunks lying one on top of the other between scalenous anterior and medius. </span><span class="segment" data-start="256.0" data-end="267.0" title="4:16">After sanitizing the skin, I would pass a short beveled regional block needle attached to a nerve stimulator per pendicular to all planes. </span><span class="segment" data-start="267.0" data-end="280.0" title="4:27">I may feel a pop as the needle passes through the sheath at a depth of between 1 and 3 centimeters, and should elicit muscle contraction in the biceps breakie alis, </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="280.0"><span class="t-timestamp">4:40</span></div>
-  <div class="t-body"><span class="segment" data-start="280.0" data-end="297.0" title="4:40">at which point I would inject between 20 to 30 milliliters of local anaesthetic, ensuring that the injection was not intranural by noting that there should be minimal resistance to injection and there should be minimal discomfort to the patient. </span><span class="segment" data-start="297.0" data-end="306.0" title="4:57">You should try and make it sound that you are used to performing practical procedures and have a routine of following basic safety and infection control procedures. </span><span class="segment" data-start="306.0" data-end="314.0" title="5:06">Mentioning consent and monitoring etc also gives you some thinking time before embarking on the description of the procedure. </span><span class="segment" data-start="314.0" data-end="319.0" title="5:14">The same preamble can be used for almost any practical clinical task. </span><span class="segment" data-start="319.0" data-end="323.0" title="5:19">What are the complications of an interscaling block? </span><span class="segment" data-start="323.0" data-end="332.0" title="5:23">Due to the level of the injection and the proximity of major cervical structures, complications can be very serious and life threatening. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="332.0"><span class="t-timestamp">5:32</span></div>
-  <div class="t-body"><span class="segment" data-start="332.0" data-end="348.0" title="5:32">With the needle being passed at right angles to all planes, the most serious complications arise when the needle passes between the transverse processes of the cervical vertebra, leading to a cervical epidural or introthical injection. </span><span class="segment" data-start="348.0" data-end="361.0" title="5:48">It is also possible to inadvertently puncture and or inject local anaesthetic into the vertebral artery, the carotid artery, external and internal jugular veins. </span><span class="segment" data-start="362.0" data-end="374.0" title="6:02">Less serious complications arise from the close proximity of other nerves and occur so frequently that they could be considered as effects of an interscaling block. </span><span class="segment" data-start="374.0" data-end="383.0" title="6:14">And these are frenic nerve paulzy and cervical sympathetic block producing a horners syndrome. </span><span class="segment" data-start="383.0" data-end="388.0" title="6:23">How would you reduce the risk of these complications? </span><span class="segment" data-start="388.0" data-end="398.0" title="6:28">The risk of complications may be reduced by angling the needle slightly towards the patient's feet so that it would hit the superior border of a transverse process. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="398.0"><span class="t-timestamp">6:38</span></div>
-  <div class="t-body"><span class="segment" data-start="398.0" data-end="403.0" title="6:38">This minimizes the risk of cervical, neural axial blockade or injury. </span><span class="segment" data-start="403.0" data-end="411.0" title="6:43">Being aware of the depth of the plexus at this level, it is rarely deeper than three centimeters and is sometimes palpable in thin individuals. </span><span class="segment" data-start="412.0" data-end="420.0" title="6:52">Only injecting once muscle contractions have been elicited and not introducing the needle any further once a pop has been felt. </span><span class="segment" data-start="420.0" data-end="428.0" title="7:00">Recent, nice recommendations suggest the use of ultrasound to aid needle placement in regional anesthesia. </span><span class="segment" data-start="428.0" data-end="433.0" title="7:08">Could you employ another approach or necessitate the shoulder? </span><span class="segment" data-start="433.0" data-end="449.0" title="7:13">The supraclavicular approach may be used for shoulder surgery, but as the supra scapular nerve, which is centrally to the shoulder joint, arises from the upper trunk, it may be missed if the injection is too lateral or if the nerve branches off earlier than normal. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="449.0"><span class="t-timestamp">7:29</span></div>
-  <div class="t-body"><span class="segment" data-start="449.0" data-end="456.0" title="7:29">However, analgesia may be supplemented by a separate supra scapular nerve block. </span><span class="segment" data-start="456.0" data-end="460.0" title="7:36">How is a supraclavicular block performed? </span><span class="segment" data-start="461.0" data-end="471.0" title="7:41">With the patient's supine and head turned away from the sight of injection, the interscaling groove is palpated until the subclavian artery pulsation is felt. </span><span class="segment" data-start="471.0" data-end="480.0" title="7:51">The injection is made just lateral and posterior to the subclavian artery, just superior to the border of trapezius. </span><span class="segment" data-start="480.0" data-end="493.0" title="8:00">The angle of the needle is directed towards the ipsilateral foot, with care not to advance the needle immediately as this increases the likelihood of puncturing the pluror or artery. </span><span class="segment" data-start="493.0" data-end="504.0" title="8:13">A pop should be felt as the needle pierces the sheath, a nerve stimulation will lead to contraction of muscles in the forearm and hand. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="504.0"><span class="t-timestamp">8:24</span></div>
-  <div class="t-body"><span class="segment" data-start="504.0" data-end="510.0" title="8:24">The volume of local anaesthetic required is usually between 20 and 30 milliliters. </span><span class="segment" data-start="510.0" data-end="519.0" title="8:30">The first rib lies beneath the plexus at this point and serves as a useful purpose in preventing the needle going too deep. </span><span class="segment" data-start="519.0" data-end="529.0" title="8:39">In experienced hands the needle can be manipulated gently within the sheath to elicit ulnar, radial and medial nerve stimulation in the forearm and hand. </span><span class="segment" data-start="530.0" data-end="542.0" title="8:50">Again, ultrasound is useful to identify the plexus and direct the needle away from pluror and the subclavian artery which lies just anterior and inferior to the plexus. </span><span class="segment" data-start="542.0" data-end="546.0" title="9:02">What problems can arise from a superclivicular block? </span><span class="segment" data-start="547.0" data-end="555.0" title="9:07">Because of the proximity of the dome of the pluror, the incidence of pneumothorax may be as high as 1 to 2%. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="555.0"><span class="t-timestamp">9:15</span></div>
-  <div class="t-body"><span class="segment" data-start="555.0" data-end="559.0" title="9:15">Although by using ultrasound this is reduced dramatically. </span><span class="segment" data-start="559.0" data-end="567.0" title="9:19">Peruvascular injection is also a common complication, again reduced by the use of ultrasound. </span><span class="segment" data-start="567.0" data-end="578.0" title="9:27">Diaphragmatic paralysis may still occur due to the proximity of the frenic nerve, although the incidence is less than that for interscaling blocks. </span><span class="segment" data-start="578.0" data-end="587.0" title="9:38">The lower trunk may be difficult to approach using this technique and as a consequence there may only be a partial ulnar nerve block. </span><span class="segment" data-start="587.0" data-end="597.0" title="9:47">As mentioned earlier, the super scapular nerve is not always blocked with a superclivicular block so may need to be anesthetized separately for shoulder surgery. </span><span class="segment" data-start="597.0" data-end="602.0" title="9:57">In what circumstance would you use a superclivicular block? </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="602.0"><span class="t-timestamp">10:02</span></div>
-  <div class="t-body"><span class="segment" data-start="602.0" data-end="612.0" title="10:02">Any upper limb surgery as this technique provides good analgesia of the forearm and hand as well as providing relief from tornocay pain. </span><span class="segment" data-start="612.0" data-end="616.0" title="10:12">How is an auxiliary block performed? </span><span class="segment" data-start="616.0" data-end="623.0" title="10:16">The auxiliary block is performed with the patient in the supine position and their arm abducted to 90 degrees. </span><span class="segment" data-start="623.0" data-end="629.0" title="10:23">The elbow is flexed and the patient's hand is either held aloft or rests behind their head. </span><span class="segment" data-start="629.0" data-end="638.0" title="10:29">The auxiliary artery is palpated and the needle is inserted just superior to the artery at the lateral border of pectoralis major. </span><span class="segment" data-start="638.0" data-end="644.0" title="10:38">The response solicited with a nerve simulator should be finger flexion, which is the median nerve. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="644.0"><span class="t-timestamp">10:44</span></div>
-  <div class="t-body"><span class="segment" data-start="644.0" data-end="653.0" title="10:44">Gentle distal pressure is applied to encourage medial spread of local anaesthetic and 30 to 40 milliliters are usually required. </span><span class="segment" data-start="653.0" data-end="662.0" title="10:53">It is possible to identify and block the ulnar and occasionally the radial nerve in the auxiliary. But it can be time consuming. </span><span class="segment" data-start="662.0" data-end="669.0" title="11:02">Risks arterial injury and does not give a better result than a single large volume injection. </span><span class="segment" data-start="669.0" data-end="681.0" title="11:09">It is, however, important to block the musculocutaneous nerve separately by injecting local anaesthetic into chorico-breakielis, just superior to the auxiliary artery, </span><span class="segment" data-start="681.0" data-end="686.0" title="11:21">or by infiltrating anaesthetic subcutaneously around the upper arm. </span><span class="segment" data-start="686.0" data-end="691.0" title="11:26">In what circumstances is an auxiliary block useful? </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="691.0"><span class="t-timestamp">11:31</span></div>
-  <div class="t-body"><span class="segment" data-start="691.0" data-end="700.0" title="11:31">An auxiliary block is relatively easy to perform and is useful for providing analgesia in patients with forearm and hand injuries. </span><span class="segment" data-start="700.0" data-end="710.0" title="11:40">Its main limitation is that the lateral aspect of the forearm is often not unnecetized due to inadequate block of the musculocutaneous nerve. </span><span class="segment" data-start="710.0" data-end="717.0" title="11:50">The perivascular approach used in this block can lead to vascular injury within the auxiliary. </span><span class="segment" data-start="717.0" data-end="726.0" title="11:57">It is, however, superior to the other approaches to the brachial plexus in that there is no danger of causing a pneumothorax. </span><span class="segment" data-start="726.0" data-end="730.0" title="12:06">What do you know about the infrachlevicular approach to the brachial plexus? </span><span class="segment" data-start="730.0" data-end="737.0" title="12:10">If the vivers going well, you could be asked about topics that you are less familiar with and may never have seen. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="737.0"><span class="t-timestamp">12:17</span></div>
-  <div class="t-body"><span class="segment" data-start="737.0" data-end="745.0" title="12:17">Having even a basic knowledge of an unfamiliar and less common procedure is likely to impress the examiners. </span><span class="segment" data-start="745.0" data-end="754.0" title="12:25">The infrachlevicular approach is less commonly performed in Britain, but is a popular approach on the continent and in America. </span><span class="segment" data-start="754.0" data-end="759.0" title="12:34">The advantages are that it is less likely to cause pneumothorax if performed correctly, </span><span class="segment" data-start="759.0" data-end="769.0" title="12:39">while providing blockade of the musculocutaneous nerve and radial nerve which are often not unnecetized when performing a single shot-exitary block. </span><span class="segment" data-start="769.0" data-end="782.0" title="12:49">The point of injection is 3cm inferior and at right angles to the midpoint of a line drawn from the medial end of the clavicle and the coracoid process. </span><span class="segment" data-start="783.0" data-end="796.0" title="13:03">With the patient-lying supine, the arm abducted and elbow flexed, the needle attached to a nerve stimulator is passed in a vertical direction until muscle contraction in the forearm and hand are elicited. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="796.0"><span class="t-timestamp">13:16</span></div>
-  <div class="t-body"><span class="segment" data-start="796.0" data-end="800.0" title="13:16">The depth of the needle should never be more than 4 or 5cm. </span><span class="segment" data-start="800.0" data-end="811.0" title="13:20">This block provides excellent analgesia for elbow, forearm and hand surgery, but is unsuitable for shoulder and upper arm and analgesia. </span><span class="segment" data-start="811.0" data-end="817.0" title="13:31">What current would you accept in your nerve stimulator when identifying the brachial plexus? </span><span class="segment" data-start="817.0" data-end="826.0" title="13:37">A response with a current of 0.3 to 0.4mg suggests that the tip of the stimulator needle is in close proximity to a target. </span><span class="segment" data-start="826.0" data-end="834.0" title="13:46">A higher current would indicate that the target is still some distance from the needle tip and may not be in these ties after local anesthetic injection. </span><span class="segment" data-start="835.0" data-end="841.0" title="13:55">A higher current can also produce required responses with the needle still being outside the plexus' sheath. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="841.0"><span class="t-timestamp">14:01</span></div>
-  <div class="t-body"><span class="segment" data-start="841.0" data-end="850.0" title="14:01">If a response is elicited at a current less than 0.2mg there is a danger that the needle tip is within the nerve. </span><span class="segment" data-start="850.0" data-end="854.0" title="14:10">Injection at this point could lead to permanent nerve damage. </span><span class="segment" data-start="854.0" data-end="866.0" title="14:14">It is important to realise that nerve stimulators cause muscles to contract if directly stimulated, which can lead to misinterpretation of the response observed. </span><span class="segment" data-start="866.0" data-end="872.0" title="14:26">After performing a brachial plexus block, what can be done if a block is inadequate? </span><span class="segment" data-start="872.0" data-end="878.0" title="14:32">You should assess whether the block has failed completely or if there is an incomplete block. </span><span class="segment" data-start="878.0" data-end="883.0" title="14:38">A complete failure should lead the operator to try an alternative type of analgesia. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="883.0"><span class="t-timestamp">14:43</span></div>
-  <div class="t-body"><span class="segment" data-start="883.0" data-end="892.0" title="14:43">It is inadvisable to attempt the same block again as the anatomy may have been transiently disrupted, making further attempts less likely to succeed. </span><span class="segment" data-start="892.0" data-end="902.0" title="14:52">The dose of local anesthetic already injected should be considered as a repeat injection may lead to an excessive dose of local anesthetic being given to the patient. </span><span class="segment" data-start="902.0" data-end="909.0" title="15:02">An incomplete block can be supplemented by forearm and wrist blocks of the nerves, not anisatized. </span><span class="segment" data-start="909.0" data-end="915.0" title="15:09">What are the contraindications to break your plexus blocks? </span><span class="segment" data-start="915.0" data-end="926.0" title="15:15">Absolute contraindications include patient refusal, allergy to local anesthetic, infection at the site of injection and severe coagulation disorders. </span><span class="segment" data-start="926.0" data-end="945.0" title="15:26">Relative contraindications include severe respiratory compromise, the high incidence of frenic nerve palsy with root blocks such as interscaling and super-clavicular blocks could severely decrease through respiratory reserve of a patient with lung disease and could lead to respiratory failure. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="945.0"><span class="t-timestamp">15:45</span></div>
-  <div class="t-body"><span class="segment" data-start="945.0" data-end="955.0" title="15:45">The effect is transient and these blocks can be performed if there is the capability of providing respiratory support whilst the frenic nerve is anisatized. </span><span class="segment" data-start="955.0" data-end="961.0" title="15:55">Alternatively an auxiliary or infraclavicular block may be more acceptable. </span><span class="segment" data-start="961.0" data-end="975.0" title="16:01">Another relative contraindication is mild to moderate coagulation disorders. The choice of approach may be governed by its proximity to major blood vessels and how easy it would be to apply pressure to a bleeding point. </span><span class="segment" data-start="975.0" data-end="988.0" title="16:15">The presence of anticipated technical difficulties such as anatomical variation, lack of equipment and inexperienced operators are further relative contraindications. </span></div>
+<div class="preamble-block"><span class="segment a-seg" data-start="0.0" data-end="5.0" title="0:00">Brake heel plexus, interscaling and auxiliary blocks. </span></div>
+<div class="qa-pair">
+<div class="q-block" data-start="5.0">
+  <div class="q-label">Q1</div>
+  <div class="q-body"><span class="segment q-seg" data-start="5.0" data-end="9.0" title="0:05">What clinical approaches do you know to block the Brake heel plexus? </span></div>
 </div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="9.0" data-end="16.0" title="0:09">For a complete answer to this question, a demonstration of an understanding of the anatomy of the Brake heel plexus is important. </span></li>
+<li><span class="segment a-seg" data-start="16.0" data-end="22.0" title="0:16">The examiners may interrupt, in which case there are four well-recognised approaches. </span></li>
+<li><span class="segment a-seg" data-start="22.0" data-end="29.0" title="0:22">Interscaling, supercalificular, infraculophicular and auxiliary. </span></li>
+<li><span class="segment a-seg" data-start="29.0" data-end="40.0" title="0:29">The Brake heel plexus is formed from the anterior primary ray my of C5 to T1 and provides all motor and sensory innovation to the upper limb. </span></li>
+<li><span class="segment a-seg" data-start="40.0" data-end="50.0" title="0:40">The nerves that make up the plexus lie in a sheath that extends from the tubercles of the transverse processes of the cervical vertebrae to the axilla. </span></li>
+<li><span class="segment a-seg" data-start="50.0" data-end="55.0" title="0:50">It is within this sheath that we would inject our local anaesthetic. </span></li>
+<li><span class="segment a-seg" data-start="55.0" data-end="63.0" title="0:55">As these five roots pass between scolinas, anterior and medius, C5 and C6 join to form the upper trunk. </span></li>
+<li><span class="segment a-seg" data-start="63.0" data-end="71.0" title="1:03">The root of C7 continues as the middle trunk and C8 and T1 unite to form the lower trunk. </span></li>
+<li><span class="segment a-seg" data-start="71.0" data-end="77.0" title="1:11">The interscaling approach aims to anesthetise the trunks of the plexus. </span></li>
+<li><span class="segment a-seg" data-start="77.0" data-end="85.0" title="1:17">The three trunks continue downwards and, laterally, in the posterior triangle of the neck to cross over the first rib. </span></li>
+<li><span class="segment a-seg" data-start="85.0" data-end="90.0" title="1:25">The supercalificular approach allows injection of local anaesthetic at this point. </span></li>
+<li><span class="segment a-seg" data-start="90.0" data-end="99.0" title="1:30">At the lateral border of the rib, the trunks each divide into anterior and posterior divisions, six divisions in total, </span></li>
+<li><span class="segment a-seg" data-start="99.0" data-end="107.0" title="1:39">and continue beneath the clavicle into the apex of the axilla to form the cords of the bachial plexus. </span></li>
+<li><span class="segment a-seg" data-start="107.0" data-end="115.0" title="1:47">As the divisions travel beneath the clavicle, they can be blocked by adopting the infraclavicular approach. </span></li>
+<li><span class="segment a-seg" data-start="115.0" data-end="122.0" title="1:55">Within the axilla, the anterior divisions of the upper and middle trunks form the lateral cord, </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="122.0">
+  <div class="q-label">Q2</div>
+  <div class="q-body"><span class="segment q-seg" data-start="122.0" data-end="128.0" title="2:02">which eventually forms the lateral head of the median nerve and the musculocutaneous nerve. </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="128.0" data-end="137.0" title="2:08">The anterior division of the lower trunk forms the medial cord from which the ulnar nerve and medial head of the median nerve are formed. </span></li>
+<li><span class="segment a-seg" data-start="137.0" data-end="146.0" title="2:17">The posterior cord is made up of the posterior divisions of all three trunks, and its main branch is the radial nerve. </span></li>
+<li><span class="segment a-seg" data-start="146.0" data-end="152.0" title="2:26">The names of the cords correspond to their relationship to the axillary artery. </span></li>
+<li><span class="segment a-seg" data-start="153.0" data-end="160.0" title="2:33">The axillary approach provides the ability to block the plexus at its most distal point. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="160.0">
+  <div class="q-label">Q3</div>
+  <div class="q-body"><span class="segment q-seg" data-start="160.0" data-end="166.0" title="2:40">For what type of surgery would an interscaleine break your plexus block be appropriate? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="166.0" data-end="176.0" title="2:46">An interscaling block provides good analgesia for shoulder and upper arm surgery and provides good relief from tornocaine pain. </span></li>
+<li><span class="segment a-seg" data-start="176.0" data-end="185.0" title="2:56">Frequently, the lower trunks are missed by the local anaesthetic, which makes this approach less suitable for hand surgery. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="185.0">
+  <div class="q-label">Q4</div>
+  <div class="q-body"><span class="segment q-seg" data-start="185.0" data-end="192.0" title="3:05">You have a patient listed for shoulder surgery. How would you perform an interscaleine block? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="192.0" data-end="202.0" title="3:12">I would firstly obtain informed consent from the patient and make sure the surgical site is marked and corresponds to the shoulder being operated on. </span></li>
+<li><span class="segment a-seg" data-start="202.0" data-end="208.0" title="3:22">I would ensure that full monitoring is established and that resuscitation equipment is easily available. </span></li>
+<li><span class="segment a-seg" data-start="208.0" data-end="214.0" title="3:28">I would then cite an intravenous cannula in the contra-lateral arm. </span></li>
+<li><span class="segment a-seg" data-start="214.0" data-end="221.0" title="3:34">The patient should be positioned supine, tilting their head slightly away from the side to be blocked. </span></li>
+<li><span class="segment a-seg" data-start="221.0" data-end="229.0" title="3:41">I would ensure a sepsis by wearing a gown and sterile gloves cleaning the skin with an appropriate cleaning solution. </span></li>
+<li><span class="segment a-seg" data-start="229.0" data-end="234.0" title="3:49">I would then palpate for the interscaling groove at the level of the crycord cartilage. </span></li>
+<li><span class="segment a-seg" data-start="234.0" data-end="242.0" title="3:54">If it was difficult to identify, I could ask the patient to sniff, which would make the scalene muscles appear more prominent. </span></li>
+<li><span class="segment a-seg" data-start="242.0" data-end="256.0" title="4:02">I could also scan the area using ultrasound, which would allow me to identify the interscaling groove with the plexus trunks lying one on top of the other between scalenous anterior and medius. </span></li>
+<li><span class="segment a-seg" data-start="256.0" data-end="267.0" title="4:16">After sanitizing the skin, I would pass a short beveled regional block needle attached to a nerve stimulator per pendicular to all planes. </span></li>
+<li><span class="segment a-seg" data-start="267.0" data-end="280.0" title="4:27">I may feel a pop as the needle passes through the sheath at a depth of between 1 and 3 centimeters, and should elicit muscle contraction in the biceps breakie alis, </span></li>
+<li><span class="segment a-seg" data-start="280.0" data-end="297.0" title="4:40">at which point I would inject between 20 to 30 milliliters of local anaesthetic, ensuring that the injection was not intranural by noting that there should be minimal resistance to injection and there should be minimal discomfort to the patient. </span></li>
+<li><span class="segment a-seg" data-start="297.0" data-end="306.0" title="4:57">You should try and make it sound that you are used to performing practical procedures and have a routine of following basic safety and infection control procedures. </span></li>
+<li><span class="segment a-seg" data-start="306.0" data-end="314.0" title="5:06">Mentioning consent and monitoring etc also gives you some thinking time before embarking on the description of the procedure. </span></li>
+<li><span class="segment a-seg" data-start="314.0" data-end="319.0" title="5:14">The same preamble can be used for almost any practical clinical task. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="319.0">
+  <div class="q-label">Q5</div>
+  <div class="q-body"><span class="segment q-seg" data-start="319.0" data-end="323.0" title="5:19">What are the complications of an interscaling block? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="323.0" data-end="332.0" title="5:23">Due to the level of the injection and the proximity of major cervical structures, complications can be very serious and life threatening. </span></li>
+<li><span class="segment a-seg" data-start="332.0" data-end="348.0" title="5:32">With the needle being passed at right angles to all planes, the most serious complications arise when the needle passes between the transverse processes of the cervical vertebra, leading to a cervical epidural or introthical injection. </span></li>
+<li><span class="segment a-seg" data-start="348.0" data-end="361.0" title="5:48">It is also possible to inadvertently puncture and or inject local anaesthetic into the vertebral artery, the carotid artery, external and internal jugular veins. </span></li>
+<li><span class="segment a-seg" data-start="362.0" data-end="374.0" title="6:02">Less serious complications arise from the close proximity of other nerves and occur so frequently that they could be considered as effects of an interscaling block. </span></li>
+<li><span class="segment a-seg" data-start="374.0" data-end="383.0" title="6:14">And these are frenic nerve paulzy and cervical sympathetic block producing a horners syndrome. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="383.0">
+  <div class="q-label">Q6</div>
+  <div class="q-body"><span class="segment q-seg" data-start="383.0" data-end="388.0" title="6:23">How would you reduce the risk of these complications? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="388.0" data-end="398.0" title="6:28">The risk of complications may be reduced by angling the needle slightly towards the patient's feet so that it would hit the superior border of a transverse process. </span></li>
+<li><span class="segment a-seg" data-start="398.0" data-end="403.0" title="6:38">This minimizes the risk of cervical, neural axial blockade or injury. </span></li>
+<li><span class="segment a-seg" data-start="403.0" data-end="411.0" title="6:43">Being aware of the depth of the plexus at this level, it is rarely deeper than three centimeters and is sometimes palpable in thin individuals. </span></li>
+<li><span class="segment a-seg" data-start="412.0" data-end="420.0" title="6:52">Only injecting once muscle contractions have been elicited and not introducing the needle any further once a pop has been felt. </span></li>
+<li><span class="segment a-seg" data-start="420.0" data-end="428.0" title="7:00">Recent, nice recommendations suggest the use of ultrasound to aid needle placement in regional anesthesia. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="428.0">
+  <div class="q-label">Q7</div>
+  <div class="q-body"><span class="segment q-seg" data-start="428.0" data-end="433.0" title="7:08">Could you employ another approach or necessitate the shoulder? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="433.0" data-end="449.0" title="7:13">The supraclavicular approach may be used for shoulder surgery, but as the supra scapular nerve, which is centrally to the shoulder joint, arises from the upper trunk, it may be missed if the injection is too lateral or if the nerve branches off earlier than normal. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="449.0">
+  <div class="q-label">Q8</div>
+  <div class="q-body"><span class="segment q-seg" data-start="449.0" data-end="456.0" title="7:29">However, analgesia may be supplemented by a separate supra scapular nerve block. </span><span class="segment q-seg" data-start="456.0" data-end="460.0" title="7:36">How is a supraclavicular block performed? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="461.0" data-end="471.0" title="7:41">With the patient's supine and head turned away from the sight of injection, the interscaling groove is palpated until the subclavian artery pulsation is felt. </span></li>
+<li><span class="segment a-seg" data-start="471.0" data-end="480.0" title="7:51">The injection is made just lateral and posterior to the subclavian artery, just superior to the border of trapezius. </span></li>
+<li><span class="segment a-seg" data-start="480.0" data-end="493.0" title="8:00">The angle of the needle is directed towards the ipsilateral foot, with care not to advance the needle immediately as this increases the likelihood of puncturing the pluror or artery. </span></li>
+<li><span class="segment a-seg" data-start="493.0" data-end="504.0" title="8:13">A pop should be felt as the needle pierces the sheath, a nerve stimulation will lead to contraction of muscles in the forearm and hand. </span></li>
+<li><span class="segment a-seg" data-start="504.0" data-end="510.0" title="8:24">The volume of local anaesthetic required is usually between 20 and 30 milliliters. </span></li>
+<li><span class="segment a-seg" data-start="510.0" data-end="519.0" title="8:30">The first rib lies beneath the plexus at this point and serves as a useful purpose in preventing the needle going too deep. </span></li>
+<li><span class="segment a-seg" data-start="519.0" data-end="529.0" title="8:39">In experienced hands the needle can be manipulated gently within the sheath to elicit ulnar, radial and medial nerve stimulation in the forearm and hand. </span></li>
+<li><span class="segment a-seg" data-start="530.0" data-end="542.0" title="8:50">Again, ultrasound is useful to identify the plexus and direct the needle away from pluror and the subclavian artery which lies just anterior and inferior to the plexus. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="542.0">
+  <div class="q-label">Q9</div>
+  <div class="q-body"><span class="segment q-seg" data-start="542.0" data-end="546.0" title="9:02">What problems can arise from a superclivicular block? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="547.0" data-end="555.0" title="9:07">Because of the proximity of the dome of the pluror, the incidence of pneumothorax may be as high as 1 to 2%. </span></li>
+<li><span class="segment a-seg" data-start="555.0" data-end="559.0" title="9:15">Although by using ultrasound this is reduced dramatically. </span></li>
+<li><span class="segment a-seg" data-start="559.0" data-end="567.0" title="9:19">Peruvascular injection is also a common complication, again reduced by the use of ultrasound. </span></li>
+<li><span class="segment a-seg" data-start="567.0" data-end="578.0" title="9:27">Diaphragmatic paralysis may still occur due to the proximity of the frenic nerve, although the incidence is less than that for interscaling blocks. </span></li>
+<li><span class="segment a-seg" data-start="578.0" data-end="587.0" title="9:38">The lower trunk may be difficult to approach using this technique and as a consequence there may only be a partial ulnar nerve block. </span></li>
+<li><span class="segment a-seg" data-start="587.0" data-end="597.0" title="9:47">As mentioned earlier, the super scapular nerve is not always blocked with a superclivicular block so may need to be anesthetized separately for shoulder surgery. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="597.0">
+  <div class="q-label">Q10</div>
+  <div class="q-body"><span class="segment q-seg" data-start="597.0" data-end="602.0" title="9:57">In what circumstance would you use a superclivicular block? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="602.0" data-end="612.0" title="10:02">Any upper limb surgery as this technique provides good analgesia of the forearm and hand as well as providing relief from tornocay pain. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="612.0">
+  <div class="q-label">Q11</div>
+  <div class="q-body"><span class="segment q-seg" data-start="612.0" data-end="616.0" title="10:12">How is an auxiliary block performed? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="616.0" data-end="623.0" title="10:16">The auxiliary block is performed with the patient in the supine position and their arm abducted to 90 degrees. </span></li>
+<li><span class="segment a-seg" data-start="623.0" data-end="629.0" title="10:23">The elbow is flexed and the patient's hand is either held aloft or rests behind their head. </span></li>
+<li><span class="segment a-seg" data-start="629.0" data-end="638.0" title="10:29">The auxiliary artery is palpated and the needle is inserted just superior to the artery at the lateral border of pectoralis major. </span></li>
+<li><span class="segment a-seg" data-start="638.0" data-end="644.0" title="10:38">The response solicited with a nerve simulator should be finger flexion, which is the median nerve. </span></li>
+<li><span class="segment a-seg" data-start="644.0" data-end="653.0" title="10:44">Gentle distal pressure is applied to encourage medial spread of local anaesthetic and 30 to 40 milliliters are usually required. </span></li>
+<li><span class="segment a-seg" data-start="653.0" data-end="662.0" title="10:53">It is possible to identify and block the ulnar and occasionally the radial nerve in the auxiliary. But it can be time consuming. </span></li>
+<li><span class="segment a-seg" data-start="662.0" data-end="669.0" title="11:02">Risks arterial injury and does not give a better result than a single large volume injection. </span></li>
+<li><span class="segment a-seg" data-start="669.0" data-end="681.0" title="11:09">It is, however, important to block the musculocutaneous nerve separately by injecting local anaesthetic into chorico-breakielis, just superior to the auxiliary artery, </span></li>
+<li><span class="segment a-seg" data-start="681.0" data-end="686.0" title="11:21">or by infiltrating anaesthetic subcutaneously around the upper arm. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="686.0">
+  <div class="q-label">Q12</div>
+  <div class="q-body"><span class="segment q-seg" data-start="686.0" data-end="691.0" title="11:26">In what circumstances is an auxiliary block useful? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="691.0" data-end="700.0" title="11:31">An auxiliary block is relatively easy to perform and is useful for providing analgesia in patients with forearm and hand injuries. </span></li>
+<li><span class="segment a-seg" data-start="700.0" data-end="710.0" title="11:40">Its main limitation is that the lateral aspect of the forearm is often not unnecetized due to inadequate block of the musculocutaneous nerve. </span></li>
+<li><span class="segment a-seg" data-start="710.0" data-end="717.0" title="11:50">The perivascular approach used in this block can lead to vascular injury within the auxiliary. </span></li>
+<li><span class="segment a-seg" data-start="717.0" data-end="726.0" title="11:57">It is, however, superior to the other approaches to the brachial plexus in that there is no danger of causing a pneumothorax. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="726.0">
+  <div class="q-label">Q13</div>
+  <div class="q-body"><span class="segment q-seg" data-start="726.0" data-end="730.0" title="12:06">What do you know about the infrachlevicular approach to the brachial plexus? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="730.0" data-end="737.0" title="12:10">If the vivers going well, you could be asked about topics that you are less familiar with and may never have seen. </span></li>
+<li><span class="segment a-seg" data-start="737.0" data-end="745.0" title="12:17">Having even a basic knowledge of an unfamiliar and less common procedure is likely to impress the examiners. </span></li>
+<li><span class="segment a-seg" data-start="745.0" data-end="754.0" title="12:25">The infrachlevicular approach is less commonly performed in Britain, but is a popular approach on the continent and in America. </span></li>
+<li><span class="segment a-seg" data-start="754.0" data-end="759.0" title="12:34">The advantages are that it is less likely to cause pneumothorax if performed correctly, </span></li>
+<li><span class="segment a-seg" data-start="759.0" data-end="769.0" title="12:39">while providing blockade of the musculocutaneous nerve and radial nerve which are often not unnecetized when performing a single shot-exitary block. </span></li>
+<li><span class="segment a-seg" data-start="769.0" data-end="782.0" title="12:49">The point of injection is 3cm inferior and at right angles to the midpoint of a line drawn from the medial end of the clavicle and the coracoid process. </span></li>
+<li><span class="segment a-seg" data-start="783.0" data-end="796.0" title="13:03">With the patient-lying supine, the arm abducted and elbow flexed, the needle attached to a nerve stimulator is passed in a vertical direction until muscle contraction in the forearm and hand are elicited. </span></li>
+<li><span class="segment a-seg" data-start="796.0" data-end="800.0" title="13:16">The depth of the needle should never be more than 4 or 5cm. </span></li>
+<li><span class="segment a-seg" data-start="800.0" data-end="811.0" title="13:20">This block provides excellent analgesia for elbow, forearm and hand surgery, but is unsuitable for shoulder and upper arm and analgesia. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="811.0">
+  <div class="q-label">Q14</div>
+  <div class="q-body"><span class="segment q-seg" data-start="811.0" data-end="817.0" title="13:31">What current would you accept in your nerve stimulator when identifying the brachial plexus? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="817.0" data-end="826.0" title="13:37">A response with a current of 0.3 to 0.4mg suggests that the tip of the stimulator needle is in close proximity to a target. </span></li>
+<li><span class="segment a-seg" data-start="826.0" data-end="834.0" title="13:46">A higher current would indicate that the target is still some distance from the needle tip and may not be in these ties after local anesthetic injection. </span></li>
+<li><span class="segment a-seg" data-start="835.0" data-end="841.0" title="13:55">A higher current can also produce required responses with the needle still being outside the plexus' sheath. </span></li>
+<li><span class="segment a-seg" data-start="841.0" data-end="850.0" title="14:01">If a response is elicited at a current less than 0.2mg there is a danger that the needle tip is within the nerve. </span></li>
+<li><span class="segment a-seg" data-start="850.0" data-end="854.0" title="14:10">Injection at this point could lead to permanent nerve damage. </span></li>
+<li><span class="segment a-seg" data-start="854.0" data-end="866.0" title="14:14">It is important to realise that nerve stimulators cause muscles to contract if directly stimulated, which can lead to misinterpretation of the response observed. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="866.0">
+  <div class="q-label">Q15</div>
+  <div class="q-body"><span class="segment q-seg" data-start="866.0" data-end="872.0" title="14:26">After performing a brachial plexus block, what can be done if a block is inadequate? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="872.0" data-end="878.0" title="14:32">You should assess whether the block has failed completely or if there is an incomplete block. </span></li>
+<li><span class="segment a-seg" data-start="878.0" data-end="883.0" title="14:38">A complete failure should lead the operator to try an alternative type of analgesia. </span></li>
+<li><span class="segment a-seg" data-start="883.0" data-end="892.0" title="14:43">It is inadvisable to attempt the same block again as the anatomy may have been transiently disrupted, making further attempts less likely to succeed. </span></li>
+<li><span class="segment a-seg" data-start="892.0" data-end="902.0" title="14:52">The dose of local anesthetic already injected should be considered as a repeat injection may lead to an excessive dose of local anesthetic being given to the patient. </span></li>
+<li><span class="segment a-seg" data-start="902.0" data-end="909.0" title="15:02">An incomplete block can be supplemented by forearm and wrist blocks of the nerves, not anisatized. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="909.0">
+  <div class="q-label">Q16</div>
+  <div class="q-body"><span class="segment q-seg" data-start="909.0" data-end="915.0" title="15:09">What are the contraindications to break your plexus blocks? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="915.0" data-end="926.0" title="15:15">Absolute contraindications include patient refusal, allergy to local anesthetic, infection at the site of injection and severe coagulation disorders. </span></li>
+<li><span class="segment a-seg" data-start="926.0" data-end="945.0" title="15:26">Relative contraindications include severe respiratory compromise, the high incidence of frenic nerve palsy with root blocks such as interscaling and super-clavicular blocks could severely decrease through respiratory reserve of a patient with lung disease and could lead to respiratory failure. </span></li>
+<li><span class="segment a-seg" data-start="945.0" data-end="955.0" title="15:45">The effect is transient and these blocks can be performed if there is the capability of providing respiratory support whilst the frenic nerve is anisatized. </span></li>
+<li><span class="segment a-seg" data-start="955.0" data-end="961.0" title="15:55">Alternatively an auxiliary or infraclavicular block may be more acceptable. </span></li>
+<li><span class="segment a-seg" data-start="961.0" data-end="975.0" title="16:01">Another relative contraindication is mild to moderate coagulation disorders. The choice of approach may be governed by its proximity to major blood vessels and how easy it would be to apply pressure to a bleeding point. </span></li>
+<li><span class="segment a-seg" data-start="975.0" data-end="988.0" title="16:15">The presence of anticipated technical difficulties such as anatomical variation, lack of equipment and inexperienced operators are further relative contraindications. </span></li>
+  </ul>
+</div>
+</div>
+
 </div>
 
 <div class="subtitle-bar">
-  <span class="subtitle-text empty" id="subtitle-text">Play audio to see live subtitles&#8230;</span>
+  <span id="subtitle-text" class="empty">Play audio to see live subtitles&#8230;</span>
 </div>
 
 <script>
-
-const audio    = document.getElementById('audio');
-const allSegs  = Array.from(document.querySelectorAll('.segment'));
-const allBlocks = Array.from(document.querySelectorAll('.t-block'));
+const audio      = document.getElementById('audio');
+const allSegs    = Array.from(document.querySelectorAll('.segment'));
 const subtitleEl = document.getElementById('subtitle-text');
-let activeSegEl   = null;
-let activeBlockEl = null;
-let searchMatches = [];
-let searchIdx     = 0;
+let activeSegEl  = null;
+let searchMatches = [], searchIdx = 0;
 
-// Duration display
 audio.addEventListener('loadedmetadata', () => {
   const m = Math.floor(audio.duration / 60);
   const s = Math.floor(audio.duration %% 60).toString().padStart(2,'0');
   document.getElementById('dur').textContent = m + ':' + s;
 });
 
-// Seek helper
-function seekTo(t) {
-  audio.currentTime = t;
-  audio.play();
-}
+function seekTo(t) { audio.currentTime = t; audio.play(); }
 
-// Block gutter click
-document.querySelectorAll('.t-gutter').forEach(g => {
-  g.addEventListener('click', () => seekTo(parseFloat(g.dataset.start)));
+// Q-block header click
+document.querySelectorAll('.q-block').forEach(q => {
+  q.addEventListener('click', e => {
+    if (!e.target.classList.contains('segment')) seekTo(parseFloat(q.dataset.start));
+  });
 });
 
-// Segment click
+// Individual segment click
 allSegs.forEach(s => {
-  s.addEventListener('click', e => {
-    e.stopPropagation();
-    seekTo(parseFloat(s.dataset.start));
-  });
+  s.addEventListener('click', e => { e.stopPropagation(); seekTo(parseFloat(s.dataset.start)); });
 });
 
 // Real-time tracking
 audio.addEventListener('timeupdate', () => {
   const t = audio.currentTime;
-
-  // Find active segment (last one whose start <= t)
   let found = null;
   for (let i = allSegs.length - 1; i >= 0; i--) {
     if (parseFloat(allSegs[i].dataset.start) <= t) { found = allSegs[i]; break; }
   }
-
   if (found && found !== activeSegEl) {
-    // Clear previous
-    if (activeSegEl) activeSegEl.classList.remove('active');
-    if (activeBlockEl) {
-      activeBlockEl.classList.remove('block-active');
-      const pg = activeBlockEl.querySelector('.t-gutter');
-      if (pg) pg.classList.remove('gutter-active');
+    if (activeSegEl) {
+      activeSegEl.classList.remove('active');
+      const pli = activeSegEl.closest('li');
+      if (pli) pli.classList.remove('li-active');
+      const pq = activeSegEl.closest('.q-block');
+      if (pq) pq.classList.remove('q-active');
     }
-    // Set new
     found.classList.add('active');
-    const block = found.closest('.t-block');
-    if (block) {
-      block.classList.add('block-active');
-      const g = block.querySelector('.t-gutter');
-      if (g) g.classList.add('gutter-active');
-      activeBlockEl = block;
-    }
+    const li = found.closest('li');
+    if (li) li.classList.add('li-active');
+    const qb = found.closest('.q-block');
+    if (qb) qb.classList.add('q-active');
     activeSegEl = found;
 
-    // Update subtitle
     subtitleEl.textContent = found.textContent.trim();
     subtitleEl.classList.remove('empty');
 
-    // Auto-scroll (only when not searching)
-    if (!document.getElementById('search').value) {
+    if (!document.getElementById('search').value)
       found.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }
   }
 });
 
@@ -347,17 +536,13 @@ searchInput.addEventListener('keydown', e => {
     el.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
 });
-
 function runSearch() {
   const q = searchInput.value.trim().toLowerCase();
   allSegs.forEach(s => s.classList.remove('search-match','search-current'));
   searchMatches = [];
   if (!q) return;
   allSegs.forEach(s => {
-    if (s.textContent.toLowerCase().includes(q)) {
-      s.classList.add('search-match');
-      searchMatches.push(s);
-    }
+    if (s.textContent.toLowerCase().includes(q)) { s.classList.add('search-match'); searchMatches.push(s); }
   });
   if (!searchMatches.length) return;
   searchIdx = 0;

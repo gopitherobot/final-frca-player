@@ -5,10 +5,19 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Gastrointestinal Tract — Feeding</title>
 <style>
-
   :root {
-    --accent:    #f97316;
-    --body-bg:   #f1f5f9;
+    --q-bg:       #1e3a5f;
+    --q-text:     #ffffff;
+    --q-label:    #60a5fa;
+    --a-bg:       #ffffff;
+    --a-border:   #e2e8f0;
+    --a-label:    #059669;
+    --active-q:   #f97316;
+    --active-a:   #dbeafe;
+    --accent:     #f97316;
+    --body-bg:    #f1f5f9;
+    --pre-bg:     #fef9c3;
+    --pre-border: #fcd34d;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
@@ -40,22 +49,9 @@
     margin-bottom: 4px;
     letter-spacing: 0.01em;
   }
-  .header-sub {
-    font-size: 0.72rem;
-    color: #94a3b8;
-    font-style: italic;
-  }
-  audio {
-    height: 36px;
-    accent-color: var(--accent);
-    flex-shrink: 0;
-  }
-  .back-link {
-    font-size: 0.8rem;
-    color: #94a3b8;
-    text-decoration: none;
-    white-space: nowrap;
-  }
+  .header-sub { font-size: 0.72rem; color: #94a3b8; font-style: italic; }
+  audio { height: 36px; accent-color: var(--accent); flex-shrink: 0; }
+  .back-link { font-size: 0.8rem; color: #94a3b8; text-decoration: none; white-space: nowrap; }
   .back-link:hover { color: #60a5fa; }
 
   /* ── Toolbar ── */
@@ -69,30 +65,17 @@
     border-bottom: 1px solid #334155;
   }
   .toolbar input {
-    flex: 1;
-    max-width: 380px;
+    flex: 1; max-width: 380px;
     padding: 5px 11px;
-    border: 1px solid #475569;
-    border-radius: 6px;
-    background: #0f172a;
-    color: #e2e8f0;
-    font-size: 0.83rem;
-    outline: none;
+    border: 1px solid #475569; border-radius: 6px;
+    background: #0f172a; color: #e2e8f0; font-size: 0.83rem; outline: none;
   }
   .toolbar input:focus { border-color: var(--accent); }
   .toolbar input::placeholder { color: #64748b; }
-  .stats {
-    font-size: 0.72rem;
-    color: #64748b;
-    white-space: nowrap;
-  }
+  .stats { font-size: 0.72rem; color: #64748b; white-space: nowrap; }
 
   /* ── Scroll area ── */
-  .scroll-area {
-    flex: 1;
-    overflow-y: auto;
-    padding: 20px;
-  }
+  .scroll-area { flex: 1; overflow-y: auto; padding: 20px; }
   .scroll-area::-webkit-scrollbar { width: 6px; }
   .scroll-area::-webkit-scrollbar-track { background: transparent; }
   .scroll-area::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
@@ -107,68 +90,77 @@
     display: flex;
     align-items: center;
   }
-  .subtitle-text {
-    font-size: 0.9rem;
-    color: #e2e8f0;
-    line-height: 1.5;
-    font-style: italic;
-  }
-  .subtitle-text.empty { color: #475569; }
+  #subtitle-text { font-size: 0.88rem; color: #e2e8f0; line-height: 1.5; font-style: italic; }
+  #subtitle-text.empty { color: #475569; }
 
-  /* ── Transcript blocks ── */
-  .t-block {
-    background: #ffffff;
-    border: 1px solid #e2e8f0;
-    border-radius: 10px;
-    margin-bottom: 14px;
-    overflow: hidden;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
-    display: flex;
-  }
-  .t-block.block-active {
-    border-color: var(--accent);
-    box-shadow: 0 0 0 2px rgba(37,99,235,0.15);
-  }
-  .t-gutter {
-    background: #0f172a;
-    width: 52px;
-    flex-shrink: 0;
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
-    padding-top: 14px;
-    cursor: pointer;
-  }
-  .t-gutter:hover { background: #1e293b; }
-  .t-timestamp {
-    font-size: 0.7rem;
-    color: #64748b;
-    font-family: monospace;
-    font-weight: 600;
-    letter-spacing: 0.02em;
-  }
-  .t-gutter.gutter-active .t-timestamp { color: var(--accent); }
-  .t-body {
-    flex: 1;
+  /* ── Preamble ── */
+  .preamble-block {
+    background: var(--pre-bg);
+    border-left: 4px solid var(--pre-border);
+    border-radius: 0 8px 8px 0;
     padding: 12px 16px;
-    line-height: 1.75;
-    font-size: 0.92rem;
-    color: #1e293b;
+    margin-bottom: 20px;
+    font-size: 0.88rem;
+    color: #78350f;
+    font-style: italic;
+    line-height: 1.7;
   }
 
-  /* ── Segments ── */
-  .segment {
+  /* ── Q&A pair ── */
+  .qa-pair { margin-bottom: 20px; border-radius: 10px; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+
+  /* Question block */
+  .q-block {
+    background: var(--q-bg);
+    padding: 14px 18px;
+    display: flex; gap: 14px; align-items: flex-start;
     cursor: pointer;
-    border-radius: 3px;
-    transition: background 0.1s;
+    transition: background 0.15s;
   }
-  .segment:hover { background: #eff6ff; }
-  .segment.active {
-    background: #bfdbfe;
-    outline: 2px solid #3b82f6;
-    outline-offset: 1px;
-    border-radius: 3px;
+  .q-block:hover { background: #1d4ed8; }
+  .q-block.q-active { background: var(--active-q); }
+  .q-label {
+    font-size: 0.7rem; font-weight: 700;
+    color: var(--q-label);
+    background: rgba(96,165,250,0.15);
+    border: 1px solid rgba(96,165,250,0.3);
+    border-radius: 5px; padding: 3px 7px;
+    white-space: nowrap; margin-top: 2px; letter-spacing: 0.05em;
+    flex-shrink: 0;
   }
+  .q-body { flex: 1; font-size: 0.97rem; font-weight: 600; color: var(--q-text); line-height: 1.55; }
+
+  /* Answer block */
+  .a-block {
+    background: var(--a-bg);
+    border: 1px solid var(--a-border); border-top: none;
+    padding: 14px 18px;
+    display: flex; gap: 14px; align-items: flex-start;
+  }
+  .a-label {
+    font-size: 0.7rem; font-weight: 700;
+    color: var(--a-label);
+    background: #d1fae5; border: 1px solid #6ee7b7;
+    border-radius: 5px; padding: 3px 9px;
+    white-space: nowrap; margin-top: 2px; letter-spacing: 0.05em;
+    flex-shrink: 0;
+  }
+  .a-body { flex: 1; list-style: none; padding: 0; }
+  .a-body li {
+    padding: 4px 0 4px 14px;
+    border-left: 3px solid transparent;
+    line-height: 1.7; font-size: 0.92rem; color: #1e293b;
+    border-radius: 0 4px 4px 0;
+    transition: background 0.15s;
+  }
+  .a-body li:not(:last-child) { border-bottom: 1px solid #f1f5f9; }
+
+  /* ── Segments (clickable) ── */
+  .segment { cursor: pointer; border-radius: 3px; }
+  .q-seg:hover { background: rgba(255,255,255,0.18); }
+  .a-seg:hover { background: #eff6ff; }
+  .segment.active { background: #bfdbfe; outline: 2px solid #3b82f6; outline-offset: 1px; }
+  .a-body li.li-active { background: var(--active-a); border-left-color: var(--accent); }
   .segment.search-match  { background: #fef9c3; }
   .segment.search-current { background: #fde047; outline: 2px solid #ca8a04; }
 
@@ -187,175 +179,344 @@
 
 <div class="toolbar">
   <input type="text" id="search" placeholder="Search transcript&#8230; (Enter = next match)">
-  <span class="stats" id="stats">165 segments &nbsp;|&nbsp; <span id="dur">loading&#8230;</span></span>
+  <span class="stats" id="stats">11 questions &nbsp;|&nbsp; 165 segments &nbsp;|&nbsp; <span id="dur">loading&#8230;</span></span>
 </div>
 
 <div class="scroll-area" id="scroll-area">
-<div class="t-block">
-  <div class="t-gutter" data-start="0.0"><span class="t-timestamp">0:00</span></div>
-  <div class="t-body"><span class="segment" data-start="0.0" data-end="2.4" title="0:00">Feeding. </span><span class="segment" data-start="2.4" data-end="6.08" title="0:02">Tell me about entral nutrition. </span><span class="segment" data-start="6.08" data-end="12.84" title="0:06">The best nutrition has obtained when food is chewed, swallowed and digested, where possible </span><span class="segment" data-start="12.84" data-end="16.28" title="0:12">the entral route should always be used. </span><span class="segment" data-start="16.28" data-end="21.58" title="0:16">The entral route has benefits over and above the supply of nutrition, playing a role in </span><span class="segment" data-start="21.58" data-end="27.44" title="0:21">maintenance of gut integrity and protecting against bacterial translocation across the </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="27.44"><span class="t-timestamp">0:27</span></div>
-  <div class="t-body"><span class="segment" data-start="27.44" data-end="29.64" title="0:27">gut wall. </span><span class="segment" data-start="29.64" data-end="35.56" title="0:29">Entral nutrition can be administered via a nasogastric or nasogedginal feeding tube, </span><span class="segment" data-start="35.56" data-end="42.2" title="0:35">or via a percutaneous gastric or percutaneous gedginal feeding tube. </span><span class="segment" data-start="42.2" data-end="49.68" title="0:42">The most commonly used route is the nasogastric route, but it relies on adequate gastric emptying. </span><span class="segment" data-start="49.68" data-end="54.56" title="0:49">The nasogedginal route is less commonly used, as it is more difficult for the tube to </span><span class="segment" data-start="54.56" data-end="56.88" title="0:54">be positioned correctly. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="56.88"><span class="t-timestamp">0:56</span></div>
-  <div class="t-body"><span class="segment" data-start="56.88" data-end="61.84" title="0:56">It often requires an endoscope, but it is thought to be advantageous in patients with </span><span class="segment" data-start="61.84" data-end="68.48" title="1:01">severe pancreatitis, and some suggest that it may decrease the rate of pneumonia. </span><span class="segment" data-start="68.48" data-end="73.96" title="1:08">Percutaneous feeding tubes are useful when entral feeding is likely to be required long </span><span class="segment" data-start="73.96" data-end="80.72" title="1:13">term, such as in patients with cerebral palsy, head injury or after major maxural facial </span><span class="segment" data-start="80.72" data-end="82.12" title="1:20">surgery. </span><span class="segment" data-start="82.12" data-end="87.84" title="1:22">It has the advantage of avoiding the discomfort of a nasal tube. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="87.84"><span class="t-timestamp">1:27</span></div>
-  <div class="t-body"><span class="segment" data-start="87.84" data-end="92.24" title="1:27">Successful entral feeding requires the use of feeding protocols. </span><span class="segment" data-start="92.24" data-end="98.44" title="1:32">These will vary from centre to centre, but in general most protocols insist on a gastric </span><span class="segment" data-start="98.44" data-end="105.84" title="1:38">residual volume of less than 200 ml, following a four-hour period of continuous feeding. </span><span class="segment" data-start="105.84" data-end="113.88" title="1:45">If the volume is greater than 200 ml, pro-kinetics are often indicated to aid gut motility. </span><span class="segment" data-start="113.88" data-end="118.2" title="1:53">What different types of entral feeds are available? </span><span class="segment" data-start="118.2" data-end="124.84" title="1:58">The majority of entral feeds are polymeric and contain one kilocalorie per mil. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="124.84"><span class="t-timestamp">2:04</span></div>
-  <div class="t-body"><span class="segment" data-start="124.84" data-end="130.52" title="2:04">Special feeds are available, which are fibroenriched, such as Jevety Plus. </span><span class="segment" data-start="130.52" data-end="137.16" title="2:10">Nepro is available for renal patients who are fluid restricted as it contains two kilocalories </span><span class="segment" data-start="137.16" data-end="139.84" title="2:17">per mil. </span><span class="segment" data-start="139.84" data-end="145.0" title="2:19">Elemental feeds are available for patients with gastrointestinal problems, such as short </span><span class="segment" data-start="145.0" data-end="148.64" title="2:25">bowel syndrome and pancreatitis. </span><span class="segment" data-start="148.64" data-end="155.4" title="2:28">Polymercare contains a higher proportion of protein and fat and less carbohydrate, and </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="155.4"><span class="t-timestamp">2:35</span></div>
-  <div class="t-body"><span class="segment" data-start="155.4" data-end="161.2" title="2:35">can be beneficial in patients with carbon dioxide retention, as it reduces the amount of carbon </span><span class="segment" data-start="161.2" data-end="163.72" title="2:41">dioxide produced. </span><span class="segment" data-start="163.72" data-end="168.12" title="2:43">What are the complications of entral feeding? </span><span class="segment" data-start="168.12" data-end="172.72" title="2:48">Entral feeding can be impeded by a number of mechanical problems. </span><span class="segment" data-start="172.72" data-end="177.32" title="2:52">The lumen of the feeding tube can become obstructed or displaced. </span><span class="segment" data-start="177.32" data-end="182.76" title="2:57">The tube can cause discomfort and in extreme cases ulceration. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="182.76"><span class="t-timestamp">3:02</span></div>
-  <div class="t-body"><span class="segment" data-start="182.76" data-end="189.24" title="3:02">Lureusophageal reflux occurs more commonly with a nasogastric tube and can lead to aspiration </span><span class="segment" data-start="189.24" data-end="191.92" title="3:09">and pneumonia. </span><span class="segment" data-start="191.92" data-end="199.12" title="3:11">Entral feeding can cause various metabolic problems, including dehydration or over-hydration, </span><span class="segment" data-start="199.12" data-end="205.16" title="3:19">hyperglycemia, hypercatenia and electrolyte imbalance. </span><span class="segment" data-start="205.16" data-end="212.16" title="3:25">Blood glucose should be monitored and an insulin-sliding scale started where appropriate. </span><span class="segment" data-start="212.16" data-end="217.84" title="3:32">Intestinal feed can be increased if the carbon dioxide is seen to rise, especially in feeds </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="217.84"><span class="t-timestamp">3:37</span></div>
-  <div class="t-body"><span class="segment" data-start="217.84" data-end="222.0" title="3:37">with a high carbohydrate load. </span><span class="segment" data-start="222.0" data-end="226.44" title="3:42">Electrolite imbalance may occur, particularly in patients who have been without a food </span><span class="segment" data-start="226.44" data-end="235.04" title="3:46">source for a prolonged period, where refeeding syndrome should be suspected and treated aggressively. </span><span class="segment" data-start="235.04" data-end="241.56" title="3:55">Although in testinal complications of entral feeding include gastric retention, nausea, </span><span class="segment" data-start="241.56" data-end="245.32" title="4:01">vomiting, diarrhea and bloating. </span><span class="segment" data-start="245.32" data-end="251.76" title="4:05">Prokinetics can be helpful in some cases of gastric retention and feeds with high fiber </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="251.76"><span class="t-timestamp">4:11</span></div>
-  <div class="t-body"><span class="segment" data-start="251.76" data-end="255.24" title="4:11">can help limit diarrhea. </span><span class="segment" data-start="255.24" data-end="260.52" title="4:15">Alternative causes for all of the above symptoms should be sought prior to attributing them </span><span class="segment" data-start="260.52" data-end="262.16" title="4:20">to the feed. </span><span class="segment" data-start="262.16" data-end="268.6" title="4:22">In particular, patients with diarrhea should be screened for clostridium difficeule. </span><span class="segment" data-start="268.6" data-end="274.52" title="4:28">What prokinetics can be used in critical care to improve entral nutrition? </span><span class="segment" data-start="274.52" data-end="281.8" title="4:34">Metaclopromide and erythromycin are the most commonly used prokinetics on critical care. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="281.8"><span class="t-timestamp">4:41</span></div>
-  <div class="t-body"><span class="segment" data-start="281.8" data-end="289.28" title="4:41">Metaclopromide works by improving gastric emptying, but has no effect on pneumonia or mortality. </span><span class="segment" data-start="289.28" data-end="295.52" title="4:49">Erythromycin improves short-term tolerance of entral nutrition and reduces gastric </span><span class="segment" data-start="295.52" data-end="301.68" title="4:55">residual volumes, but its use is limited by concerns over development of antibiotic </span><span class="segment" data-start="301.68" data-end="303.88" title="5:01">resistance. </span><span class="segment" data-start="303.88" data-end="309.56" title="5:03">Near stigmean is occasionally used to improve tolerance of entral feeding, but it is not </span><span class="segment" data-start="309.56" data-end="312.08" title="5:09">licensed for this. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="312.08"><span class="t-timestamp">5:12</span></div>
-  <div class="t-body"><span class="segment" data-start="312.08" data-end="316.16" title="5:12">Tell me about total parental nutrition. </span><span class="segment" data-start="316.16" data-end="322.6" title="5:16">The use of total parental nutrition or TPN is generally reserved for those patients in </span><span class="segment" data-start="322.6" data-end="329.44" title="5:22">whom entral feeding is unlikely to be established for at least seven days or those patients </span><span class="segment" data-start="329.44" data-end="333.56" title="5:29">who are intolerant to entral feeding. </span><span class="segment" data-start="333.56" data-end="341.0" title="5:33">TPN is usually formulated as a lipid emulsion and contains medium branched amino acids. </span><span class="segment" data-start="341.0" data-end="348.2" title="5:41">The nutrient solution consists of water and electrolytes, glucose, amino acids and </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="348.2"><span class="t-timestamp">5:48</span></div>
-  <div class="t-body"><span class="segment" data-start="348.2" data-end="350.04" title="5:48">lipids. </span><span class="segment" data-start="350.04" data-end="356.56" title="5:50">Essential vitamins, minerals and trace elements are added or given separately. </span><span class="segment" data-start="356.56" data-end="362.52" title="5:56">TPN is hyperosmolar and irritant to veins, and therefore usually given through a central </span><span class="segment" data-start="362.52" data-end="369.12" title="6:02">vein via a continuous infusion, although some formulations do exist that can be administered </span><span class="segment" data-start="369.12" data-end="371.64" title="6:09">via peripheral access. </span><span class="segment" data-start="371.64" data-end="377.68" title="6:11">It is imperative to check electrolytes daily and the levels of trace elements should be adjusted </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="377.68"><span class="t-timestamp">6:17</span></div>
-  <div class="t-body"><span class="segment" data-start="377.68" data-end="379.28" title="6:17">accordingly. </span><span class="segment" data-start="379.28" data-end="385.64" title="6:19">This is especially important where the patient is at high risk of refeedings in-drome. </span><span class="segment" data-start="385.64" data-end="390.8" title="6:25">Patients receiving TPN are at high risk of line infection. </span><span class="segment" data-start="390.8" data-end="397.2" title="6:30">Meticulous asepsis is therefore required when connecting and disconnecting feeds and </span><span class="segment" data-start="397.2" data-end="402.56" title="6:37">the infusion line should only be broken when absolutely necessary. </span><span class="segment" data-start="402.56" data-end="408.68" title="6:42">In recent years, 24 hour-leabags of TPN have been introduced to keep disconnections to </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="408.68"><span class="t-timestamp">6:48</span></div>
-  <div class="t-body"><span class="segment" data-start="408.68" data-end="410.16" title="6:48">a minimum. </span><span class="segment" data-start="410.16" data-end="418.44" title="6:50">In some circumstances, it may be appropriate to administer TPN and entral feeds simultaneously. </span><span class="segment" data-start="418.44" data-end="424.52" title="6:58">In these special cases, it is essential to have the input of a dietician. </span><span class="segment" data-start="424.52" data-end="428.8" title="7:04">What is refeeding syndrome? </span><span class="segment" data-start="428.8" data-end="434.52" title="7:08">Refeeding syndrome consists of a number of metabolic disturbances that occur as a result of </span><span class="segment" data-start="434.52" data-end="440.44" title="7:14">re-institution of nutrition to a patient who has been starved or severely malnourished </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="440.44"><span class="t-timestamp">7:20</span></div>
-  <div class="t-body"><span class="segment" data-start="440.44" data-end="442.24" title="7:20">for a prolonged period. </span><span class="segment" data-start="442.24" data-end="450.48" title="7:22">It usually occurs within four days of starting feeding and is characterized by hypophosphatemia </span><span class="segment" data-start="450.48" data-end="456.48" title="7:30">accompanied by a multitude of life-threatening complications such as cardiac and respiratory </span><span class="segment" data-start="456.48" data-end="464.92" title="7:36">failure, coma, seizures, raptomylicis and hematological dysfunction. </span><span class="segment" data-start="464.92" data-end="471.0" title="7:44">The underlying cause is a shift from fat to carbohydrate metabolism. </span><span class="segment" data-start="471.0" data-end="477.2" title="7:51">This results in a sudden increase in insulin levels, which in turn increase cellular uptake </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="477.2"><span class="t-timestamp">7:57</span></div>
-  <div class="t-body"><span class="segment" data-start="477.2" data-end="483.4" title="7:57">of phosphate causing a precipitous fall in extracellular phosphate. </span><span class="segment" data-start="483.4" data-end="489.76" title="8:03">Levels of potassium, magnesium, glucose and thymine also fall. </span><span class="segment" data-start="489.76" data-end="496.04" title="8:09">The shifting of electrolytes and fluid balance increases cardiac workload and heart rate, </span><span class="segment" data-start="496.04" data-end="500.52" title="8:16">which can cause acute heart failure. </span><span class="segment" data-start="500.52" data-end="506.2" title="8:20">Oxygen consumption is also increased, which strains the respiratory system and can result </span><span class="segment" data-start="506.2" data-end="510.04" title="8:26">in worsening respiratory failure. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="510.04"><span class="t-timestamp">8:30</span></div>
-  <div class="t-body"><span class="segment" data-start="510.04" data-end="515.48" title="8:30">It can be fatal if it is not recognised and treated properly. </span><span class="segment" data-start="515.48" data-end="519.8" title="8:35">Electrolite levels should be checked daily until they are stable. </span><span class="segment" data-start="519.8" data-end="526.08" title="8:39">Treatment includes starting feed slowly and aggressive correction of electrolyte deficiency </span><span class="segment" data-start="526.08" data-end="528.68" title="8:46">via the intravenous root. </span><span class="segment" data-start="528.68" data-end="535.24" title="8:48">In those thought to be at risk of thymine deficiency, supplements should be prescribed. </span><span class="segment" data-start="535.24" data-end="539.2" title="8:55">What are immune enhancing diets? </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="539.2"><span class="t-timestamp">8:59</span></div>
-  <div class="t-body"><span class="segment" data-start="539.2" data-end="547.0" title="8:59">The dietary supplementation of glutamine, arginine, fish oils and antioxidants such as vitamin </span><span class="segment" data-start="547.0" data-end="549.28" title="9:07">C and E. </span><span class="segment" data-start="549.28" data-end="555.84" title="9:09">In the critical care setting, selenium has been the focus of much research in the last decade. </span><span class="segment" data-start="555.84" data-end="564.04" title="9:15">Unfortunately, the exact role of this immunonutrition is inconclusive and randomised clinical trials </span><span class="segment" data-start="564.04" data-end="571.12" title="9:24">of immune enhanced feeds have failed to show a clear benefit in critically ill patients. </span><span class="segment" data-start="571.12" data-end="576.6" title="9:31">Glutamine seems to have the largest body of evidence behind it and benefits have been </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="576.6"><span class="t-timestamp">9:36</span></div>
-  <div class="t-body"><span class="segment" data-start="576.6" data-end="579.76" title="9:36">shown in certain circumstances. </span><span class="segment" data-start="579.76" data-end="585.56" title="9:39">Arginine has been shown to be beneficial in cancer patients, but may be harmful in the </span><span class="segment" data-start="585.56" data-end="593.24" title="9:45">critically ill as increasing arginine levels leads to an increase in nitric oxide production. </span><span class="segment" data-start="593.24" data-end="598.32" title="9:53">Each use is therefore not recommended in critical care. </span><span class="segment" data-start="598.32" data-end="604.56" title="9:58">Fish oils such as omega-3 fatty acids have limited evidence to suggest a survival benefit </span><span class="segment" data-start="604.56" data-end="609.4" title="10:04">in acute lung injury, but more research is needed. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="609.4"><span class="t-timestamp">10:09</span></div>
-  <div class="t-body"><span class="segment" data-start="609.4" data-end="614.68" title="10:09">Selenium is the most promising antioxidant to have been studied, but again, more research </span><span class="segment" data-start="614.68" data-end="620.28" title="10:14">is needed to confirm benefits in critically ill patients. </span><span class="segment" data-start="620.28" data-end="624.88" title="10:20">Only more about glutamine supplementation. </span><span class="segment" data-start="624.88" data-end="628.96" title="10:24">Glutamine is the most abundant, non-essential amino acid. </span><span class="segment" data-start="628.96" data-end="633.44" title="10:28">It is synthesised and stored in skeletal muscle. </span><span class="segment" data-start="633.44" data-end="641.0" title="10:33">It has a central role in nitrogen transport, urea genesis, ammonia genesis and regulation </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="641.0"><span class="t-timestamp">10:41</span></div>
-  <div class="t-body"><span class="segment" data-start="641.0" data-end="649.84" title="10:41">of acid base, and it is the sole respiratory fuel of lymphocytes, hipatocytes and gut mucusa. </span><span class="segment" data-start="650.84" data-end="657.28" title="10:50">In catabolic disease states, as are commonly seen in critical care, glutamine becomes a </span><span class="segment" data-start="657.28" data-end="665.24" title="10:57">conditionally essential amino acid, and patients with severe trauma, sepsis, major surgery </span><span class="segment" data-start="665.24" data-end="670.64" title="11:05">and chemo-oradiotherapy often have low levels of glutamine. </span><span class="segment" data-start="670.64" data-end="676.2" title="11:10">This can lead to a reduced capacity of immune cells to proliferate and an impaired immune </span><span class="segment" data-start="676.2" data-end="678.72" title="11:16">function. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="678.8"><span class="t-timestamp">11:18</span></div>
-  <div class="t-body"><span class="segment" data-start="678.8" data-end="685.56" title="11:18">Evidence so far suggests some theoretical benefits of glutamine administration. </span><span class="segment" data-start="685.56" data-end="691.64" title="11:25">Notably, it is thought to improve nitrogen balance and preserve glutamine levels in skeletal </span><span class="segment" data-start="691.64" data-end="693.24" title="11:31">muscle. </span><span class="segment" data-start="693.24" data-end="700.88" title="11:33">Improve immune cell function and cytokine production and protect against bacterial gut translocation. </span><span class="segment" data-start="700.88" data-end="707.36" title="11:40">However, so far, the effects of nutrition on the immune system have not been translated </span><span class="segment" data-start="707.36" data-end="714.6" title="11:47">into fewer infectious complications and decreased mortality, and strong evidence for any effect </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="714.6"><span class="t-timestamp">11:54</span></div>
-  <div class="t-body"><span class="segment" data-start="714.6" data-end="719.88" title="11:54">on hospital stay or long-term survival is still lacking. </span><span class="segment" data-start="719.88" data-end="725.36" title="11:59">The evidence for its use is strongest in burns and trauma patients, and those undergoing </span><span class="segment" data-start="725.36" data-end="727.92" title="12:05">gastrointestinal surgery. </span><span class="segment" data-start="727.92" data-end="733.32" title="12:07">There is conflicting data in its usefulness in septic patients. </span><span class="segment" data-start="733.8" data-end="739.96" title="12:13">Overall, the use of glutamine in certain patient groups in critical care seems promising, </span><span class="segment" data-start="739.96" data-end="742.48" title="12:19">but does require more research. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="742.48"><span class="t-timestamp">12:22</span></div>
-  <div class="t-body"><span class="segment" data-start="742.48" data-end="749.36" title="12:22">In addition, the safety of long-term glutamine administration requires further investigation, </span><span class="segment" data-start="749.36" data-end="753.44" title="12:29">and an optimal dose needs to be defined. </span><span class="segment" data-start="753.44" data-end="757.68" title="12:33">What special considerations are there for feeding patients with liver failure, renal failure </span><span class="segment" data-start="757.68" data-end="761.24" title="12:37">and pancreatitis? </span><span class="segment" data-start="761.24" data-end="767.24" title="12:41">Patients with liver failure may have marked pre-existing electrolyte abnormalities, and </span><span class="segment" data-start="767.24" data-end="773.12" title="12:47">may have been on fluid-restricted diets to minimize a site's formation. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="773.12"><span class="t-timestamp">12:53</span></div>
-  <div class="t-body"><span class="segment" data-start="773.12" data-end="779.24" title="12:53">Patassium, magnesium and zinc losses are common in these patients, and they may have profound </span><span class="segment" data-start="779.24" data-end="786.44" title="12:59">hyponatremia despite having high total body sodium concentrations. </span><span class="segment" data-start="786.44" data-end="794.28" title="13:06">The sodium levels should be corrected slowly to avoid the risk of central pontine myelinolysis. </span><span class="segment" data-start="794.28" data-end="800.44" title="13:14">In patients that have developed n-cafolopathy, feeds with increased branched chain amino </span><span class="segment" data-start="800.44" data-end="807.44" title="13:20">acids and reduced sulfur-containing amino acids should be administered. </span><span class="segment" data-start="807.44" data-end="814.44" title="13:27">These limit further accumulation of ammonia, which is responsible for the n-cafolopathy. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="814.44"><span class="t-timestamp">13:34</span></div>
-  <div class="t-body"><span class="segment" data-start="814.44" data-end="819.84" title="13:34">In patients with renal failure, the feeding regime will need to be tailored to the type </span><span class="segment" data-start="819.84" data-end="823.88" title="13:39">of renal replacement therapy being received. </span><span class="segment" data-start="823.88" data-end="830.28" title="13:43">In fluid-restricted patients, low volume, low sodium feeds should be used. </span><span class="segment" data-start="830.28" data-end="836.32" title="13:50">In patients with chronic renal failure, nitrogen intake will need to be reduced to between </span><span class="segment" data-start="836.32" data-end="841.96" title="13:56">0.5 and 0.8 grams of nitrogen per kilo per day. </span><span class="segment" data-start="841.96" data-end="848.06" title="14:01">In patients on peritoneal dialysis, glucose levels should be monitored, as the dialysis </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="848.06"><span class="t-timestamp">14:08</span></div>
-  <div class="t-body"><span class="segment" data-start="848.06" data-end="853.4" title="14:08">fluid usually contains glucose. </span><span class="segment" data-start="853.4" data-end="857.96" title="14:13">Feeding regimes in acute pancreatitis have been much debated. </span><span class="segment" data-start="857.96" data-end="864.36" title="14:17">It was traditionally thought that TPN should be used and the pancreas should be rested. </span><span class="segment" data-start="864.36" data-end="871.8" title="14:24">But more recent evidence suggests that this may not be associated with improved outcomes. </span><span class="segment" data-start="871.8" data-end="877.16" title="14:31">Most pyloric feeding has been advocated, but it has been shown to stimulate pancreatic </span><span class="segment" data-start="877.16" data-end="882.72" title="14:37">enzyme synthesis and secretion as much as gastric feeding. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="882.72"><span class="t-timestamp">14:42</span></div>
-  <div class="t-body"><span class="segment" data-start="882.72" data-end="888.92" title="14:42">Some studies suggest that resting the bowel may exacerbate the inflammatory response and </span><span class="segment" data-start="888.92" data-end="895.48" title="14:48">worsen the catabolic process of pancreatitis, thus increasing protein deficiency. </span><span class="segment" data-start="895.48" data-end="902.84" title="14:55">There is therefore increasing support for entral polymeric feeding in severe acute pancreatitis. </span></div>
+<div class="preamble-block"><span class="segment a-seg" data-start="0.0" data-end="2.4" title="0:00">Feeding. </span></div>
+<div class="qa-pair">
+<div class="q-block" data-start="2.4">
+  <div class="q-label">Q1</div>
+  <div class="q-body"><span class="segment q-seg" data-start="2.4" data-end="6.08" title="0:02">Tell me about entral nutrition. </span></div>
 </div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="6.08" data-end="12.84" title="0:06">The best nutrition has obtained when food is chewed, swallowed and digested, where possible </span></li>
+<li><span class="segment a-seg" data-start="12.84" data-end="16.28" title="0:12">the entral route should always be used. </span></li>
+<li><span class="segment a-seg" data-start="16.28" data-end="21.58" title="0:16">The entral route has benefits over and above the supply of nutrition, playing a role in </span></li>
+<li><span class="segment a-seg" data-start="21.58" data-end="27.44" title="0:21">maintenance of gut integrity and protecting against bacterial translocation across the </span></li>
+<li><span class="segment a-seg" data-start="27.44" data-end="29.64" title="0:27">gut wall. </span></li>
+<li><span class="segment a-seg" data-start="29.64" data-end="35.56" title="0:29">Entral nutrition can be administered via a nasogastric or nasogedginal feeding tube, </span></li>
+<li><span class="segment a-seg" data-start="35.56" data-end="42.2" title="0:35">or via a percutaneous gastric or percutaneous gedginal feeding tube. </span></li>
+<li><span class="segment a-seg" data-start="42.2" data-end="49.68" title="0:42">The most commonly used route is the nasogastric route, but it relies on adequate gastric emptying. </span></li>
+<li><span class="segment a-seg" data-start="49.68" data-end="54.56" title="0:49">The nasogedginal route is less commonly used, as it is more difficult for the tube to </span></li>
+<li><span class="segment a-seg" data-start="54.56" data-end="56.88" title="0:54">be positioned correctly. </span></li>
+<li><span class="segment a-seg" data-start="56.88" data-end="61.84" title="0:56">It often requires an endoscope, but it is thought to be advantageous in patients with </span></li>
+<li><span class="segment a-seg" data-start="61.84" data-end="68.48" title="1:01">severe pancreatitis, and some suggest that it may decrease the rate of pneumonia. </span></li>
+<li><span class="segment a-seg" data-start="68.48" data-end="73.96" title="1:08">Percutaneous feeding tubes are useful when entral feeding is likely to be required long </span></li>
+<li><span class="segment a-seg" data-start="73.96" data-end="80.72" title="1:13">term, such as in patients with cerebral palsy, head injury or after major maxural facial </span></li>
+<li><span class="segment a-seg" data-start="80.72" data-end="82.12" title="1:20">surgery. </span></li>
+<li><span class="segment a-seg" data-start="82.12" data-end="87.84" title="1:22">It has the advantage of avoiding the discomfort of a nasal tube. </span></li>
+<li><span class="segment a-seg" data-start="87.84" data-end="92.24" title="1:27">Successful entral feeding requires the use of feeding protocols. </span></li>
+<li><span class="segment a-seg" data-start="92.24" data-end="98.44" title="1:32">These will vary from centre to centre, but in general most protocols insist on a gastric </span></li>
+<li><span class="segment a-seg" data-start="98.44" data-end="105.84" title="1:38">residual volume of less than 200 ml, following a four-hour period of continuous feeding. </span></li>
+<li><span class="segment a-seg" data-start="105.84" data-end="113.88" title="1:45">If the volume is greater than 200 ml, pro-kinetics are often indicated to aid gut motility. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="113.88">
+  <div class="q-label">Q2</div>
+  <div class="q-body"><span class="segment q-seg" data-start="113.88" data-end="118.2" title="1:53">What different types of entral feeds are available? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="118.2" data-end="124.84" title="1:58">The majority of entral feeds are polymeric and contain one kilocalorie per mil. </span></li>
+<li><span class="segment a-seg" data-start="124.84" data-end="130.52" title="2:04">Special feeds are available, which are fibroenriched, such as Jevety Plus. </span></li>
+<li><span class="segment a-seg" data-start="130.52" data-end="137.16" title="2:10">Nepro is available for renal patients who are fluid restricted as it contains two kilocalories </span></li>
+<li><span class="segment a-seg" data-start="137.16" data-end="139.84" title="2:17">per mil. </span></li>
+<li><span class="segment a-seg" data-start="139.84" data-end="145.0" title="2:19">Elemental feeds are available for patients with gastrointestinal problems, such as short </span></li>
+<li><span class="segment a-seg" data-start="145.0" data-end="148.64" title="2:25">bowel syndrome and pancreatitis. </span></li>
+<li><span class="segment a-seg" data-start="148.64" data-end="155.4" title="2:28">Polymercare contains a higher proportion of protein and fat and less carbohydrate, and </span></li>
+<li><span class="segment a-seg" data-start="155.4" data-end="161.2" title="2:35">can be beneficial in patients with carbon dioxide retention, as it reduces the amount of carbon </span></li>
+<li><span class="segment a-seg" data-start="161.2" data-end="163.72" title="2:41">dioxide produced. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="163.72">
+  <div class="q-label">Q3</div>
+  <div class="q-body"><span class="segment q-seg" data-start="163.72" data-end="168.12" title="2:43">What are the complications of entral feeding? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="168.12" data-end="172.72" title="2:48">Entral feeding can be impeded by a number of mechanical problems. </span></li>
+<li><span class="segment a-seg" data-start="172.72" data-end="177.32" title="2:52">The lumen of the feeding tube can become obstructed or displaced. </span></li>
+<li><span class="segment a-seg" data-start="177.32" data-end="182.76" title="2:57">The tube can cause discomfort and in extreme cases ulceration. </span></li>
+<li><span class="segment a-seg" data-start="182.76" data-end="189.24" title="3:02">Lureusophageal reflux occurs more commonly with a nasogastric tube and can lead to aspiration </span></li>
+<li><span class="segment a-seg" data-start="189.24" data-end="191.92" title="3:09">and pneumonia. </span></li>
+<li><span class="segment a-seg" data-start="191.92" data-end="199.12" title="3:11">Entral feeding can cause various metabolic problems, including dehydration or over-hydration, </span></li>
+<li><span class="segment a-seg" data-start="199.12" data-end="205.16" title="3:19">hyperglycemia, hypercatenia and electrolyte imbalance. </span></li>
+<li><span class="segment a-seg" data-start="205.16" data-end="212.16" title="3:25">Blood glucose should be monitored and an insulin-sliding scale started where appropriate. </span></li>
+<li><span class="segment a-seg" data-start="212.16" data-end="217.84" title="3:32">Intestinal feed can be increased if the carbon dioxide is seen to rise, especially in feeds </span></li>
+<li><span class="segment a-seg" data-start="217.84" data-end="222.0" title="3:37">with a high carbohydrate load. </span></li>
+<li><span class="segment a-seg" data-start="222.0" data-end="226.44" title="3:42">Electrolite imbalance may occur, particularly in patients who have been without a food </span></li>
+<li><span class="segment a-seg" data-start="226.44" data-end="235.04" title="3:46">source for a prolonged period, where refeeding syndrome should be suspected and treated aggressively. </span></li>
+<li><span class="segment a-seg" data-start="235.04" data-end="241.56" title="3:55">Although in testinal complications of entral feeding include gastric retention, nausea, </span></li>
+<li><span class="segment a-seg" data-start="241.56" data-end="245.32" title="4:01">vomiting, diarrhea and bloating. </span></li>
+<li><span class="segment a-seg" data-start="245.32" data-end="251.76" title="4:05">Prokinetics can be helpful in some cases of gastric retention and feeds with high fiber </span></li>
+<li><span class="segment a-seg" data-start="251.76" data-end="255.24" title="4:11">can help limit diarrhea. </span></li>
+<li><span class="segment a-seg" data-start="255.24" data-end="260.52" title="4:15">Alternative causes for all of the above symptoms should be sought prior to attributing them </span></li>
+<li><span class="segment a-seg" data-start="260.52" data-end="262.16" title="4:20">to the feed. </span></li>
+<li><span class="segment a-seg" data-start="262.16" data-end="268.6" title="4:22">In particular, patients with diarrhea should be screened for clostridium difficeule. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="268.6">
+  <div class="q-label">Q4</div>
+  <div class="q-body"><span class="segment q-seg" data-start="268.6" data-end="274.52" title="4:28">What prokinetics can be used in critical care to improve entral nutrition? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="274.52" data-end="281.8" title="4:34">Metaclopromide and erythromycin are the most commonly used prokinetics on critical care. </span></li>
+<li><span class="segment a-seg" data-start="281.8" data-end="289.28" title="4:41">Metaclopromide works by improving gastric emptying, but has no effect on pneumonia or mortality. </span></li>
+<li><span class="segment a-seg" data-start="289.28" data-end="295.52" title="4:49">Erythromycin improves short-term tolerance of entral nutrition and reduces gastric </span></li>
+<li><span class="segment a-seg" data-start="295.52" data-end="301.68" title="4:55">residual volumes, but its use is limited by concerns over development of antibiotic </span></li>
+<li><span class="segment a-seg" data-start="301.68" data-end="303.88" title="5:01">resistance. </span></li>
+<li><span class="segment a-seg" data-start="303.88" data-end="309.56" title="5:03">Near stigmean is occasionally used to improve tolerance of entral feeding, but it is not </span></li>
+<li><span class="segment a-seg" data-start="309.56" data-end="312.08" title="5:09">licensed for this. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="312.08">
+  <div class="q-label">Q5</div>
+  <div class="q-body"><span class="segment q-seg" data-start="312.08" data-end="316.16" title="5:12">Tell me about total parental nutrition. </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="316.16" data-end="322.6" title="5:16">The use of total parental nutrition or TPN is generally reserved for those patients in </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="322.6">
+  <div class="q-label">Q6</div>
+  <div class="q-body"><span class="segment q-seg" data-start="322.6" data-end="329.44" title="5:22">whom entral feeding is unlikely to be established for at least seven days or those patients </span><span class="segment q-seg" data-start="329.44" data-end="333.56" title="5:29">who are intolerant to entral feeding. </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="333.56" data-end="341.0" title="5:33">TPN is usually formulated as a lipid emulsion and contains medium branched amino acids. </span></li>
+<li><span class="segment a-seg" data-start="341.0" data-end="348.2" title="5:41">The nutrient solution consists of water and electrolytes, glucose, amino acids and </span></li>
+<li><span class="segment a-seg" data-start="348.2" data-end="350.04" title="5:48">lipids. </span></li>
+<li><span class="segment a-seg" data-start="350.04" data-end="356.56" title="5:50">Essential vitamins, minerals and trace elements are added or given separately. </span></li>
+<li><span class="segment a-seg" data-start="356.56" data-end="362.52" title="5:56">TPN is hyperosmolar and irritant to veins, and therefore usually given through a central </span></li>
+<li><span class="segment a-seg" data-start="362.52" data-end="369.12" title="6:02">vein via a continuous infusion, although some formulations do exist that can be administered </span></li>
+<li><span class="segment a-seg" data-start="369.12" data-end="371.64" title="6:09">via peripheral access. </span></li>
+<li><span class="segment a-seg" data-start="371.64" data-end="377.68" title="6:11">It is imperative to check electrolytes daily and the levels of trace elements should be adjusted </span></li>
+<li><span class="segment a-seg" data-start="377.68" data-end="379.28" title="6:17">accordingly. </span></li>
+<li><span class="segment a-seg" data-start="379.28" data-end="385.64" title="6:19">This is especially important where the patient is at high risk of refeedings in-drome. </span></li>
+<li><span class="segment a-seg" data-start="385.64" data-end="390.8" title="6:25">Patients receiving TPN are at high risk of line infection. </span></li>
+<li><span class="segment a-seg" data-start="390.8" data-end="397.2" title="6:30">Meticulous asepsis is therefore required when connecting and disconnecting feeds and </span></li>
+<li><span class="segment a-seg" data-start="397.2" data-end="402.56" title="6:37">the infusion line should only be broken when absolutely necessary. </span></li>
+<li><span class="segment a-seg" data-start="402.56" data-end="408.68" title="6:42">In recent years, 24 hour-leabags of TPN have been introduced to keep disconnections to </span></li>
+<li><span class="segment a-seg" data-start="408.68" data-end="410.16" title="6:48">a minimum. </span></li>
+<li><span class="segment a-seg" data-start="410.16" data-end="418.44" title="6:50">In some circumstances, it may be appropriate to administer TPN and entral feeds simultaneously. </span></li>
+<li><span class="segment a-seg" data-start="418.44" data-end="424.52" title="6:58">In these special cases, it is essential to have the input of a dietician. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="424.52">
+  <div class="q-label">Q7</div>
+  <div class="q-body"><span class="segment q-seg" data-start="424.52" data-end="428.8" title="7:04">What is refeeding syndrome? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="428.8" data-end="434.52" title="7:08">Refeeding syndrome consists of a number of metabolic disturbances that occur as a result of </span></li>
+<li><span class="segment a-seg" data-start="434.52" data-end="440.44" title="7:14">re-institution of nutrition to a patient who has been starved or severely malnourished </span></li>
+<li><span class="segment a-seg" data-start="440.44" data-end="442.24" title="7:20">for a prolonged period. </span></li>
+<li><span class="segment a-seg" data-start="442.24" data-end="450.48" title="7:22">It usually occurs within four days of starting feeding and is characterized by hypophosphatemia </span></li>
+<li><span class="segment a-seg" data-start="450.48" data-end="456.48" title="7:30">accompanied by a multitude of life-threatening complications such as cardiac and respiratory </span></li>
+<li><span class="segment a-seg" data-start="456.48" data-end="464.92" title="7:36">failure, coma, seizures, raptomylicis and hematological dysfunction. </span></li>
+<li><span class="segment a-seg" data-start="464.92" data-end="471.0" title="7:44">The underlying cause is a shift from fat to carbohydrate metabolism. </span></li>
+<li><span class="segment a-seg" data-start="471.0" data-end="477.2" title="7:51">This results in a sudden increase in insulin levels, which in turn increase cellular uptake </span></li>
+<li><span class="segment a-seg" data-start="477.2" data-end="483.4" title="7:57">of phosphate causing a precipitous fall in extracellular phosphate. </span></li>
+<li><span class="segment a-seg" data-start="483.4" data-end="489.76" title="8:03">Levels of potassium, magnesium, glucose and thymine also fall. </span></li>
+<li><span class="segment a-seg" data-start="489.76" data-end="496.04" title="8:09">The shifting of electrolytes and fluid balance increases cardiac workload and heart rate, </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="496.04">
+  <div class="q-label">Q8</div>
+  <div class="q-body"><span class="segment q-seg" data-start="496.04" data-end="500.52" title="8:16">which can cause acute heart failure. </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="500.52" data-end="506.2" title="8:20">Oxygen consumption is also increased, which strains the respiratory system and can result </span></li>
+<li><span class="segment a-seg" data-start="506.2" data-end="510.04" title="8:26">in worsening respiratory failure. </span></li>
+<li><span class="segment a-seg" data-start="510.04" data-end="515.48" title="8:30">It can be fatal if it is not recognised and treated properly. </span></li>
+<li><span class="segment a-seg" data-start="515.48" data-end="519.8" title="8:35">Electrolite levels should be checked daily until they are stable. </span></li>
+<li><span class="segment a-seg" data-start="519.8" data-end="526.08" title="8:39">Treatment includes starting feed slowly and aggressive correction of electrolyte deficiency </span></li>
+<li><span class="segment a-seg" data-start="526.08" data-end="528.68" title="8:46">via the intravenous root. </span></li>
+<li><span class="segment a-seg" data-start="528.68" data-end="535.24" title="8:48">In those thought to be at risk of thymine deficiency, supplements should be prescribed. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="535.24">
+  <div class="q-label">Q9</div>
+  <div class="q-body"><span class="segment q-seg" data-start="535.24" data-end="539.2" title="8:55">What are immune enhancing diets? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="539.2" data-end="547.0" title="8:59">The dietary supplementation of glutamine, arginine, fish oils and antioxidants such as vitamin </span></li>
+<li><span class="segment a-seg" data-start="547.0" data-end="549.28" title="9:07">C and E. </span></li>
+<li><span class="segment a-seg" data-start="549.28" data-end="555.84" title="9:09">In the critical care setting, selenium has been the focus of much research in the last decade. </span></li>
+<li><span class="segment a-seg" data-start="555.84" data-end="564.04" title="9:15">Unfortunately, the exact role of this immunonutrition is inconclusive and randomised clinical trials </span></li>
+<li><span class="segment a-seg" data-start="564.04" data-end="571.12" title="9:24">of immune enhanced feeds have failed to show a clear benefit in critically ill patients. </span></li>
+<li><span class="segment a-seg" data-start="571.12" data-end="576.6" title="9:31">Glutamine seems to have the largest body of evidence behind it and benefits have been </span></li>
+<li><span class="segment a-seg" data-start="576.6" data-end="579.76" title="9:36">shown in certain circumstances. </span></li>
+<li><span class="segment a-seg" data-start="579.76" data-end="585.56" title="9:39">Arginine has been shown to be beneficial in cancer patients, but may be harmful in the </span></li>
+<li><span class="segment a-seg" data-start="585.56" data-end="593.24" title="9:45">critically ill as increasing arginine levels leads to an increase in nitric oxide production. </span></li>
+<li><span class="segment a-seg" data-start="593.24" data-end="598.32" title="9:53">Each use is therefore not recommended in critical care. </span></li>
+<li><span class="segment a-seg" data-start="598.32" data-end="604.56" title="9:58">Fish oils such as omega-3 fatty acids have limited evidence to suggest a survival benefit </span></li>
+<li><span class="segment a-seg" data-start="604.56" data-end="609.4" title="10:04">in acute lung injury, but more research is needed. </span></li>
+<li><span class="segment a-seg" data-start="609.4" data-end="614.68" title="10:09">Selenium is the most promising antioxidant to have been studied, but again, more research </span></li>
+<li><span class="segment a-seg" data-start="614.68" data-end="620.28" title="10:14">is needed to confirm benefits in critically ill patients. </span></li>
+<li><span class="segment a-seg" data-start="620.28" data-end="624.88" title="10:20">Only more about glutamine supplementation. </span></li>
+<li><span class="segment a-seg" data-start="624.88" data-end="628.96" title="10:24">Glutamine is the most abundant, non-essential amino acid. </span></li>
+<li><span class="segment a-seg" data-start="628.96" data-end="633.44" title="10:28">It is synthesised and stored in skeletal muscle. </span></li>
+<li><span class="segment a-seg" data-start="633.44" data-end="641.0" title="10:33">It has a central role in nitrogen transport, urea genesis, ammonia genesis and regulation </span></li>
+<li><span class="segment a-seg" data-start="641.0" data-end="649.84" title="10:41">of acid base, and it is the sole respiratory fuel of lymphocytes, hipatocytes and gut mucusa. </span></li>
+<li><span class="segment a-seg" data-start="650.84" data-end="657.28" title="10:50">In catabolic disease states, as are commonly seen in critical care, glutamine becomes a </span></li>
+<li><span class="segment a-seg" data-start="657.28" data-end="665.24" title="10:57">conditionally essential amino acid, and patients with severe trauma, sepsis, major surgery </span></li>
+<li><span class="segment a-seg" data-start="665.24" data-end="670.64" title="11:05">and chemo-oradiotherapy often have low levels of glutamine. </span></li>
+<li><span class="segment a-seg" data-start="670.64" data-end="676.2" title="11:10">This can lead to a reduced capacity of immune cells to proliferate and an impaired immune </span></li>
+<li><span class="segment a-seg" data-start="676.2" data-end="678.72" title="11:16">function. </span></li>
+<li><span class="segment a-seg" data-start="678.8" data-end="685.56" title="11:18">Evidence so far suggests some theoretical benefits of glutamine administration. </span></li>
+<li><span class="segment a-seg" data-start="685.56" data-end="691.64" title="11:25">Notably, it is thought to improve nitrogen balance and preserve glutamine levels in skeletal </span></li>
+<li><span class="segment a-seg" data-start="691.64" data-end="693.24" title="11:31">muscle. </span></li>
+<li><span class="segment a-seg" data-start="693.24" data-end="700.88" title="11:33">Improve immune cell function and cytokine production and protect against bacterial gut translocation. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="700.88">
+  <div class="q-label">Q10</div>
+  <div class="q-body"><span class="segment q-seg" data-start="700.88" data-end="707.36" title="11:40">However, so far, the effects of nutrition on the immune system have not been translated </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="707.36" data-end="714.6" title="11:47">into fewer infectious complications and decreased mortality, and strong evidence for any effect </span></li>
+<li><span class="segment a-seg" data-start="714.6" data-end="719.88" title="11:54">on hospital stay or long-term survival is still lacking. </span></li>
+<li><span class="segment a-seg" data-start="719.88" data-end="725.36" title="11:59">The evidence for its use is strongest in burns and trauma patients, and those undergoing </span></li>
+<li><span class="segment a-seg" data-start="725.36" data-end="727.92" title="12:05">gastrointestinal surgery. </span></li>
+<li><span class="segment a-seg" data-start="727.92" data-end="733.32" title="12:07">There is conflicting data in its usefulness in septic patients. </span></li>
+<li><span class="segment a-seg" data-start="733.8" data-end="739.96" title="12:13">Overall, the use of glutamine in certain patient groups in critical care seems promising, </span></li>
+<li><span class="segment a-seg" data-start="739.96" data-end="742.48" title="12:19">but does require more research. </span></li>
+<li><span class="segment a-seg" data-start="742.48" data-end="749.36" title="12:22">In addition, the safety of long-term glutamine administration requires further investigation, </span></li>
+<li><span class="segment a-seg" data-start="749.36" data-end="753.44" title="12:29">and an optimal dose needs to be defined. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="753.44">
+  <div class="q-label">Q11</div>
+  <div class="q-body"><span class="segment q-seg" data-start="753.44" data-end="757.68" title="12:33">What special considerations are there for feeding patients with liver failure, renal failure </span><span class="segment q-seg" data-start="757.68" data-end="761.24" title="12:37">and pancreatitis? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="761.24" data-end="767.24" title="12:41">Patients with liver failure may have marked pre-existing electrolyte abnormalities, and </span></li>
+<li><span class="segment a-seg" data-start="767.24" data-end="773.12" title="12:47">may have been on fluid-restricted diets to minimize a site's formation. </span></li>
+<li><span class="segment a-seg" data-start="773.12" data-end="779.24" title="12:53">Patassium, magnesium and zinc losses are common in these patients, and they may have profound </span></li>
+<li><span class="segment a-seg" data-start="779.24" data-end="786.44" title="12:59">hyponatremia despite having high total body sodium concentrations. </span></li>
+<li><span class="segment a-seg" data-start="786.44" data-end="794.28" title="13:06">The sodium levels should be corrected slowly to avoid the risk of central pontine myelinolysis. </span></li>
+<li><span class="segment a-seg" data-start="794.28" data-end="800.44" title="13:14">In patients that have developed n-cafolopathy, feeds with increased branched chain amino </span></li>
+<li><span class="segment a-seg" data-start="800.44" data-end="807.44" title="13:20">acids and reduced sulfur-containing amino acids should be administered. </span></li>
+<li><span class="segment a-seg" data-start="807.44" data-end="814.44" title="13:27">These limit further accumulation of ammonia, which is responsible for the n-cafolopathy. </span></li>
+<li><span class="segment a-seg" data-start="814.44" data-end="819.84" title="13:34">In patients with renal failure, the feeding regime will need to be tailored to the type </span></li>
+<li><span class="segment a-seg" data-start="819.84" data-end="823.88" title="13:39">of renal replacement therapy being received. </span></li>
+<li><span class="segment a-seg" data-start="823.88" data-end="830.28" title="13:43">In fluid-restricted patients, low volume, low sodium feeds should be used. </span></li>
+<li><span class="segment a-seg" data-start="830.28" data-end="836.32" title="13:50">In patients with chronic renal failure, nitrogen intake will need to be reduced to between </span></li>
+<li><span class="segment a-seg" data-start="836.32" data-end="841.96" title="13:56">0.5 and 0.8 grams of nitrogen per kilo per day. </span></li>
+<li><span class="segment a-seg" data-start="841.96" data-end="848.06" title="14:01">In patients on peritoneal dialysis, glucose levels should be monitored, as the dialysis </span></li>
+<li><span class="segment a-seg" data-start="848.06" data-end="853.4" title="14:08">fluid usually contains glucose. </span></li>
+<li><span class="segment a-seg" data-start="853.4" data-end="857.96" title="14:13">Feeding regimes in acute pancreatitis have been much debated. </span></li>
+<li><span class="segment a-seg" data-start="857.96" data-end="864.36" title="14:17">It was traditionally thought that TPN should be used and the pancreas should be rested. </span></li>
+<li><span class="segment a-seg" data-start="864.36" data-end="871.8" title="14:24">But more recent evidence suggests that this may not be associated with improved outcomes. </span></li>
+<li><span class="segment a-seg" data-start="871.8" data-end="877.16" title="14:31">Most pyloric feeding has been advocated, but it has been shown to stimulate pancreatic </span></li>
+<li><span class="segment a-seg" data-start="877.16" data-end="882.72" title="14:37">enzyme synthesis and secretion as much as gastric feeding. </span></li>
+<li><span class="segment a-seg" data-start="882.72" data-end="888.92" title="14:42">Some studies suggest that resting the bowel may exacerbate the inflammatory response and </span></li>
+<li><span class="segment a-seg" data-start="888.92" data-end="895.48" title="14:48">worsen the catabolic process of pancreatitis, thus increasing protein deficiency. </span></li>
+<li><span class="segment a-seg" data-start="895.48" data-end="902.84" title="14:55">There is therefore increasing support for entral polymeric feeding in severe acute pancreatitis. </span></li>
+  </ul>
+</div>
+</div>
+
 </div>
 
 <div class="subtitle-bar">
-  <span class="subtitle-text empty" id="subtitle-text">Play audio to see live subtitles&#8230;</span>
+  <span id="subtitle-text" class="empty">Play audio to see live subtitles&#8230;</span>
 </div>
 
 <script>
-
-const audio    = document.getElementById('audio');
-const allSegs  = Array.from(document.querySelectorAll('.segment'));
-const allBlocks = Array.from(document.querySelectorAll('.t-block'));
+const audio      = document.getElementById('audio');
+const allSegs    = Array.from(document.querySelectorAll('.segment'));
 const subtitleEl = document.getElementById('subtitle-text');
-let activeSegEl   = null;
-let activeBlockEl = null;
-let searchMatches = [];
-let searchIdx     = 0;
+let activeSegEl  = null;
+let searchMatches = [], searchIdx = 0;
 
-// Duration display
 audio.addEventListener('loadedmetadata', () => {
   const m = Math.floor(audio.duration / 60);
   const s = Math.floor(audio.duration %% 60).toString().padStart(2,'0');
   document.getElementById('dur').textContent = m + ':' + s;
 });
 
-// Seek helper
-function seekTo(t) {
-  audio.currentTime = t;
-  audio.play();
-}
+function seekTo(t) { audio.currentTime = t; audio.play(); }
 
-// Block gutter click
-document.querySelectorAll('.t-gutter').forEach(g => {
-  g.addEventListener('click', () => seekTo(parseFloat(g.dataset.start)));
+// Q-block header click
+document.querySelectorAll('.q-block').forEach(q => {
+  q.addEventListener('click', e => {
+    if (!e.target.classList.contains('segment')) seekTo(parseFloat(q.dataset.start));
+  });
 });
 
-// Segment click
+// Individual segment click
 allSegs.forEach(s => {
-  s.addEventListener('click', e => {
-    e.stopPropagation();
-    seekTo(parseFloat(s.dataset.start));
-  });
+  s.addEventListener('click', e => { e.stopPropagation(); seekTo(parseFloat(s.dataset.start)); });
 });
 
 // Real-time tracking
 audio.addEventListener('timeupdate', () => {
   const t = audio.currentTime;
-
-  // Find active segment (last one whose start <= t)
   let found = null;
   for (let i = allSegs.length - 1; i >= 0; i--) {
     if (parseFloat(allSegs[i].dataset.start) <= t) { found = allSegs[i]; break; }
   }
-
   if (found && found !== activeSegEl) {
-    // Clear previous
-    if (activeSegEl) activeSegEl.classList.remove('active');
-    if (activeBlockEl) {
-      activeBlockEl.classList.remove('block-active');
-      const pg = activeBlockEl.querySelector('.t-gutter');
-      if (pg) pg.classList.remove('gutter-active');
+    if (activeSegEl) {
+      activeSegEl.classList.remove('active');
+      const pli = activeSegEl.closest('li');
+      if (pli) pli.classList.remove('li-active');
+      const pq = activeSegEl.closest('.q-block');
+      if (pq) pq.classList.remove('q-active');
     }
-    // Set new
     found.classList.add('active');
-    const block = found.closest('.t-block');
-    if (block) {
-      block.classList.add('block-active');
-      const g = block.querySelector('.t-gutter');
-      if (g) g.classList.add('gutter-active');
-      activeBlockEl = block;
-    }
+    const li = found.closest('li');
+    if (li) li.classList.add('li-active');
+    const qb = found.closest('.q-block');
+    if (qb) qb.classList.add('q-active');
     activeSegEl = found;
 
-    // Update subtitle
     subtitleEl.textContent = found.textContent.trim();
     subtitleEl.classList.remove('empty');
 
-    // Auto-scroll (only when not searching)
-    if (!document.getElementById('search').value) {
+    if (!document.getElementById('search').value)
       found.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }
   }
 });
 
@@ -371,17 +532,13 @@ searchInput.addEventListener('keydown', e => {
     el.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
 });
-
 function runSearch() {
   const q = searchInput.value.trim().toLowerCase();
   allSegs.forEach(s => s.classList.remove('search-match','search-current'));
   searchMatches = [];
   if (!q) return;
   allSegs.forEach(s => {
-    if (s.textContent.toLowerCase().includes(q)) {
-      s.classList.add('search-match');
-      searchMatches.push(s);
-    }
+    if (s.textContent.toLowerCase().includes(q)) { s.classList.add('search-match'); searchMatches.push(s); }
   });
   if (!searchMatches.length) return;
   searchIdx = 0;

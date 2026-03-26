@@ -5,10 +5,19 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Gastrointestinal Tract — Pancreatitis</title>
 <style>
-
   :root {
-    --accent:    #f97316;
-    --body-bg:   #f1f5f9;
+    --q-bg:       #1e3a5f;
+    --q-text:     #ffffff;
+    --q-label:    #60a5fa;
+    --a-bg:       #ffffff;
+    --a-border:   #e2e8f0;
+    --a-label:    #059669;
+    --active-q:   #f97316;
+    --active-a:   #dbeafe;
+    --accent:     #f97316;
+    --body-bg:    #f1f5f9;
+    --pre-bg:     #fef9c3;
+    --pre-border: #fcd34d;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
@@ -40,22 +49,9 @@
     margin-bottom: 4px;
     letter-spacing: 0.01em;
   }
-  .header-sub {
-    font-size: 0.72rem;
-    color: #94a3b8;
-    font-style: italic;
-  }
-  audio {
-    height: 36px;
-    accent-color: var(--accent);
-    flex-shrink: 0;
-  }
-  .back-link {
-    font-size: 0.8rem;
-    color: #94a3b8;
-    text-decoration: none;
-    white-space: nowrap;
-  }
+  .header-sub { font-size: 0.72rem; color: #94a3b8; font-style: italic; }
+  audio { height: 36px; accent-color: var(--accent); flex-shrink: 0; }
+  .back-link { font-size: 0.8rem; color: #94a3b8; text-decoration: none; white-space: nowrap; }
   .back-link:hover { color: #60a5fa; }
 
   /* ── Toolbar ── */
@@ -69,30 +65,17 @@
     border-bottom: 1px solid #334155;
   }
   .toolbar input {
-    flex: 1;
-    max-width: 380px;
+    flex: 1; max-width: 380px;
     padding: 5px 11px;
-    border: 1px solid #475569;
-    border-radius: 6px;
-    background: #0f172a;
-    color: #e2e8f0;
-    font-size: 0.83rem;
-    outline: none;
+    border: 1px solid #475569; border-radius: 6px;
+    background: #0f172a; color: #e2e8f0; font-size: 0.83rem; outline: none;
   }
   .toolbar input:focus { border-color: var(--accent); }
   .toolbar input::placeholder { color: #64748b; }
-  .stats {
-    font-size: 0.72rem;
-    color: #64748b;
-    white-space: nowrap;
-  }
+  .stats { font-size: 0.72rem; color: #64748b; white-space: nowrap; }
 
   /* ── Scroll area ── */
-  .scroll-area {
-    flex: 1;
-    overflow-y: auto;
-    padding: 20px;
-  }
+  .scroll-area { flex: 1; overflow-y: auto; padding: 20px; }
   .scroll-area::-webkit-scrollbar { width: 6px; }
   .scroll-area::-webkit-scrollbar-track { background: transparent; }
   .scroll-area::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
@@ -107,68 +90,77 @@
     display: flex;
     align-items: center;
   }
-  .subtitle-text {
-    font-size: 0.9rem;
-    color: #e2e8f0;
-    line-height: 1.5;
-    font-style: italic;
-  }
-  .subtitle-text.empty { color: #475569; }
+  #subtitle-text { font-size: 0.88rem; color: #e2e8f0; line-height: 1.5; font-style: italic; }
+  #subtitle-text.empty { color: #475569; }
 
-  /* ── Transcript blocks ── */
-  .t-block {
-    background: #ffffff;
-    border: 1px solid #e2e8f0;
-    border-radius: 10px;
-    margin-bottom: 14px;
-    overflow: hidden;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
-    display: flex;
-  }
-  .t-block.block-active {
-    border-color: var(--accent);
-    box-shadow: 0 0 0 2px rgba(37,99,235,0.15);
-  }
-  .t-gutter {
-    background: #0f172a;
-    width: 52px;
-    flex-shrink: 0;
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
-    padding-top: 14px;
-    cursor: pointer;
-  }
-  .t-gutter:hover { background: #1e293b; }
-  .t-timestamp {
-    font-size: 0.7rem;
-    color: #64748b;
-    font-family: monospace;
-    font-weight: 600;
-    letter-spacing: 0.02em;
-  }
-  .t-gutter.gutter-active .t-timestamp { color: var(--accent); }
-  .t-body {
-    flex: 1;
+  /* ── Preamble ── */
+  .preamble-block {
+    background: var(--pre-bg);
+    border-left: 4px solid var(--pre-border);
+    border-radius: 0 8px 8px 0;
     padding: 12px 16px;
-    line-height: 1.75;
-    font-size: 0.92rem;
-    color: #1e293b;
+    margin-bottom: 20px;
+    font-size: 0.88rem;
+    color: #78350f;
+    font-style: italic;
+    line-height: 1.7;
   }
 
-  /* ── Segments ── */
-  .segment {
+  /* ── Q&A pair ── */
+  .qa-pair { margin-bottom: 20px; border-radius: 10px; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+
+  /* Question block */
+  .q-block {
+    background: var(--q-bg);
+    padding: 14px 18px;
+    display: flex; gap: 14px; align-items: flex-start;
     cursor: pointer;
-    border-radius: 3px;
-    transition: background 0.1s;
+    transition: background 0.15s;
   }
-  .segment:hover { background: #eff6ff; }
-  .segment.active {
-    background: #bfdbfe;
-    outline: 2px solid #3b82f6;
-    outline-offset: 1px;
-    border-radius: 3px;
+  .q-block:hover { background: #1d4ed8; }
+  .q-block.q-active { background: var(--active-q); }
+  .q-label {
+    font-size: 0.7rem; font-weight: 700;
+    color: var(--q-label);
+    background: rgba(96,165,250,0.15);
+    border: 1px solid rgba(96,165,250,0.3);
+    border-radius: 5px; padding: 3px 7px;
+    white-space: nowrap; margin-top: 2px; letter-spacing: 0.05em;
+    flex-shrink: 0;
   }
+  .q-body { flex: 1; font-size: 0.97rem; font-weight: 600; color: var(--q-text); line-height: 1.55; }
+
+  /* Answer block */
+  .a-block {
+    background: var(--a-bg);
+    border: 1px solid var(--a-border); border-top: none;
+    padding: 14px 18px;
+    display: flex; gap: 14px; align-items: flex-start;
+  }
+  .a-label {
+    font-size: 0.7rem; font-weight: 700;
+    color: var(--a-label);
+    background: #d1fae5; border: 1px solid #6ee7b7;
+    border-radius: 5px; padding: 3px 9px;
+    white-space: nowrap; margin-top: 2px; letter-spacing: 0.05em;
+    flex-shrink: 0;
+  }
+  .a-body { flex: 1; list-style: none; padding: 0; }
+  .a-body li {
+    padding: 4px 0 4px 14px;
+    border-left: 3px solid transparent;
+    line-height: 1.7; font-size: 0.92rem; color: #1e293b;
+    border-radius: 0 4px 4px 0;
+    transition: background 0.15s;
+  }
+  .a-body li:not(:last-child) { border-bottom: 1px solid #f1f5f9; }
+
+  /* ── Segments (clickable) ── */
+  .segment { cursor: pointer; border-radius: 3px; }
+  .q-seg:hover { background: rgba(255,255,255,0.18); }
+  .a-seg:hover { background: #eff6ff; }
+  .segment.active { background: #bfdbfe; outline: 2px solid #3b82f6; outline-offset: 1px; }
+  .a-body li.li-active { background: var(--active-a); border-left-color: var(--accent); }
   .segment.search-match  { background: #fef9c3; }
   .segment.search-current { background: #fde047; outline: 2px solid #ca8a04; }
 
@@ -187,178 +179,430 @@
 
 <div class="toolbar">
   <input type="text" id="search" placeholder="Search transcript&#8230; (Enter = next match)">
-  <span class="stats" id="stats">169 segments &nbsp;|&nbsp; <span id="dur">loading&#8230;</span></span>
+  <span class="stats" id="stats">19 questions &nbsp;|&nbsp; 169 segments &nbsp;|&nbsp; <span id="dur">loading&#8230;</span></span>
 </div>
 
 <div class="scroll-area" id="scroll-area">
-<div class="t-block">
-  <div class="t-gutter" data-start="0.0"><span class="t-timestamp">0:00</span></div>
-  <div class="t-body"><span class="segment" data-start="0.0" data-end="7.04" title="0:00">Pancrititis. This is presented as a short-case scenario, but could also be used as a long case </span><span class="segment" data-start="7.04" data-end="12.16" title="0:07">with the history and examination findings provided along with the blood results of radiology. </span><span class="segment" data-start="12.96" data-end="19.2" title="0:12">I'm going to give you a short clinical scenario. The surgical registrar asks you to see a </span><span class="segment" data-start="19.2" data-end="24.24" title="0:19">previously well 61-year-old man with a two-day history of epigastric pain and vomiting. </span><span class="segment" data-start="24.24" data-end="32.88" title="0:24">He has oxygen saturations of 92% on 5 litres per minute of oxygen, a heart rate of 115 </span><span class="segment" data-start="32.88" data-end="40.16" title="0:32">beats per minute, and a blood pressure of 85 or 50 after 2 litres of saline. He is tender in </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="40.16"><span class="t-timestamp">0:40</span></div>
-  <div class="t-body"><span class="segment" data-start="40.16" data-end="45.2" title="0:40">the epigastrium and right upper quadrant. What is a differential diagnosis? </span><span class="segment" data-start="47.2" data-end="54.16" title="0:47">The differential diagnosis of an acute abdomen with shock is wide. In this case, I would consider </span><span class="segment" data-start="54.16" data-end="60.8" title="0:54">particularly gastric, deudinial, billary and pancreatic pathology, with the possibility of </span><span class="segment" data-start="60.8" data-end="67.68" title="1:00">more remote causes of peritonitis, aortic disease, or even an MI in the back of my mind. </span><span class="segment" data-start="69.2" data-end="75.12" title="1:09">The amylase is 2,200. What do you think the diagnosis is and how could you confirm this? </span><span class="segment" data-start="76.8" data-end="82.08" title="1:16">An amylase of more than three times the upper limit of the hospital's reference range </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="82.08"><span class="t-timestamp">1:22</span></div>
-  <div class="t-body"><span class="segment" data-start="82.08" data-end="89.36" title="1:22">is usually said to be diagnostic of pancreatitis. But as amylase levels fall rapidly over three to </span><span class="segment" data-start="89.36" data-end="97.6" title="1:29">four days, this needs to be considered in the light of the duration of symptoms. 2,200 is high </span><span class="segment" data-start="97.6" data-end="105.04" title="1:37">nevertheless, and pancreatitis is likely, even given that other pathology, such as a perforated </span><span class="segment" data-start="105.04" data-end="112.48" title="1:45">deudinial ulcer, may also increase amylase. It can be confirmed by measurement of liepays if </span><span class="segment" data-start="112.48" data-end="119.84" title="1:52">available, as the pancreas is the only source of liepays, and this test has greater overall accuracy. </span><span class="segment" data-start="120.96" data-end="128.88" title="2:00">Ultrasound or CT of the pancreas may show pancreatic swelling, and contrast enhanced CT is </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="128.88"><span class="t-timestamp">2:08</span></div>
-  <div class="t-body"><span class="segment" data-start="128.88" data-end="136.08" title="2:08">particularly good for confirmation. These tests are also useful to determine the cause of </span><span class="segment" data-start="136.08" data-end="145.52" title="2:16">pancreatitis, if gallstones, or to exclude other pathology in uncertain cases. An ECG, cardiac </span><span class="segment" data-start="145.52" data-end="152.4" title="2:25">enzymes, and chest X-ray should be done in all cases for the same reason. You've mentioned </span><span class="segment" data-start="152.48" data-end="161.12" title="2:32">gallstones. What are the other common causes of pancreatitis? Overall, gallstones account for about </span><span class="segment" data-start="161.12" data-end="170.48" title="2:41">50% of cases, and alcohol for another 20 to 25%. Pancreatitis in women is more likely to be </span><span class="segment" data-start="170.48" data-end="179.12" title="2:50">gallstone related, and in men it is more frequently due to alcohol. In up to 20% of cases, no causes </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="179.12"><span class="t-timestamp">2:59</span></div>
-  <div class="t-body"><span class="segment" data-start="179.12" data-end="189.2" title="2:59">are found. Other less common causes include drugs, trauma, ERCP, infections particularly viral </span><span class="segment" data-start="189.2" data-end="199.44" title="3:09">and including HIV, hypertriglisoridemia, hyperparapharothyroidism, malignancy, and autoimmune diseases. </span><span class="segment" data-start="200.48" data-end="202.56" title="3:20">What is the underlying pathophysiology? </span><span class="segment" data-start="203.04" data-end="211.68" title="3:23">This remains controversial, but is believed to be unregulated activation of tripsin within </span><span class="segment" data-start="211.68" data-end="219.6" title="3:31">pancreatic acinacells. Local cell damage and inflammation results with activation of complement </span><span class="segment" data-start="219.6" data-end="228.08" title="3:39">and kinin pathways, and stimulation of neutrophils and macrophages. This results in leukocyte migration </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="228.08"><span class="t-timestamp">3:48</span></div>
-  <div class="t-body"><span class="segment" data-start="228.08" data-end="234.08" title="3:48">and release of further pro-inflammatory cytokines and reactive oxygen species, </span><span class="segment" data-start="234.08" data-end="242.8" title="3:54">leading to further acinacell injury and necrosis. About 20% of cases are severe in which the local </span><span class="segment" data-start="242.8" data-end="252.08" title="4:02">inflammation leads to SIRS and extra pancreatic organ dysfunction. All there is a local complication </span><span class="segment" data-start="252.16" data-end="258.24" title="4:12">such as pancreatic pseudocyst, pseudoannurism, necrosis, or abscess. </span><span class="segment" data-start="265.68" data-end="272.0" title="4:25">There are a number of scoring systems using a variety of clinical laboratory and in some cases </span><span class="segment" data-start="272.0" data-end="278.24" title="4:32">radiological factors, perhaps indicating that predicting the course of pancreatitis on admission </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="278.24"><span class="t-timestamp">4:38</span></div>
-  <div class="t-body"><span class="segment" data-start="278.24" data-end="286.0" title="4:38">is difficult. In the United Kingdom, the Glasgow score is often used, whereas score of three or </span><span class="segment" data-start="286.0" data-end="292.32" title="4:46">more predicts a severe attack, although strictly speaking this requires 48 hours to complete. </span><span class="segment" data-start="294.32" data-end="304.48" title="4:54">Other predictors after 48 hours include an Apache 2 score of 8 or more, a CRP of more than 150 </span><span class="segment" data-start="304.56" data-end="311.6" title="5:04">and unresolving or progressive organ failure. The mortality rate in patients with organ failure </span><span class="segment" data-start="311.6" data-end="320.72" title="5:11">persisting for more than 48 hours exceeds 50%. Before 48 hours, prediction is harder, but a plural </span><span class="segment" data-start="320.72" data-end="327.52" title="5:20">effusion on chest X-ray, a BMI greater than 30, and a clinical impression of severity all </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="327.6"><span class="t-timestamp">5:27</span></div>
-  <div class="t-body"><span class="segment" data-start="327.6" data-end="336.64" title="5:27">predict severe acute pancreatitis. Finally, the CT severity index, which may be calculated on the </span><span class="segment" data-start="336.64" data-end="344.48" title="5:36">day of admission if a CT is done, shows good correlation with complications, sepsis, need for ICU </span><span class="segment" data-start="344.48" data-end="351.36" title="5:44">care and mortality. What are the components of the Glasgow score? If you really want to remember </span><span class="segment" data-start="352.08" data-end="360.16" title="5:52">try using the naminic pancreas for PO2, age neutrophils, i.e. white cell gans, calcium, </span><span class="segment" data-start="360.88" data-end="370.96" title="6:00">renal, i.e. urea, enzymes, LDH or ALT, albumin and sugar, i.e. glucose. </span><span class="segment" data-start="372.8" data-end="377.84" title="6:12">The Glasgow score uses 8 parameters, partial pressure of oxygen, </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="378.56"><span class="t-timestamp">6:18</span></div>
-  <div class="t-body"><span class="segment" data-start="378.56" data-end="388.4" title="6:18">age, white cell count, calcium, urea, either ALT or LDH, albumin and glucose. </span><span class="segment" data-start="389.28" data-end="396.4" title="6:29">Each may be scored as 0 or 1. I can't remember the cutoff values to score points, </span><span class="segment" data-start="396.4" data-end="402.16" title="6:36">but if 3 or more points are scored within the first 48 hours, the attack is a severe one. </span><span class="segment" data-start="402.56" data-end="408.8" title="6:42">Practically speaking, the number of failing organs and the severity of failure is a good </span><span class="segment" data-start="408.8" data-end="414.96" title="6:48">indicator of the severity of the attack. This man's score predicts severe acute pancreatitis, </span><span class="segment" data-start="414.96" data-end="419.52" title="6:54">and ultrasound shows a stone in the common ball duct. Will you admit him to the HDU? </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="422.0"><span class="t-timestamp">7:02</span></div>
-  <div class="t-body"><span class="segment" data-start="422.0" data-end="428.56" title="7:02">Yes, I would admit for three reasons. First, whatever the score predicts, he currently is </span><span class="segment" data-start="428.56" data-end="434.64" title="7:08">seriously unwell with evidence of organ failure in that he is hypotensive despite fluid </span><span class="segment" data-start="434.64" data-end="442.96" title="7:14">resuscitation and is hypoxic. Second, he is likely to get worse over the next 24 to 48 hours, </span><span class="segment" data-start="442.96" data-end="450.0" title="7:22">especially as there is a difficult balance between fluid required for hemodynamic and renal support, </span><span class="segment" data-start="450.0" data-end="457.36" title="7:30">and his precarious respiratory function. Finally, as I've said, mortality from severe acute </span><span class="segment" data-start="457.36" data-end="464.0" title="7:37">pancreatitis with organ failure is high, and award environment is inappropriate because early </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="464.0"><span class="t-timestamp">7:44</span></div>
-  <div class="t-body"><span class="segment" data-start="464.0" data-end="470.8" title="7:44">resuscitation is likely to reduce the risk of complications. How will he manage him once in your HDU? </span><span class="segment" data-start="473.2" data-end="478.8" title="7:53">Management of severe pancreatitis is aimed at the support of organ function and prevention of </span><span class="segment" data-start="478.8" data-end="484.32" title="7:58">complications, as there is no therapy for pancreatic inflammation once established. </span><span class="segment" data-start="485.28" data-end="490.96" title="8:05">Adequate early resuscitation with oxygen and fluid is probably the most effective way </span><span class="segment" data-start="490.96" data-end="498.64" title="8:10">of reducing the risk of later organ failure. I would insert arterial, central venous and urinary </span><span class="segment" data-start="498.64" data-end="505.68" title="8:18">catheters and anasogastric tube. I would use oxygen and non-invasive ventilation, </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="506.24"><span class="t-timestamp">8:26</span></div>
-  <div class="t-body"><span class="segment" data-start="506.24" data-end="512.8" title="8:26">or intermittent positive pressure ventilation as appropriate, aiming for partial oxygen pressures </span><span class="segment" data-start="512.8" data-end="521.68" title="8:32">above 8kPa. I would check central venous saturation and arterial lactate and resuscitate with fluid </span><span class="segment" data-start="521.68" data-end="528.88" title="8:41">and noradrenaline with an initial target central venous pressure of greater than 8 and a mean arterial </span><span class="segment" data-start="528.88" data-end="538.24" title="8:48">pressure of 65mm of mercury, as in the surviving sepsis guidelines. Annalgesia is important, </span><span class="segment" data-start="538.24" data-end="543.44" title="8:58">and this could be provided with either morphine or even an epidural if the benefits were thought </span><span class="segment" data-start="543.44" data-end="549.84" title="9:03">to outweigh the risks. Nutrition is vital as this will reduce the incidence of infectious </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="549.84"><span class="t-timestamp">9:09</span></div>
-  <div class="t-body"><span class="segment" data-start="549.84" data-end="556.64" title="9:09">complications, and I would begin enthral feeding as soon as hemodynamic stability was achieved, </span><span class="segment" data-start="556.64" data-end="565.2" title="9:16">ideally within the first 12 to 24 hours. Deep vein thrombosis and stress ulcer prophylaxis </span><span class="segment" data-start="565.2" data-end="572.16" title="9:25">should be used in the absence of contraindications. Once stable, the cause of the pancreatitis should </span><span class="segment" data-start="572.16" data-end="578.96" title="9:32">be addressed. If the cause of pancreatitis is gallstones or another form of billary obstruction, </span><span class="segment" data-start="578.96" data-end="585.6" title="9:38">which might also be indicated by raised liver enzymes, then ERCP may be indicated. </span><span class="segment" data-start="586.32" data-end="592.24" title="9:46">There's a lot bad to talk about. I'll take your last point first. How soon should ERCP be done? </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="592.96"><span class="t-timestamp">9:52</span></div>
-  <div class="t-body"><span class="segment" data-start="592.96" data-end="594.16" title="9:52">It's an easy procedure. </span><span class="segment" data-start="595.92" data-end="604.16" title="9:55">Ideally, within 72 hours of the onset of pain in severe acute pancreatitis with suspected or proven </span><span class="segment" data-start="604.16" data-end="611.28" title="10:04">gallstone etiology. This will allow sphincterotomy with or without stenting to relieve obstruction. </span><span class="segment" data-start="612.16" data-end="618.96" title="10:12">It should also be done if there are dilated bile ducts, jaundice or colangitis. It requires </span><span class="segment" data-start="618.96" data-end="624.88" title="10:18">screening facilities and can be difficult to tolerate and to perform. So in most critically old </span><span class="segment" data-start="624.88" data-end="631.04" title="10:24">patients, elective intubation and ventilation will be required. Why go for general anaesthetic when </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="631.04"><span class="t-timestamp">10:31</span></div>
-  <div class="t-body"><span class="segment" data-start="631.04" data-end="640.48" title="10:31">most ERCP is done with sedation? Patients in the HDU with severe acute pancreatitis have compromised </span><span class="segment" data-start="640.48" data-end="647.12" title="10:40">respiratory function, large, distended painful abdomens with a significant risk of a full stomach, </span><span class="segment" data-start="647.12" data-end="653.68" title="10:47">and are often confused. Sedation would carry risks of loss of the airway, aspiration, </span><span class="segment" data-start="653.68" data-end="658.16" title="10:53">further hypoxia and worsening confusion. What about colusostectomy? </span><span class="segment" data-start="660.08" data-end="665.6" title="11:00">This should wait until organ failure has resolved, but ideally will be done during the same </span><span class="segment" data-start="665.6" data-end="670.88" title="11:05">admission to prevent recurrent pancreatitis. Nutrition is a contentious issue. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="670.96"><span class="t-timestamp">11:10</span></div>
-  <div class="t-body"><span class="segment" data-start="670.96" data-end="680.32" title="11:10">It is true that older strategies emphasised resting the gut and avoiding </span><span class="segment" data-start="680.32" data-end="687.04" title="11:20">entral nutrition which was thought to increase pancreatic inflammation. However recently the </span><span class="segment" data-start="687.04" data-end="694.4" title="11:27">advantages of entral nutrition have become clearer. In particular, maintenance of gut barrier function, </span><span class="segment" data-start="694.4" data-end="701.84" title="11:34">a reduction in septic episodes, fewer surgical interventions and fewer non-infectious complications, </span><span class="segment" data-start="701.84" data-end="708.96" title="11:41">though without a difference in mortality. It is also cheaper than TPN, especially when a </span><span class="segment" data-start="708.96" data-end="716.88" title="11:48">shorter hospital stay is taken into account. Most evidence is from trials of nasogedunal feeding, </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="716.88"><span class="t-timestamp">11:56</span></div>
-  <div class="t-body"><span class="segment" data-start="716.88" data-end="723.84" title="11:56">although direct comparison of NG and NJ feeding suggest they are equivalent and NG </span><span class="segment" data-start="723.84" data-end="731.04" title="12:03">feeding is possible in up to 80% of cases. However gastric outflow obstruction and ilias are </span><span class="segment" data-start="731.04" data-end="737.6" title="12:11">common in severe acute pancreatitis, so entral feeding may be difficult to establish and </span><span class="segment" data-start="737.6" data-end="746.64" title="12:17">underfeeding is a serious risk, as is regurgitation, vomiting and aspiration. If adequate NG or NJ </span><span class="segment" data-start="746.64" data-end="754.56" title="12:26">feeding cannot be established within five days, then parental supplementation or TPN should be </span><span class="segment" data-start="754.56" data-end="760.56" title="12:34">used as calories are ultimately more important than the root. Practically speaking, how would you </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="760.56"><span class="t-timestamp">12:40</span></div>
-  <div class="t-body"><span class="segment" data-start="760.56" data-end="768.24" title="12:40">attempt to establish feeding? I would start using the NG root and use prokinetics early and in </span><span class="segment" data-start="768.24" data-end="775.28" title="12:48">combination if aspirates are high in the first 24 hours. If there is no improvement in the next 24 </span><span class="segment" data-start="775.44" data-end="783.6" title="12:55">hours, I would move from NG to NJ feeding. If this is poorly tolerated, for example, if there is </span><span class="segment" data-start="783.6" data-end="790.32" title="13:03">abdominal pain or distension or reflux, nor zero vomiting, then I would supplement with parental </span><span class="segment" data-start="790.32" data-end="797.36" title="13:10">nutrition, ideally including glutamine. It is important to agree this between all those likely to be </span><span class="segment" data-start="797.36" data-end="803.12" title="13:17">involved in the patient's care, especially surgical colleagues. What about probiotics? </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="803.84"><span class="t-timestamp">13:23</span></div>
-  <div class="t-body"><span class="segment" data-start="803.84" data-end="810.88" title="13:23">Well, although the principle of preventing potentially pathological bacterial overgrowth in the </span><span class="segment" data-start="810.88" data-end="818.0" title="13:30">gut is intuitively sound, and there is some experimental support, a recent Dutch trial published </span><span class="segment" data-start="818.0" data-end="825.44" title="13:38">in the Lancet in 2008 found an increase in mortality in the probiotic group. I would not use them. </span><span class="segment" data-start="826.0" data-end="831.52" title="13:46">Well, we could discuss a choice of resuscitation fluid, or your use of surviving sepsis targets, </span><span class="segment" data-start="831.52" data-end="836.8" title="13:51">or even whether an epidural would ever be indicated in this situation. However time is pressing, </span><span class="segment" data-start="836.8" data-end="839.92" title="13:56">so tell me, what are the complications of pancreatitis? </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="841.84"><span class="t-timestamp">14:01</span></div>
-  <div class="t-body"><span class="segment" data-start="841.84" data-end="848.24" title="14:01">These may be divided into local and systemic complications. Systemic complications arise </span><span class="segment" data-start="848.24" data-end="855.2" title="14:08">earlier and are essentially extra-pancreatic organ failures. These are responsible for most early deaths. </span><span class="segment" data-start="856.16" data-end="863.92" title="14:16">ARDS, acute kidney injury and gut failure, and the abdominal compartment syndrome are most common, </span><span class="segment" data-start="863.92" data-end="869.84" title="14:23">and as with other causes of the systemic inflammatory response, patients are more susceptible to </span><span class="segment" data-start="869.84" data-end="878.0" title="14:29">infections. Of local complications, pancreatic necrosis may also develop early. Other local </span><span class="segment" data-start="878.0" data-end="885.12" title="14:38">complications may take a week or two to develop and include pseudocysts, pseudoaneurysm, </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="885.12"><span class="t-timestamp">14:45</span></div>
-  <div class="t-body"><span class="segment" data-start="885.12" data-end="892.16" title="14:45">and pancreatic abscess. There may be a late failure to improve, or deterioration if necrosis </span><span class="segment" data-start="892.16" data-end="899.52" title="14:52">becomes infected. There may also be therapy-related complications, particularly from ERCP. </span><span class="segment" data-start="900.88" data-end="902.8" title="15:00">Tell me more about pancreatic necrosis. </span><span class="segment" data-start="903.28" data-end="910.56" title="15:03">The extent of pancreatic necrosis seen on the CT is a guide to the severity of the condition. </span><span class="segment" data-start="911.52" data-end="917.52" title="15:11">However, what is really significant is the fact that the leading cause of morbidity and mortality </span><span class="segment" data-start="917.52" data-end="925.12" title="15:17">is infected pancreatic necrosis, and somewhere over 50% of patients with severe pancreatitis </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="925.12"><span class="t-timestamp">15:25</span></div>
-  <div class="t-body"><span class="segment" data-start="925.12" data-end="931.04" title="15:25">will develop infected necrosis by the second or third week of their illness. So there has been </span><span class="segment" data-start="931.04" data-end="938.4" title="15:31">a lot of interest in preventing infection. Most infecting organisms are gut-derived gram-negative </span><span class="segment" data-start="938.4" data-end="945.6" title="15:38">and anaerobic bacteria, hence the interest in probiotics. This might also be why </span><span class="segment" data-start="945.6" data-end="952.0" title="15:45">entral feeding has the beneficial effects it does, as it preserves mucosal barrier function. </span><span class="segment" data-start="952.72" data-end="956.72" title="15:52">There is also the fawny question of antibiotic prophylaxis. </span><span class="segment" data-start="957.2" data-end="964.24" title="15:57">Oh yes, I wonder when you'd mention that. Antibiotics are often used. Should they be? What about SDD? </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="966.24"><span class="t-timestamp">16:06</span></div>
-  <div class="t-body"><span class="segment" data-start="966.24" data-end="973.28" title="16:06">Yes, broad spectrum antibiotics are often started in severe acute pancreatitis with the intention </span><span class="segment" data-start="973.28" data-end="979.92" title="16:13">of reducing the incidence of infected necrosis and mortality. There is evidence from randomised </span><span class="segment" data-start="979.92" data-end="986.48" title="16:19">controlled trials to support the use of antibiotics, and also trials that show no beneficial </span><span class="segment" data-start="986.48" data-end="993.76" title="16:26">effects. Many factors might explain this, including the antibiotics used and whether they penetrate </span><span class="segment" data-start="993.76" data-end="1000.48" title="16:33">pancreatic tissue adequately, patient selection, outcome measures and the quality of the trials. </span><span class="segment" data-start="1001.2" data-end="1007.84" title="16:41">Findings from meta-analyses are similarly confusing, probably relating to trial selection, </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="1007.84"><span class="t-timestamp">16:47</span></div>
-  <div class="t-body"><span class="segment" data-start="1007.84" data-end="1013.84" title="16:47">whether there is a suggestion that higher quality trials are associated with reduced or no treatment </span><span class="segment" data-start="1013.84" data-end="1020.8" title="16:53">effect. Current UK guidelines do not make a definitive recommendation, but there is growing </span><span class="segment" data-start="1020.8" data-end="1027.6" title="17:00">recognition of the problems of antibiotic resistance and bacterial and fungal overgrowth associated </span><span class="segment" data-start="1027.6" data-end="1033.68" title="17:07">with prolonged prophylaxis courses. Use of antibiotics should be targeted at high risk </span><span class="segment" data-start="1033.68" data-end="1041.36" title="17:13">individuals according to the clinical context, pending definitive trials. Patients with multi-organ </span><span class="segment" data-start="1041.44" data-end="1048.88" title="17:21">failure would generally be considered high risk. As far as SDD is concerned, there is insufficient </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="1048.88"><span class="t-timestamp">17:28</span></div>
-  <div class="t-body"><span class="segment" data-start="1048.88" data-end="1055.68" title="17:28">evidence to recommend routine use, but some units use it in prolonged episodes complicated by </span><span class="segment" data-start="1055.68" data-end="1061.28" title="17:35">recurrent infection. So what will you do for this man? Will you start antibiotics? </span><span class="segment" data-start="1062.72" data-end="1068.88" title="17:42">The list set is day five and he is now ventilated and on noradrenaline, with a creatinine of 350 </span><span class="segment" data-start="1068.88" data-end="1074.96" title="17:48">and rising, despite successful ERCP on day three. CT shows about one-third of his pancreas is </span><span class="segment" data-start="1074.96" data-end="1083.92" title="17:54">necrotic. Infection is unlikely if less than 30% of the pancreas is necrotic. This man has evidence </span><span class="segment" data-start="1083.92" data-end="1090.72" title="18:03">of progressive multi-organ failure. In this situation I would start antibiotics after taking blood </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="1090.72"><span class="t-timestamp">18:10</span></div>
-  <div class="t-body"><span class="segment" data-start="1090.72" data-end="1098.8" title="18:10">cultures and also a CT guided fine needle aspiration of the necrosis. I'd be guided by microbiological </span><span class="segment" data-start="1099.2" data-end="1106.8" title="18:19">advice, but mirror penim would be one appropriate choice and plan a course no longer than 14 days. </span><span class="segment" data-start="1107.92" data-end="1115.76" title="18:27">If FNA cultures were negative, I would stop the antibiotics. Fungal cover is usually not necessary </span><span class="segment" data-start="1115.76" data-end="1122.4" title="18:35">unless there have been previous antibiotics used or other risk factors such as TPN use or surgical </span><span class="segment" data-start="1122.48" data-end="1131.36" title="18:42">intervention. What is the role of CT scanning? As said before, the CT severity index is a good </span><span class="segment" data-start="1131.36" data-end="1136.72" title="18:51">prognostic guide early in the course of the disease, but unless there are other diagnostic </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="1136.72"><span class="t-timestamp">18:56</span></div>
-  <div class="t-body"><span class="segment" data-start="1136.72" data-end="1143.84" title="18:56">indications for a CT, it should not be done purely for staging purposes. Necrosis may develop </span><span class="segment" data-start="1143.84" data-end="1151.76" title="19:03">throughout the first week so early CT may underestimate the final extent and severity. A CT should </span><span class="segment" data-start="1151.84" data-end="1159.12" title="19:11">be done if there are new or persisting symptoms, signs, sepsis or organ failures as local complications </span><span class="segment" data-start="1159.12" data-end="1165.76" title="19:19">may have occurred and require intervention. CT is also indicated where infected pancreatic </span><span class="segment" data-start="1165.76" data-end="1173.12" title="19:25">necrosis is suspected to get samples for culture before starting antibiotics. So when is surgery </span><span class="segment" data-start="1173.12" data-end="1181.68" title="19:33">indicated? This is a question best decided by consultation with surgical colleagues. Cases of </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="1181.68"><span class="t-timestamp">19:41</span></div>
-  <div class="t-body"><span class="segment" data-start="1181.68" data-end="1188.88" title="19:41">infected necrosis will not resolve without necrosectomy, but it is best to wait as long as possible </span><span class="segment" data-start="1188.88" data-end="1196.8" title="19:48">to be sure that necrosis has delineated. Rarely, extensive, apparently sterile necrosis </span><span class="segment" data-start="1196.8" data-end="1203.36" title="19:56">may need to be deprived. The surgical technique will depend on local expertise and there appears </span><span class="segment" data-start="1203.36" data-end="1209.76" title="20:03">to be no difference in outcome between open and laparoscopic approaches. Some patients need an </span><span class="segment" data-start="1209.76" data-end="1218.0" title="20:09">open abdomen, repeat laparotomies or continuous drainage of the pancreatic bed. Other local complications </span><span class="segment" data-start="1218.0" data-end="1224.4" title="20:18">such as pseudocysts or pseudoaneurysm may be dealt with surgically or radiologically, </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="1224.4"><span class="t-timestamp">20:24</span></div>
-  <div class="t-body"><span class="segment" data-start="1224.4" data-end="1230.08" title="20:24">depending on the precise anatomy and available expertise. Thank you, we'll finish there. </span></div>
+<div class="preamble-block"><span class="segment a-seg" data-start="0.0" data-end="7.04" title="0:00">Pancrititis. This is presented as a short-case scenario, but could also be used as a long case </span><span class="segment a-seg" data-start="7.04" data-end="12.16" title="0:07">with the history and examination findings provided along with the blood results of radiology. </span><span class="segment a-seg" data-start="12.96" data-end="19.2" title="0:12">I'm going to give you a short clinical scenario. The surgical registrar asks you to see a </span><span class="segment a-seg" data-start="19.2" data-end="24.24" title="0:19">previously well 61-year-old man with a two-day history of epigastric pain and vomiting. </span><span class="segment a-seg" data-start="24.24" data-end="32.88" title="0:24">He has oxygen saturations of 92% on 5 litres per minute of oxygen, a heart rate of 115 </span><span class="segment a-seg" data-start="32.88" data-end="40.16" title="0:32">beats per minute, and a blood pressure of 85 or 50 after 2 litres of saline. He is tender in </span></div>
+<div class="qa-pair">
+<div class="q-block" data-start="40.16">
+  <div class="q-label">Q1</div>
+  <div class="q-body"><span class="segment q-seg" data-start="40.16" data-end="45.2" title="0:40">the epigastrium and right upper quadrant. What is a differential diagnosis? </span></div>
 </div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="47.2" data-end="54.16" title="0:47">The differential diagnosis of an acute abdomen with shock is wide. In this case, I would consider </span></li>
+<li><span class="segment a-seg" data-start="54.16" data-end="60.8" title="0:54">particularly gastric, deudinial, billary and pancreatic pathology, with the possibility of </span></li>
+<li><span class="segment a-seg" data-start="60.8" data-end="67.68" title="1:00">more remote causes of peritonitis, aortic disease, or even an MI in the back of my mind. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="69.2">
+  <div class="q-label">Q2</div>
+  <div class="q-body"><span class="segment q-seg" data-start="69.2" data-end="75.12" title="1:09">The amylase is 2,200. What do you think the diagnosis is and how could you confirm this? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="76.8" data-end="82.08" title="1:16">An amylase of more than three times the upper limit of the hospital's reference range </span></li>
+<li><span class="segment a-seg" data-start="82.08" data-end="89.36" title="1:22">is usually said to be diagnostic of pancreatitis. But as amylase levels fall rapidly over three to </span></li>
+<li><span class="segment a-seg" data-start="89.36" data-end="97.6" title="1:29">four days, this needs to be considered in the light of the duration of symptoms. 2,200 is high </span></li>
+<li><span class="segment a-seg" data-start="97.6" data-end="105.04" title="1:37">nevertheless, and pancreatitis is likely, even given that other pathology, such as a perforated </span></li>
+<li><span class="segment a-seg" data-start="105.04" data-end="112.48" title="1:45">deudinial ulcer, may also increase amylase. It can be confirmed by measurement of liepays if </span></li>
+<li><span class="segment a-seg" data-start="112.48" data-end="119.84" title="1:52">available, as the pancreas is the only source of liepays, and this test has greater overall accuracy. </span></li>
+<li><span class="segment a-seg" data-start="120.96" data-end="128.88" title="2:00">Ultrasound or CT of the pancreas may show pancreatic swelling, and contrast enhanced CT is </span></li>
+<li><span class="segment a-seg" data-start="128.88" data-end="136.08" title="2:08">particularly good for confirmation. These tests are also useful to determine the cause of </span></li>
+<li><span class="segment a-seg" data-start="136.08" data-end="145.52" title="2:16">pancreatitis, if gallstones, or to exclude other pathology in uncertain cases. An ECG, cardiac </span></li>
+<li><span class="segment a-seg" data-start="145.52" data-end="152.4" title="2:25">enzymes, and chest X-ray should be done in all cases for the same reason. You've mentioned </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="152.48">
+  <div class="q-label">Q3</div>
+  <div class="q-body"><span class="segment q-seg" data-start="152.48" data-end="158.034" title="2:32">gallstones. What are the other common causes of pancreatitis? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="158.034" data-end="161.12" title="2:38">Overall, gallstones account for about </span></li>
+<li><span class="segment a-seg" data-start="161.12" data-end="170.48" title="2:41">50% of cases, and alcohol for another 20 to 25%. Pancreatitis in women is more likely to be </span></li>
+<li><span class="segment a-seg" data-start="170.48" data-end="179.12" title="2:50">gallstone related, and in men it is more frequently due to alcohol. In up to 20% of cases, no causes </span></li>
+<li><span class="segment a-seg" data-start="179.12" data-end="189.2" title="2:59">are found. Other less common causes include drugs, trauma, ERCP, infections particularly viral </span></li>
+<li><span class="segment a-seg" data-start="189.2" data-end="199.44" title="3:09">and including HIV, hypertriglisoridemia, hyperparapharothyroidism, malignancy, and autoimmune diseases. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="200.48">
+  <div class="q-label">Q4</div>
+  <div class="q-body"><span class="segment q-seg" data-start="200.48" data-end="202.56" title="3:20">What is the underlying pathophysiology? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="203.04" data-end="211.68" title="3:23">This remains controversial, but is believed to be unregulated activation of tripsin within </span></li>
+<li><span class="segment a-seg" data-start="211.68" data-end="219.6" title="3:31">pancreatic acinacells. Local cell damage and inflammation results with activation of complement </span></li>
+<li><span class="segment a-seg" data-start="219.6" data-end="228.08" title="3:39">and kinin pathways, and stimulation of neutrophils and macrophages. This results in leukocyte migration </span></li>
+<li><span class="segment a-seg" data-start="228.08" data-end="234.08" title="3:48">and release of further pro-inflammatory cytokines and reactive oxygen species, </span></li>
+<li><span class="segment a-seg" data-start="234.08" data-end="242.8" title="3:54">leading to further acinacell injury and necrosis. About 20% of cases are severe in which the local </span></li>
+<li><span class="segment a-seg" data-start="242.8" data-end="252.08" title="4:02">inflammation leads to SIRS and extra pancreatic organ dysfunction. All there is a local complication </span></li>
+<li><span class="segment a-seg" data-start="252.16" data-end="258.24" title="4:12">such as pancreatic pseudocyst, pseudoannurism, necrosis, or abscess. </span></li>
+<li><span class="segment a-seg" data-start="265.68" data-end="272.0" title="4:25">There are a number of scoring systems using a variety of clinical laboratory and in some cases </span></li>
+<li><span class="segment a-seg" data-start="272.0" data-end="278.24" title="4:32">radiological factors, perhaps indicating that predicting the course of pancreatitis on admission </span></li>
+<li><span class="segment a-seg" data-start="278.24" data-end="286.0" title="4:38">is difficult. In the United Kingdom, the Glasgow score is often used, whereas score of three or </span></li>
+<li><span class="segment a-seg" data-start="286.0" data-end="292.32" title="4:46">more predicts a severe attack, although strictly speaking this requires 48 hours to complete. </span></li>
+<li><span class="segment a-seg" data-start="294.32" data-end="304.48" title="4:54">Other predictors after 48 hours include an Apache 2 score of 8 or more, a CRP of more than 150 </span></li>
+<li><span class="segment a-seg" data-start="304.56" data-end="311.6" title="5:04">and unresolving or progressive organ failure. The mortality rate in patients with organ failure </span></li>
+<li><span class="segment a-seg" data-start="311.6" data-end="320.72" title="5:11">persisting for more than 48 hours exceeds 50%. Before 48 hours, prediction is harder, but a plural </span></li>
+<li><span class="segment a-seg" data-start="320.72" data-end="327.52" title="5:20">effusion on chest X-ray, a BMI greater than 30, and a clinical impression of severity all </span></li>
+<li><span class="segment a-seg" data-start="327.6" data-end="336.64" title="5:27">predict severe acute pancreatitis. Finally, the CT severity index, which may be calculated on the </span></li>
+<li><span class="segment a-seg" data-start="336.64" data-end="344.48" title="5:36">day of admission if a CT is done, shows good correlation with complications, sepsis, need for ICU </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="344.48">
+  <div class="q-label">Q5</div>
+  <div class="q-body"><span class="segment q-seg" data-start="344.48" data-end="348.932" title="5:44">care and mortality. What are the components of the Glasgow score? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="348.932" data-end="351.36" title="5:48">If you really want to remember </span></li>
+<li><span class="segment a-seg" data-start="352.08" data-end="360.16" title="5:52">try using the naminic pancreas for PO2, age neutrophils, i.e. white cell gans, calcium, </span></li>
+<li><span class="segment a-seg" data-start="360.88" data-end="370.96" title="6:00">renal, i.e. urea, enzymes, LDH or ALT, albumin and sugar, i.e. glucose. </span></li>
+<li><span class="segment a-seg" data-start="372.8" data-end="377.84" title="6:12">The Glasgow score uses 8 parameters, partial pressure of oxygen, </span></li>
+<li><span class="segment a-seg" data-start="378.56" data-end="388.4" title="6:18">age, white cell count, calcium, urea, either ALT or LDH, albumin and glucose. </span></li>
+<li><span class="segment a-seg" data-start="389.28" data-end="396.4" title="6:29">Each may be scored as 0 or 1. I can't remember the cutoff values to score points, </span></li>
+<li><span class="segment a-seg" data-start="396.4" data-end="402.16" title="6:36">but if 3 or more points are scored within the first 48 hours, the attack is a severe one. </span></li>
+<li><span class="segment a-seg" data-start="402.56" data-end="408.8" title="6:42">Practically speaking, the number of failing organs and the severity of failure is a good </span></li>
+<li><span class="segment a-seg" data-start="408.8" data-end="414.96" title="6:48">indicator of the severity of the attack. This man's score predicts severe acute pancreatitis, </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="414.96">
+  <div class="q-label">Q6</div>
+  <div class="q-body"><span class="segment q-seg" data-start="414.96" data-end="419.52" title="6:54">and ultrasound shows a stone in the common ball duct. Will you admit him to the HDU? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="422.0" data-end="428.56" title="7:02">Yes, I would admit for three reasons. First, whatever the score predicts, he currently is </span></li>
+<li><span class="segment a-seg" data-start="428.56" data-end="434.64" title="7:08">seriously unwell with evidence of organ failure in that he is hypotensive despite fluid </span></li>
+<li><span class="segment a-seg" data-start="434.64" data-end="442.96" title="7:14">resuscitation and is hypoxic. Second, he is likely to get worse over the next 24 to 48 hours, </span></li>
+<li><span class="segment a-seg" data-start="442.96" data-end="450.0" title="7:22">especially as there is a difficult balance between fluid required for hemodynamic and renal support, </span></li>
+<li><span class="segment a-seg" data-start="450.0" data-end="457.36" title="7:30">and his precarious respiratory function. Finally, as I've said, mortality from severe acute </span></li>
+<li><span class="segment a-seg" data-start="457.36" data-end="464.0" title="7:37">pancreatitis with organ failure is high, and award environment is inappropriate because early </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="464.0">
+  <div class="q-label">Q7</div>
+  <div class="q-body"><span class="segment q-seg" data-start="464.0" data-end="470.8" title="7:44">resuscitation is likely to reduce the risk of complications. How will he manage him once in your HDU? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="473.2" data-end="478.8" title="7:53">Management of severe pancreatitis is aimed at the support of organ function and prevention of </span></li>
+<li><span class="segment a-seg" data-start="478.8" data-end="484.32" title="7:58">complications, as there is no therapy for pancreatic inflammation once established. </span></li>
+<li><span class="segment a-seg" data-start="485.28" data-end="490.96" title="8:05">Adequate early resuscitation with oxygen and fluid is probably the most effective way </span></li>
+<li><span class="segment a-seg" data-start="490.96" data-end="498.64" title="8:10">of reducing the risk of later organ failure. I would insert arterial, central venous and urinary </span></li>
+<li><span class="segment a-seg" data-start="498.64" data-end="505.68" title="8:18">catheters and anasogastric tube. I would use oxygen and non-invasive ventilation, </span></li>
+<li><span class="segment a-seg" data-start="506.24" data-end="512.8" title="8:26">or intermittent positive pressure ventilation as appropriate, aiming for partial oxygen pressures </span></li>
+<li><span class="segment a-seg" data-start="512.8" data-end="521.68" title="8:32">above 8kPa. I would check central venous saturation and arterial lactate and resuscitate with fluid </span></li>
+<li><span class="segment a-seg" data-start="521.68" data-end="528.88" title="8:41">and noradrenaline with an initial target central venous pressure of greater than 8 and a mean arterial </span></li>
+<li><span class="segment a-seg" data-start="528.88" data-end="538.24" title="8:48">pressure of 65mm of mercury, as in the surviving sepsis guidelines. Annalgesia is important, </span></li>
+<li><span class="segment a-seg" data-start="538.24" data-end="543.44" title="8:58">and this could be provided with either morphine or even an epidural if the benefits were thought </span></li>
+<li><span class="segment a-seg" data-start="543.44" data-end="549.84" title="9:03">to outweigh the risks. Nutrition is vital as this will reduce the incidence of infectious </span></li>
+<li><span class="segment a-seg" data-start="549.84" data-end="556.64" title="9:09">complications, and I would begin enthral feeding as soon as hemodynamic stability was achieved, </span></li>
+<li><span class="segment a-seg" data-start="556.64" data-end="565.2" title="9:16">ideally within the first 12 to 24 hours. Deep vein thrombosis and stress ulcer prophylaxis </span></li>
+<li><span class="segment a-seg" data-start="565.2" data-end="572.16" title="9:25">should be used in the absence of contraindications. Once stable, the cause of the pancreatitis should </span></li>
+<li><span class="segment a-seg" data-start="572.16" data-end="578.96" title="9:32">be addressed. If the cause of pancreatitis is gallstones or another form of billary obstruction, </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="578.96">
+  <div class="q-label">Q8</div>
+  <div class="q-body"><span class="segment q-seg" data-start="578.96" data-end="585.6" title="9:38">which might also be indicated by raised liver enzymes, then ERCP may be indicated. </span><span class="segment q-seg" data-start="586.32" data-end="592.24" title="9:46">There's a lot bad to talk about. I'll take your last point first. How soon should ERCP be done? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="592.96" data-end="594.16" title="9:52">It's an easy procedure. </span></li>
+<li><span class="segment a-seg" data-start="595.92" data-end="604.16" title="9:55">Ideally, within 72 hours of the onset of pain in severe acute pancreatitis with suspected or proven </span></li>
+<li><span class="segment a-seg" data-start="604.16" data-end="611.28" title="10:04">gallstone etiology. This will allow sphincterotomy with or without stenting to relieve obstruction. </span></li>
+<li><span class="segment a-seg" data-start="612.16" data-end="618.96" title="10:12">It should also be done if there are dilated bile ducts, jaundice or colangitis. It requires </span></li>
+<li><span class="segment a-seg" data-start="618.96" data-end="624.88" title="10:18">screening facilities and can be difficult to tolerate and to perform. So in most critically old </span></li>
+<li><span class="segment a-seg" data-start="624.88" data-end="631.04" title="10:24">patients, elective intubation and ventilation will be required. Why go for general anaesthetic when </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="631.04">
+  <div class="q-label">Q9</div>
+  <div class="q-body"><span class="segment q-seg" data-start="631.04" data-end="634.58" title="10:31">most ERCP is done with sedation? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="634.58" data-end="640.48" title="10:34">Patients in the HDU with severe acute pancreatitis have compromised </span></li>
+<li><span class="segment a-seg" data-start="640.48" data-end="647.12" title="10:40">respiratory function, large, distended painful abdomens with a significant risk of a full stomach, </span></li>
+<li><span class="segment a-seg" data-start="647.12" data-end="653.68" title="10:47">and are often confused. Sedation would carry risks of loss of the airway, aspiration, </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="653.68">
+  <div class="q-label">Q10</div>
+  <div class="q-body"><span class="segment q-seg" data-start="653.68" data-end="658.16" title="10:53">further hypoxia and worsening confusion. What about colusostectomy? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="660.08" data-end="665.6" title="11:00">This should wait until organ failure has resolved, but ideally will be done during the same </span></li>
+<li><span class="segment a-seg" data-start="665.6" data-end="670.88" title="11:05">admission to prevent recurrent pancreatitis. Nutrition is a contentious issue. </span></li>
+<li><span class="segment a-seg" data-start="670.96" data-end="680.32" title="11:10">It is true that older strategies emphasised resting the gut and avoiding </span></li>
+<li><span class="segment a-seg" data-start="680.32" data-end="687.04" title="11:20">entral nutrition which was thought to increase pancreatic inflammation. However recently the </span></li>
+<li><span class="segment a-seg" data-start="687.04" data-end="694.4" title="11:27">advantages of entral nutrition have become clearer. In particular, maintenance of gut barrier function, </span></li>
+<li><span class="segment a-seg" data-start="694.4" data-end="701.84" title="11:34">a reduction in septic episodes, fewer surgical interventions and fewer non-infectious complications, </span></li>
+<li><span class="segment a-seg" data-start="701.84" data-end="708.96" title="11:41">though without a difference in mortality. It is also cheaper than TPN, especially when a </span></li>
+<li><span class="segment a-seg" data-start="708.96" data-end="716.88" title="11:48">shorter hospital stay is taken into account. Most evidence is from trials of nasogedunal feeding, </span></li>
+<li><span class="segment a-seg" data-start="716.88" data-end="723.84" title="11:56">although direct comparison of NG and NJ feeding suggest they are equivalent and NG </span></li>
+<li><span class="segment a-seg" data-start="723.84" data-end="731.04" title="12:03">feeding is possible in up to 80% of cases. However gastric outflow obstruction and ilias are </span></li>
+<li><span class="segment a-seg" data-start="731.04" data-end="737.6" title="12:11">common in severe acute pancreatitis, so entral feeding may be difficult to establish and </span></li>
+<li><span class="segment a-seg" data-start="737.6" data-end="746.64" title="12:17">underfeeding is a serious risk, as is regurgitation, vomiting and aspiration. If adequate NG or NJ </span></li>
+<li><span class="segment a-seg" data-start="746.64" data-end="754.56" title="12:26">feeding cannot be established within five days, then parental supplementation or TPN should be </span></li>
+<li><span class="segment a-seg" data-start="754.56" data-end="760.56" title="12:34">used as calories are ultimately more important than the root. Practically speaking, how would you </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="760.56">
+  <div class="q-label">Q11</div>
+  <div class="q-body"><span class="segment q-seg" data-start="760.56" data-end="762.367" title="12:40">attempt to establish feeding? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="762.367" data-end="768.24" title="12:42">I would start using the NG root and use prokinetics early and in </span></li>
+<li><span class="segment a-seg" data-start="768.24" data-end="775.28" title="12:48">combination if aspirates are high in the first 24 hours. If there is no improvement in the next 24 </span></li>
+<li><span class="segment a-seg" data-start="775.44" data-end="783.6" title="12:55">hours, I would move from NG to NJ feeding. If this is poorly tolerated, for example, if there is </span></li>
+<li><span class="segment a-seg" data-start="783.6" data-end="790.32" title="13:03">abdominal pain or distension or reflux, nor zero vomiting, then I would supplement with parental </span></li>
+<li><span class="segment a-seg" data-start="790.32" data-end="797.36" title="13:10">nutrition, ideally including glutamine. It is important to agree this between all those likely to be </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="797.36">
+  <div class="q-label">Q12</div>
+  <div class="q-body"><span class="segment q-seg" data-start="797.36" data-end="803.12" title="13:17">involved in the patient's care, especially surgical colleagues. What about probiotics? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="803.84" data-end="810.88" title="13:23">Well, although the principle of preventing potentially pathological bacterial overgrowth in the </span></li>
+<li><span class="segment a-seg" data-start="810.88" data-end="818.0" title="13:30">gut is intuitively sound, and there is some experimental support, a recent Dutch trial published </span></li>
+<li><span class="segment a-seg" data-start="818.0" data-end="825.44" title="13:38">in the Lancet in 2008 found an increase in mortality in the probiotic group. I would not use them. </span></li>
+<li><span class="segment a-seg" data-start="826.0" data-end="831.52" title="13:46">Well, we could discuss a choice of resuscitation fluid, or your use of surviving sepsis targets, </span></li>
+<li><span class="segment a-seg" data-start="831.52" data-end="836.8" title="13:51">or even whether an epidural would ever be indicated in this situation. However time is pressing, </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="836.8">
+  <div class="q-label">Q13</div>
+  <div class="q-body"><span class="segment q-seg" data-start="836.8" data-end="839.92" title="13:56">so tell me, what are the complications of pancreatitis? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="841.84" data-end="848.24" title="14:01">These may be divided into local and systemic complications. Systemic complications arise </span></li>
+<li><span class="segment a-seg" data-start="848.24" data-end="855.2" title="14:08">earlier and are essentially extra-pancreatic organ failures. These are responsible for most early deaths. </span></li>
+<li><span class="segment a-seg" data-start="856.16" data-end="863.92" title="14:16">ARDS, acute kidney injury and gut failure, and the abdominal compartment syndrome are most common, </span></li>
+<li><span class="segment a-seg" data-start="863.92" data-end="869.84" title="14:23">and as with other causes of the systemic inflammatory response, patients are more susceptible to </span></li>
+<li><span class="segment a-seg" data-start="869.84" data-end="878.0" title="14:29">infections. Of local complications, pancreatic necrosis may also develop early. Other local </span></li>
+<li><span class="segment a-seg" data-start="878.0" data-end="885.12" title="14:38">complications may take a week or two to develop and include pseudocysts, pseudoaneurysm, </span></li>
+<li><span class="segment a-seg" data-start="885.12" data-end="892.16" title="14:45">and pancreatic abscess. There may be a late failure to improve, or deterioration if necrosis </span></li>
+<li><span class="segment a-seg" data-start="892.16" data-end="899.52" title="14:52">becomes infected. There may also be therapy-related complications, particularly from ERCP. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="900.88">
+  <div class="q-label">Q14</div>
+  <div class="q-body"><span class="segment q-seg" data-start="900.88" data-end="902.8" title="15:00">Tell me more about pancreatic necrosis. </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="903.28" data-end="910.56" title="15:03">The extent of pancreatic necrosis seen on the CT is a guide to the severity of the condition. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="911.52">
+  <div class="q-label">Q15</div>
+  <div class="q-body"><span class="segment q-seg" data-start="911.52" data-end="917.52" title="15:11">However, what is really significant is the fact that the leading cause of morbidity and mortality </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="917.52" data-end="925.12" title="15:17">is infected pancreatic necrosis, and somewhere over 50% of patients with severe pancreatitis </span></li>
+<li><span class="segment a-seg" data-start="925.12" data-end="931.04" title="15:25">will develop infected necrosis by the second or third week of their illness. So there has been </span></li>
+<li><span class="segment a-seg" data-start="931.04" data-end="938.4" title="15:31">a lot of interest in preventing infection. Most infecting organisms are gut-derived gram-negative </span></li>
+<li><span class="segment a-seg" data-start="938.4" data-end="945.6" title="15:38">and anaerobic bacteria, hence the interest in probiotics. This might also be why </span></li>
+<li><span class="segment a-seg" data-start="945.6" data-end="952.0" title="15:45">entral feeding has the beneficial effects it does, as it preserves mucosal barrier function. </span></li>
+<li><span class="segment a-seg" data-start="952.72" data-end="956.72" title="15:52">There is also the fawny question of antibiotic prophylaxis. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="957.2">
+  <div class="q-label">Q16</div>
+  <div class="q-body"><span class="segment q-seg" data-start="957.2" data-end="963.067" title="15:57">Oh yes, I wonder when you'd mention that. Antibiotics are often used. Should they be? </span><span class="segment q-seg" data-start="963.067" data-end="964.24" title="16:03">What about SDD? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="966.24" data-end="973.28" title="16:06">Yes, broad spectrum antibiotics are often started in severe acute pancreatitis with the intention </span></li>
+<li><span class="segment a-seg" data-start="973.28" data-end="979.92" title="16:13">of reducing the incidence of infected necrosis and mortality. There is evidence from randomised </span></li>
+<li><span class="segment a-seg" data-start="979.92" data-end="986.48" title="16:19">controlled trials to support the use of antibiotics, and also trials that show no beneficial </span></li>
+<li><span class="segment a-seg" data-start="986.48" data-end="993.76" title="16:26">effects. Many factors might explain this, including the antibiotics used and whether they penetrate </span></li>
+<li><span class="segment a-seg" data-start="993.76" data-end="1000.48" title="16:33">pancreatic tissue adequately, patient selection, outcome measures and the quality of the trials. </span></li>
+<li><span class="segment a-seg" data-start="1001.2" data-end="1007.84" title="16:41">Findings from meta-analyses are similarly confusing, probably relating to trial selection, </span></li>
+<li><span class="segment a-seg" data-start="1007.84" data-end="1013.84" title="16:47">whether there is a suggestion that higher quality trials are associated with reduced or no treatment </span></li>
+<li><span class="segment a-seg" data-start="1013.84" data-end="1020.8" title="16:53">effect. Current UK guidelines do not make a definitive recommendation, but there is growing </span></li>
+<li><span class="segment a-seg" data-start="1020.8" data-end="1027.6" title="17:00">recognition of the problems of antibiotic resistance and bacterial and fungal overgrowth associated </span></li>
+<li><span class="segment a-seg" data-start="1027.6" data-end="1033.68" title="17:07">with prolonged prophylaxis courses. Use of antibiotics should be targeted at high risk </span></li>
+<li><span class="segment a-seg" data-start="1033.68" data-end="1041.36" title="17:13">individuals according to the clinical context, pending definitive trials. Patients with multi-organ </span></li>
+<li><span class="segment a-seg" data-start="1041.44" data-end="1048.88" title="17:21">failure would generally be considered high risk. As far as SDD is concerned, there is insufficient </span></li>
+<li><span class="segment a-seg" data-start="1048.88" data-end="1055.68" title="17:28">evidence to recommend routine use, but some units use it in prolonged episodes complicated by </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="1055.68">
+  <div class="q-label">Q17</div>
+  <div class="q-body"><span class="segment q-seg" data-start="1055.68" data-end="1059.68" title="17:35">recurrent infection. So what will you do for this man? </span><span class="segment q-seg" data-start="1059.68" data-end="1061.28" title="17:39">Will you start antibiotics? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="1062.72" data-end="1068.88" title="17:42">The list set is day five and he is now ventilated and on noradrenaline, with a creatinine of 350 </span></li>
+<li><span class="segment a-seg" data-start="1068.88" data-end="1074.96" title="17:48">and rising, despite successful ERCP on day three. CT shows about one-third of his pancreas is </span></li>
+<li><span class="segment a-seg" data-start="1074.96" data-end="1083.92" title="17:54">necrotic. Infection is unlikely if less than 30% of the pancreas is necrotic. This man has evidence </span></li>
+<li><span class="segment a-seg" data-start="1083.92" data-end="1090.72" title="18:03">of progressive multi-organ failure. In this situation I would start antibiotics after taking blood </span></li>
+<li><span class="segment a-seg" data-start="1090.72" data-end="1098.8" title="18:10">cultures and also a CT guided fine needle aspiration of the necrosis. I'd be guided by microbiological </span></li>
+<li><span class="segment a-seg" data-start="1099.2" data-end="1106.8" title="18:19">advice, but mirror penim would be one appropriate choice and plan a course no longer than 14 days. </span></li>
+<li><span class="segment a-seg" data-start="1107.92" data-end="1115.76" title="18:27">If FNA cultures were negative, I would stop the antibiotics. Fungal cover is usually not necessary </span></li>
+<li><span class="segment a-seg" data-start="1115.76" data-end="1122.4" title="18:35">unless there have been previous antibiotics used or other risk factors such as TPN use or surgical </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="1122.48">
+  <div class="q-label">Q18</div>
+  <div class="q-body"><span class="segment q-seg" data-start="1122.48" data-end="1126.427" title="18:42">intervention. What is the role of CT scanning? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="1126.427" data-end="1131.36" title="18:46">As said before, the CT severity index is a good </span></li>
+<li><span class="segment a-seg" data-start="1131.36" data-end="1136.72" title="18:51">prognostic guide early in the course of the disease, but unless there are other diagnostic </span></li>
+<li><span class="segment a-seg" data-start="1136.72" data-end="1143.84" title="18:56">indications for a CT, it should not be done purely for staging purposes. Necrosis may develop </span></li>
+<li><span class="segment a-seg" data-start="1143.84" data-end="1151.76" title="19:03">throughout the first week so early CT may underestimate the final extent and severity. A CT should </span></li>
+<li><span class="segment a-seg" data-start="1151.84" data-end="1159.12" title="19:11">be done if there are new or persisting symptoms, signs, sepsis or organ failures as local complications </span></li>
+<li><span class="segment a-seg" data-start="1159.12" data-end="1165.76" title="19:19">may have occurred and require intervention. CT is also indicated where infected pancreatic </span></li>
+<li><span class="segment a-seg" data-start="1165.76" data-end="1173.12" title="19:25">necrosis is suspected to get samples for culture before starting antibiotics. So when is surgery </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="1173.12">
+  <div class="q-label">Q19</div>
+  <div class="q-body"><span class="segment q-seg" data-start="1173.12" data-end="1173.731" title="19:33">indicated? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="1173.731" data-end="1181.68" title="19:33">This is a question best decided by consultation with surgical colleagues. Cases of </span></li>
+<li><span class="segment a-seg" data-start="1181.68" data-end="1188.88" title="19:41">infected necrosis will not resolve without necrosectomy, but it is best to wait as long as possible </span></li>
+<li><span class="segment a-seg" data-start="1188.88" data-end="1196.8" title="19:48">to be sure that necrosis has delineated. Rarely, extensive, apparently sterile necrosis </span></li>
+<li><span class="segment a-seg" data-start="1196.8" data-end="1203.36" title="19:56">may need to be deprived. The surgical technique will depend on local expertise and there appears </span></li>
+<li><span class="segment a-seg" data-start="1203.36" data-end="1209.76" title="20:03">to be no difference in outcome between open and laparoscopic approaches. Some patients need an </span></li>
+<li><span class="segment a-seg" data-start="1209.76" data-end="1218.0" title="20:09">open abdomen, repeat laparotomies or continuous drainage of the pancreatic bed. Other local complications </span></li>
+<li><span class="segment a-seg" data-start="1218.0" data-end="1224.4" title="20:18">such as pseudocysts or pseudoaneurysm may be dealt with surgically or radiologically, </span></li>
+<li><span class="segment a-seg" data-start="1224.4" data-end="1230.08" title="20:24">depending on the precise anatomy and available expertise. Thank you, we'll finish there. </span></li>
+  </ul>
+</div>
+</div>
+
 </div>
 
 <div class="subtitle-bar">
-  <span class="subtitle-text empty" id="subtitle-text">Play audio to see live subtitles&#8230;</span>
+  <span id="subtitle-text" class="empty">Play audio to see live subtitles&#8230;</span>
 </div>
 
 <script>
-
-const audio    = document.getElementById('audio');
-const allSegs  = Array.from(document.querySelectorAll('.segment'));
-const allBlocks = Array.from(document.querySelectorAll('.t-block'));
+const audio      = document.getElementById('audio');
+const allSegs    = Array.from(document.querySelectorAll('.segment'));
 const subtitleEl = document.getElementById('subtitle-text');
-let activeSegEl   = null;
-let activeBlockEl = null;
-let searchMatches = [];
-let searchIdx     = 0;
+let activeSegEl  = null;
+let searchMatches = [], searchIdx = 0;
 
-// Duration display
 audio.addEventListener('loadedmetadata', () => {
   const m = Math.floor(audio.duration / 60);
   const s = Math.floor(audio.duration %% 60).toString().padStart(2,'0');
   document.getElementById('dur').textContent = m + ':' + s;
 });
 
-// Seek helper
-function seekTo(t) {
-  audio.currentTime = t;
-  audio.play();
-}
+function seekTo(t) { audio.currentTime = t; audio.play(); }
 
-// Block gutter click
-document.querySelectorAll('.t-gutter').forEach(g => {
-  g.addEventListener('click', () => seekTo(parseFloat(g.dataset.start)));
+// Q-block header click
+document.querySelectorAll('.q-block').forEach(q => {
+  q.addEventListener('click', e => {
+    if (!e.target.classList.contains('segment')) seekTo(parseFloat(q.dataset.start));
+  });
 });
 
-// Segment click
+// Individual segment click
 allSegs.forEach(s => {
-  s.addEventListener('click', e => {
-    e.stopPropagation();
-    seekTo(parseFloat(s.dataset.start));
-  });
+  s.addEventListener('click', e => { e.stopPropagation(); seekTo(parseFloat(s.dataset.start)); });
 });
 
 // Real-time tracking
 audio.addEventListener('timeupdate', () => {
   const t = audio.currentTime;
-
-  // Find active segment (last one whose start <= t)
   let found = null;
   for (let i = allSegs.length - 1; i >= 0; i--) {
     if (parseFloat(allSegs[i].dataset.start) <= t) { found = allSegs[i]; break; }
   }
-
   if (found && found !== activeSegEl) {
-    // Clear previous
-    if (activeSegEl) activeSegEl.classList.remove('active');
-    if (activeBlockEl) {
-      activeBlockEl.classList.remove('block-active');
-      const pg = activeBlockEl.querySelector('.t-gutter');
-      if (pg) pg.classList.remove('gutter-active');
+    if (activeSegEl) {
+      activeSegEl.classList.remove('active');
+      const pli = activeSegEl.closest('li');
+      if (pli) pli.classList.remove('li-active');
+      const pq = activeSegEl.closest('.q-block');
+      if (pq) pq.classList.remove('q-active');
     }
-    // Set new
     found.classList.add('active');
-    const block = found.closest('.t-block');
-    if (block) {
-      block.classList.add('block-active');
-      const g = block.querySelector('.t-gutter');
-      if (g) g.classList.add('gutter-active');
-      activeBlockEl = block;
-    }
+    const li = found.closest('li');
+    if (li) li.classList.add('li-active');
+    const qb = found.closest('.q-block');
+    if (qb) qb.classList.add('q-active');
     activeSegEl = found;
 
-    // Update subtitle
     subtitleEl.textContent = found.textContent.trim();
     subtitleEl.classList.remove('empty');
 
-    // Auto-scroll (only when not searching)
-    if (!document.getElementById('search').value) {
+    if (!document.getElementById('search').value)
       found.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }
   }
 });
 
@@ -374,17 +618,13 @@ searchInput.addEventListener('keydown', e => {
     el.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
 });
-
 function runSearch() {
   const q = searchInput.value.trim().toLowerCase();
   allSegs.forEach(s => s.classList.remove('search-match','search-current'));
   searchMatches = [];
   if (!q) return;
   allSegs.forEach(s => {
-    if (s.textContent.toLowerCase().includes(q)) {
-      s.classList.add('search-match');
-      searchMatches.push(s);
-    }
+    if (s.textContent.toLowerCase().includes(q)) { s.classList.add('search-match'); searchMatches.push(s); }
   });
   if (!searchMatches.length) return;
   searchIdx = 0;

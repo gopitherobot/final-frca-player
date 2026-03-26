@@ -5,10 +5,19 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Regional Anaesthesia — Anatomy of the Trachea and Bronchi</title>
 <style>
-
   :root {
-    --accent:    #2563eb;
-    --body-bg:   #f1f5f9;
+    --q-bg:       #1e3a5f;
+    --q-text:     #ffffff;
+    --q-label:    #60a5fa;
+    --a-bg:       #ffffff;
+    --a-border:   #e2e8f0;
+    --a-label:    #059669;
+    --active-q:   #2563eb;
+    --active-a:   #dbeafe;
+    --accent:     #2563eb;
+    --body-bg:    #f1f5f9;
+    --pre-bg:     #fef9c3;
+    --pre-border: #fcd34d;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
@@ -40,22 +49,9 @@
     margin-bottom: 4px;
     letter-spacing: 0.01em;
   }
-  .header-sub {
-    font-size: 0.72rem;
-    color: #94a3b8;
-    font-style: italic;
-  }
-  audio {
-    height: 36px;
-    accent-color: var(--accent);
-    flex-shrink: 0;
-  }
-  .back-link {
-    font-size: 0.8rem;
-    color: #94a3b8;
-    text-decoration: none;
-    white-space: nowrap;
-  }
+  .header-sub { font-size: 0.72rem; color: #94a3b8; font-style: italic; }
+  audio { height: 36px; accent-color: var(--accent); flex-shrink: 0; }
+  .back-link { font-size: 0.8rem; color: #94a3b8; text-decoration: none; white-space: nowrap; }
   .back-link:hover { color: #60a5fa; }
 
   /* ── Toolbar ── */
@@ -69,30 +65,17 @@
     border-bottom: 1px solid #334155;
   }
   .toolbar input {
-    flex: 1;
-    max-width: 380px;
+    flex: 1; max-width: 380px;
     padding: 5px 11px;
-    border: 1px solid #475569;
-    border-radius: 6px;
-    background: #0f172a;
-    color: #e2e8f0;
-    font-size: 0.83rem;
-    outline: none;
+    border: 1px solid #475569; border-radius: 6px;
+    background: #0f172a; color: #e2e8f0; font-size: 0.83rem; outline: none;
   }
   .toolbar input:focus { border-color: var(--accent); }
   .toolbar input::placeholder { color: #64748b; }
-  .stats {
-    font-size: 0.72rem;
-    color: #64748b;
-    white-space: nowrap;
-  }
+  .stats { font-size: 0.72rem; color: #64748b; white-space: nowrap; }
 
   /* ── Scroll area ── */
-  .scroll-area {
-    flex: 1;
-    overflow-y: auto;
-    padding: 20px;
-  }
+  .scroll-area { flex: 1; overflow-y: auto; padding: 20px; }
   .scroll-area::-webkit-scrollbar { width: 6px; }
   .scroll-area::-webkit-scrollbar-track { background: transparent; }
   .scroll-area::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
@@ -107,68 +90,77 @@
     display: flex;
     align-items: center;
   }
-  .subtitle-text {
-    font-size: 0.9rem;
-    color: #e2e8f0;
-    line-height: 1.5;
-    font-style: italic;
-  }
-  .subtitle-text.empty { color: #475569; }
+  #subtitle-text { font-size: 0.88rem; color: #e2e8f0; line-height: 1.5; font-style: italic; }
+  #subtitle-text.empty { color: #475569; }
 
-  /* ── Transcript blocks ── */
-  .t-block {
-    background: #ffffff;
-    border: 1px solid #e2e8f0;
-    border-radius: 10px;
-    margin-bottom: 14px;
-    overflow: hidden;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
-    display: flex;
-  }
-  .t-block.block-active {
-    border-color: var(--accent);
-    box-shadow: 0 0 0 2px rgba(37,99,235,0.15);
-  }
-  .t-gutter {
-    background: #0f172a;
-    width: 52px;
-    flex-shrink: 0;
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
-    padding-top: 14px;
-    cursor: pointer;
-  }
-  .t-gutter:hover { background: #1e293b; }
-  .t-timestamp {
-    font-size: 0.7rem;
-    color: #64748b;
-    font-family: monospace;
-    font-weight: 600;
-    letter-spacing: 0.02em;
-  }
-  .t-gutter.gutter-active .t-timestamp { color: var(--accent); }
-  .t-body {
-    flex: 1;
+  /* ── Preamble ── */
+  .preamble-block {
+    background: var(--pre-bg);
+    border-left: 4px solid var(--pre-border);
+    border-radius: 0 8px 8px 0;
     padding: 12px 16px;
-    line-height: 1.75;
-    font-size: 0.92rem;
-    color: #1e293b;
+    margin-bottom: 20px;
+    font-size: 0.88rem;
+    color: #78350f;
+    font-style: italic;
+    line-height: 1.7;
   }
 
-  /* ── Segments ── */
-  .segment {
+  /* ── Q&A pair ── */
+  .qa-pair { margin-bottom: 20px; border-radius: 10px; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+
+  /* Question block */
+  .q-block {
+    background: var(--q-bg);
+    padding: 14px 18px;
+    display: flex; gap: 14px; align-items: flex-start;
     cursor: pointer;
-    border-radius: 3px;
-    transition: background 0.1s;
+    transition: background 0.15s;
   }
-  .segment:hover { background: #eff6ff; }
-  .segment.active {
-    background: #bfdbfe;
-    outline: 2px solid #3b82f6;
-    outline-offset: 1px;
-    border-radius: 3px;
+  .q-block:hover { background: #1d4ed8; }
+  .q-block.q-active { background: var(--active-q); }
+  .q-label {
+    font-size: 0.7rem; font-weight: 700;
+    color: var(--q-label);
+    background: rgba(96,165,250,0.15);
+    border: 1px solid rgba(96,165,250,0.3);
+    border-radius: 5px; padding: 3px 7px;
+    white-space: nowrap; margin-top: 2px; letter-spacing: 0.05em;
+    flex-shrink: 0;
   }
+  .q-body { flex: 1; font-size: 0.97rem; font-weight: 600; color: var(--q-text); line-height: 1.55; }
+
+  /* Answer block */
+  .a-block {
+    background: var(--a-bg);
+    border: 1px solid var(--a-border); border-top: none;
+    padding: 14px 18px;
+    display: flex; gap: 14px; align-items: flex-start;
+  }
+  .a-label {
+    font-size: 0.7rem; font-weight: 700;
+    color: var(--a-label);
+    background: #d1fae5; border: 1px solid #6ee7b7;
+    border-radius: 5px; padding: 3px 9px;
+    white-space: nowrap; margin-top: 2px; letter-spacing: 0.05em;
+    flex-shrink: 0;
+  }
+  .a-body { flex: 1; list-style: none; padding: 0; }
+  .a-body li {
+    padding: 4px 0 4px 14px;
+    border-left: 3px solid transparent;
+    line-height: 1.7; font-size: 0.92rem; color: #1e293b;
+    border-radius: 0 4px 4px 0;
+    transition: background 0.15s;
+  }
+  .a-body li:not(:last-child) { border-bottom: 1px solid #f1f5f9; }
+
+  /* ── Segments (clickable) ── */
+  .segment { cursor: pointer; border-radius: 3px; }
+  .q-seg:hover { background: rgba(255,255,255,0.18); }
+  .a-seg:hover { background: #eff6ff; }
+  .segment.active { background: #bfdbfe; outline: 2px solid #3b82f6; outline-offset: 1px; }
+  .a-body li.li-active { background: var(--active-a); border-left-color: var(--accent); }
   .segment.search-match  { background: #fef9c3; }
   .segment.search-current { background: #fde047; outline: 2px solid #ca8a04; }
 
@@ -187,169 +179,557 @@
 
 <div class="toolbar">
   <input type="text" id="search" placeholder="Search transcript&#8230; (Enter = next match)">
-  <span class="stats" id="stats">152 segments &nbsp;|&nbsp; <span id="dur">loading&#8230;</span></span>
+  <span class="stats" id="stats">32 questions &nbsp;|&nbsp; 152 segments &nbsp;|&nbsp; <span id="dur">loading&#8230;</span></span>
 </div>
 
 <div class="scroll-area" id="scroll-area">
-<div class="t-block">
-  <div class="t-gutter" data-start="0.0"><span class="t-timestamp">0:00</span></div>
-  <div class="t-body"><span class="segment" data-start="0.0" data-end="4.44" title="0:00">anatomy of trachia and bronchi. This is most likely to come up in the science </span><span class="segment" data-start="4.44" data-end="8.88" title="0:04">fibre. Diagrams will help you remember the anatomy which can be quite cumbersome </span><span class="segment" data-start="8.88" data-end="13.52" title="0:08">to learn. The examiner is likely to start with describing the anatomy before </span><span class="segment" data-start="13.52" data-end="18.56" title="0:13">moving on to some applied clinical aspects. How long is an average adults trachia? </span><span class="segment" data-start="18.56" data-end="24.88" title="0:18">The trachia is 10 to 15 centimeters long and extends from the </span><span class="segment" data-start="24.88" data-end="34.4" title="0:24">cryoid cartilage at the level of C6 to the carina at T45. It may extend to T6 at </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="34.4"><span class="t-timestamp">0:34</span></div>
-  <div class="t-body"><span class="segment" data-start="34.4" data-end="41.84" title="0:34">full inspiration. What is the trachia made of? It is made of fibroelastic </span><span class="segment" data-start="41.84" data-end="47.72" title="0:41">connective tissue reinforced by 15 to 20 cartilaginous rings which are </span><span class="segment" data-start="47.72" data-end="54.16" title="0:47">incomplete posteriorly. It is lined by siliated calumna epithelium and mucus </span><span class="segment" data-start="54.16" data-end="59.52" title="0:54">glands. There is also a smooth muscle layer posteriorly which runs both </span><span class="segment" data-start="59.52" data-end="65.2" title="0:59">long to tunally and transversally. This is called the trachialis muscle. What is </span><span class="segment" data-start="65.2" data-end="72.44" title="1:05">its diameter? The diameter of the trachia is 1.5 to 2 centimeters and it is </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="72.44"><span class="t-timestamp">1:12</span></div>
-  <div class="t-body"><span class="segment" data-start="72.44" data-end="78.28" title="1:12">flattened posteriorly. What are its anterior relations? You may want to draw a </span><span class="segment" data-start="78.28" data-end="82.68" title="1:18">diagram or two to help you explain this. It's useful to learn the cross-sectional </span><span class="segment" data-start="82.68" data-end="88.04" title="1:22">anatomy at two levels. In the neck usually at the level of C6 and in the </span><span class="segment" data-start="88.04" data-end="92.92" title="1:28">thorax usually at the level of T4. The examiner may want the anatomy at both </span><span class="segment" data-start="92.92" data-end="97.72" title="1:32">levels or only at one. Take a minute to draw the diagrams before going through </span><span class="segment" data-start="97.72" data-end="106.6" title="1:37">them. In the neck the trachia's anterior relations are from outside in skin and </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="106.6"><span class="t-timestamp">1:46</span></div>
-  <div class="t-body"><span class="segment" data-start="106.6" data-end="113.8" title="1:46">superficial and then deep fascia. The anterior jugular vein, sternohyode and </span><span class="segment" data-start="113.8" data-end="120.64" title="1:53">sterno thyroid muscles in the lower neck and pre-trukey of fascia. The isthmus </span><span class="segment" data-start="120.64" data-end="124.64" title="2:00">of the thyroid gland lies anterior at the level of the second to fourth </span><span class="segment" data-start="124.64" data-end="132.16" title="2:04">trachialed rings. In the thorax the manubrium sternae lies anteriorly as does </span><span class="segment" data-start="132.16" data-end="137.28" title="2:12">the thymic remnants and the inferior thyroid veins. Lower down in the </span><span class="segment" data-start="137.28" data-end="143.08" title="2:17">thorax the brachocaphalic artery and the left brachocaphalic vein cross the </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="143.08"><span class="t-timestamp">2:23</span></div>
-  <div class="t-body"><span class="segment" data-start="143.08" data-end="149.4" title="2:23">trachiaean anteriorly as well as the aortic arch. The pulmonary bifurcation lies </span><span class="segment" data-start="149.4" data-end="156.28" title="2:29">behind the carina. What are its posterior relations? Again you can refer to your </span><span class="segment" data-start="156.28" data-end="163.12" title="2:36">diagrams. Its posterior relations in the neck include the esophagus with the </span><span class="segment" data-start="163.12" data-end="167.4" title="2:43">recurrent laryngeal nerves lying in the grooves between the trachia and the esophagus. </span><span class="segment" data-start="167.4" data-end="173.0" title="2:47">In the thorax it is only the left recurrent laryngeal nerve and the esophagus </span><span class="segment" data-start="173.0" data-end="179.2" title="2:53">which lies posteriorly. The right laryngeal nerve leaves the vagus as it crosses </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="179.2"><span class="t-timestamp">2:59</span></div>
-  <div class="t-body"><span class="segment" data-start="179.2" data-end="184.16" title="2:59">the subclavian artery which is at a higher level than where the left recurrent </span><span class="segment" data-start="184.16" data-end="190.48" title="3:04">angial nerve originates. It then ascends in the trachiaesophageal groove. The </span><span class="segment" data-start="190.48" data-end="195.36" title="3:10">left leaves the vagus at a lower level as it crosses the aortic arch and then </span><span class="segment" data-start="195.36" data-end="203.56" title="3:15">ascends. What are its lateral relations? The lateral relations in the neck, the </span><span class="segment" data-start="203.56" data-end="208.52" title="3:23">lobes of the thyroid and the crotted sheaths lie naturally. The crotted sheath </span><span class="segment" data-start="208.52" data-end="212.92" title="3:28">contains the internal jugular vein, the common crotted archery and the vagus </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="212.92"><span class="t-timestamp">3:32</span></div>
-  <div class="t-body"><span class="segment" data-start="212.92" data-end="219.8" title="3:32">nerve. In the thorax it is related on both sides by the plurra and the lung and </span><span class="segment" data-start="219.8" data-end="225.16" title="3:39">the right and left vagus nerves respectively. On the right hand side it is also </span><span class="segment" data-start="225.16" data-end="230.32" title="3:45">related to the azigas vein and the superior vina cava. On the left </span><span class="segment" data-start="230.32" data-end="235.6" title="3:50">lives the left common crotted archery and the aortic arch. What is the nerve </span><span class="segment" data-start="235.6" data-end="242.08" title="3:55">supply to the trachia? The nerve supply to the trachia is from the recurrent </span><span class="segment" data-start="242.08" data-end="246.44" title="4:02">laryngeal nerve and sympathetic branches from the middle cervical ganglion. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="246.44"><span class="t-timestamp">4:06</span></div>
-  <div class="t-body"><span class="segment" data-start="246.44" data-end="252.32" title="4:06">Let's move down to the bronchion bronchial tree. What are the subdivisions of </span><span class="segment" data-start="252.32" data-end="258.92" title="4:12">the bronchial tree from trachia to alveolus? The subdivisions of the trachia are </span><span class="segment" data-start="258.92" data-end="268.48" title="4:18">broncus bronchials, respiratory bronchials, alveoloducts, alveolus ax and then </span><span class="segment" data-start="268.48" data-end="273.68" title="4:28">alveolus. Can you describe to me the anatomy of the right main bronchus? How </span><span class="segment" data-start="273.68" data-end="279.6" title="4:33">long is it? The anatomy of the right main bronchus is that it's about three </span><span class="segment" data-start="279.6" data-end="285.32" title="4:39">centimeters long, which is shortened at the left, it's also wider. At what angle </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="285.32"><span class="t-timestamp">4:45</span></div>
-  <div class="t-body"><span class="segment" data-start="285.32" data-end="291.72" title="4:45">does it leave the trachia? The right main bronchus leaves the trachia at an angle </span><span class="segment" data-start="291.72" data-end="297.08" title="4:51">of 25 to 30 degrees, which is more vertical than that of the left main bronchus. </span><span class="segment" data-start="297.08" data-end="304.0" title="4:57">What are its relations? The relations of the right main bronchus are that it </span><span class="segment" data-start="304.0" data-end="308.76" title="5:04">passes under the azigas vein and lies initially above and then behind the </span><span class="segment" data-start="308.76" data-end="313.12" title="5:08">right pulmonary artery. What about the left main bronchus? Can you describe </span><span class="segment" data-start="313.12" data-end="319.96" title="5:13">it's anatomy? The left main bronchus is about five centimeters long, it leaves </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="319.96"><span class="t-timestamp">5:19</span></div>
-  <div class="t-body"><span class="segment" data-start="319.96" data-end="328.24" title="5:19">the trachia at an angle of 45 to 50 degrees. What are its relations? The left main </span><span class="segment" data-start="328.24" data-end="333.28" title="5:28">bronchus passes under the autogarch in front of the esophagus and descending </span><span class="segment" data-start="333.28" data-end="338.24" title="5:33">aorta. It then passes to lie initially below and then behind the left pulmonary </span><span class="segment" data-start="338.24" data-end="343.72" title="5:38">artery. Let's concentrate on the right hand side first. How many lobes are </span><span class="segment" data-start="343.72" data-end="347.76" title="5:43">there on the right? The examiner is probably going to talk you through explaining </span><span class="segment" data-start="347.76" data-end="351.96" title="5:47">the anatomy of the bronchi and bronchial tree. Again a diagram will help you </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="351.96"><span class="t-timestamp">5:51</span></div>
-  <div class="t-body"><span class="segment" data-start="351.96" data-end="359.24" title="5:51">remember and explain this. The right lung has three lobes, which is supplied by </span><span class="segment" data-start="359.24" data-end="365.4" title="5:59">three lobe bronchi, the upper, middle and lower lobes. Can you explain the </span><span class="segment" data-start="365.4" data-end="370.92" title="6:05">anatomy of the bronchi and bronchial tree on this side? The right upper </span><span class="segment" data-start="370.92" data-end="376.96" title="6:10">lobe bronchus comes off the right main bronchus first, usually about 2.5 </span><span class="segment" data-start="376.96" data-end="382.12" title="6:16">centimeters from the carina, but of course this may vary. It is therefore the </span><span class="segment" data-start="382.12" data-end="386.76" title="6:22">right upper lobe that is most at risk of occlusion from a trachial tube or a </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="386.76"><span class="t-timestamp">6:26</span></div>
-  <div class="t-body"><span class="segment" data-start="386.76" data-end="392.24" title="6:26">right-sided double-lumen tube. The right upper lobe bronchus then divides </span><span class="segment" data-start="392.24" data-end="398.36" title="6:32">within one centimeter of its origin into apical, anterior, posterior, segmental </span><span class="segment" data-start="398.36" data-end="404.12" title="6:38">bronchi. The middle lobe bronchus is the next to come off the right main bronchus. </span><span class="segment" data-start="404.12" data-end="408.88" title="6:44">This is directed downwards and forwards and splits into lateral, </span><span class="segment" data-start="408.88" data-end="415.4" title="6:48">immediate, segmental bronchi. The right lower lobe bronchus has an apical branch </span><span class="segment" data-start="415.4" data-end="420.88" title="6:55">that comes off just below the origin of the middle lobe bronchus. The main stem of </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="420.88"><span class="t-timestamp">7:00</span></div>
-  <div class="t-body"><span class="segment" data-start="420.88" data-end="424.28" title="7:00">the lower lobe bronchus continues downwards before splitting into medial, </span><span class="segment" data-start="424.28" data-end="431.88" title="7:04">basal, anterior basal, lateral basal and posterior basal segments. So how many </span><span class="segment" data-start="431.88" data-end="437.88" title="7:11">bronchopulmonary segments are there on the right? There are 10 bronchopulmonary </span><span class="segment" data-start="437.88" data-end="444.24" title="7:17">segments on the right. Apical, posterior and anterior form the upper lobe, </span><span class="segment" data-start="444.24" data-end="450.04" title="7:24">lateral and medial form the middle lobe and apical, medial, anterior, lateral </span><span class="segment" data-start="450.04" data-end="457.08" title="7:30">and posterior form the lower lobe. What about the left? How many lobes are there? </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="457.6"><span class="t-timestamp">7:37</span></div>
-  <div class="t-body"><span class="segment" data-start="457.6" data-end="462.56" title="7:37">There are two main lobes on the left, the upper and lower lobe and also a </span><span class="segment" data-start="462.56" data-end="467.6" title="7:42">lingual lobe which is thought to be part of the upper lobe. Can you describe the </span><span class="segment" data-start="467.6" data-end="473.36" title="7:47">anatomy of the bronchial tree on this side? The left main bronchus is longer than </span><span class="segment" data-start="473.36" data-end="478.52" title="7:53">the right and terminates in two lobe bronchi, the upper and lower, after about </span><span class="segment" data-start="478.52" data-end="483.84" title="7:58">five centimeters. The left upper lobe bronchus divides into superior division and </span><span class="segment" data-start="483.84" data-end="489.12" title="8:03">a lingular division. The superior division splits into apical, posterior and </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="489.12"><span class="t-timestamp">8:09</span></div>
-  <div class="t-body"><span class="segment" data-start="489.12" data-end="494.96" title="8:09">anterior segmental bronchi. This is similar to the upper lobe on the right hand side. </span><span class="segment" data-start="494.96" data-end="501.96" title="8:14">The lingular division splits into superior and inferior segmental bronchi. The </span><span class="segment" data-start="501.96" data-end="507.36" title="8:21">anatomy of the left lobe is similar to that of the right lobe lobe. The left </span><span class="segment" data-start="507.36" data-end="513.52" title="8:27">lobe lobe bronchus gives off apical, medial basal, anterior basal, lateral </span><span class="segment" data-start="513.52" data-end="520.24" title="8:33">basal and posterior basal segmental bronchi. However, the anterior and medial </span><span class="segment" data-start="520.24" data-end="526.4" title="8:40">basal bronchopromary segments are often together. So how many bronchopromary </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="526.4"><span class="t-timestamp">8:46</span></div>
-  <div class="t-body"><span class="segment" data-start="526.4" data-end="533.52" title="8:46">segments are there on the left? There are ten segments on the left hand side, apical, </span><span class="segment" data-start="533.52" data-end="539.6" title="8:53">posterior and anterior form the upper lobe, superior and inferior form the </span><span class="segment" data-start="539.6" data-end="546.32" title="8:59">lingular and apical, medial, anterior, lateral and posterior basal form the lower </span><span class="segment" data-start="546.32" data-end="550.88" title="9:06">lobe. However, since the anterior and medial bronchopromary segments are </span><span class="segment" data-start="550.88" data-end="556.32" title="9:10">often together, some would say that technically there are only nine. The </span><span class="segment" data-start="556.32" data-end="561.12" title="9:16">vivos know likely to turn to some applied clinical aspects. From your knowledge </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="561.2"><span class="t-timestamp">9:21</span></div>
-  <div class="t-body"><span class="segment" data-start="561.2" data-end="565.12" title="9:21">of the bronchial tree, can you predict which part of the lung is most likely to </span><span class="segment" data-start="565.12" data-end="570.08" title="9:25">be contaminated during aspiration if the patient is lying supine and explained to me why? </span><span class="segment" data-start="572.32" data-end="578.16" title="9:32">In the supine position, the apical segments of the lower lobes are most likely to be contaminated </span><span class="segment" data-start="578.16" data-end="582.16" title="9:38">since the apical bronchi project posteriorly from the lower lobe bronchi. </span><span class="segment" data-start="583.44" data-end="585.44" title="9:43">What about the patient was in the lateral position? </span><span class="segment" data-start="585.52" data-end="593.04" title="9:45">In the lateral position, gastric content is more likely to enter the upper lobe bronchus of the </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="593.04"><span class="t-timestamp">9:53</span></div>
-  <div class="t-body"><span class="segment" data-start="593.04" data-end="599.44" title="9:53">side the patient is lying on since these bronchi project laterally. What about the patient </span><span class="segment" data-start="599.44" data-end="606.8" title="9:59">was sitting up? In this position, the most likely areas to be contaminated are the posterior </span><span class="segment" data-start="606.8" data-end="613.44" title="10:06">basal and the lateral basal bronchopromary segments since the bronchi to these segments project downwards. </span><span class="segment" data-start="613.68" data-end="616.32" title="10:13">What if the patient was lying prone? </span><span class="segment" data-start="618.64" data-end="623.76" title="10:18">In the prone position, gastric content is more likely to enter the middle lobe on the right </span><span class="segment" data-start="623.76" data-end="628.48" title="10:23">and the lingula on the left. This is because the bronchi that supply the middle lobe and the </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="628.48"><span class="t-timestamp">10:28</span></div>
-  <div class="t-body"><span class="segment" data-start="628.48" data-end="634.72" title="10:28">lingula run downward and forward. If you're doing well, the examiner may move on to another </span><span class="segment" data-start="634.72" data-end="640.08" title="10:34">clinical area. You may be asked about performing a tracheostomy which is covered in another </span><span class="segment" data-start="640.08" data-end="646.96" title="10:40">podcast or about double lumen-entered bronchial tube. What are the indications for double lumen tube? </span><span class="segment" data-start="649.28" data-end="655.44" title="10:49">A double lumen tube may be used to facilitate one lung ventilation. The indications may be </span><span class="segment" data-start="655.44" data-end="663.68" title="10:55">classified as absolute and relative. Absolute indications are firstly airway soiling. This may be </span><span class="segment" data-start="663.76" data-end="669.76" title="11:03">from bronchiectasis, bleeding, lung abscess or an empire with a bronchopluoral fistula. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="670.96"><span class="t-timestamp">11:10</span></div>
-  <div class="t-body"><span class="segment" data-start="670.96" data-end="677.04" title="11:10">The second absolute indication is a gas leak. A gas leak may occur from a giant lung cyst, </span><span class="segment" data-start="677.04" data-end="683.68" title="11:17">a bronchopluoral fistula, a tracheo bronchial rupture, or following bronchial surgery. </span><span class="segment" data-start="685.04" data-end="691.76" title="11:25">The relative indications are all to improve surgical access. The types of surgery where this </span><span class="segment" data-start="691.76" data-end="698.16" title="11:31">may be of benefit are pulmonary, a softadule, anterior spinal and great vessel surgery. </span><span class="segment" data-start="699.36" data-end="701.52" title="11:39">What sizes of double lumen tubes do you know? </span><span class="segment" data-start="703.92" data-end="709.28" title="11:43">Double lumen tubes are measured in French gauge. Commonly used left-sided tubes are </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="709.28"><span class="t-timestamp">11:49</span></div>
-  <div class="t-body"><span class="segment" data-start="709.28" data-end="720.56" title="11:49">normally 28 or 32-French gauge. Right-sided tubes available include 35, 37, 39 and 41 French gauge. </span><span class="segment" data-start="721.76" data-end="724.16" title="12:01">Would you prefer to use a left or a right-sided tube? </span><span class="segment" data-start="726.24" data-end="728.48" title="12:06">I would prefer to use a left-sided tube. </span><span class="segment" data-start="729.84" data-end="730.48" title="12:09">Why is this? </span><span class="segment" data-start="732.32" data-end="738.72" title="12:12">The right upper lobe bronchus comes off the right main bronchus within about 2.5 cm from its origin. </span><span class="segment" data-start="738.72" data-end="743.52" title="12:18">Therefore, there's a significant risk of it being occluded by a right-sided double lumen tube. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="744.72"><span class="t-timestamp">12:24</span></div>
-  <div class="t-body"><span class="segment" data-start="744.72" data-end="747.84" title="12:24">Left-sided double lumen tubes can be used for most procedures. </span><span class="segment" data-start="748.64" data-end="751.36" title="12:28">How would you insert double lumen tube? </span><span class="segment" data-start="753.6" data-end="758.96" title="12:33">After inducing anesthesia and allowing adequate time to ensure muscle relaxation, </span><span class="segment" data-start="758.96" data-end="764.32" title="12:38">a double lumen tube is initially inserted as a tracheal tube with the bronchial curve facing </span><span class="segment" data-start="764.32" data-end="771.36" title="12:44">anteriorly. Once the tip of the tube is through the larynx, the tube should be rotated 90 degrees </span><span class="segment" data-start="771.36" data-end="776.96" title="12:51">so that the bronchial part is directed to the correct side. The tube is then connected to the </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="777.12"><span class="t-timestamp">12:57</span></div>
-  <div class="t-body"><span class="segment" data-start="777.12" data-end="783.12" title="12:57">breathing circuit via a double catheter mount. The tracheal cuff is then inflated until the </span><span class="segment" data-start="783.12" data-end="788.24" title="13:03">air leak stops and both sides of the chest are oscultated to check for ventilation. </span><span class="segment" data-start="789.84" data-end="795.84" title="13:09">The catheter mount to the tracheal lumen is then clamped and the tracheal lumen opened to air. </span><span class="segment" data-start="797.2" data-end="802.88" title="13:17">The lung is now being inflated via the bronchial lumen only and the bronchial cuff should be </span><span class="segment" data-start="802.96" data-end="809.6" title="13:22">inflated until no air leak is heard via the tracheal lumen. Only the selected lung should now be </span><span class="segment" data-start="809.6" data-end="816.16" title="13:29">ventilating. The tracheal lumen should then be reconnected and ventilation should be checked on </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="816.16"><span class="t-timestamp">13:36</span></div>
-  <div class="t-body"><span class="segment" data-start="816.16" data-end="820.96" title="13:36">both sides. How would you confirm the placement of a double lumen tube? </span><span class="segment" data-start="823.44" data-end="828.56" title="13:43">The placement of a double lumen tube should be confirmed clinically and by using bronchoscopy. </span><span class="segment" data-start="829.52" data-end="833.36" title="13:49">There are a number of clinical checks that should be done. Firstly, as with the </span><span class="segment" data-start="833.36" data-end="839.92" title="13:53">enter to key or tube placement, we should monitor for end tidal calmed dioxide. Secondly, </span><span class="segment" data-start="839.92" data-end="844.96" title="13:59">we should inspect the rise and fall of the chest and oscultate both lung fields with both </span><span class="segment" data-start="844.96" data-end="852.0" title="14:04">cuffs inflated. Thirdly, the length of the tube should be carefully inspected. For a patient </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="852.24"><span class="t-timestamp">14:12</span></div>
-  <div class="t-body"><span class="segment" data-start="852.24" data-end="858.48" title="14:12">whose height is 170 cm, the average depth of insertion to this incisors is 29 cm. </span><span class="segment" data-start="859.6" data-end="865.12" title="14:19">For every 10 cm difference in the height of the patient, the average depth of the insertion </span><span class="segment" data-start="865.12" data-end="872.72" title="14:25">of the tube changes by 1 cm. So for example, if a patient is 160 cm in height, on average the </span><span class="segment" data-start="872.72" data-end="881.6" title="14:32">depth will be 28 cm. Fourthly, both lung should be oscultated alternatively by clamping and </span><span class="segment" data-start="881.6" data-end="888.16" title="14:41">releasing each side of the caffer mount in turn. Clinical assessment can be unreliable and therefore </span><span class="segment" data-start="888.16" data-end="895.12" title="14:48">bronchoscopy should always be used to confirm placement. What are you looking for when using bronchoscopy </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="895.12"><span class="t-timestamp">14:55</span></div>
-  <div class="t-body"><span class="segment" data-start="895.12" data-end="903.36" title="14:55">to confirm its placement? When using bronchoscopy, we're looking to see the upper surface of the bronchial </span><span class="segment" data-start="903.36" data-end="910.96" title="15:03">cuff lying immediately distal to the carina. </span></div>
+<div class="preamble-block"><span class="segment a-seg" data-start="0.0" data-end="4.44" title="0:00">anatomy of trachia and bronchi. This is most likely to come up in the science </span><span class="segment a-seg" data-start="4.44" data-end="8.88" title="0:04">fibre. Diagrams will help you remember the anatomy which can be quite cumbersome </span><span class="segment a-seg" data-start="8.88" data-end="13.52" title="0:08">to learn. The examiner is likely to start with describing the anatomy before </span></div>
+<div class="qa-pair">
+<div class="q-block" data-start="13.52">
+  <div class="q-label">Q1</div>
+  <div class="q-body"><span class="segment q-seg" data-start="13.52" data-end="18.56" title="0:13">moving on to some applied clinical aspects. How long is an average adults trachia? </span></div>
 </div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="18.56" data-end="24.88" title="0:18">The trachia is 10 to 15 centimeters long and extends from the </span></li>
+<li><span class="segment a-seg" data-start="24.88" data-end="34.4" title="0:24">cryoid cartilage at the level of C6 to the carina at T45. It may extend to T6 at </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="34.4">
+  <div class="q-label">Q2</div>
+  <div class="q-body"><span class="segment q-seg" data-start="34.4" data-end="38.978" title="0:34">full inspiration. What is the trachia made of? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="38.978" data-end="41.84" title="0:38">It is made of fibroelastic </span></li>
+<li><span class="segment a-seg" data-start="41.84" data-end="47.72" title="0:41">connective tissue reinforced by 15 to 20 cartilaginous rings which are </span></li>
+<li><span class="segment a-seg" data-start="47.72" data-end="54.16" title="0:47">incomplete posteriorly. It is lined by siliated calumna epithelium and mucus </span></li>
+<li><span class="segment a-seg" data-start="54.16" data-end="59.52" title="0:54">glands. There is also a smooth muscle layer posteriorly which runs both </span></li>
+<li><span class="segment a-seg" data-start="59.52" data-end="65.2" title="0:59">long to tunally and transversally. This is called the trachialis muscle. What is </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="65.2">
+  <div class="q-label">Q3</div>
+  <div class="q-body"><span class="segment q-seg" data-start="65.2" data-end="66.165" title="1:05">its diameter? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="66.165" data-end="72.44" title="1:06">The diameter of the trachia is 1.5 to 2 centimeters and it is </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="72.44">
+  <div class="q-label">Q4</div>
+  <div class="q-body"><span class="segment q-seg" data-start="72.44" data-end="75.585" title="1:12">flattened posteriorly. What are its anterior relations? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="75.585" data-end="78.28" title="1:15">You may want to draw a </span></li>
+<li><span class="segment a-seg" data-start="78.28" data-end="82.68" title="1:18">diagram or two to help you explain this. It's useful to learn the cross-sectional </span></li>
+<li><span class="segment a-seg" data-start="82.68" data-end="88.04" title="1:22">anatomy at two levels. In the neck usually at the level of C6 and in the </span></li>
+<li><span class="segment a-seg" data-start="88.04" data-end="92.92" title="1:28">thorax usually at the level of T4. The examiner may want the anatomy at both </span></li>
+<li><span class="segment a-seg" data-start="92.92" data-end="97.72" title="1:32">levels or only at one. Take a minute to draw the diagrams before going through </span></li>
+<li><span class="segment a-seg" data-start="97.72" data-end="106.6" title="1:37">them. In the neck the trachia's anterior relations are from outside in skin and </span></li>
+<li><span class="segment a-seg" data-start="106.6" data-end="113.8" title="1:46">superficial and then deep fascia. The anterior jugular vein, sternohyode and </span></li>
+<li><span class="segment a-seg" data-start="113.8" data-end="120.64" title="1:53">sterno thyroid muscles in the lower neck and pre-trukey of fascia. The isthmus </span></li>
+<li><span class="segment a-seg" data-start="120.64" data-end="124.64" title="2:00">of the thyroid gland lies anterior at the level of the second to fourth </span></li>
+<li><span class="segment a-seg" data-start="124.64" data-end="132.16" title="2:04">trachialed rings. In the thorax the manubrium sternae lies anteriorly as does </span></li>
+<li><span class="segment a-seg" data-start="132.16" data-end="137.28" title="2:12">the thymic remnants and the inferior thyroid veins. Lower down in the </span></li>
+<li><span class="segment a-seg" data-start="137.28" data-end="143.08" title="2:17">thorax the brachocaphalic artery and the left brachocaphalic vein cross the </span></li>
+<li><span class="segment a-seg" data-start="143.08" data-end="149.4" title="2:23">trachiaean anteriorly as well as the aortic arch. The pulmonary bifurcation lies </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="149.4">
+  <div class="q-label">Q5</div>
+  <div class="q-body"><span class="segment q-seg" data-start="149.4" data-end="153.331" title="2:29">behind the carina. What are its posterior relations? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="153.331" data-end="156.28" title="2:33">Again you can refer to your </span></li>
+<li><span class="segment a-seg" data-start="156.28" data-end="163.12" title="2:36">diagrams. Its posterior relations in the neck include the esophagus with the </span></li>
+<li><span class="segment a-seg" data-start="163.12" data-end="167.4" title="2:43">recurrent laryngeal nerves lying in the grooves between the trachia and the esophagus. </span></li>
+<li><span class="segment a-seg" data-start="167.4" data-end="173.0" title="2:47">In the thorax it is only the left recurrent laryngeal nerve and the esophagus </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="173.0">
+  <div class="q-label">Q6</div>
+  <div class="q-body"><span class="segment q-seg" data-start="173.0" data-end="179.2" title="2:53">which lies posteriorly. The right laryngeal nerve leaves the vagus as it crosses </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="179.2" data-end="184.16" title="2:59">the subclavian artery which is at a higher level than where the left recurrent </span></li>
+<li><span class="segment a-seg" data-start="184.16" data-end="190.48" title="3:04">angial nerve originates. It then ascends in the trachiaesophageal groove. The </span></li>
+<li><span class="segment a-seg" data-start="190.48" data-end="195.36" title="3:10">left leaves the vagus at a lower level as it crosses the aortic arch and then </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="195.36">
+  <div class="q-label">Q7</div>
+  <div class="q-body"><span class="segment q-seg" data-start="195.36" data-end="199.145" title="3:15">ascends. What are its lateral relations? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="199.145" data-end="203.56" title="3:19">The lateral relations in the neck, the </span></li>
+<li><span class="segment a-seg" data-start="203.56" data-end="208.52" title="3:23">lobes of the thyroid and the crotted sheaths lie naturally. The crotted sheath </span></li>
+<li><span class="segment a-seg" data-start="208.52" data-end="212.92" title="3:28">contains the internal jugular vein, the common crotted archery and the vagus </span></li>
+<li><span class="segment a-seg" data-start="212.92" data-end="219.8" title="3:32">nerve. In the thorax it is related on both sides by the plurra and the lung and </span></li>
+<li><span class="segment a-seg" data-start="219.8" data-end="225.16" title="3:39">the right and left vagus nerves respectively. On the right hand side it is also </span></li>
+<li><span class="segment a-seg" data-start="225.16" data-end="230.32" title="3:45">related to the azigas vein and the superior vina cava. On the left </span></li>
+<li><span class="segment a-seg" data-start="230.32" data-end="235.6" title="3:50">lives the left common crotted archery and the aortic arch. What is the nerve </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="235.6">
+  <div class="q-label">Q8</div>
+  <div class="q-body"><span class="segment q-seg" data-start="235.6" data-end="237.451" title="3:55">supply to the trachia? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="237.451" data-end="242.08" title="3:57">The nerve supply to the trachia is from the recurrent </span></li>
+<li><span class="segment a-seg" data-start="242.08" data-end="246.44" title="4:02">laryngeal nerve and sympathetic branches from the middle cervical ganglion. </span></li>
+<li><span class="segment a-seg" data-start="246.44" data-end="252.32" title="4:06">Let's move down to the bronchion bronchial tree. What are the subdivisions of </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="252.32">
+  <div class="q-label">Q9</div>
+  <div class="q-body"><span class="segment q-seg" data-start="252.32" data-end="255.874" title="4:12">the bronchial tree from trachia to alveolus? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="255.874" data-end="258.92" title="4:15">The subdivisions of the trachia are </span></li>
+<li><span class="segment a-seg" data-start="258.92" data-end="268.48" title="4:18">broncus bronchials, respiratory bronchials, alveoloducts, alveolus ax and then </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="268.48">
+  <div class="q-label">Q10</div>
+  <div class="q-body"><span class="segment q-seg" data-start="268.48" data-end="273.309" title="4:28">alveolus. Can you describe to me the anatomy of the right main bronchus? </span><span class="segment q-seg" data-start="273.309" data-end="273.68" title="4:33">How </span><span class="segment q-seg" data-start="273.68" data-end="274.864" title="4:33">long is it? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="274.864" data-end="279.6" title="4:34">The anatomy of the right main bronchus is that it's about three </span></li>
+<li><span class="segment a-seg" data-start="279.6" data-end="285.32" title="4:39">centimeters long, which is shortened at the left, it's also wider. At what angle </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="285.32">
+  <div class="q-label">Q11</div>
+  <div class="q-body"><span class="segment q-seg" data-start="285.32" data-end="287.453" title="4:45">does it leave the trachia? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="287.453" data-end="291.72" title="4:47">The right main bronchus leaves the trachia at an angle </span></li>
+<li><span class="segment a-seg" data-start="291.72" data-end="297.08" title="4:51">of 25 to 30 degrees, which is more vertical than that of the left main bronchus. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="297.08">
+  <div class="q-label">Q12</div>
+  <div class="q-body"><span class="segment q-seg" data-start="297.08" data-end="299.057" title="4:57">What are its relations? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="299.057" data-end="304.0" title="4:59">The relations of the right main bronchus are that it </span></li>
+<li><span class="segment a-seg" data-start="304.0" data-end="308.76" title="5:04">passes under the azigas vein and lies initially above and then behind the </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="308.76">
+  <div class="q-label">Q13</div>
+  <div class="q-body"><span class="segment q-seg" data-start="308.76" data-end="312.03" title="5:08">right pulmonary artery. What about the left main bronchus? </span><span class="segment q-seg" data-start="312.03" data-end="313.12" title="5:12">Can you describe </span><span class="segment q-seg" data-start="313.12" data-end="314.172" title="5:13">it's anatomy? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="314.172" data-end="319.96" title="5:14">The left main bronchus is about five centimeters long, it leaves </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="319.96">
+  <div class="q-label">Q14</div>
+  <div class="q-body"><span class="segment q-seg" data-start="319.96" data-end="326.779" title="5:19">the trachia at an angle of 45 to 50 degrees. What are its relations? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="326.779" data-end="328.24" title="5:26">The left main </span></li>
+<li><span class="segment a-seg" data-start="328.24" data-end="333.28" title="5:28">bronchus passes under the autogarch in front of the esophagus and descending </span></li>
+<li><span class="segment a-seg" data-start="333.28" data-end="338.24" title="5:33">aorta. It then passes to lie initially below and then behind the left pulmonary </span></li>
+<li><span class="segment a-seg" data-start="338.24" data-end="343.72" title="5:38">artery. Let's concentrate on the right hand side first. How many lobes are </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="343.72">
+  <div class="q-label">Q15</div>
+  <div class="q-body"><span class="segment q-seg" data-start="343.72" data-end="344.874" title="5:43">there on the right? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="344.874" data-end="347.76" title="5:44">The examiner is probably going to talk you through explaining </span></li>
+<li><span class="segment a-seg" data-start="347.76" data-end="351.96" title="5:47">the anatomy of the bronchi and bronchial tree. Again a diagram will help you </span></li>
+<li><span class="segment a-seg" data-start="351.96" data-end="359.24" title="5:51">remember and explain this. The right lung has three lobes, which is supplied by </span></li>
+<li><span class="segment a-seg" data-start="359.24" data-end="365.4" title="5:59">three lobe bronchi, the upper, middle and lower lobes. Can you explain the </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="365.4">
+  <div class="q-label">Q16</div>
+  <div class="q-body"><span class="segment q-seg" data-start="365.4" data-end="369.646" title="6:05">anatomy of the bronchi and bronchial tree on this side? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="369.646" data-end="370.92" title="6:09">The right upper </span></li>
+<li><span class="segment a-seg" data-start="370.92" data-end="376.96" title="6:10">lobe bronchus comes off the right main bronchus first, usually about 2.5 </span></li>
+<li><span class="segment a-seg" data-start="376.96" data-end="382.12" title="6:16">centimeters from the carina, but of course this may vary. It is therefore the </span></li>
+<li><span class="segment a-seg" data-start="382.12" data-end="386.76" title="6:22">right upper lobe that is most at risk of occlusion from a trachial tube or a </span></li>
+<li><span class="segment a-seg" data-start="386.76" data-end="392.24" title="6:26">right-sided double-lumen tube. The right upper lobe bronchus then divides </span></li>
+<li><span class="segment a-seg" data-start="392.24" data-end="398.36" title="6:32">within one centimeter of its origin into apical, anterior, posterior, segmental </span></li>
+<li><span class="segment a-seg" data-start="398.36" data-end="404.12" title="6:38">bronchi. The middle lobe bronchus is the next to come off the right main bronchus. </span></li>
+<li><span class="segment a-seg" data-start="404.12" data-end="408.88" title="6:44">This is directed downwards and forwards and splits into lateral, </span></li>
+<li><span class="segment a-seg" data-start="408.88" data-end="415.4" title="6:48">immediate, segmental bronchi. The right lower lobe bronchus has an apical branch </span></li>
+<li><span class="segment a-seg" data-start="415.4" data-end="420.88" title="6:55">that comes off just below the origin of the middle lobe bronchus. The main stem of </span></li>
+<li><span class="segment a-seg" data-start="420.88" data-end="424.28" title="7:00">the lower lobe bronchus continues downwards before splitting into medial, </span></li>
+<li><span class="segment a-seg" data-start="424.28" data-end="431.88" title="7:04">basal, anterior basal, lateral basal and posterior basal segments. So how many </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="431.88">
+  <div class="q-label">Q17</div>
+  <div class="q-body"><span class="segment q-seg" data-start="431.88" data-end="435.698" title="7:11">bronchopulmonary segments are there on the right? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="435.698" data-end="437.88" title="7:15">There are 10 bronchopulmonary </span></li>
+<li><span class="segment a-seg" data-start="437.88" data-end="444.24" title="7:17">segments on the right. Apical, posterior and anterior form the upper lobe, </span></li>
+<li><span class="segment a-seg" data-start="444.24" data-end="450.04" title="7:24">lateral and medial form the middle lobe and apical, medial, anterior, lateral </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="450.04">
+  <div class="q-label">Q18</div>
+  <div class="q-body"><span class="segment q-seg" data-start="450.04" data-end="454.733" title="7:30">and posterior form the lower lobe. What about the left? </span><span class="segment q-seg" data-start="454.733" data-end="457.08" title="7:34">How many lobes are there? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="457.6" data-end="462.56" title="7:37">There are two main lobes on the left, the upper and lower lobe and also a </span></li>
+<li><span class="segment a-seg" data-start="462.56" data-end="467.6" title="7:42">lingual lobe which is thought to be part of the upper lobe. Can you describe the </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="467.6">
+  <div class="q-label">Q19</div>
+  <div class="q-body"><span class="segment q-seg" data-start="467.6" data-end="470.672" title="7:47">anatomy of the bronchial tree on this side? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="470.672" data-end="473.36" title="7:50">The left main bronchus is longer than </span></li>
+<li><span class="segment a-seg" data-start="473.36" data-end="478.52" title="7:53">the right and terminates in two lobe bronchi, the upper and lower, after about </span></li>
+<li><span class="segment a-seg" data-start="478.52" data-end="483.84" title="7:58">five centimeters. The left upper lobe bronchus divides into superior division and </span></li>
+<li><span class="segment a-seg" data-start="483.84" data-end="489.12" title="8:03">a lingular division. The superior division splits into apical, posterior and </span></li>
+<li><span class="segment a-seg" data-start="489.12" data-end="494.96" title="8:09">anterior segmental bronchi. This is similar to the upper lobe on the right hand side. </span></li>
+<li><span class="segment a-seg" data-start="494.96" data-end="501.96" title="8:14">The lingular division splits into superior and inferior segmental bronchi. The </span></li>
+<li><span class="segment a-seg" data-start="501.96" data-end="507.36" title="8:21">anatomy of the left lobe is similar to that of the right lobe lobe. The left </span></li>
+<li><span class="segment a-seg" data-start="507.36" data-end="513.52" title="8:27">lobe lobe bronchus gives off apical, medial basal, anterior basal, lateral </span></li>
+<li><span class="segment a-seg" data-start="513.52" data-end="520.24" title="8:33">basal and posterior basal segmental bronchi. However, the anterior and medial </span></li>
+<li><span class="segment a-seg" data-start="520.24" data-end="526.4" title="8:40">basal bronchopromary segments are often together. So how many bronchopromary </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="526.4">
+  <div class="q-label">Q20</div>
+  <div class="q-body"><span class="segment q-seg" data-start="526.4" data-end="529.07" title="8:46">segments are there on the left? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="529.07" data-end="533.52" title="8:49">There are ten segments on the left hand side, apical, </span></li>
+<li><span class="segment a-seg" data-start="533.52" data-end="539.6" title="8:53">posterior and anterior form the upper lobe, superior and inferior form the </span></li>
+<li><span class="segment a-seg" data-start="539.6" data-end="546.32" title="8:59">lingular and apical, medial, anterior, lateral and posterior basal form the lower </span></li>
+<li><span class="segment a-seg" data-start="546.32" data-end="550.88" title="9:06">lobe. However, since the anterior and medial bronchopromary segments are </span></li>
+<li><span class="segment a-seg" data-start="550.88" data-end="556.32" title="9:10">often together, some would say that technically there are only nine. The </span></li>
+<li><span class="segment a-seg" data-start="556.32" data-end="561.12" title="9:16">vivos know likely to turn to some applied clinical aspects. From your knowledge </span></li>
+<li><span class="segment a-seg" data-start="561.2" data-end="565.12" title="9:21">of the bronchial tree, can you predict which part of the lung is most likely to </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="565.12">
+  <div class="q-label">Q21</div>
+  <div class="q-body"><span class="segment q-seg" data-start="565.12" data-end="570.08" title="9:25">be contaminated during aspiration if the patient is lying supine and explained to me why? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="572.32" data-end="578.16" title="9:32">In the supine position, the apical segments of the lower lobes are most likely to be contaminated </span></li>
+<li><span class="segment a-seg" data-start="578.16" data-end="582.16" title="9:38">since the apical bronchi project posteriorly from the lower lobe bronchi. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="583.44">
+  <div class="q-label">Q22</div>
+  <div class="q-body"><span class="segment q-seg" data-start="583.44" data-end="585.44" title="9:43">What about the patient was in the lateral position? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="585.52" data-end="593.04" title="9:45">In the lateral position, gastric content is more likely to enter the upper lobe bronchus of the </span></li>
+<li><span class="segment a-seg" data-start="593.04" data-end="599.44" title="9:53">side the patient is lying on since these bronchi project laterally. What about the patient </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="599.44">
+  <div class="q-label">Q23</div>
+  <div class="q-body"><span class="segment q-seg" data-start="599.44" data-end="600.82" title="9:59">was sitting up? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="600.82" data-end="606.8" title="10:00">In this position, the most likely areas to be contaminated are the posterior </span></li>
+<li><span class="segment a-seg" data-start="606.8" data-end="613.44" title="10:06">basal and the lateral basal bronchopromary segments since the bronchi to these segments project downwards. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="613.68">
+  <div class="q-label">Q24</div>
+  <div class="q-body"><span class="segment q-seg" data-start="613.68" data-end="616.32" title="10:13">What if the patient was lying prone? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="618.64" data-end="623.76" title="10:18">In the prone position, gastric content is more likely to enter the middle lobe on the right </span></li>
+<li><span class="segment a-seg" data-start="623.76" data-end="628.48" title="10:23">and the lingula on the left. This is because the bronchi that supply the middle lobe and the </span></li>
+<li><span class="segment a-seg" data-start="628.48" data-end="634.72" title="10:28">lingula run downward and forward. If you're doing well, the examiner may move on to another </span></li>
+<li><span class="segment a-seg" data-start="634.72" data-end="640.08" title="10:34">clinical area. You may be asked about performing a tracheostomy which is covered in another </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="640.08">
+  <div class="q-label">Q25</div>
+  <div class="q-body"><span class="segment q-seg" data-start="640.08" data-end="646.96" title="10:40">podcast or about double lumen-entered bronchial tube. What are the indications for double lumen tube? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="649.28" data-end="655.44" title="10:49">A double lumen tube may be used to facilitate one lung ventilation. The indications may be </span></li>
+<li><span class="segment a-seg" data-start="655.44" data-end="663.68" title="10:55">classified as absolute and relative. Absolute indications are firstly airway soiling. This may be </span></li>
+<li><span class="segment a-seg" data-start="663.76" data-end="669.76" title="11:03">from bronchiectasis, bleeding, lung abscess or an empire with a bronchopluoral fistula. </span></li>
+<li><span class="segment a-seg" data-start="670.96" data-end="677.04" title="11:10">The second absolute indication is a gas leak. A gas leak may occur from a giant lung cyst, </span></li>
+<li><span class="segment a-seg" data-start="677.04" data-end="683.68" title="11:17">a bronchopluoral fistula, a tracheo bronchial rupture, or following bronchial surgery. </span></li>
+<li><span class="segment a-seg" data-start="685.04" data-end="691.76" title="11:25">The relative indications are all to improve surgical access. The types of surgery where this </span></li>
+<li><span class="segment a-seg" data-start="691.76" data-end="698.16" title="11:31">may be of benefit are pulmonary, a softadule, anterior spinal and great vessel surgery. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="699.36">
+  <div class="q-label">Q26</div>
+  <div class="q-body"><span class="segment q-seg" data-start="699.36" data-end="701.52" title="11:39">What sizes of double lumen tubes do you know? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="703.92" data-end="709.28" title="11:43">Double lumen tubes are measured in French gauge. Commonly used left-sided tubes are </span></li>
+<li><span class="segment a-seg" data-start="709.28" data-end="720.56" title="11:49">normally 28 or 32-French gauge. Right-sided tubes available include 35, 37, 39 and 41 French gauge. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="721.76">
+  <div class="q-label">Q27</div>
+  <div class="q-body"><span class="segment q-seg" data-start="721.76" data-end="724.16" title="12:01">Would you prefer to use a left or a right-sided tube? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="726.24" data-end="728.48" title="12:06">I would prefer to use a left-sided tube. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="729.84">
+  <div class="q-label">Q28</div>
+  <div class="q-body"><span class="segment q-seg" data-start="729.84" data-end="730.48" title="12:09">Why is this? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="732.32" data-end="738.72" title="12:12">The right upper lobe bronchus comes off the right main bronchus within about 2.5 cm from its origin. </span></li>
+<li><span class="segment a-seg" data-start="738.72" data-end="743.52" title="12:18">Therefore, there's a significant risk of it being occluded by a right-sided double lumen tube. </span></li>
+<li><span class="segment a-seg" data-start="744.72" data-end="747.84" title="12:24">Left-sided double lumen tubes can be used for most procedures. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="748.64">
+  <div class="q-label">Q29</div>
+  <div class="q-body"><span class="segment q-seg" data-start="748.64" data-end="751.36" title="12:28">How would you insert double lumen tube? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="753.6" data-end="758.96" title="12:33">After inducing anesthesia and allowing adequate time to ensure muscle relaxation, </span></li>
+<li><span class="segment a-seg" data-start="758.96" data-end="764.32" title="12:38">a double lumen tube is initially inserted as a tracheal tube with the bronchial curve facing </span></li>
+<li><span class="segment a-seg" data-start="764.32" data-end="771.36" title="12:44">anteriorly. Once the tip of the tube is through the larynx, the tube should be rotated 90 degrees </span></li>
+<li><span class="segment a-seg" data-start="771.36" data-end="776.96" title="12:51">so that the bronchial part is directed to the correct side. The tube is then connected to the </span></li>
+<li><span class="segment a-seg" data-start="777.12" data-end="783.12" title="12:57">breathing circuit via a double catheter mount. The tracheal cuff is then inflated until the </span></li>
+<li><span class="segment a-seg" data-start="783.12" data-end="788.24" title="13:03">air leak stops and both sides of the chest are oscultated to check for ventilation. </span></li>
+<li><span class="segment a-seg" data-start="789.84" data-end="795.84" title="13:09">The catheter mount to the tracheal lumen is then clamped and the tracheal lumen opened to air. </span></li>
+<li><span class="segment a-seg" data-start="797.2" data-end="802.88" title="13:17">The lung is now being inflated via the bronchial lumen only and the bronchial cuff should be </span></li>
+<li><span class="segment a-seg" data-start="802.96" data-end="809.6" title="13:22">inflated until no air leak is heard via the tracheal lumen. Only the selected lung should now be </span></li>
+<li><span class="segment a-seg" data-start="809.6" data-end="816.16" title="13:29">ventilating. The tracheal lumen should then be reconnected and ventilation should be checked on </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="816.16">
+  <div class="q-label">Q30</div>
+  <div class="q-body"><span class="segment q-seg" data-start="816.16" data-end="820.96" title="13:36">both sides. How would you confirm the placement of a double lumen tube? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="823.44" data-end="828.56" title="13:43">The placement of a double lumen tube should be confirmed clinically and by using bronchoscopy. </span></li>
+<li><span class="segment a-seg" data-start="829.52" data-end="833.36" title="13:49">There are a number of clinical checks that should be done. Firstly, as with the </span></li>
+<li><span class="segment a-seg" data-start="833.36" data-end="839.92" title="13:53">enter to key or tube placement, we should monitor for end tidal calmed dioxide. Secondly, </span></li>
+<li><span class="segment a-seg" data-start="839.92" data-end="844.96" title="13:59">we should inspect the rise and fall of the chest and oscultate both lung fields with both </span></li>
+<li><span class="segment a-seg" data-start="844.96" data-end="852.0" title="14:04">cuffs inflated. Thirdly, the length of the tube should be carefully inspected. For a patient </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="852.24">
+  <div class="q-label">Q31</div>
+  <div class="q-body"><span class="segment q-seg" data-start="852.24" data-end="858.48" title="14:12">whose height is 170 cm, the average depth of insertion to this incisors is 29 cm. </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="859.6" data-end="865.12" title="14:19">For every 10 cm difference in the height of the patient, the average depth of the insertion </span></li>
+<li><span class="segment a-seg" data-start="865.12" data-end="872.72" title="14:25">of the tube changes by 1 cm. So for example, if a patient is 160 cm in height, on average the </span></li>
+<li><span class="segment a-seg" data-start="872.72" data-end="881.6" title="14:32">depth will be 28 cm. Fourthly, both lung should be oscultated alternatively by clamping and </span></li>
+<li><span class="segment a-seg" data-start="881.6" data-end="888.16" title="14:41">releasing each side of the caffer mount in turn. Clinical assessment can be unreliable and therefore </span></li>
+<li><span class="segment a-seg" data-start="888.16" data-end="895.12" title="14:48">bronchoscopy should always be used to confirm placement. What are you looking for when using bronchoscopy </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="895.12">
+  <div class="q-label">Q32</div>
+  <div class="q-body"><span class="segment q-seg" data-start="895.12" data-end="897.059" title="14:55">to confirm its placement? </span><span class="segment q-seg" data-start="897.059" data-end="903.36" title="14:57">When using bronchoscopy, we're looking to see the upper surface of the bronchial </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="903.36" data-end="910.96" title="15:03">cuff lying immediately distal to the carina. </span></li>
+  </ul>
+</div>
+</div>
+
 </div>
 
 <div class="subtitle-bar">
-  <span class="subtitle-text empty" id="subtitle-text">Play audio to see live subtitles&#8230;</span>
+  <span id="subtitle-text" class="empty">Play audio to see live subtitles&#8230;</span>
 </div>
 
 <script>
-
-const audio    = document.getElementById('audio');
-const allSegs  = Array.from(document.querySelectorAll('.segment'));
-const allBlocks = Array.from(document.querySelectorAll('.t-block'));
+const audio      = document.getElementById('audio');
+const allSegs    = Array.from(document.querySelectorAll('.segment'));
 const subtitleEl = document.getElementById('subtitle-text');
-let activeSegEl   = null;
-let activeBlockEl = null;
-let searchMatches = [];
-let searchIdx     = 0;
+let activeSegEl  = null;
+let searchMatches = [], searchIdx = 0;
 
-// Duration display
 audio.addEventListener('loadedmetadata', () => {
   const m = Math.floor(audio.duration / 60);
   const s = Math.floor(audio.duration %% 60).toString().padStart(2,'0');
   document.getElementById('dur').textContent = m + ':' + s;
 });
 
-// Seek helper
-function seekTo(t) {
-  audio.currentTime = t;
-  audio.play();
-}
+function seekTo(t) { audio.currentTime = t; audio.play(); }
 
-// Block gutter click
-document.querySelectorAll('.t-gutter').forEach(g => {
-  g.addEventListener('click', () => seekTo(parseFloat(g.dataset.start)));
+// Q-block header click
+document.querySelectorAll('.q-block').forEach(q => {
+  q.addEventListener('click', e => {
+    if (!e.target.classList.contains('segment')) seekTo(parseFloat(q.dataset.start));
+  });
 });
 
-// Segment click
+// Individual segment click
 allSegs.forEach(s => {
-  s.addEventListener('click', e => {
-    e.stopPropagation();
-    seekTo(parseFloat(s.dataset.start));
-  });
+  s.addEventListener('click', e => { e.stopPropagation(); seekTo(parseFloat(s.dataset.start)); });
 });
 
 // Real-time tracking
 audio.addEventListener('timeupdate', () => {
   const t = audio.currentTime;
-
-  // Find active segment (last one whose start <= t)
   let found = null;
   for (let i = allSegs.length - 1; i >= 0; i--) {
     if (parseFloat(allSegs[i].dataset.start) <= t) { found = allSegs[i]; break; }
   }
-
   if (found && found !== activeSegEl) {
-    // Clear previous
-    if (activeSegEl) activeSegEl.classList.remove('active');
-    if (activeBlockEl) {
-      activeBlockEl.classList.remove('block-active');
-      const pg = activeBlockEl.querySelector('.t-gutter');
-      if (pg) pg.classList.remove('gutter-active');
+    if (activeSegEl) {
+      activeSegEl.classList.remove('active');
+      const pli = activeSegEl.closest('li');
+      if (pli) pli.classList.remove('li-active');
+      const pq = activeSegEl.closest('.q-block');
+      if (pq) pq.classList.remove('q-active');
     }
-    // Set new
     found.classList.add('active');
-    const block = found.closest('.t-block');
-    if (block) {
-      block.classList.add('block-active');
-      const g = block.querySelector('.t-gutter');
-      if (g) g.classList.add('gutter-active');
-      activeBlockEl = block;
-    }
+    const li = found.closest('li');
+    if (li) li.classList.add('li-active');
+    const qb = found.closest('.q-block');
+    if (qb) qb.classList.add('q-active');
     activeSegEl = found;
 
-    // Update subtitle
     subtitleEl.textContent = found.textContent.trim();
     subtitleEl.classList.remove('empty');
 
-    // Auto-scroll (only when not searching)
-    if (!document.getElementById('search').value) {
+    if (!document.getElementById('search').value)
       found.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }
   }
 });
 
@@ -365,17 +745,13 @@ searchInput.addEventListener('keydown', e => {
     el.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
 });
-
 function runSearch() {
   const q = searchInput.value.trim().toLowerCase();
   allSegs.forEach(s => s.classList.remove('search-match','search-current'));
   searchMatches = [];
   if (!q) return;
   allSegs.forEach(s => {
-    if (s.textContent.toLowerCase().includes(q)) {
-      s.classList.add('search-match');
-      searchMatches.push(s);
-    }
+    if (s.textContent.toLowerCase().includes(q)) { s.classList.add('search-match'); searchMatches.push(s); }
   });
   if (!searchMatches.length) return;
   searchIdx = 0;

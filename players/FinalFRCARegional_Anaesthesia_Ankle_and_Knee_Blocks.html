@@ -5,10 +5,19 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Regional Anaesthesia — Ankle and Knee Blocks</title>
 <style>
-
   :root {
-    --accent:    #2563eb;
-    --body-bg:   #f1f5f9;
+    --q-bg:       #1e3a5f;
+    --q-text:     #ffffff;
+    --q-label:    #60a5fa;
+    --a-bg:       #ffffff;
+    --a-border:   #e2e8f0;
+    --a-label:    #059669;
+    --active-q:   #2563eb;
+    --active-a:   #dbeafe;
+    --accent:     #2563eb;
+    --body-bg:    #f1f5f9;
+    --pre-bg:     #fef9c3;
+    --pre-border: #fcd34d;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
@@ -40,22 +49,9 @@
     margin-bottom: 4px;
     letter-spacing: 0.01em;
   }
-  .header-sub {
-    font-size: 0.72rem;
-    color: #94a3b8;
-    font-style: italic;
-  }
-  audio {
-    height: 36px;
-    accent-color: var(--accent);
-    flex-shrink: 0;
-  }
-  .back-link {
-    font-size: 0.8rem;
-    color: #94a3b8;
-    text-decoration: none;
-    white-space: nowrap;
-  }
+  .header-sub { font-size: 0.72rem; color: #94a3b8; font-style: italic; }
+  audio { height: 36px; accent-color: var(--accent); flex-shrink: 0; }
+  .back-link { font-size: 0.8rem; color: #94a3b8; text-decoration: none; white-space: nowrap; }
   .back-link:hover { color: #60a5fa; }
 
   /* ── Toolbar ── */
@@ -69,30 +65,17 @@
     border-bottom: 1px solid #334155;
   }
   .toolbar input {
-    flex: 1;
-    max-width: 380px;
+    flex: 1; max-width: 380px;
     padding: 5px 11px;
-    border: 1px solid #475569;
-    border-radius: 6px;
-    background: #0f172a;
-    color: #e2e8f0;
-    font-size: 0.83rem;
-    outline: none;
+    border: 1px solid #475569; border-radius: 6px;
+    background: #0f172a; color: #e2e8f0; font-size: 0.83rem; outline: none;
   }
   .toolbar input:focus { border-color: var(--accent); }
   .toolbar input::placeholder { color: #64748b; }
-  .stats {
-    font-size: 0.72rem;
-    color: #64748b;
-    white-space: nowrap;
-  }
+  .stats { font-size: 0.72rem; color: #64748b; white-space: nowrap; }
 
   /* ── Scroll area ── */
-  .scroll-area {
-    flex: 1;
-    overflow-y: auto;
-    padding: 20px;
-  }
+  .scroll-area { flex: 1; overflow-y: auto; padding: 20px; }
   .scroll-area::-webkit-scrollbar { width: 6px; }
   .scroll-area::-webkit-scrollbar-track { background: transparent; }
   .scroll-area::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
@@ -107,68 +90,77 @@
     display: flex;
     align-items: center;
   }
-  .subtitle-text {
-    font-size: 0.9rem;
-    color: #e2e8f0;
-    line-height: 1.5;
-    font-style: italic;
-  }
-  .subtitle-text.empty { color: #475569; }
+  #subtitle-text { font-size: 0.88rem; color: #e2e8f0; line-height: 1.5; font-style: italic; }
+  #subtitle-text.empty { color: #475569; }
 
-  /* ── Transcript blocks ── */
-  .t-block {
-    background: #ffffff;
-    border: 1px solid #e2e8f0;
-    border-radius: 10px;
-    margin-bottom: 14px;
-    overflow: hidden;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
-    display: flex;
-  }
-  .t-block.block-active {
-    border-color: var(--accent);
-    box-shadow: 0 0 0 2px rgba(37,99,235,0.15);
-  }
-  .t-gutter {
-    background: #0f172a;
-    width: 52px;
-    flex-shrink: 0;
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
-    padding-top: 14px;
-    cursor: pointer;
-  }
-  .t-gutter:hover { background: #1e293b; }
-  .t-timestamp {
-    font-size: 0.7rem;
-    color: #64748b;
-    font-family: monospace;
-    font-weight: 600;
-    letter-spacing: 0.02em;
-  }
-  .t-gutter.gutter-active .t-timestamp { color: var(--accent); }
-  .t-body {
-    flex: 1;
+  /* ── Preamble ── */
+  .preamble-block {
+    background: var(--pre-bg);
+    border-left: 4px solid var(--pre-border);
+    border-radius: 0 8px 8px 0;
     padding: 12px 16px;
-    line-height: 1.75;
-    font-size: 0.92rem;
-    color: #1e293b;
+    margin-bottom: 20px;
+    font-size: 0.88rem;
+    color: #78350f;
+    font-style: italic;
+    line-height: 1.7;
   }
 
-  /* ── Segments ── */
-  .segment {
+  /* ── Q&A pair ── */
+  .qa-pair { margin-bottom: 20px; border-radius: 10px; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+
+  /* Question block */
+  .q-block {
+    background: var(--q-bg);
+    padding: 14px 18px;
+    display: flex; gap: 14px; align-items: flex-start;
     cursor: pointer;
-    border-radius: 3px;
-    transition: background 0.1s;
+    transition: background 0.15s;
   }
-  .segment:hover { background: #eff6ff; }
-  .segment.active {
-    background: #bfdbfe;
-    outline: 2px solid #3b82f6;
-    outline-offset: 1px;
-    border-radius: 3px;
+  .q-block:hover { background: #1d4ed8; }
+  .q-block.q-active { background: var(--active-q); }
+  .q-label {
+    font-size: 0.7rem; font-weight: 700;
+    color: var(--q-label);
+    background: rgba(96,165,250,0.15);
+    border: 1px solid rgba(96,165,250,0.3);
+    border-radius: 5px; padding: 3px 7px;
+    white-space: nowrap; margin-top: 2px; letter-spacing: 0.05em;
+    flex-shrink: 0;
   }
+  .q-body { flex: 1; font-size: 0.97rem; font-weight: 600; color: var(--q-text); line-height: 1.55; }
+
+  /* Answer block */
+  .a-block {
+    background: var(--a-bg);
+    border: 1px solid var(--a-border); border-top: none;
+    padding: 14px 18px;
+    display: flex; gap: 14px; align-items: flex-start;
+  }
+  .a-label {
+    font-size: 0.7rem; font-weight: 700;
+    color: var(--a-label);
+    background: #d1fae5; border: 1px solid #6ee7b7;
+    border-radius: 5px; padding: 3px 9px;
+    white-space: nowrap; margin-top: 2px; letter-spacing: 0.05em;
+    flex-shrink: 0;
+  }
+  .a-body { flex: 1; list-style: none; padding: 0; }
+  .a-body li {
+    padding: 4px 0 4px 14px;
+    border-left: 3px solid transparent;
+    line-height: 1.7; font-size: 0.92rem; color: #1e293b;
+    border-radius: 0 4px 4px 0;
+    transition: background 0.15s;
+  }
+  .a-body li:not(:last-child) { border-bottom: 1px solid #f1f5f9; }
+
+  /* ── Segments (clickable) ── */
+  .segment { cursor: pointer; border-radius: 3px; }
+  .q-seg:hover { background: rgba(255,255,255,0.18); }
+  .a-seg:hover { background: #eff6ff; }
+  .segment.active { background: #bfdbfe; outline: 2px solid #3b82f6; outline-offset: 1px; }
+  .a-body li.li-active { background: var(--active-a); border-left-color: var(--accent); }
   .segment.search-match  { background: #fef9c3; }
   .segment.search-current { background: #fde047; outline: 2px solid #ca8a04; }
 
@@ -187,148 +179,260 @@
 
 <div class="toolbar">
   <input type="text" id="search" placeholder="Search transcript&#8230; (Enter = next match)">
-  <span class="stats" id="stats">114 segments &nbsp;|&nbsp; <span id="dur">loading&#8230;</span></span>
+  <span class="stats" id="stats">8 questions &nbsp;|&nbsp; 114 segments &nbsp;|&nbsp; <span id="dur">loading&#8230;</span></span>
 </div>
 
 <div class="scroll-area" id="scroll-area">
-<div class="t-block">
-  <div class="t-gutter" data-start="0.0"><span class="t-timestamp">0:00</span></div>
-  <div class="t-body"><span class="segment" data-start="0.0" data-end="2.12" title="0:00">Ankle and knee blocks. </span><span class="segment" data-start="2.12" data-end="6.48" title="0:02">This topic will be well suited to the clinical sciences' viather, but could easily incorporate </span><span class="segment" data-start="6.48" data-end="12.1" title="0:06">features of physiology, pharmacology and physics, and therefore also be found in the basic sciences </span><span class="segment" data-start="12.1" data-end="13.5" title="0:12">viather. </span><span class="segment" data-start="13.5" data-end="18.0" title="0:13">What nerve supply the structures below the knee? </span><span class="segment" data-start="18.0" data-end="22.88" title="0:18">The nerve supply to structures below the level of the knee is derived mainly from the </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="22.88"><span class="t-timestamp">0:22</span></div>
-  <div class="t-body"><span class="segment" data-start="22.88" data-end="24.88" title="0:22">sciatic nerve. </span><span class="segment" data-start="24.88" data-end="30.88" title="0:24">Although the saffonous nerve supplies a variable portion of the medial calf as far as the medial </span><span class="segment" data-start="30.88" data-end="39.38" title="0:30">malleolus, the sciatic nerve derived from L4 to S3 nerve roots divides approximately </span><span class="segment" data-start="39.38" data-end="48.36" title="0:39">6cm above the popliteal skin crease into the tibial and common perineal nerves. </span><span class="segment" data-start="48.36" data-end="54.76" title="0:48">The tibial nerve subsequently divides into the medial and lateral plantar nerves beyond </span><span class="segment" data-start="54.76" data-end="60.48" title="0:54">the medial malleolus and supplies the plantar surface of the foot. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="60.48"><span class="t-timestamp">1:00</span></div>
-  <div class="t-body"><span class="segment" data-start="60.48" data-end="65.92" title="1:00">After passing around the neck of the fibula, the common perineal nerve divides into the </span><span class="segment" data-start="65.92" data-end="69.96" title="1:05">deep and superficial perineal nerves. </span><span class="segment" data-start="69.96" data-end="75.52" title="1:09">The majority of sensation on the dorsum of the foot is supplied by the superficial perineal </span><span class="segment" data-start="75.52" data-end="82.16" title="1:15">nerve, whilst the deep branch supplies a small area of skin webbing between the first and </span><span class="segment" data-start="82.16" data-end="86.32" title="1:22">second toes. </span><span class="segment" data-start="86.32" data-end="92.76" title="1:26">Motor innovation of the ankle is derived from the common perineal nerve which causes dorsiflexion </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="92.76"><span class="t-timestamp">1:32</span></div>
-  <div class="t-body"><span class="segment" data-start="92.76" data-end="99.36" title="1:32">and aversion whilst the tibial nerve results in plantar flexion and inversion. </span><span class="segment" data-start="99.92" data-end="106.0" title="1:39">Finally, the churl nerve is formed from fibres of both the common perineal and tibial </span><span class="segment" data-start="106.0" data-end="111.56" title="1:46">nerves and supplies sensation of the lateral foot and calf. </span><span class="segment" data-start="111.56" data-end="117.4" title="1:51">What methods of nerve identification can be used in knee and ankle blocks? </span><span class="segment" data-start="117.4" data-end="122.76" title="1:57">Identification of the relevant nerves in an ankle block relies primarily on knowledge </span><span class="segment" data-start="122.76" data-end="126.6" title="2:02">of anatomy applied to a landmark technique. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="126.6"><span class="t-timestamp">2:06</span></div>
-  <div class="t-body"><span class="segment" data-start="126.6" data-end="132.48" title="2:06">Although in the past, parathesia has been used to suggest correct placement, these blocks </span><span class="segment" data-start="132.48" data-end="136.12" title="2:12">are now mostly performed under general anesthesia. </span><span class="segment" data-start="136.12" data-end="141.72" title="2:16">In addition, as few of the ankle nerves have a motor element, the use of the nerve stimulator </span><span class="segment" data-start="141.72" data-end="143.88" title="2:21">would not be helpful. </span><span class="segment" data-start="143.88" data-end="150.0" title="2:23">Increasingly, the availability of high quality ultrasound devices can aid identification </span><span class="segment" data-start="150.0" data-end="153.48" title="2:30">of these nerves even at the ankle. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="153.48"><span class="t-timestamp">2:33</span></div>
-  <div class="t-body"><span class="segment" data-start="153.48" data-end="160.16" title="2:33">At the knee, a nerve stimulator can be combined with ultrasound to aid identification, although </span><span class="segment" data-start="160.16" data-end="164.44" title="2:40">some anaethetists will use ultrasound alone. </span><span class="segment" data-start="164.44" data-end="167.96" title="2:44">How do nerve stimulators use the identification of peripheral nerves? </span><span class="segment" data-start="167.96" data-end="173.36" title="2:47">Different from those used for assessing neuro muscular blockade and why? </span><span class="segment" data-start="173.36" data-end="179.28" title="2:53">Due to the wide variation of tissue and hence impedance encountered as a nerve is approached </span><span class="segment" data-start="179.28" data-end="184.84" title="2:59">by a stimulating needle, devices used for identification of peripheral nerves must </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="184.84"><span class="t-timestamp">3:04</span></div>
-  <div class="t-body"><span class="segment" data-start="184.84" data-end="187.88" title="3:04">be constant current generators. </span><span class="segment" data-start="187.88" data-end="194.44" title="3:07">In addition, the delivered output should be clearly indicated on a digital display. </span><span class="segment" data-start="194.44" data-end="201.36" title="3:14">The current duration, termed Cronaxes, should be shortened to around 100 milliseconds </span><span class="segment" data-start="201.36" data-end="209.8" title="3:21">in order to preferentially stimulate a alpha motor fibers and not a delta pain fibers. </span><span class="segment" data-start="209.8" data-end="216.68" title="3:29">These devices use an insulated needle to maximize and pinpoint delivered current whilst minimizing </span><span class="segment" data-start="216.68" data-end="219.48" title="3:36">peripheral current loss. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="219.48"><span class="t-timestamp">3:39</span></div>
-  <div class="t-body"><span class="segment" data-start="219.48" data-end="226.16" title="3:39">Incorrectly attaching the positive electrode to the needle will result in a cone of hyperpolarisation </span><span class="segment" data-start="226.16" data-end="230.24" title="3:46">around the nerve and hence reduce effectiveness. </span><span class="segment" data-start="230.24" data-end="234.72" title="3:50">How would you perform a popliteal nerve block and what are the causes of suboptimal intraoperative </span><span class="segment" data-start="234.72" data-end="238.12" title="3:54">analgesia? </span><span class="segment" data-start="238.12" data-end="244.08" title="3:58">There are two main approaches to blocking nerves of the popliteal fossa, a posterior and a </span><span class="segment" data-start="244.08" data-end="246.2" title="4:04">lateral approach. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="246.2"><span class="t-timestamp">4:06</span></div>
-  <div class="t-body"><span class="segment" data-start="246.2" data-end="251.68" title="4:06">Both approaches target the tibial and common perineal nerves after they have divided from </span><span class="segment" data-start="251.68" data-end="255.12" title="4:11">the sciatic nerve above the popliteal fossa. </span><span class="segment" data-start="255.6" data-end="261.68" title="4:15">I am most familiar with the lateral approach and feel that it has advantages over the posterior </span><span class="segment" data-start="261.68" data-end="269.08" title="4:21">approach as the patient is able to remain supine during placement. </span><span class="segment" data-start="269.08" data-end="275.44" title="4:29">After inducing anesthesia, checking all relevant equipment and using sterile precautions, </span><span class="segment" data-start="275.44" data-end="283.72" title="4:35">I would insert a 5cm insulated nerve stimulating needle approximately 7cm above the lateral </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="283.72"><span class="t-timestamp">4:43</span></div>
-  <div class="t-body"><span class="segment" data-start="283.72" data-end="291.52" title="4:43">femoral epicondyle between the groove formed by biceps femoris and vastus lateralis. </span><span class="segment" data-start="291.52" data-end="297.28" title="4:51">After contacting the femur, I would redirect the needle posteriorly until a motor response </span><span class="segment" data-start="297.28" data-end="303.28" title="4:57">of the ankle is elicited at a current above 0.5 mA. </span><span class="segment" data-start="303.28" data-end="313.4" title="5:03">After negative aspiration, I would inject 30 mA of 0.5% bupivocane in 5 mA. </span><span class="segment" data-start="313.4" data-end="319.48" title="5:13">Suboptimal analgesia can result from a poorly working block or a poorly selected block. </span><span class="segment" data-start="319.48" data-end="323.28" title="5:19">A nerve block may fail for a number of reasons. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="323.28"><span class="t-timestamp">5:23</span></div>
-  <div class="t-body"><span class="segment" data-start="323.28" data-end="328.88" title="5:23">Most commonly, the local anesthetic will have been deposited in the wrong location. </span><span class="segment" data-start="328.88" data-end="333.96" title="5:28">Introvascular injection would similarly result in a poor block. </span><span class="segment" data-start="333.96" data-end="338.88" title="5:33">Depending on the location of surgery, the nerve block selected may not cover an adequate </span><span class="segment" data-start="338.88" data-end="340.08" title="5:38">area. </span><span class="segment" data-start="340.08" data-end="345.48" title="5:40">For example, surgery on the medial surface of the foot may require an additional saffonous </span><span class="segment" data-start="345.48" data-end="349.4" title="5:45">nerve block to ensure adequate analgesia. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="349.4"><span class="t-timestamp">5:49</span></div>
-  <div class="t-body"><span class="segment" data-start="349.4" data-end="355.0" title="5:49">In addition, using an above knee tornakei would require additional analgesia or a more </span><span class="segment" data-start="355.0" data-end="357.4" title="5:55">proximal nerve block. </span><span class="segment" data-start="357.4" data-end="363.64" title="5:57">You perform a pop-till block using a nerve stimulator on a patient with long-term type 1 diabetes. </span><span class="segment" data-start="363.64" data-end="366.92" title="6:03">One week later, you are told that she has paracetesia over the outer aspect of her upper </span><span class="segment" data-start="366.92" data-end="367.92" title="6:06">thigh. </span><span class="segment" data-start="368.04" data-end="370.36" title="6:08">What are the potential causes? </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="372.28"><span class="t-timestamp">6:12</span></div>
-  <div class="t-body"><span class="segment" data-start="372.28" data-end="378.24" title="6:12">The causes of paracetesia can be divided into those related to anesthesia, those related </span><span class="segment" data-start="378.24" data-end="381.6" title="6:18">to surgery and other causes. </span><span class="segment" data-start="381.6" data-end="387.32" title="6:21">Considering those related to anesthesia, although the pop-till block will often be blamed </span><span class="segment" data-start="387.32" data-end="392.08" title="6:27">for such problems, the pattern of injury makes this very unlikely. </span><span class="segment" data-start="392.08" data-end="397.36" title="6:32">The distribution of paracetesia suggests involvement of the lateral cutaneous nerve of the </span><span class="segment" data-start="397.36" data-end="402.32" title="6:37">thigh at a point above where the previous block was performed. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="402.32"><span class="t-timestamp">6:42</span></div>
-  <div class="t-body"><span class="segment" data-start="402.32" data-end="407.72" title="6:42">Damage to the lateral cutaneous nerve of the thigh can often be traced to poor interoperative </span><span class="segment" data-start="407.72" data-end="416.44" title="6:47">positioning, especially in people with conditions increasing chances of neuropraxia such as diabetes. </span><span class="segment" data-start="416.44" data-end="422.4" title="6:56">Poor positioning results in neuropraxia due to a combination of direct nerve compression, </span><span class="segment" data-start="422.4" data-end="426.0" title="7:02">ischemia and nerve stretching. </span><span class="segment" data-start="426.04" data-end="430.92" title="7:06">The lateral causes would include direct nerve trauma, although in this case, tornocade </span><span class="segment" data-start="430.92" data-end="433.2" title="7:10">damage would be more likely. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="433.2"><span class="t-timestamp">7:13</span></div>
-  <div class="t-body"><span class="segment" data-start="433.2" data-end="439.76" title="7:13">Finally, the paracetesia may be unrelated to recent events and represent a mononuropathy </span><span class="segment" data-start="439.76" data-end="442.6" title="7:19">from diabetes alone. </span><span class="segment" data-start="442.6" data-end="448.64" title="7:22">What are the advantages of a peripheral nerve block over those placed more centrally? </span><span class="segment" data-start="448.64" data-end="454.24" title="7:28">There are advantages to the technique itself and advantages to the patient. </span><span class="segment" data-start="454.24" data-end="459.76" title="7:34">In general, the more peripheral the nerve is blocked, the more superficial it can be found </span><span class="segment" data-start="459.76" data-end="463.04" title="7:39">and therefore landmarks become simpler. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="463.04"><span class="t-timestamp">7:43</span></div>
-  <div class="t-body"><span class="segment" data-start="463.04" data-end="468.96" title="7:43">Additionally, superficial nerves are often more amenable to ultrasound imaging and possibly </span><span class="segment" data-start="468.96" data-end="473.08" title="7:48">easier to identify with a nerve stimulator. </span><span class="segment" data-start="473.08" data-end="478.42" title="7:53">Turning to advantages for the patient, central nerve blocks tend to be placed closer to </span><span class="segment" data-start="478.42" data-end="485.5" title="7:58">vascular and neurological structures and thus the risks of peripheral blocks tend to be less. </span><span class="segment" data-start="485.5" data-end="490.78" title="8:05">In addition, blocking nerves more peripherally will enable one to avoid some of the central </span><span class="segment" data-start="490.78" data-end="498.22" title="8:10">effects of nerve blockade, including urinary retention and a dense whole limb weakness. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="498.22"><span class="t-timestamp">8:18</span></div>
-  <div class="t-body"><span class="segment" data-start="498.22" data-end="504.34" title="8:18">Should a popletyl nerve block be performed in a patient with a distal tibia fracture? </span><span class="segment" data-start="504.34" data-end="509.58" title="8:24">There are advantages and disadvantages to using peripheral nerve blocks. </span><span class="segment" data-start="509.58" data-end="515.54" title="8:29">A traumatic tibial fracture is known to carry a risk of compartment syndrome which persists </span><span class="segment" data-start="515.54" data-end="518.74" title="8:35">even after surgical fixation. </span><span class="segment" data-start="518.74" data-end="523.78" title="8:38">Some may argue that performing a long-lasting peripheral nerve block would make identifying </span><span class="segment" data-start="523.78" data-end="526.42" title="8:43">a compartment syndrome difficult. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="526.42"><span class="t-timestamp">8:46</span></div>
-  <div class="t-body"><span class="segment" data-start="526.42" data-end="532.42" title="8:46">However, even when a nerve block has been successful, the use of a tornake will often induce </span><span class="segment" data-start="532.42" data-end="537.26" title="8:52">intraoperative physiological changes consistent with pain. </span><span class="segment" data-start="537.26" data-end="543.06" title="8:57">There have been studies showing that this ischemia type of pain, common in compartment syndrome, </span><span class="segment" data-start="543.06" data-end="547.58" title="9:03">will break through even a perfectly working peripheral nerve block. </span><span class="segment" data-start="547.58" data-end="554.42" title="9:07">It has also been shown that good postoperative analgesia and hence early mobilization can </span><span class="segment" data-start="554.42" data-end="558.22" title="9:14">reduce the incidence of compartment syndrome. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="558.22"><span class="t-timestamp">9:18</span></div>
-  <div class="t-body"><span class="segment" data-start="558.22" data-end="563.02" title="9:18">It could be argued that if surgeons are so concerned about the risks of compartment </span><span class="segment" data-start="563.02" data-end="569.78" title="9:23">syndrome to avoid using a peripheral nerve block, then a different surgical technique or postoperative </span><span class="segment" data-start="569.78" data-end="573.18" title="9:29">compartment pressure monitoring should be used. </span><span class="segment" data-start="573.18" data-end="578.62" title="9:33">Overall, the decision to use a peripheral nerve block in these circumstances should be </span><span class="segment" data-start="578.62" data-end="584.42" title="9:38">made jointly between the surgeon and the anesthetist and would be influenced by the safety </span><span class="segment" data-start="584.42" data-end="588.1" title="9:44">of administering systemic analgesia to the patient in question. </span></div>
+<div class="preamble-block"><span class="segment a-seg" data-start="0.0" data-end="2.12" title="0:00">Ankle and knee blocks. </span><span class="segment a-seg" data-start="2.12" data-end="6.48" title="0:02">This topic will be well suited to the clinical sciences' viather, but could easily incorporate </span><span class="segment a-seg" data-start="6.48" data-end="12.1" title="0:06">features of physiology, pharmacology and physics, and therefore also be found in the basic sciences </span><span class="segment a-seg" data-start="12.1" data-end="13.5" title="0:12">viather. </span></div>
+<div class="qa-pair">
+<div class="q-block" data-start="13.5">
+  <div class="q-label">Q1</div>
+  <div class="q-body"><span class="segment q-seg" data-start="13.5" data-end="18.0" title="0:13">What nerve supply the structures below the knee? </span></div>
 </div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="18.0" data-end="22.88" title="0:18">The nerve supply to structures below the level of the knee is derived mainly from the </span></li>
+<li><span class="segment a-seg" data-start="22.88" data-end="24.88" title="0:22">sciatic nerve. </span></li>
+<li><span class="segment a-seg" data-start="24.88" data-end="30.88" title="0:24">Although the saffonous nerve supplies a variable portion of the medial calf as far as the medial </span></li>
+<li><span class="segment a-seg" data-start="30.88" data-end="39.38" title="0:30">malleolus, the sciatic nerve derived from L4 to S3 nerve roots divides approximately </span></li>
+<li><span class="segment a-seg" data-start="39.38" data-end="48.36" title="0:39">6cm above the popliteal skin crease into the tibial and common perineal nerves. </span></li>
+<li><span class="segment a-seg" data-start="48.36" data-end="54.76" title="0:48">The tibial nerve subsequently divides into the medial and lateral plantar nerves beyond </span></li>
+<li><span class="segment a-seg" data-start="54.76" data-end="60.48" title="0:54">the medial malleolus and supplies the plantar surface of the foot. </span></li>
+<li><span class="segment a-seg" data-start="60.48" data-end="65.92" title="1:00">After passing around the neck of the fibula, the common perineal nerve divides into the </span></li>
+<li><span class="segment a-seg" data-start="65.92" data-end="69.96" title="1:05">deep and superficial perineal nerves. </span></li>
+<li><span class="segment a-seg" data-start="69.96" data-end="75.52" title="1:09">The majority of sensation on the dorsum of the foot is supplied by the superficial perineal </span></li>
+<li><span class="segment a-seg" data-start="75.52" data-end="82.16" title="1:15">nerve, whilst the deep branch supplies a small area of skin webbing between the first and </span></li>
+<li><span class="segment a-seg" data-start="82.16" data-end="86.32" title="1:22">second toes. </span></li>
+<li><span class="segment a-seg" data-start="86.32" data-end="92.76" title="1:26">Motor innovation of the ankle is derived from the common perineal nerve which causes dorsiflexion </span></li>
+<li><span class="segment a-seg" data-start="92.76" data-end="99.36" title="1:32">and aversion whilst the tibial nerve results in plantar flexion and inversion. </span></li>
+<li><span class="segment a-seg" data-start="99.92" data-end="106.0" title="1:39">Finally, the churl nerve is formed from fibres of both the common perineal and tibial </span></li>
+<li><span class="segment a-seg" data-start="106.0" data-end="111.56" title="1:46">nerves and supplies sensation of the lateral foot and calf. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="111.56">
+  <div class="q-label">Q2</div>
+  <div class="q-body"><span class="segment q-seg" data-start="111.56" data-end="117.4" title="1:51">What methods of nerve identification can be used in knee and ankle blocks? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="117.4" data-end="122.76" title="1:57">Identification of the relevant nerves in an ankle block relies primarily on knowledge </span></li>
+<li><span class="segment a-seg" data-start="122.76" data-end="126.6" title="2:02">of anatomy applied to a landmark technique. </span></li>
+<li><span class="segment a-seg" data-start="126.6" data-end="132.48" title="2:06">Although in the past, parathesia has been used to suggest correct placement, these blocks </span></li>
+<li><span class="segment a-seg" data-start="132.48" data-end="136.12" title="2:12">are now mostly performed under general anesthesia. </span></li>
+<li><span class="segment a-seg" data-start="136.12" data-end="141.72" title="2:16">In addition, as few of the ankle nerves have a motor element, the use of the nerve stimulator </span></li>
+<li><span class="segment a-seg" data-start="141.72" data-end="143.88" title="2:21">would not be helpful. </span></li>
+<li><span class="segment a-seg" data-start="143.88" data-end="150.0" title="2:23">Increasingly, the availability of high quality ultrasound devices can aid identification </span></li>
+<li><span class="segment a-seg" data-start="150.0" data-end="153.48" title="2:30">of these nerves even at the ankle. </span></li>
+<li><span class="segment a-seg" data-start="153.48" data-end="160.16" title="2:33">At the knee, a nerve stimulator can be combined with ultrasound to aid identification, although </span></li>
+<li><span class="segment a-seg" data-start="160.16" data-end="164.44" title="2:40">some anaethetists will use ultrasound alone. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="164.44">
+  <div class="q-label">Q3</div>
+  <div class="q-body"><span class="segment q-seg" data-start="164.44" data-end="167.96" title="2:44">How do nerve stimulators use the identification of peripheral nerves? </span><span class="segment q-seg" data-start="167.96" data-end="173.36" title="2:47">Different from those used for assessing neuro muscular blockade and why? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="173.36" data-end="179.28" title="2:53">Due to the wide variation of tissue and hence impedance encountered as a nerve is approached </span></li>
+<li><span class="segment a-seg" data-start="179.28" data-end="184.84" title="2:59">by a stimulating needle, devices used for identification of peripheral nerves must </span></li>
+<li><span class="segment a-seg" data-start="184.84" data-end="187.88" title="3:04">be constant current generators. </span></li>
+<li><span class="segment a-seg" data-start="187.88" data-end="194.44" title="3:07">In addition, the delivered output should be clearly indicated on a digital display. </span></li>
+<li><span class="segment a-seg" data-start="194.44" data-end="201.36" title="3:14">The current duration, termed Cronaxes, should be shortened to around 100 milliseconds </span></li>
+<li><span class="segment a-seg" data-start="201.36" data-end="209.8" title="3:21">in order to preferentially stimulate a alpha motor fibers and not a delta pain fibers. </span></li>
+<li><span class="segment a-seg" data-start="209.8" data-end="216.68" title="3:29">These devices use an insulated needle to maximize and pinpoint delivered current whilst minimizing </span></li>
+<li><span class="segment a-seg" data-start="216.68" data-end="219.48" title="3:36">peripheral current loss. </span></li>
+<li><span class="segment a-seg" data-start="219.48" data-end="226.16" title="3:39">Incorrectly attaching the positive electrode to the needle will result in a cone of hyperpolarisation </span></li>
+<li><span class="segment a-seg" data-start="226.16" data-end="230.24" title="3:46">around the nerve and hence reduce effectiveness. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="230.24">
+  <div class="q-label">Q4</div>
+  <div class="q-body"><span class="segment q-seg" data-start="230.24" data-end="234.72" title="3:50">How would you perform a popliteal nerve block and what are the causes of suboptimal intraoperative </span><span class="segment q-seg" data-start="234.72" data-end="238.12" title="3:54">analgesia? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="238.12" data-end="244.08" title="3:58">There are two main approaches to blocking nerves of the popliteal fossa, a posterior and a </span></li>
+<li><span class="segment a-seg" data-start="244.08" data-end="246.2" title="4:04">lateral approach. </span></li>
+<li><span class="segment a-seg" data-start="246.2" data-end="251.68" title="4:06">Both approaches target the tibial and common perineal nerves after they have divided from </span></li>
+<li><span class="segment a-seg" data-start="251.68" data-end="255.12" title="4:11">the sciatic nerve above the popliteal fossa. </span></li>
+<li><span class="segment a-seg" data-start="255.6" data-end="261.68" title="4:15">I am most familiar with the lateral approach and feel that it has advantages over the posterior </span></li>
+<li><span class="segment a-seg" data-start="261.68" data-end="269.08" title="4:21">approach as the patient is able to remain supine during placement. </span></li>
+<li><span class="segment a-seg" data-start="269.08" data-end="275.44" title="4:29">After inducing anesthesia, checking all relevant equipment and using sterile precautions, </span></li>
+<li><span class="segment a-seg" data-start="275.44" data-end="283.72" title="4:35">I would insert a 5cm insulated nerve stimulating needle approximately 7cm above the lateral </span></li>
+<li><span class="segment a-seg" data-start="283.72" data-end="291.52" title="4:43">femoral epicondyle between the groove formed by biceps femoris and vastus lateralis. </span></li>
+<li><span class="segment a-seg" data-start="291.52" data-end="297.28" title="4:51">After contacting the femur, I would redirect the needle posteriorly until a motor response </span></li>
+<li><span class="segment a-seg" data-start="297.28" data-end="303.28" title="4:57">of the ankle is elicited at a current above 0.5 mA. </span></li>
+<li><span class="segment a-seg" data-start="303.28" data-end="313.4" title="5:03">After negative aspiration, I would inject 30 mA of 0.5% bupivocane in 5 mA. </span></li>
+<li><span class="segment a-seg" data-start="313.4" data-end="319.48" title="5:13">Suboptimal analgesia can result from a poorly working block or a poorly selected block. </span></li>
+<li><span class="segment a-seg" data-start="319.48" data-end="323.28" title="5:19">A nerve block may fail for a number of reasons. </span></li>
+<li><span class="segment a-seg" data-start="323.28" data-end="328.88" title="5:23">Most commonly, the local anesthetic will have been deposited in the wrong location. </span></li>
+<li><span class="segment a-seg" data-start="328.88" data-end="333.96" title="5:28">Introvascular injection would similarly result in a poor block. </span></li>
+<li><span class="segment a-seg" data-start="333.96" data-end="338.88" title="5:33">Depending on the location of surgery, the nerve block selected may not cover an adequate </span></li>
+<li><span class="segment a-seg" data-start="338.88" data-end="340.08" title="5:38">area. </span></li>
+<li><span class="segment a-seg" data-start="340.08" data-end="345.48" title="5:40">For example, surgery on the medial surface of the foot may require an additional saffonous </span></li>
+<li><span class="segment a-seg" data-start="345.48" data-end="349.4" title="5:45">nerve block to ensure adequate analgesia. </span></li>
+<li><span class="segment a-seg" data-start="349.4" data-end="355.0" title="5:49">In addition, using an above knee tornakei would require additional analgesia or a more </span></li>
+<li><span class="segment a-seg" data-start="355.0" data-end="357.4" title="5:55">proximal nerve block. </span></li>
+<li><span class="segment a-seg" data-start="357.4" data-end="363.64" title="5:57">You perform a pop-till block using a nerve stimulator on a patient with long-term type 1 diabetes. </span></li>
+<li><span class="segment a-seg" data-start="363.64" data-end="366.92" title="6:03">One week later, you are told that she has paracetesia over the outer aspect of her upper </span></li>
+<li><span class="segment a-seg" data-start="366.92" data-end="367.92" title="6:06">thigh. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="368.04">
+  <div class="q-label">Q5</div>
+  <div class="q-body"><span class="segment q-seg" data-start="368.04" data-end="370.36" title="6:08">What are the potential causes? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="372.28" data-end="378.24" title="6:12">The causes of paracetesia can be divided into those related to anesthesia, those related </span></li>
+<li><span class="segment a-seg" data-start="378.24" data-end="381.6" title="6:18">to surgery and other causes. </span></li>
+<li><span class="segment a-seg" data-start="381.6" data-end="387.32" title="6:21">Considering those related to anesthesia, although the pop-till block will often be blamed </span></li>
+<li><span class="segment a-seg" data-start="387.32" data-end="392.08" title="6:27">for such problems, the pattern of injury makes this very unlikely. </span></li>
+<li><span class="segment a-seg" data-start="392.08" data-end="397.36" title="6:32">The distribution of paracetesia suggests involvement of the lateral cutaneous nerve of the </span></li>
+<li><span class="segment a-seg" data-start="397.36" data-end="402.32" title="6:37">thigh at a point above where the previous block was performed. </span></li>
+<li><span class="segment a-seg" data-start="402.32" data-end="407.72" title="6:42">Damage to the lateral cutaneous nerve of the thigh can often be traced to poor interoperative </span></li>
+<li><span class="segment a-seg" data-start="407.72" data-end="416.44" title="6:47">positioning, especially in people with conditions increasing chances of neuropraxia such as diabetes. </span></li>
+<li><span class="segment a-seg" data-start="416.44" data-end="422.4" title="6:56">Poor positioning results in neuropraxia due to a combination of direct nerve compression, </span></li>
+<li><span class="segment a-seg" data-start="422.4" data-end="426.0" title="7:02">ischemia and nerve stretching. </span></li>
+<li><span class="segment a-seg" data-start="426.04" data-end="430.92" title="7:06">The lateral causes would include direct nerve trauma, although in this case, tornocade </span></li>
+<li><span class="segment a-seg" data-start="430.92" data-end="433.2" title="7:10">damage would be more likely. </span></li>
+<li><span class="segment a-seg" data-start="433.2" data-end="439.76" title="7:13">Finally, the paracetesia may be unrelated to recent events and represent a mononuropathy </span></li>
+<li><span class="segment a-seg" data-start="439.76" data-end="442.6" title="7:19">from diabetes alone. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="442.6">
+  <div class="q-label">Q6</div>
+  <div class="q-body"><span class="segment q-seg" data-start="442.6" data-end="448.64" title="7:22">What are the advantages of a peripheral nerve block over those placed more centrally? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="448.64" data-end="454.24" title="7:28">There are advantages to the technique itself and advantages to the patient. </span></li>
+<li><span class="segment a-seg" data-start="454.24" data-end="459.76" title="7:34">In general, the more peripheral the nerve is blocked, the more superficial it can be found </span></li>
+<li><span class="segment a-seg" data-start="459.76" data-end="463.04" title="7:39">and therefore landmarks become simpler. </span></li>
+<li><span class="segment a-seg" data-start="463.04" data-end="468.96" title="7:43">Additionally, superficial nerves are often more amenable to ultrasound imaging and possibly </span></li>
+<li><span class="segment a-seg" data-start="468.96" data-end="473.08" title="7:48">easier to identify with a nerve stimulator. </span></li>
+<li><span class="segment a-seg" data-start="473.08" data-end="478.42" title="7:53">Turning to advantages for the patient, central nerve blocks tend to be placed closer to </span></li>
+<li><span class="segment a-seg" data-start="478.42" data-end="485.5" title="7:58">vascular and neurological structures and thus the risks of peripheral blocks tend to be less. </span></li>
+<li><span class="segment a-seg" data-start="485.5" data-end="490.78" title="8:05">In addition, blocking nerves more peripherally will enable one to avoid some of the central </span></li>
+<li><span class="segment a-seg" data-start="490.78" data-end="498.22" title="8:10">effects of nerve blockade, including urinary retention and a dense whole limb weakness. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="498.22">
+  <div class="q-label">Q7</div>
+  <div class="q-body"><span class="segment q-seg" data-start="498.22" data-end="504.34" title="8:18">Should a popletyl nerve block be performed in a patient with a distal tibia fracture? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="504.34" data-end="509.58" title="8:24">There are advantages and disadvantages to using peripheral nerve blocks. </span></li>
+<li><span class="segment a-seg" data-start="509.58" data-end="515.54" title="8:29">A traumatic tibial fracture is known to carry a risk of compartment syndrome which persists </span></li>
+<li><span class="segment a-seg" data-start="515.54" data-end="518.74" title="8:35">even after surgical fixation. </span></li>
+<li><span class="segment a-seg" data-start="518.74" data-end="523.78" title="8:38">Some may argue that performing a long-lasting peripheral nerve block would make identifying </span></li>
+<li><span class="segment a-seg" data-start="523.78" data-end="526.42" title="8:43">a compartment syndrome difficult. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="526.42">
+  <div class="q-label">Q8</div>
+  <div class="q-body"><span class="segment q-seg" data-start="526.42" data-end="532.42" title="8:46">However, even when a nerve block has been successful, the use of a tornake will often induce </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="532.42" data-end="537.26" title="8:52">intraoperative physiological changes consistent with pain. </span></li>
+<li><span class="segment a-seg" data-start="537.26" data-end="543.06" title="8:57">There have been studies showing that this ischemia type of pain, common in compartment syndrome, </span></li>
+<li><span class="segment a-seg" data-start="543.06" data-end="547.58" title="9:03">will break through even a perfectly working peripheral nerve block. </span></li>
+<li><span class="segment a-seg" data-start="547.58" data-end="554.42" title="9:07">It has also been shown that good postoperative analgesia and hence early mobilization can </span></li>
+<li><span class="segment a-seg" data-start="554.42" data-end="558.22" title="9:14">reduce the incidence of compartment syndrome. </span></li>
+<li><span class="segment a-seg" data-start="558.22" data-end="563.02" title="9:18">It could be argued that if surgeons are so concerned about the risks of compartment </span></li>
+<li><span class="segment a-seg" data-start="563.02" data-end="569.78" title="9:23">syndrome to avoid using a peripheral nerve block, then a different surgical technique or postoperative </span></li>
+<li><span class="segment a-seg" data-start="569.78" data-end="573.18" title="9:29">compartment pressure monitoring should be used. </span></li>
+<li><span class="segment a-seg" data-start="573.18" data-end="578.62" title="9:33">Overall, the decision to use a peripheral nerve block in these circumstances should be </span></li>
+<li><span class="segment a-seg" data-start="578.62" data-end="584.42" title="9:38">made jointly between the surgeon and the anesthetist and would be influenced by the safety </span></li>
+<li><span class="segment a-seg" data-start="584.42" data-end="588.1" title="9:44">of administering systemic analgesia to the patient in question. </span></li>
+  </ul>
+</div>
+</div>
+
 </div>
 
 <div class="subtitle-bar">
-  <span class="subtitle-text empty" id="subtitle-text">Play audio to see live subtitles&#8230;</span>
+  <span id="subtitle-text" class="empty">Play audio to see live subtitles&#8230;</span>
 </div>
 
 <script>
-
-const audio    = document.getElementById('audio');
-const allSegs  = Array.from(document.querySelectorAll('.segment'));
-const allBlocks = Array.from(document.querySelectorAll('.t-block'));
+const audio      = document.getElementById('audio');
+const allSegs    = Array.from(document.querySelectorAll('.segment'));
 const subtitleEl = document.getElementById('subtitle-text');
-let activeSegEl   = null;
-let activeBlockEl = null;
-let searchMatches = [];
-let searchIdx     = 0;
+let activeSegEl  = null;
+let searchMatches = [], searchIdx = 0;
 
-// Duration display
 audio.addEventListener('loadedmetadata', () => {
   const m = Math.floor(audio.duration / 60);
   const s = Math.floor(audio.duration %% 60).toString().padStart(2,'0');
   document.getElementById('dur').textContent = m + ':' + s;
 });
 
-// Seek helper
-function seekTo(t) {
-  audio.currentTime = t;
-  audio.play();
-}
+function seekTo(t) { audio.currentTime = t; audio.play(); }
 
-// Block gutter click
-document.querySelectorAll('.t-gutter').forEach(g => {
-  g.addEventListener('click', () => seekTo(parseFloat(g.dataset.start)));
+// Q-block header click
+document.querySelectorAll('.q-block').forEach(q => {
+  q.addEventListener('click', e => {
+    if (!e.target.classList.contains('segment')) seekTo(parseFloat(q.dataset.start));
+  });
 });
 
-// Segment click
+// Individual segment click
 allSegs.forEach(s => {
-  s.addEventListener('click', e => {
-    e.stopPropagation();
-    seekTo(parseFloat(s.dataset.start));
-  });
+  s.addEventListener('click', e => { e.stopPropagation(); seekTo(parseFloat(s.dataset.start)); });
 });
 
 // Real-time tracking
 audio.addEventListener('timeupdate', () => {
   const t = audio.currentTime;
-
-  // Find active segment (last one whose start <= t)
   let found = null;
   for (let i = allSegs.length - 1; i >= 0; i--) {
     if (parseFloat(allSegs[i].dataset.start) <= t) { found = allSegs[i]; break; }
   }
-
   if (found && found !== activeSegEl) {
-    // Clear previous
-    if (activeSegEl) activeSegEl.classList.remove('active');
-    if (activeBlockEl) {
-      activeBlockEl.classList.remove('block-active');
-      const pg = activeBlockEl.querySelector('.t-gutter');
-      if (pg) pg.classList.remove('gutter-active');
+    if (activeSegEl) {
+      activeSegEl.classList.remove('active');
+      const pli = activeSegEl.closest('li');
+      if (pli) pli.classList.remove('li-active');
+      const pq = activeSegEl.closest('.q-block');
+      if (pq) pq.classList.remove('q-active');
     }
-    // Set new
     found.classList.add('active');
-    const block = found.closest('.t-block');
-    if (block) {
-      block.classList.add('block-active');
-      const g = block.querySelector('.t-gutter');
-      if (g) g.classList.add('gutter-active');
-      activeBlockEl = block;
-    }
+    const li = found.closest('li');
+    if (li) li.classList.add('li-active');
+    const qb = found.closest('.q-block');
+    if (qb) qb.classList.add('q-active');
     activeSegEl = found;
 
-    // Update subtitle
     subtitleEl.textContent = found.textContent.trim();
     subtitleEl.classList.remove('empty');
 
-    // Auto-scroll (only when not searching)
-    if (!document.getElementById('search').value) {
+    if (!document.getElementById('search').value)
       found.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }
   }
 });
 
@@ -344,17 +448,13 @@ searchInput.addEventListener('keydown', e => {
     el.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
 });
-
 function runSearch() {
   const q = searchInput.value.trim().toLowerCase();
   allSegs.forEach(s => s.classList.remove('search-match','search-current'));
   searchMatches = [];
   if (!q) return;
   allSegs.forEach(s => {
-    if (s.textContent.toLowerCase().includes(q)) {
-      s.classList.add('search-match');
-      searchMatches.push(s);
-    }
+    if (s.textContent.toLowerCase().includes(q)) { s.classList.add('search-match'); searchMatches.push(s); }
   });
   if (!searchMatches.length) return;
   searchIdx = 0;

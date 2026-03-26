@@ -5,10 +5,19 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Thoracics — Pneumothorax</title>
 <style>
-
   :root {
-    --accent:    #7c3aed;
-    --body-bg:   #f1f5f9;
+    --q-bg:       #1e3a5f;
+    --q-text:     #ffffff;
+    --q-label:    #60a5fa;
+    --a-bg:       #ffffff;
+    --a-border:   #e2e8f0;
+    --a-label:    #059669;
+    --active-q:   #7c3aed;
+    --active-a:   #dbeafe;
+    --accent:     #7c3aed;
+    --body-bg:    #f1f5f9;
+    --pre-bg:     #fef9c3;
+    --pre-border: #fcd34d;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
@@ -40,22 +49,9 @@
     margin-bottom: 4px;
     letter-spacing: 0.01em;
   }
-  .header-sub {
-    font-size: 0.72rem;
-    color: #94a3b8;
-    font-style: italic;
-  }
-  audio {
-    height: 36px;
-    accent-color: var(--accent);
-    flex-shrink: 0;
-  }
-  .back-link {
-    font-size: 0.8rem;
-    color: #94a3b8;
-    text-decoration: none;
-    white-space: nowrap;
-  }
+  .header-sub { font-size: 0.72rem; color: #94a3b8; font-style: italic; }
+  audio { height: 36px; accent-color: var(--accent); flex-shrink: 0; }
+  .back-link { font-size: 0.8rem; color: #94a3b8; text-decoration: none; white-space: nowrap; }
   .back-link:hover { color: #60a5fa; }
 
   /* ── Toolbar ── */
@@ -69,30 +65,17 @@
     border-bottom: 1px solid #334155;
   }
   .toolbar input {
-    flex: 1;
-    max-width: 380px;
+    flex: 1; max-width: 380px;
     padding: 5px 11px;
-    border: 1px solid #475569;
-    border-radius: 6px;
-    background: #0f172a;
-    color: #e2e8f0;
-    font-size: 0.83rem;
-    outline: none;
+    border: 1px solid #475569; border-radius: 6px;
+    background: #0f172a; color: #e2e8f0; font-size: 0.83rem; outline: none;
   }
   .toolbar input:focus { border-color: var(--accent); }
   .toolbar input::placeholder { color: #64748b; }
-  .stats {
-    font-size: 0.72rem;
-    color: #64748b;
-    white-space: nowrap;
-  }
+  .stats { font-size: 0.72rem; color: #64748b; white-space: nowrap; }
 
   /* ── Scroll area ── */
-  .scroll-area {
-    flex: 1;
-    overflow-y: auto;
-    padding: 20px;
-  }
+  .scroll-area { flex: 1; overflow-y: auto; padding: 20px; }
   .scroll-area::-webkit-scrollbar { width: 6px; }
   .scroll-area::-webkit-scrollbar-track { background: transparent; }
   .scroll-area::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
@@ -107,68 +90,77 @@
     display: flex;
     align-items: center;
   }
-  .subtitle-text {
-    font-size: 0.9rem;
-    color: #e2e8f0;
-    line-height: 1.5;
-    font-style: italic;
-  }
-  .subtitle-text.empty { color: #475569; }
+  #subtitle-text { font-size: 0.88rem; color: #e2e8f0; line-height: 1.5; font-style: italic; }
+  #subtitle-text.empty { color: #475569; }
 
-  /* ── Transcript blocks ── */
-  .t-block {
-    background: #ffffff;
-    border: 1px solid #e2e8f0;
-    border-radius: 10px;
-    margin-bottom: 14px;
-    overflow: hidden;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
-    display: flex;
-  }
-  .t-block.block-active {
-    border-color: var(--accent);
-    box-shadow: 0 0 0 2px rgba(37,99,235,0.15);
-  }
-  .t-gutter {
-    background: #0f172a;
-    width: 52px;
-    flex-shrink: 0;
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
-    padding-top: 14px;
-    cursor: pointer;
-  }
-  .t-gutter:hover { background: #1e293b; }
-  .t-timestamp {
-    font-size: 0.7rem;
-    color: #64748b;
-    font-family: monospace;
-    font-weight: 600;
-    letter-spacing: 0.02em;
-  }
-  .t-gutter.gutter-active .t-timestamp { color: var(--accent); }
-  .t-body {
-    flex: 1;
+  /* ── Preamble ── */
+  .preamble-block {
+    background: var(--pre-bg);
+    border-left: 4px solid var(--pre-border);
+    border-radius: 0 8px 8px 0;
     padding: 12px 16px;
-    line-height: 1.75;
-    font-size: 0.92rem;
-    color: #1e293b;
+    margin-bottom: 20px;
+    font-size: 0.88rem;
+    color: #78350f;
+    font-style: italic;
+    line-height: 1.7;
   }
 
-  /* ── Segments ── */
-  .segment {
+  /* ── Q&A pair ── */
+  .qa-pair { margin-bottom: 20px; border-radius: 10px; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+
+  /* Question block */
+  .q-block {
+    background: var(--q-bg);
+    padding: 14px 18px;
+    display: flex; gap: 14px; align-items: flex-start;
     cursor: pointer;
-    border-radius: 3px;
-    transition: background 0.1s;
+    transition: background 0.15s;
   }
-  .segment:hover { background: #eff6ff; }
-  .segment.active {
-    background: #bfdbfe;
-    outline: 2px solid #3b82f6;
-    outline-offset: 1px;
-    border-radius: 3px;
+  .q-block:hover { background: #1d4ed8; }
+  .q-block.q-active { background: var(--active-q); }
+  .q-label {
+    font-size: 0.7rem; font-weight: 700;
+    color: var(--q-label);
+    background: rgba(96,165,250,0.15);
+    border: 1px solid rgba(96,165,250,0.3);
+    border-radius: 5px; padding: 3px 7px;
+    white-space: nowrap; margin-top: 2px; letter-spacing: 0.05em;
+    flex-shrink: 0;
   }
+  .q-body { flex: 1; font-size: 0.97rem; font-weight: 600; color: var(--q-text); line-height: 1.55; }
+
+  /* Answer block */
+  .a-block {
+    background: var(--a-bg);
+    border: 1px solid var(--a-border); border-top: none;
+    padding: 14px 18px;
+    display: flex; gap: 14px; align-items: flex-start;
+  }
+  .a-label {
+    font-size: 0.7rem; font-weight: 700;
+    color: var(--a-label);
+    background: #d1fae5; border: 1px solid #6ee7b7;
+    border-radius: 5px; padding: 3px 9px;
+    white-space: nowrap; margin-top: 2px; letter-spacing: 0.05em;
+    flex-shrink: 0;
+  }
+  .a-body { flex: 1; list-style: none; padding: 0; }
+  .a-body li {
+    padding: 4px 0 4px 14px;
+    border-left: 3px solid transparent;
+    line-height: 1.7; font-size: 0.92rem; color: #1e293b;
+    border-radius: 0 4px 4px 0;
+    transition: background 0.15s;
+  }
+  .a-body li:not(:last-child) { border-bottom: 1px solid #f1f5f9; }
+
+  /* ── Segments (clickable) ── */
+  .segment { cursor: pointer; border-radius: 3px; }
+  .q-seg:hover { background: rgba(255,255,255,0.18); }
+  .a-seg:hover { background: #eff6ff; }
+  .segment.active { background: #bfdbfe; outline: 2px solid #3b82f6; outline-offset: 1px; }
+  .a-body li.li-active { background: var(--active-a); border-left-color: var(--accent); }
   .segment.search-match  { background: #fef9c3; }
   .segment.search-current { background: #fde047; outline: 2px solid #ca8a04; }
 
@@ -187,172 +179,317 @@
 
 <div class="toolbar">
   <input type="text" id="search" placeholder="Search transcript&#8230; (Enter = next match)">
-  <span class="stats" id="stats">162 segments &nbsp;|&nbsp; <span id="dur">loading&#8230;</span></span>
+  <span class="stats" id="stats">9 questions &nbsp;|&nbsp; 162 segments &nbsp;|&nbsp; <span id="dur">loading&#8230;</span></span>
 </div>
 
 <div class="scroll-area" id="scroll-area">
-<div class="t-block">
-  <div class="t-gutter" data-start="0.0"><span class="t-timestamp">0:00</span></div>
-  <div class="t-body"><span class="segment" data-start="0.0" data-end="5.12" title="0:00">Neymethorax. This topic would be suited to the clinical sciences </span><span class="segment" data-start="5.12" data-end="9.26" title="0:05">viber, but may feature in the physiology section where its implications on </span><span class="segment" data-start="9.26" data-end="13.94" title="0:09">respiratory function would be the main subject of interest. As it is a </span><span class="segment" data-start="13.94" data-end="18.24" title="0:13">potential introspective anaesthetic emergency, you should be able to answer </span><span class="segment" data-start="18.24" data-end="22.6" title="0:18">these questions confidently to a high standard and give the impression that </span><span class="segment" data-start="22.6" data-end="27.08" title="0:22">you could deal with such a situation in a logical calm fashion. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="27.56"><span class="t-timestamp">0:27</span></div>
-  <div class="t-body"><span class="segment" data-start="27.56" data-end="31.08" title="0:27">What is normally found in the interplural or introplural space? </span><span class="segment" data-start="31.08" data-end="36.18" title="0:31">Don't let such questions put you off track. By now you will understand the </span><span class="segment" data-start="36.18" data-end="40.28" title="0:36">mechanics of breathing very well and should be able to talk generally about </span><span class="segment" data-start="40.28" data-end="42.2" title="0:40">this important potential space. </span><span class="segment" data-start="42.2" data-end="48.36" title="0:42">The plurra is a double layered sack which surrounds both lungs and </span><span class="segment" data-start="48.36" data-end="54.08" title="0:48">media stinum, being composed of an outer parietal and an inner visceral layer. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="54.68"><span class="t-timestamp">0:54</span></div>
-  <div class="t-body"><span class="segment" data-start="54.68" data-end="59.0" title="0:54">Between these layers is a potential space normally containing a small </span><span class="segment" data-start="59.0" data-end="63.84" title="0:59">amount of serious fluid, although pathologically an accumulation of air or </span><span class="segment" data-start="63.84" data-end="69.04" title="1:03">fluid can occur leading to a pneumothorax or a plural effusion respectively. </span><span class="segment" data-start="69.04" data-end="74.52" title="1:09">Whilst the visceral plurra has only an autonomic nerve supply, the </span><span class="segment" data-start="74.52" data-end="79.28" title="1:14">parietal plurra has an innovation derived from the intercostal nerves. </span><span class="segment" data-start="79.28" data-end="82.6" title="1:19">Why is the space so important even in health? </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="83.56"><span class="t-timestamp">1:23</span></div>
-  <div class="t-body"><span class="segment" data-start="83.56" data-end="88.96" title="1:23">Again, try and think through the basics of respiratory physiology to show that </span><span class="segment" data-start="88.96" data-end="92.96" title="1:28">you are not only a safe clinician but one who has a sound knowledge of the </span><span class="segment" data-start="92.96" data-end="94.04" title="1:32">basic sciences. </span><span class="segment" data-start="96.04" data-end="100.44" title="1:36">This space is normally maintained at a sub atmospheric pressure of between </span><span class="segment" data-start="100.44" data-end="106.64" title="1:40">minus 0.5 to minus 1.5 kilopascals depending upon the level on the chest that </span><span class="segment" data-start="106.64" data-end="111.84" title="1:46">it is measured. This negative pressure is due to the elastic recoil of the chest </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="111.84"><span class="t-timestamp">1:51</span></div>
-  <div class="t-body"><span class="segment" data-start="111.84" data-end="116.32" title="1:51">wall springing outwards and the elasticity of the lungs pulling inwards, </span><span class="segment" data-start="116.32" data-end="121.44" title="1:56">factors which are also important in determining functional residual capacity. </span><span class="segment" data-start="122.64" data-end="127.8" title="2:02">The regional differences in interplural pressures from the top to the bottom of </span><span class="segment" data-start="127.8" data-end="132.44" title="2:07">the lung is due to the effect of gravity on lung mass, with lower regions </span><span class="segment" data-start="132.44" data-end="136.64" title="2:12">being under less negative pressure than those at the apex. </span><span class="segment" data-start="136.72" data-end="141.4" title="2:16">This in turn has important consequences when examining a pressure volume </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="141.4"><span class="t-timestamp">2:21</span></div>
-  <div class="t-body"><span class="segment" data-start="141.4" data-end="147.12" title="2:21">compliance curve and explains why under normal circumstances the upright </span><span class="segment" data-start="147.12" data-end="152.44" title="2:27">lung has greater ventilation per unit volume at its base compared with its </span><span class="segment" data-start="152.44" data-end="154.72" title="2:32">apex. These are West zones. </span><span class="segment" data-start="155.48" data-end="159.68" title="2:35">This combined with the regional differences in blood flow leads to the </span><span class="segment" data-start="159.68" data-end="164.8" title="2:39">conclusion that there is greater shunt at the lung base and greater dead space </span><span class="segment" data-start="164.8" data-end="170.64" title="2:44">at the apex. It can be seen therefore that the plurar and the pluraral space is </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="170.64"><span class="t-timestamp">2:50</span></div>
-  <div class="t-body"><span class="segment" data-start="170.64" data-end="175.6" title="2:50">essential for forming and transmitting the changes in pressure which ultimately </span><span class="segment" data-start="175.6" data-end="177.16" title="2:55">calls lung expansion. </span><span class="segment" data-start="178.36" data-end="181.12" title="2:58">A 20-year-old man with a history of asthma is admitted to hospital with </span><span class="segment" data-start="181.12" data-end="185.72" title="3:01">pleuretic chest pain and dysnia. A plain chest radiograph shows evidence for </span><span class="segment" data-start="185.72" data-end="189.96" title="3:05">three centimeter near mithorax. How would you classify and treat this new </span><span class="segment" data-start="189.96" data-end="190.76" title="3:09">mithorax? </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="191.72"><span class="t-timestamp">3:11</span></div>
-  <div class="t-body"><span class="segment" data-start="191.72" data-end="195.8" title="3:11">The British The Rassic Society has published guidelines on the treatment of </span><span class="segment" data-start="195.8" data-end="199.76" title="3:15">new mithoraxes and these should be included in your reading list before the </span><span class="segment" data-start="199.76" data-end="205.28" title="3:19">exam. Viver questions often result from topical or controversial guidelines </span><span class="segment" data-start="205.28" data-end="209.64" title="3:25">from professional societies and you should review such publications in the </span><span class="segment" data-start="209.64" data-end="211.04" title="3:29">lead up to your finals. </span><span class="segment" data-start="213.12" data-end="217.96" title="3:33">Numerathoraxes can be divided into those occurring spontaneously and those </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="217.96"><span class="t-timestamp">3:37</span></div>
-  <div class="t-body"><span class="segment" data-start="217.96" data-end="222.96" title="3:37">occurring traumatically either as a result of direct or indirect trauma. </span><span class="segment" data-start="223.72" data-end="228.48" title="3:43">Spontaneous new mithoraxes can be further classified into primary where no </span><span class="segment" data-start="228.48" data-end="233.56" title="3:48">underlying lung disease is present or secondary where lung disease is present. </span><span class="segment" data-start="234.24" data-end="238.92" title="3:54">Therefore in this case the patient has a spontaneous secondary new mithorax </span><span class="segment" data-start="238.92" data-end="244.24" title="3:58">probably as a result of a pluraral bleb rupture. According to the British </span><span class="segment" data-start="244.4" data-end="249.24" title="4:04">The Rassic Society's guidelines a trial of aspiration should be performed </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="249.24"><span class="t-timestamp">4:09</span></div>
-  <div class="t-body"><span class="segment" data-start="249.24" data-end="254.32" title="4:09">followed by insertion of an intercostal drain should aspiration be unsuccessful. </span><span class="segment" data-start="255.32" data-end="259.76" title="4:15">If the new mithorax was less than two centimeters deep on a plain chest </span><span class="segment" data-start="259.76" data-end="264.16" title="4:19">radiograph and without breathlessness the guideline suggests that </span><span class="segment" data-start="264.16" data-end="266.2" title="4:24">intervention would not be required. </span><span class="segment" data-start="267.16" data-end="271.36" title="4:27">These measurements can easily be performed on the modern digital radiology </span><span class="segment" data-start="271.48" data-end="274.72" title="4:31">viewers with the measurement tools included in the software. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="275.76"><span class="t-timestamp">4:35</span></div>
-  <div class="t-body"><span class="segment" data-start="275.76" data-end="281.52" title="4:35">A high inspired oxygen concentration using an oxygen flow of 15 litres per minute </span><span class="segment" data-start="281.52" data-end="286.72" title="4:41">via a non-rebreathing reservoir bag assembly would be helpful not only to </span><span class="segment" data-start="286.72" data-end="290.88" title="4:46">reduce the chance of highpoxia but to increase the speed of air </span><span class="segment" data-start="290.88" data-end="295.28" title="4:50">reabsorption by forming a large partial pressure gradient for nitrogen </span><span class="segment" data-start="295.6" data-end="298.16" title="4:55">between the alveoli and the plural space. </span><span class="segment" data-start="298.64" data-end="301.04" title="4:58">Would your management be different if this patient acquired a general </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="301.04"><span class="t-timestamp">5:01</span></div>
-  <div class="t-body"><span class="segment" data-start="301.04" data-end="303.28" title="5:01">anaesthetic with positive pressure ventilation? </span><span class="segment" data-start="304.24" data-end="308.8" title="5:04">When reading guidelines such as in the previous question always think how this </span><span class="segment" data-start="308.8" data-end="311.04" title="5:08">may apply to me as an anaesthetist. </span><span class="segment" data-start="313.36" data-end="317.68" title="5:13">Not only is positive pressure ventilation a risk factor for developing </span><span class="segment" data-start="317.68" data-end="323.6" title="5:17">indirect traumatic new mithorases as a result of barituruma but it can also </span><span class="segment" data-start="323.6" data-end="326.96" title="5:23">dramatically worsen an existing small new mithorax. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="327.76"><span class="t-timestamp">5:27</span></div>
-  <div class="t-body"><span class="segment" data-start="327.76" data-end="332.96" title="5:27">Although humans normally inspire by creating a negative interplural pressure </span><span class="segment" data-start="332.96" data-end="338.16" title="5:32">and therefore suck air into their lungs positive pressure ventilation uses the </span><span class="segment" data-start="338.16" data-end="342.48" title="5:38">exact opposite mechanism forcing air under pressure into the lungs. </span><span class="segment" data-start="343.44" data-end="349.04" title="5:43">This can result in both the enlargement of small new mithorases and the life-threatening </span><span class="segment" data-start="349.12" data-end="356.08" title="5:49">complication of attention new mithorax where a flap of plurah effectively forms a one-way valve </span><span class="segment" data-start="356.08" data-end="360.08" title="5:56">allowing expansion of the plural space but not deflation. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="361.04"><span class="t-timestamp">6:01</span></div>
-  <div class="t-body"><span class="segment" data-start="361.04" data-end="366.08" title="6:01">This firstly rapidly enlarges a new mithorax resulting in lung collapse, </span><span class="segment" data-start="366.08" data-end="369.36" title="6:06">hypoxia and an increased in spiritory pressure. </span><span class="segment" data-start="370.32" data-end="376.48" title="6:10">Secondly as the new mithorax increases in size high positive pressure will be transmitted </span><span class="segment" data-start="376.48" data-end="381.92" title="6:16">to the contralateral hemithorax causing displacement and great vessel compression. </span><span class="segment" data-start="382.72" data-end="388.08" title="6:22">This will result in a dramatic decrease in preload and eventually cardiovascular collapse. </span><span class="segment" data-start="388.96" data-end="393.92" title="6:28">Therefore before instituting positive pressure ventilation an intercostal </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="393.92"><span class="t-timestamp">6:33</span></div>
-  <div class="t-body"><span class="segment" data-start="393.92" data-end="400.0" title="6:33">drain should be inserted and attached to an underwater drainage system and nitrous oxide avoided. </span><span class="segment" data-start="400.96" data-end="406.4" title="6:40">The role of nitrous oxide in expanding new mithorases is due to its higher water </span><span class="segment" data-start="406.4" data-end="415.04" title="6:46">solubility relative to that of nitrogen, a blood gas coefficient of 0.47 compared with 0.15. </span><span class="segment" data-start="416.16" data-end="422.16" title="6:56">For this reason it diffuses into a closed gas space 30 times more rapidly than nitrogen </span><span class="segment" data-start="422.16" data-end="428.16" title="7:02">diffuses out therefore as much as doubling the size of the new mithorax in 10 minutes </span><span class="segment" data-start="428.16" data-end="434.08" title="7:08">when using 70% nitrous oxide. What is an underwater drainage system? </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="434.08"><span class="t-timestamp">7:14</span></div>
-  <div class="t-body"><span class="segment" data-start="434.08" data-end="436.08" title="7:14">What are its components and how does it function? </span><span class="segment" data-start="438.56" data-end="444.0" title="7:18">An underwater drainage system is attached to an intercostal drain to ensure drainage of </span><span class="segment" data-start="444.0" data-end="451.2" title="7:24">plural contents whilst minimizing the risk of air entrainment. There are two main types in use, </span><span class="segment" data-start="451.2" data-end="457.2" title="7:31">a one bottle system and a three bottle system each of which consisting of two main elements. </span><span class="segment" data-start="458.0" data-end="463.92" title="7:38">Firstly a tube is attached to the intercostal drain and positioned around 3 to 5 centimeters </span><span class="segment" data-start="463.92" data-end="470.72" title="7:43">below the surface of a water filled bottle. This tube should be wide enough to minimize resistance </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="470.72"><span class="t-timestamp">7:50</span></div>
-  <div class="t-body"><span class="segment" data-start="470.72" data-end="477.28" title="7:50">to flow and have a volume of at least half of the patient's vital capacity to ensure water is </span><span class="segment" data-start="477.28" data-end="483.68" title="7:57">not drawn into the plural cavity during large volume breaths. Secondly the bottles should be </span><span class="segment" data-start="483.68" data-end="490.72" title="8:03">watertight, clear and have a volume of water above the entry tube equal to half a vital capacity </span><span class="segment" data-start="490.72" data-end="497.68" title="8:10">breath to prevent air-injuring during deep breathing. The whole arrangement should be placed </span><span class="segment" data-start="497.68" data-end="503.04" title="8:17">50 to 100 centimeters below the level of the chest to prevent fluid entrainment. </span><span class="segment" data-start="503.92" data-end="510.24" title="8:23">Finally low level suction of between 10 and 20 centimeters of water can be applied to aid </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="510.32"><span class="t-timestamp">8:30</span></div>
-  <div class="t-body"><span class="segment" data-start="510.32" data-end="516.16" title="8:30">resolution of resistant pneumothoruses. What are the advantages of three bottle system that you </span><span class="segment" data-start="516.16" data-end="522.48" title="8:36">mentioned? As always folks if you mention something be prepared to have follow-up questions on the </span><span class="segment" data-start="522.48" data-end="528.4" title="8:42">subject. By realising this tendency of examiners it is even possible to direct your own </span><span class="segment" data-start="528.4" data-end="536.08" title="8:48">viber to a certain extent. This allows fluid and air to be drained separately and accurately </span><span class="segment" data-start="536.08" data-end="541.76" title="8:56">measured. Using the one bottle system for this purpose would gradually alter the mechanics of </span><span class="segment" data-start="541.76" data-end="546.64" title="9:01">the system as fluid is drained into the same bottle which is providing an underwater seal. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="547.6"><span class="t-timestamp">9:07</span></div>
-  <div class="t-body"><span class="segment" data-start="547.6" data-end="553.52" title="9:07">The water level would gradually increase over time leading to increased resistance to air drainage. </span><span class="segment" data-start="555.28" data-end="559.44" title="9:15">You are asked to see a patient on the intensive care unit with adult respiratory distress syndrome </span><span class="segment" data-start="559.44" data-end="564.32" title="9:19">on a background of chronic obstructive pulmonary disease. She has just had an internal </span><span class="segment" data-start="564.32" data-end="568.56" title="9:24">jugular central line inserted using a high approach under real-time ultrasound guidance. </span><span class="segment" data-start="570.4" data-end="574.96" title="9:30">The nursing staff report that her oxygen saturation has reduced and her peak in spirit </span><span class="segment" data-start="574.96" data-end="580.08" title="9:34">she pressures increased since insertion of the central line. What are the likely causes of this </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="580.08"><span class="t-timestamp">9:40</span></div>
-  <div class="t-body"><span class="segment" data-start="580.08" data-end="588.64" title="9:40">deterioration? This patient is clearly at high risk of traumatic pneumothorax both from direct </span><span class="segment" data-start="588.64" data-end="594.64" title="9:48">causes including the insertion of a central venous catheter and from indirect causes such as </span><span class="segment" data-start="594.64" data-end="601.68" title="9:54">baritourma. A pneumothorax following central venous cannulation can occur if the parietal plura is </span><span class="segment" data-start="601.68" data-end="607.68" title="10:01">breached during needle insertion and is particularly common when cannulating the subclavian vein. </span><span class="segment" data-start="608.8" data-end="614.56" title="10:08">Although a high approach does reduce the risk of a pneumothorax occurring the plura can extend </span><span class="segment" data-start="614.56" data-end="621.2" title="10:14">three to five centimeters above the clavicle crannily thus a direct traumatic pneumothorax is not </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="621.2"><span class="t-timestamp">10:21</span></div>
-  <div class="t-body"><span class="segment" data-start="621.2" data-end="627.36" title="10:21">possible. Whilst ultrasound guidance is now recommended by the National Institute of Clinical </span><span class="segment" data-start="627.36" data-end="633.12" title="10:27">Excellence for Central venous cannulation using an out-of-plane approach can still result in a </span><span class="segment" data-start="633.12" data-end="639.76" title="10:33">double puncture of the internal jugular vein or a lateral placement and hence cause plural injury. </span><span class="segment" data-start="639.92" data-end="648.4" title="10:39">An indirect traumatic pneumothorax is normally associated with baritourma leading to bronchial or </span><span class="segment" data-start="648.4" data-end="654.72" title="10:48">plural bleb rupture and is more commonly seen in those with pre-existing lung disease or patients </span><span class="segment" data-start="654.72" data-end="662.48" title="10:54">requiring high peak positive in spiriture pressure as is seen in ARDS. Positioning patients for </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="662.48"><span class="t-timestamp">11:02</span></div>
-  <div class="t-body"><span class="segment" data-start="662.48" data-end="668.32" title="11:02">central venous cannulation would involve using a trendellanberg position which in itself would </span><span class="segment" data-start="668.32" data-end="674.16" title="11:08">increase the peak in spirit she pressures required when volume directed ventilation is being used. </span><span class="segment" data-start="675.2" data-end="682.4" title="11:15">This positioning therefore may have precipitated a bronchial rupture. Apart from a pneumothorax one </span><span class="segment" data-start="682.4" data-end="688.88" title="11:22">would also want to consider as potential causes endobronchial incubation, lobella collapse, </span><span class="segment" data-start="688.88" data-end="694.64" title="11:28">mucus plugging and pulmonary embolus. A plane chest radiograph is performed on this patient and </span><span class="segment" data-start="694.64" data-end="699.28" title="11:34">apportes as normal. Does this exclude a pneumothorax as the cause of deterioration? </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="701.52"><span class="t-timestamp">11:41</span></div>
-  <div class="t-body"><span class="segment" data-start="701.52" data-end="708.8" title="11:41">Although plane chest radiographs are a useful first-line investigation in excluding a large pneumothorax, </span><span class="segment" data-start="708.8" data-end="715.76" title="11:48">they are not 100% sensitive and often miss small anterior pneumothoracies, especially in supine </span><span class="segment" data-start="715.76" data-end="723.28" title="11:55">patients. In patients with ARDS, even such small insults can be sufficient to cause live </span><span class="segment" data-start="723.28" data-end="728.72" title="12:03">threatening hypoxia and therefore other modes of investigation should be used when clinical </span><span class="segment" data-start="728.72" data-end="736.24" title="12:08">suspicion is high. Both the adhesions between plural layers in chronic lung disease and the reduced </span><span class="segment" data-start="736.24" data-end="744.72" title="12:16">lung compliance in ARDS can lead to unusual presentations of pneumothorax. Adhesions, for example, </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="744.72"><span class="t-timestamp">12:24</span></div>
-  <div class="t-body"><span class="segment" data-start="744.72" data-end="751.2" title="12:24">allow localized or lock-ulated air collections whilst due to poor lung compliance, </span><span class="segment" data-start="751.2" data-end="757.6" title="12:31">attention pneumothorax in patients with ARDS may show no signs of mediastinal shift. </span><span class="segment" data-start="758.48" data-end="764.16" title="12:38">A lateral de-cubitus radiograph could be used although this is technically difficult on the </span><span class="segment" data-start="764.16" data-end="771.2" title="12:44">intensive care unit and its sensitivity is also poor. With the advent of portable ultrasound, </span><span class="segment" data-start="771.2" data-end="777.2" title="12:51">early use of this modality has been shown to be sensitive for diagnosis of small pneumothoracies </span><span class="segment" data-start="777.28" data-end="783.36" title="12:57">in this patient population. In addition, a site of drainage can be marked before into </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="783.36"><span class="t-timestamp">13:03</span></div>
-  <div class="t-body"><span class="segment" data-start="783.36" data-end="788.24" title="13:03">coastal drain insertion as the volumes in such pneumothoracies are often small. </span><span class="segment" data-start="789.44" data-end="795.36" title="13:09">Finally, the gold standard for diagnosis would be a thoracic computerised tomography scan, </span><span class="segment" data-start="795.36" data-end="799.52" title="13:15">although the logistics and carrying out such an investigation would be challenging. </span><span class="segment" data-start="800.72" data-end="805.2" title="13:20">An intercostal drain was inserted in this patient but despite placement for 48 hours, </span><span class="segment" data-start="805.2" data-end="810.56" title="13:25">the underwater drain is continuing to bubble. What is the most likely cause and has to be managed? </span><span class="segment" data-start="811.68" data-end="818.16" title="13:31">As this is the final FRCA, be prepared to think around topics and incorporate the anesthetic </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="818.16"><span class="t-timestamp">13:38</span></div>
-  <div class="t-body"><span class="segment" data-start="818.16" data-end="822.4" title="13:38">subspecialties such as thoracic anesthesia into your answer. </span><span class="segment" data-start="824.32" data-end="829.2" title="13:44">There appears to be a communication between the bronchial tree and the pleural space which is </span><span class="segment" data-start="829.28" data-end="836.88" title="13:49">persisted for over 24 hours. This is known as a bronchopluorophysiola. This can be a major problem for </span><span class="segment" data-start="836.88" data-end="843.2" title="13:56">patients on the intensive care unit due to the inability to apply positive end-expiratory pressure, </span><span class="segment" data-start="843.2" data-end="849.28" title="14:03">loss of tidal volumes, persistent lung collapse and prolonged duration of mechanical ventilation. </span><span class="segment" data-start="850.24" data-end="856.0" title="14:10">In general, these patients are treated conservatively by continuing into coastal drainage with </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="856.0"><span class="t-timestamp">14:16</span></div>
-  <div class="t-body"><span class="segment" data-start="856.0" data-end="863.2" title="14:16">suction and attempting to minimise tidal volumes, peep, in spiritory times, peak pressures and </span><span class="segment" data-start="863.2" data-end="869.04" title="14:23">respiratory rate. This will often lead to permissive hypercapnia being required. </span><span class="segment" data-start="869.92" data-end="875.6" title="14:29">Ideally, rapid weaning to spontaneous ventilation is the ventilatory mode of choice, </span><span class="segment" data-start="875.6" data-end="881.28" title="14:35">although this is often not possible. Advanced ventilatory strategies are occasionally used </span><span class="segment" data-start="881.28" data-end="887.2" title="14:41">including high frequency ventilation and differential lung ventilation using a double-lumen tube. </span><span class="segment" data-start="887.92" data-end="894.64" title="14:47">Small leaks can be sealed via a bronchoscope whilst larger leaks need formal surgical intervention. </span></div>
+<div class="preamble-block"><span class="segment a-seg" data-start="0.0" data-end="5.12" title="0:00">Neymethorax. This topic would be suited to the clinical sciences </span><span class="segment a-seg" data-start="5.12" data-end="9.26" title="0:05">viber, but may feature in the physiology section where its implications on </span><span class="segment a-seg" data-start="9.26" data-end="13.94" title="0:09">respiratory function would be the main subject of interest. As it is a </span><span class="segment a-seg" data-start="13.94" data-end="18.24" title="0:13">potential introspective anaesthetic emergency, you should be able to answer </span><span class="segment a-seg" data-start="18.24" data-end="22.6" title="0:18">these questions confidently to a high standard and give the impression that </span><span class="segment a-seg" data-start="22.6" data-end="27.08" title="0:22">you could deal with such a situation in a logical calm fashion. </span></div>
+<div class="qa-pair">
+<div class="q-block" data-start="27.56">
+  <div class="q-label">Q1</div>
+  <div class="q-body"><span class="segment q-seg" data-start="27.56" data-end="31.08" title="0:27">What is normally found in the interplural or introplural space? </span></div>
 </div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="31.08" data-end="36.18" title="0:31">Don't let such questions put you off track. By now you will understand the </span></li>
+<li><span class="segment a-seg" data-start="36.18" data-end="40.28" title="0:36">mechanics of breathing very well and should be able to talk generally about </span></li>
+<li><span class="segment a-seg" data-start="40.28" data-end="42.2" title="0:40">this important potential space. </span></li>
+<li><span class="segment a-seg" data-start="42.2" data-end="48.36" title="0:42">The plurra is a double layered sack which surrounds both lungs and </span></li>
+<li><span class="segment a-seg" data-start="48.36" data-end="54.08" title="0:48">media stinum, being composed of an outer parietal and an inner visceral layer. </span></li>
+<li><span class="segment a-seg" data-start="54.68" data-end="59.0" title="0:54">Between these layers is a potential space normally containing a small </span></li>
+<li><span class="segment a-seg" data-start="59.0" data-end="63.84" title="0:59">amount of serious fluid, although pathologically an accumulation of air or </span></li>
+<li><span class="segment a-seg" data-start="63.84" data-end="69.04" title="1:03">fluid can occur leading to a pneumothorax or a plural effusion respectively. </span></li>
+<li><span class="segment a-seg" data-start="69.04" data-end="74.52" title="1:09">Whilst the visceral plurra has only an autonomic nerve supply, the </span></li>
+<li><span class="segment a-seg" data-start="74.52" data-end="79.28" title="1:14">parietal plurra has an innovation derived from the intercostal nerves. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="79.28">
+  <div class="q-label">Q2</div>
+  <div class="q-body"><span class="segment q-seg" data-start="79.28" data-end="82.6" title="1:19">Why is the space so important even in health? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="83.56" data-end="88.96" title="1:23">Again, try and think through the basics of respiratory physiology to show that </span></li>
+<li><span class="segment a-seg" data-start="88.96" data-end="92.96" title="1:28">you are not only a safe clinician but one who has a sound knowledge of the </span></li>
+<li><span class="segment a-seg" data-start="92.96" data-end="94.04" title="1:32">basic sciences. </span></li>
+<li><span class="segment a-seg" data-start="96.04" data-end="100.44" title="1:36">This space is normally maintained at a sub atmospheric pressure of between </span></li>
+<li><span class="segment a-seg" data-start="100.44" data-end="106.64" title="1:40">minus 0.5 to minus 1.5 kilopascals depending upon the level on the chest that </span></li>
+<li><span class="segment a-seg" data-start="106.64" data-end="111.84" title="1:46">it is measured. This negative pressure is due to the elastic recoil of the chest </span></li>
+<li><span class="segment a-seg" data-start="111.84" data-end="116.32" title="1:51">wall springing outwards and the elasticity of the lungs pulling inwards, </span></li>
+<li><span class="segment a-seg" data-start="116.32" data-end="121.44" title="1:56">factors which are also important in determining functional residual capacity. </span></li>
+<li><span class="segment a-seg" data-start="122.64" data-end="127.8" title="2:02">The regional differences in interplural pressures from the top to the bottom of </span></li>
+<li><span class="segment a-seg" data-start="127.8" data-end="132.44" title="2:07">the lung is due to the effect of gravity on lung mass, with lower regions </span></li>
+<li><span class="segment a-seg" data-start="132.44" data-end="136.64" title="2:12">being under less negative pressure than those at the apex. </span></li>
+<li><span class="segment a-seg" data-start="136.72" data-end="141.4" title="2:16">This in turn has important consequences when examining a pressure volume </span></li>
+<li><span class="segment a-seg" data-start="141.4" data-end="147.12" title="2:21">compliance curve and explains why under normal circumstances the upright </span></li>
+<li><span class="segment a-seg" data-start="147.12" data-end="152.44" title="2:27">lung has greater ventilation per unit volume at its base compared with its </span></li>
+<li><span class="segment a-seg" data-start="152.44" data-end="154.72" title="2:32">apex. These are West zones. </span></li>
+<li><span class="segment a-seg" data-start="155.48" data-end="159.68" title="2:35">This combined with the regional differences in blood flow leads to the </span></li>
+<li><span class="segment a-seg" data-start="159.68" data-end="164.8" title="2:39">conclusion that there is greater shunt at the lung base and greater dead space </span></li>
+<li><span class="segment a-seg" data-start="164.8" data-end="170.64" title="2:44">at the apex. It can be seen therefore that the plurar and the pluraral space is </span></li>
+<li><span class="segment a-seg" data-start="170.64" data-end="175.6" title="2:50">essential for forming and transmitting the changes in pressure which ultimately </span></li>
+<li><span class="segment a-seg" data-start="175.6" data-end="177.16" title="2:55">calls lung expansion. </span></li>
+<li><span class="segment a-seg" data-start="178.36" data-end="181.12" title="2:58">A 20-year-old man with a history of asthma is admitted to hospital with </span></li>
+<li><span class="segment a-seg" data-start="181.12" data-end="185.72" title="3:01">pleuretic chest pain and dysnia. A plain chest radiograph shows evidence for </span></li>
+<li><span class="segment a-seg" data-start="185.72" data-end="189.96" title="3:05">three centimeter near mithorax. How would you classify and treat this new </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="189.96">
+  <div class="q-label">Q3</div>
+  <div class="q-body"><span class="segment q-seg" data-start="189.96" data-end="190.76" title="3:09">mithorax? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="191.72" data-end="195.8" title="3:11">The British The Rassic Society has published guidelines on the treatment of </span></li>
+<li><span class="segment a-seg" data-start="195.8" data-end="199.76" title="3:15">new mithoraxes and these should be included in your reading list before the </span></li>
+<li><span class="segment a-seg" data-start="199.76" data-end="205.28" title="3:19">exam. Viver questions often result from topical or controversial guidelines </span></li>
+<li><span class="segment a-seg" data-start="205.28" data-end="209.64" title="3:25">from professional societies and you should review such publications in the </span></li>
+<li><span class="segment a-seg" data-start="209.64" data-end="211.04" title="3:29">lead up to your finals. </span></li>
+<li><span class="segment a-seg" data-start="213.12" data-end="217.96" title="3:33">Numerathoraxes can be divided into those occurring spontaneously and those </span></li>
+<li><span class="segment a-seg" data-start="217.96" data-end="222.96" title="3:37">occurring traumatically either as a result of direct or indirect trauma. </span></li>
+<li><span class="segment a-seg" data-start="223.72" data-end="228.48" title="3:43">Spontaneous new mithoraxes can be further classified into primary where no </span></li>
+<li><span class="segment a-seg" data-start="228.48" data-end="233.56" title="3:48">underlying lung disease is present or secondary where lung disease is present. </span></li>
+<li><span class="segment a-seg" data-start="234.24" data-end="238.92" title="3:54">Therefore in this case the patient has a spontaneous secondary new mithorax </span></li>
+<li><span class="segment a-seg" data-start="238.92" data-end="244.24" title="3:58">probably as a result of a pluraral bleb rupture. According to the British </span></li>
+<li><span class="segment a-seg" data-start="244.4" data-end="249.24" title="4:04">The Rassic Society's guidelines a trial of aspiration should be performed </span></li>
+<li><span class="segment a-seg" data-start="249.24" data-end="254.32" title="4:09">followed by insertion of an intercostal drain should aspiration be unsuccessful. </span></li>
+<li><span class="segment a-seg" data-start="255.32" data-end="259.76" title="4:15">If the new mithorax was less than two centimeters deep on a plain chest </span></li>
+<li><span class="segment a-seg" data-start="259.76" data-end="264.16" title="4:19">radiograph and without breathlessness the guideline suggests that </span></li>
+<li><span class="segment a-seg" data-start="264.16" data-end="266.2" title="4:24">intervention would not be required. </span></li>
+<li><span class="segment a-seg" data-start="267.16" data-end="271.36" title="4:27">These measurements can easily be performed on the modern digital radiology </span></li>
+<li><span class="segment a-seg" data-start="271.48" data-end="274.72" title="4:31">viewers with the measurement tools included in the software. </span></li>
+<li><span class="segment a-seg" data-start="275.76" data-end="281.52" title="4:35">A high inspired oxygen concentration using an oxygen flow of 15 litres per minute </span></li>
+<li><span class="segment a-seg" data-start="281.52" data-end="286.72" title="4:41">via a non-rebreathing reservoir bag assembly would be helpful not only to </span></li>
+<li><span class="segment a-seg" data-start="286.72" data-end="290.88" title="4:46">reduce the chance of highpoxia but to increase the speed of air </span></li>
+<li><span class="segment a-seg" data-start="290.88" data-end="295.28" title="4:50">reabsorption by forming a large partial pressure gradient for nitrogen </span></li>
+<li><span class="segment a-seg" data-start="295.6" data-end="298.16" title="4:55">between the alveoli and the plural space. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="298.64">
+  <div class="q-label">Q4</div>
+  <div class="q-body"><span class="segment q-seg" data-start="298.64" data-end="301.04" title="4:58">Would your management be different if this patient acquired a general </span><span class="segment q-seg" data-start="301.04" data-end="303.28" title="5:01">anaesthetic with positive pressure ventilation? </span><span class="segment q-seg" data-start="304.24" data-end="308.8" title="5:04">When reading guidelines such as in the previous question always think how this </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="308.8" data-end="311.04" title="5:08">may apply to me as an anaesthetist. </span></li>
+<li><span class="segment a-seg" data-start="313.36" data-end="317.68" title="5:13">Not only is positive pressure ventilation a risk factor for developing </span></li>
+<li><span class="segment a-seg" data-start="317.68" data-end="323.6" title="5:17">indirect traumatic new mithorases as a result of barituruma but it can also </span></li>
+<li><span class="segment a-seg" data-start="323.6" data-end="326.96" title="5:23">dramatically worsen an existing small new mithorax. </span></li>
+<li><span class="segment a-seg" data-start="327.76" data-end="332.96" title="5:27">Although humans normally inspire by creating a negative interplural pressure </span></li>
+<li><span class="segment a-seg" data-start="332.96" data-end="338.16" title="5:32">and therefore suck air into their lungs positive pressure ventilation uses the </span></li>
+<li><span class="segment a-seg" data-start="338.16" data-end="342.48" title="5:38">exact opposite mechanism forcing air under pressure into the lungs. </span></li>
+<li><span class="segment a-seg" data-start="343.44" data-end="349.04" title="5:43">This can result in both the enlargement of small new mithorases and the life-threatening </span></li>
+<li><span class="segment a-seg" data-start="349.12" data-end="356.08" title="5:49">complication of attention new mithorax where a flap of plurah effectively forms a one-way valve </span></li>
+<li><span class="segment a-seg" data-start="356.08" data-end="360.08" title="5:56">allowing expansion of the plural space but not deflation. </span></li>
+<li><span class="segment a-seg" data-start="361.04" data-end="366.08" title="6:01">This firstly rapidly enlarges a new mithorax resulting in lung collapse, </span></li>
+<li><span class="segment a-seg" data-start="366.08" data-end="369.36" title="6:06">hypoxia and an increased in spiritory pressure. </span></li>
+<li><span class="segment a-seg" data-start="370.32" data-end="376.48" title="6:10">Secondly as the new mithorax increases in size high positive pressure will be transmitted </span></li>
+<li><span class="segment a-seg" data-start="376.48" data-end="381.92" title="6:16">to the contralateral hemithorax causing displacement and great vessel compression. </span></li>
+<li><span class="segment a-seg" data-start="382.72" data-end="388.08" title="6:22">This will result in a dramatic decrease in preload and eventually cardiovascular collapse. </span></li>
+<li><span class="segment a-seg" data-start="388.96" data-end="393.92" title="6:28">Therefore before instituting positive pressure ventilation an intercostal </span></li>
+<li><span class="segment a-seg" data-start="393.92" data-end="400.0" title="6:33">drain should be inserted and attached to an underwater drainage system and nitrous oxide avoided. </span></li>
+<li><span class="segment a-seg" data-start="400.96" data-end="406.4" title="6:40">The role of nitrous oxide in expanding new mithorases is due to its higher water </span></li>
+<li><span class="segment a-seg" data-start="406.4" data-end="415.04" title="6:46">solubility relative to that of nitrogen, a blood gas coefficient of 0.47 compared with 0.15. </span></li>
+<li><span class="segment a-seg" data-start="416.16" data-end="422.16" title="6:56">For this reason it diffuses into a closed gas space 30 times more rapidly than nitrogen </span></li>
+<li><span class="segment a-seg" data-start="422.16" data-end="428.16" title="7:02">diffuses out therefore as much as doubling the size of the new mithorax in 10 minutes </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="428.16">
+  <div class="q-label">Q5</div>
+  <div class="q-body"><span class="segment q-seg" data-start="428.16" data-end="434.08" title="7:08">when using 70% nitrous oxide. What is an underwater drainage system? </span><span class="segment q-seg" data-start="434.08" data-end="436.08" title="7:14">What are its components and how does it function? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="438.56" data-end="444.0" title="7:18">An underwater drainage system is attached to an intercostal drain to ensure drainage of </span></li>
+<li><span class="segment a-seg" data-start="444.0" data-end="451.2" title="7:24">plural contents whilst minimizing the risk of air entrainment. There are two main types in use, </span></li>
+<li><span class="segment a-seg" data-start="451.2" data-end="457.2" title="7:31">a one bottle system and a three bottle system each of which consisting of two main elements. </span></li>
+<li><span class="segment a-seg" data-start="458.0" data-end="463.92" title="7:38">Firstly a tube is attached to the intercostal drain and positioned around 3 to 5 centimeters </span></li>
+<li><span class="segment a-seg" data-start="463.92" data-end="470.72" title="7:43">below the surface of a water filled bottle. This tube should be wide enough to minimize resistance </span></li>
+<li><span class="segment a-seg" data-start="470.72" data-end="477.28" title="7:50">to flow and have a volume of at least half of the patient's vital capacity to ensure water is </span></li>
+<li><span class="segment a-seg" data-start="477.28" data-end="483.68" title="7:57">not drawn into the plural cavity during large volume breaths. Secondly the bottles should be </span></li>
+<li><span class="segment a-seg" data-start="483.68" data-end="490.72" title="8:03">watertight, clear and have a volume of water above the entry tube equal to half a vital capacity </span></li>
+<li><span class="segment a-seg" data-start="490.72" data-end="497.68" title="8:10">breath to prevent air-injuring during deep breathing. The whole arrangement should be placed </span></li>
+<li><span class="segment a-seg" data-start="497.68" data-end="503.04" title="8:17">50 to 100 centimeters below the level of the chest to prevent fluid entrainment. </span></li>
+<li><span class="segment a-seg" data-start="503.92" data-end="510.24" title="8:23">Finally low level suction of between 10 and 20 centimeters of water can be applied to aid </span></li>
+<li><span class="segment a-seg" data-start="510.32" data-end="516.16" title="8:30">resolution of resistant pneumothoruses. What are the advantages of three bottle system that you </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="516.16">
+  <div class="q-label">Q6</div>
+  <div class="q-body"><span class="segment q-seg" data-start="516.16" data-end="516.555" title="8:36">mentioned? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="516.555" data-end="522.48" title="8:36">As always folks if you mention something be prepared to have follow-up questions on the </span></li>
+<li><span class="segment a-seg" data-start="522.48" data-end="528.4" title="8:42">subject. By realising this tendency of examiners it is even possible to direct your own </span></li>
+<li><span class="segment a-seg" data-start="528.4" data-end="536.08" title="8:48">viber to a certain extent. This allows fluid and air to be drained separately and accurately </span></li>
+<li><span class="segment a-seg" data-start="536.08" data-end="541.76" title="8:56">measured. Using the one bottle system for this purpose would gradually alter the mechanics of </span></li>
+<li><span class="segment a-seg" data-start="541.76" data-end="546.64" title="9:01">the system as fluid is drained into the same bottle which is providing an underwater seal. </span></li>
+<li><span class="segment a-seg" data-start="547.6" data-end="553.52" title="9:07">The water level would gradually increase over time leading to increased resistance to air drainage. </span></li>
+<li><span class="segment a-seg" data-start="555.28" data-end="559.44" title="9:15">You are asked to see a patient on the intensive care unit with adult respiratory distress syndrome </span></li>
+<li><span class="segment a-seg" data-start="559.44" data-end="564.32" title="9:19">on a background of chronic obstructive pulmonary disease. She has just had an internal </span></li>
+<li><span class="segment a-seg" data-start="564.32" data-end="568.56" title="9:24">jugular central line inserted using a high approach under real-time ultrasound guidance. </span></li>
+<li><span class="segment a-seg" data-start="570.4" data-end="574.96" title="9:30">The nursing staff report that her oxygen saturation has reduced and her peak in spirit </span></li>
+<li><span class="segment a-seg" data-start="574.96" data-end="580.08" title="9:34">she pressures increased since insertion of the central line. What are the likely causes of this </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="580.08">
+  <div class="q-label">Q7</div>
+  <div class="q-body"><span class="segment q-seg" data-start="580.08" data-end="580.691" title="9:40">deterioration? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="580.691" data-end="588.64" title="9:40">This patient is clearly at high risk of traumatic pneumothorax both from direct </span></li>
+<li><span class="segment a-seg" data-start="588.64" data-end="594.64" title="9:48">causes including the insertion of a central venous catheter and from indirect causes such as </span></li>
+<li><span class="segment a-seg" data-start="594.64" data-end="601.68" title="9:54">baritourma. A pneumothorax following central venous cannulation can occur if the parietal plura is </span></li>
+<li><span class="segment a-seg" data-start="601.68" data-end="607.68" title="10:01">breached during needle insertion and is particularly common when cannulating the subclavian vein. </span></li>
+<li><span class="segment a-seg" data-start="608.8" data-end="614.56" title="10:08">Although a high approach does reduce the risk of a pneumothorax occurring the plura can extend </span></li>
+<li><span class="segment a-seg" data-start="614.56" data-end="621.2" title="10:14">three to five centimeters above the clavicle crannily thus a direct traumatic pneumothorax is not </span></li>
+<li><span class="segment a-seg" data-start="621.2" data-end="627.36" title="10:21">possible. Whilst ultrasound guidance is now recommended by the National Institute of Clinical </span></li>
+<li><span class="segment a-seg" data-start="627.36" data-end="633.12" title="10:27">Excellence for Central venous cannulation using an out-of-plane approach can still result in a </span></li>
+<li><span class="segment a-seg" data-start="633.12" data-end="639.76" title="10:33">double puncture of the internal jugular vein or a lateral placement and hence cause plural injury. </span></li>
+<li><span class="segment a-seg" data-start="639.92" data-end="648.4" title="10:39">An indirect traumatic pneumothorax is normally associated with baritourma leading to bronchial or </span></li>
+<li><span class="segment a-seg" data-start="648.4" data-end="654.72" title="10:48">plural bleb rupture and is more commonly seen in those with pre-existing lung disease or patients </span></li>
+<li><span class="segment a-seg" data-start="654.72" data-end="662.48" title="10:54">requiring high peak positive in spiriture pressure as is seen in ARDS. Positioning patients for </span></li>
+<li><span class="segment a-seg" data-start="662.48" data-end="668.32" title="11:02">central venous cannulation would involve using a trendellanberg position which in itself would </span></li>
+<li><span class="segment a-seg" data-start="668.32" data-end="674.16" title="11:08">increase the peak in spirit she pressures required when volume directed ventilation is being used. </span></li>
+<li><span class="segment a-seg" data-start="675.2" data-end="682.4" title="11:15">This positioning therefore may have precipitated a bronchial rupture. Apart from a pneumothorax one </span></li>
+<li><span class="segment a-seg" data-start="682.4" data-end="688.88" title="11:22">would also want to consider as potential causes endobronchial incubation, lobella collapse, </span></li>
+<li><span class="segment a-seg" data-start="688.88" data-end="694.64" title="11:28">mucus plugging and pulmonary embolus. A plane chest radiograph is performed on this patient and </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="694.64">
+  <div class="q-label">Q8</div>
+  <div class="q-body"><span class="segment q-seg" data-start="694.64" data-end="699.28" title="11:34">apportes as normal. Does this exclude a pneumothorax as the cause of deterioration? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="701.52" data-end="708.8" title="11:41">Although plane chest radiographs are a useful first-line investigation in excluding a large pneumothorax, </span></li>
+<li><span class="segment a-seg" data-start="708.8" data-end="715.76" title="11:48">they are not 100% sensitive and often miss small anterior pneumothoracies, especially in supine </span></li>
+<li><span class="segment a-seg" data-start="715.76" data-end="723.28" title="11:55">patients. In patients with ARDS, even such small insults can be sufficient to cause live </span></li>
+<li><span class="segment a-seg" data-start="723.28" data-end="728.72" title="12:03">threatening hypoxia and therefore other modes of investigation should be used when clinical </span></li>
+<li><span class="segment a-seg" data-start="728.72" data-end="736.24" title="12:08">suspicion is high. Both the adhesions between plural layers in chronic lung disease and the reduced </span></li>
+<li><span class="segment a-seg" data-start="736.24" data-end="744.72" title="12:16">lung compliance in ARDS can lead to unusual presentations of pneumothorax. Adhesions, for example, </span></li>
+<li><span class="segment a-seg" data-start="744.72" data-end="751.2" title="12:24">allow localized or lock-ulated air collections whilst due to poor lung compliance, </span></li>
+<li><span class="segment a-seg" data-start="751.2" data-end="757.6" title="12:31">attention pneumothorax in patients with ARDS may show no signs of mediastinal shift. </span></li>
+<li><span class="segment a-seg" data-start="758.48" data-end="764.16" title="12:38">A lateral de-cubitus radiograph could be used although this is technically difficult on the </span></li>
+<li><span class="segment a-seg" data-start="764.16" data-end="771.2" title="12:44">intensive care unit and its sensitivity is also poor. With the advent of portable ultrasound, </span></li>
+<li><span class="segment a-seg" data-start="771.2" data-end="777.2" title="12:51">early use of this modality has been shown to be sensitive for diagnosis of small pneumothoracies </span></li>
+<li><span class="segment a-seg" data-start="777.28" data-end="783.36" title="12:57">in this patient population. In addition, a site of drainage can be marked before into </span></li>
+<li><span class="segment a-seg" data-start="783.36" data-end="788.24" title="13:03">coastal drain insertion as the volumes in such pneumothoracies are often small. </span></li>
+<li><span class="segment a-seg" data-start="789.44" data-end="795.36" title="13:09">Finally, the gold standard for diagnosis would be a thoracic computerised tomography scan, </span></li>
+<li><span class="segment a-seg" data-start="795.36" data-end="799.52" title="13:15">although the logistics and carrying out such an investigation would be challenging. </span></li>
+<li><span class="segment a-seg" data-start="800.72" data-end="805.2" title="13:20">An intercostal drain was inserted in this patient but despite placement for 48 hours, </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="805.2">
+  <div class="q-label">Q9</div>
+  <div class="q-body"><span class="segment q-seg" data-start="805.2" data-end="810.56" title="13:25">the underwater drain is continuing to bubble. What is the most likely cause and has to be managed? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="811.68" data-end="818.16" title="13:31">As this is the final FRCA, be prepared to think around topics and incorporate the anesthetic </span></li>
+<li><span class="segment a-seg" data-start="818.16" data-end="822.4" title="13:38">subspecialties such as thoracic anesthesia into your answer. </span></li>
+<li><span class="segment a-seg" data-start="824.32" data-end="829.2" title="13:44">There appears to be a communication between the bronchial tree and the pleural space which is </span></li>
+<li><span class="segment a-seg" data-start="829.28" data-end="836.88" title="13:49">persisted for over 24 hours. This is known as a bronchopluorophysiola. This can be a major problem for </span></li>
+<li><span class="segment a-seg" data-start="836.88" data-end="843.2" title="13:56">patients on the intensive care unit due to the inability to apply positive end-expiratory pressure, </span></li>
+<li><span class="segment a-seg" data-start="843.2" data-end="849.28" title="14:03">loss of tidal volumes, persistent lung collapse and prolonged duration of mechanical ventilation. </span></li>
+<li><span class="segment a-seg" data-start="850.24" data-end="856.0" title="14:10">In general, these patients are treated conservatively by continuing into coastal drainage with </span></li>
+<li><span class="segment a-seg" data-start="856.0" data-end="863.2" title="14:16">suction and attempting to minimise tidal volumes, peep, in spiritory times, peak pressures and </span></li>
+<li><span class="segment a-seg" data-start="863.2" data-end="869.04" title="14:23">respiratory rate. This will often lead to permissive hypercapnia being required. </span></li>
+<li><span class="segment a-seg" data-start="869.92" data-end="875.6" title="14:29">Ideally, rapid weaning to spontaneous ventilation is the ventilatory mode of choice, </span></li>
+<li><span class="segment a-seg" data-start="875.6" data-end="881.28" title="14:35">although this is often not possible. Advanced ventilatory strategies are occasionally used </span></li>
+<li><span class="segment a-seg" data-start="881.28" data-end="887.2" title="14:41">including high frequency ventilation and differential lung ventilation using a double-lumen tube. </span></li>
+<li><span class="segment a-seg" data-start="887.92" data-end="894.64" title="14:47">Small leaks can be sealed via a bronchoscope whilst larger leaks need formal surgical intervention. </span></li>
+  </ul>
+</div>
+</div>
+
 </div>
 
 <div class="subtitle-bar">
-  <span class="subtitle-text empty" id="subtitle-text">Play audio to see live subtitles&#8230;</span>
+  <span id="subtitle-text" class="empty">Play audio to see live subtitles&#8230;</span>
 </div>
 
 <script>
-
-const audio    = document.getElementById('audio');
-const allSegs  = Array.from(document.querySelectorAll('.segment'));
-const allBlocks = Array.from(document.querySelectorAll('.t-block'));
+const audio      = document.getElementById('audio');
+const allSegs    = Array.from(document.querySelectorAll('.segment'));
 const subtitleEl = document.getElementById('subtitle-text');
-let activeSegEl   = null;
-let activeBlockEl = null;
-let searchMatches = [];
-let searchIdx     = 0;
+let activeSegEl  = null;
+let searchMatches = [], searchIdx = 0;
 
-// Duration display
 audio.addEventListener('loadedmetadata', () => {
   const m = Math.floor(audio.duration / 60);
   const s = Math.floor(audio.duration %% 60).toString().padStart(2,'0');
   document.getElementById('dur').textContent = m + ':' + s;
 });
 
-// Seek helper
-function seekTo(t) {
-  audio.currentTime = t;
-  audio.play();
-}
+function seekTo(t) { audio.currentTime = t; audio.play(); }
 
-// Block gutter click
-document.querySelectorAll('.t-gutter').forEach(g => {
-  g.addEventListener('click', () => seekTo(parseFloat(g.dataset.start)));
+// Q-block header click
+document.querySelectorAll('.q-block').forEach(q => {
+  q.addEventListener('click', e => {
+    if (!e.target.classList.contains('segment')) seekTo(parseFloat(q.dataset.start));
+  });
 });
 
-// Segment click
+// Individual segment click
 allSegs.forEach(s => {
-  s.addEventListener('click', e => {
-    e.stopPropagation();
-    seekTo(parseFloat(s.dataset.start));
-  });
+  s.addEventListener('click', e => { e.stopPropagation(); seekTo(parseFloat(s.dataset.start)); });
 });
 
 // Real-time tracking
 audio.addEventListener('timeupdate', () => {
   const t = audio.currentTime;
-
-  // Find active segment (last one whose start <= t)
   let found = null;
   for (let i = allSegs.length - 1; i >= 0; i--) {
     if (parseFloat(allSegs[i].dataset.start) <= t) { found = allSegs[i]; break; }
   }
-
   if (found && found !== activeSegEl) {
-    // Clear previous
-    if (activeSegEl) activeSegEl.classList.remove('active');
-    if (activeBlockEl) {
-      activeBlockEl.classList.remove('block-active');
-      const pg = activeBlockEl.querySelector('.t-gutter');
-      if (pg) pg.classList.remove('gutter-active');
+    if (activeSegEl) {
+      activeSegEl.classList.remove('active');
+      const pli = activeSegEl.closest('li');
+      if (pli) pli.classList.remove('li-active');
+      const pq = activeSegEl.closest('.q-block');
+      if (pq) pq.classList.remove('q-active');
     }
-    // Set new
     found.classList.add('active');
-    const block = found.closest('.t-block');
-    if (block) {
-      block.classList.add('block-active');
-      const g = block.querySelector('.t-gutter');
-      if (g) g.classList.add('gutter-active');
-      activeBlockEl = block;
-    }
+    const li = found.closest('li');
+    if (li) li.classList.add('li-active');
+    const qb = found.closest('.q-block');
+    if (qb) qb.classList.add('q-active');
     activeSegEl = found;
 
-    // Update subtitle
     subtitleEl.textContent = found.textContent.trim();
     subtitleEl.classList.remove('empty');
 
-    // Auto-scroll (only when not searching)
-    if (!document.getElementById('search').value) {
+    if (!document.getElementById('search').value)
       found.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }
   }
 });
 
@@ -368,17 +505,13 @@ searchInput.addEventListener('keydown', e => {
     el.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
 });
-
 function runSearch() {
   const q = searchInput.value.trim().toLowerCase();
   allSegs.forEach(s => s.classList.remove('search-match','search-current'));
   searchMatches = [];
   if (!q) return;
   allSegs.forEach(s => {
-    if (s.textContent.toLowerCase().includes(q)) {
-      s.classList.add('search-match');
-      searchMatches.push(s);
-    }
+    if (s.textContent.toLowerCase().includes(q)) { s.classList.add('search-match'); searchMatches.push(s); }
   });
   if (!searchMatches.length) return;
   searchIdx = 0;

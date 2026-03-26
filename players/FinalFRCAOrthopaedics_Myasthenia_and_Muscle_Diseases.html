@@ -5,10 +5,19 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Orthopaedics — Myasthenia and Muscle Diseases</title>
 <style>
-
   :root {
-    --accent:    #64748b;
-    --body-bg:   #f1f5f9;
+    --q-bg:       #1e3a5f;
+    --q-text:     #ffffff;
+    --q-label:    #60a5fa;
+    --a-bg:       #ffffff;
+    --a-border:   #e2e8f0;
+    --a-label:    #059669;
+    --active-q:   #64748b;
+    --active-a:   #dbeafe;
+    --accent:     #64748b;
+    --body-bg:    #f1f5f9;
+    --pre-bg:     #fef9c3;
+    --pre-border: #fcd34d;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
@@ -40,22 +49,9 @@
     margin-bottom: 4px;
     letter-spacing: 0.01em;
   }
-  .header-sub {
-    font-size: 0.72rem;
-    color: #94a3b8;
-    font-style: italic;
-  }
-  audio {
-    height: 36px;
-    accent-color: var(--accent);
-    flex-shrink: 0;
-  }
-  .back-link {
-    font-size: 0.8rem;
-    color: #94a3b8;
-    text-decoration: none;
-    white-space: nowrap;
-  }
+  .header-sub { font-size: 0.72rem; color: #94a3b8; font-style: italic; }
+  audio { height: 36px; accent-color: var(--accent); flex-shrink: 0; }
+  .back-link { font-size: 0.8rem; color: #94a3b8; text-decoration: none; white-space: nowrap; }
   .back-link:hover { color: #60a5fa; }
 
   /* ── Toolbar ── */
@@ -69,30 +65,17 @@
     border-bottom: 1px solid #334155;
   }
   .toolbar input {
-    flex: 1;
-    max-width: 380px;
+    flex: 1; max-width: 380px;
     padding: 5px 11px;
-    border: 1px solid #475569;
-    border-radius: 6px;
-    background: #0f172a;
-    color: #e2e8f0;
-    font-size: 0.83rem;
-    outline: none;
+    border: 1px solid #475569; border-radius: 6px;
+    background: #0f172a; color: #e2e8f0; font-size: 0.83rem; outline: none;
   }
   .toolbar input:focus { border-color: var(--accent); }
   .toolbar input::placeholder { color: #64748b; }
-  .stats {
-    font-size: 0.72rem;
-    color: #64748b;
-    white-space: nowrap;
-  }
+  .stats { font-size: 0.72rem; color: #64748b; white-space: nowrap; }
 
   /* ── Scroll area ── */
-  .scroll-area {
-    flex: 1;
-    overflow-y: auto;
-    padding: 20px;
-  }
+  .scroll-area { flex: 1; overflow-y: auto; padding: 20px; }
   .scroll-area::-webkit-scrollbar { width: 6px; }
   .scroll-area::-webkit-scrollbar-track { background: transparent; }
   .scroll-area::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
@@ -107,68 +90,77 @@
     display: flex;
     align-items: center;
   }
-  .subtitle-text {
-    font-size: 0.9rem;
-    color: #e2e8f0;
-    line-height: 1.5;
-    font-style: italic;
-  }
-  .subtitle-text.empty { color: #475569; }
+  #subtitle-text { font-size: 0.88rem; color: #e2e8f0; line-height: 1.5; font-style: italic; }
+  #subtitle-text.empty { color: #475569; }
 
-  /* ── Transcript blocks ── */
-  .t-block {
-    background: #ffffff;
-    border: 1px solid #e2e8f0;
-    border-radius: 10px;
-    margin-bottom: 14px;
-    overflow: hidden;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
-    display: flex;
-  }
-  .t-block.block-active {
-    border-color: var(--accent);
-    box-shadow: 0 0 0 2px rgba(37,99,235,0.15);
-  }
-  .t-gutter {
-    background: #0f172a;
-    width: 52px;
-    flex-shrink: 0;
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
-    padding-top: 14px;
-    cursor: pointer;
-  }
-  .t-gutter:hover { background: #1e293b; }
-  .t-timestamp {
-    font-size: 0.7rem;
-    color: #64748b;
-    font-family: monospace;
-    font-weight: 600;
-    letter-spacing: 0.02em;
-  }
-  .t-gutter.gutter-active .t-timestamp { color: var(--accent); }
-  .t-body {
-    flex: 1;
+  /* ── Preamble ── */
+  .preamble-block {
+    background: var(--pre-bg);
+    border-left: 4px solid var(--pre-border);
+    border-radius: 0 8px 8px 0;
     padding: 12px 16px;
-    line-height: 1.75;
-    font-size: 0.92rem;
-    color: #1e293b;
+    margin-bottom: 20px;
+    font-size: 0.88rem;
+    color: #78350f;
+    font-style: italic;
+    line-height: 1.7;
   }
 
-  /* ── Segments ── */
-  .segment {
+  /* ── Q&A pair ── */
+  .qa-pair { margin-bottom: 20px; border-radius: 10px; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+
+  /* Question block */
+  .q-block {
+    background: var(--q-bg);
+    padding: 14px 18px;
+    display: flex; gap: 14px; align-items: flex-start;
     cursor: pointer;
-    border-radius: 3px;
-    transition: background 0.1s;
+    transition: background 0.15s;
   }
-  .segment:hover { background: #eff6ff; }
-  .segment.active {
-    background: #bfdbfe;
-    outline: 2px solid #3b82f6;
-    outline-offset: 1px;
-    border-radius: 3px;
+  .q-block:hover { background: #1d4ed8; }
+  .q-block.q-active { background: var(--active-q); }
+  .q-label {
+    font-size: 0.7rem; font-weight: 700;
+    color: var(--q-label);
+    background: rgba(96,165,250,0.15);
+    border: 1px solid rgba(96,165,250,0.3);
+    border-radius: 5px; padding: 3px 7px;
+    white-space: nowrap; margin-top: 2px; letter-spacing: 0.05em;
+    flex-shrink: 0;
   }
+  .q-body { flex: 1; font-size: 0.97rem; font-weight: 600; color: var(--q-text); line-height: 1.55; }
+
+  /* Answer block */
+  .a-block {
+    background: var(--a-bg);
+    border: 1px solid var(--a-border); border-top: none;
+    padding: 14px 18px;
+    display: flex; gap: 14px; align-items: flex-start;
+  }
+  .a-label {
+    font-size: 0.7rem; font-weight: 700;
+    color: var(--a-label);
+    background: #d1fae5; border: 1px solid #6ee7b7;
+    border-radius: 5px; padding: 3px 9px;
+    white-space: nowrap; margin-top: 2px; letter-spacing: 0.05em;
+    flex-shrink: 0;
+  }
+  .a-body { flex: 1; list-style: none; padding: 0; }
+  .a-body li {
+    padding: 4px 0 4px 14px;
+    border-left: 3px solid transparent;
+    line-height: 1.7; font-size: 0.92rem; color: #1e293b;
+    border-radius: 0 4px 4px 0;
+    transition: background 0.15s;
+  }
+  .a-body li:not(:last-child) { border-bottom: 1px solid #f1f5f9; }
+
+  /* ── Segments (clickable) ── */
+  .segment { cursor: pointer; border-radius: 3px; }
+  .q-seg:hover { background: rgba(255,255,255,0.18); }
+  .a-seg:hover { background: #eff6ff; }
+  .segment.active { background: #bfdbfe; outline: 2px solid #3b82f6; outline-offset: 1px; }
+  .a-body li.li-active { background: var(--active-a); border-left-color: var(--accent); }
   .segment.search-match  { background: #fef9c3; }
   .segment.search-current { background: #fde047; outline: 2px solid #ca8a04; }
 
@@ -187,163 +179,354 @@
 
 <div class="toolbar">
   <input type="text" id="search" placeholder="Search transcript&#8230; (Enter = next match)">
-  <span class="stats" id="stats">140 segments &nbsp;|&nbsp; <span id="dur">loading&#8230;</span></span>
+  <span class="stats" id="stats">14 questions &nbsp;|&nbsp; 140 segments &nbsp;|&nbsp; <span id="dur">loading&#8230;</span></span>
 </div>
 
 <div class="scroll-area" id="scroll-area">
-<div class="t-block">
-  <div class="t-gutter" data-start="0.0"><span class="t-timestamp">0:00</span></div>
-  <div class="t-body"><span class="segment" data-start="0.0" data-end="3.42" title="0:00">Myisthenia and muscle diseases. </span><span class="segment" data-start="3.42" data-end="9.92" title="0:03">You are scheduled to anithetize a 37-year-old lady with myisthenia gravis for a thymectomy. </span><span class="segment" data-start="9.92" data-end="13.36" title="0:09">What are the anesthetic implications of this condition? </span><span class="segment" data-start="13.36" data-end="18.76" title="0:13">Although relatively uncommon in routine practice, myisthenia gravis is one of a group of muscle </span><span class="segment" data-start="18.76" data-end="22.04" title="0:18">diseases which are a beloved exam topic. </span><span class="segment" data-start="22.04" data-end="27.0" title="0:22">This is because for each there are a number of specific perioperative issues. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="27.0"><span class="t-timestamp">0:27</span></div>
-  <div class="t-body"><span class="segment" data-start="27.0" data-end="30.04" title="0:27">Your knowledge is explored through discussion of these issues. </span><span class="segment" data-start="30.04" data-end="35.2" title="0:30">A useful way to introduce your answer is with an opening statement explaining the basis </span><span class="segment" data-start="35.2" data-end="41.08" title="0:35">of the disorder and the main clinical features. </span><span class="segment" data-start="41.08" data-end="46.48" title="0:41">Myisthenia gravis is an autoimmune disease affecting the neuromuscular junction. </span><span class="segment" data-start="46.48" data-end="53.44" title="0:46">The patient produces IgG antibodies against their own astyle-colean receptors. </span><span class="segment" data-start="53.44" data-end="59.04" title="0:53">There is a reduction in the number of active receptors at the neuromuscular junction. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="59.04"><span class="t-timestamp">0:59</span></div>
-  <div class="t-body"><span class="segment" data-start="59.04" data-end="64.88" title="0:59">The clinical picture is of weakness of the ocular, bulber and proximal limb muscles, which </span><span class="segment" data-start="64.88" data-end="68.4" title="1:04">is exacerbated by exercise. </span><span class="segment" data-start="68.4" data-end="73.12" title="1:08">Women are affected more commonly than men, and there is an association with other autoimmune </span><span class="segment" data-start="73.12" data-end="76.76" title="1:13">conditions and abnormalities of the thymus. </span><span class="segment" data-start="76.76" data-end="82.04" title="1:16">Describe your preoperative assessment of this patient. </span><span class="segment" data-start="82.04" data-end="87.16" title="1:22">In my preoperative assessment, I wish to gain the information needed for a routine anesthetic </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="87.16"><span class="t-timestamp">1:27</span></div>
-  <div class="t-body"><span class="segment" data-start="87.16" data-end="93.48" title="1:27">assessment, in addition to specific details regarding the patient's condition. </span><span class="segment" data-start="93.48" data-end="99.0" title="1:33">With respect to the myisthenia, my aims are to establish the duration and severity of </span><span class="segment" data-start="99.0" data-end="104.52" title="1:39">the patient's symptoms, and the regime of medication required to produce symptomatic </span><span class="segment" data-start="104.52" data-end="107.08" title="1:44">improvement. </span><span class="segment" data-start="107.08" data-end="112.36" title="1:47">It is vital to establish the degree of bulber involvement, as this has implications on </span><span class="segment" data-start="112.36" data-end="115.48" title="1:52">the risk of reflux during general anesthesia. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="115.48"><span class="t-timestamp">1:55</span></div>
-  <div class="t-body"><span class="segment" data-start="115.48" data-end="121.24" title="1:55">The presence of significant respiratory involvement is also important, as these patients are </span><span class="segment" data-start="121.24" data-end="127.16" title="2:01">more likely to require ventilatory support postoperatively. </span><span class="segment" data-start="127.16" data-end="131.72" title="2:07">Respiratory function tests may be appropriate to quantify the degree of respiratory muscle </span><span class="segment" data-start="131.72" data-end="133.56" title="2:11">impairment. </span><span class="segment" data-start="133.64" data-end="138.2" title="2:13">How would you optimize the patient? </span><span class="segment" data-start="138.2" data-end="143.08" title="2:18">Those with poorly controlled symptoms should have their pharmacological treatment optimized </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="143.08"><span class="t-timestamp">2:23</span></div>
-  <div class="t-body"><span class="segment" data-start="143.08" data-end="144.76" title="2:23">before surgery. </span><span class="segment" data-start="144.76" data-end="151.4" title="2:24">This includes anticolonesterases, steroids and other immunosuppressant agents. </span><span class="segment" data-start="151.4" data-end="157.28" title="2:31">Very rarely a severely affected patient will require preoperative plasma ferrisis. </span><span class="segment" data-start="157.28" data-end="163.28" title="2:37">The patient's normal anticolonesterase dose should be continued up until the time of surgery. </span><span class="segment" data-start="163.68" data-end="168.88" title="2:43">Sedative premedication should be avoided if possible, as it can worsen respiratory failure. </span><span class="segment" data-start="169.68" data-end="175.6" title="2:49">However, the due vicious use of benzodiazepines is appropriate in anxious patients. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="175.6"><span class="t-timestamp">2:55</span></div>
-  <div class="t-body"><span class="segment" data-start="175.6" data-end="180.64" title="2:55">Patients with significant respiratory involvement are likely to have a poor cough </span><span class="segment" data-start="180.64" data-end="184.24" title="3:00">and will benefit from preoperative physiotherapy. </span><span class="segment" data-start="184.24" data-end="190.64" title="3:04">A critical care bed should be available postoperatively for patients with severe or unstable disease. </span><span class="segment" data-start="190.64" data-end="193.52" title="3:10">Describe the conduct of your anesthetic. </span><span class="segment" data-start="195.2" data-end="200.72" title="3:15">Thymectomy is carried out either via a median stenotomy or a minimally invasive </span><span class="segment" data-start="200.72" data-end="207.68" title="3:20">thoracoscopic technique. In either case, general anesthesia with endotracheal intubation is required. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="208.96"><span class="t-timestamp">3:28</span></div>
-  <div class="t-body"><span class="segment" data-start="208.96" data-end="214.96" title="3:28">Total intravenous anesthesia or an inhalational technique at induction can be employed to avoid </span><span class="segment" data-start="214.96" data-end="220.48" title="3:34">the need for muscle relaxants. This is important because as a consequence of the destruction </span><span class="segment" data-start="220.48" data-end="226.48" title="3:40">of astylecoline receptors, these patients are very sensitive to the effects of non-depolarising </span><span class="segment" data-start="226.48" data-end="233.2" title="3:46">neuromuscular blocking drugs. These are ideally avoided if possible or used at a much reduced </span><span class="segment" data-start="233.2" data-end="237.44" title="3:53">dose, for example, one-tenth of the normal intubating dose. </span><span class="segment" data-start="239.52" data-end="243.68" title="3:59">Drugs such as atrocurium, which are rapidly metabolised are preferable. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="244.56"><span class="t-timestamp">4:04</span></div>
-  <div class="t-body"><span class="segment" data-start="244.56" data-end="250.4" title="4:04">The use of local anesthesia applied topically to the airway may help in the avoidance of neuromuscular </span><span class="segment" data-start="250.4" data-end="257.76" title="4:10">blockade. A rapid sequence induction can be performed if indicated by patient factors such as a </span><span class="segment" data-start="257.76" data-end="263.76" title="4:17">full stomach or predicted a difficult airway. However, it must be remembered that these patients are </span><span class="segment" data-start="263.76" data-end="269.52" title="4:23">relatively resistant to the effects of succcemethanium. This is because reduced numbers of active </span><span class="segment" data-start="269.52" data-end="277.28" title="4:29">receptors leads to a resistance to depolarisation. There is evidence to suggest that a dose of 1.5 </span><span class="segment" data-start="277.28" data-end="284.24" title="4:37">to 2 milligrams per kilogram produces reliable intubating conditions. The return of full neuromuscular </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="284.24"><span class="t-timestamp">4:44</span></div>
-  <div class="t-body"><span class="segment" data-start="284.24" data-end="290.0" title="4:44">function in the form of a train of four without fade should be confirmed after succcemethanium </span><span class="segment" data-start="290.0" data-end="293.6" title="4:50">if a non-depolarising agent is to be administered subsequently. </span><span class="segment" data-start="294.96" data-end="299.76" title="4:54">Maintenance of anesthesia with volatile or a total intravenous technique is appropriate. </span><span class="segment" data-start="300.4" data-end="305.6" title="5:00">It is mandatory to confirm full recovery of neuromuscular function prior to emergence. </span><span class="segment" data-start="306.32" data-end="312.88" title="5:06">If possible, the use of reversal should be avoided. Giving reversal effectively gives the patient </span><span class="segment" data-start="312.88" data-end="318.4" title="5:12">an additional dose of anticholinesis, which can theoretically provoke a cholinergic crisis. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="319.76"><span class="t-timestamp">5:19</span></div>
-  <div class="t-body"><span class="segment" data-start="319.76" data-end="325.04" title="5:19">The approach used for the surgery will be important in planning a post-operative analgesic regime. </span><span class="segment" data-start="325.76" data-end="331.2" title="5:25">As in the pre-optive period, any drugs which can produce respiratory depression should be used </span><span class="segment" data-start="331.2" data-end="336.4" title="5:31">cautiously. What factors can be used to predict the likelihood of this patient requiring post-operative </span><span class="segment" data-start="336.4" data-end="344.24" title="5:36">respiratory support? There are several factors associated with an increased incidence of respiratory </span><span class="segment" data-start="344.24" data-end="351.2" title="5:44">failure post-operatively. These include disease duration of more than six years, a daily period </span><span class="segment" data-start="351.2" data-end="359.12" title="5:51">of stigmin dose of more than 750 milligrams, coexisting chronic lung disease, a pre-operative </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="359.12"><span class="t-timestamp">5:59</span></div>
-  <div class="t-body"><span class="segment" data-start="359.12" data-end="364.88" title="5:59">vital capacity of less than 2.9 litres and major body cavity surgery. </span><span class="segment" data-start="365.68" data-end="367.84" title="6:05">What are the other post-operative concerns? </span><span class="segment" data-start="370.32" data-end="376.8" title="6:10">These patients need effective analgesia, chest physiotherapy and the early reestablishment of </span><span class="segment" data-start="376.8" data-end="382.8" title="6:16">their normal medication. What do you understand by the terms myithenic and colonineurgic crisis? </span><span class="segment" data-start="382.96" data-end="384.72" title="6:22">How would you differentiate between the two? </span><span class="segment" data-start="387.2" data-end="394.88" title="6:27">A myithenic crisis results from a relative lack of anticholinesis. It may be precipitated by missed </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="394.88"><span class="t-timestamp">6:34</span></div>
-  <div class="t-body"><span class="segment" data-start="394.88" data-end="402.64" title="6:34">doses of medication, surgery or intercurrent illness. It is characterized by sudden, rapidly worsening </span><span class="segment" data-start="402.64" data-end="409.28" title="6:42">weakness. A cholinergic crisis is provoked by administration of an anticholinesis. </span><span class="segment" data-start="410.0" data-end="416.0" title="6:50">Astyl-coline levels in the plasma are increased, leading to weakness with prominent miscarinic </span><span class="segment" data-start="416.0" data-end="422.96" title="6:56">effects. These include bradycardia, increased salivation and sweating, pupillary constriction, </span><span class="segment" data-start="422.96" data-end="429.68" title="7:02">abdominal pain and diarrhea. A dose of short-acting anticholinesis, </span><span class="segment" data-start="429.68" data-end="436.0" title="7:09">such as edraphonium, will improve the features of a myithenic crisis, but exacerbate a colonergic </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="436.96"><span class="t-timestamp">7:16</span></div>
-  <div class="t-body"><span class="segment" data-start="436.96" data-end="443.04" title="7:16">crisis. What is myithenic syndrome? These two similarly named but unrelated conditions </span><span class="segment" data-start="443.04" data-end="448.56" title="7:23">are commonly asked about together. Often the question will ask you to compare and contrast them. </span><span class="segment" data-start="451.52" data-end="458.32" title="7:31">Myithenic syndrome is also known as etenlambat syndrome and is a perineoplastic condition. </span><span class="segment" data-start="459.6" data-end="465.68" title="7:39">It is most often associated with small cell carcinoma of the lung. It is characterized </span><span class="segment" data-start="465.68" data-end="471.36" title="7:45">by proximal muscle weakness, more commonly affecting the lower limbs. This weakness is seen </span><span class="segment" data-start="471.36" data-end="478.64" title="7:51">to improve with activity in contrast to that seen in myithenia gravis. There can also be autonomic </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="478.64"><span class="t-timestamp">7:58</span></div>
-  <div class="t-body"><span class="segment" data-start="478.64" data-end="487.04" title="7:58">effects in the form of hypotension, urinary hesitancy and constipation. The syndrome is thought to </span><span class="segment" data-start="487.04" data-end="492.8" title="8:07">result from antibodies which are directed against the calcium channels in the presynaptic membrane </span><span class="segment" data-start="493.2" data-end="499.84" title="8:13">neuromuscular junction. The inactivation of these channels leads to a decreased presynaptic release </span><span class="segment" data-start="499.84" data-end="507.12" title="8:19">of astylcholine in response to an action potential. Anticholinesis raises do not improve the </span><span class="segment" data-start="507.12" data-end="514.56" title="8:27">clinical features of the syndrome. Individuals with myithenic syndrome are sensitive to both </span><span class="segment" data-start="514.56" data-end="521.04" title="8:34">depolarizing and non-depolarizing neuromuscular blocking agents. A 40-year-old male presents </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="521.04"><span class="t-timestamp">8:41</span></div>
-  <div class="t-body"><span class="segment" data-start="521.04" data-end="526.0" title="8:41">frothroscopy of the knee. He has a diagnosis of dystrophium myotoneca. </span><span class="segment" data-start="527.68" data-end="530.88" title="8:47">What is myotoneca and what do you understand about this disorder? </span><span class="segment" data-start="533.68" data-end="539.04" title="8:53">Myotoneca is a term to describe the failure of muscle to relax following contraction. </span><span class="segment" data-start="540.0" data-end="545.84" title="9:00">In dystrophium myotonica there is an abnormality of sodium conductance within the muscle fiber </span><span class="segment" data-start="545.92" data-end="551.52" title="9:05">leading to prolonged contraction. What's the clinical features? Most books have a long list of </span><span class="segment" data-start="551.52" data-end="557.68" title="9:11">clinical features aimed at organising your answer by systems concentrating on those that have </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="557.68"><span class="t-timestamp">9:17</span></div>
-  <div class="t-body"><span class="segment" data-start="557.68" data-end="565.76" title="9:17">potential anaesthetic implications. There are a characteristic group of clinical features. </span><span class="segment" data-start="566.48" data-end="573.2" title="9:26">These include general features, frontal bulding, cataracts and muscle wasting affecting the </span><span class="segment" data-start="573.2" data-end="580.48" title="9:33">sternoclider mastoid and proximal limb muscles. There can be bulber involvement with poor swallow, </span><span class="segment" data-start="580.48" data-end="587.76" title="9:40">slurred speech and recurrent aspiration. Weakness of respiratory muscles can lead to poor </span><span class="segment" data-start="587.76" data-end="595.04" title="9:47">clearance of secretions and a restrictive lung deficit. Longstanding hypoventilation can </span><span class="segment" data-start="595.04" data-end="602.32" title="9:55">result in obstructive sleep apnea and core pulmonale. In the cardiovascular system, the patient </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="602.32"><span class="t-timestamp">10:02</span></div>
-  <div class="t-body"><span class="segment" data-start="602.32" data-end="609.28" title="10:02">may have cardiomyopathy and conduction defects. It's off a geomotility and gastric emptying may be </span><span class="segment" data-start="609.28" data-end="616.0" title="10:09">affected. There is an association with diabetes and hypothyroidism. What are the potential issues </span><span class="segment" data-start="616.0" data-end="623.2" title="10:16">relating to anaesthesia in this patient? The concerns relate to the patient's underlying </span><span class="segment" data-start="623.2" data-end="630.08" title="10:23">cardiac and respiratory disease, their sensitivity to anaesthetic drugs and the risk of precipitating </span><span class="segment" data-start="630.16" data-end="639.2" title="10:30">myotonia in the periopptive period. Appropriate investigations such as ECG, echocardiogram, arterial </span><span class="segment" data-start="639.2" data-end="644.96" title="10:39">blood gases and lung function tests should be used preoperatively if there is a suspicion of </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="644.96"><span class="t-timestamp">10:44</span></div>
-  <div class="t-body"><span class="segment" data-start="644.96" data-end="652.24" title="10:44">cardiac respiratory problems. Patients are acutely sensitive to sedative and hypnotic agents such </span><span class="segment" data-start="652.24" data-end="659.44" title="10:52">that pre-medication should be avoided and induction agents used cautiously. Local or regional </span><span class="segment" data-start="659.52" data-end="667.6" title="10:59">techniques should be used wherever possible. If general anaesthesia is used, untacid pre-medication </span><span class="segment" data-start="667.6" data-end="672.64" title="11:07">is recommended and intubation is likely to be required due to the risk of aspiration. </span><span class="segment" data-start="673.68" data-end="678.8" title="11:13">De-polarising muscle relaxants are avoided due to a risk of precipitating myotonia. </span><span class="segment" data-start="679.68" data-end="685.68" title="11:19">Invasive monitoring is used in cases with significant cardiomyopathy. Intraoperatively, </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="685.68"><span class="t-timestamp">11:25</span></div>
-  <div class="t-body"><span class="segment" data-start="685.68" data-end="691.2" title="11:25">maintenance of normal thermia is important as cold and shivering are recognised triggers for </span><span class="segment" data-start="691.2" data-end="697.2" title="11:31">myotonia. Postoperatively, a period of observation in a critical care setting is appropriate. </span><span class="segment" data-start="701.92" data-end="707.76" title="11:41">The muscular discharfies are a group of inherited muscle diseases. They are characterized by </span><span class="segment" data-start="707.76" data-end="714.72" title="11:47">gradual destruction of skeletal muscle. Importantly, there is also commonly involvement of cardiac muscle. </span><span class="segment" data-start="716.0" data-end="721.52" title="11:56">There is a spectrum of severity depending on the genetic mutation and the degree of muscle involvement. </span><span class="segment" data-start="722.4" data-end="727.84" title="12:02">The classification of these disorders is based on the pattern of inheritance which can be sex </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="727.84"><span class="t-timestamp">12:07</span></div>
-  <div class="t-body"><span class="segment" data-start="727.84" data-end="734.72" title="12:07">linked, autosomal dominant or autosomal recessive. The most common form of muscular dystrophy </span><span class="segment" data-start="734.72" data-end="741.04" title="12:14">is Duchens, which has a sex linked recessive inheritance and therefore mainly affects boys. </span><span class="segment" data-start="741.6" data-end="747.6" title="12:21">It is the most severe form of the disease and presents with the onset of muscle weakness </span><span class="segment" data-start="747.6" data-end="754.48" title="12:27">between the ages of 3-5 years. This weakness is progressive and most patients are confined </span><span class="segment" data-start="754.48" data-end="762.32" title="12:34">to a wheelchair by their early teens. Life expectancy is approximately 25 years, with death resulting </span><span class="segment" data-start="762.32" data-end="768.8" title="12:42">from cardiac or respiratory failure. Becker's muscular dystrophy has a similar inheritance pattern </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="768.8"><span class="t-timestamp">12:48</span></div>
-  <div class="t-body"><span class="segment" data-start="768.8" data-end="775.28" title="12:48">but a milder clinical picture. Autosomally inherited forms of the disease include fasciose </span><span class="segment" data-start="775.28" data-end="781.36" title="12:55">scapular humoral dystrophy which shows a dominant pattern and limb girdle dystrophy which is </span><span class="segment" data-start="781.36" data-end="786.88" title="13:01">recessive. Although these syndromes are infrequently encountered in routine practice, </span><span class="segment" data-start="786.88" data-end="792.8" title="13:06">the type of surgery these patients present for includes scoliosis correction and treatment of </span><span class="segment" data-start="792.88" data-end="801.44" title="13:12">contractures. What's the clinical features? There can be severe respiratory muscle weakness </span><span class="segment" data-start="801.44" data-end="806.16" title="13:21">which may be exacerbated by a restrictive deficit due to chyphoscholiosis. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="807.36"><span class="t-timestamp">13:27</span></div>
-  <div class="t-body"><span class="segment" data-start="807.36" data-end="813.76" title="13:27">Impaired clearance of secretions and recurrent chest infections are common. Cardiomyopathy is </span><span class="segment" data-start="813.76" data-end="821.2" title="13:33">a common finding and there is a significant risk of periopptivarithmias. Exposure to succumbethanium </span><span class="segment" data-start="821.2" data-end="827.52" title="13:41">can provoke rabdomylicis and to significant hyperkalemia due to potassium efflux from cells. </span><span class="segment" data-start="828.72" data-end="835.36" title="13:48">Sucymethanium should therefore be avoided. There are concerns regarding a possible association </span><span class="segment" data-start="835.36" data-end="841.12" title="13:55">between muscular dystrophy and a reaction similar to malignant hyperpirexia on exposure </span><span class="segment" data-start="841.12" data-end="848.72" title="14:01">to succumbethanium or volatile agents. This is based on case reports and has so far not been </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="848.8"><span class="t-timestamp">14:08</span></div>
-  <div class="t-body"><span class="segment" data-start="848.8" data-end="856.56" title="14:08">substantiated by prospective studies. Volatile agents are advocated by some for short cases </span><span class="segment" data-start="856.56" data-end="860.08" title="14:16">but are generally avoided for lengthy procedures. </span></div>
+<div class="preamble-block"><span class="segment a-seg" data-start="0.0" data-end="3.42" title="0:00">Myisthenia and muscle diseases. </span><span class="segment a-seg" data-start="3.42" data-end="9.92" title="0:03">You are scheduled to anithetize a 37-year-old lady with myisthenia gravis for a thymectomy. </span></div>
+<div class="qa-pair">
+<div class="q-block" data-start="9.92">
+  <div class="q-label">Q1</div>
+  <div class="q-body"><span class="segment q-seg" data-start="9.92" data-end="13.36" title="0:09">What are the anesthetic implications of this condition? </span></div>
 </div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="13.36" data-end="18.76" title="0:13">Although relatively uncommon in routine practice, myisthenia gravis is one of a group of muscle </span></li>
+<li><span class="segment a-seg" data-start="18.76" data-end="22.04" title="0:18">diseases which are a beloved exam topic. </span></li>
+<li><span class="segment a-seg" data-start="22.04" data-end="27.0" title="0:22">This is because for each there are a number of specific perioperative issues. </span></li>
+<li><span class="segment a-seg" data-start="27.0" data-end="30.04" title="0:27">Your knowledge is explored through discussion of these issues. </span></li>
+<li><span class="segment a-seg" data-start="30.04" data-end="35.2" title="0:30">A useful way to introduce your answer is with an opening statement explaining the basis </span></li>
+<li><span class="segment a-seg" data-start="35.2" data-end="41.08" title="0:35">of the disorder and the main clinical features. </span></li>
+<li><span class="segment a-seg" data-start="41.08" data-end="46.48" title="0:41">Myisthenia gravis is an autoimmune disease affecting the neuromuscular junction. </span></li>
+<li><span class="segment a-seg" data-start="46.48" data-end="53.44" title="0:46">The patient produces IgG antibodies against their own astyle-colean receptors. </span></li>
+<li><span class="segment a-seg" data-start="53.44" data-end="59.04" title="0:53">There is a reduction in the number of active receptors at the neuromuscular junction. </span></li>
+<li><span class="segment a-seg" data-start="59.04" data-end="64.88" title="0:59">The clinical picture is of weakness of the ocular, bulber and proximal limb muscles, which </span></li>
+<li><span class="segment a-seg" data-start="64.88" data-end="68.4" title="1:04">is exacerbated by exercise. </span></li>
+<li><span class="segment a-seg" data-start="68.4" data-end="73.12" title="1:08">Women are affected more commonly than men, and there is an association with other autoimmune </span></li>
+<li><span class="segment a-seg" data-start="73.12" data-end="76.76" title="1:13">conditions and abnormalities of the thymus. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="76.76">
+  <div class="q-label">Q2</div>
+  <div class="q-body"><span class="segment q-seg" data-start="76.76" data-end="82.04" title="1:16">Describe your preoperative assessment of this patient. </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="82.04" data-end="87.16" title="1:22">In my preoperative assessment, I wish to gain the information needed for a routine anesthetic </span></li>
+<li><span class="segment a-seg" data-start="87.16" data-end="93.48" title="1:27">assessment, in addition to specific details regarding the patient's condition. </span></li>
+<li><span class="segment a-seg" data-start="93.48" data-end="99.0" title="1:33">With respect to the myisthenia, my aims are to establish the duration and severity of </span></li>
+<li><span class="segment a-seg" data-start="99.0" data-end="104.52" title="1:39">the patient's symptoms, and the regime of medication required to produce symptomatic </span></li>
+<li><span class="segment a-seg" data-start="104.52" data-end="107.08" title="1:44">improvement. </span></li>
+<li><span class="segment a-seg" data-start="107.08" data-end="112.36" title="1:47">It is vital to establish the degree of bulber involvement, as this has implications on </span></li>
+<li><span class="segment a-seg" data-start="112.36" data-end="115.48" title="1:52">the risk of reflux during general anesthesia. </span></li>
+<li><span class="segment a-seg" data-start="115.48" data-end="121.24" title="1:55">The presence of significant respiratory involvement is also important, as these patients are </span></li>
+<li><span class="segment a-seg" data-start="121.24" data-end="127.16" title="2:01">more likely to require ventilatory support postoperatively. </span></li>
+<li><span class="segment a-seg" data-start="127.16" data-end="131.72" title="2:07">Respiratory function tests may be appropriate to quantify the degree of respiratory muscle </span></li>
+<li><span class="segment a-seg" data-start="131.72" data-end="133.56" title="2:11">impairment. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="133.64">
+  <div class="q-label">Q3</div>
+  <div class="q-body"><span class="segment q-seg" data-start="133.64" data-end="138.2" title="2:13">How would you optimize the patient? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="138.2" data-end="143.08" title="2:18">Those with poorly controlled symptoms should have their pharmacological treatment optimized </span></li>
+<li><span class="segment a-seg" data-start="143.08" data-end="144.76" title="2:23">before surgery. </span></li>
+<li><span class="segment a-seg" data-start="144.76" data-end="151.4" title="2:24">This includes anticolonesterases, steroids and other immunosuppressant agents. </span></li>
+<li><span class="segment a-seg" data-start="151.4" data-end="157.28" title="2:31">Very rarely a severely affected patient will require preoperative plasma ferrisis. </span></li>
+<li><span class="segment a-seg" data-start="157.28" data-end="163.28" title="2:37">The patient's normal anticolonesterase dose should be continued up until the time of surgery. </span></li>
+<li><span class="segment a-seg" data-start="163.68" data-end="168.88" title="2:43">Sedative premedication should be avoided if possible, as it can worsen respiratory failure. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="169.68">
+  <div class="q-label">Q4</div>
+  <div class="q-body"><span class="segment q-seg" data-start="169.68" data-end="175.6" title="2:49">However, the due vicious use of benzodiazepines is appropriate in anxious patients. </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="175.6" data-end="180.64" title="2:55">Patients with significant respiratory involvement are likely to have a poor cough </span></li>
+<li><span class="segment a-seg" data-start="180.64" data-end="184.24" title="3:00">and will benefit from preoperative physiotherapy. </span></li>
+<li><span class="segment a-seg" data-start="184.24" data-end="190.64" title="3:04">A critical care bed should be available postoperatively for patients with severe or unstable disease. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="190.64">
+  <div class="q-label">Q5</div>
+  <div class="q-body"><span class="segment q-seg" data-start="190.64" data-end="193.52" title="3:10">Describe the conduct of your anesthetic. </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="195.2" data-end="200.72" title="3:15">Thymectomy is carried out either via a median stenotomy or a minimally invasive </span></li>
+<li><span class="segment a-seg" data-start="200.72" data-end="207.68" title="3:20">thoracoscopic technique. In either case, general anesthesia with endotracheal intubation is required. </span></li>
+<li><span class="segment a-seg" data-start="208.96" data-end="214.96" title="3:28">Total intravenous anesthesia or an inhalational technique at induction can be employed to avoid </span></li>
+<li><span class="segment a-seg" data-start="214.96" data-end="220.48" title="3:34">the need for muscle relaxants. This is important because as a consequence of the destruction </span></li>
+<li><span class="segment a-seg" data-start="220.48" data-end="226.48" title="3:40">of astylecoline receptors, these patients are very sensitive to the effects of non-depolarising </span></li>
+<li><span class="segment a-seg" data-start="226.48" data-end="233.2" title="3:46">neuromuscular blocking drugs. These are ideally avoided if possible or used at a much reduced </span></li>
+<li><span class="segment a-seg" data-start="233.2" data-end="237.44" title="3:53">dose, for example, one-tenth of the normal intubating dose. </span></li>
+<li><span class="segment a-seg" data-start="239.52" data-end="243.68" title="3:59">Drugs such as atrocurium, which are rapidly metabolised are preferable. </span></li>
+<li><span class="segment a-seg" data-start="244.56" data-end="250.4" title="4:04">The use of local anesthesia applied topically to the airway may help in the avoidance of neuromuscular </span></li>
+<li><span class="segment a-seg" data-start="250.4" data-end="257.76" title="4:10">blockade. A rapid sequence induction can be performed if indicated by patient factors such as a </span></li>
+<li><span class="segment a-seg" data-start="257.76" data-end="263.76" title="4:17">full stomach or predicted a difficult airway. However, it must be remembered that these patients are </span></li>
+<li><span class="segment a-seg" data-start="263.76" data-end="269.52" title="4:23">relatively resistant to the effects of succcemethanium. This is because reduced numbers of active </span></li>
+<li><span class="segment a-seg" data-start="269.52" data-end="277.28" title="4:29">receptors leads to a resistance to depolarisation. There is evidence to suggest that a dose of 1.5 </span></li>
+<li><span class="segment a-seg" data-start="277.28" data-end="284.24" title="4:37">to 2 milligrams per kilogram produces reliable intubating conditions. The return of full neuromuscular </span></li>
+<li><span class="segment a-seg" data-start="284.24" data-end="290.0" title="4:44">function in the form of a train of four without fade should be confirmed after succcemethanium </span></li>
+<li><span class="segment a-seg" data-start="290.0" data-end="293.6" title="4:50">if a non-depolarising agent is to be administered subsequently. </span></li>
+<li><span class="segment a-seg" data-start="294.96" data-end="299.76" title="4:54">Maintenance of anesthesia with volatile or a total intravenous technique is appropriate. </span></li>
+<li><span class="segment a-seg" data-start="300.4" data-end="305.6" title="5:00">It is mandatory to confirm full recovery of neuromuscular function prior to emergence. </span></li>
+<li><span class="segment a-seg" data-start="306.32" data-end="312.88" title="5:06">If possible, the use of reversal should be avoided. Giving reversal effectively gives the patient </span></li>
+<li><span class="segment a-seg" data-start="312.88" data-end="318.4" title="5:12">an additional dose of anticholinesis, which can theoretically provoke a cholinergic crisis. </span></li>
+<li><span class="segment a-seg" data-start="319.76" data-end="325.04" title="5:19">The approach used for the surgery will be important in planning a post-operative analgesic regime. </span></li>
+<li><span class="segment a-seg" data-start="325.76" data-end="331.2" title="5:25">As in the pre-optive period, any drugs which can produce respiratory depression should be used </span></li>
+<li><span class="segment a-seg" data-start="331.2" data-end="336.4" title="5:31">cautiously. What factors can be used to predict the likelihood of this patient requiring post-operative </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="336.4">
+  <div class="q-label">Q6</div>
+  <div class="q-body"><span class="segment q-seg" data-start="336.4" data-end="337.606" title="5:36">respiratory support? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="337.606" data-end="344.24" title="5:37">There are several factors associated with an increased incidence of respiratory </span></li>
+<li><span class="segment a-seg" data-start="344.24" data-end="351.2" title="5:44">failure post-operatively. These include disease duration of more than six years, a daily period </span></li>
+<li><span class="segment a-seg" data-start="351.2" data-end="359.12" title="5:51">of stigmin dose of more than 750 milligrams, coexisting chronic lung disease, a pre-operative </span></li>
+<li><span class="segment a-seg" data-start="359.12" data-end="364.88" title="5:59">vital capacity of less than 2.9 litres and major body cavity surgery. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="365.68">
+  <div class="q-label">Q7</div>
+  <div class="q-body"><span class="segment q-seg" data-start="365.68" data-end="367.84" title="6:05">What are the other post-operative concerns? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="370.32" data-end="376.8" title="6:10">These patients need effective analgesia, chest physiotherapy and the early reestablishment of </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="376.8">
+  <div class="q-label">Q8</div>
+  <div class="q-body"><span class="segment q-seg" data-start="376.8" data-end="382.8" title="6:16">their normal medication. What do you understand by the terms myithenic and colonineurgic crisis? </span><span class="segment q-seg" data-start="382.96" data-end="384.72" title="6:22">How would you differentiate between the two? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="387.2" data-end="394.88" title="6:27">A myithenic crisis results from a relative lack of anticholinesis. It may be precipitated by missed </span></li>
+<li><span class="segment a-seg" data-start="394.88" data-end="402.64" title="6:34">doses of medication, surgery or intercurrent illness. It is characterized by sudden, rapidly worsening </span></li>
+<li><span class="segment a-seg" data-start="402.64" data-end="409.28" title="6:42">weakness. A cholinergic crisis is provoked by administration of an anticholinesis. </span></li>
+<li><span class="segment a-seg" data-start="410.0" data-end="416.0" title="6:50">Astyl-coline levels in the plasma are increased, leading to weakness with prominent miscarinic </span></li>
+<li><span class="segment a-seg" data-start="416.0" data-end="422.96" title="6:56">effects. These include bradycardia, increased salivation and sweating, pupillary constriction, </span></li>
+<li><span class="segment a-seg" data-start="422.96" data-end="429.68" title="7:02">abdominal pain and diarrhea. A dose of short-acting anticholinesis, </span></li>
+<li><span class="segment a-seg" data-start="429.68" data-end="436.0" title="7:09">such as edraphonium, will improve the features of a myithenic crisis, but exacerbate a colonergic </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="436.96">
+  <div class="q-label">Q9</div>
+  <div class="q-body"><span class="segment q-seg" data-start="436.96" data-end="439.493" title="7:16">crisis. What is myithenic syndrome? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="439.493" data-end="443.04" title="7:19">These two similarly named but unrelated conditions </span></li>
+<li><span class="segment a-seg" data-start="443.04" data-end="448.56" title="7:23">are commonly asked about together. Often the question will ask you to compare and contrast them. </span></li>
+<li><span class="segment a-seg" data-start="451.52" data-end="458.32" title="7:31">Myithenic syndrome is also known as etenlambat syndrome and is a perineoplastic condition. </span></li>
+<li><span class="segment a-seg" data-start="459.6" data-end="465.68" title="7:39">It is most often associated with small cell carcinoma of the lung. It is characterized </span></li>
+<li><span class="segment a-seg" data-start="465.68" data-end="471.36" title="7:45">by proximal muscle weakness, more commonly affecting the lower limbs. This weakness is seen </span></li>
+<li><span class="segment a-seg" data-start="471.36" data-end="478.64" title="7:51">to improve with activity in contrast to that seen in myithenia gravis. There can also be autonomic </span></li>
+<li><span class="segment a-seg" data-start="478.64" data-end="487.04" title="7:58">effects in the form of hypotension, urinary hesitancy and constipation. The syndrome is thought to </span></li>
+<li><span class="segment a-seg" data-start="487.04" data-end="492.8" title="8:07">result from antibodies which are directed against the calcium channels in the presynaptic membrane </span></li>
+<li><span class="segment a-seg" data-start="493.2" data-end="499.84" title="8:13">neuromuscular junction. The inactivation of these channels leads to a decreased presynaptic release </span></li>
+<li><span class="segment a-seg" data-start="499.84" data-end="507.12" title="8:19">of astylcholine in response to an action potential. Anticholinesis raises do not improve the </span></li>
+<li><span class="segment a-seg" data-start="507.12" data-end="514.56" title="8:27">clinical features of the syndrome. Individuals with myithenic syndrome are sensitive to both </span></li>
+<li><span class="segment a-seg" data-start="514.56" data-end="521.04" title="8:34">depolarizing and non-depolarizing neuromuscular blocking agents. A 40-year-old male presents </span></li>
+<li><span class="segment a-seg" data-start="521.04" data-end="526.0" title="8:41">frothroscopy of the knee. He has a diagnosis of dystrophium myotoneca. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="527.68">
+  <div class="q-label">Q10</div>
+  <div class="q-body"><span class="segment q-seg" data-start="527.68" data-end="530.88" title="8:47">What is myotoneca and what do you understand about this disorder? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="533.68" data-end="539.04" title="8:53">Myotoneca is a term to describe the failure of muscle to relax following contraction. </span></li>
+<li><span class="segment a-seg" data-start="540.0" data-end="545.84" title="9:00">In dystrophium myotonica there is an abnormality of sodium conductance within the muscle fiber </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="545.92">
+  <div class="q-label">Q11</div>
+  <div class="q-body"><span class="segment q-seg" data-start="545.92" data-end="548.907" title="9:05">leading to prolonged contraction. What's the clinical features? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="548.907" data-end="551.52" title="9:08">Most books have a long list of </span></li>
+<li><span class="segment a-seg" data-start="551.52" data-end="557.68" title="9:11">clinical features aimed at organising your answer by systems concentrating on those that have </span></li>
+<li><span class="segment a-seg" data-start="557.68" data-end="565.76" title="9:17">potential anaesthetic implications. There are a characteristic group of clinical features. </span></li>
+<li><span class="segment a-seg" data-start="566.48" data-end="573.2" title="9:26">These include general features, frontal bulding, cataracts and muscle wasting affecting the </span></li>
+<li><span class="segment a-seg" data-start="573.2" data-end="580.48" title="9:33">sternoclider mastoid and proximal limb muscles. There can be bulber involvement with poor swallow, </span></li>
+<li><span class="segment a-seg" data-start="580.48" data-end="587.76" title="9:40">slurred speech and recurrent aspiration. Weakness of respiratory muscles can lead to poor </span></li>
+<li><span class="segment a-seg" data-start="587.76" data-end="595.04" title="9:47">clearance of secretions and a restrictive lung deficit. Longstanding hypoventilation can </span></li>
+<li><span class="segment a-seg" data-start="595.04" data-end="602.32" title="9:55">result in obstructive sleep apnea and core pulmonale. In the cardiovascular system, the patient </span></li>
+<li><span class="segment a-seg" data-start="602.32" data-end="609.28" title="10:02">may have cardiomyopathy and conduction defects. It's off a geomotility and gastric emptying may be </span></li>
+<li><span class="segment a-seg" data-start="609.28" data-end="616.0" title="10:09">affected. There is an association with diabetes and hypothyroidism. What are the potential issues </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="616.0">
+  <div class="q-label">Q12</div>
+  <div class="q-body"><span class="segment q-seg" data-start="616.0" data-end="619.323" title="10:16">relating to anaesthesia in this patient? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="619.323" data-end="623.2" title="10:19">The concerns relate to the patient's underlying </span></li>
+<li><span class="segment a-seg" data-start="623.2" data-end="630.08" title="10:23">cardiac and respiratory disease, their sensitivity to anaesthetic drugs and the risk of precipitating </span></li>
+<li><span class="segment a-seg" data-start="630.16" data-end="639.2" title="10:30">myotonia in the periopptive period. Appropriate investigations such as ECG, echocardiogram, arterial </span></li>
+<li><span class="segment a-seg" data-start="639.2" data-end="644.96" title="10:39">blood gases and lung function tests should be used preoperatively if there is a suspicion of </span></li>
+<li><span class="segment a-seg" data-start="644.96" data-end="652.24" title="10:44">cardiac respiratory problems. Patients are acutely sensitive to sedative and hypnotic agents such </span></li>
+<li><span class="segment a-seg" data-start="652.24" data-end="659.44" title="10:52">that pre-medication should be avoided and induction agents used cautiously. Local or regional </span></li>
+<li><span class="segment a-seg" data-start="659.52" data-end="667.6" title="10:59">techniques should be used wherever possible. If general anaesthesia is used, untacid pre-medication </span></li>
+<li><span class="segment a-seg" data-start="667.6" data-end="672.64" title="11:07">is recommended and intubation is likely to be required due to the risk of aspiration. </span></li>
+<li><span class="segment a-seg" data-start="673.68" data-end="678.8" title="11:13">De-polarising muscle relaxants are avoided due to a risk of precipitating myotonia. </span></li>
+<li><span class="segment a-seg" data-start="679.68" data-end="685.68" title="11:19">Invasive monitoring is used in cases with significant cardiomyopathy. Intraoperatively, </span></li>
+<li><span class="segment a-seg" data-start="685.68" data-end="691.2" title="11:25">maintenance of normal thermia is important as cold and shivering are recognised triggers for </span></li>
+<li><span class="segment a-seg" data-start="691.2" data-end="697.2" title="11:31">myotonia. Postoperatively, a period of observation in a critical care setting is appropriate. </span></li>
+<li><span class="segment a-seg" data-start="701.92" data-end="707.76" title="11:41">The muscular discharfies are a group of inherited muscle diseases. They are characterized by </span></li>
+<li><span class="segment a-seg" data-start="707.76" data-end="714.72" title="11:47">gradual destruction of skeletal muscle. Importantly, there is also commonly involvement of cardiac muscle. </span></li>
+<li><span class="segment a-seg" data-start="716.0" data-end="721.52" title="11:56">There is a spectrum of severity depending on the genetic mutation and the degree of muscle involvement. </span></li>
+<li><span class="segment a-seg" data-start="722.4" data-end="727.84" title="12:02">The classification of these disorders is based on the pattern of inheritance which can be sex </span></li>
+<li><span class="segment a-seg" data-start="727.84" data-end="734.72" title="12:07">linked, autosomal dominant or autosomal recessive. The most common form of muscular dystrophy </span></li>
+<li><span class="segment a-seg" data-start="734.72" data-end="741.04" title="12:14">is Duchens, which has a sex linked recessive inheritance and therefore mainly affects boys. </span></li>
+<li><span class="segment a-seg" data-start="741.6" data-end="747.6" title="12:21">It is the most severe form of the disease and presents with the onset of muscle weakness </span></li>
+<li><span class="segment a-seg" data-start="747.6" data-end="754.48" title="12:27">between the ages of 3-5 years. This weakness is progressive and most patients are confined </span></li>
+<li><span class="segment a-seg" data-start="754.48" data-end="762.32" title="12:34">to a wheelchair by their early teens. Life expectancy is approximately 25 years, with death resulting </span></li>
+<li><span class="segment a-seg" data-start="762.32" data-end="768.8" title="12:42">from cardiac or respiratory failure. Becker's muscular dystrophy has a similar inheritance pattern </span></li>
+<li><span class="segment a-seg" data-start="768.8" data-end="775.28" title="12:48">but a milder clinical picture. Autosomally inherited forms of the disease include fasciose </span></li>
+<li><span class="segment a-seg" data-start="775.28" data-end="781.36" title="12:55">scapular humoral dystrophy which shows a dominant pattern and limb girdle dystrophy which is </span></li>
+<li><span class="segment a-seg" data-start="781.36" data-end="786.88" title="13:01">recessive. Although these syndromes are infrequently encountered in routine practice, </span></li>
+<li><span class="segment a-seg" data-start="786.88" data-end="792.8" title="13:06">the type of surgery these patients present for includes scoliosis correction and treatment of </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="792.88">
+  <div class="q-label">Q13</div>
+  <div class="q-body"><span class="segment q-seg" data-start="792.88" data-end="796.447" title="13:12">contractures. What's the clinical features? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="796.447" data-end="801.44" title="13:16">There can be severe respiratory muscle weakness </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="801.44">
+  <div class="q-label">Q14</div>
+  <div class="q-body"><span class="segment q-seg" data-start="801.44" data-end="806.16" title="13:21">which may be exacerbated by a restrictive deficit due to chyphoscholiosis. </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="807.36" data-end="813.76" title="13:27">Impaired clearance of secretions and recurrent chest infections are common. Cardiomyopathy is </span></li>
+<li><span class="segment a-seg" data-start="813.76" data-end="821.2" title="13:33">a common finding and there is a significant risk of periopptivarithmias. Exposure to succumbethanium </span></li>
+<li><span class="segment a-seg" data-start="821.2" data-end="827.52" title="13:41">can provoke rabdomylicis and to significant hyperkalemia due to potassium efflux from cells. </span></li>
+<li><span class="segment a-seg" data-start="828.72" data-end="835.36" title="13:48">Sucymethanium should therefore be avoided. There are concerns regarding a possible association </span></li>
+<li><span class="segment a-seg" data-start="835.36" data-end="841.12" title="13:55">between muscular dystrophy and a reaction similar to malignant hyperpirexia on exposure </span></li>
+<li><span class="segment a-seg" data-start="841.12" data-end="848.72" title="14:01">to succumbethanium or volatile agents. This is based on case reports and has so far not been </span></li>
+<li><span class="segment a-seg" data-start="848.8" data-end="856.56" title="14:08">substantiated by prospective studies. Volatile agents are advocated by some for short cases </span></li>
+<li><span class="segment a-seg" data-start="856.56" data-end="860.08" title="14:16">but are generally avoided for lengthy procedures. </span></li>
+  </ul>
+</div>
+</div>
+
 </div>
 
 <div class="subtitle-bar">
-  <span class="subtitle-text empty" id="subtitle-text">Play audio to see live subtitles&#8230;</span>
+  <span id="subtitle-text" class="empty">Play audio to see live subtitles&#8230;</span>
 </div>
 
 <script>
-
-const audio    = document.getElementById('audio');
-const allSegs  = Array.from(document.querySelectorAll('.segment'));
-const allBlocks = Array.from(document.querySelectorAll('.t-block'));
+const audio      = document.getElementById('audio');
+const allSegs    = Array.from(document.querySelectorAll('.segment'));
 const subtitleEl = document.getElementById('subtitle-text');
-let activeSegEl   = null;
-let activeBlockEl = null;
-let searchMatches = [];
-let searchIdx     = 0;
+let activeSegEl  = null;
+let searchMatches = [], searchIdx = 0;
 
-// Duration display
 audio.addEventListener('loadedmetadata', () => {
   const m = Math.floor(audio.duration / 60);
   const s = Math.floor(audio.duration %% 60).toString().padStart(2,'0');
   document.getElementById('dur').textContent = m + ':' + s;
 });
 
-// Seek helper
-function seekTo(t) {
-  audio.currentTime = t;
-  audio.play();
-}
+function seekTo(t) { audio.currentTime = t; audio.play(); }
 
-// Block gutter click
-document.querySelectorAll('.t-gutter').forEach(g => {
-  g.addEventListener('click', () => seekTo(parseFloat(g.dataset.start)));
+// Q-block header click
+document.querySelectorAll('.q-block').forEach(q => {
+  q.addEventListener('click', e => {
+    if (!e.target.classList.contains('segment')) seekTo(parseFloat(q.dataset.start));
+  });
 });
 
-// Segment click
+// Individual segment click
 allSegs.forEach(s => {
-  s.addEventListener('click', e => {
-    e.stopPropagation();
-    seekTo(parseFloat(s.dataset.start));
-  });
+  s.addEventListener('click', e => { e.stopPropagation(); seekTo(parseFloat(s.dataset.start)); });
 });
 
 // Real-time tracking
 audio.addEventListener('timeupdate', () => {
   const t = audio.currentTime;
-
-  // Find active segment (last one whose start <= t)
   let found = null;
   for (let i = allSegs.length - 1; i >= 0; i--) {
     if (parseFloat(allSegs[i].dataset.start) <= t) { found = allSegs[i]; break; }
   }
-
   if (found && found !== activeSegEl) {
-    // Clear previous
-    if (activeSegEl) activeSegEl.classList.remove('active');
-    if (activeBlockEl) {
-      activeBlockEl.classList.remove('block-active');
-      const pg = activeBlockEl.querySelector('.t-gutter');
-      if (pg) pg.classList.remove('gutter-active');
+    if (activeSegEl) {
+      activeSegEl.classList.remove('active');
+      const pli = activeSegEl.closest('li');
+      if (pli) pli.classList.remove('li-active');
+      const pq = activeSegEl.closest('.q-block');
+      if (pq) pq.classList.remove('q-active');
     }
-    // Set new
     found.classList.add('active');
-    const block = found.closest('.t-block');
-    if (block) {
-      block.classList.add('block-active');
-      const g = block.querySelector('.t-gutter');
-      if (g) g.classList.add('gutter-active');
-      activeBlockEl = block;
-    }
+    const li = found.closest('li');
+    if (li) li.classList.add('li-active');
+    const qb = found.closest('.q-block');
+    if (qb) qb.classList.add('q-active');
     activeSegEl = found;
 
-    // Update subtitle
     subtitleEl.textContent = found.textContent.trim();
     subtitleEl.classList.remove('empty');
 
-    // Auto-scroll (only when not searching)
-    if (!document.getElementById('search').value) {
+    if (!document.getElementById('search').value)
       found.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }
   }
 });
 
@@ -359,17 +542,13 @@ searchInput.addEventListener('keydown', e => {
     el.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
 });
-
 function runSearch() {
   const q = searchInput.value.trim().toLowerCase();
   allSegs.forEach(s => s.classList.remove('search-match','search-current'));
   searchMatches = [];
   if (!q) return;
   allSegs.forEach(s => {
-    if (s.textContent.toLowerCase().includes(q)) {
-      s.classList.add('search-match');
-      searchMatches.push(s);
-    }
+    if (s.textContent.toLowerCase().includes(q)) { s.classList.add('search-match'); searchMatches.push(s); }
   });
   if (!searchMatches.length) return;
   searchIdx = 0;

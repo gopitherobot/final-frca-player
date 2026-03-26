@@ -5,10 +5,19 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Obstetrics — Physiological and Anatomical Changes of Pregnancy</title>
 <style>
-
   :root {
-    --accent:    #db2777;
-    --body-bg:   #f1f5f9;
+    --q-bg:       #1e3a5f;
+    --q-text:     #ffffff;
+    --q-label:    #60a5fa;
+    --a-bg:       #ffffff;
+    --a-border:   #e2e8f0;
+    --a-label:    #059669;
+    --active-q:   #db2777;
+    --active-a:   #dbeafe;
+    --accent:     #db2777;
+    --body-bg:    #f1f5f9;
+    --pre-bg:     #fef9c3;
+    --pre-border: #fcd34d;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
@@ -40,22 +49,9 @@
     margin-bottom: 4px;
     letter-spacing: 0.01em;
   }
-  .header-sub {
-    font-size: 0.72rem;
-    color: #94a3b8;
-    font-style: italic;
-  }
-  audio {
-    height: 36px;
-    accent-color: var(--accent);
-    flex-shrink: 0;
-  }
-  .back-link {
-    font-size: 0.8rem;
-    color: #94a3b8;
-    text-decoration: none;
-    white-space: nowrap;
-  }
+  .header-sub { font-size: 0.72rem; color: #94a3b8; font-style: italic; }
+  audio { height: 36px; accent-color: var(--accent); flex-shrink: 0; }
+  .back-link { font-size: 0.8rem; color: #94a3b8; text-decoration: none; white-space: nowrap; }
   .back-link:hover { color: #60a5fa; }
 
   /* ── Toolbar ── */
@@ -69,30 +65,17 @@
     border-bottom: 1px solid #334155;
   }
   .toolbar input {
-    flex: 1;
-    max-width: 380px;
+    flex: 1; max-width: 380px;
     padding: 5px 11px;
-    border: 1px solid #475569;
-    border-radius: 6px;
-    background: #0f172a;
-    color: #e2e8f0;
-    font-size: 0.83rem;
-    outline: none;
+    border: 1px solid #475569; border-radius: 6px;
+    background: #0f172a; color: #e2e8f0; font-size: 0.83rem; outline: none;
   }
   .toolbar input:focus { border-color: var(--accent); }
   .toolbar input::placeholder { color: #64748b; }
-  .stats {
-    font-size: 0.72rem;
-    color: #64748b;
-    white-space: nowrap;
-  }
+  .stats { font-size: 0.72rem; color: #64748b; white-space: nowrap; }
 
   /* ── Scroll area ── */
-  .scroll-area {
-    flex: 1;
-    overflow-y: auto;
-    padding: 20px;
-  }
+  .scroll-area { flex: 1; overflow-y: auto; padding: 20px; }
   .scroll-area::-webkit-scrollbar { width: 6px; }
   .scroll-area::-webkit-scrollbar-track { background: transparent; }
   .scroll-area::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
@@ -107,68 +90,77 @@
     display: flex;
     align-items: center;
   }
-  .subtitle-text {
-    font-size: 0.9rem;
-    color: #e2e8f0;
-    line-height: 1.5;
-    font-style: italic;
-  }
-  .subtitle-text.empty { color: #475569; }
+  #subtitle-text { font-size: 0.88rem; color: #e2e8f0; line-height: 1.5; font-style: italic; }
+  #subtitle-text.empty { color: #475569; }
 
-  /* ── Transcript blocks ── */
-  .t-block {
-    background: #ffffff;
-    border: 1px solid #e2e8f0;
-    border-radius: 10px;
-    margin-bottom: 14px;
-    overflow: hidden;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
-    display: flex;
-  }
-  .t-block.block-active {
-    border-color: var(--accent);
-    box-shadow: 0 0 0 2px rgba(37,99,235,0.15);
-  }
-  .t-gutter {
-    background: #0f172a;
-    width: 52px;
-    flex-shrink: 0;
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
-    padding-top: 14px;
-    cursor: pointer;
-  }
-  .t-gutter:hover { background: #1e293b; }
-  .t-timestamp {
-    font-size: 0.7rem;
-    color: #64748b;
-    font-family: monospace;
-    font-weight: 600;
-    letter-spacing: 0.02em;
-  }
-  .t-gutter.gutter-active .t-timestamp { color: var(--accent); }
-  .t-body {
-    flex: 1;
+  /* ── Preamble ── */
+  .preamble-block {
+    background: var(--pre-bg);
+    border-left: 4px solid var(--pre-border);
+    border-radius: 0 8px 8px 0;
     padding: 12px 16px;
-    line-height: 1.75;
-    font-size: 0.92rem;
-    color: #1e293b;
+    margin-bottom: 20px;
+    font-size: 0.88rem;
+    color: #78350f;
+    font-style: italic;
+    line-height: 1.7;
   }
 
-  /* ── Segments ── */
-  .segment {
+  /* ── Q&A pair ── */
+  .qa-pair { margin-bottom: 20px; border-radius: 10px; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+
+  /* Question block */
+  .q-block {
+    background: var(--q-bg);
+    padding: 14px 18px;
+    display: flex; gap: 14px; align-items: flex-start;
     cursor: pointer;
-    border-radius: 3px;
-    transition: background 0.1s;
+    transition: background 0.15s;
   }
-  .segment:hover { background: #eff6ff; }
-  .segment.active {
-    background: #bfdbfe;
-    outline: 2px solid #3b82f6;
-    outline-offset: 1px;
-    border-radius: 3px;
+  .q-block:hover { background: #1d4ed8; }
+  .q-block.q-active { background: var(--active-q); }
+  .q-label {
+    font-size: 0.7rem; font-weight: 700;
+    color: var(--q-label);
+    background: rgba(96,165,250,0.15);
+    border: 1px solid rgba(96,165,250,0.3);
+    border-radius: 5px; padding: 3px 7px;
+    white-space: nowrap; margin-top: 2px; letter-spacing: 0.05em;
+    flex-shrink: 0;
   }
+  .q-body { flex: 1; font-size: 0.97rem; font-weight: 600; color: var(--q-text); line-height: 1.55; }
+
+  /* Answer block */
+  .a-block {
+    background: var(--a-bg);
+    border: 1px solid var(--a-border); border-top: none;
+    padding: 14px 18px;
+    display: flex; gap: 14px; align-items: flex-start;
+  }
+  .a-label {
+    font-size: 0.7rem; font-weight: 700;
+    color: var(--a-label);
+    background: #d1fae5; border: 1px solid #6ee7b7;
+    border-radius: 5px; padding: 3px 9px;
+    white-space: nowrap; margin-top: 2px; letter-spacing: 0.05em;
+    flex-shrink: 0;
+  }
+  .a-body { flex: 1; list-style: none; padding: 0; }
+  .a-body li {
+    padding: 4px 0 4px 14px;
+    border-left: 3px solid transparent;
+    line-height: 1.7; font-size: 0.92rem; color: #1e293b;
+    border-radius: 0 4px 4px 0;
+    transition: background 0.15s;
+  }
+  .a-body li:not(:last-child) { border-bottom: 1px solid #f1f5f9; }
+
+  /* ── Segments (clickable) ── */
+  .segment { cursor: pointer; border-radius: 3px; }
+  .q-seg:hover { background: rgba(255,255,255,0.18); }
+  .a-seg:hover { background: #eff6ff; }
+  .segment.active { background: #bfdbfe; outline: 2px solid #3b82f6; outline-offset: 1px; }
+  .a-body li.li-active { background: var(--active-a); border-left-color: var(--accent); }
   .segment.search-match  { background: #fef9c3; }
   .segment.search-current { background: #fde047; outline: 2px solid #ca8a04; }
 
@@ -187,148 +179,351 @@
 
 <div class="toolbar">
   <input type="text" id="search" placeholder="Search transcript&#8230; (Enter = next match)">
-  <span class="stats" id="stats">110 segments &nbsp;|&nbsp; <span id="dur">loading&#8230;</span></span>
+  <span class="stats" id="stats">17 questions &nbsp;|&nbsp; 110 segments &nbsp;|&nbsp; <span id="dur">loading&#8230;</span></span>
 </div>
 
 <div class="scroll-area" id="scroll-area">
-<div class="t-block">
-  <div class="t-gutter" data-start="0.0"><span class="t-timestamp">0:00</span></div>
-  <div class="t-body"><span class="segment" data-start="0.0" data-end="3.6" title="0:00">Physiological and anatomical changes of pregnancy. </span><span class="segment" data-start="4.24" data-end="8.24" title="0:04">This topic will be well suited to the clinical sciences' viather, </span><span class="segment" data-start="8.24" data-end="12.08" title="0:08">but may feature as the introduction to the clinical question. </span><span class="segment" data-start="13.12" data-end="17.84" title="0:13">What can you tell me about the physiological and anatomical changes of pregnancy? </span><span class="segment" data-start="17.84" data-end="23.52" title="0:17">A structured approach is vital to ensure that you do not forget any of the key points. </span><span class="segment" data-start="23.52" data-end="29.12" title="0:23">It may be worth making an opening statement explaining the reason for all of these changes. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="30.96"><span class="t-timestamp">0:30</span></div>
-  <div class="t-body"><span class="segment" data-start="30.96" data-end="37.12" title="0:30">The physiological changes of pregnancy are aimed at supplying oxygen and nutrients </span><span class="segment" data-start="37.12" data-end="41.6" title="0:37">to the increased demand of the uteroplasental unit and fetus. </span><span class="segment" data-start="42.48" data-end="46.96" title="0:42">The adaptations are also key in preparing the mother for delivery. </span><span class="segment" data-start="47.52" data-end="50.56" title="0:47">The changes may be divided into the body systems. </span><span class="segment" data-start="51.84" data-end="58.4" title="0:51">Firstly, the cardiovascular system. From the first trimester, there is an expansion of plasma </span><span class="segment" data-start="58.4" data-end="66.48" title="0:58">volume of about 50%. Red cell volume also increases, but due to the relatively greater increase in </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="66.48"><span class="t-timestamp">1:06</span></div>
-  <div class="t-body"><span class="segment" data-start="66.48" data-end="75.28" title="1:06">plasma volume, a dilutional anemia develops. Cardiac output increases by 40% from the 10th week </span><span class="segment" data-start="75.28" data-end="81.52" title="1:15">of gestation, with an increase in both heart rate and stroke volume achieving this change. </span><span class="segment" data-start="82.4" data-end="88.72" title="1:22">This systemic vascular resistance falls by 15%. This is due to the development of the </span><span class="segment" data-start="88.72" data-end="95.28" title="1:28">intervalous space, which is a low resistance vascular bed, and the vasodilator effects of the </span><span class="segment" data-start="95.28" data-end="103.2" title="1:35">pregnancy hormones. The blood pressure falls during pregnancy. Diastolic blood pressure decreases </span><span class="segment" data-start="103.2" data-end="109.68" title="1:43">more than systolic by mid-gestation, but both parameters then return to normal levels at term. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="109.92"><span class="t-timestamp">1:49</span></div>
-  <div class="t-body"><span class="segment" data-start="109.92" data-end="118.8" title="1:49">Due to volume loading, cardiac dilation and hypertrophic occur, leading to ECG changes of left </span><span class="segment" data-start="118.8" data-end="127.44" title="1:58">axis deviation and ST segment changes. A further important effect is that of aorticaval compression. </span><span class="segment" data-start="128.16" data-end="135.6" title="2:08">The gravity uterus compresses the venocaver, reducing venous return, and can also reduce aortic </span><span class="segment" data-start="135.68" data-end="139.92" title="2:15">blood flow, particularly when the parturiant is in the supine position. </span><span class="segment" data-start="140.96" data-end="147.36" title="2:20">This effect can have severe implications for the uteroplasental unit, which does not have a system </span><span class="segment" data-start="147.36" data-end="154.88" title="2:27">of auto regulation and so relies on pressure to maintain blood flow. In order to decrease the effects </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="154.88"><span class="t-timestamp">2:34</span></div>
-  <div class="t-body"><span class="segment" data-start="154.88" data-end="160.96" title="2:34">of aorticaval compression, we use a tilt or wedge when the pregnant woman is supine. </span><span class="segment" data-start="161.6" data-end="165.28" title="2:41">How much weight would you expect a woman to gain during a normal pregnancy? </span><span class="segment" data-start="165.84" data-end="171.28" title="2:45">The examiner may interrupt if he feels you are performing well and he wants to probe your depth </span><span class="segment" data-start="171.28" data-end="180.0" title="2:51">of knowledge further. The weight gain varies tremendously, but average values are approximately </span><span class="segment" data-start="180.0" data-end="186.48" title="3:00">12 kilos. This is due to the combination of increase in tissue mass of the breasts, </span><span class="segment" data-start="186.48" data-end="192.8" title="3:06">placenta, uterus and fetus, and the increase in plasma and interstitial fluid. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="192.88"><span class="t-timestamp">3:12</span></div>
-  <div class="t-body"><span class="segment" data-start="192.88" data-end="196.8" title="3:12">Can you now describe the changes to the respiratory system? </span><span class="segment" data-start="197.6" data-end="203.04" title="3:17">There are many changes here, so try and remember as much as you can of this important topic. </span><span class="segment" data-start="203.76" data-end="209.12" title="3:23">If the examiner allows you to continue, you can indicate the implications to the anesthetist. </span><span class="segment" data-start="212.0" data-end="218.24" title="3:32">The oxygen consumption of a pregnant woman increases by about 20 to 40 percent at term. </span><span class="segment" data-start="218.88" data-end="225.12" title="3:38">The minute ventilation therefore increases by 45 percent to meet this increased demand. </span><span class="segment" data-start="226.08" data-end="232.48" title="3:46">This is achieved predominantly by an increase in tidal volume rather than respiratory rate </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="232.48"><span class="t-timestamp">3:52</span></div>
-  <div class="t-body"><span class="segment" data-start="232.48" data-end="238.32" title="3:52">and is thought to be caused by the stimulatory effects of progesterone on the central respiratory </span><span class="segment" data-start="238.32" data-end="246.4" title="3:58">neurons. A mild respiratory alkylosis is observed, which shifts the oxyhemoglobin disassociation </span><span class="segment" data-start="246.4" data-end="253.92" title="4:06">curve to the left, but the coinciding increase in maternal 2, 3 DPG offset this potential </span><span class="segment" data-start="253.92" data-end="261.2" title="4:13">deleterious effect. The upward displacement of the diaphragm by the uterus causes a decrease </span><span class="segment" data-start="261.2" data-end="270.4" title="4:21">in the functional residual capacity of up to 25 percent. The combination of reduced FRC and increased </span><span class="segment" data-start="270.4" data-end="278.48" title="4:30">oxygen consumption leads to an increased risk of hypoxemia. The decreased FRC also leads to a </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="278.48"><span class="t-timestamp">4:38</span></div>
-  <div class="t-body"><span class="segment" data-start="278.48" data-end="285.84" title="4:38">more rapid onset of the volatile agents. Tricule intubation of a pregnant woman can be more challenging </span><span class="segment" data-start="285.84" data-end="292.16" title="4:45">due to upper airway capillary engorgement and edema, breast enlargement and laryngeal distortion </span><span class="segment" data-start="292.16" data-end="295.92" title="4:52">from cryoid pressure, particularly in the left lateral position. </span><span class="segment" data-start="296.16" data-end="300.56" title="4:56">Can you tell me how pregnancy orders the gastrointestinal system? </span><span class="segment" data-start="303.04" data-end="309.76" title="5:03">The anatomical effects of the uterus act to elevate the stomach, which increase intra-gastric </span><span class="segment" data-start="309.76" data-end="315.68" title="5:09">pressure and in combination with progesterone decrease the lower esophageal sphincter tone. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="316.4"><span class="t-timestamp">5:16</span></div>
-  <div class="t-body"><span class="segment" data-start="316.4" data-end="321.52" title="5:16">This leads to a fall in the barrier pressure, which is the difference between the lower esophageal </span><span class="segment" data-start="321.52" data-end="328.4" title="5:21">sphincter tone and the gastric pressure. Gastric motility is normal during pregnancy, </span><span class="segment" data-start="328.4" data-end="333.52" title="5:28">but reduced during labor, especially when opioid analgesia is administered. </span><span class="segment" data-start="334.16" data-end="335.84" title="5:34">How do these changes affect women? </span><span class="segment" data-start="338.64" data-end="345.04" title="5:38">Up to 70 percent of women suffer from gastroesophageal reflux during pregnancy due to reduced </span><span class="segment" data-start="345.04" data-end="348.56" title="5:45">barrier pressure. What are the anaesthetic implications? </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="349.04"><span class="t-timestamp">5:49</span></div>
-  <div class="t-body"><span class="segment" data-start="349.04" data-end="356.56" title="5:49">Women should receive untested prophylaxis during labor if there is any increased risk of </span><span class="segment" data-start="356.56" data-end="360.8" title="5:56">emergency cesarean section. A prokinetic may also be given. </span><span class="segment" data-start="361.76" data-end="368.32" title="6:01">30 mills of 0.3 molar sodium citrate is given prior to induction of general anesthesia </span><span class="segment" data-start="368.32" data-end="376.16" title="6:08">to neutralize acidic gastric contents. Furthermore, a rapid sequence induction technique is employed </span><span class="segment" data-start="376.16" data-end="379.92" title="6:16">in an attempt to avoid airway soiling by gastric contents. </span><span class="segment" data-start="380.8" data-end="383.12" title="6:20">How does pregnancy alter renal function? </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="385.92"><span class="t-timestamp">6:25</span></div>
-  <div class="t-body"><span class="segment" data-start="385.92" data-end="392.48" title="6:25">The enlargement of the uterus leads to dilation of the ureters and calisies with reduced bladder </span><span class="segment" data-start="392.48" data-end="399.36" title="6:32">capacity. Due to increased renal plasma flow, the glomerular filtration rate increases </span><span class="segment" data-start="399.36" data-end="405.12" title="6:39">and creatinine and urea levels fall. Glycus urea is commonly observed. </span><span class="segment" data-start="406.16" data-end="408.08" title="6:46">What hematological changes occur? </span><span class="segment" data-start="410.56" data-end="416.8" title="6:50">The woman becomes relatively hypercoaculable during pregnancy to reduce blood loss during labor. </span><span class="segment" data-start="417.44" data-end="426.08" title="6:57">This is achieved by an increase in the concentration of the coagulation factors 7, 8, 9, 10, </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="426.08"><span class="t-timestamp">7:06</span></div>
-  <div class="t-body"><span class="segment" data-start="426.08" data-end="433.68" title="7:06">12 and for bridgion. Enhanced platelet turnover occurs and thrombocytopenia is seen in </span><span class="segment" data-start="433.68" data-end="440.4" title="7:13">approximately 1% of pregnant women. How does this affect your management of a woman after an LSCS? </span><span class="segment" data-start="443.04" data-end="447.92" title="7:23">Early woman who receives a lower segment cesarean section should have prophylactic </span><span class="segment" data-start="447.92" data-end="453.68" title="7:27">anticoagulation to reduce the possibility of deep vein thrombosis or pulmonary embolism. </span><span class="segment" data-start="454.72" data-end="459.12" title="7:34">How does the white cell count change during pregnancy? And why is this important? </span><span class="segment" data-start="459.6" data-end="467.68" title="7:39">The leukocyte count increases slightly during pregnancy and then markedly during labor, </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="467.68"><span class="t-timestamp">7:47</span></div>
-  <div class="t-body"><span class="segment" data-start="467.68" data-end="472.4" title="7:47">with levels reaching about 15 to 20 times 10 to 9 per litre. </span><span class="segment" data-start="473.28" data-end="479.36" title="7:53">This is important to consider when attempting to use the white cell count as a marker for sepsis, </span><span class="segment" data-start="479.36" data-end="484.08" title="7:59">especially when deciding whether to perform an epidural as it may be unreliable. </span><span class="segment" data-start="484.24" data-end="487.6" title="8:04">Do the plasma proteins change during pregnancy? </span><span class="segment" data-start="490.24" data-end="496.0" title="8:10">Yes, the concentration of albumin falls but globulin and fibroinogen increase. </span><span class="segment" data-start="496.72" data-end="502.8" title="8:16">The overall total protein level falls, leading to a reduction in colloid osmotic pressure. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="503.68"><span class="t-timestamp">8:23</span></div>
-  <div class="t-body"><span class="segment" data-start="503.68" data-end="510.56" title="8:23">Drug binding is altered and free drug concentrations may increase if normally bound to albumin. </span><span class="segment" data-start="510.96" data-end="517.28" title="8:30">Plasma concentration of pseudo-colonesterase is reduced by approximately 20% </span><span class="segment" data-start="517.28" data-end="521.52" title="8:37">and may therefore prolong the action of succamethonium. </span><span class="segment" data-start="521.52" data-end="524.64" title="8:41">Do you know of any endocrine changes of pregnancy? </span><span class="segment" data-start="527.52" data-end="533.2" title="8:47">The thyroid gland increases in size but the mother usually remains euthyroid. </span><span class="segment" data-start="533.84" data-end="540.48" title="8:53">Plasma corticosteroid levels increase three to five times from normal and ACTH secretion. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="540.56"><span class="t-timestamp">9:00</span></div>
-  <div class="t-body"><span class="segment" data-start="540.56" data-end="548.32" title="9:00">The pituitary gland becomes enlarged, predominantly due to the increased activity of the </span><span class="segment" data-start="548.32" data-end="555.44" title="9:08">prolactin secreting lactotrophs, thus making it more susceptible to falls in perfusion due to its </span><span class="segment" data-start="555.44" data-end="562.64" title="9:15">portal blood supply. During the first trimester of pregnancy, women are relatively insulin-sensitive. </span><span class="segment" data-start="563.44" data-end="568.32" title="9:23">Resistance may then ensue with the development of gestational diabetes. </span><span class="segment" data-start="568.48" data-end="571.76" title="9:28">How is the musculoskeletal system affected? </span><span class="segment" data-start="574.4" data-end="581.68" title="9:34">The effects of progesterone and relaxin act to increase ligamentus laxity and increase the </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="581.68"><span class="t-timestamp">9:41</span></div>
-  <div class="t-body"><span class="segment" data-start="581.68" data-end="587.2" title="9:41">lumbar lordosis. It is therefore important to take care when positioning the patient. </span><span class="segment" data-start="588.0" data-end="591.68" title="9:48">Can you describe to me any of the central nervous system effects of pregnancy? </span><span class="segment" data-start="592.08" data-end="601.2" title="9:52">The pregnancy hormones, progesterone and the beta endorphins released during labor may act to </span><span class="segment" data-start="601.2" data-end="610.08" title="10:01">reduce minimum alveolar concentration by as much as 25% and increase sensitivity to both sedatives </span><span class="segment" data-start="610.08" data-end="618.72" title="10:10">and hypnotics. Veno-caval compression caused by the uterus results in distension of the epidural </span><span class="segment" data-start="618.72" data-end="625.6" title="10:18">venous plexus. This can lead to an increased risk of intravascular injection during regional </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="625.6"><span class="t-timestamp">10:25</span></div>
-  <div class="t-body"><span class="segment" data-start="625.6" data-end="632.48" title="10:25">anesthesia and contributes to the enhanced spread of local anesthesia due to the reduced capacity </span><span class="segment" data-start="632.48" data-end="639.76" title="10:32">of the epidural space itself. The sympathetic nervous system activity is increased during pregnancy, </span><span class="segment" data-start="639.76" data-end="646.8" title="10:39">in order to produce lower limb vasoconstriction and counteract the effects of aorticaval compression. </span><span class="segment" data-start="647.76" data-end="652.0" title="10:47">Can you describe the innovations of the bladder uterus for jynarine cervix? </span><span class="segment" data-start="654.88" data-end="662.96" title="10:54">The bladder has sympathetic innovation derived from roots T11 to L2 and parasympathetic innovation </span><span class="segment" data-start="662.96" data-end="670.8" title="11:02">from S2 to S4. The uterus is innovated via sympathetic pathways in cervical tissue and the broad </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="670.8"><span class="t-timestamp">11:10</span></div>
-  <div class="t-body"><span class="segment" data-start="670.8" data-end="680.48" title="11:10">ligaments from roots T10 to L1. The vagina and cervix are innovated via the pudendol, genito femoral, </span><span class="segment" data-start="680.48" data-end="688.72" title="11:20">iliouin-gunnol and sacral nerves from roots S2 to S4. What level sensory block do you therefore </span><span class="segment" data-start="688.72" data-end="697.6" title="11:28">need for a cesarean section using central neuroaxial blockade? The sensory block should be at or </span><span class="segment" data-start="697.6" data-end="705.84" title="11:37">above T6 for light touch and T5 for cold sensation. What's the effects of maternal pain on the </span><span class="segment" data-start="705.84" data-end="715.04" title="11:45">fetus and the mother? Pain will cause sympathetic nervous system stimulation. This can lead to </span><span class="segment" data-start="715.04" data-end="721.28" title="11:55">diversion of blood flow from the uteroplasental unit and since there is no auto regulation, </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="721.28"><span class="t-timestamp">12:01</span></div>
-  <div class="t-body"><span class="segment" data-start="721.28" data-end="728.4" title="12:01">this will directly affect the fetal blood supply. Pain can also cause a metabolic acidosis </span><span class="segment" data-start="728.4" data-end="738.56" title="12:08">and an increase in plasma cortisol and endorphins. </span></div>
+<div class="preamble-block"><span class="segment a-seg" data-start="0.0" data-end="3.6" title="0:00">Physiological and anatomical changes of pregnancy. </span><span class="segment a-seg" data-start="4.24" data-end="8.24" title="0:04">This topic will be well suited to the clinical sciences' viather, </span><span class="segment a-seg" data-start="8.24" data-end="12.08" title="0:08">but may feature as the introduction to the clinical question. </span></div>
+<div class="qa-pair">
+<div class="q-block" data-start="13.12">
+  <div class="q-label">Q1</div>
+  <div class="q-body"><span class="segment q-seg" data-start="13.12" data-end="17.84" title="0:13">What can you tell me about the physiological and anatomical changes of pregnancy? </span></div>
 </div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="17.84" data-end="23.52" title="0:17">A structured approach is vital to ensure that you do not forget any of the key points. </span></li>
+<li><span class="segment a-seg" data-start="23.52" data-end="29.12" title="0:23">It may be worth making an opening statement explaining the reason for all of these changes. </span></li>
+<li><span class="segment a-seg" data-start="30.96" data-end="37.12" title="0:30">The physiological changes of pregnancy are aimed at supplying oxygen and nutrients </span></li>
+<li><span class="segment a-seg" data-start="37.12" data-end="41.6" title="0:37">to the increased demand of the uteroplasental unit and fetus. </span></li>
+<li><span class="segment a-seg" data-start="42.48" data-end="46.96" title="0:42">The adaptations are also key in preparing the mother for delivery. </span></li>
+<li><span class="segment a-seg" data-start="47.52" data-end="50.56" title="0:47">The changes may be divided into the body systems. </span></li>
+<li><span class="segment a-seg" data-start="51.84" data-end="58.4" title="0:51">Firstly, the cardiovascular system. From the first trimester, there is an expansion of plasma </span></li>
+<li><span class="segment a-seg" data-start="58.4" data-end="66.48" title="0:58">volume of about 50%. Red cell volume also increases, but due to the relatively greater increase in </span></li>
+<li><span class="segment a-seg" data-start="66.48" data-end="75.28" title="1:06">plasma volume, a dilutional anemia develops. Cardiac output increases by 40% from the 10th week </span></li>
+<li><span class="segment a-seg" data-start="75.28" data-end="81.52" title="1:15">of gestation, with an increase in both heart rate and stroke volume achieving this change. </span></li>
+<li><span class="segment a-seg" data-start="82.4" data-end="88.72" title="1:22">This systemic vascular resistance falls by 15%. This is due to the development of the </span></li>
+<li><span class="segment a-seg" data-start="88.72" data-end="95.28" title="1:28">intervalous space, which is a low resistance vascular bed, and the vasodilator effects of the </span></li>
+<li><span class="segment a-seg" data-start="95.28" data-end="103.2" title="1:35">pregnancy hormones. The blood pressure falls during pregnancy. Diastolic blood pressure decreases </span></li>
+<li><span class="segment a-seg" data-start="103.2" data-end="109.68" title="1:43">more than systolic by mid-gestation, but both parameters then return to normal levels at term. </span></li>
+<li><span class="segment a-seg" data-start="109.92" data-end="118.8" title="1:49">Due to volume loading, cardiac dilation and hypertrophic occur, leading to ECG changes of left </span></li>
+<li><span class="segment a-seg" data-start="118.8" data-end="127.44" title="1:58">axis deviation and ST segment changes. A further important effect is that of aorticaval compression. </span></li>
+<li><span class="segment a-seg" data-start="128.16" data-end="135.6" title="2:08">The gravity uterus compresses the venocaver, reducing venous return, and can also reduce aortic </span></li>
+<li><span class="segment a-seg" data-start="135.68" data-end="139.92" title="2:15">blood flow, particularly when the parturiant is in the supine position. </span></li>
+<li><span class="segment a-seg" data-start="140.96" data-end="147.36" title="2:20">This effect can have severe implications for the uteroplasental unit, which does not have a system </span></li>
+<li><span class="segment a-seg" data-start="147.36" data-end="154.88" title="2:27">of auto regulation and so relies on pressure to maintain blood flow. In order to decrease the effects </span></li>
+<li><span class="segment a-seg" data-start="154.88" data-end="160.96" title="2:34">of aorticaval compression, we use a tilt or wedge when the pregnant woman is supine. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="161.6">
+  <div class="q-label">Q2</div>
+  <div class="q-body"><span class="segment q-seg" data-start="161.6" data-end="165.28" title="2:41">How much weight would you expect a woman to gain during a normal pregnancy? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="165.84" data-end="171.28" title="2:45">The examiner may interrupt if he feels you are performing well and he wants to probe your depth </span></li>
+<li><span class="segment a-seg" data-start="171.28" data-end="180.0" title="2:51">of knowledge further. The weight gain varies tremendously, but average values are approximately </span></li>
+<li><span class="segment a-seg" data-start="180.0" data-end="186.48" title="3:00">12 kilos. This is due to the combination of increase in tissue mass of the breasts, </span></li>
+<li><span class="segment a-seg" data-start="186.48" data-end="192.8" title="3:06">placenta, uterus and fetus, and the increase in plasma and interstitial fluid. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="192.88">
+  <div class="q-label">Q3</div>
+  <div class="q-body"><span class="segment q-seg" data-start="192.88" data-end="196.8" title="3:12">Can you now describe the changes to the respiratory system? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="197.6" data-end="203.04" title="3:17">There are many changes here, so try and remember as much as you can of this important topic. </span></li>
+<li><span class="segment a-seg" data-start="203.76" data-end="209.12" title="3:23">If the examiner allows you to continue, you can indicate the implications to the anesthetist. </span></li>
+<li><span class="segment a-seg" data-start="212.0" data-end="218.24" title="3:32">The oxygen consumption of a pregnant woman increases by about 20 to 40 percent at term. </span></li>
+<li><span class="segment a-seg" data-start="218.88" data-end="225.12" title="3:38">The minute ventilation therefore increases by 45 percent to meet this increased demand. </span></li>
+<li><span class="segment a-seg" data-start="226.08" data-end="232.48" title="3:46">This is achieved predominantly by an increase in tidal volume rather than respiratory rate </span></li>
+<li><span class="segment a-seg" data-start="232.48" data-end="238.32" title="3:52">and is thought to be caused by the stimulatory effects of progesterone on the central respiratory </span></li>
+<li><span class="segment a-seg" data-start="238.32" data-end="246.4" title="3:58">neurons. A mild respiratory alkylosis is observed, which shifts the oxyhemoglobin disassociation </span></li>
+<li><span class="segment a-seg" data-start="246.4" data-end="253.92" title="4:06">curve to the left, but the coinciding increase in maternal 2, 3 DPG offset this potential </span></li>
+<li><span class="segment a-seg" data-start="253.92" data-end="261.2" title="4:13">deleterious effect. The upward displacement of the diaphragm by the uterus causes a decrease </span></li>
+<li><span class="segment a-seg" data-start="261.2" data-end="270.4" title="4:21">in the functional residual capacity of up to 25 percent. The combination of reduced FRC and increased </span></li>
+<li><span class="segment a-seg" data-start="270.4" data-end="278.48" title="4:30">oxygen consumption leads to an increased risk of hypoxemia. The decreased FRC also leads to a </span></li>
+<li><span class="segment a-seg" data-start="278.48" data-end="285.84" title="4:38">more rapid onset of the volatile agents. Tricule intubation of a pregnant woman can be more challenging </span></li>
+<li><span class="segment a-seg" data-start="285.84" data-end="292.16" title="4:45">due to upper airway capillary engorgement and edema, breast enlargement and laryngeal distortion </span></li>
+<li><span class="segment a-seg" data-start="292.16" data-end="295.92" title="4:52">from cryoid pressure, particularly in the left lateral position. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="296.16">
+  <div class="q-label">Q4</div>
+  <div class="q-body"><span class="segment q-seg" data-start="296.16" data-end="300.56" title="4:56">Can you tell me how pregnancy orders the gastrointestinal system? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="303.04" data-end="309.76" title="5:03">The anatomical effects of the uterus act to elevate the stomach, which increase intra-gastric </span></li>
+<li><span class="segment a-seg" data-start="309.76" data-end="315.68" title="5:09">pressure and in combination with progesterone decrease the lower esophageal sphincter tone. </span></li>
+<li><span class="segment a-seg" data-start="316.4" data-end="321.52" title="5:16">This leads to a fall in the barrier pressure, which is the difference between the lower esophageal </span></li>
+<li><span class="segment a-seg" data-start="321.52" data-end="328.4" title="5:21">sphincter tone and the gastric pressure. Gastric motility is normal during pregnancy, </span></li>
+<li><span class="segment a-seg" data-start="328.4" data-end="333.52" title="5:28">but reduced during labor, especially when opioid analgesia is administered. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="334.16">
+  <div class="q-label">Q5</div>
+  <div class="q-body"><span class="segment q-seg" data-start="334.16" data-end="335.84" title="5:34">How do these changes affect women? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="338.64" data-end="345.04" title="5:38">Up to 70 percent of women suffer from gastroesophageal reflux during pregnancy due to reduced </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="345.04">
+  <div class="q-label">Q6</div>
+  <div class="q-body"><span class="segment q-seg" data-start="345.04" data-end="348.56" title="5:45">barrier pressure. What are the anaesthetic implications? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="349.04" data-end="356.56" title="5:49">Women should receive untested prophylaxis during labor if there is any increased risk of </span></li>
+<li><span class="segment a-seg" data-start="356.56" data-end="360.8" title="5:56">emergency cesarean section. A prokinetic may also be given. </span></li>
+<li><span class="segment a-seg" data-start="361.76" data-end="368.32" title="6:01">30 mills of 0.3 molar sodium citrate is given prior to induction of general anesthesia </span></li>
+<li><span class="segment a-seg" data-start="368.32" data-end="376.16" title="6:08">to neutralize acidic gastric contents. Furthermore, a rapid sequence induction technique is employed </span></li>
+<li><span class="segment a-seg" data-start="376.16" data-end="379.92" title="6:16">in an attempt to avoid airway soiling by gastric contents. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="380.8">
+  <div class="q-label">Q7</div>
+  <div class="q-body"><span class="segment q-seg" data-start="380.8" data-end="383.12" title="6:20">How does pregnancy alter renal function? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="385.92" data-end="392.48" title="6:25">The enlargement of the uterus leads to dilation of the ureters and calisies with reduced bladder </span></li>
+<li><span class="segment a-seg" data-start="392.48" data-end="399.36" title="6:32">capacity. Due to increased renal plasma flow, the glomerular filtration rate increases </span></li>
+<li><span class="segment a-seg" data-start="399.36" data-end="405.12" title="6:39">and creatinine and urea levels fall. Glycus urea is commonly observed. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="406.16">
+  <div class="q-label">Q8</div>
+  <div class="q-body"><span class="segment q-seg" data-start="406.16" data-end="408.08" title="6:46">What hematological changes occur? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="410.56" data-end="416.8" title="6:50">The woman becomes relatively hypercoaculable during pregnancy to reduce blood loss during labor. </span></li>
+<li><span class="segment a-seg" data-start="417.44" data-end="426.08" title="6:57">This is achieved by an increase in the concentration of the coagulation factors 7, 8, 9, 10, </span></li>
+<li><span class="segment a-seg" data-start="426.08" data-end="433.68" title="7:06">12 and for bridgion. Enhanced platelet turnover occurs and thrombocytopenia is seen in </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="433.68">
+  <div class="q-label">Q9</div>
+  <div class="q-body"><span class="segment q-seg" data-start="433.68" data-end="440.4" title="7:13">approximately 1% of pregnant women. How does this affect your management of a woman after an LSCS? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="443.04" data-end="447.92" title="7:23">Early woman who receives a lower segment cesarean section should have prophylactic </span></li>
+<li><span class="segment a-seg" data-start="447.92" data-end="453.68" title="7:27">anticoagulation to reduce the possibility of deep vein thrombosis or pulmonary embolism. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="454.72">
+  <div class="q-label">Q10</div>
+  <div class="q-body"><span class="segment q-seg" data-start="454.72" data-end="457.549" title="7:34">How does the white cell count change during pregnancy? </span><span class="segment q-seg" data-start="457.549" data-end="459.12" title="7:37">And why is this important? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="459.6" data-end="467.68" title="7:39">The leukocyte count increases slightly during pregnancy and then markedly during labor, </span></li>
+<li><span class="segment a-seg" data-start="467.68" data-end="472.4" title="7:47">with levels reaching about 15 to 20 times 10 to 9 per litre. </span></li>
+<li><span class="segment a-seg" data-start="473.28" data-end="479.36" title="7:53">This is important to consider when attempting to use the white cell count as a marker for sepsis, </span></li>
+<li><span class="segment a-seg" data-start="479.36" data-end="484.08" title="7:59">especially when deciding whether to perform an epidural as it may be unreliable. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="484.24">
+  <div class="q-label">Q11</div>
+  <div class="q-body"><span class="segment q-seg" data-start="484.24" data-end="487.6" title="8:04">Do the plasma proteins change during pregnancy? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="490.24" data-end="496.0" title="8:10">Yes, the concentration of albumin falls but globulin and fibroinogen increase. </span></li>
+<li><span class="segment a-seg" data-start="496.72" data-end="502.8" title="8:16">The overall total protein level falls, leading to a reduction in colloid osmotic pressure. </span></li>
+<li><span class="segment a-seg" data-start="503.68" data-end="510.56" title="8:23">Drug binding is altered and free drug concentrations may increase if normally bound to albumin. </span></li>
+<li><span class="segment a-seg" data-start="510.96" data-end="517.28" title="8:30">Plasma concentration of pseudo-colonesterase is reduced by approximately 20% </span></li>
+<li><span class="segment a-seg" data-start="517.28" data-end="521.52" title="8:37">and may therefore prolong the action of succamethonium. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="521.52">
+  <div class="q-label">Q12</div>
+  <div class="q-body"><span class="segment q-seg" data-start="521.52" data-end="524.64" title="8:41">Do you know of any endocrine changes of pregnancy? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="527.52" data-end="533.2" title="8:47">The thyroid gland increases in size but the mother usually remains euthyroid. </span></li>
+<li><span class="segment a-seg" data-start="533.84" data-end="540.48" title="8:53">Plasma corticosteroid levels increase three to five times from normal and ACTH secretion. </span></li>
+<li><span class="segment a-seg" data-start="540.56" data-end="548.32" title="9:00">The pituitary gland becomes enlarged, predominantly due to the increased activity of the </span></li>
+<li><span class="segment a-seg" data-start="548.32" data-end="555.44" title="9:08">prolactin secreting lactotrophs, thus making it more susceptible to falls in perfusion due to its </span></li>
+<li><span class="segment a-seg" data-start="555.44" data-end="562.64" title="9:15">portal blood supply. During the first trimester of pregnancy, women are relatively insulin-sensitive. </span></li>
+<li><span class="segment a-seg" data-start="563.44" data-end="568.32" title="9:23">Resistance may then ensue with the development of gestational diabetes. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="568.48">
+  <div class="q-label">Q13</div>
+  <div class="q-body"><span class="segment q-seg" data-start="568.48" data-end="571.76" title="9:28">How is the musculoskeletal system affected? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="574.4" data-end="581.68" title="9:34">The effects of progesterone and relaxin act to increase ligamentus laxity and increase the </span></li>
+<li><span class="segment a-seg" data-start="581.68" data-end="587.2" title="9:41">lumbar lordosis. It is therefore important to take care when positioning the patient. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="588.0">
+  <div class="q-label">Q14</div>
+  <div class="q-body"><span class="segment q-seg" data-start="588.0" data-end="591.68" title="9:48">Can you describe to me any of the central nervous system effects of pregnancy? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="592.08" data-end="601.2" title="9:52">The pregnancy hormones, progesterone and the beta endorphins released during labor may act to </span></li>
+<li><span class="segment a-seg" data-start="601.2" data-end="610.08" title="10:01">reduce minimum alveolar concentration by as much as 25% and increase sensitivity to both sedatives </span></li>
+<li><span class="segment a-seg" data-start="610.08" data-end="618.72" title="10:10">and hypnotics. Veno-caval compression caused by the uterus results in distension of the epidural </span></li>
+<li><span class="segment a-seg" data-start="618.72" data-end="625.6" title="10:18">venous plexus. This can lead to an increased risk of intravascular injection during regional </span></li>
+<li><span class="segment a-seg" data-start="625.6" data-end="632.48" title="10:25">anesthesia and contributes to the enhanced spread of local anesthesia due to the reduced capacity </span></li>
+<li><span class="segment a-seg" data-start="632.48" data-end="639.76" title="10:32">of the epidural space itself. The sympathetic nervous system activity is increased during pregnancy, </span></li>
+<li><span class="segment a-seg" data-start="639.76" data-end="646.8" title="10:39">in order to produce lower limb vasoconstriction and counteract the effects of aorticaval compression. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="647.76">
+  <div class="q-label">Q15</div>
+  <div class="q-body"><span class="segment q-seg" data-start="647.76" data-end="652.0" title="10:47">Can you describe the innovations of the bladder uterus for jynarine cervix? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="654.88" data-end="662.96" title="10:54">The bladder has sympathetic innovation derived from roots T11 to L2 and parasympathetic innovation </span></li>
+<li><span class="segment a-seg" data-start="662.96" data-end="670.8" title="11:02">from S2 to S4. The uterus is innovated via sympathetic pathways in cervical tissue and the broad </span></li>
+<li><span class="segment a-seg" data-start="670.8" data-end="680.48" title="11:10">ligaments from roots T10 to L1. The vagina and cervix are innovated via the pudendol, genito femoral, </span></li>
+<li><span class="segment a-seg" data-start="680.48" data-end="688.72" title="11:20">iliouin-gunnol and sacral nerves from roots S2 to S4. What level sensory block do you therefore </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="688.72">
+  <div class="q-label">Q16</div>
+  <div class="q-body"><span class="segment q-seg" data-start="688.72" data-end="693.715" title="11:28">need for a cesarean section using central neuroaxial blockade? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="693.715" data-end="697.6" title="11:33">The sensory block should be at or </span></li>
+<li><span class="segment a-seg" data-start="697.6" data-end="705.84" title="11:37">above T6 for light touch and T5 for cold sensation. What's the effects of maternal pain on the </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="705.84">
+  <div class="q-label">Q17</div>
+  <div class="q-body"><span class="segment q-seg" data-start="705.84" data-end="708.293" title="11:45">fetus and the mother? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="708.293" data-end="715.04" title="11:48">Pain will cause sympathetic nervous system stimulation. This can lead to </span></li>
+<li><span class="segment a-seg" data-start="715.04" data-end="721.28" title="11:55">diversion of blood flow from the uteroplasental unit and since there is no auto regulation, </span></li>
+<li><span class="segment a-seg" data-start="721.28" data-end="728.4" title="12:01">this will directly affect the fetal blood supply. Pain can also cause a metabolic acidosis </span></li>
+<li><span class="segment a-seg" data-start="728.4" data-end="738.56" title="12:08">and an increase in plasma cortisol and endorphins. </span></li>
+  </ul>
+</div>
+</div>
+
 </div>
 
 <div class="subtitle-bar">
-  <span class="subtitle-text empty" id="subtitle-text">Play audio to see live subtitles&#8230;</span>
+  <span id="subtitle-text" class="empty">Play audio to see live subtitles&#8230;</span>
 </div>
 
 <script>
-
-const audio    = document.getElementById('audio');
-const allSegs  = Array.from(document.querySelectorAll('.segment'));
-const allBlocks = Array.from(document.querySelectorAll('.t-block'));
+const audio      = document.getElementById('audio');
+const allSegs    = Array.from(document.querySelectorAll('.segment'));
 const subtitleEl = document.getElementById('subtitle-text');
-let activeSegEl   = null;
-let activeBlockEl = null;
-let searchMatches = [];
-let searchIdx     = 0;
+let activeSegEl  = null;
+let searchMatches = [], searchIdx = 0;
 
-// Duration display
 audio.addEventListener('loadedmetadata', () => {
   const m = Math.floor(audio.duration / 60);
   const s = Math.floor(audio.duration %% 60).toString().padStart(2,'0');
   document.getElementById('dur').textContent = m + ':' + s;
 });
 
-// Seek helper
-function seekTo(t) {
-  audio.currentTime = t;
-  audio.play();
-}
+function seekTo(t) { audio.currentTime = t; audio.play(); }
 
-// Block gutter click
-document.querySelectorAll('.t-gutter').forEach(g => {
-  g.addEventListener('click', () => seekTo(parseFloat(g.dataset.start)));
+// Q-block header click
+document.querySelectorAll('.q-block').forEach(q => {
+  q.addEventListener('click', e => {
+    if (!e.target.classList.contains('segment')) seekTo(parseFloat(q.dataset.start));
+  });
 });
 
-// Segment click
+// Individual segment click
 allSegs.forEach(s => {
-  s.addEventListener('click', e => {
-    e.stopPropagation();
-    seekTo(parseFloat(s.dataset.start));
-  });
+  s.addEventListener('click', e => { e.stopPropagation(); seekTo(parseFloat(s.dataset.start)); });
 });
 
 // Real-time tracking
 audio.addEventListener('timeupdate', () => {
   const t = audio.currentTime;
-
-  // Find active segment (last one whose start <= t)
   let found = null;
   for (let i = allSegs.length - 1; i >= 0; i--) {
     if (parseFloat(allSegs[i].dataset.start) <= t) { found = allSegs[i]; break; }
   }
-
   if (found && found !== activeSegEl) {
-    // Clear previous
-    if (activeSegEl) activeSegEl.classList.remove('active');
-    if (activeBlockEl) {
-      activeBlockEl.classList.remove('block-active');
-      const pg = activeBlockEl.querySelector('.t-gutter');
-      if (pg) pg.classList.remove('gutter-active');
+    if (activeSegEl) {
+      activeSegEl.classList.remove('active');
+      const pli = activeSegEl.closest('li');
+      if (pli) pli.classList.remove('li-active');
+      const pq = activeSegEl.closest('.q-block');
+      if (pq) pq.classList.remove('q-active');
     }
-    // Set new
     found.classList.add('active');
-    const block = found.closest('.t-block');
-    if (block) {
-      block.classList.add('block-active');
-      const g = block.querySelector('.t-gutter');
-      if (g) g.classList.add('gutter-active');
-      activeBlockEl = block;
-    }
+    const li = found.closest('li');
+    if (li) li.classList.add('li-active');
+    const qb = found.closest('.q-block');
+    if (qb) qb.classList.add('q-active');
     activeSegEl = found;
 
-    // Update subtitle
     subtitleEl.textContent = found.textContent.trim();
     subtitleEl.classList.remove('empty');
 
-    // Auto-scroll (only when not searching)
-    if (!document.getElementById('search').value) {
+    if (!document.getElementById('search').value)
       found.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }
   }
 });
 
@@ -344,17 +539,13 @@ searchInput.addEventListener('keydown', e => {
     el.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
 });
-
 function runSearch() {
   const q = searchInput.value.trim().toLowerCase();
   allSegs.forEach(s => s.classList.remove('search-match','search-current'));
   searchMatches = [];
   if (!q) return;
   allSegs.forEach(s => {
-    if (s.textContent.toLowerCase().includes(q)) {
-      s.classList.add('search-match');
-      searchMatches.push(s);
-    }
+    if (s.textContent.toLowerCase().includes(q)) { s.classList.add('search-match'); searchMatches.push(s); }
   });
   if (!searchMatches.length) return;
   searchIdx = 0;

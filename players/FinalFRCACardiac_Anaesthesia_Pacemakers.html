@@ -5,10 +5,19 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Cardiac Anaesthesia — Pacemakers</title>
 <style>
-
   :root {
-    --accent:    #ef4444;
-    --body-bg:   #f1f5f9;
+    --q-bg:       #1e3a5f;
+    --q-text:     #ffffff;
+    --q-label:    #60a5fa;
+    --a-bg:       #ffffff;
+    --a-border:   #e2e8f0;
+    --a-label:    #059669;
+    --active-q:   #ef4444;
+    --active-a:   #dbeafe;
+    --accent:     #ef4444;
+    --body-bg:    #f1f5f9;
+    --pre-bg:     #fef9c3;
+    --pre-border: #fcd34d;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
@@ -40,22 +49,9 @@
     margin-bottom: 4px;
     letter-spacing: 0.01em;
   }
-  .header-sub {
-    font-size: 0.72rem;
-    color: #94a3b8;
-    font-style: italic;
-  }
-  audio {
-    height: 36px;
-    accent-color: var(--accent);
-    flex-shrink: 0;
-  }
-  .back-link {
-    font-size: 0.8rem;
-    color: #94a3b8;
-    text-decoration: none;
-    white-space: nowrap;
-  }
+  .header-sub { font-size: 0.72rem; color: #94a3b8; font-style: italic; }
+  audio { height: 36px; accent-color: var(--accent); flex-shrink: 0; }
+  .back-link { font-size: 0.8rem; color: #94a3b8; text-decoration: none; white-space: nowrap; }
   .back-link:hover { color: #60a5fa; }
 
   /* ── Toolbar ── */
@@ -69,30 +65,17 @@
     border-bottom: 1px solid #334155;
   }
   .toolbar input {
-    flex: 1;
-    max-width: 380px;
+    flex: 1; max-width: 380px;
     padding: 5px 11px;
-    border: 1px solid #475569;
-    border-radius: 6px;
-    background: #0f172a;
-    color: #e2e8f0;
-    font-size: 0.83rem;
-    outline: none;
+    border: 1px solid #475569; border-radius: 6px;
+    background: #0f172a; color: #e2e8f0; font-size: 0.83rem; outline: none;
   }
   .toolbar input:focus { border-color: var(--accent); }
   .toolbar input::placeholder { color: #64748b; }
-  .stats {
-    font-size: 0.72rem;
-    color: #64748b;
-    white-space: nowrap;
-  }
+  .stats { font-size: 0.72rem; color: #64748b; white-space: nowrap; }
 
   /* ── Scroll area ── */
-  .scroll-area {
-    flex: 1;
-    overflow-y: auto;
-    padding: 20px;
-  }
+  .scroll-area { flex: 1; overflow-y: auto; padding: 20px; }
   .scroll-area::-webkit-scrollbar { width: 6px; }
   .scroll-area::-webkit-scrollbar-track { background: transparent; }
   .scroll-area::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
@@ -107,68 +90,77 @@
     display: flex;
     align-items: center;
   }
-  .subtitle-text {
-    font-size: 0.9rem;
-    color: #e2e8f0;
-    line-height: 1.5;
-    font-style: italic;
-  }
-  .subtitle-text.empty { color: #475569; }
+  #subtitle-text { font-size: 0.88rem; color: #e2e8f0; line-height: 1.5; font-style: italic; }
+  #subtitle-text.empty { color: #475569; }
 
-  /* ── Transcript blocks ── */
-  .t-block {
-    background: #ffffff;
-    border: 1px solid #e2e8f0;
-    border-radius: 10px;
-    margin-bottom: 14px;
-    overflow: hidden;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
-    display: flex;
-  }
-  .t-block.block-active {
-    border-color: var(--accent);
-    box-shadow: 0 0 0 2px rgba(37,99,235,0.15);
-  }
-  .t-gutter {
-    background: #0f172a;
-    width: 52px;
-    flex-shrink: 0;
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
-    padding-top: 14px;
-    cursor: pointer;
-  }
-  .t-gutter:hover { background: #1e293b; }
-  .t-timestamp {
-    font-size: 0.7rem;
-    color: #64748b;
-    font-family: monospace;
-    font-weight: 600;
-    letter-spacing: 0.02em;
-  }
-  .t-gutter.gutter-active .t-timestamp { color: var(--accent); }
-  .t-body {
-    flex: 1;
+  /* ── Preamble ── */
+  .preamble-block {
+    background: var(--pre-bg);
+    border-left: 4px solid var(--pre-border);
+    border-radius: 0 8px 8px 0;
     padding: 12px 16px;
-    line-height: 1.75;
-    font-size: 0.92rem;
-    color: #1e293b;
+    margin-bottom: 20px;
+    font-size: 0.88rem;
+    color: #78350f;
+    font-style: italic;
+    line-height: 1.7;
   }
 
-  /* ── Segments ── */
-  .segment {
+  /* ── Q&A pair ── */
+  .qa-pair { margin-bottom: 20px; border-radius: 10px; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+
+  /* Question block */
+  .q-block {
+    background: var(--q-bg);
+    padding: 14px 18px;
+    display: flex; gap: 14px; align-items: flex-start;
     cursor: pointer;
-    border-radius: 3px;
-    transition: background 0.1s;
+    transition: background 0.15s;
   }
-  .segment:hover { background: #eff6ff; }
-  .segment.active {
-    background: #bfdbfe;
-    outline: 2px solid #3b82f6;
-    outline-offset: 1px;
-    border-radius: 3px;
+  .q-block:hover { background: #1d4ed8; }
+  .q-block.q-active { background: var(--active-q); }
+  .q-label {
+    font-size: 0.7rem; font-weight: 700;
+    color: var(--q-label);
+    background: rgba(96,165,250,0.15);
+    border: 1px solid rgba(96,165,250,0.3);
+    border-radius: 5px; padding: 3px 7px;
+    white-space: nowrap; margin-top: 2px; letter-spacing: 0.05em;
+    flex-shrink: 0;
   }
+  .q-body { flex: 1; font-size: 0.97rem; font-weight: 600; color: var(--q-text); line-height: 1.55; }
+
+  /* Answer block */
+  .a-block {
+    background: var(--a-bg);
+    border: 1px solid var(--a-border); border-top: none;
+    padding: 14px 18px;
+    display: flex; gap: 14px; align-items: flex-start;
+  }
+  .a-label {
+    font-size: 0.7rem; font-weight: 700;
+    color: var(--a-label);
+    background: #d1fae5; border: 1px solid #6ee7b7;
+    border-radius: 5px; padding: 3px 9px;
+    white-space: nowrap; margin-top: 2px; letter-spacing: 0.05em;
+    flex-shrink: 0;
+  }
+  .a-body { flex: 1; list-style: none; padding: 0; }
+  .a-body li {
+    padding: 4px 0 4px 14px;
+    border-left: 3px solid transparent;
+    line-height: 1.7; font-size: 0.92rem; color: #1e293b;
+    border-radius: 0 4px 4px 0;
+    transition: background 0.15s;
+  }
+  .a-body li:not(:last-child) { border-bottom: 1px solid #f1f5f9; }
+
+  /* ── Segments (clickable) ── */
+  .segment { cursor: pointer; border-radius: 3px; }
+  .q-seg:hover { background: rgba(255,255,255,0.18); }
+  .a-seg:hover { background: #eff6ff; }
+  .segment.active { background: #bfdbfe; outline: 2px solid #3b82f6; outline-offset: 1px; }
+  .a-body li.li-active { background: var(--active-a); border-left-color: var(--accent); }
   .segment.search-match  { background: #fef9c3; }
   .segment.search-current { background: #fde047; outline: 2px solid #ca8a04; }
 
@@ -187,157 +179,366 @@
 
 <div class="toolbar">
   <input type="text" id="search" placeholder="Search transcript&#8230; (Enter = next match)">
-  <span class="stats" id="stats">127 segments &nbsp;|&nbsp; <span id="dur">loading&#8230;</span></span>
+  <span class="stats" id="stats">18 questions &nbsp;|&nbsp; 127 segments &nbsp;|&nbsp; <span id="dur">loading&#8230;</span></span>
 </div>
 
 <div class="scroll-area" id="scroll-area">
-<div class="t-block">
-  <div class="t-gutter" data-start="0.0"><span class="t-timestamp">0:00</span></div>
-  <div class="t-body"><span class="segment" data-start="0.0" data-end="5.0" title="0:00">Pace makers, implantable cardiac devices and anesthesia in surgery. </span><span class="segment" data-start="5.0" data-end="11.0" title="0:05">This is an important area of anesthetic practice that is becoming increasingly complex. </span><span class="segment" data-start="11.0" data-end="17.0" title="0:11">The examiners will expect a good understanding of the important principles involved in the safe, </span><span class="segment" data-start="17.0" data-end="20.0" title="0:17">perioperative management of these patients. </span><span class="segment" data-start="20.0" data-end="25.0" title="0:20">Importantly, current guidance from the Medicines and Healthcare Products Regulatory Agency </span><span class="segment" data-start="25.0" data-end="30.0" title="0:25">highlights that specialist referral to the cardiology team or pacing physiologist </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="30.0"><span class="t-timestamp">0:30</span></div>
-  <div class="t-body"><span class="segment" data-start="30.0" data-end="33.0" title="0:30">is often appropriate if time allows. </span><span class="segment" data-start="33.0" data-end="38.0" title="0:33">You are asked to provide a general anesthetic for a patient with a permanent pacemaker. </span><span class="segment" data-start="38.0" data-end="44.0" title="0:38">Describe the features in the patient's history and clinical examination that are of particular relevance. </span><span class="segment" data-start="44.0" data-end="51.0" title="0:44">Safe anesthetic practice of all patients should start with careful, preoperative review. </span><span class="segment" data-start="51.0" data-end="58.0" title="0:51">Patients for all non-emergency surgical procedures should undergo routine pre-admission screening </span><span class="segment" data-start="58.0" data-end="63.0" title="0:58">and patients with permanent pacemakers should be identified at this stage. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="63.0"><span class="t-timestamp">1:03</span></div>
-  <div class="t-body"><span class="segment" data-start="63.0" data-end="69.0" title="1:03">Many patients with permanent pacemakers have multiple medical problems. </span><span class="segment" data-start="69.0" data-end="72.0" title="1:09">These will need to be reviewed in detail. </span><span class="segment" data-start="72.0" data-end="77.0" title="1:12">In addition, key information regarding the pacemaker should be sought. </span><span class="segment" data-start="77.0" data-end="84.0" title="1:17">Some of this information may be available on a pacemaker card provided to the patient by the pacing clinic. </span><span class="segment" data-start="84.0" data-end="92.0" title="1:24">This includes device manufacturer, model number, serial number, date of insertion, </span><span class="segment" data-start="92.0" data-end="100.0" title="1:32">indication for permanent pacing, generic pacemaker code, including special emphasis on anti-tackicardia, </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="100.0"><span class="t-timestamp">1:40</span></div>
-  <div class="t-body"><span class="segment" data-start="100.0" data-end="108.0" title="1:40">shocking or rate modulation features, and whether the device is at or approaching replacement phase. </span><span class="segment" data-start="108.0" data-end="117.0" title="1:48">Symptoms suggesting pacemaker malfunction such as dizziness, lightheadedness or syncopy should be sought. </span><span class="segment" data-start="117.0" data-end="125.0" title="1:57">A general physical examination should be performed with particular emphasis on the presence of cardiac failure. </span><span class="segment" data-start="125.0" data-end="129.0" title="2:05">What routine investigations are required? </span><span class="segment" data-start="129.0" data-end="134.0" title="2:09">A recent 12-lead electrocardiogram is mandatory. </span><span class="segment" data-start="134.0" data-end="141.0" title="2:14">The underlying rhythm should be noted, together with any signs of pacemaker discharge and electrical capture. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="141.0"><span class="t-timestamp">2:21</span></div>
-  <div class="t-body"><span class="segment" data-start="141.0" data-end="151.0" title="2:21">Chest X-ray is not mandatory, although it may be helpful to verify lead continuity and look for signs of cardiac failure. </span><span class="segment" data-start="151.0" data-end="160.0" title="2:31">Serum electrolytes should be measured as electrolyte abnormalities, particularly of potassium, may cause loss of capture. </span><span class="segment" data-start="160.0" data-end="165.0" title="2:40">These abnormalities, if present, should be corrected preoperatively. </span><span class="segment" data-start="165.0" data-end="174.0" title="2:45">Pacemaker interrogation by a pacing physiologist may be required, and this will be discussed in detail later. </span><span class="segment" data-start="174.0" data-end="177.0" title="2:54">Describe the code used to describe pacemakers. </span><span class="segment" data-start="177.0" data-end="188.0" title="2:57">It is not necessary to provide all of the details given in the following answer in order to pass, but some familiarity with this system is required. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="188.0"><span class="t-timestamp">3:08</span></div>
-  <div class="t-body"><span class="segment" data-start="188.0" data-end="194.0" title="3:08">A generic 5-letter code to describe the functions of pacemakers has been devised. </span><span class="segment" data-start="194.0" data-end="205.0" title="3:14">The first letter indicates the chamber being paced, A for atrium, V for ventricle and D for dual. </span><span class="segment" data-start="205.0" data-end="217.0" title="3:25">The second letter indicates the chamber being sensed, A for atrium, V for ventricle, D for dual and O for none. </span><span class="segment" data-start="217.0" data-end="225.0" title="3:37">The third letter indicates the response to sensing, I is inhibited, T for triggered. </span><span class="segment" data-start="225.0" data-end="244.0" title="3:45">The fourth letter indicates programmability, O equals none, C equals communicating, P equals simple programmability, M equals multi-programmability, R equals rate modulation. </span><span class="segment" data-start="244.0" data-end="260.0" title="4:04">The fifth letter indicates anti-tackicaridia functions, O equals none, P is for pacing, S for shocks and D for dual, for example pacing and shocks. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="260.0"><span class="t-timestamp">4:20</span></div>
-  <div class="t-body"><span class="segment" data-start="260.0" data-end="265.0" title="4:20">What are the most common modes of newly inserted pacemakers? </span><span class="segment" data-start="265.0" data-end="273.0" title="4:25">Almost 95% of all newly inserted pacemakers can be accounted for by four different modes. </span><span class="segment" data-start="273.0" data-end="283.0" title="4:33">These are VVI, VVIR, DDD and DDIR. </span><span class="segment" data-start="283.0" data-end="290.0" title="4:43">What monitoring is required for a patient with a permanent pacemaker, prior to induction of anesthesia? </span><span class="segment" data-start="290.0" data-end="299.0" title="4:50">AAGBI minimum monitoring standards, as suggested for all patients undergoing general anesthesia, should be a dear to. </span><span class="segment" data-start="299.0" data-end="309.0" title="4:59">Importantly, these include continuous ECG monitoring, pulse-oxymetry with plethismography and non-invasive blood pressure monitoring. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="309.0"><span class="t-timestamp">5:09</span></div>
-  <div class="t-body"><span class="segment" data-start="309.0" data-end="325.0" title="5:09">Although beat-to-beat evidence of mechanical capture can be gained by monitoring the patient's pulse or observing the plethismograph trace, consideration should be given to direct arterial pressure monitoring, especially in more complex cases. </span><span class="segment" data-start="325.0" data-end="340.0" title="5:25">If a central venous catheter is indicated, great care should be taken during insertion, particularly if the pacemaker has been recently inserted, as the pacing electrode may become dislodged, leading to pacemaker failure. </span><span class="segment" data-start="340.0" data-end="345.0" title="5:40">Alternatively, the femoral venous root may be chosen. </span><span class="segment" data-start="345.0" data-end="350.0" title="5:45">Although any specific concerns regarding the use of succcemethonium. </span><span class="segment" data-start="350.0" data-end="355.0" title="5:50">Muscle faciculations occur after the administration of succcemethonium. </span><span class="segment" data-start="355.0" data-end="360.0" title="5:55">These may be perceived by the pacemaker as intrinsic cardiac impulses. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="360.0"><span class="t-timestamp">6:00</span></div>
-  <div class="t-body"><span class="segment" data-start="360.0" data-end="366.0" title="6:00">Depending on the type of pacemaker, this may cause unwanted inhibition of the pacemaker. </span><span class="segment" data-start="366.0" data-end="371.0" title="6:06">Succemethonium should therefore, where possible, be avoided. </span><span class="segment" data-start="371.0" data-end="387.0" title="6:11">If it is required, then the pacemaker may be reprogrammed to asynchronous, VO mode, or a small, defeculating dose of a non-depolarizing muscle accent, may be given a few minutes prior to the succcemethonium. </span><span class="segment" data-start="387.0" data-end="392.0" title="6:27">What is electromagnetic interference? </span><span class="segment" data-start="392.0" data-end="402.0" title="6:32">Electromagnetic interference refers to any electromagnetic radiation with the potential to affect implantable devices. </span><span class="segment" data-start="402.0" data-end="407.0" title="6:42">What are the principal source of electromagnetic interference than hospitals? </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="407.0"><span class="t-timestamp">6:47</span></div>
-  <div class="t-body"><span class="segment" data-start="407.0" data-end="417.0" title="6:47">The most important source of potentially damaging electromagnetic interference in an operating theatre environment is surgical diaphragm. </span><span class="segment" data-start="417.0" data-end="429.0" title="6:57">Other hospital sources include magnetic resonance imaging, cardiaversion or cardiac defibrillation, lythotrypsy and transcutaneous nerve stimulation. </span><span class="segment" data-start="429.0" data-end="437.0" title="7:09">What are the potential adverse effects of electromagnetic interference and patients with permanent pacemakers? </span><span class="segment" data-start="437.0" data-end="454.0" title="7:17">Possible responses to external electromagnetic interference include inappropriate inhibition or triggering of impulses, reprogramming the pacemaker to a backup mode, which may be a synchronous or permanent damage to the pacemaker itself. </span><span class="segment" data-start="454.0" data-end="461.0" title="7:34">Is there any safety advantage of using one type of diaphragm over the other in this situation? </span><span class="segment" data-start="461.0" data-end="479.0" title="7:41">Wherever possible, surgical diaphragm should be avoided altogether. However, where surgical diaphragm is deemed essential, the use of bipolar diaphragm is preferred as the chance of interference with pacemaker function is less in this mode. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="479.0"><span class="t-timestamp">7:59</span></div>
-  <div class="t-body"><span class="segment" data-start="479.0" data-end="488.0" title="7:59">In an elective setting, what additional equipment and expertise is required whenever diaphragm is used in a patient with a permanent pacemaker? </span><span class="segment" data-start="488.0" data-end="495.0" title="8:08">Clear guidance on this topic has been provided by the Medicines and Healthcare Products Regulatory Agency. </span><span class="segment" data-start="495.0" data-end="504.0" title="8:15">If surgical diaphragm cannot be avoided, the patient's cardiac follow-up centre should usually be contacted for advice. </span><span class="segment" data-start="504.0" data-end="515.0" title="8:24">If the surgical procedure is remote from the pacemaker site and the device has been checked within the last three months, then the risk of malfunction is minimal. </span><span class="segment" data-start="515.0" data-end="522.0" title="8:35">If the procedure will be close to the implant, then the risk of diothermia-induced malfunction is increased. </span><span class="segment" data-start="522.0" data-end="536.0" title="8:42">In these instances, the patient's follow-up clinic should be asked to advise whether support from a cardiac pacing physiologist will be required before, during and after the surgical procedure. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="536.0"><span class="t-timestamp">8:56</span></div>
-  <div class="t-body"><span class="segment" data-start="536.0" data-end="545.0" title="8:56">Steps taken may include programming a pacemaker to minimise inappropriate inhibition secondary to electromagnetic interference, </span><span class="segment" data-start="545.0" data-end="555.0" title="9:05">disabling shock delivery functions and rate response functions that use the minute ventilation or sleep modes of physiological pacing, </span><span class="segment" data-start="555.0" data-end="562.0" title="9:15">and reactivation of functions and confirmation of device functioning after surgery. </span><span class="segment" data-start="563.0" data-end="569.0" title="9:23">Cardiopulmonary resuscitation equipment must be immediately available during these cases. </span><span class="segment" data-start="569.0" data-end="579.0" title="9:29">This must include a defibrillator and access to alternative pacing methods such as temporary external and transvenous pacing. </span><span class="segment" data-start="579.0" data-end="584.0" title="9:39">How does advice above differ for emergency procedures? </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="584.0"><span class="t-timestamp">9:44</span></div>
-  <div class="t-body"><span class="segment" data-start="584.0" data-end="590.0" title="9:44">Wherever possible, all of the above steps should also be taken for emergency procedures. </span><span class="segment" data-start="591.0" data-end="604.0" title="9:51">Where it is not possible for the pacemaker to be checked before surgery, even greater vigilance is required to detect pacemaker failure, and the device should be checked as soon as possible postoperatively. </span><span class="segment" data-start="604.0" data-end="612.0" title="10:04">If diothermia is necessary, what steps must be taken to minimise the chance of pacemaker malfunction? </span><span class="segment" data-start="613.0" data-end="619.0" title="10:13">Bi-poladirethermia should be used in preference to monopolar diothermia whenever possible. </span><span class="segment" data-start="619.0" data-end="629.0" title="10:19">If monopolar diothermia is unavoidable, then it's use should be limited to short bursts, keeping the energy level as low as possible. </span><span class="segment" data-start="629.0" data-end="641.0" title="10:29">The return plate should be positioned so that the current pathway between the diothermia electrode and the return plate is as far away as possible from the pacemaker and its leads. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="642.0"><span class="t-timestamp">10:42</span></div>
-  <div class="t-body"><span class="segment" data-start="642.0" data-end="652.0" title="10:42">In operations involving either mono or bipolar diothermia, the cables attached to the diothermia equipment should be kept away from the pacemaker. </span><span class="segment" data-start="652.0" data-end="655.0" title="10:52">How is pacemaker failure suspected? </span><span class="segment" data-start="656.0" data-end="662.0" title="10:56">The consequences of pacemaker failure depend upon the underlying cardiac rhythm. </span><span class="segment" data-start="662.0" data-end="668.0" title="11:02">This highlights the importance of knowing the original indication for insertion of a pacemaker. </span><span class="segment" data-start="668.0" data-end="676.0" title="11:08">Clearly, if the original indication was ventricular standstill, then pacemaker failure is potentially lethal. </span><span class="segment" data-start="676.0" data-end="686.0" title="11:16">Pacemaker failure results from loss of electrical capture, and in the perioperative period is most commonly caused by electromagnetic interference. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="687.0"><span class="t-timestamp">11:27</span></div>
-  <div class="t-body"><span class="segment" data-start="687.0" data-end="704.0" title="11:27">As electromagnetic interference also interferes with ECG recording, recognition of pacemaker failure during electromagnetic interference relies on monitoring the plethysmograph trace, arterial line trace, or patient's pulse. </span><span class="segment" data-start="704.0" data-end="710.0" title="11:44">If this is not done, then pacemaker failure may initially go unnoticed. </span><span class="segment" data-start="710.0" data-end="714.0" title="11:50">How should pacemaker failure be treated? </span><span class="segment" data-start="715.0" data-end="722.0" title="11:55">If cardiac arrest has occurred, then all sources of electromagnetic interference should be stopped immediately. </span><span class="segment" data-start="722.0" data-end="730.0" title="12:02">If pacemaker failure was due to oversensing, stopping the electromagnetic interference storm may help. </span><span class="segment" data-start="730.0" data-end="740.0" title="12:10">If cardiac arrest persists, advanced cardiac life support, including chest compressions, should be commenced immediately. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="740.0"><span class="t-timestamp">12:20</span></div>
-  <div class="t-body"><span class="segment" data-start="740.0" data-end="754.0" title="12:20">External pacing via pads placed either below the right clavicle and over the cardiac apex, or over the left side of the chest in the anterior posterior position should be attempted. </span><span class="segment" data-start="754.0" data-end="760.0" title="12:34">Capture can often be achieved at currents of about 80 mA. </span><span class="segment" data-start="760.0" data-end="764.0" title="12:40">Transvenous pacing will take longer to set up. </span><span class="segment" data-start="764.0" data-end="771.0" title="12:44">As we'll be discussed later, the use of magnets in this setting remains controversial. </span><span class="segment" data-start="771.0" data-end="780.0" title="12:51">If external defibrillation is required in the patient with a permanent pacemaker, what steps are required to minimize device damage in reprogramming? </span><span class="segment" data-start="780.0" data-end="790.0" title="13:00">External defibrillation in patients with a permanent pacemaker is associated with a high risk of damaging or reprogramming the device. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="790.0"><span class="t-timestamp">13:10</span></div>
-  <div class="t-body"><span class="segment" data-start="790.0" data-end="799.0" title="13:10">In order to minimize these effects, the defibrillation pads should be placed a minimum of 10 cm from the pulse generator. </span><span class="segment" data-start="799.0" data-end="803.0" title="13:19">The anterior posterior position may be used. </span><span class="segment" data-start="803.0" data-end="810.0" title="13:23">What role do magnets have in the management of patients with permanent pacemakers undergoing general anesthesia? </span><span class="segment" data-start="810.0" data-end="812.0" title="13:30">This is an area of controversy. </span><span class="segment" data-start="812.0" data-end="817.0" title="13:32">The effects of magnets on the programming of modern pacemakers is unpredictable. </span><span class="segment" data-start="817.0" data-end="823.0" title="13:37">Some pacemakers will switch to a continuous asynchronous mode when a magnet is applied. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="823.0"><span class="t-timestamp">13:43</span></div>
-  <div class="t-body"><span class="segment" data-start="823.0" data-end="830.0" title="13:43">This explains why previously there have been thought to be useful in the event of pacemaker failure. </span><span class="segment" data-start="830.0" data-end="838.0" title="13:50">However, there is a bewildering array of different responses that pacemakers may display after placement of a magnet. </span><span class="segment" data-start="838.0" data-end="845.0" title="13:58">Most implantable cardiovascular defibrillators will have their shock delivery function inhibited by a magnet. </span><span class="segment" data-start="845.0" data-end="854.0" title="14:05">But once again, this is not universal behavior, and inhibition of shock therapy will only be effective during magnet placement. </span><span class="segment" data-start="854.0" data-end="864.0" title="14:14">Clearly, any subsequent ventricular tachycardia or ventricular fibrillation will need to be treated by external defibrillation. </span><span class="segment" data-start="864.0" data-end="870.0" title="14:24">What follow up and investigations are required after surgery in a patient with a permanent pacemaker? </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="870.0"><span class="t-timestamp">14:30</span></div>
-  <div class="t-body"><span class="segment" data-start="870.0" data-end="879.0" title="14:30">Pacemaker function should be checked by pacing physiologists following any procedure involving surgical diothermia. </span><span class="segment" data-start="879.0" data-end="889.0" title="14:39">Rate modulation functions and anti-tachycardia and shock functions will need to be reactivated as soon as possible postoperatively. </span><span class="segment" data-start="889.0" data-end="897.0" title="14:49">Until this is done, these patients should have continuous ECG monitoring in an appropriate environment. </span><span class="segment" data-start="897.0" data-end="901.0" title="14:57">What are implantable cardiovascular defibrillators? </span><span class="segment" data-start="901.0" data-end="912.0" title="15:01">In addition to defibrillating functions, ICDs may also have bipolar anti-tachycardia pacing and anti-tachycardia pacing. </span><span class="segment" data-start="912.0" data-end="920.0" title="15:12">The delivery of one shock shortens the normal battery life of five to nine years by one month. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="920.0"><span class="t-timestamp">15:20</span></div>
-  <div class="t-body"><span class="segment" data-start="920.0" data-end="926.0" title="15:20">Describe the anaesthetic management of a patient with an ICD undergoing surgery. </span><span class="segment" data-start="926.0" data-end="941.0" title="15:26">Detailed pre-anesthetic assessment is required. The center that implanted the ICD should be contacted, the indication for insertion, and details regarding delivery of countershocks should be obtained. </span><span class="segment" data-start="941.0" data-end="948.0" title="15:41">The device should be interrogated preoperatively and the effect of magnet applications should be recorded. </span><span class="segment" data-start="948.0" data-end="957.0" title="15:48">Many of these patients will have severe cardiovascular disease, including left ventricular impairment. </span><span class="segment" data-start="957.0" data-end="970.0" title="15:57">As for patients with pacemakers undergoing anesthesia and surgery, 12 lead ECG, serum electrolytes, and possibly chest x-ray should be performed preoperatively. </span><span class="segment" data-start="970.0" data-end="980.0" title="16:10">Electrolite abnormalities should be corrected preoperatively and anti-arhythmic and anti-faliomedicines should be continued. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="980.0"><span class="t-timestamp">16:20</span></div>
-  <div class="t-body"><span class="segment" data-start="980.0" data-end="993.0" title="16:20">Defibrillation and anti-tachycardia functions should be disabled if surgical diotherm use is anticipated or the patient is due to undergo lythertripcy or electro-convulsive therapy. </span><span class="segment" data-start="993.0" data-end="998.0" title="16:33">Transcutaneous nerve stimulation should not be used. </span><span class="segment" data-start="998.0" data-end="1007.0" title="16:38">An external defibrillator should be available. Ideally, it should be attached to adhesive pads on the patient prior to surgery. </span><span class="segment" data-start="1007.0" data-end="1017.0" title="16:47">Usual pad placement below the right clavicle and at the cardiac apex will expose the ICD to the minimum induced current. </span><span class="segment" data-start="1017.0" data-end="1025.0" title="16:57">The same advice regarding minimizing electromagnetic interference in patients with pacemakers should be applied. </span><span class="segment" data-start="1025.0" data-end="1032.0" title="17:05">Postoperatively, the patient should be managed in either a high dependency or current repair environment. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="1032.0"><span class="t-timestamp">17:12</span></div>
-  <div class="t-body"><span class="segment" data-start="1032.0" data-end="1042.0" title="17:12">Continuous ECG monitoring is required until the ICD has been checked after surgery and the device reactivated. </span></div>
+<div class="preamble-block"><span class="segment a-seg" data-start="0.0" data-end="5.0" title="0:00">Pace makers, implantable cardiac devices and anesthesia in surgery. </span><span class="segment a-seg" data-start="5.0" data-end="11.0" title="0:05">This is an important area of anesthetic practice that is becoming increasingly complex. </span><span class="segment a-seg" data-start="11.0" data-end="17.0" title="0:11">The examiners will expect a good understanding of the important principles involved in the safe, </span><span class="segment a-seg" data-start="17.0" data-end="20.0" title="0:17">perioperative management of these patients. </span><span class="segment a-seg" data-start="20.0" data-end="25.0" title="0:20">Importantly, current guidance from the Medicines and Healthcare Products Regulatory Agency </span><span class="segment a-seg" data-start="25.0" data-end="30.0" title="0:25">highlights that specialist referral to the cardiology team or pacing physiologist </span><span class="segment a-seg" data-start="30.0" data-end="33.0" title="0:30">is often appropriate if time allows. </span><span class="segment a-seg" data-start="33.0" data-end="38.0" title="0:33">You are asked to provide a general anesthetic for a patient with a permanent pacemaker. </span></div>
+<div class="qa-pair">
+<div class="q-block" data-start="38.0">
+  <div class="q-label">Q1</div>
+  <div class="q-body"><span class="segment q-seg" data-start="38.0" data-end="44.0" title="0:38">Describe the features in the patient's history and clinical examination that are of particular relevance. </span></div>
 </div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="44.0" data-end="51.0" title="0:44">Safe anesthetic practice of all patients should start with careful, preoperative review. </span></li>
+<li><span class="segment a-seg" data-start="51.0" data-end="58.0" title="0:51">Patients for all non-emergency surgical procedures should undergo routine pre-admission screening </span></li>
+<li><span class="segment a-seg" data-start="58.0" data-end="63.0" title="0:58">and patients with permanent pacemakers should be identified at this stage. </span></li>
+<li><span class="segment a-seg" data-start="63.0" data-end="69.0" title="1:03">Many patients with permanent pacemakers have multiple medical problems. </span></li>
+<li><span class="segment a-seg" data-start="69.0" data-end="72.0" title="1:09">These will need to be reviewed in detail. </span></li>
+<li><span class="segment a-seg" data-start="72.0" data-end="77.0" title="1:12">In addition, key information regarding the pacemaker should be sought. </span></li>
+<li><span class="segment a-seg" data-start="77.0" data-end="84.0" title="1:17">Some of this information may be available on a pacemaker card provided to the patient by the pacing clinic. </span></li>
+<li><span class="segment a-seg" data-start="84.0" data-end="92.0" title="1:24">This includes device manufacturer, model number, serial number, date of insertion, </span></li>
+<li><span class="segment a-seg" data-start="92.0" data-end="100.0" title="1:32">indication for permanent pacing, generic pacemaker code, including special emphasis on anti-tackicardia, </span></li>
+<li><span class="segment a-seg" data-start="100.0" data-end="108.0" title="1:40">shocking or rate modulation features, and whether the device is at or approaching replacement phase. </span></li>
+<li><span class="segment a-seg" data-start="108.0" data-end="117.0" title="1:48">Symptoms suggesting pacemaker malfunction such as dizziness, lightheadedness or syncopy should be sought. </span></li>
+<li><span class="segment a-seg" data-start="117.0" data-end="125.0" title="1:57">A general physical examination should be performed with particular emphasis on the presence of cardiac failure. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="125.0">
+  <div class="q-label">Q2</div>
+  <div class="q-body"><span class="segment q-seg" data-start="125.0" data-end="129.0" title="2:05">What routine investigations are required? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="129.0" data-end="134.0" title="2:09">A recent 12-lead electrocardiogram is mandatory. </span></li>
+<li><span class="segment a-seg" data-start="134.0" data-end="141.0" title="2:14">The underlying rhythm should be noted, together with any signs of pacemaker discharge and electrical capture. </span></li>
+<li><span class="segment a-seg" data-start="141.0" data-end="151.0" title="2:21">Chest X-ray is not mandatory, although it may be helpful to verify lead continuity and look for signs of cardiac failure. </span></li>
+<li><span class="segment a-seg" data-start="151.0" data-end="160.0" title="2:31">Serum electrolytes should be measured as electrolyte abnormalities, particularly of potassium, may cause loss of capture. </span></li>
+<li><span class="segment a-seg" data-start="160.0" data-end="165.0" title="2:40">These abnormalities, if present, should be corrected preoperatively. </span></li>
+<li><span class="segment a-seg" data-start="165.0" data-end="174.0" title="2:45">Pacemaker interrogation by a pacing physiologist may be required, and this will be discussed in detail later. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="174.0">
+  <div class="q-label">Q3</div>
+  <div class="q-body"><span class="segment q-seg" data-start="174.0" data-end="177.0" title="2:54">Describe the code used to describe pacemakers. </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="177.0" data-end="188.0" title="2:57">It is not necessary to provide all of the details given in the following answer in order to pass, but some familiarity with this system is required. </span></li>
+<li><span class="segment a-seg" data-start="188.0" data-end="194.0" title="3:08">A generic 5-letter code to describe the functions of pacemakers has been devised. </span></li>
+<li><span class="segment a-seg" data-start="194.0" data-end="205.0" title="3:14">The first letter indicates the chamber being paced, A for atrium, V for ventricle and D for dual. </span></li>
+<li><span class="segment a-seg" data-start="205.0" data-end="217.0" title="3:25">The second letter indicates the chamber being sensed, A for atrium, V for ventricle, D for dual and O for none. </span></li>
+<li><span class="segment a-seg" data-start="217.0" data-end="225.0" title="3:37">The third letter indicates the response to sensing, I is inhibited, T for triggered. </span></li>
+<li><span class="segment a-seg" data-start="225.0" data-end="244.0" title="3:45">The fourth letter indicates programmability, O equals none, C equals communicating, P equals simple programmability, M equals multi-programmability, R equals rate modulation. </span></li>
+<li><span class="segment a-seg" data-start="244.0" data-end="260.0" title="4:04">The fifth letter indicates anti-tackicaridia functions, O equals none, P is for pacing, S for shocks and D for dual, for example pacing and shocks. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="260.0">
+  <div class="q-label">Q4</div>
+  <div class="q-body"><span class="segment q-seg" data-start="260.0" data-end="265.0" title="4:20">What are the most common modes of newly inserted pacemakers? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="265.0" data-end="273.0" title="4:25">Almost 95% of all newly inserted pacemakers can be accounted for by four different modes. </span></li>
+<li><span class="segment a-seg" data-start="273.0" data-end="283.0" title="4:33">These are VVI, VVIR, DDD and DDIR. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="283.0">
+  <div class="q-label">Q5</div>
+  <div class="q-body"><span class="segment q-seg" data-start="283.0" data-end="290.0" title="4:43">What monitoring is required for a patient with a permanent pacemaker, prior to induction of anesthesia? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="290.0" data-end="299.0" title="4:50">AAGBI minimum monitoring standards, as suggested for all patients undergoing general anesthesia, should be a dear to. </span></li>
+<li><span class="segment a-seg" data-start="299.0" data-end="309.0" title="4:59">Importantly, these include continuous ECG monitoring, pulse-oxymetry with plethismography and non-invasive blood pressure monitoring. </span></li>
+<li><span class="segment a-seg" data-start="309.0" data-end="325.0" title="5:09">Although beat-to-beat evidence of mechanical capture can be gained by monitoring the patient's pulse or observing the plethismograph trace, consideration should be given to direct arterial pressure monitoring, especially in more complex cases. </span></li>
+<li><span class="segment a-seg" data-start="325.0" data-end="340.0" title="5:25">If a central venous catheter is indicated, great care should be taken during insertion, particularly if the pacemaker has been recently inserted, as the pacing electrode may become dislodged, leading to pacemaker failure. </span></li>
+<li><span class="segment a-seg" data-start="340.0" data-end="345.0" title="5:40">Alternatively, the femoral venous root may be chosen. </span></li>
+<li><span class="segment a-seg" data-start="345.0" data-end="350.0" title="5:45">Although any specific concerns regarding the use of succcemethonium. </span></li>
+<li><span class="segment a-seg" data-start="350.0" data-end="355.0" title="5:50">Muscle faciculations occur after the administration of succcemethonium. </span></li>
+<li><span class="segment a-seg" data-start="355.0" data-end="360.0" title="5:55">These may be perceived by the pacemaker as intrinsic cardiac impulses. </span></li>
+<li><span class="segment a-seg" data-start="360.0" data-end="366.0" title="6:00">Depending on the type of pacemaker, this may cause unwanted inhibition of the pacemaker. </span></li>
+<li><span class="segment a-seg" data-start="366.0" data-end="371.0" title="6:06">Succemethonium should therefore, where possible, be avoided. </span></li>
+<li><span class="segment a-seg" data-start="371.0" data-end="387.0" title="6:11">If it is required, then the pacemaker may be reprogrammed to asynchronous, VO mode, or a small, defeculating dose of a non-depolarizing muscle accent, may be given a few minutes prior to the succcemethonium. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="387.0">
+  <div class="q-label">Q6</div>
+  <div class="q-body"><span class="segment q-seg" data-start="387.0" data-end="392.0" title="6:27">What is electromagnetic interference? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="392.0" data-end="402.0" title="6:32">Electromagnetic interference refers to any electromagnetic radiation with the potential to affect implantable devices. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="402.0">
+  <div class="q-label">Q7</div>
+  <div class="q-body"><span class="segment q-seg" data-start="402.0" data-end="407.0" title="6:42">What are the principal source of electromagnetic interference than hospitals? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="407.0" data-end="417.0" title="6:47">The most important source of potentially damaging electromagnetic interference in an operating theatre environment is surgical diaphragm. </span></li>
+<li><span class="segment a-seg" data-start="417.0" data-end="429.0" title="6:57">Other hospital sources include magnetic resonance imaging, cardiaversion or cardiac defibrillation, lythotrypsy and transcutaneous nerve stimulation. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="429.0">
+  <div class="q-label">Q8</div>
+  <div class="q-body"><span class="segment q-seg" data-start="429.0" data-end="437.0" title="7:09">What are the potential adverse effects of electromagnetic interference and patients with permanent pacemakers? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="437.0" data-end="454.0" title="7:17">Possible responses to external electromagnetic interference include inappropriate inhibition or triggering of impulses, reprogramming the pacemaker to a backup mode, which may be a synchronous or permanent damage to the pacemaker itself. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="454.0">
+  <div class="q-label">Q9</div>
+  <div class="q-body"><span class="segment q-seg" data-start="454.0" data-end="461.0" title="7:34">Is there any safety advantage of using one type of diaphragm over the other in this situation? </span><span class="segment q-seg" data-start="461.0" data-end="479.0" title="7:41">Wherever possible, surgical diaphragm should be avoided altogether. However, where surgical diaphragm is deemed essential, the use of bipolar diaphragm is preferred as the chance of interference with pacemaker function is less in this mode. </span><span class="segment q-seg" data-start="479.0" data-end="488.0" title="7:59">In an elective setting, what additional equipment and expertise is required whenever diaphragm is used in a patient with a permanent pacemaker? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="488.0" data-end="495.0" title="8:08">Clear guidance on this topic has been provided by the Medicines and Healthcare Products Regulatory Agency. </span></li>
+<li><span class="segment a-seg" data-start="495.0" data-end="504.0" title="8:15">If surgical diaphragm cannot be avoided, the patient's cardiac follow-up centre should usually be contacted for advice. </span></li>
+<li><span class="segment a-seg" data-start="504.0" data-end="515.0" title="8:24">If the surgical procedure is remote from the pacemaker site and the device has been checked within the last three months, then the risk of malfunction is minimal. </span></li>
+<li><span class="segment a-seg" data-start="515.0" data-end="522.0" title="8:35">If the procedure will be close to the implant, then the risk of diothermia-induced malfunction is increased. </span></li>
+<li><span class="segment a-seg" data-start="522.0" data-end="536.0" title="8:42">In these instances, the patient's follow-up clinic should be asked to advise whether support from a cardiac pacing physiologist will be required before, during and after the surgical procedure. </span></li>
+<li><span class="segment a-seg" data-start="536.0" data-end="545.0" title="8:56">Steps taken may include programming a pacemaker to minimise inappropriate inhibition secondary to electromagnetic interference, </span></li>
+<li><span class="segment a-seg" data-start="545.0" data-end="555.0" title="9:05">disabling shock delivery functions and rate response functions that use the minute ventilation or sleep modes of physiological pacing, </span></li>
+<li><span class="segment a-seg" data-start="555.0" data-end="562.0" title="9:15">and reactivation of functions and confirmation of device functioning after surgery. </span></li>
+<li><span class="segment a-seg" data-start="563.0" data-end="569.0" title="9:23">Cardiopulmonary resuscitation equipment must be immediately available during these cases. </span></li>
+<li><span class="segment a-seg" data-start="569.0" data-end="579.0" title="9:29">This must include a defibrillator and access to alternative pacing methods such as temporary external and transvenous pacing. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="579.0">
+  <div class="q-label">Q10</div>
+  <div class="q-body"><span class="segment q-seg" data-start="579.0" data-end="584.0" title="9:39">How does advice above differ for emergency procedures? </span><span class="segment q-seg" data-start="584.0" data-end="590.0" title="9:44">Wherever possible, all of the above steps should also be taken for emergency procedures. </span><span class="segment q-seg" data-start="591.0" data-end="604.0" title="9:51">Where it is not possible for the pacemaker to be checked before surgery, even greater vigilance is required to detect pacemaker failure, and the device should be checked as soon as possible postoperatively. </span><span class="segment q-seg" data-start="604.0" data-end="612.0" title="10:04">If diothermia is necessary, what steps must be taken to minimise the chance of pacemaker malfunction? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="613.0" data-end="619.0" title="10:13">Bi-poladirethermia should be used in preference to monopolar diothermia whenever possible. </span></li>
+<li><span class="segment a-seg" data-start="619.0" data-end="629.0" title="10:19">If monopolar diothermia is unavoidable, then it's use should be limited to short bursts, keeping the energy level as low as possible. </span></li>
+<li><span class="segment a-seg" data-start="629.0" data-end="641.0" title="10:29">The return plate should be positioned so that the current pathway between the diothermia electrode and the return plate is as far away as possible from the pacemaker and its leads. </span></li>
+<li><span class="segment a-seg" data-start="642.0" data-end="652.0" title="10:42">In operations involving either mono or bipolar diothermia, the cables attached to the diothermia equipment should be kept away from the pacemaker. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="652.0">
+  <div class="q-label">Q11</div>
+  <div class="q-body"><span class="segment q-seg" data-start="652.0" data-end="655.0" title="10:52">How is pacemaker failure suspected? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="656.0" data-end="662.0" title="10:56">The consequences of pacemaker failure depend upon the underlying cardiac rhythm. </span></li>
+<li><span class="segment a-seg" data-start="662.0" data-end="668.0" title="11:02">This highlights the importance of knowing the original indication for insertion of a pacemaker. </span></li>
+<li><span class="segment a-seg" data-start="668.0" data-end="676.0" title="11:08">Clearly, if the original indication was ventricular standstill, then pacemaker failure is potentially lethal. </span></li>
+<li><span class="segment a-seg" data-start="676.0" data-end="686.0" title="11:16">Pacemaker failure results from loss of electrical capture, and in the perioperative period is most commonly caused by electromagnetic interference. </span></li>
+<li><span class="segment a-seg" data-start="687.0" data-end="704.0" title="11:27">As electromagnetic interference also interferes with ECG recording, recognition of pacemaker failure during electromagnetic interference relies on monitoring the plethysmograph trace, arterial line trace, or patient's pulse. </span></li>
+<li><span class="segment a-seg" data-start="704.0" data-end="710.0" title="11:44">If this is not done, then pacemaker failure may initially go unnoticed. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="710.0">
+  <div class="q-label">Q12</div>
+  <div class="q-body"><span class="segment q-seg" data-start="710.0" data-end="714.0" title="11:50">How should pacemaker failure be treated? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="715.0" data-end="722.0" title="11:55">If cardiac arrest has occurred, then all sources of electromagnetic interference should be stopped immediately. </span></li>
+<li><span class="segment a-seg" data-start="722.0" data-end="730.0" title="12:02">If pacemaker failure was due to oversensing, stopping the electromagnetic interference storm may help. </span></li>
+<li><span class="segment a-seg" data-start="730.0" data-end="740.0" title="12:10">If cardiac arrest persists, advanced cardiac life support, including chest compressions, should be commenced immediately. </span></li>
+<li><span class="segment a-seg" data-start="740.0" data-end="754.0" title="12:20">External pacing via pads placed either below the right clavicle and over the cardiac apex, or over the left side of the chest in the anterior posterior position should be attempted. </span></li>
+<li><span class="segment a-seg" data-start="754.0" data-end="760.0" title="12:34">Capture can often be achieved at currents of about 80 mA. </span></li>
+<li><span class="segment a-seg" data-start="760.0" data-end="764.0" title="12:40">Transvenous pacing will take longer to set up. </span></li>
+<li><span class="segment a-seg" data-start="764.0" data-end="771.0" title="12:44">As we'll be discussed later, the use of magnets in this setting remains controversial. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="771.0">
+  <div class="q-label">Q13</div>
+  <div class="q-body"><span class="segment q-seg" data-start="771.0" data-end="780.0" title="12:51">If external defibrillation is required in the patient with a permanent pacemaker, what steps are required to minimize device damage in reprogramming? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="780.0" data-end="790.0" title="13:00">External defibrillation in patients with a permanent pacemaker is associated with a high risk of damaging or reprogramming the device. </span></li>
+<li><span class="segment a-seg" data-start="790.0" data-end="799.0" title="13:10">In order to minimize these effects, the defibrillation pads should be placed a minimum of 10 cm from the pulse generator. </span></li>
+<li><span class="segment a-seg" data-start="799.0" data-end="803.0" title="13:19">The anterior posterior position may be used. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="803.0">
+  <div class="q-label">Q14</div>
+  <div class="q-body"><span class="segment q-seg" data-start="803.0" data-end="810.0" title="13:23">What role do magnets have in the management of patients with permanent pacemakers undergoing general anesthesia? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="810.0" data-end="812.0" title="13:30">This is an area of controversy. </span></li>
+<li><span class="segment a-seg" data-start="812.0" data-end="817.0" title="13:32">The effects of magnets on the programming of modern pacemakers is unpredictable. </span></li>
+<li><span class="segment a-seg" data-start="817.0" data-end="823.0" title="13:37">Some pacemakers will switch to a continuous asynchronous mode when a magnet is applied. </span></li>
+<li><span class="segment a-seg" data-start="823.0" data-end="830.0" title="13:43">This explains why previously there have been thought to be useful in the event of pacemaker failure. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="830.0">
+  <div class="q-label">Q15</div>
+  <div class="q-body"><span class="segment q-seg" data-start="830.0" data-end="838.0" title="13:50">However, there is a bewildering array of different responses that pacemakers may display after placement of a magnet. </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="838.0" data-end="845.0" title="13:58">Most implantable cardiovascular defibrillators will have their shock delivery function inhibited by a magnet. </span></li>
+<li><span class="segment a-seg" data-start="845.0" data-end="854.0" title="14:05">But once again, this is not universal behavior, and inhibition of shock therapy will only be effective during magnet placement. </span></li>
+<li><span class="segment a-seg" data-start="854.0" data-end="864.0" title="14:14">Clearly, any subsequent ventricular tachycardia or ventricular fibrillation will need to be treated by external defibrillation. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="864.0">
+  <div class="q-label">Q16</div>
+  <div class="q-body"><span class="segment q-seg" data-start="864.0" data-end="870.0" title="14:24">What follow up and investigations are required after surgery in a patient with a permanent pacemaker? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="870.0" data-end="879.0" title="14:30">Pacemaker function should be checked by pacing physiologists following any procedure involving surgical diothermia. </span></li>
+<li><span class="segment a-seg" data-start="879.0" data-end="889.0" title="14:39">Rate modulation functions and anti-tachycardia and shock functions will need to be reactivated as soon as possible postoperatively. </span></li>
+<li><span class="segment a-seg" data-start="889.0" data-end="897.0" title="14:49">Until this is done, these patients should have continuous ECG monitoring in an appropriate environment. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="897.0">
+  <div class="q-label">Q17</div>
+  <div class="q-body"><span class="segment q-seg" data-start="897.0" data-end="901.0" title="14:57">What are implantable cardiovascular defibrillators? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="901.0" data-end="912.0" title="15:01">In addition to defibrillating functions, ICDs may also have bipolar anti-tachycardia pacing and anti-tachycardia pacing. </span></li>
+<li><span class="segment a-seg" data-start="912.0" data-end="920.0" title="15:12">The delivery of one shock shortens the normal battery life of five to nine years by one month. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="920.0">
+  <div class="q-label">Q18</div>
+  <div class="q-body"><span class="segment q-seg" data-start="920.0" data-end="926.0" title="15:20">Describe the anaesthetic management of a patient with an ICD undergoing surgery. </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="926.0" data-end="941.0" title="15:26">Detailed pre-anesthetic assessment is required. The center that implanted the ICD should be contacted, the indication for insertion, and details regarding delivery of countershocks should be obtained. </span></li>
+<li><span class="segment a-seg" data-start="941.0" data-end="948.0" title="15:41">The device should be interrogated preoperatively and the effect of magnet applications should be recorded. </span></li>
+<li><span class="segment a-seg" data-start="948.0" data-end="957.0" title="15:48">Many of these patients will have severe cardiovascular disease, including left ventricular impairment. </span></li>
+<li><span class="segment a-seg" data-start="957.0" data-end="970.0" title="15:57">As for patients with pacemakers undergoing anesthesia and surgery, 12 lead ECG, serum electrolytes, and possibly chest x-ray should be performed preoperatively. </span></li>
+<li><span class="segment a-seg" data-start="970.0" data-end="980.0" title="16:10">Electrolite abnormalities should be corrected preoperatively and anti-arhythmic and anti-faliomedicines should be continued. </span></li>
+<li><span class="segment a-seg" data-start="980.0" data-end="993.0" title="16:20">Defibrillation and anti-tachycardia functions should be disabled if surgical diotherm use is anticipated or the patient is due to undergo lythertripcy or electro-convulsive therapy. </span></li>
+<li><span class="segment a-seg" data-start="993.0" data-end="998.0" title="16:33">Transcutaneous nerve stimulation should not be used. </span></li>
+<li><span class="segment a-seg" data-start="998.0" data-end="1007.0" title="16:38">An external defibrillator should be available. Ideally, it should be attached to adhesive pads on the patient prior to surgery. </span></li>
+<li><span class="segment a-seg" data-start="1007.0" data-end="1017.0" title="16:47">Usual pad placement below the right clavicle and at the cardiac apex will expose the ICD to the minimum induced current. </span></li>
+<li><span class="segment a-seg" data-start="1017.0" data-end="1025.0" title="16:57">The same advice regarding minimizing electromagnetic interference in patients with pacemakers should be applied. </span></li>
+<li><span class="segment a-seg" data-start="1025.0" data-end="1032.0" title="17:05">Postoperatively, the patient should be managed in either a high dependency or current repair environment. </span></li>
+<li><span class="segment a-seg" data-start="1032.0" data-end="1042.0" title="17:12">Continuous ECG monitoring is required until the ICD has been checked after surgery and the device reactivated. </span></li>
+  </ul>
+</div>
+</div>
+
 </div>
 
 <div class="subtitle-bar">
-  <span class="subtitle-text empty" id="subtitle-text">Play audio to see live subtitles&#8230;</span>
+  <span id="subtitle-text" class="empty">Play audio to see live subtitles&#8230;</span>
 </div>
 
 <script>
-
-const audio    = document.getElementById('audio');
-const allSegs  = Array.from(document.querySelectorAll('.segment'));
-const allBlocks = Array.from(document.querySelectorAll('.t-block'));
+const audio      = document.getElementById('audio');
+const allSegs    = Array.from(document.querySelectorAll('.segment'));
 const subtitleEl = document.getElementById('subtitle-text');
-let activeSegEl   = null;
-let activeBlockEl = null;
-let searchMatches = [];
-let searchIdx     = 0;
+let activeSegEl  = null;
+let searchMatches = [], searchIdx = 0;
 
-// Duration display
 audio.addEventListener('loadedmetadata', () => {
   const m = Math.floor(audio.duration / 60);
   const s = Math.floor(audio.duration %% 60).toString().padStart(2,'0');
   document.getElementById('dur').textContent = m + ':' + s;
 });
 
-// Seek helper
-function seekTo(t) {
-  audio.currentTime = t;
-  audio.play();
-}
+function seekTo(t) { audio.currentTime = t; audio.play(); }
 
-// Block gutter click
-document.querySelectorAll('.t-gutter').forEach(g => {
-  g.addEventListener('click', () => seekTo(parseFloat(g.dataset.start)));
+// Q-block header click
+document.querySelectorAll('.q-block').forEach(q => {
+  q.addEventListener('click', e => {
+    if (!e.target.classList.contains('segment')) seekTo(parseFloat(q.dataset.start));
+  });
 });
 
-// Segment click
+// Individual segment click
 allSegs.forEach(s => {
-  s.addEventListener('click', e => {
-    e.stopPropagation();
-    seekTo(parseFloat(s.dataset.start));
-  });
+  s.addEventListener('click', e => { e.stopPropagation(); seekTo(parseFloat(s.dataset.start)); });
 });
 
 // Real-time tracking
 audio.addEventListener('timeupdate', () => {
   const t = audio.currentTime;
-
-  // Find active segment (last one whose start <= t)
   let found = null;
   for (let i = allSegs.length - 1; i >= 0; i--) {
     if (parseFloat(allSegs[i].dataset.start) <= t) { found = allSegs[i]; break; }
   }
-
   if (found && found !== activeSegEl) {
-    // Clear previous
-    if (activeSegEl) activeSegEl.classList.remove('active');
-    if (activeBlockEl) {
-      activeBlockEl.classList.remove('block-active');
-      const pg = activeBlockEl.querySelector('.t-gutter');
-      if (pg) pg.classList.remove('gutter-active');
+    if (activeSegEl) {
+      activeSegEl.classList.remove('active');
+      const pli = activeSegEl.closest('li');
+      if (pli) pli.classList.remove('li-active');
+      const pq = activeSegEl.closest('.q-block');
+      if (pq) pq.classList.remove('q-active');
     }
-    // Set new
     found.classList.add('active');
-    const block = found.closest('.t-block');
-    if (block) {
-      block.classList.add('block-active');
-      const g = block.querySelector('.t-gutter');
-      if (g) g.classList.add('gutter-active');
-      activeBlockEl = block;
-    }
+    const li = found.closest('li');
+    if (li) li.classList.add('li-active');
+    const qb = found.closest('.q-block');
+    if (qb) qb.classList.add('q-active');
     activeSegEl = found;
 
-    // Update subtitle
     subtitleEl.textContent = found.textContent.trim();
     subtitleEl.classList.remove('empty');
 
-    // Auto-scroll (only when not searching)
-    if (!document.getElementById('search').value) {
+    if (!document.getElementById('search').value)
       found.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }
   }
 });
 
@@ -353,17 +554,13 @@ searchInput.addEventListener('keydown', e => {
     el.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
 });
-
 function runSearch() {
   const q = searchInput.value.trim().toLowerCase();
   allSegs.forEach(s => s.classList.remove('search-match','search-current'));
   searchMatches = [];
   if (!q) return;
   allSegs.forEach(s => {
-    if (s.textContent.toLowerCase().includes(q)) {
-      s.classList.add('search-match');
-      searchMatches.push(s);
-    }
+    if (s.textContent.toLowerCase().includes(q)) { s.classList.add('search-match'); searchMatches.push(s); }
   });
   if (!searchMatches.length) return;
   searchIdx = 0;

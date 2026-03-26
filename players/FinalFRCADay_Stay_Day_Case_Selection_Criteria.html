@@ -5,10 +5,19 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Day Stay — Day Case Selection Criteria</title>
 <style>
-
   :root {
-    --accent:    #6b7280;
-    --body-bg:   #f1f5f9;
+    --q-bg:       #1e3a5f;
+    --q-text:     #ffffff;
+    --q-label:    #60a5fa;
+    --a-bg:       #ffffff;
+    --a-border:   #e2e8f0;
+    --a-label:    #059669;
+    --active-q:   #6b7280;
+    --active-a:   #dbeafe;
+    --accent:     #6b7280;
+    --body-bg:    #f1f5f9;
+    --pre-bg:     #fef9c3;
+    --pre-border: #fcd34d;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
@@ -40,22 +49,9 @@
     margin-bottom: 4px;
     letter-spacing: 0.01em;
   }
-  .header-sub {
-    font-size: 0.72rem;
-    color: #94a3b8;
-    font-style: italic;
-  }
-  audio {
-    height: 36px;
-    accent-color: var(--accent);
-    flex-shrink: 0;
-  }
-  .back-link {
-    font-size: 0.8rem;
-    color: #94a3b8;
-    text-decoration: none;
-    white-space: nowrap;
-  }
+  .header-sub { font-size: 0.72rem; color: #94a3b8; font-style: italic; }
+  audio { height: 36px; accent-color: var(--accent); flex-shrink: 0; }
+  .back-link { font-size: 0.8rem; color: #94a3b8; text-decoration: none; white-space: nowrap; }
   .back-link:hover { color: #60a5fa; }
 
   /* ── Toolbar ── */
@@ -69,30 +65,17 @@
     border-bottom: 1px solid #334155;
   }
   .toolbar input {
-    flex: 1;
-    max-width: 380px;
+    flex: 1; max-width: 380px;
     padding: 5px 11px;
-    border: 1px solid #475569;
-    border-radius: 6px;
-    background: #0f172a;
-    color: #e2e8f0;
-    font-size: 0.83rem;
-    outline: none;
+    border: 1px solid #475569; border-radius: 6px;
+    background: #0f172a; color: #e2e8f0; font-size: 0.83rem; outline: none;
   }
   .toolbar input:focus { border-color: var(--accent); }
   .toolbar input::placeholder { color: #64748b; }
-  .stats {
-    font-size: 0.72rem;
-    color: #64748b;
-    white-space: nowrap;
-  }
+  .stats { font-size: 0.72rem; color: #64748b; white-space: nowrap; }
 
   /* ── Scroll area ── */
-  .scroll-area {
-    flex: 1;
-    overflow-y: auto;
-    padding: 20px;
-  }
+  .scroll-area { flex: 1; overflow-y: auto; padding: 20px; }
   .scroll-area::-webkit-scrollbar { width: 6px; }
   .scroll-area::-webkit-scrollbar-track { background: transparent; }
   .scroll-area::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
@@ -107,68 +90,77 @@
     display: flex;
     align-items: center;
   }
-  .subtitle-text {
-    font-size: 0.9rem;
-    color: #e2e8f0;
-    line-height: 1.5;
-    font-style: italic;
-  }
-  .subtitle-text.empty { color: #475569; }
+  #subtitle-text { font-size: 0.88rem; color: #e2e8f0; line-height: 1.5; font-style: italic; }
+  #subtitle-text.empty { color: #475569; }
 
-  /* ── Transcript blocks ── */
-  .t-block {
-    background: #ffffff;
-    border: 1px solid #e2e8f0;
-    border-radius: 10px;
-    margin-bottom: 14px;
-    overflow: hidden;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
-    display: flex;
-  }
-  .t-block.block-active {
-    border-color: var(--accent);
-    box-shadow: 0 0 0 2px rgba(37,99,235,0.15);
-  }
-  .t-gutter {
-    background: #0f172a;
-    width: 52px;
-    flex-shrink: 0;
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
-    padding-top: 14px;
-    cursor: pointer;
-  }
-  .t-gutter:hover { background: #1e293b; }
-  .t-timestamp {
-    font-size: 0.7rem;
-    color: #64748b;
-    font-family: monospace;
-    font-weight: 600;
-    letter-spacing: 0.02em;
-  }
-  .t-gutter.gutter-active .t-timestamp { color: var(--accent); }
-  .t-body {
-    flex: 1;
+  /* ── Preamble ── */
+  .preamble-block {
+    background: var(--pre-bg);
+    border-left: 4px solid var(--pre-border);
+    border-radius: 0 8px 8px 0;
     padding: 12px 16px;
-    line-height: 1.75;
-    font-size: 0.92rem;
-    color: #1e293b;
+    margin-bottom: 20px;
+    font-size: 0.88rem;
+    color: #78350f;
+    font-style: italic;
+    line-height: 1.7;
   }
 
-  /* ── Segments ── */
-  .segment {
+  /* ── Q&A pair ── */
+  .qa-pair { margin-bottom: 20px; border-radius: 10px; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+
+  /* Question block */
+  .q-block {
+    background: var(--q-bg);
+    padding: 14px 18px;
+    display: flex; gap: 14px; align-items: flex-start;
     cursor: pointer;
-    border-radius: 3px;
-    transition: background 0.1s;
+    transition: background 0.15s;
   }
-  .segment:hover { background: #eff6ff; }
-  .segment.active {
-    background: #bfdbfe;
-    outline: 2px solid #3b82f6;
-    outline-offset: 1px;
-    border-radius: 3px;
+  .q-block:hover { background: #1d4ed8; }
+  .q-block.q-active { background: var(--active-q); }
+  .q-label {
+    font-size: 0.7rem; font-weight: 700;
+    color: var(--q-label);
+    background: rgba(96,165,250,0.15);
+    border: 1px solid rgba(96,165,250,0.3);
+    border-radius: 5px; padding: 3px 7px;
+    white-space: nowrap; margin-top: 2px; letter-spacing: 0.05em;
+    flex-shrink: 0;
   }
+  .q-body { flex: 1; font-size: 0.97rem; font-weight: 600; color: var(--q-text); line-height: 1.55; }
+
+  /* Answer block */
+  .a-block {
+    background: var(--a-bg);
+    border: 1px solid var(--a-border); border-top: none;
+    padding: 14px 18px;
+    display: flex; gap: 14px; align-items: flex-start;
+  }
+  .a-label {
+    font-size: 0.7rem; font-weight: 700;
+    color: var(--a-label);
+    background: #d1fae5; border: 1px solid #6ee7b7;
+    border-radius: 5px; padding: 3px 9px;
+    white-space: nowrap; margin-top: 2px; letter-spacing: 0.05em;
+    flex-shrink: 0;
+  }
+  .a-body { flex: 1; list-style: none; padding: 0; }
+  .a-body li {
+    padding: 4px 0 4px 14px;
+    border-left: 3px solid transparent;
+    line-height: 1.7; font-size: 0.92rem; color: #1e293b;
+    border-radius: 0 4px 4px 0;
+    transition: background 0.15s;
+  }
+  .a-body li:not(:last-child) { border-bottom: 1px solid #f1f5f9; }
+
+  /* ── Segments (clickable) ── */
+  .segment { cursor: pointer; border-radius: 3px; }
+  .q-seg:hover { background: rgba(255,255,255,0.18); }
+  .a-seg:hover { background: #eff6ff; }
+  .segment.active { background: #bfdbfe; outline: 2px solid #3b82f6; outline-offset: 1px; }
+  .a-body li.li-active { background: var(--active-a); border-left-color: var(--accent); }
   .segment.search-match  { background: #fef9c3; }
   .segment.search-current { background: #fde047; outline: 2px solid #ca8a04; }
 
@@ -187,157 +179,309 @@
 
 <div class="toolbar">
   <input type="text" id="search" placeholder="Search transcript&#8230; (Enter = next match)">
-  <span class="stats" id="stats">130 segments &nbsp;|&nbsp; <span id="dur">loading&#8230;</span></span>
+  <span class="stats" id="stats">11 questions &nbsp;|&nbsp; 130 segments &nbsp;|&nbsp; <span id="dur">loading&#8230;</span></span>
 </div>
 
 <div class="scroll-area" id="scroll-area">
-<div class="t-block">
-  <div class="t-gutter" data-start="0.0"><span class="t-timestamp">0:00</span></div>
-  <div class="t-body"><span class="segment" data-start="0.0" data-end="2.8" title="0:00">Day-K selection. </span><span class="segment" data-start="2.8" data-end="7.12" title="0:02">What are the advantages of day-K surgery? </span><span class="segment" data-start="7.12" data-end="13.24" title="0:07">There are many advantages of day-K surgery, which is one of the reasons why the NHS plan </span><span class="segment" data-start="13.24" data-end="21.16" title="0:13">has set a target of 75% of all elective surgeries being performed on a day-case basis. </span><span class="segment" data-start="21.16" data-end="28.0" title="0:21">There are advantages for patients as most prefer day-case rather than overnight stay. </span><span class="segment" data-start="28.0" data-end="34.36" title="0:28">In the elderly population, it has been shown to decrease post-operative cognitive dysfunction. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="34.36"><span class="t-timestamp">0:34</span></div>
-  <div class="t-body"><span class="segment" data-start="34.36" data-end="38.24" title="0:34">It is ideal for children and elderly patients. </span><span class="segment" data-start="38.24" data-end="43.48" title="0:38">There are also other patient benefits, not just psychological ones. </span><span class="segment" data-start="43.48" data-end="49.64" title="0:43">These include less cross-infection and early mobilisation, reducing the risk of deep vein </span><span class="segment" data-start="49.64" data-end="51.64" title="0:49">thrombosis. </span><span class="segment" data-start="51.64" data-end="57.48" title="0:51">Staff are easier to obtain due to social hours, and there are increased economic benefits </span><span class="segment" data-start="57.48" data-end="64.36" title="0:57">to the trust as there can be an increased efficiency in a well-run day-case service reducing waiting </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="64.36"><span class="t-timestamp">1:04</span></div>
-  <div class="t-body"><span class="segment" data-start="64.36" data-end="66.56" title="1:04">lists. </span><span class="segment" data-start="66.56" data-end="71.04" title="1:06">Are there any disadvantages that you can think of? </span><span class="segment" data-start="71.04" data-end="76.84" title="1:11">It is important to assess and have robust guidelines for the selection of patients for </span><span class="segment" data-start="76.84" data-end="78.8" title="1:16">day-case surgery. </span><span class="segment" data-start="78.8" data-end="85.12" title="1:18">There is also inherently a limitation of some anesthetic techniques such as epidural or </span><span class="segment" data-start="85.12" data-end="89.72" title="1:25">indwelling catheter techniques for analgesia postoperatively. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="89.72"><span class="t-timestamp">1:29</span></div>
-  <div class="t-body"><span class="segment" data-start="89.72" data-end="95.6" title="1:29">There also has to be facility for admission of a proportion of patients due to intra and </span><span class="segment" data-start="95.6" data-end="99.0" title="1:35">postoperative complications. </span><span class="segment" data-start="99.0" data-end="105.48" title="1:39">What surgery can be performed as day-case and what are the important considerations? </span><span class="segment" data-start="105.48" data-end="111.44" title="1:45">There has to be consideration as to which surgery is appropriate to be performed as day-case. </span><span class="segment" data-start="111.44" data-end="117.68" title="1:51">It is important to make sure that any surgery can be done safely as a day-case without compromising </span><span class="segment" data-start="117.68" data-end="119.52" title="1:57">patient care. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="119.52"><span class="t-timestamp">1:59</span></div>
-  <div class="t-body"><span class="segment" data-start="119.52" data-end="124.28" title="1:59">The complication rate should be low with minimal blood loss. </span><span class="segment" data-start="124.28" data-end="129.96" title="2:04">There must be adequate control of pain, nausea and vomiting, and the patients must be able </span><span class="segment" data-start="129.96" data-end="137.24" title="2:09">to eat and drink and mobilize within a reasonable time frame after the surgery is complete. </span><span class="segment" data-start="137.24" data-end="142.04" title="2:17">So how are you going to select patients to have day-case surgery? </span><span class="segment" data-start="142.04" data-end="147.8" title="2:22">There are social and medical factors that affect whether a patient can have day-case surgery </span><span class="segment" data-start="147.8" data-end="149.92" title="2:27">or not. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="149.92"><span class="t-timestamp">2:29</span></div>
-  <div class="t-body"><span class="segment" data-start="149.92" data-end="157.04" title="2:29">Social factors include willingness on the patient's behalf, easy access to a phone and transport </span><span class="segment" data-start="157.04" data-end="158.96" title="2:37">back to the hospital. </span><span class="segment" data-start="158.96" data-end="163.84" title="2:38">There should be a responsible adult who can stay with the patient for at least the first </span><span class="segment" data-start="163.84" data-end="170.04" title="2:43">24 hours postoperatively and the conditions at home should be compatible with postoperative </span><span class="segment" data-start="170.04" data-end="174.48" title="2:50">care, with adequate toilet and bathroom facilities. </span><span class="segment" data-start="174.48" data-end="179.88" title="2:54">There should be no more than a 60 minute travelling time back to the hospital should complications </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="179.88"><span class="t-timestamp">2:59</span></div>
-  <div class="t-body"><span class="segment" data-start="179.88" data-end="181.88" title="2:59">occur. </span><span class="segment" data-start="181.88" data-end="187.36" title="3:01">Patients should have a telephone number to contact in case of emergencies and be discharged </span><span class="segment" data-start="187.36" data-end="192.88" title="3:07">with an advice sheet explaining what to do in case of complications. </span><span class="segment" data-start="192.88" data-end="198.56" title="3:12">Social factors are more difficult to quantify and in many circumstances clinical judgment </span><span class="segment" data-start="198.56" data-end="201.2" title="3:18">needs to be employed. </span><span class="segment" data-start="201.2" data-end="209.6" title="3:21">In general, patients should be relatively fit and well, mobile and not morbidly obese. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="209.6"><span class="t-timestamp">3:29</span></div>
-  <div class="t-body"><span class="segment" data-start="209.6" data-end="215.36" title="3:29">Patients should be selected according to their physiological status and not their chronological </span><span class="segment" data-start="215.36" data-end="217.36" title="3:35">age. </span><span class="segment" data-start="217.36" data-end="223.08" title="3:37">Some patients who fall outside guidelines may particularly benefit and should be discussed </span><span class="segment" data-start="223.08" data-end="229.08" title="3:43">on a case-by-case basis, for example, people with stable diabetes. </span><span class="segment" data-start="229.08" data-end="234.88" title="3:49">Obesity is not an absolute contraindication for day-case surgery, but there are problems </span><span class="segment" data-start="234.88" data-end="237.32" title="3:54">with this population. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="237.32"><span class="t-timestamp">3:57</span></div>
-  <div class="t-body"><span class="segment" data-start="237.32" data-end="242.84" title="3:57">What are the problems of treating obese patients in the day-case setting? </span><span class="segment" data-start="242.84" data-end="247.8" title="4:02">There needs to be appropriate resources and facilities for the management of obese </span><span class="segment" data-start="247.8" data-end="253.52" title="4:07">patients, and specialist equipment and staff may not be available. </span><span class="segment" data-start="253.52" data-end="258.76" title="4:13">There is an increased risk of respiratory compromise in the obese population, and late </span><span class="segment" data-start="258.76" data-end="264.72" title="4:18">complications may develop more frequently, and therefore a longer hospital stay may be </span><span class="segment" data-start="264.72" data-end="268.16" title="4:24">appropriate in some circumstances. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="268.16"><span class="t-timestamp">4:28</span></div>
-  <div class="t-body"><span class="segment" data-start="268.16" data-end="275.48" title="4:28">Obidly obese patients may also provide increased technical challenge to surgeons. </span><span class="segment" data-start="275.48" data-end="281.88" title="4:35">Body Mass Index, though not the ideal tool for assessing these patients, does give pre-assessment </span><span class="segment" data-start="281.88" data-end="283.8" title="4:41">nurses a guide. </span><span class="segment" data-start="283.8" data-end="291.24" title="4:43">Our day-case unit has a body Mass Index cutoff of 35 for all procedures, as there is not </span><span class="segment" data-start="291.24" data-end="293.64" title="4:51">the appropriate facility available. </span><span class="segment" data-start="293.96" data-end="300.08" title="4:53">However, in many units there is no specific limit set, and cases can be assessed on an </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="300.08"><span class="t-timestamp">5:00</span></div>
-  <div class="t-body"><span class="segment" data-start="300.08" data-end="303.0" title="5:00">individual basis. </span><span class="segment" data-start="303.0" data-end="307.2" title="5:03">How else can you select patients? </span><span class="segment" data-start="307.2" data-end="313.96" title="5:07">Other general factors to consider include no previous problems with surgery or anesthesia, </span><span class="segment" data-start="313.96" data-end="319.0" title="5:13">and no significant family history of anesthetic complications. </span><span class="segment" data-start="319.0" data-end="323.96" title="5:19">The type of surgery needs to be taken into account, and the likelihood of significant </span><span class="segment" data-start="323.96" data-end="328.24" title="5:23">bleeding, and or prolonged and difficult surgery. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="328.24"><span class="t-timestamp">5:28</span></div>
-  <div class="t-body"><span class="segment" data-start="328.24" data-end="334.44" title="5:28">Newer techniques, such as total intravenous anesthesia, and the use of desflurrain, mean </span><span class="segment" data-start="334.44" data-end="339.56" title="5:34">that surgery does not have to be time limited to be performed as a day-case. </span><span class="segment" data-start="339.56" data-end="345.0" title="5:39">If there are specialist services needed, such as radiological intervention, then there may </span><span class="segment" data-start="345.0" data-end="350.16" title="5:45">be logistical reasons why day-case surgery may not be appropriate. </span><span class="segment" data-start="350.16" data-end="355.4" title="5:50">In these cases, surgery should be planned as an inpatient. </span><span class="segment" data-start="355.4" data-end="358.36" title="5:55">You have mentioned general and surgical factors. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="358.36"><span class="t-timestamp">5:58</span></div>
-  <div class="t-body"><span class="segment" data-start="358.36" data-end="362.04" title="5:58">What other factors are there that need to be considered when selecting patients for day-case </span><span class="segment" data-start="362.04" data-end="365.04" title="6:02">surgery? </span><span class="segment" data-start="365.04" data-end="370.96" title="6:05">Cardiovascular history should be explored, with particular attention being paid to exercise </span><span class="segment" data-start="370.96" data-end="373.48" title="6:10">tolerance and reserve. </span><span class="segment" data-start="373.48" data-end="379.44" title="6:13">If there are signs of heart failure, such as ankle edema and disnear, then these patients </span><span class="segment" data-start="379.44" data-end="382.32" title="6:19">are not appropriate for day-case surgery. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="382.32"><span class="t-timestamp">6:22</span></div>
-  <div class="t-body"><span class="segment" data-start="382.32" data-end="390.72" title="6:22">Also, uncontrolled angina or myocardial infarction in the last six months should be an exclusion. </span><span class="segment" data-start="390.72" data-end="396.56" title="6:30">Vovular heart disease with symptoms should be excluded for further investigation and </span><span class="segment" data-start="396.56" data-end="398.56" title="6:36">quantification. </span><span class="segment" data-start="398.56" data-end="403.88" title="6:38">Type attention is controversial and should be controlled preoperatively in a day-case </span><span class="segment" data-start="403.88" data-end="407.52" title="6:43">surgery setting for an elective procedure. </span><span class="segment" data-start="407.52" data-end="413.6" title="6:47">A general practitioner should be able to re-refer the patient directly to the clinic for treatment </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="413.6"><span class="t-timestamp">6:53</span></div>
-  <div class="t-body"><span class="segment" data-start="413.6" data-end="417.08" title="6:53">once this is controlled. </span><span class="segment" data-start="417.08" data-end="423.8" title="6:57">Significant respiratory disease should be searched for and optimised prior to day-case surgery. </span><span class="segment" data-start="423.8" data-end="429.56" title="7:03">A history of corticosteroid use or intensive care admission recently would make day-case </span><span class="segment" data-start="429.56" data-end="433.24" title="7:09">surgery less appropriate. </span><span class="segment" data-start="433.24" data-end="438.92" title="7:13">Diabetics can generally be done if performed first on the list, allowing time for eating </span><span class="segment" data-start="438.92" data-end="442.48" title="7:18">and drinking to be established post-procedure. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="442.48"><span class="t-timestamp">7:22</span></div>
-  <div class="t-body"><span class="segment" data-start="442.48" data-end="450.0" title="7:22">A sliding scale should be able to be performed if needed in the day-surgery unit. </span><span class="segment" data-start="450.0" data-end="461.72" title="7:30">Epilepsy is not an absolute contraindication unless there is poor control. </span><span class="segment" data-start="461.72" data-end="468.4" title="7:41">Recent transient ischemic attacks or so re-brovascular events in the past six months may exclude </span><span class="segment" data-start="468.4" data-end="470.56" title="7:48">day-case surgery. </span><span class="segment" data-start="470.56" data-end="476.2" title="7:50">This population group is also more likely to be anti-coagulated and every case should </span><span class="segment" data-start="476.2" data-end="479.92" title="7:56">be assessed to see if this could be stopped for surgery. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="479.92"><span class="t-timestamp">7:59</span></div>
-  <div class="t-body"><span class="segment" data-start="479.92" data-end="485.32" title="7:59">If unable to stop, the patient should be done as an inpatient, allowing for transfer </span><span class="segment" data-start="485.32" data-end="488.16" title="8:05">to heparin infusion. </span><span class="segment" data-start="488.16" data-end="494.32" title="8:08">Other drugs which would make day-surgery more difficult include monoam in oxidase inhibitors </span><span class="segment" data-start="494.32" data-end="497.12" title="8:14">and corticosteroids. </span><span class="segment" data-start="497.12" data-end="501.68" title="8:17">Excessive alcohol or drug abuse may also exclude day-surgery. </span><span class="segment" data-start="501.68" data-end="506.08" title="8:21">Every case should be assessed individually. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="506.08"><span class="t-timestamp">8:26</span></div>
-  <div class="t-body"><span class="segment" data-start="506.08" data-end="511.76" title="8:26">What are the important principles of anaesthetic management for day-case surgery? </span><span class="segment" data-start="511.76" data-end="519.64" title="8:31">It is important to perform safe and effective anaesthesia with rapid recovery and few complications. </span><span class="segment" data-start="519.64" data-end="525.52" title="8:39">The patients need to recover rapidly, have no cardiovascular or respiratory effects, and </span><span class="segment" data-start="525.52" data-end="528.0" title="8:45">be awakened or orientated. </span><span class="segment" data-start="528.0" data-end="533.16" title="8:48">They should not have nausea or vomiting and be able to drink fluids. </span><span class="segment" data-start="533.16" data-end="539.56" title="8:53">Anti-emetics and the avoidance of nitrous oxide or volatile anaesthetic agents may be vital </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="539.56"><span class="t-timestamp">8:59</span></div>
-  <div class="t-body"><span class="segment" data-start="539.56" data-end="542.08" title="8:59">in certain circumstances. </span><span class="segment" data-start="542.08" data-end="547.96" title="9:02">Adequat analgesia is vital and opiate sparing techniques are important. </span><span class="segment" data-start="547.96" data-end="555.36" title="9:07">Local anaesthetic techniques and non-steroidal anti-inflammatory drugs should be used if appropriate. </span><span class="segment" data-start="555.36" data-end="560.68" title="9:15">When should patients be discharged and what criteria should they meet? </span><span class="segment" data-start="560.68" data-end="565.76" title="9:20">As mentioned before, patients should be cardiovascular stable. </span><span class="segment" data-start="565.76" data-end="568.68" title="9:25">There should not be excessive blood loss. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="568.68"><span class="t-timestamp">9:28</span></div>
-  <div class="t-body"><span class="segment" data-start="568.68" data-end="575.16" title="9:28">There should be adequate respiratory parameters with saturations maintained on room air. </span><span class="segment" data-start="575.16" data-end="579.0" title="9:35">Pain and nausea and vomiting should be controlled. </span><span class="segment" data-start="579.0" data-end="584.16" title="9:39">Any motorblock from a regional technique should have worn off and there should be no impairment </span><span class="segment" data-start="584.16" data-end="586.52" title="9:44">of bladder function. </span><span class="segment" data-start="586.52" data-end="592.04" title="9:46">Models should be able to mobilize and have adequate social care at home, including access </span><span class="segment" data-start="592.04" data-end="599.4" title="9:52">to a phone, bathroom and a responsible adults are care for them for 24 hours. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="599.4"><span class="t-timestamp">9:59</span></div>
-  <div class="t-body"><span class="segment" data-start="599.4" data-end="603.96" title="9:59">Information should be given on discharge with a telephone number and advice as to what </span><span class="segment" data-start="603.96" data-end="607.48" title="10:03">to do if complications arise. </span><span class="segment" data-start="607.48" data-end="613.36" title="10:07">Why do patients get admitted overnight following day case surgery? </span><span class="segment" data-start="613.44" data-end="618.28" title="10:13">There are many reasons why patients get admitted following day surgery. </span><span class="segment" data-start="618.28" data-end="624.48" title="10:18">There are surgical reasons such as bleeding or more extensive procedure being performed. </span><span class="segment" data-start="624.48" data-end="630.44" title="10:24">There are anaesthetic reasons such as pain, cardiovascular or respiratory instability </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="630.44"><span class="t-timestamp">10:30</span></div>
-  <div class="t-body"><span class="segment" data-start="630.44" data-end="632.96" title="10:30">and nausea and vomiting. </span><span class="segment" data-start="632.96" data-end="638.84" title="10:32">If any of the discharge criteria are not achieved, such as being unable to pass urine, then </span><span class="segment" data-start="638.84" data-end="641.8" title="10:38">the patient should also be admitted. </span><span class="segment" data-start="641.8" data-end="647.24" title="10:41">The commonest reasons for admission are inadequate pain relief and nausea and vomiting. </span></div>
+<div class="preamble-block"><span class="segment a-seg" data-start="0.0" data-end="2.8" title="0:00">Day-K selection. </span></div>
+<div class="qa-pair">
+<div class="q-block" data-start="2.8">
+  <div class="q-label">Q1</div>
+  <div class="q-body"><span class="segment q-seg" data-start="2.8" data-end="7.12" title="0:02">What are the advantages of day-K surgery? </span></div>
 </div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="7.12" data-end="13.24" title="0:07">There are many advantages of day-K surgery, which is one of the reasons why the NHS plan </span></li>
+<li><span class="segment a-seg" data-start="13.24" data-end="21.16" title="0:13">has set a target of 75% of all elective surgeries being performed on a day-case basis. </span></li>
+<li><span class="segment a-seg" data-start="21.16" data-end="28.0" title="0:21">There are advantages for patients as most prefer day-case rather than overnight stay. </span></li>
+<li><span class="segment a-seg" data-start="28.0" data-end="34.36" title="0:28">In the elderly population, it has been shown to decrease post-operative cognitive dysfunction. </span></li>
+<li><span class="segment a-seg" data-start="34.36" data-end="38.24" title="0:34">It is ideal for children and elderly patients. </span></li>
+<li><span class="segment a-seg" data-start="38.24" data-end="43.48" title="0:38">There are also other patient benefits, not just psychological ones. </span></li>
+<li><span class="segment a-seg" data-start="43.48" data-end="49.64" title="0:43">These include less cross-infection and early mobilisation, reducing the risk of deep vein </span></li>
+<li><span class="segment a-seg" data-start="49.64" data-end="51.64" title="0:49">thrombosis. </span></li>
+<li><span class="segment a-seg" data-start="51.64" data-end="57.48" title="0:51">Staff are easier to obtain due to social hours, and there are increased economic benefits </span></li>
+<li><span class="segment a-seg" data-start="57.48" data-end="64.36" title="0:57">to the trust as there can be an increased efficiency in a well-run day-case service reducing waiting </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="64.36">
+  <div class="q-label">Q2</div>
+  <div class="q-body"><span class="segment q-seg" data-start="64.36" data-end="66.56" title="1:04">lists. </span><span class="segment q-seg" data-start="66.56" data-end="71.04" title="1:06">Are there any disadvantages that you can think of? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="71.04" data-end="76.84" title="1:11">It is important to assess and have robust guidelines for the selection of patients for </span></li>
+<li><span class="segment a-seg" data-start="76.84" data-end="78.8" title="1:16">day-case surgery. </span></li>
+<li><span class="segment a-seg" data-start="78.8" data-end="85.12" title="1:18">There is also inherently a limitation of some anesthetic techniques such as epidural or </span></li>
+<li><span class="segment a-seg" data-start="85.12" data-end="89.72" title="1:25">indwelling catheter techniques for analgesia postoperatively. </span></li>
+<li><span class="segment a-seg" data-start="89.72" data-end="95.6" title="1:29">There also has to be facility for admission of a proportion of patients due to intra and </span></li>
+<li><span class="segment a-seg" data-start="95.6" data-end="99.0" title="1:35">postoperative complications. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="99.0">
+  <div class="q-label">Q3</div>
+  <div class="q-body"><span class="segment q-seg" data-start="99.0" data-end="105.48" title="1:39">What surgery can be performed as day-case and what are the important considerations? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="105.48" data-end="111.44" title="1:45">There has to be consideration as to which surgery is appropriate to be performed as day-case. </span></li>
+<li><span class="segment a-seg" data-start="111.44" data-end="117.68" title="1:51">It is important to make sure that any surgery can be done safely as a day-case without compromising </span></li>
+<li><span class="segment a-seg" data-start="117.68" data-end="119.52" title="1:57">patient care. </span></li>
+<li><span class="segment a-seg" data-start="119.52" data-end="124.28" title="1:59">The complication rate should be low with minimal blood loss. </span></li>
+<li><span class="segment a-seg" data-start="124.28" data-end="129.96" title="2:04">There must be adequate control of pain, nausea and vomiting, and the patients must be able </span></li>
+<li><span class="segment a-seg" data-start="129.96" data-end="137.24" title="2:09">to eat and drink and mobilize within a reasonable time frame after the surgery is complete. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="137.24">
+  <div class="q-label">Q4</div>
+  <div class="q-body"><span class="segment q-seg" data-start="137.24" data-end="142.04" title="2:17">So how are you going to select patients to have day-case surgery? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="142.04" data-end="147.8" title="2:22">There are social and medical factors that affect whether a patient can have day-case surgery </span></li>
+<li><span class="segment a-seg" data-start="147.8" data-end="149.92" title="2:27">or not. </span></li>
+<li><span class="segment a-seg" data-start="149.92" data-end="157.04" title="2:29">Social factors include willingness on the patient's behalf, easy access to a phone and transport </span></li>
+<li><span class="segment a-seg" data-start="157.04" data-end="158.96" title="2:37">back to the hospital. </span></li>
+<li><span class="segment a-seg" data-start="158.96" data-end="163.84" title="2:38">There should be a responsible adult who can stay with the patient for at least the first </span></li>
+<li><span class="segment a-seg" data-start="163.84" data-end="170.04" title="2:43">24 hours postoperatively and the conditions at home should be compatible with postoperative </span></li>
+<li><span class="segment a-seg" data-start="170.04" data-end="174.48" title="2:50">care, with adequate toilet and bathroom facilities. </span></li>
+<li><span class="segment a-seg" data-start="174.48" data-end="179.88" title="2:54">There should be no more than a 60 minute travelling time back to the hospital should complications </span></li>
+<li><span class="segment a-seg" data-start="179.88" data-end="181.88" title="2:59">occur. </span></li>
+<li><span class="segment a-seg" data-start="181.88" data-end="187.36" title="3:01">Patients should have a telephone number to contact in case of emergencies and be discharged </span></li>
+<li><span class="segment a-seg" data-start="187.36" data-end="192.88" title="3:07">with an advice sheet explaining what to do in case of complications. </span></li>
+<li><span class="segment a-seg" data-start="192.88" data-end="198.56" title="3:12">Social factors are more difficult to quantify and in many circumstances clinical judgment </span></li>
+<li><span class="segment a-seg" data-start="198.56" data-end="201.2" title="3:18">needs to be employed. </span></li>
+<li><span class="segment a-seg" data-start="201.2" data-end="209.6" title="3:21">In general, patients should be relatively fit and well, mobile and not morbidly obese. </span></li>
+<li><span class="segment a-seg" data-start="209.6" data-end="215.36" title="3:29">Patients should be selected according to their physiological status and not their chronological </span></li>
+<li><span class="segment a-seg" data-start="215.36" data-end="217.36" title="3:35">age. </span></li>
+<li><span class="segment a-seg" data-start="217.36" data-end="223.08" title="3:37">Some patients who fall outside guidelines may particularly benefit and should be discussed </span></li>
+<li><span class="segment a-seg" data-start="223.08" data-end="229.08" title="3:43">on a case-by-case basis, for example, people with stable diabetes. </span></li>
+<li><span class="segment a-seg" data-start="229.08" data-end="234.88" title="3:49">Obesity is not an absolute contraindication for day-case surgery, but there are problems </span></li>
+<li><span class="segment a-seg" data-start="234.88" data-end="237.32" title="3:54">with this population. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="237.32">
+  <div class="q-label">Q5</div>
+  <div class="q-body"><span class="segment q-seg" data-start="237.32" data-end="242.84" title="3:57">What are the problems of treating obese patients in the day-case setting? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="242.84" data-end="247.8" title="4:02">There needs to be appropriate resources and facilities for the management of obese </span></li>
+<li><span class="segment a-seg" data-start="247.8" data-end="253.52" title="4:07">patients, and specialist equipment and staff may not be available. </span></li>
+<li><span class="segment a-seg" data-start="253.52" data-end="258.76" title="4:13">There is an increased risk of respiratory compromise in the obese population, and late </span></li>
+<li><span class="segment a-seg" data-start="258.76" data-end="264.72" title="4:18">complications may develop more frequently, and therefore a longer hospital stay may be </span></li>
+<li><span class="segment a-seg" data-start="264.72" data-end="268.16" title="4:24">appropriate in some circumstances. </span></li>
+<li><span class="segment a-seg" data-start="268.16" data-end="275.48" title="4:28">Obidly obese patients may also provide increased technical challenge to surgeons. </span></li>
+<li><span class="segment a-seg" data-start="275.48" data-end="281.88" title="4:35">Body Mass Index, though not the ideal tool for assessing these patients, does give pre-assessment </span></li>
+<li><span class="segment a-seg" data-start="281.88" data-end="283.8" title="4:41">nurses a guide. </span></li>
+<li><span class="segment a-seg" data-start="283.8" data-end="291.24" title="4:43">Our day-case unit has a body Mass Index cutoff of 35 for all procedures, as there is not </span></li>
+<li><span class="segment a-seg" data-start="291.24" data-end="293.64" title="4:51">the appropriate facility available. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="293.96">
+  <div class="q-label">Q6</div>
+  <div class="q-body"><span class="segment q-seg" data-start="293.96" data-end="300.08" title="4:53">However, in many units there is no specific limit set, and cases can be assessed on an </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="300.08" data-end="303.0" title="5:00">individual basis. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="303.0">
+  <div class="q-label">Q7</div>
+  <div class="q-body"><span class="segment q-seg" data-start="303.0" data-end="307.2" title="5:03">How else can you select patients? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="307.2" data-end="313.96" title="5:07">Other general factors to consider include no previous problems with surgery or anesthesia, </span></li>
+<li><span class="segment a-seg" data-start="313.96" data-end="319.0" title="5:13">and no significant family history of anesthetic complications. </span></li>
+<li><span class="segment a-seg" data-start="319.0" data-end="323.96" title="5:19">The type of surgery needs to be taken into account, and the likelihood of significant </span></li>
+<li><span class="segment a-seg" data-start="323.96" data-end="328.24" title="5:23">bleeding, and or prolonged and difficult surgery. </span></li>
+<li><span class="segment a-seg" data-start="328.24" data-end="334.44" title="5:28">Newer techniques, such as total intravenous anesthesia, and the use of desflurrain, mean </span></li>
+<li><span class="segment a-seg" data-start="334.44" data-end="339.56" title="5:34">that surgery does not have to be time limited to be performed as a day-case. </span></li>
+<li><span class="segment a-seg" data-start="339.56" data-end="345.0" title="5:39">If there are specialist services needed, such as radiological intervention, then there may </span></li>
+<li><span class="segment a-seg" data-start="345.0" data-end="350.16" title="5:45">be logistical reasons why day-case surgery may not be appropriate. </span></li>
+<li><span class="segment a-seg" data-start="350.16" data-end="355.4" title="5:50">In these cases, surgery should be planned as an inpatient. </span></li>
+<li><span class="segment a-seg" data-start="355.4" data-end="358.36" title="5:55">You have mentioned general and surgical factors. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="358.36">
+  <div class="q-label">Q8</div>
+  <div class="q-body"><span class="segment q-seg" data-start="358.36" data-end="362.04" title="5:58">What other factors are there that need to be considered when selecting patients for day-case </span><span class="segment q-seg" data-start="362.04" data-end="365.04" title="6:02">surgery? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="365.04" data-end="370.96" title="6:05">Cardiovascular history should be explored, with particular attention being paid to exercise </span></li>
+<li><span class="segment a-seg" data-start="370.96" data-end="373.48" title="6:10">tolerance and reserve. </span></li>
+<li><span class="segment a-seg" data-start="373.48" data-end="379.44" title="6:13">If there are signs of heart failure, such as ankle edema and disnear, then these patients </span></li>
+<li><span class="segment a-seg" data-start="379.44" data-end="382.32" title="6:19">are not appropriate for day-case surgery. </span></li>
+<li><span class="segment a-seg" data-start="382.32" data-end="390.72" title="6:22">Also, uncontrolled angina or myocardial infarction in the last six months should be an exclusion. </span></li>
+<li><span class="segment a-seg" data-start="390.72" data-end="396.56" title="6:30">Vovular heart disease with symptoms should be excluded for further investigation and </span></li>
+<li><span class="segment a-seg" data-start="396.56" data-end="398.56" title="6:36">quantification. </span></li>
+<li><span class="segment a-seg" data-start="398.56" data-end="403.88" title="6:38">Type attention is controversial and should be controlled preoperatively in a day-case </span></li>
+<li><span class="segment a-seg" data-start="403.88" data-end="407.52" title="6:43">surgery setting for an elective procedure. </span></li>
+<li><span class="segment a-seg" data-start="407.52" data-end="413.6" title="6:47">A general practitioner should be able to re-refer the patient directly to the clinic for treatment </span></li>
+<li><span class="segment a-seg" data-start="413.6" data-end="417.08" title="6:53">once this is controlled. </span></li>
+<li><span class="segment a-seg" data-start="417.08" data-end="423.8" title="6:57">Significant respiratory disease should be searched for and optimised prior to day-case surgery. </span></li>
+<li><span class="segment a-seg" data-start="423.8" data-end="429.56" title="7:03">A history of corticosteroid use or intensive care admission recently would make day-case </span></li>
+<li><span class="segment a-seg" data-start="429.56" data-end="433.24" title="7:09">surgery less appropriate. </span></li>
+<li><span class="segment a-seg" data-start="433.24" data-end="438.92" title="7:13">Diabetics can generally be done if performed first on the list, allowing time for eating </span></li>
+<li><span class="segment a-seg" data-start="438.92" data-end="442.48" title="7:18">and drinking to be established post-procedure. </span></li>
+<li><span class="segment a-seg" data-start="442.48" data-end="450.0" title="7:22">A sliding scale should be able to be performed if needed in the day-surgery unit. </span></li>
+<li><span class="segment a-seg" data-start="450.0" data-end="461.72" title="7:30">Epilepsy is not an absolute contraindication unless there is poor control. </span></li>
+<li><span class="segment a-seg" data-start="461.72" data-end="468.4" title="7:41">Recent transient ischemic attacks or so re-brovascular events in the past six months may exclude </span></li>
+<li><span class="segment a-seg" data-start="468.4" data-end="470.56" title="7:48">day-case surgery. </span></li>
+<li><span class="segment a-seg" data-start="470.56" data-end="476.2" title="7:50">This population group is also more likely to be anti-coagulated and every case should </span></li>
+<li><span class="segment a-seg" data-start="476.2" data-end="479.92" title="7:56">be assessed to see if this could be stopped for surgery. </span></li>
+<li><span class="segment a-seg" data-start="479.92" data-end="485.32" title="7:59">If unable to stop, the patient should be done as an inpatient, allowing for transfer </span></li>
+<li><span class="segment a-seg" data-start="485.32" data-end="488.16" title="8:05">to heparin infusion. </span></li>
+<li><span class="segment a-seg" data-start="488.16" data-end="494.32" title="8:08">Other drugs which would make day-surgery more difficult include monoam in oxidase inhibitors </span></li>
+<li><span class="segment a-seg" data-start="494.32" data-end="497.12" title="8:14">and corticosteroids. </span></li>
+<li><span class="segment a-seg" data-start="497.12" data-end="501.68" title="8:17">Excessive alcohol or drug abuse may also exclude day-surgery. </span></li>
+<li><span class="segment a-seg" data-start="501.68" data-end="506.08" title="8:21">Every case should be assessed individually. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="506.08">
+  <div class="q-label">Q9</div>
+  <div class="q-body"><span class="segment q-seg" data-start="506.08" data-end="511.76" title="8:26">What are the important principles of anaesthetic management for day-case surgery? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="511.76" data-end="519.64" title="8:31">It is important to perform safe and effective anaesthesia with rapid recovery and few complications. </span></li>
+<li><span class="segment a-seg" data-start="519.64" data-end="525.52" title="8:39">The patients need to recover rapidly, have no cardiovascular or respiratory effects, and </span></li>
+<li><span class="segment a-seg" data-start="525.52" data-end="528.0" title="8:45">be awakened or orientated. </span></li>
+<li><span class="segment a-seg" data-start="528.0" data-end="533.16" title="8:48">They should not have nausea or vomiting and be able to drink fluids. </span></li>
+<li><span class="segment a-seg" data-start="533.16" data-end="539.56" title="8:53">Anti-emetics and the avoidance of nitrous oxide or volatile anaesthetic agents may be vital </span></li>
+<li><span class="segment a-seg" data-start="539.56" data-end="542.08" title="8:59">in certain circumstances. </span></li>
+<li><span class="segment a-seg" data-start="542.08" data-end="547.96" title="9:02">Adequat analgesia is vital and opiate sparing techniques are important. </span></li>
+<li><span class="segment a-seg" data-start="547.96" data-end="555.36" title="9:07">Local anaesthetic techniques and non-steroidal anti-inflammatory drugs should be used if appropriate. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="555.36">
+  <div class="q-label">Q10</div>
+  <div class="q-body"><span class="segment q-seg" data-start="555.36" data-end="560.68" title="9:15">When should patients be discharged and what criteria should they meet? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="560.68" data-end="565.76" title="9:20">As mentioned before, patients should be cardiovascular stable. </span></li>
+<li><span class="segment a-seg" data-start="565.76" data-end="568.68" title="9:25">There should not be excessive blood loss. </span></li>
+<li><span class="segment a-seg" data-start="568.68" data-end="575.16" title="9:28">There should be adequate respiratory parameters with saturations maintained on room air. </span></li>
+<li><span class="segment a-seg" data-start="575.16" data-end="579.0" title="9:35">Pain and nausea and vomiting should be controlled. </span></li>
+<li><span class="segment a-seg" data-start="579.0" data-end="584.16" title="9:39">Any motorblock from a regional technique should have worn off and there should be no impairment </span></li>
+<li><span class="segment a-seg" data-start="584.16" data-end="586.52" title="9:44">of bladder function. </span></li>
+<li><span class="segment a-seg" data-start="586.52" data-end="592.04" title="9:46">Models should be able to mobilize and have adequate social care at home, including access </span></li>
+<li><span class="segment a-seg" data-start="592.04" data-end="599.4" title="9:52">to a phone, bathroom and a responsible adults are care for them for 24 hours. </span></li>
+<li><span class="segment a-seg" data-start="599.4" data-end="603.96" title="9:59">Information should be given on discharge with a telephone number and advice as to what </span></li>
+<li><span class="segment a-seg" data-start="603.96" data-end="607.48" title="10:03">to do if complications arise. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="607.48">
+  <div class="q-label">Q11</div>
+  <div class="q-body"><span class="segment q-seg" data-start="607.48" data-end="613.36" title="10:07">Why do patients get admitted overnight following day case surgery? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="613.44" data-end="618.28" title="10:13">There are many reasons why patients get admitted following day surgery. </span></li>
+<li><span class="segment a-seg" data-start="618.28" data-end="624.48" title="10:18">There are surgical reasons such as bleeding or more extensive procedure being performed. </span></li>
+<li><span class="segment a-seg" data-start="624.48" data-end="630.44" title="10:24">There are anaesthetic reasons such as pain, cardiovascular or respiratory instability </span></li>
+<li><span class="segment a-seg" data-start="630.44" data-end="632.96" title="10:30">and nausea and vomiting. </span></li>
+<li><span class="segment a-seg" data-start="632.96" data-end="638.84" title="10:32">If any of the discharge criteria are not achieved, such as being unable to pass urine, then </span></li>
+<li><span class="segment a-seg" data-start="638.84" data-end="641.8" title="10:38">the patient should also be admitted. </span></li>
+<li><span class="segment a-seg" data-start="641.8" data-end="647.24" title="10:41">The commonest reasons for admission are inadequate pain relief and nausea and vomiting. </span></li>
+  </ul>
+</div>
+</div>
+
 </div>
 
 <div class="subtitle-bar">
-  <span class="subtitle-text empty" id="subtitle-text">Play audio to see live subtitles&#8230;</span>
+  <span id="subtitle-text" class="empty">Play audio to see live subtitles&#8230;</span>
 </div>
 
 <script>
-
-const audio    = document.getElementById('audio');
-const allSegs  = Array.from(document.querySelectorAll('.segment'));
-const allBlocks = Array.from(document.querySelectorAll('.t-block'));
+const audio      = document.getElementById('audio');
+const allSegs    = Array.from(document.querySelectorAll('.segment'));
 const subtitleEl = document.getElementById('subtitle-text');
-let activeSegEl   = null;
-let activeBlockEl = null;
-let searchMatches = [];
-let searchIdx     = 0;
+let activeSegEl  = null;
+let searchMatches = [], searchIdx = 0;
 
-// Duration display
 audio.addEventListener('loadedmetadata', () => {
   const m = Math.floor(audio.duration / 60);
   const s = Math.floor(audio.duration %% 60).toString().padStart(2,'0');
   document.getElementById('dur').textContent = m + ':' + s;
 });
 
-// Seek helper
-function seekTo(t) {
-  audio.currentTime = t;
-  audio.play();
-}
+function seekTo(t) { audio.currentTime = t; audio.play(); }
 
-// Block gutter click
-document.querySelectorAll('.t-gutter').forEach(g => {
-  g.addEventListener('click', () => seekTo(parseFloat(g.dataset.start)));
+// Q-block header click
+document.querySelectorAll('.q-block').forEach(q => {
+  q.addEventListener('click', e => {
+    if (!e.target.classList.contains('segment')) seekTo(parseFloat(q.dataset.start));
+  });
 });
 
-// Segment click
+// Individual segment click
 allSegs.forEach(s => {
-  s.addEventListener('click', e => {
-    e.stopPropagation();
-    seekTo(parseFloat(s.dataset.start));
-  });
+  s.addEventListener('click', e => { e.stopPropagation(); seekTo(parseFloat(s.dataset.start)); });
 });
 
 // Real-time tracking
 audio.addEventListener('timeupdate', () => {
   const t = audio.currentTime;
-
-  // Find active segment (last one whose start <= t)
   let found = null;
   for (let i = allSegs.length - 1; i >= 0; i--) {
     if (parseFloat(allSegs[i].dataset.start) <= t) { found = allSegs[i]; break; }
   }
-
   if (found && found !== activeSegEl) {
-    // Clear previous
-    if (activeSegEl) activeSegEl.classList.remove('active');
-    if (activeBlockEl) {
-      activeBlockEl.classList.remove('block-active');
-      const pg = activeBlockEl.querySelector('.t-gutter');
-      if (pg) pg.classList.remove('gutter-active');
+    if (activeSegEl) {
+      activeSegEl.classList.remove('active');
+      const pli = activeSegEl.closest('li');
+      if (pli) pli.classList.remove('li-active');
+      const pq = activeSegEl.closest('.q-block');
+      if (pq) pq.classList.remove('q-active');
     }
-    // Set new
     found.classList.add('active');
-    const block = found.closest('.t-block');
-    if (block) {
-      block.classList.add('block-active');
-      const g = block.querySelector('.t-gutter');
-      if (g) g.classList.add('gutter-active');
-      activeBlockEl = block;
-    }
+    const li = found.closest('li');
+    if (li) li.classList.add('li-active');
+    const qb = found.closest('.q-block');
+    if (qb) qb.classList.add('q-active');
     activeSegEl = found;
 
-    // Update subtitle
     subtitleEl.textContent = found.textContent.trim();
     subtitleEl.classList.remove('empty');
 
-    // Auto-scroll (only when not searching)
-    if (!document.getElementById('search').value) {
+    if (!document.getElementById('search').value)
       found.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }
   }
 });
 
@@ -353,17 +497,13 @@ searchInput.addEventListener('keydown', e => {
     el.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
 });
-
 function runSearch() {
   const q = searchInput.value.trim().toLowerCase();
   allSegs.forEach(s => s.classList.remove('search-match','search-current'));
   searchMatches = [];
   if (!q) return;
   allSegs.forEach(s => {
-    if (s.textContent.toLowerCase().includes(q)) {
-      s.classList.add('search-match');
-      searchMatches.push(s);
-    }
+    if (s.textContent.toLowerCase().includes(q)) { s.classList.add('search-match'); searchMatches.push(s); }
   });
   if (!searchMatches.length) return;
   searchIdx = 0;

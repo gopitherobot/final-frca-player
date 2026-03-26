@@ -5,10 +5,19 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Cardiac Anaesthesia — Anaesthesia for Cardiac Surgery</title>
 <style>
-
   :root {
-    --accent:    #ef4444;
-    --body-bg:   #f1f5f9;
+    --q-bg:       #1e3a5f;
+    --q-text:     #ffffff;
+    --q-label:    #60a5fa;
+    --a-bg:       #ffffff;
+    --a-border:   #e2e8f0;
+    --a-label:    #059669;
+    --active-q:   #ef4444;
+    --active-a:   #dbeafe;
+    --accent:     #ef4444;
+    --body-bg:    #f1f5f9;
+    --pre-bg:     #fef9c3;
+    --pre-border: #fcd34d;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
@@ -40,22 +49,9 @@
     margin-bottom: 4px;
     letter-spacing: 0.01em;
   }
-  .header-sub {
-    font-size: 0.72rem;
-    color: #94a3b8;
-    font-style: italic;
-  }
-  audio {
-    height: 36px;
-    accent-color: var(--accent);
-    flex-shrink: 0;
-  }
-  .back-link {
-    font-size: 0.8rem;
-    color: #94a3b8;
-    text-decoration: none;
-    white-space: nowrap;
-  }
+  .header-sub { font-size: 0.72rem; color: #94a3b8; font-style: italic; }
+  audio { height: 36px; accent-color: var(--accent); flex-shrink: 0; }
+  .back-link { font-size: 0.8rem; color: #94a3b8; text-decoration: none; white-space: nowrap; }
   .back-link:hover { color: #60a5fa; }
 
   /* ── Toolbar ── */
@@ -69,30 +65,17 @@
     border-bottom: 1px solid #334155;
   }
   .toolbar input {
-    flex: 1;
-    max-width: 380px;
+    flex: 1; max-width: 380px;
     padding: 5px 11px;
-    border: 1px solid #475569;
-    border-radius: 6px;
-    background: #0f172a;
-    color: #e2e8f0;
-    font-size: 0.83rem;
-    outline: none;
+    border: 1px solid #475569; border-radius: 6px;
+    background: #0f172a; color: #e2e8f0; font-size: 0.83rem; outline: none;
   }
   .toolbar input:focus { border-color: var(--accent); }
   .toolbar input::placeholder { color: #64748b; }
-  .stats {
-    font-size: 0.72rem;
-    color: #64748b;
-    white-space: nowrap;
-  }
+  .stats { font-size: 0.72rem; color: #64748b; white-space: nowrap; }
 
   /* ── Scroll area ── */
-  .scroll-area {
-    flex: 1;
-    overflow-y: auto;
-    padding: 20px;
-  }
+  .scroll-area { flex: 1; overflow-y: auto; padding: 20px; }
   .scroll-area::-webkit-scrollbar { width: 6px; }
   .scroll-area::-webkit-scrollbar-track { background: transparent; }
   .scroll-area::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
@@ -107,68 +90,77 @@
     display: flex;
     align-items: center;
   }
-  .subtitle-text {
-    font-size: 0.9rem;
-    color: #e2e8f0;
-    line-height: 1.5;
-    font-style: italic;
-  }
-  .subtitle-text.empty { color: #475569; }
+  #subtitle-text { font-size: 0.88rem; color: #e2e8f0; line-height: 1.5; font-style: italic; }
+  #subtitle-text.empty { color: #475569; }
 
-  /* ── Transcript blocks ── */
-  .t-block {
-    background: #ffffff;
-    border: 1px solid #e2e8f0;
-    border-radius: 10px;
-    margin-bottom: 14px;
-    overflow: hidden;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
-    display: flex;
-  }
-  .t-block.block-active {
-    border-color: var(--accent);
-    box-shadow: 0 0 0 2px rgba(37,99,235,0.15);
-  }
-  .t-gutter {
-    background: #0f172a;
-    width: 52px;
-    flex-shrink: 0;
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
-    padding-top: 14px;
-    cursor: pointer;
-  }
-  .t-gutter:hover { background: #1e293b; }
-  .t-timestamp {
-    font-size: 0.7rem;
-    color: #64748b;
-    font-family: monospace;
-    font-weight: 600;
-    letter-spacing: 0.02em;
-  }
-  .t-gutter.gutter-active .t-timestamp { color: var(--accent); }
-  .t-body {
-    flex: 1;
+  /* ── Preamble ── */
+  .preamble-block {
+    background: var(--pre-bg);
+    border-left: 4px solid var(--pre-border);
+    border-radius: 0 8px 8px 0;
     padding: 12px 16px;
-    line-height: 1.75;
-    font-size: 0.92rem;
-    color: #1e293b;
+    margin-bottom: 20px;
+    font-size: 0.88rem;
+    color: #78350f;
+    font-style: italic;
+    line-height: 1.7;
   }
 
-  /* ── Segments ── */
-  .segment {
+  /* ── Q&A pair ── */
+  .qa-pair { margin-bottom: 20px; border-radius: 10px; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+
+  /* Question block */
+  .q-block {
+    background: var(--q-bg);
+    padding: 14px 18px;
+    display: flex; gap: 14px; align-items: flex-start;
     cursor: pointer;
-    border-radius: 3px;
-    transition: background 0.1s;
+    transition: background 0.15s;
   }
-  .segment:hover { background: #eff6ff; }
-  .segment.active {
-    background: #bfdbfe;
-    outline: 2px solid #3b82f6;
-    outline-offset: 1px;
-    border-radius: 3px;
+  .q-block:hover { background: #1d4ed8; }
+  .q-block.q-active { background: var(--active-q); }
+  .q-label {
+    font-size: 0.7rem; font-weight: 700;
+    color: var(--q-label);
+    background: rgba(96,165,250,0.15);
+    border: 1px solid rgba(96,165,250,0.3);
+    border-radius: 5px; padding: 3px 7px;
+    white-space: nowrap; margin-top: 2px; letter-spacing: 0.05em;
+    flex-shrink: 0;
   }
+  .q-body { flex: 1; font-size: 0.97rem; font-weight: 600; color: var(--q-text); line-height: 1.55; }
+
+  /* Answer block */
+  .a-block {
+    background: var(--a-bg);
+    border: 1px solid var(--a-border); border-top: none;
+    padding: 14px 18px;
+    display: flex; gap: 14px; align-items: flex-start;
+  }
+  .a-label {
+    font-size: 0.7rem; font-weight: 700;
+    color: var(--a-label);
+    background: #d1fae5; border: 1px solid #6ee7b7;
+    border-radius: 5px; padding: 3px 9px;
+    white-space: nowrap; margin-top: 2px; letter-spacing: 0.05em;
+    flex-shrink: 0;
+  }
+  .a-body { flex: 1; list-style: none; padding: 0; }
+  .a-body li {
+    padding: 4px 0 4px 14px;
+    border-left: 3px solid transparent;
+    line-height: 1.7; font-size: 0.92rem; color: #1e293b;
+    border-radius: 0 4px 4px 0;
+    transition: background 0.15s;
+  }
+  .a-body li:not(:last-child) { border-bottom: 1px solid #f1f5f9; }
+
+  /* ── Segments (clickable) ── */
+  .segment { cursor: pointer; border-radius: 3px; }
+  .q-seg:hover { background: rgba(255,255,255,0.18); }
+  .a-seg:hover { background: #eff6ff; }
+  .segment.active { background: #bfdbfe; outline: 2px solid #3b82f6; outline-offset: 1px; }
+  .a-body li.li-active { background: var(--active-a); border-left-color: var(--accent); }
   .segment.search-match  { background: #fef9c3; }
   .segment.search-current { background: #fde047; outline: 2px solid #ca8a04; }
 
@@ -187,217 +179,562 @@
 
 <div class="toolbar">
   <input type="text" id="search" placeholder="Search transcript&#8230; (Enter = next match)">
-  <span class="stats" id="stats">249 segments &nbsp;|&nbsp; <span id="dur">loading&#8230;</span></span>
+  <span class="stats" id="stats">24 questions &nbsp;|&nbsp; 249 segments &nbsp;|&nbsp; <span id="dur">loading&#8230;</span></span>
 </div>
 
 <div class="scroll-area" id="scroll-area">
-<div class="t-block">
-  <div class="t-gutter" data-start="0.0"><span class="t-timestamp">0:00</span></div>
-  <div class="t-body"><span class="segment" data-start="0.0" data-end="5.36" title="0:00">Anacesia for cardiac surgery, cardiopulmonary bypass and cardioplegia. </span><span class="segment" data-start="5.36" data-end="11.36" title="0:05">Don't panic if this topic comes up, folks. Your examiners will either not be cardiac anesthetist </span><span class="segment" data-start="11.36" data-end="17.04" title="0:11">or are not allowed to use specialist knowledge in the bivore, unless you are doing extremely well </span><span class="segment" data-start="17.04" data-end="23.36" title="0:17">and have already achieved a good pass. This is a large subject and you only need to demonstrate </span><span class="segment" data-start="23.36" data-end="28.16" title="0:23">that you have a working knowledge of the normal principles and practice of cardiac anesthesia. </span><span class="segment" data-start="29.12" data-end="35.44" title="0:29">A 68-year-old man presents an elective aortic valve replacement with coronary archibyeparthgrafting. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="35.44"><span class="t-timestamp">0:35</span></div>
-  <div class="t-body"><span class="segment" data-start="35.44" data-end="40.64" title="0:35">What areas in the history are of particular relevance to your anesthetic management plan? </span><span class="segment" data-start="40.64" data-end="46.08" title="0:40">As always, to show your thinking clearly, it's a good idea to give an opening sentence </span><span class="segment" data-start="46.08" data-end="48.88" title="0:46">to show how you are going to continue with your answer. </span><span class="segment" data-start="50.96" data-end="57.28" title="0:50">The three key areas to address are firstly the cardiac defect that has resulted in the need </span><span class="segment" data-start="57.28" data-end="62.96" title="0:57">for elective surgery, secondly the severity of impairment of cardiac function, </span><span class="segment" data-start="63.76" data-end="69.92" title="1:03">and thirdly any comorbidities. An initial assessment of the severity of the symptoms that </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="69.92"><span class="t-timestamp">1:09</span></div>
-  <div class="t-body"><span class="segment" data-start="69.92" data-end="76.48" title="1:09">brought the patient to their doctor is important. The patient's exercise tolerance and how it has </span><span class="segment" data-start="76.48" data-end="81.76" title="1:16">changed over time and with treatment are important pieces of the history to bring out. </span><span class="segment" data-start="82.72" data-end="89.12" title="1:22">I would quantify exercise tolerance using metabolic equivalents. I would hope to see an exercise </span><span class="segment" data-start="89.12" data-end="96.08" title="1:29">tolerance of greater than or equal to four mets, the equivalent of moderate exercise or climbing </span><span class="segment" data-start="96.08" data-end="102.96" title="1:36">a flight of stairs. Many patients presenting for cardiac surgery may have significant medical </span><span class="segment" data-start="102.96" data-end="108.48" title="1:42">comorbidities. These may have a common etiology to the cause of the cardiac problem. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="109.2"><span class="t-timestamp">1:49</span></div>
-  <div class="t-body"><span class="segment" data-start="109.2" data-end="115.76" title="1:49">For example, congenital cardiac defects may be associated with other anatomical defects. </span><span class="segment" data-start="116.88" data-end="123.44" title="1:56">Marcardial ischemia, secondary to coronary atheromatous disease, will be accompanied by peripheral </span><span class="segment" data-start="123.44" data-end="131.12" title="2:03">vasculatheromatous disease affecting other arteries such as the carotid, cerebral, and renal arteries. </span><span class="segment" data-start="132.32" data-end="138.4" title="2:12">Diabetes is common for this patient group and is an underlying cause of ischemic heart disease. </span><span class="segment" data-start="139.44" data-end="146.4" title="2:19">Smoking is also a risk factor and pulmonary disease such as bronchitis and emphysema are common. </span><span class="segment" data-start="147.6" data-end="154.32" title="2:27">More general features in the history include a past anesthetic history, current medication, </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="154.32"><span class="t-timestamp">2:34</span></div>
-  <div class="t-body"><span class="segment" data-start="154.32" data-end="161.76" title="2:34">past anesthetic experiences, allergies, dentition, and an assessment of the patient's airway will </span><span class="segment" data-start="161.76" data-end="168.08" title="2:41">need to be undertaken with a view to intubation. How do we classify aortic stenosis? </span><span class="segment" data-start="170.4" data-end="177.92" title="2:50">Stenosis may be mild, moderate, severe, or critical and can be classified according to the </span><span class="segment" data-start="177.92" data-end="185.2" title="2:57">mean pressure gradient across the valve and valve area. It is the valve area that is the key </span><span class="segment" data-start="185.2" data-end="195.68" title="3:05">factor determining flow. A normal aortic valve has a cross-sectional area of 2.5 to 3.5 cm squared. </span><span class="segment" data-start="196.88" data-end="207.44" title="3:16">Mild stenosis has a mean gradient of less than 25 mm of mercury and a valve area of 1.3 to 2 cm squared. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="208.32"><span class="t-timestamp">3:28</span></div>
-  <div class="t-body"><span class="segment" data-start="208.32" data-end="217.28" title="3:28">Moderate stenosis has a pressure gradient of 25 to 50 mm of mercury and a valve area of 1 to 1.3 </span><span class="segment" data-start="217.28" data-end="225.28" title="3:37">cm squared and severe stenosis is when there is a gradient of greater than 50 mm of mercury </span><span class="segment" data-start="225.28" data-end="232.56" title="3:45">and a valve area of 1 cm squared. This is an indication for immediate surgical intervention. </span><span class="segment" data-start="232.96" data-end="242.96" title="3:52">A valve area of less than 0.7 cm squared is critical and any demand for an increased cardiac output </span><span class="segment" data-start="242.96" data-end="247.76" title="4:02">will result in symptoms of angina, syncopy, and sudden death. </span><span class="segment" data-start="247.76" data-end="256.96" title="4:07">What are the causes of aortic stenosis? Aortic stenosis may result from degeneration and </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="257.12"><span class="t-timestamp">4:17</span></div>
-  <div class="t-body"><span class="segment" data-start="257.12" data-end="264.96" title="4:17">calcification of the valve over time, rheumatic heart disease, or a congenitally by cuspid valve, </span><span class="segment" data-start="264.96" data-end="272.08" title="4:24">which affects 1 to 2% of the population. What are the signs and symptoms of aortic stenosis? </span><span class="segment" data-start="272.08" data-end="277.76" title="4:32">And why do they occur? Aortic stenosis may be a symptomatic for years. </span><span class="segment" data-start="278.48" data-end="286.08" title="4:38">The classical symptoms of angina, syncopy, and left ventricular failure may occur and </span><span class="segment" data-start="286.08" data-end="292.8" title="4:46">once this triad of symptoms is present, life expectancy is usually less than five years. </span><span class="segment" data-start="294.16" data-end="302.08" title="4:54">The signs that may be present include a narrowed pulse pressure, slow rising peripheral pulses, </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="302.08"><span class="t-timestamp">5:02</span></div>
-  <div class="t-body"><span class="segment" data-start="302.08" data-end="308.96" title="5:02">and a tapping apex beat which may or may not be displaced depending on disease severity. </span><span class="segment" data-start="309.92" data-end="315.28" title="5:09">Usually an ejection systolic murmur would be audible in the aortic area, </span><span class="segment" data-start="315.28" data-end="320.32" title="5:15">which may radiate to the carotids and become louder on expiration. </span><span class="segment" data-start="321.68" data-end="329.6" title="5:21">Aortic stenosis results in concentric hypertrophy of the left ventricle and a fixed cardiac output state. </span><span class="segment" data-start="330.72" data-end="336.32" title="5:30">The hypertrophied ventricle is less compliant and with greater muscle mass and higher </span><span class="segment" data-start="336.32" data-end="342.56" title="5:36">diastolic pressures results in higher myocardial oxygen demand and lower supply. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="343.44"><span class="t-timestamp">5:43</span></div>
-  <div class="t-body"><span class="segment" data-start="343.44" data-end="351.44" title="5:43">This is why angina pectoris develops. Loss of recoil reduces diastolic filling and </span><span class="segment" data-start="351.44" data-end="358.16" title="5:51">atrial contribution to ventricular filling becomes more important, so atrial fibrillation can </span><span class="segment" data-start="358.16" data-end="366.08" title="5:58">trigger decomposition. A significant fall in systemic vascular resistance will precipitate a </span><span class="segment" data-start="366.08" data-end="372.8" title="6:06">drastic fall in blood pressure that can result in the symptoms of syncopy and also a fall in </span><span class="segment" data-start="372.8" data-end="380.16" title="6:12">coronary perfusion pressure leading to myocardial ischemia. What investigations are of particular </span><span class="segment" data-start="380.16" data-end="388.96" title="6:20">importance for this patient's anaesthetic management? For this gentleman, a 12 lead ECG will also be </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="388.96"><span class="t-timestamp">6:28</span></div>
-  <div class="t-body"><span class="segment" data-start="388.96" data-end="394.88" title="6:28">a value in assessing the rate, rhythm, axis and any conduction abnormalities. </span><span class="segment" data-start="395.84" data-end="403.28" title="6:35">To demonstrate the severity of myocardial ischemia, an exercise ECG may need to be performed </span><span class="segment" data-start="403.28" data-end="410.96" title="6:43">to show when ischemic changes are provoked and what the changes in rhythm, rate, arterial pressure </span><span class="segment" data-start="410.96" data-end="418.8" title="6:50">and conduction result from increased activity. Debuted mean stress testing may be helpful if </span><span class="segment" data-start="418.8" data-end="425.36" title="6:58">the patient is unable to exercise due to other comorbidities such as severe osteoarthritis. </span><span class="segment" data-start="427.44" data-end="433.92" title="7:07">I would expect there to be up-to-date studies demonstrating the area and pressure gradient </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="433.92"><span class="t-timestamp">7:13</span></div>
-  <div class="t-body"><span class="segment" data-start="433.92" data-end="440.96" title="7:13">across his aortic valve has he has been listed for an aortic valve replacement. He may have had a </span><span class="segment" data-start="440.96" data-end="448.64" title="7:20">recent trans thoracic echocardiogram or a transisophageal echocardiogram. The latter provides </span><span class="segment" data-start="448.64" data-end="457.36" title="7:28">better images for assessment of valvular size, function and dynamics. A recent angiogram would be </span><span class="segment" data-start="457.36" data-end="463.84" title="7:37">useful to demonstrate abnormalities of the flow through his coronary arteries and to determine </span><span class="segment" data-start="463.84" data-end="471.12" title="7:43">indices of his left ventricular function. From these investigations, the degree of valvular </span><span class="segment" data-start="471.12" data-end="478.16" title="7:51">disease and cardiac impairment can be determined which will help us decide upon the anaesthetic approach </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="478.16"><span class="t-timestamp">7:58</span></div>
-  <div class="t-body"><span class="segment" data-start="478.16" data-end="482.8" title="7:58">and appropriately predict risk. What are the principles of how you would </span><span class="segment" data-start="482.8" data-end="492.48" title="8:02">ennecetize a patient with aortic stenosis? The principles to ennecetizing a patient with aortic stenosis </span><span class="segment" data-start="492.48" data-end="500.72" title="8:12">are to avoid decompensation. Myocardial oxygen supply must be maintained by avoiding a drop in </span><span class="segment" data-start="500.72" data-end="508.24" title="8:20">systemic vascular resistance and avoiding tachycardias. Arithmias must be avoided, </span><span class="segment" data-start="508.24" data-end="514.96" title="8:28">particularly atrial fibrillation, as atrial contraction plays an important part in ventricular </span><span class="segment" data-start="514.96" data-end="521.84" title="8:34">filling. Intravascular volume should be optimal to help maintain cardiac output. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="522.88"><span class="t-timestamp">8:42</span></div>
-  <div class="t-body"><span class="segment" data-start="522.88" data-end="525.28" title="8:42">Would you offer a premed to a patient such as this? </span><span class="segment" data-start="525.76" data-end="533.92" title="8:45">The preoperative visit brings the opportunity to make the patient's acquaintance and establish </span><span class="segment" data-start="533.92" data-end="540.96" title="8:53">some trust and should include a full discussion of what the patient will experience and the risks </span><span class="segment" data-start="540.96" data-end="548.56" title="9:00">associated with the surgery and anesthesia. A preoperative sedative can be useful to reduce the </span><span class="segment" data-start="548.56" data-end="554.56" title="9:08">cardiovascular effects of anxiety, including the effects of increased cataclysmines. </span><span class="segment" data-start="555.76" data-end="558.96" title="9:15">Describe how you would induce anesthesia for this patient. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="559.6"><span class="t-timestamp">9:19</span></div>
-  <div class="t-body"><span class="segment" data-start="559.6" data-end="564.8" title="9:19">Here it pays to visualize what you do in practice and talk it through step-by-step. </span><span class="segment" data-start="565.52" data-end="571.28" title="9:25">An examiner will not expect you to have extensive first-hand experience of cardiac anesthesia, </span><span class="segment" data-start="571.28" data-end="576.88" title="9:31">but knowledge of the principles of managing patients with severe cardiac disease will be required. </span><span class="segment" data-start="576.96" data-end="586.24" title="9:36">All anaesthetic and resuscitation drugs, equipment and staff should be ready before the patient </span><span class="segment" data-start="586.24" data-end="595.36" title="9:46">arrives in the anaesthetic room. Ina tropes, vasopressors and vasodilators must be prepared in advance. </span><span class="segment" data-start="596.88" data-end="604.72" title="9:56">Prior to induction of anaesthesia, continuous ECG monitoring using a CM-5 configuration, </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="604.72"><span class="t-timestamp">10:04</span></div>
-  <div class="t-body"><span class="segment" data-start="604.72" data-end="610.56" title="10:04">oxygen saturations probe and invasive arterial monitoring should be established. </span><span class="segment" data-start="611.28" data-end="614.56" title="10:11">It may be appropriate to monitor central venous pressure, </span><span class="segment" data-start="615.2" data-end="622.96" title="10:15">insert a pulmonary artery catheter or use non-invasive methods of cardiac output monitoring at this stage. </span><span class="segment" data-start="624.4" data-end="631.52" title="10:24">At least one large bore intravenous cannula should be inserted whilst oxygen is administered </span><span class="segment" data-start="631.52" data-end="638.4" title="10:31">and the patients should be pre-oxygenated. If sedatives are administered as pre-medication </span><span class="segment" data-start="638.4" data-end="642.96" title="10:38">on the ward, oxygen therapy should commence at this early stage. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="644.0"><span class="t-timestamp">10:44</span></div>
-  <div class="t-body"><span class="segment" data-start="644.0" data-end="649.92" title="10:44">The choice of anaesthetic agents is governed by the preference of the anesthetist and the </span><span class="segment" data-start="649.92" data-end="658.0" title="10:49">requirement for cardiovascular stability. Intravenous induction may be performed using a combination </span><span class="segment" data-start="658.0" data-end="665.52" title="10:58">of high-dose opioid such as 10-15 micrograms per kilo of fentanyl and a carefully </span><span class="segment" data-start="665.52" data-end="673.76" title="11:05">titrated intravenous induction agent such as propifol or thio pentone, while carefully monitoring </span><span class="segment" data-start="673.76" data-end="680.96" title="11:13">the arterial pressure. It is important to obtain the presser response to endotracheal intubation, </span><span class="segment" data-start="681.68" data-end="687.92" title="11:21">avoid myocardial depression and sudden decreases in systemic vascular resistance. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="689.84"><span class="t-timestamp">11:29</span></div>
-  <div class="t-body"><span class="segment" data-start="689.84" data-end="697.44" title="11:29">Any adverse hemodynamic changes should be treated promptly. A muscle relaxant is given after </span><span class="segment" data-start="697.44" data-end="704.72" title="11:37">loss of consciousness and mask ventilation with oxygen performed with anesthesia being maintained </span><span class="segment" data-start="704.72" data-end="712.48" title="11:44">with a volatile agent such as civa fluorine or an infusion of propifol until neuromuscular blockade </span><span class="segment" data-start="712.48" data-end="719.12" title="11:52">is adequate for intubation. Once the airway has been secured with a tracheal tube, </span><span class="segment" data-start="719.12" data-end="725.6" title="11:59">mandatory ventilation is continued whilst a central venous catheter is inserted to provide </span><span class="segment" data-start="725.6" data-end="733.28" title="12:05">venous pressure monitoring and access for inotropic agents. Routine cannulation of the internal </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="733.28"><span class="t-timestamp">12:13</span></div>
-  <div class="t-body"><span class="segment" data-start="733.28" data-end="739.68" title="12:13">jugular vein with a large bore sheath to allow flotation of a pulmonary artery catheter </span><span class="segment" data-start="739.68" data-end="747.36" title="12:19">introducer is advocated in many centres. Prior to surgery, the patient should have a urinary </span><span class="segment" data-start="747.36" data-end="754.48" title="12:27">catheter and a nasopharyngeal temperature probe inserted. A temperature probe positioned to </span><span class="segment" data-start="754.48" data-end="762.0" title="12:34">measure core temperature should be used. Capnography should be used as per the association guidelines. </span><span class="segment" data-start="762.8" data-end="771.04" title="12:42">Some centres advocate cerebral perfusion and processed EEG monitoring during cardio-bulmonary bypass </span><span class="segment" data-start="771.04" data-end="780.0" title="12:51">as awareness during anesthesia is a recognised risk. Transysophagial echo is now used in most centres. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="781.52"><span class="t-timestamp">13:01</span></div>
-  <div class="t-body"><span class="segment" data-start="781.52" data-end="788.24" title="13:01">Maintenance of anesthesia can be provided using a volatile agent or a total intravenous technique </span><span class="segment" data-start="788.32" data-end="796.16" title="13:08">with propifol and remyventinil. Increments of neuromuscular blockade and longer acting analgesics </span><span class="segment" data-start="796.16" data-end="803.76" title="13:16">will also be required. Nitrous oxide is best avoided because of cardiovascular depression </span><span class="segment" data-start="803.76" data-end="807.76" title="13:23">and there is a risk of expanding air bubbles within the circulation. </span><span class="segment" data-start="809.04" data-end="816.72" title="13:29">What volatile agent would you use? The volatile agent of choice is a subject of some debate, </span><span class="segment" data-start="817.44" data-end="824.32" title="13:37">with isofluorane particularly being implicated in coronary steel. This is when blood flow is </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="824.32"><span class="t-timestamp">13:44</span></div>
-  <div class="t-body"><span class="segment" data-start="824.32" data-end="830.64" title="13:44">directed away from ischemic areas due to vasodilitation of healthy coronary arteries. </span><span class="segment" data-start="831.44" data-end="838.24" title="13:51">However, this is not thought to be a major consideration clinically and isofluorane can be used. </span><span class="segment" data-start="839.04" data-end="845.44" title="13:59">Desphluorane may be avoided as it can cause sympathetic stimulation and tachycardias should </span><span class="segment" data-start="845.44" data-end="851.52" title="14:05">be avoided. What can you tell me about ischemic preconditioning? Don't panic if you don't </span><span class="segment" data-start="851.52" data-end="859.76" title="14:11">know much on this subject. If you get asked this, you're doing well. Ischemic preconditioning </span><span class="segment" data-start="859.76" data-end="866.96" title="14:19">involves the induction of short ischemic periods prior to a period of prolonged tissue ischemia. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="868.16"><span class="t-timestamp">14:28</span></div>
-  <div class="t-body"><span class="segment" data-start="868.16" data-end="874.96" title="14:28">The brief ischemic periods have been shown to render the tissue more resistant to the adverse </span><span class="segment" data-start="874.96" data-end="882.16" title="14:34">effects of prolonged ischemia or reperfusion. The mechanism underlying this phenomenon </span><span class="segment" data-start="882.16" data-end="888.96" title="14:42">is thought to involve reactive oxygen species triggering the release of endogenous agents </span><span class="segment" data-start="888.96" data-end="898.8" title="14:48">such as adenosine, nitric oxide, heat shock protein, protein kinase C and mitochondrial ATP </span><span class="segment" data-start="899.52" data-end="905.92" title="14:59">potassium channels. Studies have shown that in addition to brief ischemic periods, </span><span class="segment" data-start="905.92" data-end="912.32" title="15:05">pharmacological agents, particularly the volatile agents can be used perioperatively </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="912.32"><span class="t-timestamp">15:12</span></div>
-  <div class="t-body"><span class="segment" data-start="912.32" data-end="919.44" title="15:12">to precondition the macardium via similar pathways. What is cardiopulmonary bypass and what are </span><span class="segment" data-start="919.44" data-end="928.72" title="15:19">its functions? Cardiopulmonary bypass is an extra-corporial circulation that takes over the </span><span class="segment" data-start="928.8" data-end="936.96" title="15:28">role of the heart and lungs to allow open heart surgery to proceed. That is, it allows continued </span><span class="segment" data-start="936.96" data-end="944.4" title="15:36">oxygenation and circulation of the blood. The functions are to allow surgical access to a </span><span class="segment" data-start="944.4" data-end="952.56" title="15:44">bloodless and motionless heart and provide the patient with oxygenated non-pulsatile blood flow </span><span class="segment" data-start="952.56" data-end="959.68" title="15:52">at a predetermined temperature and pressure. Carbon dioxide can also be removed from the blood </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="959.68"><span class="t-timestamp">15:59</span></div>
-  <div class="t-body"><span class="segment" data-start="959.68" data-end="967.92" title="15:59">by the machine. Anesthetic vapor and vasopressors or vasodilators may be added to this flow. </span><span class="segment" data-start="968.88" data-end="975.28" title="16:08">The cardiopulmonary bypass machine can also enable rapid cooling or heating of blood </span><span class="segment" data-start="975.28" data-end="982.0" title="16:15">whenever required and temperatures between 15 to 37 degrees Celsius can be used. </span><span class="segment" data-start="983.12" data-end="986.32" title="16:23">Which operations require cardiopulmonary bypass? </span><span class="segment" data-start="988.72" data-end="996.96" title="16:28">Cardiopulmonary bypass is required for coronary artery bypass surgery, valve surgery, repair of </span><span class="segment" data-start="996.96" data-end="1005.6" title="16:36">large septal defects and congenital heart defects. It is also necessary for heart and or lung </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="1005.6"><span class="t-timestamp">16:45</span></div>
-  <div class="t-body"><span class="segment" data-start="1005.6" data-end="1013.36" title="16:45">transplants and repair of some aneurysms. Newer techniques are evolving, which avoid the use </span><span class="segment" data-start="1013.36" data-end="1021.92" title="16:53">of cardiopulmonary bypass. These include minimally invasive direct coronary artery bypass surgery, </span><span class="segment" data-start="1021.92" data-end="1030.08" title="17:01">robotic surgery or endovascular valve surgery. These techniques are referred to as off-pump surgery. </span><span class="segment" data-start="1030.96" data-end="1034.32" title="17:10">What are the key steps in instituting cardiopulmonary bypass? </span><span class="segment" data-start="1036.48" data-end="1042.16" title="17:16">The skin will be prepared and draped by the surgical team and a median stenotomy will be </span><span class="segment" data-start="1042.16" data-end="1049.84" title="17:22">performed soon after skin incision. The surgical stimulation of this and perhaps concurrent harvesting </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="1049.84"><span class="t-timestamp">17:29</span></div>
-  <div class="t-body"><span class="segment" data-start="1049.84" data-end="1056.72" title="17:29">of leg veins may result in a surge in blood pressure and pulse rate, which will need intervention </span><span class="segment" data-start="1056.72" data-end="1065.28" title="17:36">without producing negative ionotropy. A short-acting opioid is often used. Blood samples </span><span class="segment" data-start="1065.36" data-end="1072.32" title="17:45">for measurement of baseline routine biochemical and hematological variables are sent prior to </span><span class="segment" data-start="1072.32" data-end="1080.48" title="17:52">cardiopulmonary bypass. Before the arterial and venous bypass canily are inserted, the patient </span><span class="segment" data-start="1080.48" data-end="1086.96" title="18:00">will need to be fully anticoagulated. Heparin should be administered via the central line </span><span class="segment" data-start="1087.04" data-end="1095.76" title="18:07">at a dose of 3mg or 300 international units per kilo. An activated clotting time should </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="1095.76"><span class="t-timestamp">18:15</span></div>
-  <div class="t-body"><span class="segment" data-start="1095.76" data-end="1104.16" title="18:15">be checked after 3 minutes to ensure adequate anticoagulation. The activated clotting time </span><span class="segment" data-start="1104.16" data-end="1112.24" title="18:24">should be 4 times normal, which is 100 to 140 seconds to allow bypass to proceed. </span><span class="segment" data-start="1113.2" data-end="1120.56" title="18:33">The addition of pump priming solution to the extra-corporial circuit will result in an acute fall </span><span class="segment" data-start="1120.56" data-end="1126.88" title="18:40">in hematocrit during bypass, which potentially improves micro-circulatory blood flow. </span><span class="segment" data-start="1127.84" data-end="1134.4" title="18:47">The solution can be crystalloid, such as heartmins, heparin and occasionally manitol. </span><span class="segment" data-start="1135.28" data-end="1141.36" title="18:55">The systolic pressure may need to be reduced to 80 to 100 millimetres of mercury </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="1141.44"><span class="t-timestamp">19:01</span></div>
-  <div class="t-body"><span class="segment" data-start="1141.44" data-end="1146.8" title="19:01">to reduce the risk of aortic dissection at the time of aortic cross-clamping. </span><span class="segment" data-start="1147.76" data-end="1154.88" title="19:07">Cardioplegia solution should be prepared and administered in a bubble-free pressurized circuit </span><span class="segment" data-start="1154.88" data-end="1162.24" title="19:14">if it is to be used. Once the patient is on bypass, the ventilator can be turned off </span><span class="segment" data-start="1162.24" data-end="1169.68" title="19:22">and an infusion of proper fall started or a volatile agent can be used by mounting the vaporizer </span><span class="segment" data-start="1169.76" data-end="1175.36" title="19:29">on the bypass machine. What are the key components of the Cardioplegia solution to the bypass circuit? </span><span class="segment" data-start="1176.08" data-end="1182.8" title="19:36">Remember to keep it simple. It's just a circuit with tubes in and out, a pump, an oxygenator, </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="1182.8"><span class="t-timestamp">19:42</span></div>
-  <div class="t-body"><span class="segment" data-start="1182.8" data-end="1188.16" title="19:42">and a heat exchanger. You may be asked to sketch a diagram of the Cardioplegia solution to the </span><span class="segment" data-start="1188.16" data-end="1192.0" title="19:48">bypass circuit, so it will be worth practicing this a few times. </span><span class="segment" data-start="1192.24" data-end="1202.32" title="19:52">Venus canule from the superior and inferior Vena Kvi or right atrium drain blood into a reservoir. </span><span class="segment" data-start="1203.44" data-end="1207.68" title="20:03">Filtered blood from the suction can be added to the reservoir also. </span><span class="segment" data-start="1208.8" data-end="1216.16" title="20:08">The blood is passed through an oxygenator, normally a membrane oxygenator, and a heat exchanger </span><span class="segment" data-start="1216.16" data-end="1222.64" title="20:16">before being pumped through a filter into the arterial cannula, which is normally inserted </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="1222.64"><span class="t-timestamp">20:22</span></div>
-  <div class="t-body"><span class="segment" data-start="1222.64" data-end="1229.68" title="20:22">into the ascending aorta, distal to the cross clamp, so returning blood to the patient's circulation. </span><span class="segment" data-start="1230.8" data-end="1236.64" title="20:30">What do you know about the blood pumps? It is possible you could be asked to discuss the physics </span><span class="segment" data-start="1236.64" data-end="1244.88" title="20:36">of blood flow and the Hagen-Prassele equation within this topic. The pumps used are either roller </span><span class="segment" data-start="1244.88" data-end="1252.24" title="20:44">or centrifugal pumps and are required to deliver flow against resistance. They must avoid any </span><span class="segment" data-start="1252.24" data-end="1258.96" title="20:52">areas of blood stasis, potentially causing embelly or turbulence which may cause hemolosis. </span><span class="segment" data-start="1259.84" data-end="1266.8" title="20:59">The pumps deliver a flow of 2.4 litres per minute per metre squared to correspond with a normal </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="1266.8"><span class="t-timestamp">21:06</span></div>
-  <div class="t-body"><span class="segment" data-start="1266.8" data-end="1274.4" title="21:06">cardiac index. In contrast to the physiological circulation, the flow delivered is non-pulsatile. </span><span class="segment" data-start="1275.52" data-end="1280.4" title="21:15">You mentioned membrane oxygenators. Do you know any other types of oxygenators and the </span><span class="segment" data-start="1280.4" data-end="1288.88" title="21:20">advantages and disadvantages of each? Yes, I am aware of membrane and bubble oxygenators. </span><span class="segment" data-start="1289.68" data-end="1296.88" title="21:29">Membrane oxygenators are most commonly used. They contain hollow fibers giving a large surface </span><span class="segment" data-start="1296.88" data-end="1304.64" title="21:36">area for gas exchange which occurs down concentration gradients. Bubble oxygenators are when the gases </span><span class="segment" data-start="1304.64" data-end="1311.6" title="21:44">are bubbled through the blood but this leads to increased risk of air embolism and is less commonly used. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="1312.8"><span class="t-timestamp">21:52</span></div>
-  <div class="t-body"><span class="segment" data-start="1312.8" data-end="1316.4" title="21:52">What are the complications associated with cardiopulmonary bypass? </span><span class="segment" data-start="1318.64" data-end="1324.96" title="21:58">The complications of cardiopulmonary bypass relate to the circuit and to perfusion. </span><span class="segment" data-start="1325.92" data-end="1333.28" title="22:05">Circuit-related complications include obstruction of the cannulae, failure of the oxygenator, </span><span class="segment" data-start="1333.28" data-end="1338.4" title="22:13">inadequate anti-coagulation causing embolism and aortic dissection. </span><span class="segment" data-start="1339.44" data-end="1346.8" title="22:19">Air embolism is also a risk and hemorrhage can also occur during the surgery or postoperatively. </span><span class="segment" data-start="1347.84" data-end="1354.64" title="22:27">Complications associated with perfusion include hypothermia, fluid overload, </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="1355.12"><span class="t-timestamp">22:35</span></div>
-  <div class="t-body"><span class="segment" data-start="1355.12" data-end="1362.24" title="22:35">myocardial stunning and coagulopathy which occurs particularly with pump times greater than 2 hours. </span><span class="segment" data-start="1363.52" data-end="1370.56" title="22:43">Prolonged cardiopulmonary bypass can lead to release of cytokines and a systemic inflammatory </span><span class="segment" data-start="1370.56" data-end="1377.44" title="22:50">response resulting in organ dysfunction. This may clinically manifest as confusion, </span><span class="segment" data-start="1378.08" data-end="1386.64" title="22:58">renal dysfunction and failure, ischemic gut, thrombocytopenia and impaired gas exchange due to </span><span class="segment" data-start="1386.64" data-end="1394.4" title="23:06">ventilation perfusion mismatch. Hypothermia can occur and careful temperature management </span><span class="segment" data-start="1394.4" data-end="1398.88" title="23:14">and active rewarming are essential prior to coming off bypass. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="1400.08"><span class="t-timestamp">23:20</span></div>
-  <div class="t-body"><span class="segment" data-start="1400.08" data-end="1406.72" title="23:20">Electrolite and acid-based disturbances may also occur and should also be corrected prior to </span><span class="segment" data-start="1406.72" data-end="1416.16" title="23:26">coming off bypass. Seribrovascular events occur in between 1 and 5% of patients ranging from a </span><span class="segment" data-start="1416.16" data-end="1421.68" title="23:36">transient postoperative cognitive dysfunction to a major disabling stroke. </span><span class="segment" data-start="1422.88" data-end="1425.92" title="23:42">What do you understand by the term myocardial preservation? </span><span class="segment" data-start="1428.16" data-end="1435.76" title="23:48">Myocardial preservation or protection aims to preserve myocardial function and prevent cell death. </span><span class="segment" data-start="1436.88" data-end="1443.12" title="23:56">Cardioplegic solutions are used to achieve this. They are administered to the myocardium </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="1443.12"><span class="t-timestamp">24:03</span></div>
-  <div class="t-body"><span class="segment" data-start="1443.12" data-end="1451.76" title="24:03">to cause a diastolic electro-mechanical arrest. A cold solution can be used to reduce metabolic rate </span><span class="segment" data-start="1451.76" data-end="1459.76" title="24:11">and cardioplegia solution is stored at 4°C then injected into the coronary arteries or coronary </span><span class="segment" data-start="1459.76" data-end="1469.84" title="24:19">sinus. Cooling is also achieved with cardioplegia at 4°C poured into the pericardium and chambers </span><span class="segment" data-start="1469.84" data-end="1479.76" title="24:29">to achieve a uniformly cooled heart at between 10 and 12°C. Further doses of cardioplegia </span><span class="segment" data-start="1479.76" data-end="1487.84" title="24:39">are required every 20 minutes or when electrical activity returns. The core body temperature </span><span class="segment" data-start="1487.84" data-end="1497.2" title="24:47">is allowed to fall to a target value of between 28 and 32°C. Modifications of this technique </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="1497.28"><span class="t-timestamp">24:57</span></div>
-  <div class="t-body"><span class="segment" data-start="1497.28" data-end="1502.96" title="24:57">are used in different centres. What is the composition of cardioplegic solution? </span><span class="segment" data-start="1505.44" data-end="1512.64" title="25:05">There are a number of different formulations. These are crystalloid or blood-based solutions </span><span class="segment" data-start="1512.64" data-end="1520.32" title="25:12">to which a number of ingredients are added. Ringer's lactate, dextrose and saline dextrose </span><span class="segment" data-start="1520.4" data-end="1528.48" title="25:20">solutions have all been used. Potassium is the agent used to induce cardiac arrest. It is added </span><span class="segment" data-start="1528.48" data-end="1536.56" title="25:28">at a concentration of 20mm per litre potassium chloride to depolarise macardial cells with </span><span class="segment" data-start="1536.56" data-end="1545.52" title="25:36">procane as a membrane stabilising agent and magnesium may also be added. The cardioplegia solution </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="1545.6"><span class="t-timestamp">25:45</span></div>
-  <div class="t-body"><span class="segment" data-start="1545.6" data-end="1553.68" title="25:45">is stored at 4°C and is rapidly infused under pressure, making sure no air bubbles enter the </span><span class="segment" data-start="1553.68" data-end="1561.12" title="25:53">coronary circulation. There is some debate as to whether blood cardioplegia is superior to its </span><span class="segment" data-start="1561.12" data-end="1567.12" title="26:01">crystalloid counterpart due to the theoretical advantage of oxygen carrying capacity. </span><span class="segment" data-start="1568.32" data-end="1570.48" title="26:08">What events occur when coming off bypass? </span><span class="segment" data-start="1570.88" data-end="1579.6" title="26:10">There must be clear communication between the surgeon, anesthetist and perfusionist. </span><span class="segment" data-start="1580.32" data-end="1590.08" title="26:20">The patient's temperature should be returned to 37°C, the potassium should be 4-5mm per litre </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="1590.08"><span class="t-timestamp">26:30</span></div>
-  <div class="t-body"><span class="segment" data-start="1590.08" data-end="1599.92" title="26:30">and the hematocrit should be greater than 24%. A sinus rate of 70-100 beats per minute is desirable </span><span class="segment" data-start="1600.48" data-end="1608.56" title="26:40">and if sinus rhythm does not return spontaneously, DC cardioversion or an internal defibrillator </span><span class="segment" data-start="1608.56" data-end="1615.76" title="26:48">or temporary pacing wires may be needed. The venous pump is gradually restricted, </span><span class="segment" data-start="1615.76" data-end="1622.72" title="26:55">so allowing venous return back into the right atrium. As cardiac activity returns, </span><span class="segment" data-start="1622.72" data-end="1628.96" title="27:02">blood begins to circulate into the pulmonary vasculature and artificial ventilation with </span><span class="segment" data-start="1628.96" data-end="1637.04" title="27:08">oxygen and an inhalational volatile agent is recommended. Once the ventricles are contracting well, </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="1637.04"><span class="t-timestamp">27:17</span></div>
-  <div class="t-body"><span class="segment" data-start="1637.04" data-end="1645.52" title="27:17">the circulating volume is returned to the heart. Protamine, 1mg per 100 units of heparin, </span><span class="segment" data-start="1645.52" data-end="1653.2" title="27:25">is administered by slow infusion to reverse the effects of heparin, but only when surgically </span><span class="segment" data-start="1653.2" data-end="1658.4" title="27:33">indicated and at this point the perfusionist must turn off the suction. </span><span class="segment" data-start="1659.52" data-end="1667.6" title="27:39">Protamine may precipitate systemic hypotension, pulmonary vasoconstriction and anaphylaxis. </span><span class="segment" data-start="1668.72" data-end="1671.6" title="27:48">What investigation should be performed post-biparse? </span><span class="segment" data-start="1673.84" data-end="1681.28" title="27:53">Serum samples should be taken for an activated clotting time, hematology, biochemistry </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="1681.28"><span class="t-timestamp">28:01</span></div>
-  <div class="t-body"><span class="segment" data-start="1681.28" data-end="1688.24" title="28:01">and coagulation screen and an arterial blood cast should be taken to allow correction of disturbances. </span><span class="segment" data-start="1689.52" data-end="1692.08" title="28:09">What are the important features of post-operative care? </span><span class="segment" data-start="1694.64" data-end="1698.8" title="28:14">The patient should be looked after in a critical care environment, </span><span class="segment" data-start="1698.8" data-end="1704.32" title="28:18">with invasive monitoring and appropriately experienced nursing and medical care. </span><span class="segment" data-start="1705.04" data-end="1710.96" title="28:25">The patient will usually require a period of sedation and ventilation post-operatively. </span><span class="segment" data-start="1712.0" data-end="1718.48" title="28:32">The length of time will depend on which anesthetic drugs and analgesic drugs are used </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="1718.48"><span class="t-timestamp">28:38</span></div>
-  <div class="t-body"><span class="segment" data-start="1718.48" data-end="1725.28" title="28:38">and whether the patient is stable cardiovascular. Fast-track cardiac anesthesia, </span><span class="segment" data-start="1725.28" data-end="1731.84" title="28:45">meaning excavation within eight hours after cardiac surgery, has been established as routine </span><span class="segment" data-start="1731.84" data-end="1737.92" title="28:51">in many cardiac centres in the world. The patient should be normothermic, </span><span class="segment" data-start="1737.92" data-end="1745.28" title="28:57">hemodynamically stable and have any acid-base or electrolyte disturbances corrected prior to </span><span class="segment" data-start="1745.28" data-end="1752.96" title="29:05">excavation. Most patients will require volume expansion as they warm up, and are high </span><span class="segment" data-start="1752.96" data-end="1760.4" title="29:12">urine output as a result of the filtration of the pump prime can lead to hypocholemia. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="1761.6"><span class="t-timestamp">29:21</span></div>
-  <div class="t-body"><span class="segment" data-start="1761.6" data-end="1767.52" title="29:21">Bleeding from the chest or the pericardial drains in the post-operative period may need </span><span class="segment" data-start="1767.52" data-end="1775.04" title="29:27">investigating, necessitating the administration of blood, platelets, fresh frozen plasma, </span><span class="segment" data-start="1775.04" data-end="1782.0" title="29:35">or more protamine. If bleeding continues, then surgical exploration may be required. </span><span class="segment" data-start="1782.96" data-end="1790.16" title="29:42">Once exhumated, analgesia can be maintained using patient-controlled opioid analgesia </span><span class="segment" data-start="1790.16" data-end="1797.44" title="29:50">and regular paracetamol. High thoracic epidural anesthesia provides good hemodinamidum </span><span class="segment" data-start="1797.44" data-end="1805.2" title="29:57">and anachystability throughout surgery, superior analgesia, facilitating respiratory movements, </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="1805.2"><span class="t-timestamp">30:05</span></div>
-  <div class="t-body"><span class="segment" data-start="1805.2" data-end="1811.12" title="30:05">and adequate muscle tone, all necessary criteria for safe early excavation. </span><span class="segment" data-start="1812.4" data-end="1819.36" title="30:12">Centres using this technique claim that immediate excavation at the end of surgery is possible. </span><span class="segment" data-start="1819.36" data-end="1827.6" title="30:19">Extubation is not contraindicated if the patient is dependent on moderate doses of ionotropes. </span></div>
+<div class="preamble-block"><span class="segment a-seg" data-start="0.0" data-end="5.36" title="0:00">Anacesia for cardiac surgery, cardiopulmonary bypass and cardioplegia. </span><span class="segment a-seg" data-start="5.36" data-end="11.36" title="0:05">Don't panic if this topic comes up, folks. Your examiners will either not be cardiac anesthetist </span><span class="segment a-seg" data-start="11.36" data-end="17.04" title="0:11">or are not allowed to use specialist knowledge in the bivore, unless you are doing extremely well </span><span class="segment a-seg" data-start="17.04" data-end="23.36" title="0:17">and have already achieved a good pass. This is a large subject and you only need to demonstrate </span><span class="segment a-seg" data-start="23.36" data-end="28.16" title="0:23">that you have a working knowledge of the normal principles and practice of cardiac anesthesia. </span><span class="segment a-seg" data-start="29.12" data-end="35.44" title="0:29">A 68-year-old man presents an elective aortic valve replacement with coronary archibyeparthgrafting. </span></div>
+<div class="qa-pair">
+<div class="q-block" data-start="35.44">
+  <div class="q-label">Q1</div>
+  <div class="q-body"><span class="segment q-seg" data-start="35.44" data-end="40.64" title="0:35">What areas in the history are of particular relevance to your anesthetic management plan? </span></div>
 </div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="40.64" data-end="46.08" title="0:40">As always, to show your thinking clearly, it's a good idea to give an opening sentence </span></li>
+<li><span class="segment a-seg" data-start="46.08" data-end="48.88" title="0:46">to show how you are going to continue with your answer. </span></li>
+<li><span class="segment a-seg" data-start="50.96" data-end="57.28" title="0:50">The three key areas to address are firstly the cardiac defect that has resulted in the need </span></li>
+<li><span class="segment a-seg" data-start="57.28" data-end="62.96" title="0:57">for elective surgery, secondly the severity of impairment of cardiac function, </span></li>
+<li><span class="segment a-seg" data-start="63.76" data-end="69.92" title="1:03">and thirdly any comorbidities. An initial assessment of the severity of the symptoms that </span></li>
+<li><span class="segment a-seg" data-start="69.92" data-end="76.48" title="1:09">brought the patient to their doctor is important. The patient's exercise tolerance and how it has </span></li>
+<li><span class="segment a-seg" data-start="76.48" data-end="81.76" title="1:16">changed over time and with treatment are important pieces of the history to bring out. </span></li>
+<li><span class="segment a-seg" data-start="82.72" data-end="89.12" title="1:22">I would quantify exercise tolerance using metabolic equivalents. I would hope to see an exercise </span></li>
+<li><span class="segment a-seg" data-start="89.12" data-end="96.08" title="1:29">tolerance of greater than or equal to four mets, the equivalent of moderate exercise or climbing </span></li>
+<li><span class="segment a-seg" data-start="96.08" data-end="102.96" title="1:36">a flight of stairs. Many patients presenting for cardiac surgery may have significant medical </span></li>
+<li><span class="segment a-seg" data-start="102.96" data-end="108.48" title="1:42">comorbidities. These may have a common etiology to the cause of the cardiac problem. </span></li>
+<li><span class="segment a-seg" data-start="109.2" data-end="115.76" title="1:49">For example, congenital cardiac defects may be associated with other anatomical defects. </span></li>
+<li><span class="segment a-seg" data-start="116.88" data-end="123.44" title="1:56">Marcardial ischemia, secondary to coronary atheromatous disease, will be accompanied by peripheral </span></li>
+<li><span class="segment a-seg" data-start="123.44" data-end="131.12" title="2:03">vasculatheromatous disease affecting other arteries such as the carotid, cerebral, and renal arteries. </span></li>
+<li><span class="segment a-seg" data-start="132.32" data-end="138.4" title="2:12">Diabetes is common for this patient group and is an underlying cause of ischemic heart disease. </span></li>
+<li><span class="segment a-seg" data-start="139.44" data-end="146.4" title="2:19">Smoking is also a risk factor and pulmonary disease such as bronchitis and emphysema are common. </span></li>
+<li><span class="segment a-seg" data-start="147.6" data-end="154.32" title="2:27">More general features in the history include a past anesthetic history, current medication, </span></li>
+<li><span class="segment a-seg" data-start="154.32" data-end="161.76" title="2:34">past anesthetic experiences, allergies, dentition, and an assessment of the patient's airway will </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="161.76">
+  <div class="q-label">Q2</div>
+  <div class="q-body"><span class="segment q-seg" data-start="161.76" data-end="168.08" title="2:41">need to be undertaken with a view to intubation. How do we classify aortic stenosis? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="170.4" data-end="177.92" title="2:50">Stenosis may be mild, moderate, severe, or critical and can be classified according to the </span></li>
+<li><span class="segment a-seg" data-start="177.92" data-end="185.2" title="2:57">mean pressure gradient across the valve and valve area. It is the valve area that is the key </span></li>
+<li><span class="segment a-seg" data-start="185.2" data-end="195.68" title="3:05">factor determining flow. A normal aortic valve has a cross-sectional area of 2.5 to 3.5 cm squared. </span></li>
+<li><span class="segment a-seg" data-start="196.88" data-end="207.44" title="3:16">Mild stenosis has a mean gradient of less than 25 mm of mercury and a valve area of 1.3 to 2 cm squared. </span></li>
+<li><span class="segment a-seg" data-start="208.32" data-end="217.28" title="3:28">Moderate stenosis has a pressure gradient of 25 to 50 mm of mercury and a valve area of 1 to 1.3 </span></li>
+<li><span class="segment a-seg" data-start="217.28" data-end="225.28" title="3:37">cm squared and severe stenosis is when there is a gradient of greater than 50 mm of mercury </span></li>
+<li><span class="segment a-seg" data-start="225.28" data-end="232.56" title="3:45">and a valve area of 1 cm squared. This is an indication for immediate surgical intervention. </span></li>
+<li><span class="segment a-seg" data-start="232.96" data-end="242.96" title="3:52">A valve area of less than 0.7 cm squared is critical and any demand for an increased cardiac output </span></li>
+<li><span class="segment a-seg" data-start="242.96" data-end="247.76" title="4:02">will result in symptoms of angina, syncopy, and sudden death. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="247.76">
+  <div class="q-label">Q3</div>
+  <div class="q-body"><span class="segment q-seg" data-start="247.76" data-end="252.36" title="4:07">What are the causes of aortic stenosis? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="252.36" data-end="256.96" title="4:12">Aortic stenosis may result from degeneration and </span></li>
+<li><span class="segment a-seg" data-start="257.12" data-end="264.96" title="4:17">calcification of the valve over time, rheumatic heart disease, or a congenitally by cuspid valve, </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="264.96">
+  <div class="q-label">Q4</div>
+  <div class="q-body"><span class="segment q-seg" data-start="264.96" data-end="272.08" title="4:24">which affects 1 to 2% of the population. What are the signs and symptoms of aortic stenosis? </span><span class="segment q-seg" data-start="272.08" data-end="274.265" title="4:32">And why do they occur? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="274.265" data-end="277.76" title="4:34">Aortic stenosis may be a symptomatic for years. </span></li>
+<li><span class="segment a-seg" data-start="278.48" data-end="286.08" title="4:38">The classical symptoms of angina, syncopy, and left ventricular failure may occur and </span></li>
+<li><span class="segment a-seg" data-start="286.08" data-end="292.8" title="4:46">once this triad of symptoms is present, life expectancy is usually less than five years. </span></li>
+<li><span class="segment a-seg" data-start="294.16" data-end="302.08" title="4:54">The signs that may be present include a narrowed pulse pressure, slow rising peripheral pulses, </span></li>
+<li><span class="segment a-seg" data-start="302.08" data-end="308.96" title="5:02">and a tapping apex beat which may or may not be displaced depending on disease severity. </span></li>
+<li><span class="segment a-seg" data-start="309.92" data-end="315.28" title="5:09">Usually an ejection systolic murmur would be audible in the aortic area, </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="315.28">
+  <div class="q-label">Q5</div>
+  <div class="q-body"><span class="segment q-seg" data-start="315.28" data-end="320.32" title="5:15">which may radiate to the carotids and become louder on expiration. </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="321.68" data-end="329.6" title="5:21">Aortic stenosis results in concentric hypertrophy of the left ventricle and a fixed cardiac output state. </span></li>
+<li><span class="segment a-seg" data-start="330.72" data-end="336.32" title="5:30">The hypertrophied ventricle is less compliant and with greater muscle mass and higher </span></li>
+<li><span class="segment a-seg" data-start="336.32" data-end="342.56" title="5:36">diastolic pressures results in higher myocardial oxygen demand and lower supply. </span></li>
+<li><span class="segment a-seg" data-start="343.44" data-end="351.44" title="5:43">This is why angina pectoris develops. Loss of recoil reduces diastolic filling and </span></li>
+<li><span class="segment a-seg" data-start="351.44" data-end="358.16" title="5:51">atrial contribution to ventricular filling becomes more important, so atrial fibrillation can </span></li>
+<li><span class="segment a-seg" data-start="358.16" data-end="366.08" title="5:58">trigger decomposition. A significant fall in systemic vascular resistance will precipitate a </span></li>
+<li><span class="segment a-seg" data-start="366.08" data-end="372.8" title="6:06">drastic fall in blood pressure that can result in the symptoms of syncopy and also a fall in </span></li>
+<li><span class="segment a-seg" data-start="372.8" data-end="380.16" title="6:12">coronary perfusion pressure leading to myocardial ischemia. What investigations are of particular </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="380.16">
+  <div class="q-label">Q6</div>
+  <div class="q-body"><span class="segment q-seg" data-start="380.16" data-end="383.46" title="6:20">importance for this patient's anaesthetic management? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="383.46" data-end="388.96" title="6:23">For this gentleman, a 12 lead ECG will also be </span></li>
+<li><span class="segment a-seg" data-start="388.96" data-end="394.88" title="6:28">a value in assessing the rate, rhythm, axis and any conduction abnormalities. </span></li>
+<li><span class="segment a-seg" data-start="395.84" data-end="403.28" title="6:35">To demonstrate the severity of myocardial ischemia, an exercise ECG may need to be performed </span></li>
+<li><span class="segment a-seg" data-start="403.28" data-end="410.96" title="6:43">to show when ischemic changes are provoked and what the changes in rhythm, rate, arterial pressure </span></li>
+<li><span class="segment a-seg" data-start="410.96" data-end="418.8" title="6:50">and conduction result from increased activity. Debuted mean stress testing may be helpful if </span></li>
+<li><span class="segment a-seg" data-start="418.8" data-end="425.36" title="6:58">the patient is unable to exercise due to other comorbidities such as severe osteoarthritis. </span></li>
+<li><span class="segment a-seg" data-start="427.44" data-end="433.92" title="7:07">I would expect there to be up-to-date studies demonstrating the area and pressure gradient </span></li>
+<li><span class="segment a-seg" data-start="433.92" data-end="440.96" title="7:13">across his aortic valve has he has been listed for an aortic valve replacement. He may have had a </span></li>
+<li><span class="segment a-seg" data-start="440.96" data-end="448.64" title="7:20">recent trans thoracic echocardiogram or a transisophageal echocardiogram. The latter provides </span></li>
+<li><span class="segment a-seg" data-start="448.64" data-end="457.36" title="7:28">better images for assessment of valvular size, function and dynamics. A recent angiogram would be </span></li>
+<li><span class="segment a-seg" data-start="457.36" data-end="463.84" title="7:37">useful to demonstrate abnormalities of the flow through his coronary arteries and to determine </span></li>
+<li><span class="segment a-seg" data-start="463.84" data-end="471.12" title="7:43">indices of his left ventricular function. From these investigations, the degree of valvular </span></li>
+<li><span class="segment a-seg" data-start="471.12" data-end="478.16" title="7:51">disease and cardiac impairment can be determined which will help us decide upon the anaesthetic approach </span></li>
+<li><span class="segment a-seg" data-start="478.16" data-end="482.8" title="7:58">and appropriately predict risk. What are the principles of how you would </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="482.8">
+  <div class="q-label">Q7</div>
+  <div class="q-body"><span class="segment q-seg" data-start="482.8" data-end="486.672" title="8:02">ennecetize a patient with aortic stenosis? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="486.672" data-end="492.48" title="8:06">The principles to ennecetizing a patient with aortic stenosis </span></li>
+<li><span class="segment a-seg" data-start="492.48" data-end="500.72" title="8:12">are to avoid decompensation. Myocardial oxygen supply must be maintained by avoiding a drop in </span></li>
+<li><span class="segment a-seg" data-start="500.72" data-end="508.24" title="8:20">systemic vascular resistance and avoiding tachycardias. Arithmias must be avoided, </span></li>
+<li><span class="segment a-seg" data-start="508.24" data-end="514.96" title="8:28">particularly atrial fibrillation, as atrial contraction plays an important part in ventricular </span></li>
+<li><span class="segment a-seg" data-start="514.96" data-end="521.84" title="8:34">filling. Intravascular volume should be optimal to help maintain cardiac output. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="522.88">
+  <div class="q-label">Q8</div>
+  <div class="q-body"><span class="segment q-seg" data-start="522.88" data-end="525.28" title="8:42">Would you offer a premed to a patient such as this? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="525.76" data-end="533.92" title="8:45">The preoperative visit brings the opportunity to make the patient's acquaintance and establish </span></li>
+<li><span class="segment a-seg" data-start="533.92" data-end="540.96" title="8:53">some trust and should include a full discussion of what the patient will experience and the risks </span></li>
+<li><span class="segment a-seg" data-start="540.96" data-end="548.56" title="9:00">associated with the surgery and anesthesia. A preoperative sedative can be useful to reduce the </span></li>
+<li><span class="segment a-seg" data-start="548.56" data-end="554.56" title="9:08">cardiovascular effects of anxiety, including the effects of increased cataclysmines. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="555.76">
+  <div class="q-label">Q9</div>
+  <div class="q-body"><span class="segment q-seg" data-start="555.76" data-end="558.96" title="9:15">Describe how you would induce anesthesia for this patient. </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="559.6" data-end="564.8" title="9:19">Here it pays to visualize what you do in practice and talk it through step-by-step. </span></li>
+<li><span class="segment a-seg" data-start="565.52" data-end="571.28" title="9:25">An examiner will not expect you to have extensive first-hand experience of cardiac anesthesia, </span></li>
+<li><span class="segment a-seg" data-start="571.28" data-end="576.88" title="9:31">but knowledge of the principles of managing patients with severe cardiac disease will be required. </span></li>
+<li><span class="segment a-seg" data-start="576.96" data-end="586.24" title="9:36">All anaesthetic and resuscitation drugs, equipment and staff should be ready before the patient </span></li>
+<li><span class="segment a-seg" data-start="586.24" data-end="595.36" title="9:46">arrives in the anaesthetic room. Ina tropes, vasopressors and vasodilators must be prepared in advance. </span></li>
+<li><span class="segment a-seg" data-start="596.88" data-end="604.72" title="9:56">Prior to induction of anaesthesia, continuous ECG monitoring using a CM-5 configuration, </span></li>
+<li><span class="segment a-seg" data-start="604.72" data-end="610.56" title="10:04">oxygen saturations probe and invasive arterial monitoring should be established. </span></li>
+<li><span class="segment a-seg" data-start="611.28" data-end="614.56" title="10:11">It may be appropriate to monitor central venous pressure, </span></li>
+<li><span class="segment a-seg" data-start="615.2" data-end="622.96" title="10:15">insert a pulmonary artery catheter or use non-invasive methods of cardiac output monitoring at this stage. </span></li>
+<li><span class="segment a-seg" data-start="624.4" data-end="631.52" title="10:24">At least one large bore intravenous cannula should be inserted whilst oxygen is administered </span></li>
+<li><span class="segment a-seg" data-start="631.52" data-end="638.4" title="10:31">and the patients should be pre-oxygenated. If sedatives are administered as pre-medication </span></li>
+<li><span class="segment a-seg" data-start="638.4" data-end="642.96" title="10:38">on the ward, oxygen therapy should commence at this early stage. </span></li>
+<li><span class="segment a-seg" data-start="644.0" data-end="649.92" title="10:44">The choice of anaesthetic agents is governed by the preference of the anesthetist and the </span></li>
+<li><span class="segment a-seg" data-start="649.92" data-end="658.0" title="10:49">requirement for cardiovascular stability. Intravenous induction may be performed using a combination </span></li>
+<li><span class="segment a-seg" data-start="658.0" data-end="665.52" title="10:58">of high-dose opioid such as 10-15 micrograms per kilo of fentanyl and a carefully </span></li>
+<li><span class="segment a-seg" data-start="665.52" data-end="673.76" title="11:05">titrated intravenous induction agent such as propifol or thio pentone, while carefully monitoring </span></li>
+<li><span class="segment a-seg" data-start="673.76" data-end="680.96" title="11:13">the arterial pressure. It is important to obtain the presser response to endotracheal intubation, </span></li>
+<li><span class="segment a-seg" data-start="681.68" data-end="687.92" title="11:21">avoid myocardial depression and sudden decreases in systemic vascular resistance. </span></li>
+<li><span class="segment a-seg" data-start="689.84" data-end="697.44" title="11:29">Any adverse hemodynamic changes should be treated promptly. A muscle relaxant is given after </span></li>
+<li><span class="segment a-seg" data-start="697.44" data-end="704.72" title="11:37">loss of consciousness and mask ventilation with oxygen performed with anesthesia being maintained </span></li>
+<li><span class="segment a-seg" data-start="704.72" data-end="712.48" title="11:44">with a volatile agent such as civa fluorine or an infusion of propifol until neuromuscular blockade </span></li>
+<li><span class="segment a-seg" data-start="712.48" data-end="719.12" title="11:52">is adequate for intubation. Once the airway has been secured with a tracheal tube, </span></li>
+<li><span class="segment a-seg" data-start="719.12" data-end="725.6" title="11:59">mandatory ventilation is continued whilst a central venous catheter is inserted to provide </span></li>
+<li><span class="segment a-seg" data-start="725.6" data-end="733.28" title="12:05">venous pressure monitoring and access for inotropic agents. Routine cannulation of the internal </span></li>
+<li><span class="segment a-seg" data-start="733.28" data-end="739.68" title="12:13">jugular vein with a large bore sheath to allow flotation of a pulmonary artery catheter </span></li>
+<li><span class="segment a-seg" data-start="739.68" data-end="747.36" title="12:19">introducer is advocated in many centres. Prior to surgery, the patient should have a urinary </span></li>
+<li><span class="segment a-seg" data-start="747.36" data-end="754.48" title="12:27">catheter and a nasopharyngeal temperature probe inserted. A temperature probe positioned to </span></li>
+<li><span class="segment a-seg" data-start="754.48" data-end="762.0" title="12:34">measure core temperature should be used. Capnography should be used as per the association guidelines. </span></li>
+<li><span class="segment a-seg" data-start="762.8" data-end="771.04" title="12:42">Some centres advocate cerebral perfusion and processed EEG monitoring during cardio-bulmonary bypass </span></li>
+<li><span class="segment a-seg" data-start="771.04" data-end="780.0" title="12:51">as awareness during anesthesia is a recognised risk. Transysophagial echo is now used in most centres. </span></li>
+<li><span class="segment a-seg" data-start="781.52" data-end="788.24" title="13:01">Maintenance of anesthesia can be provided using a volatile agent or a total intravenous technique </span></li>
+<li><span class="segment a-seg" data-start="788.32" data-end="796.16" title="13:08">with propifol and remyventinil. Increments of neuromuscular blockade and longer acting analgesics </span></li>
+<li><span class="segment a-seg" data-start="796.16" data-end="803.76" title="13:16">will also be required. Nitrous oxide is best avoided because of cardiovascular depression </span></li>
+<li><span class="segment a-seg" data-start="803.76" data-end="807.76" title="13:23">and there is a risk of expanding air bubbles within the circulation. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="809.04">
+  <div class="q-label">Q10</div>
+  <div class="q-body"><span class="segment q-seg" data-start="809.04" data-end="811.751" title="13:29">What volatile agent would you use? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="811.751" data-end="816.72" title="13:31">The volatile agent of choice is a subject of some debate, </span></li>
+<li><span class="segment a-seg" data-start="817.44" data-end="824.32" title="13:37">with isofluorane particularly being implicated in coronary steel. This is when blood flow is </span></li>
+<li><span class="segment a-seg" data-start="824.32" data-end="830.64" title="13:44">directed away from ischemic areas due to vasodilitation of healthy coronary arteries. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="831.44">
+  <div class="q-label">Q11</div>
+  <div class="q-body"><span class="segment q-seg" data-start="831.44" data-end="838.24" title="13:51">However, this is not thought to be a major consideration clinically and isofluorane can be used. </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="839.04" data-end="845.44" title="13:59">Desphluorane may be avoided as it can cause sympathetic stimulation and tachycardias should </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="845.44">
+  <div class="q-label">Q12</div>
+  <div class="q-body"><span class="segment q-seg" data-start="845.44" data-end="849.493" title="14:05">be avoided. What can you tell me about ischemic preconditioning? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="849.493" data-end="851.52" title="14:09">Don't panic if you don't </span></li>
+<li><span class="segment a-seg" data-start="851.52" data-end="859.76" title="14:11">know much on this subject. If you get asked this, you're doing well. Ischemic preconditioning </span></li>
+<li><span class="segment a-seg" data-start="859.76" data-end="866.96" title="14:19">involves the induction of short ischemic periods prior to a period of prolonged tissue ischemia. </span></li>
+<li><span class="segment a-seg" data-start="868.16" data-end="874.96" title="14:28">The brief ischemic periods have been shown to render the tissue more resistant to the adverse </span></li>
+<li><span class="segment a-seg" data-start="874.96" data-end="882.16" title="14:34">effects of prolonged ischemia or reperfusion. The mechanism underlying this phenomenon </span></li>
+<li><span class="segment a-seg" data-start="882.16" data-end="888.96" title="14:42">is thought to involve reactive oxygen species triggering the release of endogenous agents </span></li>
+<li><span class="segment a-seg" data-start="888.96" data-end="898.8" title="14:48">such as adenosine, nitric oxide, heat shock protein, protein kinase C and mitochondrial ATP </span></li>
+<li><span class="segment a-seg" data-start="899.52" data-end="905.92" title="14:59">potassium channels. Studies have shown that in addition to brief ischemic periods, </span></li>
+<li><span class="segment a-seg" data-start="905.92" data-end="912.32" title="15:05">pharmacological agents, particularly the volatile agents can be used perioperatively </span></li>
+<li><span class="segment a-seg" data-start="912.32" data-end="919.44" title="15:12">to precondition the macardium via similar pathways. What is cardiopulmonary bypass and what are </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="919.44">
+  <div class="q-label">Q13</div>
+  <div class="q-body"><span class="segment q-seg" data-start="919.44" data-end="920.987" title="15:19">its functions? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="920.987" data-end="928.72" title="15:20">Cardiopulmonary bypass is an extra-corporial circulation that takes over the </span></li>
+<li><span class="segment a-seg" data-start="928.8" data-end="936.96" title="15:28">role of the heart and lungs to allow open heart surgery to proceed. That is, it allows continued </span></li>
+<li><span class="segment a-seg" data-start="936.96" data-end="944.4" title="15:36">oxygenation and circulation of the blood. The functions are to allow surgical access to a </span></li>
+<li><span class="segment a-seg" data-start="944.4" data-end="952.56" title="15:44">bloodless and motionless heart and provide the patient with oxygenated non-pulsatile blood flow </span></li>
+<li><span class="segment a-seg" data-start="952.56" data-end="959.68" title="15:52">at a predetermined temperature and pressure. Carbon dioxide can also be removed from the blood </span></li>
+<li><span class="segment a-seg" data-start="959.68" data-end="967.92" title="15:59">by the machine. Anesthetic vapor and vasopressors or vasodilators may be added to this flow. </span></li>
+<li><span class="segment a-seg" data-start="968.88" data-end="975.28" title="16:08">The cardiopulmonary bypass machine can also enable rapid cooling or heating of blood </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="975.28">
+  <div class="q-label">Q14</div>
+  <div class="q-body"><span class="segment q-seg" data-start="975.28" data-end="982.0" title="16:15">whenever required and temperatures between 15 to 37 degrees Celsius can be used. </span><span class="segment q-seg" data-start="983.12" data-end="986.32" title="16:23">Which operations require cardiopulmonary bypass? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="988.72" data-end="996.96" title="16:28">Cardiopulmonary bypass is required for coronary artery bypass surgery, valve surgery, repair of </span></li>
+<li><span class="segment a-seg" data-start="996.96" data-end="1005.6" title="16:36">large septal defects and congenital heart defects. It is also necessary for heart and or lung </span></li>
+<li><span class="segment a-seg" data-start="1005.6" data-end="1013.36" title="16:45">transplants and repair of some aneurysms. Newer techniques are evolving, which avoid the use </span></li>
+<li><span class="segment a-seg" data-start="1013.36" data-end="1021.92" title="16:53">of cardiopulmonary bypass. These include minimally invasive direct coronary artery bypass surgery, </span></li>
+<li><span class="segment a-seg" data-start="1021.92" data-end="1030.08" title="17:01">robotic surgery or endovascular valve surgery. These techniques are referred to as off-pump surgery. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="1030.96">
+  <div class="q-label">Q15</div>
+  <div class="q-body"><span class="segment q-seg" data-start="1030.96" data-end="1034.32" title="17:10">What are the key steps in instituting cardiopulmonary bypass? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="1036.48" data-end="1042.16" title="17:16">The skin will be prepared and draped by the surgical team and a median stenotomy will be </span></li>
+<li><span class="segment a-seg" data-start="1042.16" data-end="1049.84" title="17:22">performed soon after skin incision. The surgical stimulation of this and perhaps concurrent harvesting </span></li>
+<li><span class="segment a-seg" data-start="1049.84" data-end="1056.72" title="17:29">of leg veins may result in a surge in blood pressure and pulse rate, which will need intervention </span></li>
+<li><span class="segment a-seg" data-start="1056.72" data-end="1065.28" title="17:36">without producing negative ionotropy. A short-acting opioid is often used. Blood samples </span></li>
+<li><span class="segment a-seg" data-start="1065.36" data-end="1072.32" title="17:45">for measurement of baseline routine biochemical and hematological variables are sent prior to </span></li>
+<li><span class="segment a-seg" data-start="1072.32" data-end="1080.48" title="17:52">cardiopulmonary bypass. Before the arterial and venous bypass canily are inserted, the patient </span></li>
+<li><span class="segment a-seg" data-start="1080.48" data-end="1086.96" title="18:00">will need to be fully anticoagulated. Heparin should be administered via the central line </span></li>
+<li><span class="segment a-seg" data-start="1087.04" data-end="1095.76" title="18:07">at a dose of 3mg or 300 international units per kilo. An activated clotting time should </span></li>
+<li><span class="segment a-seg" data-start="1095.76" data-end="1104.16" title="18:15">be checked after 3 minutes to ensure adequate anticoagulation. The activated clotting time </span></li>
+<li><span class="segment a-seg" data-start="1104.16" data-end="1112.24" title="18:24">should be 4 times normal, which is 100 to 140 seconds to allow bypass to proceed. </span></li>
+<li><span class="segment a-seg" data-start="1113.2" data-end="1120.56" title="18:33">The addition of pump priming solution to the extra-corporial circuit will result in an acute fall </span></li>
+<li><span class="segment a-seg" data-start="1120.56" data-end="1126.88" title="18:40">in hematocrit during bypass, which potentially improves micro-circulatory blood flow. </span></li>
+<li><span class="segment a-seg" data-start="1127.84" data-end="1134.4" title="18:47">The solution can be crystalloid, such as heartmins, heparin and occasionally manitol. </span></li>
+<li><span class="segment a-seg" data-start="1135.28" data-end="1141.36" title="18:55">The systolic pressure may need to be reduced to 80 to 100 millimetres of mercury </span></li>
+<li><span class="segment a-seg" data-start="1141.44" data-end="1146.8" title="19:01">to reduce the risk of aortic dissection at the time of aortic cross-clamping. </span></li>
+<li><span class="segment a-seg" data-start="1147.76" data-end="1154.88" title="19:07">Cardioplegia solution should be prepared and administered in a bubble-free pressurized circuit </span></li>
+<li><span class="segment a-seg" data-start="1154.88" data-end="1162.24" title="19:14">if it is to be used. Once the patient is on bypass, the ventilator can be turned off </span></li>
+<li><span class="segment a-seg" data-start="1162.24" data-end="1169.68" title="19:22">and an infusion of proper fall started or a volatile agent can be used by mounting the vaporizer </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="1169.76">
+  <div class="q-label">Q16</div>
+  <div class="q-body"><span class="segment q-seg" data-start="1169.76" data-end="1175.36" title="19:29">on the bypass machine. What are the key components of the Cardioplegia solution to the bypass circuit? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="1176.08" data-end="1182.8" title="19:36">Remember to keep it simple. It's just a circuit with tubes in and out, a pump, an oxygenator, </span></li>
+<li><span class="segment a-seg" data-start="1182.8" data-end="1188.16" title="19:42">and a heat exchanger. You may be asked to sketch a diagram of the Cardioplegia solution to the </span></li>
+<li><span class="segment a-seg" data-start="1188.16" data-end="1192.0" title="19:48">bypass circuit, so it will be worth practicing this a few times. </span></li>
+<li><span class="segment a-seg" data-start="1192.24" data-end="1202.32" title="19:52">Venus canule from the superior and inferior Vena Kvi or right atrium drain blood into a reservoir. </span></li>
+<li><span class="segment a-seg" data-start="1203.44" data-end="1207.68" title="20:03">Filtered blood from the suction can be added to the reservoir also. </span></li>
+<li><span class="segment a-seg" data-start="1208.8" data-end="1216.16" title="20:08">The blood is passed through an oxygenator, normally a membrane oxygenator, and a heat exchanger </span></li>
+<li><span class="segment a-seg" data-start="1216.16" data-end="1222.64" title="20:16">before being pumped through a filter into the arterial cannula, which is normally inserted </span></li>
+<li><span class="segment a-seg" data-start="1222.64" data-end="1229.68" title="20:22">into the ascending aorta, distal to the cross clamp, so returning blood to the patient's circulation. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="1230.8">
+  <div class="q-label">Q17</div>
+  <div class="q-body"><span class="segment q-seg" data-start="1230.8" data-end="1233.259" title="20:30">What do you know about the blood pumps? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="1233.259" data-end="1236.64" title="20:33">It is possible you could be asked to discuss the physics </span></li>
+<li><span class="segment a-seg" data-start="1236.64" data-end="1244.88" title="20:36">of blood flow and the Hagen-Prassele equation within this topic. The pumps used are either roller </span></li>
+<li><span class="segment a-seg" data-start="1244.88" data-end="1252.24" title="20:44">or centrifugal pumps and are required to deliver flow against resistance. They must avoid any </span></li>
+<li><span class="segment a-seg" data-start="1252.24" data-end="1258.96" title="20:52">areas of blood stasis, potentially causing embelly or turbulence which may cause hemolosis. </span></li>
+<li><span class="segment a-seg" data-start="1259.84" data-end="1266.8" title="20:59">The pumps deliver a flow of 2.4 litres per minute per metre squared to correspond with a normal </span></li>
+<li><span class="segment a-seg" data-start="1266.8" data-end="1274.4" title="21:06">cardiac index. In contrast to the physiological circulation, the flow delivered is non-pulsatile. </span></li>
+<li><span class="segment a-seg" data-start="1275.52" data-end="1280.4" title="21:15">You mentioned membrane oxygenators. Do you know any other types of oxygenators and the </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="1280.4">
+  <div class="q-label">Q18</div>
+  <div class="q-body"><span class="segment q-seg" data-start="1280.4" data-end="1283.429" title="21:20">advantages and disadvantages of each? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="1283.429" data-end="1288.88" title="21:23">Yes, I am aware of membrane and bubble oxygenators. </span></li>
+<li><span class="segment a-seg" data-start="1289.68" data-end="1296.88" title="21:29">Membrane oxygenators are most commonly used. They contain hollow fibers giving a large surface </span></li>
+<li><span class="segment a-seg" data-start="1296.88" data-end="1304.64" title="21:36">area for gas exchange which occurs down concentration gradients. Bubble oxygenators are when the gases </span></li>
+<li><span class="segment a-seg" data-start="1304.64" data-end="1311.6" title="21:44">are bubbled through the blood but this leads to increased risk of air embolism and is less commonly used. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="1312.8">
+  <div class="q-label">Q19</div>
+  <div class="q-body"><span class="segment q-seg" data-start="1312.8" data-end="1316.4" title="21:52">What are the complications associated with cardiopulmonary bypass? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="1318.64" data-end="1324.96" title="21:58">The complications of cardiopulmonary bypass relate to the circuit and to perfusion. </span></li>
+<li><span class="segment a-seg" data-start="1325.92" data-end="1333.28" title="22:05">Circuit-related complications include obstruction of the cannulae, failure of the oxygenator, </span></li>
+<li><span class="segment a-seg" data-start="1333.28" data-end="1338.4" title="22:13">inadequate anti-coagulation causing embolism and aortic dissection. </span></li>
+<li><span class="segment a-seg" data-start="1339.44" data-end="1346.8" title="22:19">Air embolism is also a risk and hemorrhage can also occur during the surgery or postoperatively. </span></li>
+<li><span class="segment a-seg" data-start="1347.84" data-end="1354.64" title="22:27">Complications associated with perfusion include hypothermia, fluid overload, </span></li>
+<li><span class="segment a-seg" data-start="1355.12" data-end="1362.24" title="22:35">myocardial stunning and coagulopathy which occurs particularly with pump times greater than 2 hours. </span></li>
+<li><span class="segment a-seg" data-start="1363.52" data-end="1370.56" title="22:43">Prolonged cardiopulmonary bypass can lead to release of cytokines and a systemic inflammatory </span></li>
+<li><span class="segment a-seg" data-start="1370.56" data-end="1377.44" title="22:50">response resulting in organ dysfunction. This may clinically manifest as confusion, </span></li>
+<li><span class="segment a-seg" data-start="1378.08" data-end="1386.64" title="22:58">renal dysfunction and failure, ischemic gut, thrombocytopenia and impaired gas exchange due to </span></li>
+<li><span class="segment a-seg" data-start="1386.64" data-end="1394.4" title="23:06">ventilation perfusion mismatch. Hypothermia can occur and careful temperature management </span></li>
+<li><span class="segment a-seg" data-start="1394.4" data-end="1398.88" title="23:14">and active rewarming are essential prior to coming off bypass. </span></li>
+<li><span class="segment a-seg" data-start="1400.08" data-end="1406.72" title="23:20">Electrolite and acid-based disturbances may also occur and should also be corrected prior to </span></li>
+<li><span class="segment a-seg" data-start="1406.72" data-end="1416.16" title="23:26">coming off bypass. Seribrovascular events occur in between 1 and 5% of patients ranging from a </span></li>
+<li><span class="segment a-seg" data-start="1416.16" data-end="1421.68" title="23:36">transient postoperative cognitive dysfunction to a major disabling stroke. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="1422.88">
+  <div class="q-label">Q20</div>
+  <div class="q-body"><span class="segment q-seg" data-start="1422.88" data-end="1425.92" title="23:42">What do you understand by the term myocardial preservation? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="1428.16" data-end="1435.76" title="23:48">Myocardial preservation or protection aims to preserve myocardial function and prevent cell death. </span></li>
+<li><span class="segment a-seg" data-start="1436.88" data-end="1443.12" title="23:56">Cardioplegic solutions are used to achieve this. They are administered to the myocardium </span></li>
+<li><span class="segment a-seg" data-start="1443.12" data-end="1451.76" title="24:03">to cause a diastolic electro-mechanical arrest. A cold solution can be used to reduce metabolic rate </span></li>
+<li><span class="segment a-seg" data-start="1451.76" data-end="1459.76" title="24:11">and cardioplegia solution is stored at 4°C then injected into the coronary arteries or coronary </span></li>
+<li><span class="segment a-seg" data-start="1459.76" data-end="1469.84" title="24:19">sinus. Cooling is also achieved with cardioplegia at 4°C poured into the pericardium and chambers </span></li>
+<li><span class="segment a-seg" data-start="1469.84" data-end="1479.76" title="24:29">to achieve a uniformly cooled heart at between 10 and 12°C. Further doses of cardioplegia </span></li>
+<li><span class="segment a-seg" data-start="1479.76" data-end="1487.84" title="24:39">are required every 20 minutes or when electrical activity returns. The core body temperature </span></li>
+<li><span class="segment a-seg" data-start="1487.84" data-end="1497.2" title="24:47">is allowed to fall to a target value of between 28 and 32°C. Modifications of this technique </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="1497.28">
+  <div class="q-label">Q21</div>
+  <div class="q-body"><span class="segment q-seg" data-start="1497.28" data-end="1502.96" title="24:57">are used in different centres. What is the composition of cardioplegic solution? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="1505.44" data-end="1512.64" title="25:05">There are a number of different formulations. These are crystalloid or blood-based solutions </span></li>
+<li><span class="segment a-seg" data-start="1512.64" data-end="1520.32" title="25:12">to which a number of ingredients are added. Ringer's lactate, dextrose and saline dextrose </span></li>
+<li><span class="segment a-seg" data-start="1520.4" data-end="1528.48" title="25:20">solutions have all been used. Potassium is the agent used to induce cardiac arrest. It is added </span></li>
+<li><span class="segment a-seg" data-start="1528.48" data-end="1536.56" title="25:28">at a concentration of 20mm per litre potassium chloride to depolarise macardial cells with </span></li>
+<li><span class="segment a-seg" data-start="1536.56" data-end="1545.52" title="25:36">procane as a membrane stabilising agent and magnesium may also be added. The cardioplegia solution </span></li>
+<li><span class="segment a-seg" data-start="1545.6" data-end="1553.68" title="25:45">is stored at 4°C and is rapidly infused under pressure, making sure no air bubbles enter the </span></li>
+<li><span class="segment a-seg" data-start="1553.68" data-end="1561.12" title="25:53">coronary circulation. There is some debate as to whether blood cardioplegia is superior to its </span></li>
+<li><span class="segment a-seg" data-start="1561.12" data-end="1567.12" title="26:01">crystalloid counterpart due to the theoretical advantage of oxygen carrying capacity. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="1568.32">
+  <div class="q-label">Q22</div>
+  <div class="q-body"><span class="segment q-seg" data-start="1568.32" data-end="1570.48" title="26:08">What events occur when coming off bypass? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="1570.88" data-end="1579.6" title="26:10">There must be clear communication between the surgeon, anesthetist and perfusionist. </span></li>
+<li><span class="segment a-seg" data-start="1580.32" data-end="1590.08" title="26:20">The patient's temperature should be returned to 37°C, the potassium should be 4-5mm per litre </span></li>
+<li><span class="segment a-seg" data-start="1590.08" data-end="1599.92" title="26:30">and the hematocrit should be greater than 24%. A sinus rate of 70-100 beats per minute is desirable </span></li>
+<li><span class="segment a-seg" data-start="1600.48" data-end="1608.56" title="26:40">and if sinus rhythm does not return spontaneously, DC cardioversion or an internal defibrillator </span></li>
+<li><span class="segment a-seg" data-start="1608.56" data-end="1615.76" title="26:48">or temporary pacing wires may be needed. The venous pump is gradually restricted, </span></li>
+<li><span class="segment a-seg" data-start="1615.76" data-end="1622.72" title="26:55">so allowing venous return back into the right atrium. As cardiac activity returns, </span></li>
+<li><span class="segment a-seg" data-start="1622.72" data-end="1628.96" title="27:02">blood begins to circulate into the pulmonary vasculature and artificial ventilation with </span></li>
+<li><span class="segment a-seg" data-start="1628.96" data-end="1637.04" title="27:08">oxygen and an inhalational volatile agent is recommended. Once the ventricles are contracting well, </span></li>
+<li><span class="segment a-seg" data-start="1637.04" data-end="1645.52" title="27:17">the circulating volume is returned to the heart. Protamine, 1mg per 100 units of heparin, </span></li>
+<li><span class="segment a-seg" data-start="1645.52" data-end="1653.2" title="27:25">is administered by slow infusion to reverse the effects of heparin, but only when surgically </span></li>
+<li><span class="segment a-seg" data-start="1653.2" data-end="1658.4" title="27:33">indicated and at this point the perfusionist must turn off the suction. </span></li>
+<li><span class="segment a-seg" data-start="1659.52" data-end="1667.6" title="27:39">Protamine may precipitate systemic hypotension, pulmonary vasoconstriction and anaphylaxis. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="1668.72">
+  <div class="q-label">Q23</div>
+  <div class="q-body"><span class="segment q-seg" data-start="1668.72" data-end="1671.6" title="27:48">What investigation should be performed post-biparse? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="1673.84" data-end="1681.28" title="27:53">Serum samples should be taken for an activated clotting time, hematology, biochemistry </span></li>
+<li><span class="segment a-seg" data-start="1681.28" data-end="1688.24" title="28:01">and coagulation screen and an arterial blood cast should be taken to allow correction of disturbances. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="1689.52">
+  <div class="q-label">Q24</div>
+  <div class="q-body"><span class="segment q-seg" data-start="1689.52" data-end="1692.08" title="28:09">What are the important features of post-operative care? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="1694.64" data-end="1698.8" title="28:14">The patient should be looked after in a critical care environment, </span></li>
+<li><span class="segment a-seg" data-start="1698.8" data-end="1704.32" title="28:18">with invasive monitoring and appropriately experienced nursing and medical care. </span></li>
+<li><span class="segment a-seg" data-start="1705.04" data-end="1710.96" title="28:25">The patient will usually require a period of sedation and ventilation post-operatively. </span></li>
+<li><span class="segment a-seg" data-start="1712.0" data-end="1718.48" title="28:32">The length of time will depend on which anesthetic drugs and analgesic drugs are used </span></li>
+<li><span class="segment a-seg" data-start="1718.48" data-end="1725.28" title="28:38">and whether the patient is stable cardiovascular. Fast-track cardiac anesthesia, </span></li>
+<li><span class="segment a-seg" data-start="1725.28" data-end="1731.84" title="28:45">meaning excavation within eight hours after cardiac surgery, has been established as routine </span></li>
+<li><span class="segment a-seg" data-start="1731.84" data-end="1737.92" title="28:51">in many cardiac centres in the world. The patient should be normothermic, </span></li>
+<li><span class="segment a-seg" data-start="1737.92" data-end="1745.28" title="28:57">hemodynamically stable and have any acid-base or electrolyte disturbances corrected prior to </span></li>
+<li><span class="segment a-seg" data-start="1745.28" data-end="1752.96" title="29:05">excavation. Most patients will require volume expansion as they warm up, and are high </span></li>
+<li><span class="segment a-seg" data-start="1752.96" data-end="1760.4" title="29:12">urine output as a result of the filtration of the pump prime can lead to hypocholemia. </span></li>
+<li><span class="segment a-seg" data-start="1761.6" data-end="1767.52" title="29:21">Bleeding from the chest or the pericardial drains in the post-operative period may need </span></li>
+<li><span class="segment a-seg" data-start="1767.52" data-end="1775.04" title="29:27">investigating, necessitating the administration of blood, platelets, fresh frozen plasma, </span></li>
+<li><span class="segment a-seg" data-start="1775.04" data-end="1782.0" title="29:35">or more protamine. If bleeding continues, then surgical exploration may be required. </span></li>
+<li><span class="segment a-seg" data-start="1782.96" data-end="1790.16" title="29:42">Once exhumated, analgesia can be maintained using patient-controlled opioid analgesia </span></li>
+<li><span class="segment a-seg" data-start="1790.16" data-end="1797.44" title="29:50">and regular paracetamol. High thoracic epidural anesthesia provides good hemodinamidum </span></li>
+<li><span class="segment a-seg" data-start="1797.44" data-end="1805.2" title="29:57">and anachystability throughout surgery, superior analgesia, facilitating respiratory movements, </span></li>
+<li><span class="segment a-seg" data-start="1805.2" data-end="1811.12" title="30:05">and adequate muscle tone, all necessary criteria for safe early excavation. </span></li>
+<li><span class="segment a-seg" data-start="1812.4" data-end="1819.36" title="30:12">Centres using this technique claim that immediate excavation at the end of surgery is possible. </span></li>
+<li><span class="segment a-seg" data-start="1819.36" data-end="1827.6" title="30:19">Extubation is not contraindicated if the patient is dependent on moderate doses of ionotropes. </span></li>
+  </ul>
+</div>
+</div>
+
 </div>
 
 <div class="subtitle-bar">
-  <span class="subtitle-text empty" id="subtitle-text">Play audio to see live subtitles&#8230;</span>
+  <span id="subtitle-text" class="empty">Play audio to see live subtitles&#8230;</span>
 </div>
 
 <script>
-
-const audio    = document.getElementById('audio');
-const allSegs  = Array.from(document.querySelectorAll('.segment'));
-const allBlocks = Array.from(document.querySelectorAll('.t-block'));
+const audio      = document.getElementById('audio');
+const allSegs    = Array.from(document.querySelectorAll('.segment'));
 const subtitleEl = document.getElementById('subtitle-text');
-let activeSegEl   = null;
-let activeBlockEl = null;
-let searchMatches = [];
-let searchIdx     = 0;
+let activeSegEl  = null;
+let searchMatches = [], searchIdx = 0;
 
-// Duration display
 audio.addEventListener('loadedmetadata', () => {
   const m = Math.floor(audio.duration / 60);
   const s = Math.floor(audio.duration %% 60).toString().padStart(2,'0');
   document.getElementById('dur').textContent = m + ':' + s;
 });
 
-// Seek helper
-function seekTo(t) {
-  audio.currentTime = t;
-  audio.play();
-}
+function seekTo(t) { audio.currentTime = t; audio.play(); }
 
-// Block gutter click
-document.querySelectorAll('.t-gutter').forEach(g => {
-  g.addEventListener('click', () => seekTo(parseFloat(g.dataset.start)));
+// Q-block header click
+document.querySelectorAll('.q-block').forEach(q => {
+  q.addEventListener('click', e => {
+    if (!e.target.classList.contains('segment')) seekTo(parseFloat(q.dataset.start));
+  });
 });
 
-// Segment click
+// Individual segment click
 allSegs.forEach(s => {
-  s.addEventListener('click', e => {
-    e.stopPropagation();
-    seekTo(parseFloat(s.dataset.start));
-  });
+  s.addEventListener('click', e => { e.stopPropagation(); seekTo(parseFloat(s.dataset.start)); });
 });
 
 // Real-time tracking
 audio.addEventListener('timeupdate', () => {
   const t = audio.currentTime;
-
-  // Find active segment (last one whose start <= t)
   let found = null;
   for (let i = allSegs.length - 1; i >= 0; i--) {
     if (parseFloat(allSegs[i].dataset.start) <= t) { found = allSegs[i]; break; }
   }
-
   if (found && found !== activeSegEl) {
-    // Clear previous
-    if (activeSegEl) activeSegEl.classList.remove('active');
-    if (activeBlockEl) {
-      activeBlockEl.classList.remove('block-active');
-      const pg = activeBlockEl.querySelector('.t-gutter');
-      if (pg) pg.classList.remove('gutter-active');
+    if (activeSegEl) {
+      activeSegEl.classList.remove('active');
+      const pli = activeSegEl.closest('li');
+      if (pli) pli.classList.remove('li-active');
+      const pq = activeSegEl.closest('.q-block');
+      if (pq) pq.classList.remove('q-active');
     }
-    // Set new
     found.classList.add('active');
-    const block = found.closest('.t-block');
-    if (block) {
-      block.classList.add('block-active');
-      const g = block.querySelector('.t-gutter');
-      if (g) g.classList.add('gutter-active');
-      activeBlockEl = block;
-    }
+    const li = found.closest('li');
+    if (li) li.classList.add('li-active');
+    const qb = found.closest('.q-block');
+    if (qb) qb.classList.add('q-active');
     activeSegEl = found;
 
-    // Update subtitle
     subtitleEl.textContent = found.textContent.trim();
     subtitleEl.classList.remove('empty');
 
-    // Auto-scroll (only when not searching)
-    if (!document.getElementById('search').value) {
+    if (!document.getElementById('search').value)
       found.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }
   }
 });
 
@@ -413,17 +750,13 @@ searchInput.addEventListener('keydown', e => {
     el.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
 });
-
 function runSearch() {
   const q = searchInput.value.trim().toLowerCase();
   allSegs.forEach(s => s.classList.remove('search-match','search-current'));
   searchMatches = [];
   if (!q) return;
   allSegs.forEach(s => {
-    if (s.textContent.toLowerCase().includes(q)) {
-      s.classList.add('search-match');
-      searchMatches.push(s);
-    }
+    if (s.textContent.toLowerCase().includes(q)) { s.classList.add('search-match'); searchMatches.push(s); }
   });
   if (!searchMatches.length) return;
   searchIdx = 0;

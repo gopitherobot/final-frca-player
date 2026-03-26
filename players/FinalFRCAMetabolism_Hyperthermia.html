@@ -5,10 +5,19 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Metabolism — Hyperthermia</title>
 <style>
-
   :root {
-    --accent:    #10b981;
-    --body-bg:   #f1f5f9;
+    --q-bg:       #1e3a5f;
+    --q-text:     #ffffff;
+    --q-label:    #60a5fa;
+    --a-bg:       #ffffff;
+    --a-border:   #e2e8f0;
+    --a-label:    #059669;
+    --active-q:   #10b981;
+    --active-a:   #dbeafe;
+    --accent:     #10b981;
+    --body-bg:    #f1f5f9;
+    --pre-bg:     #fef9c3;
+    --pre-border: #fcd34d;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
@@ -40,22 +49,9 @@
     margin-bottom: 4px;
     letter-spacing: 0.01em;
   }
-  .header-sub {
-    font-size: 0.72rem;
-    color: #94a3b8;
-    font-style: italic;
-  }
-  audio {
-    height: 36px;
-    accent-color: var(--accent);
-    flex-shrink: 0;
-  }
-  .back-link {
-    font-size: 0.8rem;
-    color: #94a3b8;
-    text-decoration: none;
-    white-space: nowrap;
-  }
+  .header-sub { font-size: 0.72rem; color: #94a3b8; font-style: italic; }
+  audio { height: 36px; accent-color: var(--accent); flex-shrink: 0; }
+  .back-link { font-size: 0.8rem; color: #94a3b8; text-decoration: none; white-space: nowrap; }
   .back-link:hover { color: #60a5fa; }
 
   /* ── Toolbar ── */
@@ -69,30 +65,17 @@
     border-bottom: 1px solid #334155;
   }
   .toolbar input {
-    flex: 1;
-    max-width: 380px;
+    flex: 1; max-width: 380px;
     padding: 5px 11px;
-    border: 1px solid #475569;
-    border-radius: 6px;
-    background: #0f172a;
-    color: #e2e8f0;
-    font-size: 0.83rem;
-    outline: none;
+    border: 1px solid #475569; border-radius: 6px;
+    background: #0f172a; color: #e2e8f0; font-size: 0.83rem; outline: none;
   }
   .toolbar input:focus { border-color: var(--accent); }
   .toolbar input::placeholder { color: #64748b; }
-  .stats {
-    font-size: 0.72rem;
-    color: #64748b;
-    white-space: nowrap;
-  }
+  .stats { font-size: 0.72rem; color: #64748b; white-space: nowrap; }
 
   /* ── Scroll area ── */
-  .scroll-area {
-    flex: 1;
-    overflow-y: auto;
-    padding: 20px;
-  }
+  .scroll-area { flex: 1; overflow-y: auto; padding: 20px; }
   .scroll-area::-webkit-scrollbar { width: 6px; }
   .scroll-area::-webkit-scrollbar-track { background: transparent; }
   .scroll-area::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
@@ -107,68 +90,77 @@
     display: flex;
     align-items: center;
   }
-  .subtitle-text {
-    font-size: 0.9rem;
-    color: #e2e8f0;
-    line-height: 1.5;
-    font-style: italic;
-  }
-  .subtitle-text.empty { color: #475569; }
+  #subtitle-text { font-size: 0.88rem; color: #e2e8f0; line-height: 1.5; font-style: italic; }
+  #subtitle-text.empty { color: #475569; }
 
-  /* ── Transcript blocks ── */
-  .t-block {
-    background: #ffffff;
-    border: 1px solid #e2e8f0;
-    border-radius: 10px;
-    margin-bottom: 14px;
-    overflow: hidden;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
-    display: flex;
-  }
-  .t-block.block-active {
-    border-color: var(--accent);
-    box-shadow: 0 0 0 2px rgba(37,99,235,0.15);
-  }
-  .t-gutter {
-    background: #0f172a;
-    width: 52px;
-    flex-shrink: 0;
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
-    padding-top: 14px;
-    cursor: pointer;
-  }
-  .t-gutter:hover { background: #1e293b; }
-  .t-timestamp {
-    font-size: 0.7rem;
-    color: #64748b;
-    font-family: monospace;
-    font-weight: 600;
-    letter-spacing: 0.02em;
-  }
-  .t-gutter.gutter-active .t-timestamp { color: var(--accent); }
-  .t-body {
-    flex: 1;
+  /* ── Preamble ── */
+  .preamble-block {
+    background: var(--pre-bg);
+    border-left: 4px solid var(--pre-border);
+    border-radius: 0 8px 8px 0;
     padding: 12px 16px;
-    line-height: 1.75;
-    font-size: 0.92rem;
-    color: #1e293b;
+    margin-bottom: 20px;
+    font-size: 0.88rem;
+    color: #78350f;
+    font-style: italic;
+    line-height: 1.7;
   }
 
-  /* ── Segments ── */
-  .segment {
+  /* ── Q&A pair ── */
+  .qa-pair { margin-bottom: 20px; border-radius: 10px; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+
+  /* Question block */
+  .q-block {
+    background: var(--q-bg);
+    padding: 14px 18px;
+    display: flex; gap: 14px; align-items: flex-start;
     cursor: pointer;
-    border-radius: 3px;
-    transition: background 0.1s;
+    transition: background 0.15s;
   }
-  .segment:hover { background: #eff6ff; }
-  .segment.active {
-    background: #bfdbfe;
-    outline: 2px solid #3b82f6;
-    outline-offset: 1px;
-    border-radius: 3px;
+  .q-block:hover { background: #1d4ed8; }
+  .q-block.q-active { background: var(--active-q); }
+  .q-label {
+    font-size: 0.7rem; font-weight: 700;
+    color: var(--q-label);
+    background: rgba(96,165,250,0.15);
+    border: 1px solid rgba(96,165,250,0.3);
+    border-radius: 5px; padding: 3px 7px;
+    white-space: nowrap; margin-top: 2px; letter-spacing: 0.05em;
+    flex-shrink: 0;
   }
+  .q-body { flex: 1; font-size: 0.97rem; font-weight: 600; color: var(--q-text); line-height: 1.55; }
+
+  /* Answer block */
+  .a-block {
+    background: var(--a-bg);
+    border: 1px solid var(--a-border); border-top: none;
+    padding: 14px 18px;
+    display: flex; gap: 14px; align-items: flex-start;
+  }
+  .a-label {
+    font-size: 0.7rem; font-weight: 700;
+    color: var(--a-label);
+    background: #d1fae5; border: 1px solid #6ee7b7;
+    border-radius: 5px; padding: 3px 9px;
+    white-space: nowrap; margin-top: 2px; letter-spacing: 0.05em;
+    flex-shrink: 0;
+  }
+  .a-body { flex: 1; list-style: none; padding: 0; }
+  .a-body li {
+    padding: 4px 0 4px 14px;
+    border-left: 3px solid transparent;
+    line-height: 1.7; font-size: 0.92rem; color: #1e293b;
+    border-radius: 0 4px 4px 0;
+    transition: background 0.15s;
+  }
+  .a-body li:not(:last-child) { border-bottom: 1px solid #f1f5f9; }
+
+  /* ── Segments (clickable) ── */
+  .segment { cursor: pointer; border-radius: 3px; }
+  .q-seg:hover { background: rgba(255,255,255,0.18); }
+  .a-seg:hover { background: #eff6ff; }
+  .segment.active { background: #bfdbfe; outline: 2px solid #3b82f6; outline-offset: 1px; }
+  .a-body li.li-active { background: var(--active-a); border-left-color: var(--accent); }
   .segment.search-match  { background: #fef9c3; }
   .segment.search-current { background: #fde047; outline: 2px solid #ca8a04; }
 
@@ -187,178 +179,409 @@
 
 <div class="toolbar">
   <input type="text" id="search" placeholder="Search transcript&#8230; (Enter = next match)">
-  <span class="stats" id="stats">169 segments &nbsp;|&nbsp; <span id="dur">loading&#8230;</span></span>
+  <span class="stats" id="stats">17 questions &nbsp;|&nbsp; 169 segments &nbsp;|&nbsp; <span id="dur">loading&#8230;</span></span>
 </div>
 
 <div class="scroll-area" id="scroll-area">
-<div class="t-block">
-  <div class="t-gutter" data-start="0.0"><span class="t-timestamp">0:00</span></div>
-  <div class="t-body"><span class="segment" data-start="0.0" data-end="2.0" title="0:00">hypothermia </span><span class="segment" data-start="2.72" data-end="8.0" title="0:02">You'll call to the emergency department to assess a 35-year-old patient who has run a half marathon </span><span class="segment" data-start="8.96" data-end="11.76" title="0:08">He is drowsy and his temperature is 42 degrees </span><span class="segment" data-start="12.88" data-end="19.52" title="0:12">The ED registrar is concerned that his hypothermic and needs HDU care. What is hypothermia? </span><span class="segment" data-start="19.76" data-end="30.0" title="0:19">Hyperthermia is defined as an acute condition which occurs when the body produces or absorbs more heat than it can dissipate </span><span class="segment" data-start="30.0" data-end="32.24" title="0:30">What can cause hypothermia? </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="32.24"><span class="t-timestamp">0:32</span></div>
-  <div class="t-body"><span class="segment" data-start="32.24" data-end="34.16" title="0:32">Be general and brief </span><span class="segment" data-start="34.16" data-end="45.04" title="0:34">Causes of hypothermia can be environmental, drug-related or related to a medical condition such as sepsis or an acute burn injury </span><span class="segment" data-start="45.04" data-end="48.16" title="0:45">What form of hypothermia is this patient suffering from? </span><span class="segment" data-start="50.0" data-end="59.04" title="0:50">This patient is suffering from environmental hypothermia. This can range from mild heat exhaustion to the more extreme heat stroke </span><span class="segment" data-start="59.92" data-end="62.48" title="0:59">Heat stroke exists in two forms </span><span class="segment" data-start="63.12" data-end="66.4" title="1:03">Classical heat stroke and exertional heat stroke </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="67.12"><span class="t-timestamp">1:07</span></div>
-  <div class="t-body"><span class="segment" data-start="67.12" data-end="70.64" title="1:07">This patient is likely to be suffering from exertional heat stroke </span><span class="segment" data-start="71.04" data-end="79.28" title="1:11">Which typically occurs acutely in young fit and healthy patients who have taken part in exercise during high ambient </span><span class="segment" data-start="79.28" data-end="81.28" title="1:19">temperatures </span><span class="segment" data-start="81.68" data-end="91.92" title="1:21">Classical heat stroke occurs over several hours or days and tends to occur in the elderly and in firm when ambient temperatures are raised for several days </span><span class="segment" data-start="92.56" data-end="95.44" title="1:32">How do you differentiate between heat exhaustion and heat stroke? </span><span class="segment" data-start="97.28" data-end="103.04" title="1:37">Heat stroke requires the presence of hyperpirexia and neurological dysfunction </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="103.52"><span class="t-timestamp">1:43</span></div>
-  <div class="t-body"><span class="segment" data-start="103.52" data-end="107.44" title="1:43">It typically involves temperatures of greater than 40 degrees C </span><span class="segment" data-start="107.44" data-end="112.88" title="1:47">And the patient is often confused or unconscious and can be hypotensive </span><span class="segment" data-start="112.88" data-end="117.44" title="1:52">Suffer from cardiac dysrhythmias and even cardiac respiratory arrest </span><span class="segment" data-start="117.44" data-end="121.6" title="1:57">If your diagnosis of heat stroke is correct in this patient, how would you manage him? </span><span class="segment" data-start="123.6" data-end="127.44" title="2:03">I would assess his airway, breathing and circulation </span><span class="segment" data-start="128.0" data-end="132.24" title="2:08">Make an assessment of his conscious level and commence cooling of the patient </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="133.04"><span class="t-timestamp">2:13</span></div>
-  <div class="t-body"><span class="segment" data-start="133.04" data-end="136.08" title="2:13">I would start by externally cooling the patient </span><span class="segment" data-start="136.08" data-end="138.56" title="2:16">Place him in a cold environment if possible </span><span class="segment" data-start="138.56" data-end="142.96" title="2:18">And begin surface cooling him with cold towels, ice packs </span><span class="segment" data-start="142.96" data-end="145.28" title="2:22">And I could consider cold water immersion </span><span class="segment" data-start="145.92" data-end="150.8" title="2:25">As he is severely hypothermic, I could also use internal cooling methods </span><span class="segment" data-start="150.8" data-end="155.28" title="2:30">Such as cold intravenous fluids, cold lavage of the stomach, </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="155.28"><span class="t-timestamp">2:35</span></div>
-  <div class="t-body"><span class="segment" data-start="155.28" data-end="159.36" title="2:35">Peritoneum or bladder, and intravascular cooling techniques </span><span class="segment" data-start="159.36" data-end="162.72" title="2:39">Such as hemofiltration or cardiopulmonary bypass </span><span class="segment" data-start="163.2" data-end="167.04" title="2:43">Apart from cooling the patient, other and other therapies that are indicated </span><span class="segment" data-start="171.12" data-end="177.52" title="2:51">Heat stroke patients are often intra-vascular deplete and require fluid resuscitation </span><span class="segment" data-start="177.52" data-end="180.8" title="2:57">guided by cardiovascular parameters and urine output </span><span class="segment" data-start="181.52" data-end="185.44" title="3:01">Cooling reduces heat-induced vasodilitation </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="185.44"><span class="t-timestamp">3:05</span></div>
-  <div class="t-body"><span class="segment" data-start="185.44" data-end="191.36" title="3:05">And over-resuscitating with fluid can cause circulatory overload, cardiac failure </span><span class="segment" data-start="191.44" data-end="196.16" title="3:11">And pulmonary edema, especially if the patient has pre-existing heart disease </span><span class="segment" data-start="196.8" data-end="201.68" title="3:16">The patient may therefore also require ionotropal vasopressor support </span><span class="segment" data-start="202.16" data-end="204.24" title="3:22">What tests might you order on this patient? </span><span class="segment" data-start="206.0" data-end="212.72" title="3:26">If the cause of the hyperthermia is not clear, tests may be indicated to find an underlying cause </span><span class="segment" data-start="213.36" data-end="220.08" title="3:33">A full blood count, urea and electrolytes, liver function tests, creatinine kinase </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="220.16"><span class="t-timestamp">3:40</span></div>
-  <div class="t-body"><span class="segment" data-start="220.16" data-end="223.76" title="3:40">and a coagulation screen should be taken as a baseline </span><span class="segment" data-start="223.76" data-end="228.8" title="3:43">as well as thyroid function tests and screens for possible recreational drugs </span><span class="segment" data-start="229.36" data-end="233.04" title="3:49">What is this patient at risk of if their temperature is not reduced in a timely manner? </span><span class="segment" data-start="235.12" data-end="239.76" title="3:55">Temperatures of more than 40 degrees C can be destructive to the brain </span><span class="segment" data-start="239.76" data-end="243.12" title="3:59">and ultimately progressed to multi-organ failure and death </span><span class="segment" data-start="244.4" data-end="249.6" title="4:04">A response similar to that which occurs in this systemic inflammatory response syndrome occurs </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="250.08"><span class="t-timestamp">4:10</span></div>
-  <div class="t-body"><span class="segment" data-start="250.08" data-end="256.64" title="4:10">and can affect all organs within the body, resulting in seizures, coma, dysrhythmias, </span><span class="segment" data-start="256.64" data-end="260.8" title="4:16">hypotension, disseminated intravascular calculation, </span><span class="segment" data-start="260.8" data-end="265.76" title="4:20">raptomylicis, hepatic failure and even cardiorespiratory arrest </span><span class="segment" data-start="266.24" data-end="271.2" title="4:26">Your esitzo calls you to theatre as their concern the patient on the table having an appendicectomy </span><span class="segment" data-start="271.2" data-end="272.56" title="4:31">has a very high temperature </span><span class="segment" data-start="273.76" data-end="277.92" title="4:33">This off-ageal probe in situ is recording a temperature of 40 degrees centigrade </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="278.88"><span class="t-timestamp">4:38</span></div>
-  <div class="t-body"><span class="segment" data-start="278.88" data-end="280.56" title="4:38">What is a differential diagnosis? </span><span class="segment" data-start="281.2" data-end="286.88" title="4:41">As with other questions divide these into patient factors, environmental factors etc </span><span class="segment" data-start="288.88" data-end="295.12" title="4:48">Causes of a high temperature intraoperatively include patient-related, drug-related </span><span class="segment" data-start="295.12" data-end="297.28" title="4:55">and environmental-related factors </span><span class="segment" data-start="298.0" data-end="302.8" title="4:58">The patient is undergoing an appendicectomy so has a potential source of sepsis </span><span class="segment" data-start="303.36" data-end="309.6" title="5:03">Interabdominal abscesses can cause significant febriar response which often settle once source </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="309.6"><span class="t-timestamp">5:09</span></div>
-  <div class="t-body"><span class="segment" data-start="309.6" data-end="310.64" title="5:09">control is gained </span><span class="segment" data-start="311.28" data-end="317.76" title="5:11">The patient may also be suffering from sepsis from another source such as pulmonary or urinary tract </span><span class="segment" data-start="317.76" data-end="318.4" title="5:17">infection </span><span class="segment" data-start="319.2" data-end="322.32" title="5:19">Pulmonary embolus can also cause a febriar response </span><span class="segment" data-start="322.96" data-end="329.36" title="5:22">Hyperthyroidism, either pre-existing or acute undiagnosed, should also be considered </span><span class="segment" data-start="329.36" data-end="331.28" title="5:29">as should fiochromositoma </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="332.24"><span class="t-timestamp">5:32</span></div>
-  <div class="t-body"><span class="segment" data-start="332.24" data-end="339.36" title="5:32">Drug-related factors, particular tannisthenics, include the much-veered malignant hyperpirexia </span><span class="segment" data-start="339.36" data-end="343.6" title="5:39">associated with the inhalation ul anoscetic drugs and seximophobia </span><span class="segment" data-start="344.16" data-end="351.68" title="5:44">Drug-related factors, particular tannisthenics include the much-veered malignant hyperpirexia </span><span class="segment" data-start="351.68" data-end="356.0" title="5:51">associated with the inhalational anoscetic drugs and to seximothonium </span><span class="segment" data-start="356.0" data-end="363.2" title="5:56">If the patient usually takes antipsychotics, they are also at risk of neuroelptic malignant </span><span class="segment" data-start="363.2" data-end="369.48" title="6:03">syndrome. A febrile response can also occur in response to the administration of blood </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="369.48"><span class="t-timestamp">6:09</span></div>
-  <div class="t-body"><span class="segment" data-start="369.48" data-end="377.32" title="6:09">products or drugs such as N-Astylcystine. Environmental factors are those such as a very </span><span class="segment" data-start="377.32" data-end="384.64" title="6:17">high ambient temperature, excessive warming by warm intravenous fluids, air warming blankets, </span><span class="segment" data-start="384.64" data-end="391.32" title="6:24">or warming mattresses. What further information would you require? Think history, investigation, </span><span class="segment" data-start="391.32" data-end="398.08" title="6:31">examination. Further information that I would require would include an assessment of the </span><span class="segment" data-start="398.08" data-end="402.84" title="6:38">would be able to discover if there were any pre-morbid conditions of note or any current </span><span class="segment" data-start="402.84" data-end="409.8" title="6:42">medications, transfusions or recreational drugs which may be implicated in the pyrexia. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="409.8"><span class="t-timestamp">6:49</span></div>
-  <div class="t-body"><span class="segment" data-start="409.8" data-end="415.0" title="6:49">There may also be a family history of malignant hyperpyrexia recorded in the anesthetic </span><span class="segment" data-start="415.0" data-end="420.36" title="6:55">history, or history of problems during prior anesthetics. Although I would hope that this </span><span class="segment" data-start="420.36" data-end="425.52" title="7:00">would have been considered when choosing an appropriate mode of anesthesia, and indeed </span><span class="segment" data-start="425.52" data-end="430.6" title="7:05">I would make a note of any potential drugs given during the anesthetic which may have triggered </span><span class="segment" data-start="430.6" data-end="436.6" title="7:10">a malignant hyperpyrexia. I would want to determine the time frame within which the pyrexia </span><span class="segment" data-start="436.6" data-end="442.48" title="7:16">has arisen. Examining the observations prior to coming to theatre may show a pre-existing </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="442.48"><span class="t-timestamp">7:22</span></div>
-  <div class="t-body"><span class="segment" data-start="442.48" data-end="449.16" title="7:22">pyrexia which may suggest a septic origin. If the pyrexia was not pre-existing, I would </span><span class="segment" data-start="449.16" data-end="454.0" title="7:29">want to ascertain how quickly it has arisen interpretively. A temperature that has </span><span class="segment" data-start="454.0" data-end="459.52" title="7:34">crept up over the course of two to three hours is likely to be of a very different origin </span><span class="segment" data-start="459.52" data-end="464.96" title="7:39">than one which has increased by a number of degrees over a short time period. I would </span><span class="segment" data-start="464.96" data-end="470.68" title="7:44">review any blood tests that had been recorded prior to theatre as a leukocytosis or raised </span><span class="segment" data-start="470.68" data-end="477.32" title="7:50">CRP may suggest an effective cause of the temperature. I would also review the patient's </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="477.32"><span class="t-timestamp">7:57</span></div>
-  <div class="t-body"><span class="segment" data-start="477.32" data-end="482.92" title="7:57">current observations as a tachycardia and high blood pressure would be more in keeping </span><span class="segment" data-start="482.92" data-end="489.32" title="8:02">with a malignant hyperpyrexia rather than a sepsis. Further information may be gathered </span><span class="segment" data-start="489.32" data-end="496.08" title="8:09">from the patient's end-title carbon dioxide and inspired expired oxygen levels. As </span><span class="segment" data-start="496.08" data-end="502.56" title="8:16">a patient suffering from malignant hyperpyrexia would be hypermetabolic and have an increased </span><span class="segment" data-start="502.56" data-end="509.0" title="8:22">oxygen requirement and carbon dioxide production out of keeping with that which would be expected </span><span class="segment" data-start="509.0" data-end="516.32" title="8:29">from a high temperature alone. Performing a full clinical examination of the patient </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="516.32"><span class="t-timestamp">8:36</span></div>
-  <div class="t-body"><span class="segment" data-start="516.32" data-end="523.32" title="8:36">may also allow me to elicit signs of sepsis or features consistent with a malignant hyperpyrexia </span><span class="segment" data-start="523.32" data-end="528.6" title="8:43">such as muscle rigidity. You've deduced the most likely cause of the hypothermia is malignant </span><span class="segment" data-start="528.6" data-end="535.36" title="8:48">hyperpyrexia caused either by the succcemethonium or the inhaled anaesthetic volatile. Describe </span><span class="segment" data-start="535.36" data-end="541.08" title="8:55">your initial management. This management is based on an AAGBI document which should be </span><span class="segment" data-start="541.08" data-end="546.76" title="9:01">a well-rehearsed drill. I would cease all potential precipitant </span><span class="segment" data-start="546.76" data-end="553.44" title="9:06">drugs and convert to a malignant hyperthermia safe technique. I would ask the surgeon to </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="553.44"><span class="t-timestamp">9:13</span></div>
-  <div class="t-body"><span class="segment" data-start="553.44" data-end="560.64" title="9:13">stop operating and inform him of my suspicions and potential evolving anaesthetic emergency. </span><span class="segment" data-start="560.64" data-end="568.44" title="9:20">I would then call for senior help and reassess the patient's airway, breathing and circulation. </span><span class="segment" data-start="568.44" data-end="573.48" title="9:28">I would remove the patient from the anaesthetic breathing circuit and hyperventilate them </span><span class="segment" data-start="573.48" data-end="582.12" title="9:33">with 100% oxygen and provide anaesthesia with an intravenous agent such as propyl. </span><span class="segment" data-start="582.12" data-end="588.32" title="9:42">I would ask my anaesthetic assistant to prepare 2-3 mg per kilogram of dantraline and have </span><span class="segment" data-start="588.32" data-end="594.8" title="9:48">further bonuses of 1 mg per kilogram ready. I would begin calling of the patient by giving </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="594.8"><span class="t-timestamp">9:54</span></div>
-  <div class="t-body"><span class="segment" data-start="594.8" data-end="601.04" title="9:54">cold intravenous fluids, switching the warming blanket to a cooling temperature and asking </span><span class="segment" data-start="601.04" data-end="607.72" title="10:01">the surgeon to perform cold peritoneal ofage. I would also consider extra corporeal heat </span><span class="segment" data-start="607.72" data-end="614.64" title="10:07">exchange. I would insert an arterial line and send blood for gas analysis, potassium, </span><span class="segment" data-start="614.64" data-end="621.44" title="10:14">hematocrit, platelet count, clotting and cratine kinase. I would also consider inserting </span><span class="segment" data-start="621.44" data-end="628.36" title="10:21">a central venous line under urinary catheter and perform dipstick urinalysis for marglobenuria, </span><span class="segment" data-start="628.36" data-end="632.2" title="10:28">as well as sending a sample to the lab for formal analysis. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="632.2"><span class="t-timestamp">10:32</span></div>
-  <div class="t-body"><span class="segment" data-start="632.2" data-end="636.84" title="10:32">How would your management continue for the duration of the operation? </span><span class="segment" data-start="636.84" data-end="642.52" title="10:36">My management from this point would depend on the clinical situation. I would ask the surgeon </span><span class="segment" data-start="642.52" data-end="649.04" title="10:42">to complete the surgery as soon as possible, calling in a senior surgeon if necessary. </span><span class="segment" data-start="649.04" data-end="656.68" title="10:49">My perventilation with 100% oxygen and consideration of giving sodium bicarbonate would help to treat </span><span class="segment" data-start="656.68" data-end="664.08" title="10:56">acidosis and hypoxemia. I would treat hyperkalemia with glucose and insulin, intravenous calcium </span><span class="segment" data-start="664.08" data-end="671.96" title="11:04">chloride and sodium bicarbonate if levels were dangerously high. If myoglobinemia were detected, </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="671.96"><span class="t-timestamp">11:11</span></div>
-  <div class="t-body"><span class="segment" data-start="671.96" data-end="677.84" title="11:11">I would consider forced alkaline diuresis, aiming for more than 3 mils per kilo per hour </span><span class="segment" data-start="677.84" data-end="685.04" title="11:17">of urine, with a pH of greater than 7. I could consider giving manatol to induce a diuresis, </span><span class="segment" data-start="685.04" data-end="690.6" title="11:25">although I do not know of any evidence to show that this would improve outcome. I would treat </span><span class="segment" data-start="690.6" data-end="696.76" title="11:30">disseminated intravascular calculation with fresh frozen plasma, platelets and cryoprecipitate </span><span class="segment" data-start="696.76" data-end="702.76" title="11:36">as indicated, and treat cardiac dysrhythmias with appropriate drugs such as magnesium, </span><span class="segment" data-start="702.76" data-end="708.2" title="11:42">amiodarone and procanomide. Where would you care for the patient postoperatively? </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="708.2"><span class="t-timestamp">11:48</span></div>
-  <div class="t-body"><span class="segment" data-start="708.2" data-end="715.0" title="11:48">I would continue invasive monitoring of this patient in intensive care and continue to </span><span class="segment" data-start="715.0" data-end="721.56" title="11:55">call to normothermia and treat evolving symptoms appropriately. He would need assessment for </span><span class="segment" data-start="721.56" data-end="727.72" title="12:01">renal failure and consideration of renal replacement therapy as well as vigilance for compartment </span><span class="segment" data-start="727.8" data-end="734.6" title="12:07">syndrome. He may need further dantraline and other diagnoses should be ruled out. This patient </span><span class="segment" data-start="734.6" data-end="740.44" title="12:14">will also need counseling and referral to the MH unit. You are called to review a long-term </span><span class="segment" data-start="740.44" data-end="745.88" title="12:20">slow-weaning patient on the ICU, who has spiked a temperature of 39.6 degrees centigrade. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="747.0"><span class="t-timestamp">12:27</span></div>
-  <div class="t-body"><span class="segment" data-start="747.0" data-end="750.44" title="12:27">What physiological effects is this have on a critically ill patient? </span><span class="segment" data-start="750.44" data-end="753.96" title="12:30">Be organised here and work through systems methodically. </span><span class="segment" data-start="754.28" data-end="764.04" title="12:34">A fever on the ICU is defined as a temperature of greater than 38.3 degrees C. An increase in body </span><span class="segment" data-start="764.04" data-end="770.92" title="12:44">temperature has effects upon each system within the body. It increases both oxygen demand and </span><span class="segment" data-start="770.92" data-end="779.64" title="12:50">expenditure of energy approximately 10% for every one degree C increase. This can have a profound </span><span class="segment" data-start="779.64" data-end="785.72" title="12:59">effect upon a critically ill patient who may already have insufficient oxygen supplies and </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="785.72"><span class="t-timestamp">13:05</span></div>
-  <div class="t-body"><span class="segment" data-start="785.72" data-end="791.72" title="13:05">will be in a catabolic state and already have high energy demands. The hemoglobin oxygen </span><span class="segment" data-start="791.72" data-end="797.4" title="13:11">dissociation curve shifts to the right which increases offload of oxygen to the tissues. </span><span class="segment" data-start="798.12" data-end="804.92" title="13:18">Cardiovascular the patient is often tachycardic and can be hypotensive which may require fluid </span><span class="segment" data-start="804.92" data-end="810.76" title="13:24">resuscitation and even vasoactive support. What aspects of the patient's clinical history </span><span class="segment" data-start="810.76" data-end="814.2" title="13:30">may be of importance when trying to determine the cause of the fever? </span><span class="segment" data-start="816.04" data-end="821.0" title="13:36">As the patient is a long-term patient any potential infection will likely be nose </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="821.0"><span class="t-timestamp">13:41</span></div>
-  <div class="t-body"><span class="segment" data-start="821.0" data-end="826.76" title="13:41">acomial in nature. I would want to ascertain the duration of insertion of any invasive lines, </span><span class="segment" data-start="826.76" data-end="833.0" title="13:46">catheters or drains as well as determining for how long they had been ventilated and noting the </span><span class="segment" data-start="833.08" data-end="839.8" title="13:53">site of the Androtochial tube as a patient who is nasally intubated is at more risk of sinus infections. </span><span class="segment" data-start="840.52" data-end="845.56" title="14:00">I would also question the nurses regarding the presence of any purulence secretions from </span><span class="segment" data-start="845.56" data-end="851.64" title="14:05">Androtochial suctioning or discharge from drain or line sites or indeed any other wounds. </span><span class="segment" data-start="852.44" data-end="858.84" title="14:12">A history of prior hematological disease, recent foreign travel or prior infection with diseases </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="859.0"><span class="t-timestamp">14:19</span></div>
-  <div class="t-body"><span class="segment" data-start="859.0" data-end="865.32" title="14:19">such as TB would also be important to ascertain, as would the patient's current acute medical </span><span class="segment" data-start="865.32" data-end="870.92" title="14:25">or surgical problems. What aspects of the patient's clinical examination may give further information? </span><span class="segment" data-start="872.6" data-end="875.8" title="14:32">There may be crepitations or bronchial breathing audible on </span><span class="segment" data-start="875.8" data-end="881.72" title="14:35">oscillation of the lungs or don't as to percussion consistent with effusion. There may be a new </span><span class="segment" data-start="881.72" data-end="888.28" title="14:41">heart murmur or other evidence of endocarditis such as splinter hemorrhages or Janeway lesions. </span><span class="segment" data-start="889.0" data-end="895.64" title="14:49">Examination of the skin may show evidence of septic embolite, cellulitis or fungal infection of </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="895.64"><span class="t-timestamp">14:55</span></div>
-  <div class="t-body"><span class="segment" data-start="895.64" data-end="903.08" title="14:55">skin folds. A review of the patient's recent microbiology results may also herald clues as to </span><span class="segment" data-start="903.08" data-end="910.04" title="15:03">potential infective pathogens and the trends of inflammatory markers such as CRP, procal </span><span class="segment" data-start="910.04" data-end="915.8" title="15:10">cetonin, platelet count and white cell count may also give an indication of an ongoing </span><span class="segment" data-start="915.8" data-end="919.72" title="15:15">infective process. How might you treat the fever in this patient? </span><span class="segment" data-start="921.72" data-end="927.96" title="15:21">After ensuring that the patient is physiologically stable and that appropriate samples of blood, </span><span class="segment" data-start="927.96" data-end="934.52" title="15:27">sputum, urine and any wound site swabs have been sent, my management then is centered on reducing </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="934.52"><span class="t-timestamp">15:34</span></div>
-  <div class="t-body"><span class="segment" data-start="934.52" data-end="940.92" title="15:34">the patient's temperature back towards normothermia, ordering further tests which may help to </span><span class="segment" data-start="941.08" data-end="945.56" title="15:41">determine the site of the potential infection and then gaining source control. </span><span class="segment" data-start="946.12" data-end="948.6" title="15:46">How might you pharmacologically reduce that temperature? </span><span class="segment" data-start="950.44" data-end="955.96" title="15:50">Antipyretic agents such as paracetamol are often administered with good effect. </span><span class="segment" data-start="956.76" data-end="962.52" title="15:56">Non-steroidal anti-inflammatory drugs also have an antibiotic effect and although these </span><span class="segment" data-start="962.52" data-end="968.52" title="16:02">drugs are also associated with renal dysfunction they have been proven to lower body temperature, </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="968.52"><span class="t-timestamp">16:08</span></div>
-  <div class="t-body"><span class="segment" data-start="968.52" data-end="973.48" title="16:08">tachycardia and lactate accumulation in septic patients. </span></div>
+<div class="preamble-block"><span class="segment a-seg" data-start="0.0" data-end="2.0" title="0:00">hypothermia </span><span class="segment a-seg" data-start="2.72" data-end="8.0" title="0:02">You'll call to the emergency department to assess a 35-year-old patient who has run a half marathon </span><span class="segment a-seg" data-start="8.96" data-end="11.76" title="0:08">He is drowsy and his temperature is 42 degrees </span></div>
+<div class="qa-pair">
+<div class="q-block" data-start="12.88">
+  <div class="q-label">Q1</div>
+  <div class="q-body"><span class="segment q-seg" data-start="12.88" data-end="19.52" title="0:12">The ED registrar is concerned that his hypothermic and needs HDU care. What is hypothermia? </span></div>
 </div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="19.76" data-end="30.0" title="0:19">Hyperthermia is defined as an acute condition which occurs when the body produces or absorbs more heat than it can dissipate </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="30.0">
+  <div class="q-label">Q2</div>
+  <div class="q-body"><span class="segment q-seg" data-start="30.0" data-end="32.24" title="0:30">What can cause hypothermia? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="32.24" data-end="34.16" title="0:32">Be general and brief </span></li>
+<li><span class="segment a-seg" data-start="34.16" data-end="45.04" title="0:34">Causes of hypothermia can be environmental, drug-related or related to a medical condition such as sepsis or an acute burn injury </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="45.04">
+  <div class="q-label">Q3</div>
+  <div class="q-body"><span class="segment q-seg" data-start="45.04" data-end="48.16" title="0:45">What form of hypothermia is this patient suffering from? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="50.0" data-end="59.04" title="0:50">This patient is suffering from environmental hypothermia. This can range from mild heat exhaustion to the more extreme heat stroke </span></li>
+<li><span class="segment a-seg" data-start="59.92" data-end="62.48" title="0:59">Heat stroke exists in two forms </span></li>
+<li><span class="segment a-seg" data-start="63.12" data-end="66.4" title="1:03">Classical heat stroke and exertional heat stroke </span></li>
+<li><span class="segment a-seg" data-start="67.12" data-end="70.64" title="1:07">This patient is likely to be suffering from exertional heat stroke </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="71.04">
+  <div class="q-label">Q4</div>
+  <div class="q-body"><span class="segment q-seg" data-start="71.04" data-end="79.28" title="1:11">Which typically occurs acutely in young fit and healthy patients who have taken part in exercise during high ambient </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="79.28" data-end="81.28" title="1:19">temperatures </span></li>
+<li><span class="segment a-seg" data-start="81.68" data-end="91.92" title="1:21">Classical heat stroke occurs over several hours or days and tends to occur in the elderly and in firm when ambient temperatures are raised for several days </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="92.56">
+  <div class="q-label">Q5</div>
+  <div class="q-body"><span class="segment q-seg" data-start="92.56" data-end="95.44" title="1:32">How do you differentiate between heat exhaustion and heat stroke? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="97.28" data-end="103.04" title="1:37">Heat stroke requires the presence of hyperpirexia and neurological dysfunction </span></li>
+<li><span class="segment a-seg" data-start="103.52" data-end="107.44" title="1:43">It typically involves temperatures of greater than 40 degrees C </span></li>
+<li><span class="segment a-seg" data-start="107.44" data-end="112.88" title="1:47">And the patient is often confused or unconscious and can be hypotensive </span></li>
+<li><span class="segment a-seg" data-start="112.88" data-end="117.44" title="1:52">Suffer from cardiac dysrhythmias and even cardiac respiratory arrest </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="117.44">
+  <div class="q-label">Q6</div>
+  <div class="q-body"><span class="segment q-seg" data-start="117.44" data-end="121.6" title="1:57">If your diagnosis of heat stroke is correct in this patient, how would you manage him? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="123.6" data-end="127.44" title="2:03">I would assess his airway, breathing and circulation </span></li>
+<li><span class="segment a-seg" data-start="128.0" data-end="132.24" title="2:08">Make an assessment of his conscious level and commence cooling of the patient </span></li>
+<li><span class="segment a-seg" data-start="133.04" data-end="136.08" title="2:13">I would start by externally cooling the patient </span></li>
+<li><span class="segment a-seg" data-start="136.08" data-end="138.56" title="2:16">Place him in a cold environment if possible </span></li>
+<li><span class="segment a-seg" data-start="138.56" data-end="142.96" title="2:18">And begin surface cooling him with cold towels, ice packs </span></li>
+<li><span class="segment a-seg" data-start="142.96" data-end="145.28" title="2:22">And I could consider cold water immersion </span></li>
+<li><span class="segment a-seg" data-start="145.92" data-end="150.8" title="2:25">As he is severely hypothermic, I could also use internal cooling methods </span></li>
+<li><span class="segment a-seg" data-start="150.8" data-end="155.28" title="2:30">Such as cold intravenous fluids, cold lavage of the stomach, </span></li>
+<li><span class="segment a-seg" data-start="155.28" data-end="159.36" title="2:35">Peritoneum or bladder, and intravascular cooling techniques </span></li>
+<li><span class="segment a-seg" data-start="159.36" data-end="162.72" title="2:39">Such as hemofiltration or cardiopulmonary bypass </span></li>
+<li><span class="segment a-seg" data-start="163.2" data-end="167.04" title="2:43">Apart from cooling the patient, other and other therapies that are indicated </span></li>
+<li><span class="segment a-seg" data-start="171.12" data-end="177.52" title="2:51">Heat stroke patients are often intra-vascular deplete and require fluid resuscitation </span></li>
+<li><span class="segment a-seg" data-start="177.52" data-end="180.8" title="2:57">guided by cardiovascular parameters and urine output </span></li>
+<li><span class="segment a-seg" data-start="181.52" data-end="185.44" title="3:01">Cooling reduces heat-induced vasodilitation </span></li>
+<li><span class="segment a-seg" data-start="185.44" data-end="191.36" title="3:05">And over-resuscitating with fluid can cause circulatory overload, cardiac failure </span></li>
+<li><span class="segment a-seg" data-start="191.44" data-end="196.16" title="3:11">And pulmonary edema, especially if the patient has pre-existing heart disease </span></li>
+<li><span class="segment a-seg" data-start="196.8" data-end="201.68" title="3:16">The patient may therefore also require ionotropal vasopressor support </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="202.16">
+  <div class="q-label">Q7</div>
+  <div class="q-body"><span class="segment q-seg" data-start="202.16" data-end="204.24" title="3:22">What tests might you order on this patient? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="206.0" data-end="212.72" title="3:26">If the cause of the hyperthermia is not clear, tests may be indicated to find an underlying cause </span></li>
+<li><span class="segment a-seg" data-start="213.36" data-end="220.08" title="3:33">A full blood count, urea and electrolytes, liver function tests, creatinine kinase </span></li>
+<li><span class="segment a-seg" data-start="220.16" data-end="223.76" title="3:40">and a coagulation screen should be taken as a baseline </span></li>
+<li><span class="segment a-seg" data-start="223.76" data-end="228.8" title="3:43">as well as thyroid function tests and screens for possible recreational drugs </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="229.36">
+  <div class="q-label">Q8</div>
+  <div class="q-body"><span class="segment q-seg" data-start="229.36" data-end="233.04" title="3:49">What is this patient at risk of if their temperature is not reduced in a timely manner? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="235.12" data-end="239.76" title="3:55">Temperatures of more than 40 degrees C can be destructive to the brain </span></li>
+<li><span class="segment a-seg" data-start="239.76" data-end="243.12" title="3:59">and ultimately progressed to multi-organ failure and death </span></li>
+<li><span class="segment a-seg" data-start="244.4" data-end="249.6" title="4:04">A response similar to that which occurs in this systemic inflammatory response syndrome occurs </span></li>
+<li><span class="segment a-seg" data-start="250.08" data-end="256.64" title="4:10">and can affect all organs within the body, resulting in seizures, coma, dysrhythmias, </span></li>
+<li><span class="segment a-seg" data-start="256.64" data-end="260.8" title="4:16">hypotension, disseminated intravascular calculation, </span></li>
+<li><span class="segment a-seg" data-start="260.8" data-end="265.76" title="4:20">raptomylicis, hepatic failure and even cardiorespiratory arrest </span></li>
+<li><span class="segment a-seg" data-start="266.24" data-end="271.2" title="4:26">Your esitzo calls you to theatre as their concern the patient on the table having an appendicectomy </span></li>
+<li><span class="segment a-seg" data-start="271.2" data-end="272.56" title="4:31">has a very high temperature </span></li>
+<li><span class="segment a-seg" data-start="273.76" data-end="277.92" title="4:33">This off-ageal probe in situ is recording a temperature of 40 degrees centigrade </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="278.88">
+  <div class="q-label">Q9</div>
+  <div class="q-body"><span class="segment q-seg" data-start="278.88" data-end="280.56" title="4:38">What is a differential diagnosis? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="281.2" data-end="286.88" title="4:41">As with other questions divide these into patient factors, environmental factors etc </span></li>
+<li><span class="segment a-seg" data-start="288.88" data-end="295.12" title="4:48">Causes of a high temperature intraoperatively include patient-related, drug-related </span></li>
+<li><span class="segment a-seg" data-start="295.12" data-end="297.28" title="4:55">and environmental-related factors </span></li>
+<li><span class="segment a-seg" data-start="298.0" data-end="302.8" title="4:58">The patient is undergoing an appendicectomy so has a potential source of sepsis </span></li>
+<li><span class="segment a-seg" data-start="303.36" data-end="309.6" title="5:03">Interabdominal abscesses can cause significant febriar response which often settle once source </span></li>
+<li><span class="segment a-seg" data-start="309.6" data-end="310.64" title="5:09">control is gained </span></li>
+<li><span class="segment a-seg" data-start="311.28" data-end="317.76" title="5:11">The patient may also be suffering from sepsis from another source such as pulmonary or urinary tract </span></li>
+<li><span class="segment a-seg" data-start="317.76" data-end="318.4" title="5:17">infection </span></li>
+<li><span class="segment a-seg" data-start="319.2" data-end="322.32" title="5:19">Pulmonary embolus can also cause a febriar response </span></li>
+<li><span class="segment a-seg" data-start="322.96" data-end="329.36" title="5:22">Hyperthyroidism, either pre-existing or acute undiagnosed, should also be considered </span></li>
+<li><span class="segment a-seg" data-start="329.36" data-end="331.28" title="5:29">as should fiochromositoma </span></li>
+<li><span class="segment a-seg" data-start="332.24" data-end="339.36" title="5:32">Drug-related factors, particular tannisthenics, include the much-veered malignant hyperpirexia </span></li>
+<li><span class="segment a-seg" data-start="339.36" data-end="343.6" title="5:39">associated with the inhalation ul anoscetic drugs and seximophobia </span></li>
+<li><span class="segment a-seg" data-start="344.16" data-end="351.68" title="5:44">Drug-related factors, particular tannisthenics include the much-veered malignant hyperpirexia </span></li>
+<li><span class="segment a-seg" data-start="351.68" data-end="356.0" title="5:51">associated with the inhalational anoscetic drugs and to seximothonium </span></li>
+<li><span class="segment a-seg" data-start="356.0" data-end="363.2" title="5:56">If the patient usually takes antipsychotics, they are also at risk of neuroelptic malignant </span></li>
+<li><span class="segment a-seg" data-start="363.2" data-end="369.48" title="6:03">syndrome. A febrile response can also occur in response to the administration of blood </span></li>
+<li><span class="segment a-seg" data-start="369.48" data-end="377.32" title="6:09">products or drugs such as N-Astylcystine. Environmental factors are those such as a very </span></li>
+<li><span class="segment a-seg" data-start="377.32" data-end="384.64" title="6:17">high ambient temperature, excessive warming by warm intravenous fluids, air warming blankets, </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="384.64">
+  <div class="q-label">Q10</div>
+  <div class="q-body"><span class="segment q-seg" data-start="384.64" data-end="389.65" title="6:24">or warming mattresses. What further information would you require? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="389.65" data-end="391.32" title="6:29">Think history, investigation, </span></li>
+<li><span class="segment a-seg" data-start="391.32" data-end="398.08" title="6:31">examination. Further information that I would require would include an assessment of the </span></li>
+<li><span class="segment a-seg" data-start="398.08" data-end="402.84" title="6:38">would be able to discover if there were any pre-morbid conditions of note or any current </span></li>
+<li><span class="segment a-seg" data-start="402.84" data-end="409.8" title="6:42">medications, transfusions or recreational drugs which may be implicated in the pyrexia. </span></li>
+<li><span class="segment a-seg" data-start="409.8" data-end="415.0" title="6:49">There may also be a family history of malignant hyperpyrexia recorded in the anesthetic </span></li>
+<li><span class="segment a-seg" data-start="415.0" data-end="420.36" title="6:55">history, or history of problems during prior anesthetics. Although I would hope that this </span></li>
+<li><span class="segment a-seg" data-start="420.36" data-end="425.52" title="7:00">would have been considered when choosing an appropriate mode of anesthesia, and indeed </span></li>
+<li><span class="segment a-seg" data-start="425.52" data-end="430.6" title="7:05">I would make a note of any potential drugs given during the anesthetic which may have triggered </span></li>
+<li><span class="segment a-seg" data-start="430.6" data-end="436.6" title="7:10">a malignant hyperpyrexia. I would want to determine the time frame within which the pyrexia </span></li>
+<li><span class="segment a-seg" data-start="436.6" data-end="442.48" title="7:16">has arisen. Examining the observations prior to coming to theatre may show a pre-existing </span></li>
+<li><span class="segment a-seg" data-start="442.48" data-end="449.16" title="7:22">pyrexia which may suggest a septic origin. If the pyrexia was not pre-existing, I would </span></li>
+<li><span class="segment a-seg" data-start="449.16" data-end="454.0" title="7:29">want to ascertain how quickly it has arisen interpretively. A temperature that has </span></li>
+<li><span class="segment a-seg" data-start="454.0" data-end="459.52" title="7:34">crept up over the course of two to three hours is likely to be of a very different origin </span></li>
+<li><span class="segment a-seg" data-start="459.52" data-end="464.96" title="7:39">than one which has increased by a number of degrees over a short time period. I would </span></li>
+<li><span class="segment a-seg" data-start="464.96" data-end="470.68" title="7:44">review any blood tests that had been recorded prior to theatre as a leukocytosis or raised </span></li>
+<li><span class="segment a-seg" data-start="470.68" data-end="477.32" title="7:50">CRP may suggest an effective cause of the temperature. I would also review the patient's </span></li>
+<li><span class="segment a-seg" data-start="477.32" data-end="482.92" title="7:57">current observations as a tachycardia and high blood pressure would be more in keeping </span></li>
+<li><span class="segment a-seg" data-start="482.92" data-end="489.32" title="8:02">with a malignant hyperpyrexia rather than a sepsis. Further information may be gathered </span></li>
+<li><span class="segment a-seg" data-start="489.32" data-end="496.08" title="8:09">from the patient's end-title carbon dioxide and inspired expired oxygen levels. As </span></li>
+<li><span class="segment a-seg" data-start="496.08" data-end="502.56" title="8:16">a patient suffering from malignant hyperpyrexia would be hypermetabolic and have an increased </span></li>
+<li><span class="segment a-seg" data-start="502.56" data-end="509.0" title="8:22">oxygen requirement and carbon dioxide production out of keeping with that which would be expected </span></li>
+<li><span class="segment a-seg" data-start="509.0" data-end="516.32" title="8:29">from a high temperature alone. Performing a full clinical examination of the patient </span></li>
+<li><span class="segment a-seg" data-start="516.32" data-end="523.32" title="8:36">may also allow me to elicit signs of sepsis or features consistent with a malignant hyperpyrexia </span></li>
+<li><span class="segment a-seg" data-start="523.32" data-end="528.6" title="8:43">such as muscle rigidity. You've deduced the most likely cause of the hypothermia is malignant </span></li>
+<li><span class="segment a-seg" data-start="528.6" data-end="535.36" title="8:48">hyperpyrexia caused either by the succcemethonium or the inhaled anaesthetic volatile. Describe </span></li>
+<li><span class="segment a-seg" data-start="535.36" data-end="541.08" title="8:55">your initial management. This management is based on an AAGBI document which should be </span></li>
+<li><span class="segment a-seg" data-start="541.08" data-end="546.76" title="9:01">a well-rehearsed drill. I would cease all potential precipitant </span></li>
+<li><span class="segment a-seg" data-start="546.76" data-end="553.44" title="9:06">drugs and convert to a malignant hyperthermia safe technique. I would ask the surgeon to </span></li>
+<li><span class="segment a-seg" data-start="553.44" data-end="560.64" title="9:13">stop operating and inform him of my suspicions and potential evolving anaesthetic emergency. </span></li>
+<li><span class="segment a-seg" data-start="560.64" data-end="568.44" title="9:20">I would then call for senior help and reassess the patient's airway, breathing and circulation. </span></li>
+<li><span class="segment a-seg" data-start="568.44" data-end="573.48" title="9:28">I would remove the patient from the anaesthetic breathing circuit and hyperventilate them </span></li>
+<li><span class="segment a-seg" data-start="573.48" data-end="582.12" title="9:33">with 100% oxygen and provide anaesthesia with an intravenous agent such as propyl. </span></li>
+<li><span class="segment a-seg" data-start="582.12" data-end="588.32" title="9:42">I would ask my anaesthetic assistant to prepare 2-3 mg per kilogram of dantraline and have </span></li>
+<li><span class="segment a-seg" data-start="588.32" data-end="594.8" title="9:48">further bonuses of 1 mg per kilogram ready. I would begin calling of the patient by giving </span></li>
+<li><span class="segment a-seg" data-start="594.8" data-end="601.04" title="9:54">cold intravenous fluids, switching the warming blanket to a cooling temperature and asking </span></li>
+<li><span class="segment a-seg" data-start="601.04" data-end="607.72" title="10:01">the surgeon to perform cold peritoneal ofage. I would also consider extra corporeal heat </span></li>
+<li><span class="segment a-seg" data-start="607.72" data-end="614.64" title="10:07">exchange. I would insert an arterial line and send blood for gas analysis, potassium, </span></li>
+<li><span class="segment a-seg" data-start="614.64" data-end="621.44" title="10:14">hematocrit, platelet count, clotting and cratine kinase. I would also consider inserting </span></li>
+<li><span class="segment a-seg" data-start="621.44" data-end="628.36" title="10:21">a central venous line under urinary catheter and perform dipstick urinalysis for marglobenuria, </span></li>
+<li><span class="segment a-seg" data-start="628.36" data-end="632.2" title="10:28">as well as sending a sample to the lab for formal analysis. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="632.2">
+  <div class="q-label">Q11</div>
+  <div class="q-body"><span class="segment q-seg" data-start="632.2" data-end="636.84" title="10:32">How would your management continue for the duration of the operation? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="636.84" data-end="642.52" title="10:36">My management from this point would depend on the clinical situation. I would ask the surgeon </span></li>
+<li><span class="segment a-seg" data-start="642.52" data-end="649.04" title="10:42">to complete the surgery as soon as possible, calling in a senior surgeon if necessary. </span></li>
+<li><span class="segment a-seg" data-start="649.04" data-end="656.68" title="10:49">My perventilation with 100% oxygen and consideration of giving sodium bicarbonate would help to treat </span></li>
+<li><span class="segment a-seg" data-start="656.68" data-end="664.08" title="10:56">acidosis and hypoxemia. I would treat hyperkalemia with glucose and insulin, intravenous calcium </span></li>
+<li><span class="segment a-seg" data-start="664.08" data-end="671.96" title="11:04">chloride and sodium bicarbonate if levels were dangerously high. If myoglobinemia were detected, </span></li>
+<li><span class="segment a-seg" data-start="671.96" data-end="677.84" title="11:11">I would consider forced alkaline diuresis, aiming for more than 3 mils per kilo per hour </span></li>
+<li><span class="segment a-seg" data-start="677.84" data-end="685.04" title="11:17">of urine, with a pH of greater than 7. I could consider giving manatol to induce a diuresis, </span></li>
+<li><span class="segment a-seg" data-start="685.04" data-end="690.6" title="11:25">although I do not know of any evidence to show that this would improve outcome. I would treat </span></li>
+<li><span class="segment a-seg" data-start="690.6" data-end="696.76" title="11:30">disseminated intravascular calculation with fresh frozen plasma, platelets and cryoprecipitate </span></li>
+<li><span class="segment a-seg" data-start="696.76" data-end="702.76" title="11:36">as indicated, and treat cardiac dysrhythmias with appropriate drugs such as magnesium, </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="702.76">
+  <div class="q-label">Q12</div>
+  <div class="q-body"><span class="segment q-seg" data-start="702.76" data-end="708.2" title="11:42">amiodarone and procanomide. Where would you care for the patient postoperatively? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="708.2" data-end="715.0" title="11:48">I would continue invasive monitoring of this patient in intensive care and continue to </span></li>
+<li><span class="segment a-seg" data-start="715.0" data-end="721.56" title="11:55">call to normothermia and treat evolving symptoms appropriately. He would need assessment for </span></li>
+<li><span class="segment a-seg" data-start="721.56" data-end="727.72" title="12:01">renal failure and consideration of renal replacement therapy as well as vigilance for compartment </span></li>
+<li><span class="segment a-seg" data-start="727.8" data-end="734.6" title="12:07">syndrome. He may need further dantraline and other diagnoses should be ruled out. This patient </span></li>
+<li><span class="segment a-seg" data-start="734.6" data-end="740.44" title="12:14">will also need counseling and referral to the MH unit. You are called to review a long-term </span></li>
+<li><span class="segment a-seg" data-start="740.44" data-end="745.88" title="12:20">slow-weaning patient on the ICU, who has spiked a temperature of 39.6 degrees centigrade. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="747.0">
+  <div class="q-label">Q13</div>
+  <div class="q-body"><span class="segment q-seg" data-start="747.0" data-end="750.44" title="12:27">What physiological effects is this have on a critically ill patient? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="750.44" data-end="753.96" title="12:30">Be organised here and work through systems methodically. </span></li>
+<li><span class="segment a-seg" data-start="754.28" data-end="764.04" title="12:34">A fever on the ICU is defined as a temperature of greater than 38.3 degrees C. An increase in body </span></li>
+<li><span class="segment a-seg" data-start="764.04" data-end="770.92" title="12:44">temperature has effects upon each system within the body. It increases both oxygen demand and </span></li>
+<li><span class="segment a-seg" data-start="770.92" data-end="779.64" title="12:50">expenditure of energy approximately 10% for every one degree C increase. This can have a profound </span></li>
+<li><span class="segment a-seg" data-start="779.64" data-end="785.72" title="12:59">effect upon a critically ill patient who may already have insufficient oxygen supplies and </span></li>
+<li><span class="segment a-seg" data-start="785.72" data-end="791.72" title="13:05">will be in a catabolic state and already have high energy demands. The hemoglobin oxygen </span></li>
+<li><span class="segment a-seg" data-start="791.72" data-end="797.4" title="13:11">dissociation curve shifts to the right which increases offload of oxygen to the tissues. </span></li>
+<li><span class="segment a-seg" data-start="798.12" data-end="804.92" title="13:18">Cardiovascular the patient is often tachycardic and can be hypotensive which may require fluid </span></li>
+<li><span class="segment a-seg" data-start="804.92" data-end="810.76" title="13:24">resuscitation and even vasoactive support. What aspects of the patient's clinical history </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="810.76">
+  <div class="q-label">Q14</div>
+  <div class="q-body"><span class="segment q-seg" data-start="810.76" data-end="814.2" title="13:30">may be of importance when trying to determine the cause of the fever? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="816.04" data-end="821.0" title="13:36">As the patient is a long-term patient any potential infection will likely be nose </span></li>
+<li><span class="segment a-seg" data-start="821.0" data-end="826.76" title="13:41">acomial in nature. I would want to ascertain the duration of insertion of any invasive lines, </span></li>
+<li><span class="segment a-seg" data-start="826.76" data-end="833.0" title="13:46">catheters or drains as well as determining for how long they had been ventilated and noting the </span></li>
+<li><span class="segment a-seg" data-start="833.08" data-end="839.8" title="13:53">site of the Androtochial tube as a patient who is nasally intubated is at more risk of sinus infections. </span></li>
+<li><span class="segment a-seg" data-start="840.52" data-end="845.56" title="14:00">I would also question the nurses regarding the presence of any purulence secretions from </span></li>
+<li><span class="segment a-seg" data-start="845.56" data-end="851.64" title="14:05">Androtochial suctioning or discharge from drain or line sites or indeed any other wounds. </span></li>
+<li><span class="segment a-seg" data-start="852.44" data-end="858.84" title="14:12">A history of prior hematological disease, recent foreign travel or prior infection with diseases </span></li>
+<li><span class="segment a-seg" data-start="859.0" data-end="865.32" title="14:19">such as TB would also be important to ascertain, as would the patient's current acute medical </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="865.32">
+  <div class="q-label">Q15</div>
+  <div class="q-body"><span class="segment q-seg" data-start="865.32" data-end="870.92" title="14:25">or surgical problems. What aspects of the patient's clinical examination may give further information? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="872.6" data-end="875.8" title="14:32">There may be crepitations or bronchial breathing audible on </span></li>
+<li><span class="segment a-seg" data-start="875.8" data-end="881.72" title="14:35">oscillation of the lungs or don't as to percussion consistent with effusion. There may be a new </span></li>
+<li><span class="segment a-seg" data-start="881.72" data-end="888.28" title="14:41">heart murmur or other evidence of endocarditis such as splinter hemorrhages or Janeway lesions. </span></li>
+<li><span class="segment a-seg" data-start="889.0" data-end="895.64" title="14:49">Examination of the skin may show evidence of septic embolite, cellulitis or fungal infection of </span></li>
+<li><span class="segment a-seg" data-start="895.64" data-end="903.08" title="14:55">skin folds. A review of the patient's recent microbiology results may also herald clues as to </span></li>
+<li><span class="segment a-seg" data-start="903.08" data-end="910.04" title="15:03">potential infective pathogens and the trends of inflammatory markers such as CRP, procal </span></li>
+<li><span class="segment a-seg" data-start="910.04" data-end="915.8" title="15:10">cetonin, platelet count and white cell count may also give an indication of an ongoing </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="915.8">
+  <div class="q-label">Q16</div>
+  <div class="q-body"><span class="segment q-seg" data-start="915.8" data-end="919.72" title="15:15">infective process. How might you treat the fever in this patient? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="921.72" data-end="927.96" title="15:21">After ensuring that the patient is physiologically stable and that appropriate samples of blood, </span></li>
+<li><span class="segment a-seg" data-start="927.96" data-end="934.52" title="15:27">sputum, urine and any wound site swabs have been sent, my management then is centered on reducing </span></li>
+<li><span class="segment a-seg" data-start="934.52" data-end="940.92" title="15:34">the patient's temperature back towards normothermia, ordering further tests which may help to </span></li>
+<li><span class="segment a-seg" data-start="941.08" data-end="945.56" title="15:41">determine the site of the potential infection and then gaining source control. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="946.12">
+  <div class="q-label">Q17</div>
+  <div class="q-body"><span class="segment q-seg" data-start="946.12" data-end="948.6" title="15:46">How might you pharmacologically reduce that temperature? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="950.44" data-end="955.96" title="15:50">Antipyretic agents such as paracetamol are often administered with good effect. </span></li>
+<li><span class="segment a-seg" data-start="956.76" data-end="962.52" title="15:56">Non-steroidal anti-inflammatory drugs also have an antibiotic effect and although these </span></li>
+<li><span class="segment a-seg" data-start="962.52" data-end="968.52" title="16:02">drugs are also associated with renal dysfunction they have been proven to lower body temperature, </span></li>
+<li><span class="segment a-seg" data-start="968.52" data-end="973.48" title="16:08">tachycardia and lactate accumulation in septic patients. </span></li>
+  </ul>
+</div>
+</div>
+
 </div>
 
 <div class="subtitle-bar">
-  <span class="subtitle-text empty" id="subtitle-text">Play audio to see live subtitles&#8230;</span>
+  <span id="subtitle-text" class="empty">Play audio to see live subtitles&#8230;</span>
 </div>
 
 <script>
-
-const audio    = document.getElementById('audio');
-const allSegs  = Array.from(document.querySelectorAll('.segment'));
-const allBlocks = Array.from(document.querySelectorAll('.t-block'));
+const audio      = document.getElementById('audio');
+const allSegs    = Array.from(document.querySelectorAll('.segment'));
 const subtitleEl = document.getElementById('subtitle-text');
-let activeSegEl   = null;
-let activeBlockEl = null;
-let searchMatches = [];
-let searchIdx     = 0;
+let activeSegEl  = null;
+let searchMatches = [], searchIdx = 0;
 
-// Duration display
 audio.addEventListener('loadedmetadata', () => {
   const m = Math.floor(audio.duration / 60);
   const s = Math.floor(audio.duration %% 60).toString().padStart(2,'0');
   document.getElementById('dur').textContent = m + ':' + s;
 });
 
-// Seek helper
-function seekTo(t) {
-  audio.currentTime = t;
-  audio.play();
-}
+function seekTo(t) { audio.currentTime = t; audio.play(); }
 
-// Block gutter click
-document.querySelectorAll('.t-gutter').forEach(g => {
-  g.addEventListener('click', () => seekTo(parseFloat(g.dataset.start)));
+// Q-block header click
+document.querySelectorAll('.q-block').forEach(q => {
+  q.addEventListener('click', e => {
+    if (!e.target.classList.contains('segment')) seekTo(parseFloat(q.dataset.start));
+  });
 });
 
-// Segment click
+// Individual segment click
 allSegs.forEach(s => {
-  s.addEventListener('click', e => {
-    e.stopPropagation();
-    seekTo(parseFloat(s.dataset.start));
-  });
+  s.addEventListener('click', e => { e.stopPropagation(); seekTo(parseFloat(s.dataset.start)); });
 });
 
 // Real-time tracking
 audio.addEventListener('timeupdate', () => {
   const t = audio.currentTime;
-
-  // Find active segment (last one whose start <= t)
   let found = null;
   for (let i = allSegs.length - 1; i >= 0; i--) {
     if (parseFloat(allSegs[i].dataset.start) <= t) { found = allSegs[i]; break; }
   }
-
   if (found && found !== activeSegEl) {
-    // Clear previous
-    if (activeSegEl) activeSegEl.classList.remove('active');
-    if (activeBlockEl) {
-      activeBlockEl.classList.remove('block-active');
-      const pg = activeBlockEl.querySelector('.t-gutter');
-      if (pg) pg.classList.remove('gutter-active');
+    if (activeSegEl) {
+      activeSegEl.classList.remove('active');
+      const pli = activeSegEl.closest('li');
+      if (pli) pli.classList.remove('li-active');
+      const pq = activeSegEl.closest('.q-block');
+      if (pq) pq.classList.remove('q-active');
     }
-    // Set new
     found.classList.add('active');
-    const block = found.closest('.t-block');
-    if (block) {
-      block.classList.add('block-active');
-      const g = block.querySelector('.t-gutter');
-      if (g) g.classList.add('gutter-active');
-      activeBlockEl = block;
-    }
+    const li = found.closest('li');
+    if (li) li.classList.add('li-active');
+    const qb = found.closest('.q-block');
+    if (qb) qb.classList.add('q-active');
     activeSegEl = found;
 
-    // Update subtitle
     subtitleEl.textContent = found.textContent.trim();
     subtitleEl.classList.remove('empty');
 
-    // Auto-scroll (only when not searching)
-    if (!document.getElementById('search').value) {
+    if (!document.getElementById('search').value)
       found.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }
   }
 });
 
@@ -374,17 +597,13 @@ searchInput.addEventListener('keydown', e => {
     el.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
 });
-
 function runSearch() {
   const q = searchInput.value.trim().toLowerCase();
   allSegs.forEach(s => s.classList.remove('search-match','search-current'));
   searchMatches = [];
   if (!q) return;
   allSegs.forEach(s => {
-    if (s.textContent.toLowerCase().includes(q)) {
-      s.classList.add('search-match');
-      searchMatches.push(s);
-    }
+    if (s.textContent.toLowerCase().includes(q)) { s.classList.add('search-match'); searchMatches.push(s); }
   });
   if (!searchMatches.length) return;
   searchIdx = 0;

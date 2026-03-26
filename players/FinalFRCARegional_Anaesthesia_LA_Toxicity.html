@@ -5,10 +5,19 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Regional Anaesthesia — LA Toxicity</title>
 <style>
-
   :root {
-    --accent:    #2563eb;
-    --body-bg:   #f1f5f9;
+    --q-bg:       #1e3a5f;
+    --q-text:     #ffffff;
+    --q-label:    #60a5fa;
+    --a-bg:       #ffffff;
+    --a-border:   #e2e8f0;
+    --a-label:    #059669;
+    --active-q:   #2563eb;
+    --active-a:   #dbeafe;
+    --accent:     #2563eb;
+    --body-bg:    #f1f5f9;
+    --pre-bg:     #fef9c3;
+    --pre-border: #fcd34d;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
@@ -40,22 +49,9 @@
     margin-bottom: 4px;
     letter-spacing: 0.01em;
   }
-  .header-sub {
-    font-size: 0.72rem;
-    color: #94a3b8;
-    font-style: italic;
-  }
-  audio {
-    height: 36px;
-    accent-color: var(--accent);
-    flex-shrink: 0;
-  }
-  .back-link {
-    font-size: 0.8rem;
-    color: #94a3b8;
-    text-decoration: none;
-    white-space: nowrap;
-  }
+  .header-sub { font-size: 0.72rem; color: #94a3b8; font-style: italic; }
+  audio { height: 36px; accent-color: var(--accent); flex-shrink: 0; }
+  .back-link { font-size: 0.8rem; color: #94a3b8; text-decoration: none; white-space: nowrap; }
   .back-link:hover { color: #60a5fa; }
 
   /* ── Toolbar ── */
@@ -69,30 +65,17 @@
     border-bottom: 1px solid #334155;
   }
   .toolbar input {
-    flex: 1;
-    max-width: 380px;
+    flex: 1; max-width: 380px;
     padding: 5px 11px;
-    border: 1px solid #475569;
-    border-radius: 6px;
-    background: #0f172a;
-    color: #e2e8f0;
-    font-size: 0.83rem;
-    outline: none;
+    border: 1px solid #475569; border-radius: 6px;
+    background: #0f172a; color: #e2e8f0; font-size: 0.83rem; outline: none;
   }
   .toolbar input:focus { border-color: var(--accent); }
   .toolbar input::placeholder { color: #64748b; }
-  .stats {
-    font-size: 0.72rem;
-    color: #64748b;
-    white-space: nowrap;
-  }
+  .stats { font-size: 0.72rem; color: #64748b; white-space: nowrap; }
 
   /* ── Scroll area ── */
-  .scroll-area {
-    flex: 1;
-    overflow-y: auto;
-    padding: 20px;
-  }
+  .scroll-area { flex: 1; overflow-y: auto; padding: 20px; }
   .scroll-area::-webkit-scrollbar { width: 6px; }
   .scroll-area::-webkit-scrollbar-track { background: transparent; }
   .scroll-area::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
@@ -107,68 +90,77 @@
     display: flex;
     align-items: center;
   }
-  .subtitle-text {
-    font-size: 0.9rem;
-    color: #e2e8f0;
-    line-height: 1.5;
-    font-style: italic;
-  }
-  .subtitle-text.empty { color: #475569; }
+  #subtitle-text { font-size: 0.88rem; color: #e2e8f0; line-height: 1.5; font-style: italic; }
+  #subtitle-text.empty { color: #475569; }
 
-  /* ── Transcript blocks ── */
-  .t-block {
-    background: #ffffff;
-    border: 1px solid #e2e8f0;
-    border-radius: 10px;
-    margin-bottom: 14px;
-    overflow: hidden;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
-    display: flex;
-  }
-  .t-block.block-active {
-    border-color: var(--accent);
-    box-shadow: 0 0 0 2px rgba(37,99,235,0.15);
-  }
-  .t-gutter {
-    background: #0f172a;
-    width: 52px;
-    flex-shrink: 0;
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
-    padding-top: 14px;
-    cursor: pointer;
-  }
-  .t-gutter:hover { background: #1e293b; }
-  .t-timestamp {
-    font-size: 0.7rem;
-    color: #64748b;
-    font-family: monospace;
-    font-weight: 600;
-    letter-spacing: 0.02em;
-  }
-  .t-gutter.gutter-active .t-timestamp { color: var(--accent); }
-  .t-body {
-    flex: 1;
+  /* ── Preamble ── */
+  .preamble-block {
+    background: var(--pre-bg);
+    border-left: 4px solid var(--pre-border);
+    border-radius: 0 8px 8px 0;
     padding: 12px 16px;
-    line-height: 1.75;
-    font-size: 0.92rem;
-    color: #1e293b;
+    margin-bottom: 20px;
+    font-size: 0.88rem;
+    color: #78350f;
+    font-style: italic;
+    line-height: 1.7;
   }
 
-  /* ── Segments ── */
-  .segment {
+  /* ── Q&A pair ── */
+  .qa-pair { margin-bottom: 20px; border-radius: 10px; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+
+  /* Question block */
+  .q-block {
+    background: var(--q-bg);
+    padding: 14px 18px;
+    display: flex; gap: 14px; align-items: flex-start;
     cursor: pointer;
-    border-radius: 3px;
-    transition: background 0.1s;
+    transition: background 0.15s;
   }
-  .segment:hover { background: #eff6ff; }
-  .segment.active {
-    background: #bfdbfe;
-    outline: 2px solid #3b82f6;
-    outline-offset: 1px;
-    border-radius: 3px;
+  .q-block:hover { background: #1d4ed8; }
+  .q-block.q-active { background: var(--active-q); }
+  .q-label {
+    font-size: 0.7rem; font-weight: 700;
+    color: var(--q-label);
+    background: rgba(96,165,250,0.15);
+    border: 1px solid rgba(96,165,250,0.3);
+    border-radius: 5px; padding: 3px 7px;
+    white-space: nowrap; margin-top: 2px; letter-spacing: 0.05em;
+    flex-shrink: 0;
   }
+  .q-body { flex: 1; font-size: 0.97rem; font-weight: 600; color: var(--q-text); line-height: 1.55; }
+
+  /* Answer block */
+  .a-block {
+    background: var(--a-bg);
+    border: 1px solid var(--a-border); border-top: none;
+    padding: 14px 18px;
+    display: flex; gap: 14px; align-items: flex-start;
+  }
+  .a-label {
+    font-size: 0.7rem; font-weight: 700;
+    color: var(--a-label);
+    background: #d1fae5; border: 1px solid #6ee7b7;
+    border-radius: 5px; padding: 3px 9px;
+    white-space: nowrap; margin-top: 2px; letter-spacing: 0.05em;
+    flex-shrink: 0;
+  }
+  .a-body { flex: 1; list-style: none; padding: 0; }
+  .a-body li {
+    padding: 4px 0 4px 14px;
+    border-left: 3px solid transparent;
+    line-height: 1.7; font-size: 0.92rem; color: #1e293b;
+    border-radius: 0 4px 4px 0;
+    transition: background 0.15s;
+  }
+  .a-body li:not(:last-child) { border-bottom: 1px solid #f1f5f9; }
+
+  /* ── Segments (clickable) ── */
+  .segment { cursor: pointer; border-radius: 3px; }
+  .q-seg:hover { background: rgba(255,255,255,0.18); }
+  .a-seg:hover { background: #eff6ff; }
+  .segment.active { background: #bfdbfe; outline: 2px solid #3b82f6; outline-offset: 1px; }
+  .a-body li.li-active { background: var(--active-a); border-left-color: var(--accent); }
   .segment.search-match  { background: #fef9c3; }
   .segment.search-current { background: #fde047; outline: 2px solid #ca8a04; }
 
@@ -187,175 +179,430 @@
 
 <div class="toolbar">
   <input type="text" id="search" placeholder="Search transcript&#8230; (Enter = next match)">
-  <span class="stats" id="stats">166 segments &nbsp;|&nbsp; <span id="dur">loading&#8230;</span></span>
+  <span class="stats" id="stats">19 questions &nbsp;|&nbsp; 166 segments &nbsp;|&nbsp; <span id="dur">loading&#8230;</span></span>
 </div>
 
 <div class="scroll-area" id="scroll-area">
-<div class="t-block">
-  <div class="t-gutter" data-start="0.0"><span class="t-timestamp">0:00</span></div>
-  <div class="t-body"><span class="segment" data-start="0.0" data-end="2.0" title="0:00">Local anaesthetic toxicity. </span><span class="segment" data-start="3.28" data-end="5.28" title="0:03">What is a local anaesthetic agent? </span><span class="segment" data-start="5.84" data-end="10.4" title="0:05">You need to get an off-packed definition here in order to get the examiner on your side from the start. </span><span class="segment" data-start="12.24" data-end="17.52" title="0:12">A local anaesthetic agent is one which reversibly blocks neural transmission </span><span class="segment" data-start="17.52" data-end="21.04" title="0:17">beyond its point of application when applied locally. </span><span class="segment" data-start="22.08" data-end="29.68" title="0:22">All local anaesthetic agents are weak bases and can be subdivided into esters and amides </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="30.0"><span class="t-timestamp">0:30</span></div>
-  <div class="t-body"><span class="segment" data-start="30.0" data-end="35.28" title="0:30">according to the chemical linkage between the hydrophobic aromatic ring structure </span><span class="segment" data-start="35.28" data-end="41.44" title="0:35">and the hydrophilic chain. Would you like me to illustrate the chemical formula of these linkages? </span><span class="segment" data-start="46.8" data-end="56.16" title="0:46">Examples of amides include lidocaine, bupivocaine and prilocaine and examples of esters include </span><span class="segment" data-start="56.16" data-end="63.92" title="0:56">cocaine, tetrakaine and amythicaine. Amides are more commonly used in clinical practice due to </span><span class="segment" data-start="63.92" data-end="69.2" title="1:03">their increased stability, ease of heat sterilization and longer shelf life. </span><span class="segment" data-start="69.68" data-end="71.76" title="1:09">How do local anaesthetic agents work? </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="73.76"><span class="t-timestamp">1:13</span></div>
-  <div class="t-body"><span class="segment" data-start="73.76" data-end="80.24" title="1:13">Local anaesthetic agents work by blocking the voltage-gated sodium channel from the cytosolic </span><span class="segment" data-start="80.24" data-end="87.36" title="1:20">aspect of the receptor, i.e. from the inside of the cell. Inactivation of the sodium channel </span><span class="segment" data-start="87.36" data-end="93.84" title="1:27">prevents the upstroke of the action potential and so inhibits depolarization and therefore </span><span class="segment" data-start="93.84" data-end="101.04" title="1:33">transmission of nerve impulses. The drug accesses the receptor by crossing the neural membrane </span><span class="segment" data-start="101.04" data-end="108.48" title="1:41">in its unionized form. It then becomes ionized in the relative acidic environment of the cytoplasm </span><span class="segment" data-start="108.48" data-end="115.12" title="1:48">and it is the ionized form that is responsible for a receptor blockade. A secondary mechanism of </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="115.12"><span class="t-timestamp">1:55</span></div>
-  <div class="t-body"><span class="segment" data-start="115.12" data-end="121.76" title="1:55">action relies on disruption of impulse-transduction due to the presence of unionized agent in the </span><span class="segment" data-start="121.76" data-end="128.08" title="2:01">nerve cell membrane. What factors determine the potency, the speed of onset and the duration of </span><span class="segment" data-start="128.08" data-end="136.96" title="2:08">action of a low-clone aesthetic? Potency is dependent on how lipid soluble the drug is. The more lipid </span><span class="segment" data-start="136.96" data-end="144.48" title="2:16">solubility is, the more potent it becomes. The onset of action is related to the drug's PKA. </span><span class="segment" data-start="145.28" data-end="152.0" title="2:25">A drug with a lower PKA will have a greater percentage present in the unionized form which allows </span><span class="segment" data-start="152.0" data-end="156.72" title="2:32">more rapid passage through the nerve cell membrane and a faster onset of action. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="157.44"><span class="t-timestamp">2:37</span></div>
-  <div class="t-body"><span class="segment" data-start="157.44" data-end="165.28" title="2:37">So for example, LIDACane has a PKA of 7.9 and has a more rapid onset of action than bupivocane </span><span class="segment" data-start="165.28" data-end="173.68" title="2:45">which has a PKA of 8.1. The duration of action is dependent on how protein bound the drug is. </span><span class="segment" data-start="174.4" data-end="180.24" title="2:54">If a drug is highly protein bound, like bupivocane, it will have a long duration of action. </span><span class="segment" data-start="180.96" data-end="184.64" title="3:00">What factors plays a patient at risk of local anesthetic toxicity? </span><span class="segment" data-start="186.88" data-end="193.52" title="3:06">Local anesthetic toxicity results from the acquisition of a high or rapidly rising plasma </span><span class="segment" data-start="193.52" data-end="200.8" title="3:13">local anesthetic concentration. The factors which play a patient at risk of this situation developing </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="200.8"><span class="t-timestamp">3:20</span></div>
-  <div class="t-body"><span class="segment" data-start="200.8" data-end="208.32" title="3:20">are firstly the dose administered and the speed of injection. As large, rapidly administered doses </span><span class="segment" data-start="208.32" data-end="215.92" title="3:28">raise the risk of high plasma concentrations developing. Secondly, inadvertent vascular injection. </span><span class="segment" data-start="216.56" data-end="223.36" title="3:36">For example, through an epidural catheter inadvertently placed into a vein in batsons plexus, </span><span class="segment" data-start="223.36" data-end="227.84" title="3:43">resulting in direct administration of local anesthetic into the circulation. </span><span class="segment" data-start="228.72" data-end="236.4" title="3:48">Similarly, inadvertent intrathecal injection will also produce toxic effects as an inappropriate </span><span class="segment" data-start="236.4" data-end="243.68" title="3:56">intrathecal dose is likely to be administered. Thirdly, the site of administration. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="243.68"><span class="t-timestamp">4:03</span></div>
-  <div class="t-body"><span class="segment" data-start="243.68" data-end="248.0" title="4:03">As this affects the rate of absorption of local anesthetic into the bloodstream. </span><span class="segment" data-start="248.8" data-end="255.68" title="4:08">So, for example, local anesthetic is more readily absorbed into the bloodstream when it is administered </span><span class="segment" data-start="255.68" data-end="262.08" title="4:15">via the intercostal or cordal site compared to the subcutaneous or brachial plexus site. </span><span class="segment" data-start="262.88" data-end="269.6" title="4:22">The performance of a pudendal nerve block in obstetrics is also highly likely to cause systemic </span><span class="segment" data-start="269.6" data-end="277.68" title="4:29">toxicity due to the adjacent rich blood supply. Related to this is the presence of vasoconstrictor </span><span class="segment" data-start="277.68" data-end="285.04" title="4:37">in the injected solution. For example, adrenaline may be co-administered with local anesthetic agents, </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="285.04"><span class="t-timestamp">4:45</span></div>
-  <div class="t-body"><span class="segment" data-start="285.04" data-end="291.36" title="4:45">producing localized vasoconstriction and limiting the absorption of local anesthetic agent into </span><span class="segment" data-start="291.36" data-end="298.48" title="4:51">the bloodstream. Adrenaline added to lidocaine increases the safe dose which may be given </span><span class="segment" data-start="298.48" data-end="303.6" title="4:58">from 3 mg per kilogram to 6 mg per kilogram for this reason. </span><span class="segment" data-start="305.44" data-end="312.56" title="5:05">Fourthly, the type of local anesthetic used as some types of local anesthetic are inherently more </span><span class="segment" data-start="312.56" data-end="320.96" title="5:12">toxic than others. For example, Rhesemic bupivocaine is inherently more toxic than its pure S and </span><span class="segment" data-start="320.96" data-end="328.08" title="5:20">Antiuma levobupevocaine. This is due to a reduction in the ability of binding of the S in Antiuma </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="328.08"><span class="t-timestamp">5:28</span></div>
-  <div class="t-body"><span class="segment" data-start="328.08" data-end="333.44" title="5:28">to the sodium channels of the myocardium and therefore less risk of the myocardial </span><span class="segment" data-start="333.44" data-end="342.16" title="5:33">depressant effects of a toxic dose. Fifthly, patient heterogeneity and comorbidity </span><span class="segment" data-start="342.16" data-end="349.04" title="5:42">has an important bearing on the risks of toxicity. Patients with cardiac or hepatic disease </span><span class="segment" data-start="349.04" data-end="354.96" title="5:49">and those who are critically unwell or pregnant as well as neonates and young infants </span><span class="segment" data-start="354.96" data-end="362.4" title="5:54">are particularly at risk due to alterations in absorption, distribution, metabolism and excretion. </span><span class="segment" data-start="363.6" data-end="370.88" title="6:03">These patients also have changes in their protein binding capacity, particularly to alpha-1 acid </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="370.88"><span class="t-timestamp">6:10</span></div>
-  <div class="t-body"><span class="segment" data-start="370.88" data-end="377.04" title="6:10">glycoprotein, whether levels are reduced and therefore may well have increased free drug </span><span class="segment" data-start="377.04" data-end="384.4" title="6:17">concentration raising the risk of toxicity. In these situations, the dose administered should </span><span class="segment" data-start="384.4" data-end="392.08" title="6:24">be reduced. Finally, the acid-based status of the patient has a bearing on their risk of </span><span class="segment" data-start="392.08" data-end="399.84" title="6:32">toxicity. Avoiding acidosis, so for example, ensuring patients are adequately ventilated, </span><span class="segment" data-start="399.84" data-end="405.6" title="6:39">will reduce the risk of toxicity occurring. Some patients are particularly at risk of a specific </span><span class="segment" data-start="405.6" data-end="411.68" title="6:45">form of toxicity related to one of the AMI local anaesthetic agents. Can you think of what that might be? </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="412.16"><span class="t-timestamp">6:52</span></div>
-  <div class="t-body"><span class="segment" data-start="412.16" data-end="423.44" title="6:52">Prylicane is metabolized to Otolyardine. Infants and those with methemoglobin reductase deficiency </span><span class="segment" data-start="423.44" data-end="430.56" title="7:03">are poorly able to metabolize Otolyardine and may develop methemoglobinemia, which results from </span><span class="segment" data-start="430.56" data-end="438.48" title="7:10">the oxidation of the iron atom in heme from its ferrous to its ferric state. This produces a </span><span class="segment" data-start="438.48" data-end="443.76" title="7:18">blue discoloration of the skin, which can produce errors in pulse-soximeter analysis. </span><span class="segment" data-start="444.72" data-end="453.2" title="7:24">Pulse-soximeters may falsely read 85% leading the anesthetist to believe that patient is hypoxic, </span><span class="segment" data-start="453.2" data-end="460.24" title="7:33">where this may not be the case. The oxygen-carrying capacity of hemeoglobin is reduced by the </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="460.24"><span class="t-timestamp">7:40</span></div>
-  <div class="t-body"><span class="segment" data-start="460.24" data-end="468.08" title="7:40">transformation in heme, and in extreme cases this may result in tissue hypoxia. It can be treated </span><span class="segment" data-start="468.08" data-end="476.16" title="7:48">with methylene blue at a dose of 1 milligram per kilogram over 5 minutes. It is important to remember </span><span class="segment" data-start="476.16" data-end="483.44" title="7:56">however that Prylicane is relatively less toxic than bupivocane, especially on the heart. This is </span><span class="segment" data-start="483.44" data-end="490.4" title="8:03">why it is used for intravenous regional anesthesia. Let's get back now to local anaesthetic toxicity </span><span class="segment" data-start="490.4" data-end="496.8" title="8:10">in general. What are the symptoms and signs of local anaesthetic toxicity? Most people can </span><span class="segment" data-start="496.8" data-end="501.84" title="8:16">rattle off a list and answer to this question, but if you can bring in some basic science to your </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="501.84"><span class="t-timestamp">8:21</span></div>
-  <div class="t-body"><span class="segment" data-start="501.84" data-end="506.4" title="8:21">answer, it looks like you really understand the concepts making you stronger candidate. </span><span class="segment" data-start="508.24" data-end="514.64" title="8:28">Local anaesthetic toxicity presents initially with central nervous system disturbances </span><span class="segment" data-start="514.64" data-end="521.36" title="8:34">followed by cardiovascular system disturbance. Toxic levels of local anaesthetic </span><span class="segment" data-start="521.36" data-end="527.68" title="8:41">initially depress the depressant effects of the central nervous system, such that excitatory </span><span class="segment" data-start="527.68" data-end="536.8" title="8:47">effects are initially seen. These include headache, perioral parathesia, tinnitus, vertigo, </span><span class="segment" data-start="536.8" data-end="545.04" title="8:56">disorientation, visual and auditory disturbances, and a sense of impending doom. Shivering and tremors </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="545.04"><span class="t-timestamp">9:05</span></div>
-  <div class="t-body"><span class="segment" data-start="545.04" data-end="552.8" title="9:05">may be seen. As the toxic effect progresses, both the depressant and the excitatory effects of </span><span class="segment" data-start="552.8" data-end="559.92" title="9:12">the central nervous system are depressed. This may then lead to slurred speech, loss of consciousness </span><span class="segment" data-start="559.92" data-end="568.4" title="9:19">and seizure activity, often manifesting as a grand maltype of fit. Escalating toxicity then </span><span class="segment" data-start="568.4" data-end="575.92" title="9:28">results in respiratory depression and arrest and cardiovascular disturbances. This is initially </span><span class="segment" data-start="575.92" data-end="583.28" title="9:35">hypotension from direct cardiac depression and vasodilitation, followed by cardiac arrest </span><span class="segment" data-start="583.28" data-end="591.2" title="9:43">with any numbers of dysrhythmias intervening. Sinus bradacardia, sinus arrest, and resistant ventricular </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="591.2"><span class="t-timestamp">9:51</span></div>
-  <div class="t-body"><span class="segment" data-start="591.2" data-end="596.96" title="9:51">fibrillation would be common examples. What do you understand by the term toxicity ratio? </span><span class="segment" data-start="598.4" data-end="603.92" title="9:58">The toxicity ratio is the ratio between the plasma level of local anaesthetic </span><span class="segment" data-start="603.92" data-end="610.48" title="10:03">required to produce cardiovascular symptoms, to that required to produce central nervous system </span><span class="segment" data-start="610.48" data-end="618.0" title="10:10">symptoms. It is expressed as a ratio for each local anaesthetic agent and gives an idea of the </span><span class="segment" data-start="618.0" data-end="624.16" title="10:18">window between the onset of central nervous system symptoms and the onset of cardiovascular </span><span class="segment" data-start="624.16" data-end="632.96" title="10:24">symptoms. For example, the toxicity ratio for lidocaine is 7 and for bububbivocaine is 3, </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="633.6"><span class="t-timestamp">10:33</span></div>
-  <div class="t-body"><span class="segment" data-start="633.6" data-end="641.28" title="10:33">but for levobubbivocaine is 5. This means that after central nervous system symptoms occur, </span><span class="segment" data-start="641.28" data-end="647.36" title="10:41">you need 7 times that plasma level of local anaesthetic to get cardiovascular symptoms with </span><span class="segment" data-start="647.44" data-end="654.32" title="10:47">lidocaine, but only 3 times that plasma level to get cardiovascular symptoms with bububbivocaine. </span><span class="segment" data-start="654.96" data-end="660.88" title="10:54">In practical terms, this means that the onset of central nervous system symptoms in bububbivocaine </span><span class="segment" data-start="660.88" data-end="668.16" title="11:00">toxicity means that cardiovascular symptoms are soon to follow. So, why is bubivocaine more toxic </span><span class="segment" data-start="668.24" data-end="677.44" title="11:08">than lidocaine? Bububbivocaine is 4 to 16 times more cardiotoxic than lidocaine due to its </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="677.44"><span class="t-timestamp">11:17</span></div>
-  <div class="t-body"><span class="segment" data-start="677.44" data-end="682.88" title="11:17">increased protein binding and the evidity with which it binds myocardial tissue. </span><span class="segment" data-start="684.0" data-end="691.28" title="11:24">It dissociates from myocardial sodium channels 10 times less readily than lidocaine producing a </span><span class="segment" data-start="691.28" data-end="698.16" title="11:31">prolonged refractory blockade. Reversal of this binding can be particularly difficult, </span><span class="segment" data-start="698.16" data-end="704.8" title="11:38">especially in the face of cardiopulmonary arrest when hypoxia and acidosis may complicate the </span><span class="segment" data-start="704.8" data-end="710.64" title="11:44">picture. How would you manage a 28-year-old primegravida who has collapsed after complaining of </span><span class="segment" data-start="710.64" data-end="717.12" title="11:50">tonight's San Vertigo following an epidural top-up of 20 milliliters of 0.5% leave of bubivocaine? </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="717.92"><span class="t-timestamp">11:57</span></div>
-  <div class="t-body"><span class="segment" data-start="717.92" data-end="720.72" title="11:57">She is scheduled for a category 2-serene section. </span><span class="segment" data-start="722.72" data-end="728.64" title="12:02">This is an emergency. The factors which pose the greatest threat to the mother's life </span><span class="segment" data-start="728.64" data-end="735.44" title="12:08">should be managed first and without delay. I would call for help immediately, whilst placing </span><span class="segment" data-start="735.44" data-end="742.72" title="12:15">the woman in a left lateral tilt of at least 15 degrees. I would start by ensuring a patent </span><span class="segment" data-start="742.8" data-end="750.48" title="12:22">airway and administer high-flow oxygen via a reservoir mask. Should the airway be compromised, </span><span class="segment" data-start="750.48" data-end="757.36" title="12:30">I would secure it with a cuffed endotracheal tube. Whilst assessing the airway, I would palpate a </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="757.36"><span class="t-timestamp">12:37</span></div>
-  <div class="t-body"><span class="segment" data-start="757.36" data-end="762.72" title="12:37">central pulse to exclude cardiac arrest before going on to assess the breathing. </span><span class="segment" data-start="763.44" data-end="766.4" title="12:43">There is no palpable pulse. How would you proceed? </span><span class="segment" data-start="766.8" data-end="774.8" title="12:46">I would dedicate a member of staff to put out a cardiac arrest call and ask them on their return </span><span class="segment" data-start="774.8" data-end="780.96" title="12:54">to bring the resuscitation trolley and more members of staff to assist. I would then allocate </span><span class="segment" data-start="780.96" data-end="788.64" title="13:00">another member of the team to bring the 20% in tralippid. In the meantime, I would start advanced </span><span class="segment" data-start="788.64" data-end="795.2" title="13:08">life support according to the advanced life support guidelines. This involves cardiopulmonary </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="795.2"><span class="t-timestamp">13:15</span></div>
-  <div class="t-body"><span class="segment" data-start="795.2" data-end="802.24" title="13:15">resuscitation in the ratio of 30 compressions to two ventilations or asynchronous compressions </span><span class="segment" data-start="802.24" data-end="809.12" title="13:22">once the trachea is intubated. I would assume the role of cardiac arrest team leader and </span><span class="segment" data-start="809.12" data-end="816.08" title="13:29">delegate team members to appropriate roles. Discovery of the underlying rhythm is then essential </span><span class="segment" data-start="816.08" data-end="822.16" title="13:36">to allow stratification to the ventricular fibrillation or pulsulus ventricular tachycardia </span><span class="segment" data-start="822.16" data-end="829.2" title="13:42">algorithm or to the asystole algorithm. You mentioned intralipid. How is this administered in the </span><span class="segment" data-start="829.2" data-end="839.12" title="13:49">setting? On arrival of the 20% intralipid, I would immediately deliver a 1.5 milligram per kilogram </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="839.12"><span class="t-timestamp">13:59</span></div>
-  <div class="t-body"><span class="segment" data-start="839.12" data-end="846.0" title="13:59">bolus intravenously and start an infusion of 0.25 milligrams per kilogram per minute. </span><span class="segment" data-start="846.96" data-end="852.64" title="14:06">The bolus injection may be repeated twice at 5 minute intervals. </span><span class="segment" data-start="852.64" data-end="863.52" title="14:12">5 minutes after the third bolus of intralipid, the infusion rate should be increased to 0.5 milligrams per kilogram per minute. </span><span class="segment" data-start="863.52" data-end="873.04" title="14:23">It is worth bearing in mind that cardiac arrest due to local anaesthetic toxicity may be prolonged </span><span class="segment" data-start="873.04" data-end="879.92" title="14:33">and refractory to treatment, so I would persist with the resuscitation for over an hour if needed. </span><span class="segment" data-start="881.76" data-end="888.4" title="14:41">Although standard ALS protocols should be followed throughout, consideration should be given to the </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="888.4"><span class="t-timestamp">14:48</span></div>
-  <div class="t-body"><span class="segment" data-start="888.4" data-end="895.28" title="14:48">use of cardiopulmonary bypass wear available as the situation is potentially salvageable with </span><span class="segment" data-start="895.28" data-end="899.68" title="14:55">prolonged life support. Is there anything else that you may consider in this situation? </span><span class="segment" data-start="899.92" data-end="909.28" title="14:59">If after 5 minutes of cardiopulmonary resuscitation, there has been no return of spontaneous circulation, </span><span class="segment" data-start="909.28" data-end="915.84" title="15:09">then a perimortum cesarean section should be undertaken in order to optimize the efficacy of CPR </span><span class="segment" data-start="915.84" data-end="923.2" title="15:15">and the chance of maternal survival. Ventricular fibrillation should be treated according to standard </span><span class="segment" data-start="923.2" data-end="930.88" title="15:23">ALS protocols. Magnesium should be considered at an early stage. Should the ventricular fibrillation </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="930.88"><span class="t-timestamp">15:30</span></div>
-  <div class="t-body"><span class="segment" data-start="930.88" data-end="937.04" title="15:30">prove refractory to standard treatment and intralipid, then brithillium may be considered. </span><span class="segment" data-start="937.68" data-end="943.52" title="15:37">It is not part of the standard resuscitation guidelines, but in this situation there is a small </span><span class="segment" data-start="943.52" data-end="949.84" title="15:43">chance it may be of benefit. You mentioned brithillium. How does a stroke work and what dose would you use? </span><span class="segment" data-start="950.24" data-end="958.48" title="15:50">Brithillium acts by inhibiting release of noradrenaline at the sympathetic nervous system, </span><span class="segment" data-start="958.48" data-end="964.4" title="15:58">and is administered by rapid intravenous injection at a dose of 5 mg per kilogram. </span><span class="segment" data-start="965.36" data-end="971.76" title="16:05">If ventricular fibrillation persists, the dose may be increased to 10 mg per kilogram </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="971.76"><span class="t-timestamp">16:11</span></div>
-  <div class="t-body"><span class="segment" data-start="971.76" data-end="978.64" title="16:11">and given it 1-2 hour intervals. Brithillium is not commonly used, and so its acquisition is </span><span class="segment" data-start="978.64" data-end="984.64" title="16:18">unlikely to be rapid, hence the importance of all other aspects of resuscitation in this case. </span><span class="segment" data-start="985.92" data-end="991.52" title="16:25">Where is intralipid kept in your hospital? You should know the answer to this, and if you don't, </span><span class="segment" data-start="991.52" data-end="999.36" title="16:31">make it look like you do. Intralipid is kept in areas where potentially toxic doses of </span><span class="segment" data-start="999.36" data-end="1004.8" title="16:39">local anaesthetic are administered. It is kept on the resuscitation trolley in theatre, </span><span class="segment" data-start="1004.8" data-end="1010.56" title="16:44">on the resuscitation trolley on delivery suite, in the bag that the intensive care registrar brings </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="1010.56"><span class="t-timestamp">16:50</span></div>
-  <div class="t-body"><span class="segment" data-start="1010.56" data-end="1017.04" title="16:50">to arrest calls, and it is available in the pharmacy store cupboard in theatres and from pharmacy. </span><span class="segment" data-start="1018.48" data-end="1021.36" title="16:58">What is the actual mechanism of local anaesthetic toxicity? </span><span class="segment" data-start="1023.84" data-end="1030.8" title="17:03">Local anaesthetic toxicity results from several processes, most commonly binding of the </span><span class="segment" data-start="1030.8" data-end="1036.64" title="17:10">anaesthetic agent to the cytosolic aspect of the voltage-gated sodium channel, resulting in </span><span class="segment" data-start="1036.64" data-end="1043.44" title="17:16">sodium channel blockade. Bepivocane, one of the most toxic local anaesthetic agents, </span><span class="segment" data-start="1043.44" data-end="1050.24" title="17:23">also interferes with almost all of the metabotropic and ionotropic cell-transduction mechanism studied. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="1051.12"><span class="t-timestamp">17:31</span></div>
-  <div class="t-body"><span class="segment" data-start="1051.12" data-end="1057.68" title="17:31">It also interferes with oxidative phosphorylation, perhaps most importantly, the metabolism of </span><span class="segment" data-start="1057.68" data-end="1063.68" title="17:37">carna-teen, which is thought to be essential for the transport of fatty acids into the mitochondria. </span><span class="segment" data-start="1063.92" data-end="1070.08" title="17:43">The transport of fatty acids into mitochondria is essential for the generation of ATP, </span><span class="segment" data-start="1070.08" data-end="1076.72" title="17:50">and so bupivocane in disrupting this process limits the ability of cells to produce the energy they </span><span class="segment" data-start="1076.72" data-end="1083.84" title="17:56">need to function normally. This disruption in ATP generation is particularly apparent in energy </span><span class="segment" data-start="1083.84" data-end="1090.16" title="18:03">demanding cells such as cardiac myocytes. How does intralipid all to this process? </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="1091.04"><span class="t-timestamp">18:11</span></div>
-  <div class="t-body"><span class="segment" data-start="1091.04" data-end="1094.72" title="18:11">If you get a question like this, don't panic, it means you're doing very well. </span><span class="segment" data-start="1096.8" data-end="1103.2" title="18:16">20% intralipid has an avidity for local anaesthetic agents, which may prevent the agent </span><span class="segment" data-start="1103.2" data-end="1109.92" title="18:23">reaching the cell if administered reasonably soon after the toxic dose. It may have a potential </span><span class="segment" data-start="1110.48" data-end="1116.96" title="18:30">enrauring the agent out of the cell and removing it from its inhibitory action on metabotropic </span><span class="segment" data-start="1116.96" data-end="1123.84" title="18:36">and ionotropic signaling and restoring the action of carna-teen on fatty acid transport in mitochondria. </span><span class="segment" data-start="1125.2" data-end="1131.52" title="18:45">This effect results in an apparent shift in the dose response curve, resulting in a higher plasma </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="1131.52"><span class="t-timestamp">18:51</span></div>
-  <div class="t-body"><span class="segment" data-start="1131.52" data-end="1139.28" title="18:51">concentration of local anaesthetic agent required to induce a systole. Vineberg and colleagues, </span><span class="segment" data-start="1139.28" data-end="1145.28" title="18:59">amongst others, have explored this in the experimental setting of rats and dogs, </span><span class="segment" data-start="1145.28" data-end="1152.88" title="19:05">and users of intralipid are encouraged to report cases to intralipid.org, where case series are being </span><span class="segment" data-start="1152.88" data-end="1154.88" title="19:12">compiled. </span></div>
+<div class="preamble-block"><span class="segment a-seg" data-start="0.0" data-end="2.0" title="0:00">Local anaesthetic toxicity. </span></div>
+<div class="qa-pair">
+<div class="q-block" data-start="3.28">
+  <div class="q-label">Q1</div>
+  <div class="q-body"><span class="segment q-seg" data-start="3.28" data-end="5.28" title="0:03">What is a local anaesthetic agent? </span></div>
 </div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="5.84" data-end="10.4" title="0:05">You need to get an off-packed definition here in order to get the examiner on your side from the start. </span></li>
+<li><span class="segment a-seg" data-start="12.24" data-end="17.52" title="0:12">A local anaesthetic agent is one which reversibly blocks neural transmission </span></li>
+<li><span class="segment a-seg" data-start="17.52" data-end="21.04" title="0:17">beyond its point of application when applied locally. </span></li>
+<li><span class="segment a-seg" data-start="22.08" data-end="29.68" title="0:22">All local anaesthetic agents are weak bases and can be subdivided into esters and amides </span></li>
+<li><span class="segment a-seg" data-start="30.0" data-end="35.28" title="0:30">according to the chemical linkage between the hydrophobic aromatic ring structure </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="35.28">
+  <div class="q-label">Q2</div>
+  <div class="q-body"><span class="segment q-seg" data-start="35.28" data-end="41.44" title="0:35">and the hydrophilic chain. Would you like me to illustrate the chemical formula of these linkages? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="46.8" data-end="56.16" title="0:46">Examples of amides include lidocaine, bupivocaine and prilocaine and examples of esters include </span></li>
+<li><span class="segment a-seg" data-start="56.16" data-end="63.92" title="0:56">cocaine, tetrakaine and amythicaine. Amides are more commonly used in clinical practice due to </span></li>
+<li><span class="segment a-seg" data-start="63.92" data-end="69.2" title="1:03">their increased stability, ease of heat sterilization and longer shelf life. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="69.68">
+  <div class="q-label">Q3</div>
+  <div class="q-body"><span class="segment q-seg" data-start="69.68" data-end="71.76" title="1:09">How do local anaesthetic agents work? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="73.76" data-end="80.24" title="1:13">Local anaesthetic agents work by blocking the voltage-gated sodium channel from the cytosolic </span></li>
+<li><span class="segment a-seg" data-start="80.24" data-end="87.36" title="1:20">aspect of the receptor, i.e. from the inside of the cell. Inactivation of the sodium channel </span></li>
+<li><span class="segment a-seg" data-start="87.36" data-end="93.84" title="1:27">prevents the upstroke of the action potential and so inhibits depolarization and therefore </span></li>
+<li><span class="segment a-seg" data-start="93.84" data-end="101.04" title="1:33">transmission of nerve impulses. The drug accesses the receptor by crossing the neural membrane </span></li>
+<li><span class="segment a-seg" data-start="101.04" data-end="108.48" title="1:41">in its unionized form. It then becomes ionized in the relative acidic environment of the cytoplasm </span></li>
+<li><span class="segment a-seg" data-start="108.48" data-end="115.12" title="1:48">and it is the ionized form that is responsible for a receptor blockade. A secondary mechanism of </span></li>
+<li><span class="segment a-seg" data-start="115.12" data-end="121.76" title="1:55">action relies on disruption of impulse-transduction due to the presence of unionized agent in the </span></li>
+<li><span class="segment a-seg" data-start="121.76" data-end="128.08" title="2:01">nerve cell membrane. What factors determine the potency, the speed of onset and the duration of </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="128.08">
+  <div class="q-label">Q4</div>
+  <div class="q-body"><span class="segment q-seg" data-start="128.08" data-end="130.547" title="2:08">action of a low-clone aesthetic? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="130.547" data-end="136.96" title="2:10">Potency is dependent on how lipid soluble the drug is. The more lipid </span></li>
+<li><span class="segment a-seg" data-start="136.96" data-end="144.48" title="2:16">solubility is, the more potent it becomes. The onset of action is related to the drug's PKA. </span></li>
+<li><span class="segment a-seg" data-start="145.28" data-end="152.0" title="2:25">A drug with a lower PKA will have a greater percentage present in the unionized form which allows </span></li>
+<li><span class="segment a-seg" data-start="152.0" data-end="156.72" title="2:32">more rapid passage through the nerve cell membrane and a faster onset of action. </span></li>
+<li><span class="segment a-seg" data-start="157.44" data-end="165.28" title="2:37">So for example, LIDACane has a PKA of 7.9 and has a more rapid onset of action than bupivocane </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="165.28">
+  <div class="q-label">Q5</div>
+  <div class="q-body"><span class="segment q-seg" data-start="165.28" data-end="173.68" title="2:45">which has a PKA of 8.1. The duration of action is dependent on how protein bound the drug is. </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="174.4" data-end="180.24" title="2:54">If a drug is highly protein bound, like bupivocane, it will have a long duration of action. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="180.96">
+  <div class="q-label">Q6</div>
+  <div class="q-body"><span class="segment q-seg" data-start="180.96" data-end="184.64" title="3:00">What factors plays a patient at risk of local anesthetic toxicity? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="186.88" data-end="193.52" title="3:06">Local anesthetic toxicity results from the acquisition of a high or rapidly rising plasma </span></li>
+<li><span class="segment a-seg" data-start="193.52" data-end="200.8" title="3:13">local anesthetic concentration. The factors which play a patient at risk of this situation developing </span></li>
+<li><span class="segment a-seg" data-start="200.8" data-end="208.32" title="3:20">are firstly the dose administered and the speed of injection. As large, rapidly administered doses </span></li>
+<li><span class="segment a-seg" data-start="208.32" data-end="215.92" title="3:28">raise the risk of high plasma concentrations developing. Secondly, inadvertent vascular injection. </span></li>
+<li><span class="segment a-seg" data-start="216.56" data-end="223.36" title="3:36">For example, through an epidural catheter inadvertently placed into a vein in batsons plexus, </span></li>
+<li><span class="segment a-seg" data-start="223.36" data-end="227.84" title="3:43">resulting in direct administration of local anesthetic into the circulation. </span></li>
+<li><span class="segment a-seg" data-start="228.72" data-end="236.4" title="3:48">Similarly, inadvertent intrathecal injection will also produce toxic effects as an inappropriate </span></li>
+<li><span class="segment a-seg" data-start="236.4" data-end="243.68" title="3:56">intrathecal dose is likely to be administered. Thirdly, the site of administration. </span></li>
+<li><span class="segment a-seg" data-start="243.68" data-end="248.0" title="4:03">As this affects the rate of absorption of local anesthetic into the bloodstream. </span></li>
+<li><span class="segment a-seg" data-start="248.8" data-end="255.68" title="4:08">So, for example, local anesthetic is more readily absorbed into the bloodstream when it is administered </span></li>
+<li><span class="segment a-seg" data-start="255.68" data-end="262.08" title="4:15">via the intercostal or cordal site compared to the subcutaneous or brachial plexus site. </span></li>
+<li><span class="segment a-seg" data-start="262.88" data-end="269.6" title="4:22">The performance of a pudendal nerve block in obstetrics is also highly likely to cause systemic </span></li>
+<li><span class="segment a-seg" data-start="269.6" data-end="277.68" title="4:29">toxicity due to the adjacent rich blood supply. Related to this is the presence of vasoconstrictor </span></li>
+<li><span class="segment a-seg" data-start="277.68" data-end="285.04" title="4:37">in the injected solution. For example, adrenaline may be co-administered with local anesthetic agents, </span></li>
+<li><span class="segment a-seg" data-start="285.04" data-end="291.36" title="4:45">producing localized vasoconstriction and limiting the absorption of local anesthetic agent into </span></li>
+<li><span class="segment a-seg" data-start="291.36" data-end="298.48" title="4:51">the bloodstream. Adrenaline added to lidocaine increases the safe dose which may be given </span></li>
+<li><span class="segment a-seg" data-start="298.48" data-end="303.6" title="4:58">from 3 mg per kilogram to 6 mg per kilogram for this reason. </span></li>
+<li><span class="segment a-seg" data-start="305.44" data-end="312.56" title="5:05">Fourthly, the type of local anesthetic used as some types of local anesthetic are inherently more </span></li>
+<li><span class="segment a-seg" data-start="312.56" data-end="320.96" title="5:12">toxic than others. For example, Rhesemic bupivocaine is inherently more toxic than its pure S and </span></li>
+<li><span class="segment a-seg" data-start="320.96" data-end="328.08" title="5:20">Antiuma levobupevocaine. This is due to a reduction in the ability of binding of the S in Antiuma </span></li>
+<li><span class="segment a-seg" data-start="328.08" data-end="333.44" title="5:28">to the sodium channels of the myocardium and therefore less risk of the myocardial </span></li>
+<li><span class="segment a-seg" data-start="333.44" data-end="342.16" title="5:33">depressant effects of a toxic dose. Fifthly, patient heterogeneity and comorbidity </span></li>
+<li><span class="segment a-seg" data-start="342.16" data-end="349.04" title="5:42">has an important bearing on the risks of toxicity. Patients with cardiac or hepatic disease </span></li>
+<li><span class="segment a-seg" data-start="349.04" data-end="354.96" title="5:49">and those who are critically unwell or pregnant as well as neonates and young infants </span></li>
+<li><span class="segment a-seg" data-start="354.96" data-end="362.4" title="5:54">are particularly at risk due to alterations in absorption, distribution, metabolism and excretion. </span></li>
+<li><span class="segment a-seg" data-start="363.6" data-end="370.88" title="6:03">These patients also have changes in their protein binding capacity, particularly to alpha-1 acid </span></li>
+<li><span class="segment a-seg" data-start="370.88" data-end="377.04" title="6:10">glycoprotein, whether levels are reduced and therefore may well have increased free drug </span></li>
+<li><span class="segment a-seg" data-start="377.04" data-end="384.4" title="6:17">concentration raising the risk of toxicity. In these situations, the dose administered should </span></li>
+<li><span class="segment a-seg" data-start="384.4" data-end="392.08" title="6:24">be reduced. Finally, the acid-based status of the patient has a bearing on their risk of </span></li>
+<li><span class="segment a-seg" data-start="392.08" data-end="399.84" title="6:32">toxicity. Avoiding acidosis, so for example, ensuring patients are adequately ventilated, </span></li>
+<li><span class="segment a-seg" data-start="399.84" data-end="405.6" title="6:39">will reduce the risk of toxicity occurring. Some patients are particularly at risk of a specific </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="405.6">
+  <div class="q-label">Q7</div>
+  <div class="q-body"><span class="segment q-seg" data-start="405.6" data-end="411.68" title="6:45">form of toxicity related to one of the AMI local anaesthetic agents. Can you think of what that might be? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="412.16" data-end="423.44" title="6:52">Prylicane is metabolized to Otolyardine. Infants and those with methemoglobin reductase deficiency </span></li>
+<li><span class="segment a-seg" data-start="423.44" data-end="430.56" title="7:03">are poorly able to metabolize Otolyardine and may develop methemoglobinemia, which results from </span></li>
+<li><span class="segment a-seg" data-start="430.56" data-end="438.48" title="7:10">the oxidation of the iron atom in heme from its ferrous to its ferric state. This produces a </span></li>
+<li><span class="segment a-seg" data-start="438.48" data-end="443.76" title="7:18">blue discoloration of the skin, which can produce errors in pulse-soximeter analysis. </span></li>
+<li><span class="segment a-seg" data-start="444.72" data-end="453.2" title="7:24">Pulse-soximeters may falsely read 85% leading the anesthetist to believe that patient is hypoxic, </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="453.2">
+  <div class="q-label">Q8</div>
+  <div class="q-body"><span class="segment q-seg" data-start="453.2" data-end="460.24" title="7:33">where this may not be the case. The oxygen-carrying capacity of hemeoglobin is reduced by the </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="460.24" data-end="468.08" title="7:40">transformation in heme, and in extreme cases this may result in tissue hypoxia. It can be treated </span></li>
+<li><span class="segment a-seg" data-start="468.08" data-end="476.16" title="7:48">with methylene blue at a dose of 1 milligram per kilogram over 5 minutes. It is important to remember </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="476.16">
+  <div class="q-label">Q9</div>
+  <div class="q-body"><span class="segment q-seg" data-start="476.16" data-end="483.44" title="7:56">however that Prylicane is relatively less toxic than bupivocane, especially on the heart. This is </span><span class="segment q-seg" data-start="483.44" data-end="490.4" title="8:03">why it is used for intravenous regional anesthesia. Let's get back now to local anaesthetic toxicity </span><span class="segment q-seg" data-start="490.4" data-end="495.52" title="8:10">in general. What are the symptoms and signs of local anaesthetic toxicity? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="495.52" data-end="496.8" title="8:15">Most people can </span></li>
+<li><span class="segment a-seg" data-start="496.8" data-end="501.84" title="8:16">rattle off a list and answer to this question, but if you can bring in some basic science to your </span></li>
+<li><span class="segment a-seg" data-start="501.84" data-end="506.4" title="8:21">answer, it looks like you really understand the concepts making you stronger candidate. </span></li>
+<li><span class="segment a-seg" data-start="508.24" data-end="514.64" title="8:28">Local anaesthetic toxicity presents initially with central nervous system disturbances </span></li>
+<li><span class="segment a-seg" data-start="514.64" data-end="521.36" title="8:34">followed by cardiovascular system disturbance. Toxic levels of local anaesthetic </span></li>
+<li><span class="segment a-seg" data-start="521.36" data-end="527.68" title="8:41">initially depress the depressant effects of the central nervous system, such that excitatory </span></li>
+<li><span class="segment a-seg" data-start="527.68" data-end="536.8" title="8:47">effects are initially seen. These include headache, perioral parathesia, tinnitus, vertigo, </span></li>
+<li><span class="segment a-seg" data-start="536.8" data-end="545.04" title="8:56">disorientation, visual and auditory disturbances, and a sense of impending doom. Shivering and tremors </span></li>
+<li><span class="segment a-seg" data-start="545.04" data-end="552.8" title="9:05">may be seen. As the toxic effect progresses, both the depressant and the excitatory effects of </span></li>
+<li><span class="segment a-seg" data-start="552.8" data-end="559.92" title="9:12">the central nervous system are depressed. This may then lead to slurred speech, loss of consciousness </span></li>
+<li><span class="segment a-seg" data-start="559.92" data-end="568.4" title="9:19">and seizure activity, often manifesting as a grand maltype of fit. Escalating toxicity then </span></li>
+<li><span class="segment a-seg" data-start="568.4" data-end="575.92" title="9:28">results in respiratory depression and arrest and cardiovascular disturbances. This is initially </span></li>
+<li><span class="segment a-seg" data-start="575.92" data-end="583.28" title="9:35">hypotension from direct cardiac depression and vasodilitation, followed by cardiac arrest </span></li>
+<li><span class="segment a-seg" data-start="583.28" data-end="591.2" title="9:43">with any numbers of dysrhythmias intervening. Sinus bradacardia, sinus arrest, and resistant ventricular </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="591.2">
+  <div class="q-label">Q10</div>
+  <div class="q-body"><span class="segment q-seg" data-start="591.2" data-end="596.96" title="9:51">fibrillation would be common examples. What do you understand by the term toxicity ratio? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="598.4" data-end="603.92" title="9:58">The toxicity ratio is the ratio between the plasma level of local anaesthetic </span></li>
+<li><span class="segment a-seg" data-start="603.92" data-end="610.48" title="10:03">required to produce cardiovascular symptoms, to that required to produce central nervous system </span></li>
+<li><span class="segment a-seg" data-start="610.48" data-end="618.0" title="10:10">symptoms. It is expressed as a ratio for each local anaesthetic agent and gives an idea of the </span></li>
+<li><span class="segment a-seg" data-start="618.0" data-end="624.16" title="10:18">window between the onset of central nervous system symptoms and the onset of cardiovascular </span></li>
+<li><span class="segment a-seg" data-start="624.16" data-end="632.96" title="10:24">symptoms. For example, the toxicity ratio for lidocaine is 7 and for bububbivocaine is 3, </span></li>
+<li><span class="segment a-seg" data-start="633.6" data-end="641.28" title="10:33">but for levobubbivocaine is 5. This means that after central nervous system symptoms occur, </span></li>
+<li><span class="segment a-seg" data-start="641.28" data-end="647.36" title="10:41">you need 7 times that plasma level of local anaesthetic to get cardiovascular symptoms with </span></li>
+<li><span class="segment a-seg" data-start="647.44" data-end="654.32" title="10:47">lidocaine, but only 3 times that plasma level to get cardiovascular symptoms with bububbivocaine. </span></li>
+<li><span class="segment a-seg" data-start="654.96" data-end="660.88" title="10:54">In practical terms, this means that the onset of central nervous system symptoms in bububbivocaine </span></li>
+<li><span class="segment a-seg" data-start="660.88" data-end="668.16" title="11:00">toxicity means that cardiovascular symptoms are soon to follow. So, why is bubivocaine more toxic </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="668.24">
+  <div class="q-label">Q11</div>
+  <div class="q-body"><span class="segment q-seg" data-start="668.24" data-end="669.467" title="11:08">than lidocaine? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="669.467" data-end="677.44" title="11:09">Bububbivocaine is 4 to 16 times more cardiotoxic than lidocaine due to its </span></li>
+<li><span class="segment a-seg" data-start="677.44" data-end="682.88" title="11:17">increased protein binding and the evidity with which it binds myocardial tissue. </span></li>
+<li><span class="segment a-seg" data-start="684.0" data-end="691.28" title="11:24">It dissociates from myocardial sodium channels 10 times less readily than lidocaine producing a </span></li>
+<li><span class="segment a-seg" data-start="691.28" data-end="698.16" title="11:31">prolonged refractory blockade. Reversal of this binding can be particularly difficult, </span></li>
+<li><span class="segment a-seg" data-start="698.16" data-end="704.8" title="11:38">especially in the face of cardiopulmonary arrest when hypoxia and acidosis may complicate the </span></li>
+<li><span class="segment a-seg" data-start="704.8" data-end="710.64" title="11:44">picture. How would you manage a 28-year-old primegravida who has collapsed after complaining of </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="710.64">
+  <div class="q-label">Q12</div>
+  <div class="q-body"><span class="segment q-seg" data-start="710.64" data-end="717.12" title="11:50">tonight's San Vertigo following an epidural top-up of 20 milliliters of 0.5% leave of bubivocaine? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="717.92" data-end="720.72" title="11:57">She is scheduled for a category 2-serene section. </span></li>
+<li><span class="segment a-seg" data-start="722.72" data-end="728.64" title="12:02">This is an emergency. The factors which pose the greatest threat to the mother's life </span></li>
+<li><span class="segment a-seg" data-start="728.64" data-end="735.44" title="12:08">should be managed first and without delay. I would call for help immediately, whilst placing </span></li>
+<li><span class="segment a-seg" data-start="735.44" data-end="742.72" title="12:15">the woman in a left lateral tilt of at least 15 degrees. I would start by ensuring a patent </span></li>
+<li><span class="segment a-seg" data-start="742.8" data-end="750.48" title="12:22">airway and administer high-flow oxygen via a reservoir mask. Should the airway be compromised, </span></li>
+<li><span class="segment a-seg" data-start="750.48" data-end="757.36" title="12:30">I would secure it with a cuffed endotracheal tube. Whilst assessing the airway, I would palpate a </span></li>
+<li><span class="segment a-seg" data-start="757.36" data-end="762.72" title="12:37">central pulse to exclude cardiac arrest before going on to assess the breathing. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="763.44">
+  <div class="q-label">Q13</div>
+  <div class="q-body"><span class="segment q-seg" data-start="763.44" data-end="766.4" title="12:43">There is no palpable pulse. How would you proceed? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="766.8" data-end="774.8" title="12:46">I would dedicate a member of staff to put out a cardiac arrest call and ask them on their return </span></li>
+<li><span class="segment a-seg" data-start="774.8" data-end="780.96" title="12:54">to bring the resuscitation trolley and more members of staff to assist. I would then allocate </span></li>
+<li><span class="segment a-seg" data-start="780.96" data-end="788.64" title="13:00">another member of the team to bring the 20% in tralippid. In the meantime, I would start advanced </span></li>
+<li><span class="segment a-seg" data-start="788.64" data-end="795.2" title="13:08">life support according to the advanced life support guidelines. This involves cardiopulmonary </span></li>
+<li><span class="segment a-seg" data-start="795.2" data-end="802.24" title="13:15">resuscitation in the ratio of 30 compressions to two ventilations or asynchronous compressions </span></li>
+<li><span class="segment a-seg" data-start="802.24" data-end="809.12" title="13:22">once the trachea is intubated. I would assume the role of cardiac arrest team leader and </span></li>
+<li><span class="segment a-seg" data-start="809.12" data-end="816.08" title="13:29">delegate team members to appropriate roles. Discovery of the underlying rhythm is then essential </span></li>
+<li><span class="segment a-seg" data-start="816.08" data-end="822.16" title="13:36">to allow stratification to the ventricular fibrillation or pulsulus ventricular tachycardia </span></li>
+<li><span class="segment a-seg" data-start="822.16" data-end="829.2" title="13:42">algorithm or to the asystole algorithm. You mentioned intralipid. How is this administered in the </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="829.2">
+  <div class="q-label">Q14</div>
+  <div class="q-body"><span class="segment q-seg" data-start="829.2" data-end="829.82" title="13:49">setting? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="829.82" data-end="839.12" title="13:49">On arrival of the 20% intralipid, I would immediately deliver a 1.5 milligram per kilogram </span></li>
+<li><span class="segment a-seg" data-start="839.12" data-end="846.0" title="13:59">bolus intravenously and start an infusion of 0.25 milligrams per kilogram per minute. </span></li>
+<li><span class="segment a-seg" data-start="846.96" data-end="852.64" title="14:06">The bolus injection may be repeated twice at 5 minute intervals. </span></li>
+<li><span class="segment a-seg" data-start="852.64" data-end="863.52" title="14:12">5 minutes after the third bolus of intralipid, the infusion rate should be increased to 0.5 milligrams per kilogram per minute. </span></li>
+<li><span class="segment a-seg" data-start="863.52" data-end="873.04" title="14:23">It is worth bearing in mind that cardiac arrest due to local anaesthetic toxicity may be prolonged </span></li>
+<li><span class="segment a-seg" data-start="873.04" data-end="879.92" title="14:33">and refractory to treatment, so I would persist with the resuscitation for over an hour if needed. </span></li>
+<li><span class="segment a-seg" data-start="881.76" data-end="888.4" title="14:41">Although standard ALS protocols should be followed throughout, consideration should be given to the </span></li>
+<li><span class="segment a-seg" data-start="888.4" data-end="895.28" title="14:48">use of cardiopulmonary bypass wear available as the situation is potentially salvageable with </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="895.28">
+  <div class="q-label">Q15</div>
+  <div class="q-body"><span class="segment q-seg" data-start="895.28" data-end="899.68" title="14:55">prolonged life support. Is there anything else that you may consider in this situation? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="899.92" data-end="909.28" title="14:59">If after 5 minutes of cardiopulmonary resuscitation, there has been no return of spontaneous circulation, </span></li>
+<li><span class="segment a-seg" data-start="909.28" data-end="915.84" title="15:09">then a perimortum cesarean section should be undertaken in order to optimize the efficacy of CPR </span></li>
+<li><span class="segment a-seg" data-start="915.84" data-end="923.2" title="15:15">and the chance of maternal survival. Ventricular fibrillation should be treated according to standard </span></li>
+<li><span class="segment a-seg" data-start="923.2" data-end="930.88" title="15:23">ALS protocols. Magnesium should be considered at an early stage. Should the ventricular fibrillation </span></li>
+<li><span class="segment a-seg" data-start="930.88" data-end="937.04" title="15:30">prove refractory to standard treatment and intralipid, then brithillium may be considered. </span></li>
+<li><span class="segment a-seg" data-start="937.68" data-end="943.52" title="15:37">It is not part of the standard resuscitation guidelines, but in this situation there is a small </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="943.52">
+  <div class="q-label">Q16</div>
+  <div class="q-body"><span class="segment q-seg" data-start="943.52" data-end="949.84" title="15:43">chance it may be of benefit. You mentioned brithillium. How does a stroke work and what dose would you use? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="950.24" data-end="958.48" title="15:50">Brithillium acts by inhibiting release of noradrenaline at the sympathetic nervous system, </span></li>
+<li><span class="segment a-seg" data-start="958.48" data-end="964.4" title="15:58">and is administered by rapid intravenous injection at a dose of 5 mg per kilogram. </span></li>
+<li><span class="segment a-seg" data-start="965.36" data-end="971.76" title="16:05">If ventricular fibrillation persists, the dose may be increased to 10 mg per kilogram </span></li>
+<li><span class="segment a-seg" data-start="971.76" data-end="978.64" title="16:11">and given it 1-2 hour intervals. Brithillium is not commonly used, and so its acquisition is </span></li>
+<li><span class="segment a-seg" data-start="978.64" data-end="984.64" title="16:18">unlikely to be rapid, hence the importance of all other aspects of resuscitation in this case. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="985.92">
+  <div class="q-label">Q17</div>
+  <div class="q-body"><span class="segment q-seg" data-start="985.92" data-end="988.098" title="16:25">Where is intralipid kept in your hospital? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="988.098" data-end="991.52" title="16:28">You should know the answer to this, and if you don't, </span></li>
+<li><span class="segment a-seg" data-start="991.52" data-end="999.36" title="16:31">make it look like you do. Intralipid is kept in areas where potentially toxic doses of </span></li>
+<li><span class="segment a-seg" data-start="999.36" data-end="1004.8" title="16:39">local anaesthetic are administered. It is kept on the resuscitation trolley in theatre, </span></li>
+<li><span class="segment a-seg" data-start="1004.8" data-end="1010.56" title="16:44">on the resuscitation trolley on delivery suite, in the bag that the intensive care registrar brings </span></li>
+<li><span class="segment a-seg" data-start="1010.56" data-end="1017.04" title="16:50">to arrest calls, and it is available in the pharmacy store cupboard in theatres and from pharmacy. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="1018.48">
+  <div class="q-label">Q18</div>
+  <div class="q-body"><span class="segment q-seg" data-start="1018.48" data-end="1021.36" title="16:58">What is the actual mechanism of local anaesthetic toxicity? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="1023.84" data-end="1030.8" title="17:03">Local anaesthetic toxicity results from several processes, most commonly binding of the </span></li>
+<li><span class="segment a-seg" data-start="1030.8" data-end="1036.64" title="17:10">anaesthetic agent to the cytosolic aspect of the voltage-gated sodium channel, resulting in </span></li>
+<li><span class="segment a-seg" data-start="1036.64" data-end="1043.44" title="17:16">sodium channel blockade. Bepivocane, one of the most toxic local anaesthetic agents, </span></li>
+<li><span class="segment a-seg" data-start="1043.44" data-end="1050.24" title="17:23">also interferes with almost all of the metabotropic and ionotropic cell-transduction mechanism studied. </span></li>
+<li><span class="segment a-seg" data-start="1051.12" data-end="1057.68" title="17:31">It also interferes with oxidative phosphorylation, perhaps most importantly, the metabolism of </span></li>
+<li><span class="segment a-seg" data-start="1057.68" data-end="1063.68" title="17:37">carna-teen, which is thought to be essential for the transport of fatty acids into the mitochondria. </span></li>
+<li><span class="segment a-seg" data-start="1063.92" data-end="1070.08" title="17:43">The transport of fatty acids into mitochondria is essential for the generation of ATP, </span></li>
+<li><span class="segment a-seg" data-start="1070.08" data-end="1076.72" title="17:50">and so bupivocane in disrupting this process limits the ability of cells to produce the energy they </span></li>
+<li><span class="segment a-seg" data-start="1076.72" data-end="1083.84" title="17:56">need to function normally. This disruption in ATP generation is particularly apparent in energy </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="1083.84">
+  <div class="q-label">Q19</div>
+  <div class="q-body"><span class="segment q-seg" data-start="1083.84" data-end="1090.16" title="18:03">demanding cells such as cardiac myocytes. How does intralipid all to this process? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="1091.04" data-end="1094.72" title="18:11">If you get a question like this, don't panic, it means you're doing very well. </span></li>
+<li><span class="segment a-seg" data-start="1096.8" data-end="1103.2" title="18:16">20% intralipid has an avidity for local anaesthetic agents, which may prevent the agent </span></li>
+<li><span class="segment a-seg" data-start="1103.2" data-end="1109.92" title="18:23">reaching the cell if administered reasonably soon after the toxic dose. It may have a potential </span></li>
+<li><span class="segment a-seg" data-start="1110.48" data-end="1116.96" title="18:30">enrauring the agent out of the cell and removing it from its inhibitory action on metabotropic </span></li>
+<li><span class="segment a-seg" data-start="1116.96" data-end="1123.84" title="18:36">and ionotropic signaling and restoring the action of carna-teen on fatty acid transport in mitochondria. </span></li>
+<li><span class="segment a-seg" data-start="1125.2" data-end="1131.52" title="18:45">This effect results in an apparent shift in the dose response curve, resulting in a higher plasma </span></li>
+<li><span class="segment a-seg" data-start="1131.52" data-end="1139.28" title="18:51">concentration of local anaesthetic agent required to induce a systole. Vineberg and colleagues, </span></li>
+<li><span class="segment a-seg" data-start="1139.28" data-end="1145.28" title="18:59">amongst others, have explored this in the experimental setting of rats and dogs, </span></li>
+<li><span class="segment a-seg" data-start="1145.28" data-end="1152.88" title="19:05">and users of intralipid are encouraged to report cases to intralipid.org, where case series are being </span></li>
+<li><span class="segment a-seg" data-start="1152.88" data-end="1154.88" title="19:12">compiled. </span></li>
+  </ul>
+</div>
+</div>
+
 </div>
 
 <div class="subtitle-bar">
-  <span class="subtitle-text empty" id="subtitle-text">Play audio to see live subtitles&#8230;</span>
+  <span id="subtitle-text" class="empty">Play audio to see live subtitles&#8230;</span>
 </div>
 
 <script>
-
-const audio    = document.getElementById('audio');
-const allSegs  = Array.from(document.querySelectorAll('.segment'));
-const allBlocks = Array.from(document.querySelectorAll('.t-block'));
+const audio      = document.getElementById('audio');
+const allSegs    = Array.from(document.querySelectorAll('.segment'));
 const subtitleEl = document.getElementById('subtitle-text');
-let activeSegEl   = null;
-let activeBlockEl = null;
-let searchMatches = [];
-let searchIdx     = 0;
+let activeSegEl  = null;
+let searchMatches = [], searchIdx = 0;
 
-// Duration display
 audio.addEventListener('loadedmetadata', () => {
   const m = Math.floor(audio.duration / 60);
   const s = Math.floor(audio.duration %% 60).toString().padStart(2,'0');
   document.getElementById('dur').textContent = m + ':' + s;
 });
 
-// Seek helper
-function seekTo(t) {
-  audio.currentTime = t;
-  audio.play();
-}
+function seekTo(t) { audio.currentTime = t; audio.play(); }
 
-// Block gutter click
-document.querySelectorAll('.t-gutter').forEach(g => {
-  g.addEventListener('click', () => seekTo(parseFloat(g.dataset.start)));
+// Q-block header click
+document.querySelectorAll('.q-block').forEach(q => {
+  q.addEventListener('click', e => {
+    if (!e.target.classList.contains('segment')) seekTo(parseFloat(q.dataset.start));
+  });
 });
 
-// Segment click
+// Individual segment click
 allSegs.forEach(s => {
-  s.addEventListener('click', e => {
-    e.stopPropagation();
-    seekTo(parseFloat(s.dataset.start));
-  });
+  s.addEventListener('click', e => { e.stopPropagation(); seekTo(parseFloat(s.dataset.start)); });
 });
 
 // Real-time tracking
 audio.addEventListener('timeupdate', () => {
   const t = audio.currentTime;
-
-  // Find active segment (last one whose start <= t)
   let found = null;
   for (let i = allSegs.length - 1; i >= 0; i--) {
     if (parseFloat(allSegs[i].dataset.start) <= t) { found = allSegs[i]; break; }
   }
-
   if (found && found !== activeSegEl) {
-    // Clear previous
-    if (activeSegEl) activeSegEl.classList.remove('active');
-    if (activeBlockEl) {
-      activeBlockEl.classList.remove('block-active');
-      const pg = activeBlockEl.querySelector('.t-gutter');
-      if (pg) pg.classList.remove('gutter-active');
+    if (activeSegEl) {
+      activeSegEl.classList.remove('active');
+      const pli = activeSegEl.closest('li');
+      if (pli) pli.classList.remove('li-active');
+      const pq = activeSegEl.closest('.q-block');
+      if (pq) pq.classList.remove('q-active');
     }
-    // Set new
     found.classList.add('active');
-    const block = found.closest('.t-block');
-    if (block) {
-      block.classList.add('block-active');
-      const g = block.querySelector('.t-gutter');
-      if (g) g.classList.add('gutter-active');
-      activeBlockEl = block;
-    }
+    const li = found.closest('li');
+    if (li) li.classList.add('li-active');
+    const qb = found.closest('.q-block');
+    if (qb) qb.classList.add('q-active');
     activeSegEl = found;
 
-    // Update subtitle
     subtitleEl.textContent = found.textContent.trim();
     subtitleEl.classList.remove('empty');
 
-    // Auto-scroll (only when not searching)
-    if (!document.getElementById('search').value) {
+    if (!document.getElementById('search').value)
       found.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }
   }
 });
 
@@ -371,17 +618,13 @@ searchInput.addEventListener('keydown', e => {
     el.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
 });
-
 function runSearch() {
   const q = searchInput.value.trim().toLowerCase();
   allSegs.forEach(s => s.classList.remove('search-match','search-current'));
   searchMatches = [];
   if (!q) return;
   allSegs.forEach(s => {
-    if (s.textContent.toLowerCase().includes(q)) {
-      s.classList.add('search-match');
-      searchMatches.push(s);
-    }
+    if (s.textContent.toLowerCase().includes(q)) { s.classList.add('search-match'); searchMatches.push(s); }
   });
   if (!searchMatches.length) return;
   searchIdx = 0;

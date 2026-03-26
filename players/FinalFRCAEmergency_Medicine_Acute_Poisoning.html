@@ -5,10 +5,19 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Emergency Medicine — Acute Poisoning</title>
 <style>
-
   :root {
-    --accent:    #dc2626;
-    --body-bg:   #f1f5f9;
+    --q-bg:       #1e3a5f;
+    --q-text:     #ffffff;
+    --q-label:    #60a5fa;
+    --a-bg:       #ffffff;
+    --a-border:   #e2e8f0;
+    --a-label:    #059669;
+    --active-q:   #dc2626;
+    --active-a:   #dbeafe;
+    --accent:     #dc2626;
+    --body-bg:    #f1f5f9;
+    --pre-bg:     #fef9c3;
+    --pre-border: #fcd34d;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
@@ -40,22 +49,9 @@
     margin-bottom: 4px;
     letter-spacing: 0.01em;
   }
-  .header-sub {
-    font-size: 0.72rem;
-    color: #94a3b8;
-    font-style: italic;
-  }
-  audio {
-    height: 36px;
-    accent-color: var(--accent);
-    flex-shrink: 0;
-  }
-  .back-link {
-    font-size: 0.8rem;
-    color: #94a3b8;
-    text-decoration: none;
-    white-space: nowrap;
-  }
+  .header-sub { font-size: 0.72rem; color: #94a3b8; font-style: italic; }
+  audio { height: 36px; accent-color: var(--accent); flex-shrink: 0; }
+  .back-link { font-size: 0.8rem; color: #94a3b8; text-decoration: none; white-space: nowrap; }
   .back-link:hover { color: #60a5fa; }
 
   /* ── Toolbar ── */
@@ -69,30 +65,17 @@
     border-bottom: 1px solid #334155;
   }
   .toolbar input {
-    flex: 1;
-    max-width: 380px;
+    flex: 1; max-width: 380px;
     padding: 5px 11px;
-    border: 1px solid #475569;
-    border-radius: 6px;
-    background: #0f172a;
-    color: #e2e8f0;
-    font-size: 0.83rem;
-    outline: none;
+    border: 1px solid #475569; border-radius: 6px;
+    background: #0f172a; color: #e2e8f0; font-size: 0.83rem; outline: none;
   }
   .toolbar input:focus { border-color: var(--accent); }
   .toolbar input::placeholder { color: #64748b; }
-  .stats {
-    font-size: 0.72rem;
-    color: #64748b;
-    white-space: nowrap;
-  }
+  .stats { font-size: 0.72rem; color: #64748b; white-space: nowrap; }
 
   /* ── Scroll area ── */
-  .scroll-area {
-    flex: 1;
-    overflow-y: auto;
-    padding: 20px;
-  }
+  .scroll-area { flex: 1; overflow-y: auto; padding: 20px; }
   .scroll-area::-webkit-scrollbar { width: 6px; }
   .scroll-area::-webkit-scrollbar-track { background: transparent; }
   .scroll-area::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
@@ -107,68 +90,77 @@
     display: flex;
     align-items: center;
   }
-  .subtitle-text {
-    font-size: 0.9rem;
-    color: #e2e8f0;
-    line-height: 1.5;
-    font-style: italic;
-  }
-  .subtitle-text.empty { color: #475569; }
+  #subtitle-text { font-size: 0.88rem; color: #e2e8f0; line-height: 1.5; font-style: italic; }
+  #subtitle-text.empty { color: #475569; }
 
-  /* ── Transcript blocks ── */
-  .t-block {
-    background: #ffffff;
-    border: 1px solid #e2e8f0;
-    border-radius: 10px;
-    margin-bottom: 14px;
-    overflow: hidden;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
-    display: flex;
-  }
-  .t-block.block-active {
-    border-color: var(--accent);
-    box-shadow: 0 0 0 2px rgba(37,99,235,0.15);
-  }
-  .t-gutter {
-    background: #0f172a;
-    width: 52px;
-    flex-shrink: 0;
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
-    padding-top: 14px;
-    cursor: pointer;
-  }
-  .t-gutter:hover { background: #1e293b; }
-  .t-timestamp {
-    font-size: 0.7rem;
-    color: #64748b;
-    font-family: monospace;
-    font-weight: 600;
-    letter-spacing: 0.02em;
-  }
-  .t-gutter.gutter-active .t-timestamp { color: var(--accent); }
-  .t-body {
-    flex: 1;
+  /* ── Preamble ── */
+  .preamble-block {
+    background: var(--pre-bg);
+    border-left: 4px solid var(--pre-border);
+    border-radius: 0 8px 8px 0;
     padding: 12px 16px;
-    line-height: 1.75;
-    font-size: 0.92rem;
-    color: #1e293b;
+    margin-bottom: 20px;
+    font-size: 0.88rem;
+    color: #78350f;
+    font-style: italic;
+    line-height: 1.7;
   }
 
-  /* ── Segments ── */
-  .segment {
+  /* ── Q&A pair ── */
+  .qa-pair { margin-bottom: 20px; border-radius: 10px; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+
+  /* Question block */
+  .q-block {
+    background: var(--q-bg);
+    padding: 14px 18px;
+    display: flex; gap: 14px; align-items: flex-start;
     cursor: pointer;
-    border-radius: 3px;
-    transition: background 0.1s;
+    transition: background 0.15s;
   }
-  .segment:hover { background: #eff6ff; }
-  .segment.active {
-    background: #bfdbfe;
-    outline: 2px solid #3b82f6;
-    outline-offset: 1px;
-    border-radius: 3px;
+  .q-block:hover { background: #1d4ed8; }
+  .q-block.q-active { background: var(--active-q); }
+  .q-label {
+    font-size: 0.7rem; font-weight: 700;
+    color: var(--q-label);
+    background: rgba(96,165,250,0.15);
+    border: 1px solid rgba(96,165,250,0.3);
+    border-radius: 5px; padding: 3px 7px;
+    white-space: nowrap; margin-top: 2px; letter-spacing: 0.05em;
+    flex-shrink: 0;
   }
+  .q-body { flex: 1; font-size: 0.97rem; font-weight: 600; color: var(--q-text); line-height: 1.55; }
+
+  /* Answer block */
+  .a-block {
+    background: var(--a-bg);
+    border: 1px solid var(--a-border); border-top: none;
+    padding: 14px 18px;
+    display: flex; gap: 14px; align-items: flex-start;
+  }
+  .a-label {
+    font-size: 0.7rem; font-weight: 700;
+    color: var(--a-label);
+    background: #d1fae5; border: 1px solid #6ee7b7;
+    border-radius: 5px; padding: 3px 9px;
+    white-space: nowrap; margin-top: 2px; letter-spacing: 0.05em;
+    flex-shrink: 0;
+  }
+  .a-body { flex: 1; list-style: none; padding: 0; }
+  .a-body li {
+    padding: 4px 0 4px 14px;
+    border-left: 3px solid transparent;
+    line-height: 1.7; font-size: 0.92rem; color: #1e293b;
+    border-radius: 0 4px 4px 0;
+    transition: background 0.15s;
+  }
+  .a-body li:not(:last-child) { border-bottom: 1px solid #f1f5f9; }
+
+  /* ── Segments (clickable) ── */
+  .segment { cursor: pointer; border-radius: 3px; }
+  .q-seg:hover { background: rgba(255,255,255,0.18); }
+  .a-seg:hover { background: #eff6ff; }
+  .segment.active { background: #bfdbfe; outline: 2px solid #3b82f6; outline-offset: 1px; }
+  .a-body li.li-active { background: var(--active-a); border-left-color: var(--accent); }
   .segment.search-match  { background: #fef9c3; }
   .segment.search-current { background: #fde047; outline: 2px solid #ca8a04; }
 
@@ -187,154 +179,433 @@
 
 <div class="toolbar">
   <input type="text" id="search" placeholder="Search transcript&#8230; (Enter = next match)">
-  <span class="stats" id="stats">124 segments &nbsp;|&nbsp; <span id="dur">loading&#8230;</span></span>
+  <span class="stats" id="stats">24 questions &nbsp;|&nbsp; 124 segments &nbsp;|&nbsp; <span id="dur">loading&#8230;</span></span>
 </div>
 
 <div class="scroll-area" id="scroll-area">
-<div class="t-block">
-  <div class="t-gutter" data-start="0.0"><span class="t-timestamp">0:00</span></div>
-  <div class="t-body"><span class="segment" data-start="0.0" data-end="6.96" title="0:00">Acute poisoning. You accorde to the emergency department to review a 29-year-old woman with a reduced </span><span class="segment" data-start="6.96" data-end="12.08" title="0:06">consciousness level who is suspected to have taken an overdose of tricyclic antitipressants, </span><span class="segment" data-start="12.08" data-end="17.28" title="0:12">benzodiazepine and paracetamol. Describe your initial management of this patient. </span><span class="segment" data-start="19.28" data-end="25.2" title="0:19">As with any patient I am asked to assess, who may be critically ill, I would first assess this </span><span class="segment" data-start="25.2" data-end="31.76" title="0:25">patient's airway, breathing and circulation before making an assessment of their conscious level </span><span class="segment" data-start="31.76" data-end="37.12" title="0:31">using the Glasgow coma score. The patient is maintaining her airway, has a respiratory </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="37.12"><span class="t-timestamp">0:37</span></div>
-  <div class="t-body"><span class="segment" data-start="37.12" data-end="43.36" title="0:37">rate of 20 breaths per minute and saturations of 99% on 150 litres of oxygen via non-rebreed </span><span class="segment" data-start="43.36" data-end="51.52" title="0:43">the mask. Her pulse is 46 and her blood pressure is 90 over 60. She is opening her eyes to painful </span><span class="segment" data-start="51.52" data-end="58.0" title="0:51">stimulation, localising to pain and talking in muddled sentences. What is her GCS? </span><span class="segment" data-start="60.0" data-end="68.64" title="1:00">Her GCS is 11, 2 for eyes, 5 for movement and 4 for verbal. What would your next steps be in </span><span class="segment" data-start="68.64" data-end="76.32" title="1:08">this patient's management? Now that I have ensured her basic vital functions are maintained </span><span class="segment" data-start="76.4" data-end="82.24" title="1:16">and she is conscious enough to protect her own airway, I would try to ascertain a more precise </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="82.24"><span class="t-timestamp">1:22</span></div>
-  <div class="t-body"><span class="segment" data-start="82.24" data-end="88.4" title="1:22">history of what types and quantities of drugs were taken, as well as finding out if alcohol </span><span class="segment" data-start="88.4" data-end="93.52" title="1:28">ingestion was also involved and what time the suspected overdose was taken. </span><span class="segment" data-start="94.64" data-end="98.24" title="1:34">Her mother has brought in several empty bottles of medication found at the scene. </span><span class="segment" data-start="99.44" data-end="102.8" title="1:39">It is estimate that she has taken approximately 12 grams of paracetamol, </span><span class="segment" data-start="103.36" data-end="110.32" title="1:43">100 milligrams of tamasapam, 1.5 grams of amy-triptoline and half a litre of vodka about 5 hours prior </span><span class="segment" data-start="110.32" data-end="115.76" title="1:50">to arrive in the ED. What tests would you like to order now knowing what she suggested? </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="117.84"><span class="t-timestamp">1:57</span></div>
-  <div class="t-body"><span class="segment" data-start="117.84" data-end="123.28" title="1:57">I would order a full blood count, use an ease, liver function tests, </span><span class="segment" data-start="123.28" data-end="129.92" title="2:03">coagulation screen, paracetamol and solicit levels, an ECG and a chest x-ray. </span><span class="segment" data-start="130.72" data-end="136.8" title="2:10">An arterial blood gas may also be of use, both to assess acid-based status and to get a </span><span class="segment" data-start="136.8" data-end="142.24" title="2:16">quicker measurement of electrolytes. They might have ordered ECG in a chest x-ray. </span><span class="segment" data-start="144.4" data-end="150.16" title="2:24">The patient has taken a significant amount of a tricyclic antidepressant. More than one </span><span class="segment" data-start="150.16" data-end="157.92" title="2:30">gram in a 70 kilo adult can cause severe toxicity, which often manifests as ECG abnormalities, </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="158.0"><span class="t-timestamp">2:38</span></div>
-  <div class="t-body"><span class="segment" data-start="158.0" data-end="164.8" title="2:38">such as an increased QR esteration, a long QT interval, an increased PR interval, </span><span class="segment" data-start="164.8" data-end="170.8" title="2:44">and AV block as well as ventricular arrhythmias. The chest x-ray may help to determine </span><span class="segment" data-start="170.8" data-end="176.48" title="2:50">whether any aspiration has occurred. Other any other systems which can be affected by tricyclics? </span><span class="segment" data-start="179.04" data-end="184.08" title="2:59">Yes, the central nervous system can also be involved with blurred vision, </span><span class="segment" data-start="184.08" data-end="188.16" title="3:04">urinary retention, seizures and even coma evolving. </span><span class="segment" data-start="189.12" data-end="193.68" title="3:09">What can be done to treat the tricyclic overdose? Would activated charcoal be of use? </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="195.84"><span class="t-timestamp">3:15</span></div>
-  <div class="t-body"><span class="segment" data-start="195.84" data-end="202.48" title="3:15">No, activated charcoal should only be used if less than an hour has elapsed since the tablets were </span><span class="segment" data-start="202.48" data-end="210.0" title="3:22">ingested. Treatment is mainly supportive and instigating cardiac monitoring. Giving the patient </span><span class="segment" data-start="210.0" data-end="216.4" title="3:30">by carbonate will increase the pH of the blood and reduce the free fraction of tricyclic antidepressant. </span><span class="segment" data-start="217.12" data-end="221.12" title="3:37">Magnesium can also be used for its anti-aridmic properties. </span><span class="segment" data-start="222.4" data-end="226.16" title="3:42">What concerns about the amount of 12 grams of paracetamol that she has ingested? </span><span class="segment" data-start="228.32" data-end="234.32" title="3:48">A toxic dose after a single ingestion is 150 milligrams per kilogram, </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="234.4"><span class="t-timestamp">3:54</span></div>
-  <div class="t-body"><span class="segment" data-start="234.4" data-end="241.04" title="3:54">so 12 grams of paracetamol is a very toxic dose and this patient is at significant risk </span><span class="segment" data-start="241.04" data-end="244.88" title="4:01">of suffering severe liver damage if it is not effectively treated. </span><span class="segment" data-start="246.24" data-end="250.32" title="4:06">If you were told this woman has a history of elevated alcohol intake, would it affect your </span><span class="segment" data-start="250.32" data-end="257.28" title="4:10">management? Chronic alcohol ingestion causes a depletion of glutathione in the liver. </span><span class="segment" data-start="258.08" data-end="265.2" title="4:18">In paracetamol overdose, normal pathways become saturated and this happens more quickly if less </span><span class="segment" data-start="265.2" data-end="272.56" title="4:25">glutathione is present. The paracetamol is then instead metabolised by cytochrome P450, </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="272.56"><span class="t-timestamp">4:32</span></div>
-  <div class="t-body"><span class="segment" data-start="272.56" data-end="278.88" title="4:32">which results in production of toxic metabolites, which cause hipatocelular damage and even death. </span><span class="segment" data-start="279.68" data-end="284.32" title="4:39">Therefore if this woman had a chronic alcohol history, you would have a lower threshold </span><span class="segment" data-start="284.32" data-end="289.44" title="4:44">for treating her with N-Astylcystine. How does NAC work? </span><span class="segment" data-start="291.84" data-end="298.32" title="4:51">N-Astylcystine increases glutathione stores and enhances conjugation of paracetamol. </span><span class="segment" data-start="299.04" data-end="304.48" title="4:59">It is most effective when administered within eight hours of ingestion and is usually </span><span class="segment" data-start="304.48" data-end="310.32" title="5:04">commenced following measurements of serum paracetamol levels and comparing them to the Rumac-Math-U </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="310.32"><span class="t-timestamp">5:10</span></div>
-  <div class="t-body"><span class="segment" data-start="310.32" data-end="318.0" title="5:10">Norma gram. What is the dose of NAC? 150 milligrams per kilogram </span><span class="segment" data-start="318.0" data-end="325.6" title="5:18">intravenously as a loading dose over 15 minutes, then 50 milligrams per kilogram over four hours, </span><span class="segment" data-start="325.6" data-end="333.04" title="5:25">and then 100 milligrams per kilogram over 16 hours. This is continued for 36 hours or longer </span><span class="segment" data-start="333.12" data-end="338.72" title="5:33">until the INR is in normal limits. Does NAC have any side effects? </span><span class="segment" data-start="340.96" data-end="348.16" title="5:40">Yes, it commonly causes nausea and vomiting, as well as urticaria, fever and bronchospasm. </span><span class="segment" data-start="349.44" data-end="351.6" title="5:49">Where would you arrange for this patient to be cared for? </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="353.76"><span class="t-timestamp">5:53</span></div>
-  <div class="t-body"><span class="segment" data-start="353.76" data-end="358.72" title="5:53">If she had just taken the paracetamol overdose, then she could potentially be cared for </span><span class="segment" data-start="359.2" data-end="365.2" title="5:59">on a medical ward, but given the amatryptaline overdose associated with ECG changes and to the </span><span class="segment" data-start="365.2" data-end="369.52" title="6:05">reduced conscious level, she should be cared for in a high dependency area. </span><span class="segment" data-start="370.64" data-end="374.88" title="6:10">Consider a second patient who is attempted to commit suicide by breathing in car fumes in a </span><span class="segment" data-start="374.88" data-end="379.92" title="6:14">confined space. Paramedics pulled him from his fume-filled car and brought him straight to </span><span class="segment" data-start="379.92" data-end="384.4" title="6:19">the emergency department. Describe your initial management of such a patient. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="385.36"><span class="t-timestamp">6:25</span></div>
-  <div class="t-body"><span class="segment" data-start="385.36" data-end="392.08" title="6:25">I would assess the patency of the airway and then the adequacy of the breathing and the status of </span><span class="segment" data-start="392.08" data-end="397.92" title="6:32">the circulation. If I was happy that the vital functions were stable, I would then move on to </span><span class="segment" data-start="397.92" data-end="403.36" title="6:37">assess the conscious level of the patient. The patient is making grunting respiratory </span><span class="segment" data-start="403.36" data-end="407.76" title="6:43">efforts with sea-sawing of his chest and abdomen. What are your next actions? </span><span class="segment" data-start="408.0" data-end="415.76" title="6:48">Then I would perform maneuvers to open the airway, which may include head tilt and chin lift, </span><span class="segment" data-start="415.76" data-end="421.28" title="6:55">if I were happy that we were not suspecting a cervical spine injury or a jaw thrust if we were </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="421.28"><span class="t-timestamp">7:01</span></div>
-  <div class="t-body"><span class="segment" data-start="421.28" data-end="427.2" title="7:01">unsure. I may also require adjuncts such as a good del or nasal farongial airway. </span><span class="segment" data-start="427.76" data-end="432.96" title="7:07">I would also give the patient 15 litres of oxygen via non-rebrea-the-mask. </span><span class="segment" data-start="434.72" data-end="436.48" title="7:14">This improves this respiratory pattern. </span><span class="segment" data-start="437.76" data-end="442.96" title="7:17">His oxygen saturation is 100% on 15 litres of oxygen via non-rebrea-the-mask. </span><span class="segment" data-start="444.24" data-end="448.16" title="7:24">His blood pressure is 70 over 40 and his pulse 50 beats per minute. </span><span class="segment" data-start="449.28" data-end="454.24" title="7:29">He appears to be deeply unconscious and as your assistant inserts an intravenous cannula, </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="454.24"><span class="t-timestamp">7:34</span></div>
-  <div class="t-body"><span class="segment" data-start="454.24" data-end="460.48" title="7:34">the patient does not react. You commence intravenous resuscitation. What are your next actions? </span><span class="segment" data-start="460.8" data-end="468.24" title="7:40">Given the history of entrapment in a fume-filled car and his reduced blood pressure, </span><span class="segment" data-start="468.24" data-end="474.56" title="7:48">pulse rate and conscious level, I am suspicious that he may be suffering from severe carbon monoxide </span><span class="segment" data-start="474.56" data-end="481.84" title="7:54">poisoning. I would send routine blood tests but would specifically want to send arterial blood </span><span class="segment" data-start="481.84" data-end="488.96" title="8:01">for gas analysis and measurement of carbon monoxide levels. I would also want an ECG and a chest </span><span class="segment" data-start="489.12" data-end="495.12" title="8:09">x-ray. What degree of carbon monoxide were being keeping with his patient's clinical presentation? </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="497.36"><span class="t-timestamp">8:17</span></div>
-  <div class="t-body"><span class="segment" data-start="497.36" data-end="505.12" title="8:17">Mild poisoning often presents with headache, nausea and visual disturbance. Moderate poisoning </span><span class="segment" data-start="505.12" data-end="512.48" title="8:25">presents with confusion, attack it near, tachycardia and to syncopy. This patient is suffering from </span><span class="segment" data-start="512.48" data-end="520.48" title="8:32">severe toxicity, which manifests with seizures, coma, hypotension, cardiac dysrhythmias, </span><span class="segment" data-start="520.48" data-end="524.32" title="8:40">pulmonary edema and even with cardiac respiratory arrest. </span><span class="segment" data-start="525.68" data-end="528.72" title="8:45">What is the initial treatment for severe carbon monoxide poisoning? </span><span class="segment" data-start="530.8" data-end="537.36" title="8:50">The initial treatment is supplemental high-flow oxygen at as higher concentration as is possible. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="538.16"><span class="t-timestamp">8:58</span></div>
-  <div class="t-body"><span class="segment" data-start="538.16" data-end="544.8" title="8:58">Carbon monoxide's affinity for hemoglobin is 250 times greater than that of oxygen, </span><span class="segment" data-start="544.8" data-end="550.56" title="9:04">so oxygen is displaced and this results in cellular hypoxia and acidosis. </span><span class="segment" data-start="551.84" data-end="560.8" title="9:11">Administering 100% oxygen reduces the half-life of carbon monoxide from 4 to 6 hours to 60 to 90 minutes. </span><span class="segment" data-start="562.24" data-end="567.2" title="9:22">Would you leave this patient breathing 100% oxygen spontaneously with a greedle airway in situ? </span><span class="segment" data-start="567.36" data-end="576.0" title="9:27">No, his GCS is 3, so he is not protecting his own airway. I would perform a rapid sequence </span><span class="segment" data-start="576.0" data-end="583.36" title="9:36">induction, intubate his trachea and ventilate him with 100% oxygen. He may also require </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="583.36"><span class="t-timestamp">9:43</span></div>
-  <div class="t-body"><span class="segment" data-start="583.36" data-end="588.72" title="9:43">vasoactive drugs, if his hypotension remains refractory to fluid resuscitation. </span><span class="segment" data-start="588.88" data-end="591.76" title="9:48">Are there any other treatment options? </span><span class="segment" data-start="593.28" data-end="599.92" title="9:53">Hyperbaric oxygen provides a theoretical advantage as it enables a greater amount of oxygen to be </span><span class="segment" data-start="599.92" data-end="606.32" title="9:59">delivered and a few limited case reports have suggested that hyperbaric oxygen therapy </span><span class="segment" data-start="606.32" data-end="612.64" title="10:06">helps to prevent permanent neurological damage. However, there are not many hyperbaric chambers </span><span class="segment" data-start="612.72" data-end="615.6" title="10:12">within close reach to most intensive care units. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="617.12"><span class="t-timestamp">10:17</span></div>
-  <div class="t-body"><span class="segment" data-start="617.12" data-end="620.8" title="10:17">In what situations do you think hyperbaric oxygen therapy should be considered? </span><span class="segment" data-start="622.32" data-end="627.36" title="10:22">If the patient had an altered mental state, focal neurological deficits, </span><span class="segment" data-start="628.0" data-end="634.32" title="10:28">seizures, unconsciousness or a history of loss of consciousness or if a pregnant patient has </span><span class="segment" data-start="634.32" data-end="640.48" title="10:34">carbon monoxide levels greater than 15%, the hyperbaric oxygen therapy should be considered. </span><span class="segment" data-start="640.64" data-end="646.08" title="10:40">Do you know of any other gases which are toxic when inhaled which may affect patients involved in fires? </span><span class="segment" data-start="648.4" data-end="656.08" title="10:48">Yes, cyanide is a deadly poison which also causes tissue hypoxia. It is formed when materials </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="656.08"><span class="t-timestamp">10:56</span></div>
-  <div class="t-body"><span class="segment" data-start="656.08" data-end="663.04" title="10:56">such as wool, silicon, plastic, undergo combustion, so as common in-household and industrial fires. </span><span class="segment" data-start="664.4" data-end="667.52" title="11:04">How might a patient present to a suffering with cyanide poisoning? </span><span class="segment" data-start="667.76" data-end="676.72" title="11:07">Mild toxicity can cause dizziness, headache, drowsiness and dyspnea with progression to </span><span class="segment" data-start="676.72" data-end="684.16" title="11:16">confusion and agitation and even seizures, coma, respiratory arrest or cardiovascular collapse. </span><span class="segment" data-start="684.16" data-end="688.88" title="11:24">How would you manage a patient who presented with cyanide toxicity? </span><span class="segment" data-start="690.88" data-end="695.2" title="11:30">The main stage of treatment is supportive and oxygen therapy. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="695.84"><span class="t-timestamp">11:35</span></div>
-  <div class="t-body"><span class="segment" data-start="695.84" data-end="701.68" title="11:35">I would administer high-flow oxygen to the patient and intubate them if they were unconscious </span><span class="segment" data-start="701.68" data-end="706.88" title="11:41">or unable to protect their own airway. I would fluid resuscitate the patient if they were </span><span class="segment" data-start="706.88" data-end="714.08" title="11:46">hypotensive and commence vasoactive therapy where the hypotension was refractory to fluid resuscitation. </span><span class="segment" data-start="715.2" data-end="722.08" title="11:55">I would send off both cyanide and carbon monoxide levels as well as routine blood tests and I would </span><span class="segment" data-start="722.08" data-end="728.64" title="12:02">order an ECG and a chest x-ray. Do you know of any treatments given in a hospital environment </span><span class="segment" data-start="728.64" data-end="736.4" title="12:08">which can actually cause cyanide toxicity? Yes, rapid or prolonged administration of sodium </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="736.4"><span class="t-timestamp">12:16</span></div>
-  <div class="t-body"><span class="segment" data-start="736.4" data-end="742.24" title="12:16">nitroprocide can cause toxicity significant enough to cause a metabolic acidosis. </span><span class="segment" data-start="742.96" data-end="748.56" title="12:22">Cyanide can also be ingested or absorbed through the skin, although one would hope that this </span><span class="segment" data-start="748.56" data-end="755.2" title="12:28">would not occur in a hospital environment. Apart from supportive therapy, are there any antidotes </span><span class="segment" data-start="755.2" data-end="762.56" title="12:35">available to treat cyanide poisoning? In particularly severe cases of poisoning, there are a number of </span><span class="segment" data-start="762.56" data-end="769.12" title="12:42">antidotes available which vary depending on which country you are working in. In some countries, </span><span class="segment" data-start="769.12" data-end="777.12" title="12:49">a cyanide antidote package exists which consists of sodium and amyl nitrates and sodium thiosulfate. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="777.92"><span class="t-timestamp">12:57</span></div>
-  <div class="t-body"><span class="segment" data-start="777.92" data-end="784.8" title="12:57">The nitrite oxidizes hemoglobin to methemoglobin which has a high affinity for cyanide </span><span class="segment" data-start="784.8" data-end="792.32" title="13:04">and forms cyanomethemoglobin which the liver then metabolizes. A more commonly used and less </span><span class="segment" data-start="792.32" data-end="801.2" title="13:12">complicated antidote is hydroxycobalamin. Hydroxycobalamin displaces cyanide from the cytochrome oxidase </span><span class="segment" data-start="801.2" data-end="804.56" title="13:21">and forms cyanocobalamin which is then excreted. </span></div>
+<div class="preamble-block"><span class="segment a-seg" data-start="0.0" data-end="6.96" title="0:00">Acute poisoning. You accorde to the emergency department to review a 29-year-old woman with a reduced </span><span class="segment a-seg" data-start="6.96" data-end="12.08" title="0:06">consciousness level who is suspected to have taken an overdose of tricyclic antitipressants, </span><span class="segment a-seg" data-start="12.08" data-end="17.28" title="0:12">benzodiazepine and paracetamol. Describe your initial management of this patient. </span><span class="segment a-seg" data-start="19.28" data-end="25.2" title="0:19">As with any patient I am asked to assess, who may be critically ill, I would first assess this </span><span class="segment a-seg" data-start="25.2" data-end="31.76" title="0:25">patient's airway, breathing and circulation before making an assessment of their conscious level </span><span class="segment a-seg" data-start="31.76" data-end="37.12" title="0:31">using the Glasgow coma score. The patient is maintaining her airway, has a respiratory </span><span class="segment a-seg" data-start="37.12" data-end="43.36" title="0:37">rate of 20 breaths per minute and saturations of 99% on 150 litres of oxygen via non-rebreed </span><span class="segment a-seg" data-start="43.36" data-end="51.52" title="0:43">the mask. Her pulse is 46 and her blood pressure is 90 over 60. She is opening her eyes to painful </span></div>
+<div class="qa-pair">
+<div class="q-block" data-start="51.52">
+  <div class="q-label">Q1</div>
+  <div class="q-body"><span class="segment q-seg" data-start="51.52" data-end="58.0" title="0:51">stimulation, localising to pain and talking in muddled sentences. What is her GCS? </span></div>
 </div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="60.0" data-end="68.64" title="1:00">Her GCS is 11, 2 for eyes, 5 for movement and 4 for verbal. What would your next steps be in </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="68.64">
+  <div class="q-label">Q2</div>
+  <div class="q-body"><span class="segment q-seg" data-start="68.64" data-end="70.286" title="1:08">this patient's management? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="70.286" data-end="76.32" title="1:10">Now that I have ensured her basic vital functions are maintained </span></li>
+<li><span class="segment a-seg" data-start="76.4" data-end="82.24" title="1:16">and she is conscious enough to protect her own airway, I would try to ascertain a more precise </span></li>
+<li><span class="segment a-seg" data-start="82.24" data-end="88.4" title="1:22">history of what types and quantities of drugs were taken, as well as finding out if alcohol </span></li>
+<li><span class="segment a-seg" data-start="88.4" data-end="93.52" title="1:28">ingestion was also involved and what time the suspected overdose was taken. </span></li>
+<li><span class="segment a-seg" data-start="94.64" data-end="98.24" title="1:34">Her mother has brought in several empty bottles of medication found at the scene. </span></li>
+<li><span class="segment a-seg" data-start="99.44" data-end="102.8" title="1:39">It is estimate that she has taken approximately 12 grams of paracetamol, </span></li>
+<li><span class="segment a-seg" data-start="103.36" data-end="110.32" title="1:43">100 milligrams of tamasapam, 1.5 grams of amy-triptoline and half a litre of vodka about 5 hours prior </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="110.32">
+  <div class="q-label">Q3</div>
+  <div class="q-body"><span class="segment q-seg" data-start="110.32" data-end="115.76" title="1:50">to arrive in the ED. What tests would you like to order now knowing what she suggested? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="117.84" data-end="123.28" title="1:57">I would order a full blood count, use an ease, liver function tests, </span></li>
+<li><span class="segment a-seg" data-start="123.28" data-end="129.92" title="2:03">coagulation screen, paracetamol and solicit levels, an ECG and a chest x-ray. </span></li>
+<li><span class="segment a-seg" data-start="130.72" data-end="136.8" title="2:10">An arterial blood gas may also be of use, both to assess acid-based status and to get a </span></li>
+<li><span class="segment a-seg" data-start="136.8" data-end="142.24" title="2:16">quicker measurement of electrolytes. They might have ordered ECG in a chest x-ray. </span></li>
+<li><span class="segment a-seg" data-start="144.4" data-end="150.16" title="2:24">The patient has taken a significant amount of a tricyclic antidepressant. More than one </span></li>
+<li><span class="segment a-seg" data-start="150.16" data-end="157.92" title="2:30">gram in a 70 kilo adult can cause severe toxicity, which often manifests as ECG abnormalities, </span></li>
+<li><span class="segment a-seg" data-start="158.0" data-end="164.8" title="2:38">such as an increased QR esteration, a long QT interval, an increased PR interval, </span></li>
+<li><span class="segment a-seg" data-start="164.8" data-end="170.8" title="2:44">and AV block as well as ventricular arrhythmias. The chest x-ray may help to determine </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="170.8">
+  <div class="q-label">Q4</div>
+  <div class="q-body"><span class="segment q-seg" data-start="170.8" data-end="176.48" title="2:50">whether any aspiration has occurred. Other any other systems which can be affected by tricyclics? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="179.04" data-end="184.08" title="2:59">Yes, the central nervous system can also be involved with blurred vision, </span></li>
+<li><span class="segment a-seg" data-start="184.08" data-end="188.16" title="3:04">urinary retention, seizures and even coma evolving. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="189.12">
+  <div class="q-label">Q5</div>
+  <div class="q-body"><span class="segment q-seg" data-start="189.12" data-end="191.856" title="3:09">What can be done to treat the tricyclic overdose? </span><span class="segment q-seg" data-start="191.856" data-end="193.68" title="3:11">Would activated charcoal be of use? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="195.84" data-end="202.48" title="3:15">No, activated charcoal should only be used if less than an hour has elapsed since the tablets were </span></li>
+<li><span class="segment a-seg" data-start="202.48" data-end="210.0" title="3:22">ingested. Treatment is mainly supportive and instigating cardiac monitoring. Giving the patient </span></li>
+<li><span class="segment a-seg" data-start="210.0" data-end="216.4" title="3:30">by carbonate will increase the pH of the blood and reduce the free fraction of tricyclic antidepressant. </span></li>
+<li><span class="segment a-seg" data-start="217.12" data-end="221.12" title="3:37">Magnesium can also be used for its anti-aridmic properties. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="222.4">
+  <div class="q-label">Q6</div>
+  <div class="q-body"><span class="segment q-seg" data-start="222.4" data-end="226.16" title="3:42">What concerns about the amount of 12 grams of paracetamol that she has ingested? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="228.32" data-end="234.32" title="3:48">A toxic dose after a single ingestion is 150 milligrams per kilogram, </span></li>
+<li><span class="segment a-seg" data-start="234.4" data-end="241.04" title="3:54">so 12 grams of paracetamol is a very toxic dose and this patient is at significant risk </span></li>
+<li><span class="segment a-seg" data-start="241.04" data-end="244.88" title="4:01">of suffering severe liver damage if it is not effectively treated. </span></li>
+<li><span class="segment a-seg" data-start="246.24" data-end="250.32" title="4:06">If you were told this woman has a history of elevated alcohol intake, would it affect your </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="250.32">
+  <div class="q-label">Q7</div>
+  <div class="q-body"><span class="segment q-seg" data-start="250.32" data-end="250.9" title="4:10">management? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="250.9" data-end="257.28" title="4:10">Chronic alcohol ingestion causes a depletion of glutathione in the liver. </span></li>
+<li><span class="segment a-seg" data-start="258.08" data-end="265.2" title="4:18">In paracetamol overdose, normal pathways become saturated and this happens more quickly if less </span></li>
+<li><span class="segment a-seg" data-start="265.2" data-end="272.56" title="4:25">glutathione is present. The paracetamol is then instead metabolised by cytochrome P450, </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="272.56">
+  <div class="q-label">Q8</div>
+  <div class="q-body"><span class="segment q-seg" data-start="272.56" data-end="278.88" title="4:32">which results in production of toxic metabolites, which cause hipatocelular damage and even death. </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="279.68" data-end="284.32" title="4:39">Therefore if this woman had a chronic alcohol history, you would have a lower threshold </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="284.32">
+  <div class="q-label">Q9</div>
+  <div class="q-body"><span class="segment q-seg" data-start="284.32" data-end="289.44" title="4:44">for treating her with N-Astylcystine. How does NAC work? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="291.84" data-end="298.32" title="4:51">N-Astylcystine increases glutathione stores and enhances conjugation of paracetamol. </span></li>
+<li><span class="segment a-seg" data-start="299.04" data-end="304.48" title="4:59">It is most effective when administered within eight hours of ingestion and is usually </span></li>
+<li><span class="segment a-seg" data-start="304.48" data-end="310.32" title="5:04">commenced following measurements of serum paracetamol levels and comparing them to the Rumac-Math-U </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="310.32">
+  <div class="q-label">Q10</div>
+  <div class="q-body"><span class="segment q-seg" data-start="310.32" data-end="315.44" title="5:10">Norma gram. What is the dose of NAC? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="315.44" data-end="318.0" title="5:15">150 milligrams per kilogram </span></li>
+<li><span class="segment a-seg" data-start="318.0" data-end="325.6" title="5:18">intravenously as a loading dose over 15 minutes, then 50 milligrams per kilogram over four hours, </span></li>
+<li><span class="segment a-seg" data-start="325.6" data-end="333.04" title="5:25">and then 100 milligrams per kilogram over 16 hours. This is continued for 36 hours or longer </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="333.12">
+  <div class="q-label">Q11</div>
+  <div class="q-body"><span class="segment q-seg" data-start="333.12" data-end="338.72" title="5:33">until the INR is in normal limits. Does NAC have any side effects? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="340.96" data-end="348.16" title="5:40">Yes, it commonly causes nausea and vomiting, as well as urticaria, fever and bronchospasm. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="349.44">
+  <div class="q-label">Q12</div>
+  <div class="q-body"><span class="segment q-seg" data-start="349.44" data-end="351.6" title="5:49">Where would you arrange for this patient to be cared for? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="353.76" data-end="358.72" title="5:53">If she had just taken the paracetamol overdose, then she could potentially be cared for </span></li>
+<li><span class="segment a-seg" data-start="359.2" data-end="365.2" title="5:59">on a medical ward, but given the amatryptaline overdose associated with ECG changes and to the </span></li>
+<li><span class="segment a-seg" data-start="365.2" data-end="369.52" title="6:05">reduced conscious level, she should be cared for in a high dependency area. </span></li>
+<li><span class="segment a-seg" data-start="370.64" data-end="374.88" title="6:10">Consider a second patient who is attempted to commit suicide by breathing in car fumes in a </span></li>
+<li><span class="segment a-seg" data-start="374.88" data-end="379.92" title="6:14">confined space. Paramedics pulled him from his fume-filled car and brought him straight to </span></li>
+<li><span class="segment a-seg" data-start="379.92" data-end="384.4" title="6:19">the emergency department. Describe your initial management of such a patient. </span></li>
+<li><span class="segment a-seg" data-start="385.36" data-end="392.08" title="6:25">I would assess the patency of the airway and then the adequacy of the breathing and the status of </span></li>
+<li><span class="segment a-seg" data-start="392.08" data-end="397.92" title="6:32">the circulation. If I was happy that the vital functions were stable, I would then move on to </span></li>
+<li><span class="segment a-seg" data-start="397.92" data-end="403.36" title="6:37">assess the conscious level of the patient. The patient is making grunting respiratory </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="403.36">
+  <div class="q-label">Q13</div>
+  <div class="q-body"><span class="segment q-seg" data-start="403.36" data-end="407.76" title="6:43">efforts with sea-sawing of his chest and abdomen. What are your next actions? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="408.0" data-end="415.76" title="6:48">Then I would perform maneuvers to open the airway, which may include head tilt and chin lift, </span></li>
+<li><span class="segment a-seg" data-start="415.76" data-end="421.28" title="6:55">if I were happy that we were not suspecting a cervical spine injury or a jaw thrust if we were </span></li>
+<li><span class="segment a-seg" data-start="421.28" data-end="427.2" title="7:01">unsure. I may also require adjuncts such as a good del or nasal farongial airway. </span></li>
+<li><span class="segment a-seg" data-start="427.76" data-end="432.96" title="7:07">I would also give the patient 15 litres of oxygen via non-rebrea-the-mask. </span></li>
+<li><span class="segment a-seg" data-start="434.72" data-end="436.48" title="7:14">This improves this respiratory pattern. </span></li>
+<li><span class="segment a-seg" data-start="437.76" data-end="442.96" title="7:17">His oxygen saturation is 100% on 15 litres of oxygen via non-rebrea-the-mask. </span></li>
+<li><span class="segment a-seg" data-start="444.24" data-end="448.16" title="7:24">His blood pressure is 70 over 40 and his pulse 50 beats per minute. </span></li>
+<li><span class="segment a-seg" data-start="449.28" data-end="454.24" title="7:29">He appears to be deeply unconscious and as your assistant inserts an intravenous cannula, </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="454.24">
+  <div class="q-label">Q14</div>
+  <div class="q-body"><span class="segment q-seg" data-start="454.24" data-end="460.48" title="7:34">the patient does not react. You commence intravenous resuscitation. What are your next actions? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="460.8" data-end="468.24" title="7:40">Given the history of entrapment in a fume-filled car and his reduced blood pressure, </span></li>
+<li><span class="segment a-seg" data-start="468.24" data-end="474.56" title="7:48">pulse rate and conscious level, I am suspicious that he may be suffering from severe carbon monoxide </span></li>
+<li><span class="segment a-seg" data-start="474.56" data-end="481.84" title="7:54">poisoning. I would send routine blood tests but would specifically want to send arterial blood </span></li>
+<li><span class="segment a-seg" data-start="481.84" data-end="488.96" title="8:01">for gas analysis and measurement of carbon monoxide levels. I would also want an ECG and a chest </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="489.12">
+  <div class="q-label">Q15</div>
+  <div class="q-body"><span class="segment q-seg" data-start="489.12" data-end="495.12" title="8:09">x-ray. What degree of carbon monoxide were being keeping with his patient's clinical presentation? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="497.36" data-end="505.12" title="8:17">Mild poisoning often presents with headache, nausea and visual disturbance. Moderate poisoning </span></li>
+<li><span class="segment a-seg" data-start="505.12" data-end="512.48" title="8:25">presents with confusion, attack it near, tachycardia and to syncopy. This patient is suffering from </span></li>
+<li><span class="segment a-seg" data-start="512.48" data-end="520.48" title="8:32">severe toxicity, which manifests with seizures, coma, hypotension, cardiac dysrhythmias, </span></li>
+<li><span class="segment a-seg" data-start="520.48" data-end="524.32" title="8:40">pulmonary edema and even with cardiac respiratory arrest. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="525.68">
+  <div class="q-label">Q16</div>
+  <div class="q-body"><span class="segment q-seg" data-start="525.68" data-end="528.72" title="8:45">What is the initial treatment for severe carbon monoxide poisoning? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="530.8" data-end="537.36" title="8:50">The initial treatment is supplemental high-flow oxygen at as higher concentration as is possible. </span></li>
+<li><span class="segment a-seg" data-start="538.16" data-end="544.8" title="8:58">Carbon monoxide's affinity for hemoglobin is 250 times greater than that of oxygen, </span></li>
+<li><span class="segment a-seg" data-start="544.8" data-end="550.56" title="9:04">so oxygen is displaced and this results in cellular hypoxia and acidosis. </span></li>
+<li><span class="segment a-seg" data-start="551.84" data-end="560.8" title="9:11">Administering 100% oxygen reduces the half-life of carbon monoxide from 4 to 6 hours to 60 to 90 minutes. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="562.24">
+  <div class="q-label">Q17</div>
+  <div class="q-body"><span class="segment q-seg" data-start="562.24" data-end="567.2" title="9:22">Would you leave this patient breathing 100% oxygen spontaneously with a greedle airway in situ? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="567.36" data-end="576.0" title="9:27">No, his GCS is 3, so he is not protecting his own airway. I would perform a rapid sequence </span></li>
+<li><span class="segment a-seg" data-start="576.0" data-end="583.36" title="9:36">induction, intubate his trachea and ventilate him with 100% oxygen. He may also require </span></li>
+<li><span class="segment a-seg" data-start="583.36" data-end="588.72" title="9:43">vasoactive drugs, if his hypotension remains refractory to fluid resuscitation. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="588.88">
+  <div class="q-label">Q18</div>
+  <div class="q-body"><span class="segment q-seg" data-start="588.88" data-end="591.76" title="9:48">Are there any other treatment options? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="593.28" data-end="599.92" title="9:53">Hyperbaric oxygen provides a theoretical advantage as it enables a greater amount of oxygen to be </span></li>
+<li><span class="segment a-seg" data-start="599.92" data-end="606.32" title="9:59">delivered and a few limited case reports have suggested that hyperbaric oxygen therapy </span></li>
+<li><span class="segment a-seg" data-start="606.32" data-end="612.64" title="10:06">helps to prevent permanent neurological damage. However, there are not many hyperbaric chambers </span></li>
+<li><span class="segment a-seg" data-start="612.72" data-end="615.6" title="10:12">within close reach to most intensive care units. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="617.12">
+  <div class="q-label">Q19</div>
+  <div class="q-body"><span class="segment q-seg" data-start="617.12" data-end="620.8" title="10:17">In what situations do you think hyperbaric oxygen therapy should be considered? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="622.32" data-end="627.36" title="10:22">If the patient had an altered mental state, focal neurological deficits, </span></li>
+<li><span class="segment a-seg" data-start="628.0" data-end="634.32" title="10:28">seizures, unconsciousness or a history of loss of consciousness or if a pregnant patient has </span></li>
+<li><span class="segment a-seg" data-start="634.32" data-end="640.48" title="10:34">carbon monoxide levels greater than 15%, the hyperbaric oxygen therapy should be considered. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="640.64">
+  <div class="q-label">Q20</div>
+  <div class="q-body"><span class="segment q-seg" data-start="640.64" data-end="646.08" title="10:40">Do you know of any other gases which are toxic when inhaled which may affect patients involved in fires? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="648.4" data-end="656.08" title="10:48">Yes, cyanide is a deadly poison which also causes tissue hypoxia. It is formed when materials </span></li>
+<li><span class="segment a-seg" data-start="656.08" data-end="663.04" title="10:56">such as wool, silicon, plastic, undergo combustion, so as common in-household and industrial fires. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="664.4">
+  <div class="q-label">Q21</div>
+  <div class="q-body"><span class="segment q-seg" data-start="664.4" data-end="667.52" title="11:04">How might a patient present to a suffering with cyanide poisoning? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="667.76" data-end="676.72" title="11:07">Mild toxicity can cause dizziness, headache, drowsiness and dyspnea with progression to </span></li>
+<li><span class="segment a-seg" data-start="676.72" data-end="684.16" title="11:16">confusion and agitation and even seizures, coma, respiratory arrest or cardiovascular collapse. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="684.16">
+  <div class="q-label">Q22</div>
+  <div class="q-body"><span class="segment q-seg" data-start="684.16" data-end="688.88" title="11:24">How would you manage a patient who presented with cyanide toxicity? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="690.88" data-end="695.2" title="11:30">The main stage of treatment is supportive and oxygen therapy. </span></li>
+<li><span class="segment a-seg" data-start="695.84" data-end="701.68" title="11:35">I would administer high-flow oxygen to the patient and intubate them if they were unconscious </span></li>
+<li><span class="segment a-seg" data-start="701.68" data-end="706.88" title="11:41">or unable to protect their own airway. I would fluid resuscitate the patient if they were </span></li>
+<li><span class="segment a-seg" data-start="706.88" data-end="714.08" title="11:46">hypotensive and commence vasoactive therapy where the hypotension was refractory to fluid resuscitation. </span></li>
+<li><span class="segment a-seg" data-start="715.2" data-end="722.08" title="11:55">I would send off both cyanide and carbon monoxide levels as well as routine blood tests and I would </span></li>
+<li><span class="segment a-seg" data-start="722.08" data-end="728.64" title="12:02">order an ECG and a chest x-ray. Do you know of any treatments given in a hospital environment </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="728.64">
+  <div class="q-label">Q23</div>
+  <div class="q-body"><span class="segment q-seg" data-start="728.64" data-end="732.222" title="12:08">which can actually cause cyanide toxicity? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="732.222" data-end="736.4" title="12:12">Yes, rapid or prolonged administration of sodium </span></li>
+<li><span class="segment a-seg" data-start="736.4" data-end="742.24" title="12:16">nitroprocide can cause toxicity significant enough to cause a metabolic acidosis. </span></li>
+<li><span class="segment a-seg" data-start="742.96" data-end="748.56" title="12:22">Cyanide can also be ingested or absorbed through the skin, although one would hope that this </span></li>
+<li><span class="segment a-seg" data-start="748.56" data-end="755.2" title="12:28">would not occur in a hospital environment. Apart from supportive therapy, are there any antidotes </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="755.2">
+  <div class="q-label">Q24</div>
+  <div class="q-body"><span class="segment q-seg" data-start="755.2" data-end="757.5" title="12:35">available to treat cyanide poisoning? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="757.5" data-end="762.56" title="12:37">In particularly severe cases of poisoning, there are a number of </span></li>
+<li><span class="segment a-seg" data-start="762.56" data-end="769.12" title="12:42">antidotes available which vary depending on which country you are working in. In some countries, </span></li>
+<li><span class="segment a-seg" data-start="769.12" data-end="777.12" title="12:49">a cyanide antidote package exists which consists of sodium and amyl nitrates and sodium thiosulfate. </span></li>
+<li><span class="segment a-seg" data-start="777.92" data-end="784.8" title="12:57">The nitrite oxidizes hemoglobin to methemoglobin which has a high affinity for cyanide </span></li>
+<li><span class="segment a-seg" data-start="784.8" data-end="792.32" title="13:04">and forms cyanomethemoglobin which the liver then metabolizes. A more commonly used and less </span></li>
+<li><span class="segment a-seg" data-start="792.32" data-end="801.2" title="13:12">complicated antidote is hydroxycobalamin. Hydroxycobalamin displaces cyanide from the cytochrome oxidase </span></li>
+<li><span class="segment a-seg" data-start="801.2" data-end="804.56" title="13:21">and forms cyanocobalamin which is then excreted. </span></li>
+  </ul>
+</div>
+</div>
+
 </div>
 
 <div class="subtitle-bar">
-  <span class="subtitle-text empty" id="subtitle-text">Play audio to see live subtitles&#8230;</span>
+  <span id="subtitle-text" class="empty">Play audio to see live subtitles&#8230;</span>
 </div>
 
 <script>
-
-const audio    = document.getElementById('audio');
-const allSegs  = Array.from(document.querySelectorAll('.segment'));
-const allBlocks = Array.from(document.querySelectorAll('.t-block'));
+const audio      = document.getElementById('audio');
+const allSegs    = Array.from(document.querySelectorAll('.segment'));
 const subtitleEl = document.getElementById('subtitle-text');
-let activeSegEl   = null;
-let activeBlockEl = null;
-let searchMatches = [];
-let searchIdx     = 0;
+let activeSegEl  = null;
+let searchMatches = [], searchIdx = 0;
 
-// Duration display
 audio.addEventListener('loadedmetadata', () => {
   const m = Math.floor(audio.duration / 60);
   const s = Math.floor(audio.duration %% 60).toString().padStart(2,'0');
   document.getElementById('dur').textContent = m + ':' + s;
 });
 
-// Seek helper
-function seekTo(t) {
-  audio.currentTime = t;
-  audio.play();
-}
+function seekTo(t) { audio.currentTime = t; audio.play(); }
 
-// Block gutter click
-document.querySelectorAll('.t-gutter').forEach(g => {
-  g.addEventListener('click', () => seekTo(parseFloat(g.dataset.start)));
+// Q-block header click
+document.querySelectorAll('.q-block').forEach(q => {
+  q.addEventListener('click', e => {
+    if (!e.target.classList.contains('segment')) seekTo(parseFloat(q.dataset.start));
+  });
 });
 
-// Segment click
+// Individual segment click
 allSegs.forEach(s => {
-  s.addEventListener('click', e => {
-    e.stopPropagation();
-    seekTo(parseFloat(s.dataset.start));
-  });
+  s.addEventListener('click', e => { e.stopPropagation(); seekTo(parseFloat(s.dataset.start)); });
 });
 
 // Real-time tracking
 audio.addEventListener('timeupdate', () => {
   const t = audio.currentTime;
-
-  // Find active segment (last one whose start <= t)
   let found = null;
   for (let i = allSegs.length - 1; i >= 0; i--) {
     if (parseFloat(allSegs[i].dataset.start) <= t) { found = allSegs[i]; break; }
   }
-
   if (found && found !== activeSegEl) {
-    // Clear previous
-    if (activeSegEl) activeSegEl.classList.remove('active');
-    if (activeBlockEl) {
-      activeBlockEl.classList.remove('block-active');
-      const pg = activeBlockEl.querySelector('.t-gutter');
-      if (pg) pg.classList.remove('gutter-active');
+    if (activeSegEl) {
+      activeSegEl.classList.remove('active');
+      const pli = activeSegEl.closest('li');
+      if (pli) pli.classList.remove('li-active');
+      const pq = activeSegEl.closest('.q-block');
+      if (pq) pq.classList.remove('q-active');
     }
-    // Set new
     found.classList.add('active');
-    const block = found.closest('.t-block');
-    if (block) {
-      block.classList.add('block-active');
-      const g = block.querySelector('.t-gutter');
-      if (g) g.classList.add('gutter-active');
-      activeBlockEl = block;
-    }
+    const li = found.closest('li');
+    if (li) li.classList.add('li-active');
+    const qb = found.closest('.q-block');
+    if (qb) qb.classList.add('q-active');
     activeSegEl = found;
 
-    // Update subtitle
     subtitleEl.textContent = found.textContent.trim();
     subtitleEl.classList.remove('empty');
 
-    // Auto-scroll (only when not searching)
-    if (!document.getElementById('search').value) {
+    if (!document.getElementById('search').value)
       found.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }
   }
 });
 
@@ -350,17 +621,13 @@ searchInput.addEventListener('keydown', e => {
     el.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
 });
-
 function runSearch() {
   const q = searchInput.value.trim().toLowerCase();
   allSegs.forEach(s => s.classList.remove('search-match','search-current'));
   searchMatches = [];
   if (!q) return;
   allSegs.forEach(s => {
-    if (s.textContent.toLowerCase().includes(q)) {
-      s.classList.add('search-match');
-      searchMatches.push(s);
-    }
+    if (s.textContent.toLowerCase().includes(q)) { s.classList.add('search-match'); searchMatches.push(s); }
   });
   if (!searchMatches.length) return;
   searchIdx = 0;

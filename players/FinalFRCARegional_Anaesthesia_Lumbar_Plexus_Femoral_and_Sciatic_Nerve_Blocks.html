@@ -5,10 +5,19 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Regional Anaesthesia — Lumbar Plexus Femoral and Sciatic Nerve Blocks</title>
 <style>
-
   :root {
-    --accent:    #2563eb;
-    --body-bg:   #f1f5f9;
+    --q-bg:       #1e3a5f;
+    --q-text:     #ffffff;
+    --q-label:    #60a5fa;
+    --a-bg:       #ffffff;
+    --a-border:   #e2e8f0;
+    --a-label:    #059669;
+    --active-q:   #2563eb;
+    --active-a:   #dbeafe;
+    --accent:     #2563eb;
+    --body-bg:    #f1f5f9;
+    --pre-bg:     #fef9c3;
+    --pre-border: #fcd34d;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
@@ -40,22 +49,9 @@
     margin-bottom: 4px;
     letter-spacing: 0.01em;
   }
-  .header-sub {
-    font-size: 0.72rem;
-    color: #94a3b8;
-    font-style: italic;
-  }
-  audio {
-    height: 36px;
-    accent-color: var(--accent);
-    flex-shrink: 0;
-  }
-  .back-link {
-    font-size: 0.8rem;
-    color: #94a3b8;
-    text-decoration: none;
-    white-space: nowrap;
-  }
+  .header-sub { font-size: 0.72rem; color: #94a3b8; font-style: italic; }
+  audio { height: 36px; accent-color: var(--accent); flex-shrink: 0; }
+  .back-link { font-size: 0.8rem; color: #94a3b8; text-decoration: none; white-space: nowrap; }
   .back-link:hover { color: #60a5fa; }
 
   /* ── Toolbar ── */
@@ -69,30 +65,17 @@
     border-bottom: 1px solid #334155;
   }
   .toolbar input {
-    flex: 1;
-    max-width: 380px;
+    flex: 1; max-width: 380px;
     padding: 5px 11px;
-    border: 1px solid #475569;
-    border-radius: 6px;
-    background: #0f172a;
-    color: #e2e8f0;
-    font-size: 0.83rem;
-    outline: none;
+    border: 1px solid #475569; border-radius: 6px;
+    background: #0f172a; color: #e2e8f0; font-size: 0.83rem; outline: none;
   }
   .toolbar input:focus { border-color: var(--accent); }
   .toolbar input::placeholder { color: #64748b; }
-  .stats {
-    font-size: 0.72rem;
-    color: #64748b;
-    white-space: nowrap;
-  }
+  .stats { font-size: 0.72rem; color: #64748b; white-space: nowrap; }
 
   /* ── Scroll area ── */
-  .scroll-area {
-    flex: 1;
-    overflow-y: auto;
-    padding: 20px;
-  }
+  .scroll-area { flex: 1; overflow-y: auto; padding: 20px; }
   .scroll-area::-webkit-scrollbar { width: 6px; }
   .scroll-area::-webkit-scrollbar-track { background: transparent; }
   .scroll-area::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
@@ -107,68 +90,77 @@
     display: flex;
     align-items: center;
   }
-  .subtitle-text {
-    font-size: 0.9rem;
-    color: #e2e8f0;
-    line-height: 1.5;
-    font-style: italic;
-  }
-  .subtitle-text.empty { color: #475569; }
+  #subtitle-text { font-size: 0.88rem; color: #e2e8f0; line-height: 1.5; font-style: italic; }
+  #subtitle-text.empty { color: #475569; }
 
-  /* ── Transcript blocks ── */
-  .t-block {
-    background: #ffffff;
-    border: 1px solid #e2e8f0;
-    border-radius: 10px;
-    margin-bottom: 14px;
-    overflow: hidden;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
-    display: flex;
-  }
-  .t-block.block-active {
-    border-color: var(--accent);
-    box-shadow: 0 0 0 2px rgba(37,99,235,0.15);
-  }
-  .t-gutter {
-    background: #0f172a;
-    width: 52px;
-    flex-shrink: 0;
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
-    padding-top: 14px;
-    cursor: pointer;
-  }
-  .t-gutter:hover { background: #1e293b; }
-  .t-timestamp {
-    font-size: 0.7rem;
-    color: #64748b;
-    font-family: monospace;
-    font-weight: 600;
-    letter-spacing: 0.02em;
-  }
-  .t-gutter.gutter-active .t-timestamp { color: var(--accent); }
-  .t-body {
-    flex: 1;
+  /* ── Preamble ── */
+  .preamble-block {
+    background: var(--pre-bg);
+    border-left: 4px solid var(--pre-border);
+    border-radius: 0 8px 8px 0;
     padding: 12px 16px;
-    line-height: 1.75;
-    font-size: 0.92rem;
-    color: #1e293b;
+    margin-bottom: 20px;
+    font-size: 0.88rem;
+    color: #78350f;
+    font-style: italic;
+    line-height: 1.7;
   }
 
-  /* ── Segments ── */
-  .segment {
+  /* ── Q&A pair ── */
+  .qa-pair { margin-bottom: 20px; border-radius: 10px; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+
+  /* Question block */
+  .q-block {
+    background: var(--q-bg);
+    padding: 14px 18px;
+    display: flex; gap: 14px; align-items: flex-start;
     cursor: pointer;
-    border-radius: 3px;
-    transition: background 0.1s;
+    transition: background 0.15s;
   }
-  .segment:hover { background: #eff6ff; }
-  .segment.active {
-    background: #bfdbfe;
-    outline: 2px solid #3b82f6;
-    outline-offset: 1px;
-    border-radius: 3px;
+  .q-block:hover { background: #1d4ed8; }
+  .q-block.q-active { background: var(--active-q); }
+  .q-label {
+    font-size: 0.7rem; font-weight: 700;
+    color: var(--q-label);
+    background: rgba(96,165,250,0.15);
+    border: 1px solid rgba(96,165,250,0.3);
+    border-radius: 5px; padding: 3px 7px;
+    white-space: nowrap; margin-top: 2px; letter-spacing: 0.05em;
+    flex-shrink: 0;
   }
+  .q-body { flex: 1; font-size: 0.97rem; font-weight: 600; color: var(--q-text); line-height: 1.55; }
+
+  /* Answer block */
+  .a-block {
+    background: var(--a-bg);
+    border: 1px solid var(--a-border); border-top: none;
+    padding: 14px 18px;
+    display: flex; gap: 14px; align-items: flex-start;
+  }
+  .a-label {
+    font-size: 0.7rem; font-weight: 700;
+    color: var(--a-label);
+    background: #d1fae5; border: 1px solid #6ee7b7;
+    border-radius: 5px; padding: 3px 9px;
+    white-space: nowrap; margin-top: 2px; letter-spacing: 0.05em;
+    flex-shrink: 0;
+  }
+  .a-body { flex: 1; list-style: none; padding: 0; }
+  .a-body li {
+    padding: 4px 0 4px 14px;
+    border-left: 3px solid transparent;
+    line-height: 1.7; font-size: 0.92rem; color: #1e293b;
+    border-radius: 0 4px 4px 0;
+    transition: background 0.15s;
+  }
+  .a-body li:not(:last-child) { border-bottom: 1px solid #f1f5f9; }
+
+  /* ── Segments (clickable) ── */
+  .segment { cursor: pointer; border-radius: 3px; }
+  .q-seg:hover { background: rgba(255,255,255,0.18); }
+  .a-seg:hover { background: #eff6ff; }
+  .segment.active { background: #bfdbfe; outline: 2px solid #3b82f6; outline-offset: 1px; }
+  .a-body li.li-active { background: var(--active-a); border-left-color: var(--accent); }
   .segment.search-match  { background: #fef9c3; }
   .segment.search-current { background: #fde047; outline: 2px solid #ca8a04; }
 
@@ -187,175 +179,448 @@
 
 <div class="toolbar">
   <input type="text" id="search" placeholder="Search transcript&#8230; (Enter = next match)">
-  <span class="stats" id="stats">167 segments &nbsp;|&nbsp; <span id="dur">loading&#8230;</span></span>
+  <span class="stats" id="stats">21 questions &nbsp;|&nbsp; 167 segments &nbsp;|&nbsp; <span id="dur">loading&#8230;</span></span>
 </div>
 
 <div class="scroll-area" id="scroll-area">
-<div class="t-block">
-  <div class="t-gutter" data-start="0.0"><span class="t-timestamp">0:00</span></div>
-  <div class="t-body"><span class="segment" data-start="0.0" data-end="4.0" title="0:00">Lumberplexus, femoral and scatic blocks. </span><span class="segment" data-start="4.0" data-end="7.0" title="0:04">Could you describe the anatomy of the lumberplexus? </span><span class="segment" data-start="7.0" data-end="12.0" title="0:07">The easiest way to answer anatomy questions like this is to be able to draw a diagram. </span><span class="segment" data-start="12.0" data-end="17.0" title="0:12">A simple line drawing of the lumberplexus can be easily learnt and reproduced. </span><span class="segment" data-start="17.0" data-end="21.0" title="0:17">A picture paints a thousand words. </span><span class="segment" data-start="21.0" data-end="28.0" title="0:21">The lumberplexus arises from the anterior primary raymy of L1 to L4. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="28.0"><span class="t-timestamp">0:28</span></div>
-  <div class="t-body"><span class="segment" data-start="28.0" data-end="32.0" title="0:28">There is sometimes a contribution from T12. </span><span class="segment" data-start="32.0" data-end="42.0" title="0:32">L1 divides into the iliohypogastric and ilio-angrinal nerves and gives a contribution to the genitofemoral nerve. </span><span class="segment" data-start="42.0" data-end="52.0" title="0:42">L2 contributes the remainder of the genitofemoral nerve and forms the lateral cutaneous nerve of thai with L3. </span><span class="segment" data-start="52.0" data-end="60.0" title="0:52">The obturator and femoral nerves are both formed from branches of L2 to L4. </span><span class="segment" data-start="60.0" data-end="64.0" title="1:00">When might we want to perform a lumberplexus block? </span><span class="segment" data-start="64.0" data-end="76.0" title="1:04">We can use the lumberplexus block for anesthesia and postop analgesia for surgery involving the hip, thai or upper leg or after traumatic injury. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="76.0"><span class="t-timestamp">1:16</span></div>
-  <div class="t-body"><span class="segment" data-start="76.0" data-end="84.0" title="1:16">We can use it in conjunction with a sciatic nerve or sacral plexus block for anesthesia and analgesia of the leg. </span><span class="segment" data-start="84.0" data-end="91.0" title="1:24">In a chronic pain setting it can be used to treat cancer pain from the hip or upper femur. </span><span class="segment" data-start="91.0" data-end="100.0" title="1:31">The sympathetic block achieved can also be useful in the treatment of a schemic pain and complex regional pain syndrome. </span><span class="segment" data-start="100.0" data-end="106.0" title="1:40">How can the lumberplexus be blocked? Do you know of any approaches? </span><span class="segment" data-start="106.0" data-end="120.0" title="1:46">The lumberplexus may be blocked with a posterior approach, the sewers compartment block and two inferior approaches, the three in one block and the fascia iliacus block. </span><span class="segment" data-start="120.0" data-end="124.0" title="2:00">Can I describe one of these approaches? </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="124.0"><span class="t-timestamp">2:04</span></div>
-  <div class="t-body"><span class="segment" data-start="124.0" data-end="132.0" title="2:04">You are unlikely to be asked to describe all three, so just learn the one that you are most familiar with and ideally that you have actually performed. </span><span class="segment" data-start="132.0" data-end="136.0" title="2:12">We have included the mold for the sake of completeness. </span><span class="segment" data-start="136.0" data-end="145.0" title="2:16">For the serious compartment block the patient is in the lateral position with the side to be blocked uppermost. </span><span class="segment" data-start="145.0" data-end="161.0" title="2:25">The insertion point is the intersection of two perpendicular lines, one running parallel to the spinous processes at the level of the posterior superior iliac spine and one joining the iliac crests. </span><span class="segment" data-start="161.0" data-end="172.0" title="2:41">I use a nerve stimulator and a 100mm insulated needle inserted at 90 degrees to the skin aiming slightly cordily. </span><span class="segment" data-start="172.0" data-end="182.0" title="2:52">The end point is quadriceps contraction, which should occur at a depth of approximately 8 to 10 cm. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="182.0"><span class="t-timestamp">3:02</span></div>
-  <div class="t-body"><span class="segment" data-start="182.0" data-end="188.0" title="3:02">An alternative is the loss of resistance technique using a long two-in-eadle. </span><span class="segment" data-start="188.0" data-end="200.0" title="3:08">You may walk the needle off the inferior surface of the L4 transverse process and then you get a loss of resistance after a further 1 cm. </span><span class="segment" data-start="200.0" data-end="212.0" title="3:20">The three-in-one block aims to block the femoral nerve, the obturator nerve and the lateral cutaneous nerve of thigh using a low anterior approach. </span><span class="segment" data-start="212.0" data-end="216.0" title="3:32">The patient is in the supine position. </span><span class="segment" data-start="216.0" data-end="225.0" title="3:36">The insertion point is one centimeter lateral to the femoral pulse and two centimeters below the ingonal ligament. </span><span class="segment" data-start="225.0" data-end="237.0" title="3:45">I use a nerve stimulator and a 50mm insulated needle inserted at 45 degrees to the skin aiming approximately and parallel to the femoral archery. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="237.0"><span class="t-timestamp">3:57</span></div>
-  <div class="t-body"><span class="segment" data-start="237.0" data-end="246.0" title="3:57">The end point is quadriceps contraction, which should occur at a depth of 30 to 50mm. </span><span class="segment" data-start="247.0" data-end="255.0" title="4:07">When the local anesthetic is injected, you may apply distal pressure to help encourage kephalad spread. </span><span class="segment" data-start="255.0" data-end="275.0" title="4:15">I usually block the lateral cutaneous nerve of the thigh separately by injecting 10 mills of local anesthetic beneath the fascial artery at a point, two centimeters' medial and two centimeters' inferior to the anterior superior iliac spine. </span><span class="segment" data-start="276.0" data-end="286.0" title="4:36">The fascia iliacus block is convenient because it does not require a nerve stimulator and can be done in the paralyzed and necessitates patient. </span><span class="segment" data-start="286.0" data-end="294.0" title="4:46">It may also be more effective at covering the lateral cutaneous nerve of the thigh than the three-in-one block. </span><span class="segment" data-start="294.0" data-end="297.0" title="4:54">The patient is in the supine position. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="297.0"><span class="t-timestamp">4:57</span></div>
-  <div class="t-body"><span class="segment" data-start="297.0" data-end="310.0" title="4:57">The insertion point is one centimeter' inferior to the junction of the lateral and middle thirds of a line joining the pubic tubicle and the anterior superior iliac spine. </span><span class="segment" data-start="310.0" data-end="317.0" title="5:10">I use either a 16 gauge or 18 gauge 2e needle or a blunt nerve stimulator needle. </span><span class="segment" data-start="317.0" data-end="325.0" title="5:17">I insert the needle perpendicular to the skin and after penetrating the skin, advance until I feel two more pops. </span><span class="segment" data-start="325.0" data-end="334.0" title="5:25">As I puncture fascial artery and fascia iliacus, I then inject 30 to 40 mills of local anesthetic. </span><span class="segment" data-start="334.0" data-end="345.0" title="5:34">If using an epidural set, a catheter may be passed, leaving about 3 to 5 centimeters in the fascial compartment for continuous infusion of local anesthetic. </span><span class="segment" data-start="345.0" data-end="350.0" title="5:45">How does the lumbus sympathetic block differ from the lumbus plexus block? </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="350.0"><span class="t-timestamp">5:50</span></div>
-  <div class="t-body"><span class="segment" data-start="350.0" data-end="362.0" title="5:50">You've probably never performed a lumbus sympathetic block before. Just be familiar with the method, its complications and the safety measures which are employed from performing the block. </span><span class="segment" data-start="362.0" data-end="374.0" title="6:02">The lumbus sympathetic chains lie on the anterior lateral aspect of the lumbus vertebrae, whereas the somatic nerves lie posterior and lateral to the surface muscle and fascia. </span><span class="segment" data-start="374.0" data-end="382.0" title="6:14">The anterior relations of the sympathetic chains are they aorta on the left and the inferior vena cava on the right. </span><span class="segment" data-start="382.0" data-end="391.0" title="6:22">The aim is to place local anesthetic solution around the lumbus sympathetic chain from the second to fourth lumbus vertebra. </span><span class="segment" data-start="391.0" data-end="402.0" title="6:31">This can either be achieved by a single injection of L3 or three separate injections at L2, L3 and L4. </span><span class="segment" data-start="402.0" data-end="416.0" title="6:42">This block is used in the treatment of a variety of conditions, including low-alimus schemia, complex regional pain syndrome of the low-alim, phantom limb pain and renal or urogenital pain. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="416.0"><span class="t-timestamp">6:56</span></div>
-  <div class="t-body"><span class="segment" data-start="416.0" data-end="419.0" title="6:56">How is the block performed? </span><span class="segment" data-start="419.0" data-end="426.0" title="6:59">The patient is positioned laterally, with the side to be blocked up or most. </span><span class="segment" data-start="426.0" data-end="438.0" title="7:06">A point is marked 8cm lateral to the midpoint of the spinous process of the desired lumbus vertebra. The block is done under image intensifier guidance. </span><span class="segment" data-start="438.0" data-end="450.0" title="7:18">After local infotration, a 12cm 22 gauge needle is inserted at 45 degrees to the skin, aiming immediately towards the body of the vertebra. </span><span class="segment" data-start="451.0" data-end="468.0" title="7:31">The body lies at a depth of about 8cm. If bone is encountered at 4 to 5cm, it is likely to be a transverse process, in which case the needle is redirected crannily to get past it. </span><span class="segment" data-start="468.0" data-end="476.0" title="7:48">When the needle has come into contact with the body of the vertebra, it is redirected to past just ancho-lactually. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="476.0"><span class="t-timestamp">7:56</span></div>
-  <div class="t-body"><span class="segment" data-start="476.0" data-end="481.0" title="7:56">You might feel a loss of resistance as the serous fascia is penetrated. </span><span class="segment" data-start="481.0" data-end="491.0" title="8:01">It is really important to aspirate for blood or cerebrospinal fluid, than a testos of local anesthetic mixed with radiographic contrast is injected. </span><span class="segment" data-start="491.0" data-end="500.0" title="8:11">This should show a band of contrast along the vertebral column, covering the relevant lumbar vertebral levels. </span><span class="segment" data-start="500.0" data-end="507.0" title="8:20">If contrast dissipates quickly, the needle may be intravascular. </span><span class="segment" data-start="507.0" data-end="514.0" title="8:27">Otherwise, you may see contrast spreading into the retroperdalial compartment or into the serous muscle. </span><span class="segment" data-start="514.0" data-end="521.0" title="8:34">Latchal and antroposterior images should be attained to make sure the needle is in the correct place. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="521.0"><span class="t-timestamp">8:41</span></div>
-  <div class="t-body"><span class="segment" data-start="521.0" data-end="526.0" title="8:41">What specific complications of this block do you know? </span><span class="segment" data-start="526.0" data-end="535.0" title="8:46">The local anesthetic toxicity may be caused by inadvertent intravascular injection into the outer or inferior vena cava. </span><span class="segment" data-start="535.0" data-end="545.0" title="8:55">Intrathical injection may occur, which would cause a profound motor block or permanent paralysis if neurolitig agents were being used. </span><span class="segment" data-start="545.0" data-end="555.0" title="9:05">The block can also cause profound hypotension, so intravenous access, full monitoring and access to resuscitation equipment is mandatory. </span><span class="segment" data-start="555.0" data-end="561.0" title="9:15">Other complications are a ureotereic damage and a jackuletary failure. </span><span class="segment" data-start="561.0" data-end="569.0" title="9:21">Also, post-sympathetic to meet neuropathic pain can occur with neurolitic techniques. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="569.0"><span class="t-timestamp">9:29</span></div>
-  <div class="t-body"><span class="segment" data-start="569.0" data-end="573.0" title="9:29">Can you describe the anatomical cause, the scotic nerve? </span><span class="segment" data-start="573.0" data-end="584.0" title="9:33">Whilst revising, practice drawing a simple line diagram of the sacral plexus, the sciatic nerve and its divisions, adding in some of its relations and landmarks to help you remember its core. </span><span class="segment" data-start="584.0" data-end="596.0" title="9:44">The sciatic nerve arises from the sacral plexus, which is formed by the nerve roots of L4, L5 and S1 to 3. </span><span class="segment" data-start="596.0" data-end="604.0" title="9:56">It passes anterior to the pyrophamous muscle and exits the pelvis through the greater sciatic notch. </span><span class="segment" data-start="604.0" data-end="612.0" title="10:04">It passes into the posterior thigh between the ischial tuberosity and the greater tricanta of the femur. </span><span class="segment" data-start="612.0" data-end="621.0" title="10:12">It then passes posterior to the femur, before dividing into the tibial and common perineal nerves in the popletyl thossa. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="621.0"><span class="t-timestamp">10:21</span></div>
-  <div class="t-body"><span class="segment" data-start="621.0" data-end="629.0" title="10:21">The tibial nerve passes medially and divides into the sural and posterior tibial nerves. </span><span class="segment" data-start="629.0" data-end="638.0" title="10:29">The common perineal nerve passes naturally and divides into the deep and superficial plantar nerves. </span><span class="segment" data-start="638.0" data-end="643.0" title="10:38">Can you describe the motor and sensory functions of the scotic nerve? </span><span class="segment" data-start="643.0" data-end="655.0" title="10:43">The sciatic nerve is motor to the hamstrings, psilias, gastric nemius, the perineal muscles, tibialis anterior and the muscles of the foot. </span><span class="segment" data-start="655.0" data-end="667.0" title="10:55">It is sensory to the hip and knee joints, and most of the leg accept the medial side of the knee and calf, which is supplied by the saffronous nerve, which is a branch of the femoral nerve. </span><span class="segment" data-start="667.0" data-end="672.0" title="11:07">When might we want to perform a scotic nerve block? </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="672.0"><span class="t-timestamp">11:12</span></div>
-  <div class="t-body"><span class="segment" data-start="672.0" data-end="681.0" title="11:12">The sciatic nerve block can be used alone to provide post-op analgesia for ankle and foot surgery or analgesia for fractures of the lower leg. </span><span class="segment" data-start="681.0" data-end="689.0" title="11:21">In combination with a femoral nerve block, it can be used for analgesia for knee and lower leg surgery and amputations. </span><span class="segment" data-start="689.0" data-end="696.0" title="11:29">In the chronic pain setting, it can be used for ischemic pain and for CRPS. </span><span class="segment" data-start="696.0" data-end="700.0" title="11:36">What are the different approaches to the scotic nerve block? </span><span class="segment" data-start="700.0" data-end="704.0" title="11:40">You are unlikely to be asked to describe more than one or two approaches. </span><span class="segment" data-start="704.0" data-end="712.0" title="11:44">Again, we have provided them all for the sake of completeness. Draw a diagram if it helps you to remember the anatomy. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="712.0"><span class="t-timestamp">11:52</span></div>
-  <div class="t-body"><span class="segment" data-start="712.0" data-end="719.0" title="11:52">There are three posterior, one anterior and one lateral approach to the sciatic nerve. </span><span class="segment" data-start="719.0" data-end="729.0" title="11:59">LeBats posterior approach is performed with a patient in the lateral position with the upper leg flexed at 90 degrees at the hip and knee. </span><span class="segment" data-start="729.0" data-end="741.0" title="12:09">I draw two lines, one from the posterior superior iliac spine to the greater tricanta and the other from the greater tricanta to the sacral hiatus. </span><span class="segment" data-start="741.0" data-end="746.0" title="12:21">I then drop a third line at 90 degrees from the upper line. </span><span class="segment" data-start="746.0" data-end="752.0" title="12:26">The insertion point is where this perpendicular line hits my lower line. </span><span class="segment" data-start="752.0" data-end="758.0" title="12:32">I use a 100mm needle inserted at 90 degrees. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="758.0"><span class="t-timestamp">12:38</span></div>
-  <div class="t-body"><span class="segment" data-start="758.0" data-end="768.0" title="12:38">The end point I am looking for is plant inflection, which I would normally expect at about 6cm. </span><span class="segment" data-start="768.0" data-end="778.0" title="12:48">Another posterior approach takes place with the patient in the supine position, with the leg flexed at 90 degrees at the hip and knee. </span><span class="segment" data-start="778.0" data-end="784.0" title="12:58">I draw line from the greater tricanta to the ischial tuberosity. </span><span class="segment" data-start="784.0" data-end="788.0" title="13:04">The midpoint of this line is the insertion point. </span><span class="segment" data-start="788.0" data-end="793.0" title="13:08">I use a 100mm needle inserted at 90 degrees. </span><span class="segment" data-start="793.0" data-end="801.0" title="13:13">The end point I am looking for is plant inflection, which I would expect at about 6cm. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="801.0"><span class="t-timestamp">13:21</span></div>
-  <div class="t-body"><span class="segment" data-start="801.0" data-end="805.0" title="13:21">The third posterior approach is the popliteal fossa block. </span><span class="segment" data-start="805.0" data-end="816.0" title="13:25">This can be performed with the patient either prone with the leg straight or supine with the hip and knee flexed at 90 degrees. </span><span class="segment" data-start="816.0" data-end="827.0" title="13:36">The insertion point is 7 to 8cm proximal and 1cm lateral to the midpoint of the skin crease of the knee. </span><span class="segment" data-start="827.0" data-end="833.0" title="13:47">I use a 50mm needle inserted at 45 degrees proximally. </span><span class="segment" data-start="833.0" data-end="837.0" title="13:53">The end point I am looking for is plant inflection. </span><span class="segment" data-start="837.0" data-end="846.0" title="13:57">However, the nerve may have already divided at this point, so I may get dorsiflection caused by stimulation of the common perineal nerve. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="846.0"><span class="t-timestamp">14:06</span></div>
-  <div class="t-body"><span class="segment" data-start="846.0" data-end="858.0" title="14:06">If this occurs, I deposit half the local anaesthetic at this point and then redirect the needle immediately to locate the tibial nerve, looking for plant inflection. </span><span class="segment" data-start="858.0" data-end="864.0" title="14:18">I would then deposit the rest of the local anaesthetic in that position. </span><span class="segment" data-start="864.0" data-end="870.0" title="14:24">The anterior approach to the sciatic nerve is performed with the patient in the supine position. </span><span class="segment" data-start="870.0" data-end="876.0" title="14:30">I draw a line connecting the anterior superior ilax pine and the pubic tubicle. </span><span class="segment" data-start="876.0" data-end="884.0" title="14:36">I then divide this into thirds and drop a perpendicular from the junction of the middle and medial thirds of this line. </span><span class="segment" data-start="884.0" data-end="890.0" title="14:44">The insertion point is where this line meets a parallel line at the level of the greater tricanta. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="890.0"><span class="t-timestamp">14:50</span></div>
-  <div class="t-body"><span class="segment" data-start="890.0" data-end="895.0" title="14:50">I use a 100mm needle inserted at 90 degrees. </span><span class="segment" data-start="895.0" data-end="902.0" title="14:55">The end point I am looking for is plant inflection, which I would expect at about 8-10cm. </span><span class="segment" data-start="902.0" data-end="907.0" title="15:02">If I hit bone, I redirect the needle immediately. </span><span class="segment" data-start="907.0" data-end="911.0" title="15:07">The lateral approach is performed with the patient in the supine position. </span><span class="segment" data-start="911.0" data-end="917.0" title="15:11">A line is drawn down the thigh from the posterior border of the greater tricanta. </span><span class="segment" data-start="917.0" data-end="923.0" title="15:17">The insertion point is halfway between the knee and the greater tricanta. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="923.0"><span class="t-timestamp">15:23</span></div>
-  <div class="t-body"><span class="segment" data-start="923.0" data-end="927.0" title="15:23">I use a 100mm needle inserted at 90 degrees. </span><span class="segment" data-start="927.0" data-end="934.0" title="15:27">The end point I am looking for is plant inflection, which I would expect at about 8-10cm depth. </span><span class="segment" data-start="934.0" data-end="938.0" title="15:34">If I hit bone, I redirect posteriorly. </span><span class="segment" data-start="938.0" data-end="942.0" title="15:38">What general safety measures do you employ when performing a regional block? </span><span class="segment" data-start="942.0" data-end="946.0" title="15:42">I take a full medical anaesthetic history and ask about drug allergies. </span><span class="segment" data-start="946.0" data-end="950.8" title="15:46">I secure intravenous access and ensure that full airway and cardiovascular </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="950.8"><span class="t-timestamp">15:50</span></div>
-  <div class="t-body"><span class="segment" data-start="950.8" data-end="954.0" title="15:50">resuscitation equipment is immediately available. </span><span class="segment" data-start="954.0" data-end="959.0" title="15:54">Patients should be fully monitored according to the Royal College of Anestas Guidelines. </span><span class="segment" data-start="959.0" data-end="967.0" title="15:59">I use a strict Aceptic technique with antiseptic solution, sterile gloves and sterile disposable needles. </span><span class="segment" data-start="967.0" data-end="973.0" title="16:07">In general, what methods are available to identify nerves when performing blocks? </span><span class="segment" data-start="973.0" data-end="976.0" title="16:13">You can identify nerves in several ways. </span><span class="segment" data-start="976.0" data-end="981.0" title="16:16">The most basic way is to use anatomical landmarks to find the insertion point. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="981.0"><span class="t-timestamp">16:21</span></div>
-  <div class="t-body"><span class="segment" data-start="981.0" data-end="986.0" title="16:21">You can then insert the needle to a given depth, such as in the paraverta block. </span><span class="segment" data-start="986.0" data-end="990.0" title="16:26">Will there may be an end point such as a pop through fascia? </span><span class="segment" data-start="990.0" data-end="998.0" title="16:30">Some anestas listed parastheia in the distribution of the nerve concerned, though with this there is a risk of nerve damage. </span><span class="segment" data-start="998.0" data-end="1007.0" title="16:38">Loss of resistance techniques can be used, for example in an epidural insertion, a so-as compartment and paraverta block. </span><span class="segment" data-start="1007.0" data-end="1011.0" title="16:47">This can be the loss of resistance to injection of air or saline. </span><span class="segment" data-start="1011.0" data-end="1022.0" title="16:51">Another method is to transvix an artery lying within a nerve sheath, such as the auxiliary artery in auxiliary brachial plexus block. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="1023.0"><span class="t-timestamp">17:03</span></div>
-  <div class="t-body"><span class="segment" data-start="1023.0" data-end="1034.0" title="17:03">Most anestists now use nerve stimulation techniques, either with a non-invasive probe to help identify the nerves or with special insulated needles. </span><span class="segment" data-start="1034.0" data-end="1046.0" title="17:14">Lastly, ultrasound guided techniques are gaining popularity and may be combined with other techniques to improve accuracy and hence efficacy of your local anaesthetic block. </span><span class="segment" data-start="1047.0" data-end="1055.0" title="17:27">This allows visualization of the nerve surrounding structures and the block needle in real time. </span><span class="segment" data-start="1055.0" data-end="1061.0" title="17:35">The spread of local anaesthetic around the nerve can also be seen and would predict a successful block. </span><span class="segment" data-start="1061.0" data-end="1068.0" title="17:41">What are the basic principles behind nerve stimulators? How do they work? </span><span class="segment" data-start="1068.0" data-end="1075.0" title="17:48">Electrical impulses are delivered via a needle to elicity the parastheia or the muscle movement associated with the nerve concerned. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="1075.0"><span class="t-timestamp">17:55</span></div>
-  <div class="t-body"><span class="segment" data-start="1075.0" data-end="1083.0" title="17:55">They can help to reduce the incidence of nerve damage because the aim of the technique is to get the tip of the needle very close to the nerve without touching it. </span><span class="segment" data-start="1083.0" data-end="1087.0" title="18:03">They still require a thorough knowledge of the relevant anatomy. </span><span class="segment" data-start="1087.0" data-end="1098.0" title="18:07">Talk us through how you would use a peripheral nerve stimulator. We'll assume you have IV access, monitoring, school assistance and there are no contraindications. </span><span class="segment" data-start="1099.0" data-end="1112.0" title="18:19">I would connect the positive lead to an ETG electrode at least 20 centimeters from the needle insertion site and the negative lead to an insulated nerve stimulator needle of the required length. </span><span class="segment" data-start="1112.0" data-end="1123.0" title="18:32">I remember which lead is which as I could remember that the patient is positive and the needle is negative so P for patient positive and N for needle negative. </span><span class="segment" data-start="1124.0" data-end="1131.0" title="18:44">I set the duration of impulse at about 100 milliseconds or less and the frequency of impulse at 1 to 2 hertz. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="1131.0"><span class="t-timestamp">18:51</span></div>
-  <div class="t-body"><span class="segment" data-start="1131.0" data-end="1144.0" title="18:51">To start with I set the delivered current at 1 to 2 milliamps. I then prep the area, inject some local anaesthetic into the skin with an orange needle, wait for it to work and then insert the stimulator needle. </span><span class="segment" data-start="1144.0" data-end="1152.0" title="19:04">I look for synchronous muscle movement in the desired distribution and when I get it I reduce the current. </span><span class="segment" data-start="1152.0" data-end="1163.0" title="19:12">Movement should still be present at half a milliamp but should disappear at 0.2 milliamps or the needle might be within the nerve. </span><span class="segment" data-start="1163.0" data-end="1168.0" title="19:23">It's really important to aspirate at this point to check for intravascular placement. </span><span class="segment" data-start="1168.0" data-end="1177.0" title="19:28">I then inject 1 mil of local anaesthetic at which point the motor response should disappear as the nerve is displaced away from the needle tip. </span><span class="segment" data-start="1177.0" data-end="1186.0" title="19:37">Injection should be painless and without resistance. If not I would consider a different position. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="1186.0"><span class="t-timestamp">19:46</span></div>
-  <div class="t-body"><span class="segment" data-start="1186.0" data-end="1197.0" title="19:46">I usually get an assistant to inject the local and get them to aspirate after every 5 mils injected to check that the needle tip has not migrated into a blood vessel. </span><span class="segment" data-start="1197.0" data-end="1203.0" title="19:57">Could you compare and contrast LiDOKAE number pivocaine when used for nerve blockade? </span><span class="segment" data-start="1203.0" data-end="1211.0" title="20:03">Both are amide local anaesthetic solutions commonly used in nerve blocks. LiDOKAE has a rapid onset and short duration of action. </span><span class="segment" data-start="1211.0" data-end="1222.0" title="20:11">It causes vasodinitation at the site of injection and so the addition of adrenaline, 1 in 200,000, slows its systemic absorption and prolongs the duration of block. </span><span class="segment" data-start="1222.0" data-end="1230.0" title="20:22">The maximum dose is 3 milg per kilogram or 7 milg per kilogram if adrenaline is added. </span><span class="segment" data-start="1230.0" data-end="1237.0" title="20:30">Pivocaine has a slower onset of action and longer duration of action. It lasts 2 to 3 times longer than LiDOKAE. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="1237.0"><span class="t-timestamp">20:37</span></div>
-  <div class="t-body"><span class="segment" data-start="1237.0" data-end="1245.0" title="20:37">It does not cause vasodilitation so the addition of adrenaline has no effect on its systemic absorption or its duration of action. </span><span class="segment" data-start="1245.0" data-end="1248.0" title="20:45">The maximum dose is 2 milg per kilogram. </span><span class="segment" data-start="1248.0" data-end="1259.0" title="20:48">LiDOKAE the S and Antima of Pivocaine is less cardiac toxic. Its maximum dose is also 2 milg per kilogram. </span><span class="segment" data-start="1259.0" data-end="1264.0" title="20:59">How are the drugs different in case of toxicity? </span><span class="segment" data-start="1264.0" data-end="1279.0" title="21:04">With LiDOKAE, cerebral irritation occurs before myocardial depression so the patient may experience perioral tingling, dizziness, visual disturbance and tinnitus, progressing to tremors and then seizures. </span><span class="segment" data-start="1279.0" data-end="1289.0" title="21:19">With Pivocaine, myocardial depression is prominent so the patient may have cardiovascular collapse without any neurological signs or symptoms. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="1289.0"><span class="t-timestamp">21:29</span></div>
-  <div class="t-body"><span class="segment" data-start="1289.0" data-end="1292.0" title="21:29">What do you know about Ropivocaine? </span><span class="segment" data-start="1292.0" data-end="1302.0" title="21:32">Ropivocaine has an onset of action similar to Ropivocaine but causes some vasoconstriction which may prolong its duration of action. </span><span class="segment" data-start="1302.0" data-end="1307.0" title="21:42">Like Bupivocaine, its maximum dose is 2 milg per kilogram. </span><span class="segment" data-start="1307.0" data-end="1313.0" title="21:47">It is marketed as causing less motorblog and cardiotoxicity than Bupivocaine. </span><span class="segment" data-start="1313.0" data-end="1317.0" title="21:53">But this may just be due to its lower potency. </span></div>
+<div class="preamble-block"><span class="segment a-seg" data-start="0.0" data-end="4.0" title="0:00">Lumberplexus, femoral and scatic blocks. </span></div>
+<div class="qa-pair">
+<div class="q-block" data-start="4.0">
+  <div class="q-label">Q1</div>
+  <div class="q-body"><span class="segment q-seg" data-start="4.0" data-end="7.0" title="0:04">Could you describe the anatomy of the lumberplexus? </span></div>
 </div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="7.0" data-end="12.0" title="0:07">The easiest way to answer anatomy questions like this is to be able to draw a diagram. </span></li>
+<li><span class="segment a-seg" data-start="12.0" data-end="17.0" title="0:12">A simple line drawing of the lumberplexus can be easily learnt and reproduced. </span></li>
+<li><span class="segment a-seg" data-start="17.0" data-end="21.0" title="0:17">A picture paints a thousand words. </span></li>
+<li><span class="segment a-seg" data-start="21.0" data-end="28.0" title="0:21">The lumberplexus arises from the anterior primary raymy of L1 to L4. </span></li>
+<li><span class="segment a-seg" data-start="28.0" data-end="32.0" title="0:28">There is sometimes a contribution from T12. </span></li>
+<li><span class="segment a-seg" data-start="32.0" data-end="42.0" title="0:32">L1 divides into the iliohypogastric and ilio-angrinal nerves and gives a contribution to the genitofemoral nerve. </span></li>
+<li><span class="segment a-seg" data-start="42.0" data-end="52.0" title="0:42">L2 contributes the remainder of the genitofemoral nerve and forms the lateral cutaneous nerve of thai with L3. </span></li>
+<li><span class="segment a-seg" data-start="52.0" data-end="60.0" title="0:52">The obturator and femoral nerves are both formed from branches of L2 to L4. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="60.0">
+  <div class="q-label">Q2</div>
+  <div class="q-body"><span class="segment q-seg" data-start="60.0" data-end="64.0" title="1:00">When might we want to perform a lumberplexus block? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="64.0" data-end="76.0" title="1:04">We can use the lumberplexus block for anesthesia and postop analgesia for surgery involving the hip, thai or upper leg or after traumatic injury. </span></li>
+<li><span class="segment a-seg" data-start="76.0" data-end="84.0" title="1:16">We can use it in conjunction with a sciatic nerve or sacral plexus block for anesthesia and analgesia of the leg. </span></li>
+<li><span class="segment a-seg" data-start="84.0" data-end="91.0" title="1:24">In a chronic pain setting it can be used to treat cancer pain from the hip or upper femur. </span></li>
+<li><span class="segment a-seg" data-start="91.0" data-end="100.0" title="1:31">The sympathetic block achieved can also be useful in the treatment of a schemic pain and complex regional pain syndrome. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="100.0">
+  <div class="q-label">Q3</div>
+  <div class="q-body"><span class="segment q-seg" data-start="100.0" data-end="103.0" title="1:40">How can the lumberplexus be blocked? </span><span class="segment q-seg" data-start="103.0" data-end="106.0" title="1:43">Do you know of any approaches? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="106.0" data-end="120.0" title="1:46">The lumberplexus may be blocked with a posterior approach, the sewers compartment block and two inferior approaches, the three in one block and the fascia iliacus block. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="120.0">
+  <div class="q-label">Q4</div>
+  <div class="q-body"><span class="segment q-seg" data-start="120.0" data-end="124.0" title="2:00">Can I describe one of these approaches? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="124.0" data-end="132.0" title="2:04">You are unlikely to be asked to describe all three, so just learn the one that you are most familiar with and ideally that you have actually performed. </span></li>
+<li><span class="segment a-seg" data-start="132.0" data-end="136.0" title="2:12">We have included the mold for the sake of completeness. </span></li>
+<li><span class="segment a-seg" data-start="136.0" data-end="145.0" title="2:16">For the serious compartment block the patient is in the lateral position with the side to be blocked uppermost. </span></li>
+<li><span class="segment a-seg" data-start="145.0" data-end="161.0" title="2:25">The insertion point is the intersection of two perpendicular lines, one running parallel to the spinous processes at the level of the posterior superior iliac spine and one joining the iliac crests. </span></li>
+<li><span class="segment a-seg" data-start="161.0" data-end="172.0" title="2:41">I use a nerve stimulator and a 100mm insulated needle inserted at 90 degrees to the skin aiming slightly cordily. </span></li>
+<li><span class="segment a-seg" data-start="172.0" data-end="182.0" title="2:52">The end point is quadriceps contraction, which should occur at a depth of approximately 8 to 10 cm. </span></li>
+<li><span class="segment a-seg" data-start="182.0" data-end="188.0" title="3:02">An alternative is the loss of resistance technique using a long two-in-eadle. </span></li>
+<li><span class="segment a-seg" data-start="188.0" data-end="200.0" title="3:08">You may walk the needle off the inferior surface of the L4 transverse process and then you get a loss of resistance after a further 1 cm. </span></li>
+<li><span class="segment a-seg" data-start="200.0" data-end="212.0" title="3:20">The three-in-one block aims to block the femoral nerve, the obturator nerve and the lateral cutaneous nerve of thigh using a low anterior approach. </span></li>
+<li><span class="segment a-seg" data-start="212.0" data-end="216.0" title="3:32">The patient is in the supine position. </span></li>
+<li><span class="segment a-seg" data-start="216.0" data-end="225.0" title="3:36">The insertion point is one centimeter lateral to the femoral pulse and two centimeters below the ingonal ligament. </span></li>
+<li><span class="segment a-seg" data-start="225.0" data-end="237.0" title="3:45">I use a nerve stimulator and a 50mm insulated needle inserted at 45 degrees to the skin aiming approximately and parallel to the femoral archery. </span></li>
+<li><span class="segment a-seg" data-start="237.0" data-end="246.0" title="3:57">The end point is quadriceps contraction, which should occur at a depth of 30 to 50mm. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="247.0">
+  <div class="q-label">Q5</div>
+  <div class="q-body"><span class="segment q-seg" data-start="247.0" data-end="255.0" title="4:07">When the local anesthetic is injected, you may apply distal pressure to help encourage kephalad spread. </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="255.0" data-end="275.0" title="4:15">I usually block the lateral cutaneous nerve of the thigh separately by injecting 10 mills of local anesthetic beneath the fascial artery at a point, two centimeters' medial and two centimeters' inferior to the anterior superior iliac spine. </span></li>
+<li><span class="segment a-seg" data-start="276.0" data-end="286.0" title="4:36">The fascia iliacus block is convenient because it does not require a nerve stimulator and can be done in the paralyzed and necessitates patient. </span></li>
+<li><span class="segment a-seg" data-start="286.0" data-end="294.0" title="4:46">It may also be more effective at covering the lateral cutaneous nerve of the thigh than the three-in-one block. </span></li>
+<li><span class="segment a-seg" data-start="294.0" data-end="297.0" title="4:54">The patient is in the supine position. </span></li>
+<li><span class="segment a-seg" data-start="297.0" data-end="310.0" title="4:57">The insertion point is one centimeter' inferior to the junction of the lateral and middle thirds of a line joining the pubic tubicle and the anterior superior iliac spine. </span></li>
+<li><span class="segment a-seg" data-start="310.0" data-end="317.0" title="5:10">I use either a 16 gauge or 18 gauge 2e needle or a blunt nerve stimulator needle. </span></li>
+<li><span class="segment a-seg" data-start="317.0" data-end="325.0" title="5:17">I insert the needle perpendicular to the skin and after penetrating the skin, advance until I feel two more pops. </span></li>
+<li><span class="segment a-seg" data-start="325.0" data-end="334.0" title="5:25">As I puncture fascial artery and fascia iliacus, I then inject 30 to 40 mills of local anesthetic. </span></li>
+<li><span class="segment a-seg" data-start="334.0" data-end="345.0" title="5:34">If using an epidural set, a catheter may be passed, leaving about 3 to 5 centimeters in the fascial compartment for continuous infusion of local anesthetic. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="345.0">
+  <div class="q-label">Q6</div>
+  <div class="q-body"><span class="segment q-seg" data-start="345.0" data-end="350.0" title="5:45">How does the lumbus sympathetic block differ from the lumbus plexus block? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="350.0" data-end="362.0" title="5:50">You've probably never performed a lumbus sympathetic block before. Just be familiar with the method, its complications and the safety measures which are employed from performing the block. </span></li>
+<li><span class="segment a-seg" data-start="362.0" data-end="374.0" title="6:02">The lumbus sympathetic chains lie on the anterior lateral aspect of the lumbus vertebrae, whereas the somatic nerves lie posterior and lateral to the surface muscle and fascia. </span></li>
+<li><span class="segment a-seg" data-start="374.0" data-end="382.0" title="6:14">The anterior relations of the sympathetic chains are they aorta on the left and the inferior vena cava on the right. </span></li>
+<li><span class="segment a-seg" data-start="382.0" data-end="391.0" title="6:22">The aim is to place local anesthetic solution around the lumbus sympathetic chain from the second to fourth lumbus vertebra. </span></li>
+<li><span class="segment a-seg" data-start="391.0" data-end="402.0" title="6:31">This can either be achieved by a single injection of L3 or three separate injections at L2, L3 and L4. </span></li>
+<li><span class="segment a-seg" data-start="402.0" data-end="416.0" title="6:42">This block is used in the treatment of a variety of conditions, including low-alimus schemia, complex regional pain syndrome of the low-alim, phantom limb pain and renal or urogenital pain. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="416.0">
+  <div class="q-label">Q7</div>
+  <div class="q-body"><span class="segment q-seg" data-start="416.0" data-end="419.0" title="6:56">How is the block performed? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="419.0" data-end="426.0" title="6:59">The patient is positioned laterally, with the side to be blocked up or most. </span></li>
+<li><span class="segment a-seg" data-start="426.0" data-end="438.0" title="7:06">A point is marked 8cm lateral to the midpoint of the spinous process of the desired lumbus vertebra. The block is done under image intensifier guidance. </span></li>
+<li><span class="segment a-seg" data-start="438.0" data-end="450.0" title="7:18">After local infotration, a 12cm 22 gauge needle is inserted at 45 degrees to the skin, aiming immediately towards the body of the vertebra. </span></li>
+<li><span class="segment a-seg" data-start="451.0" data-end="468.0" title="7:31">The body lies at a depth of about 8cm. If bone is encountered at 4 to 5cm, it is likely to be a transverse process, in which case the needle is redirected crannily to get past it. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="468.0">
+  <div class="q-label">Q8</div>
+  <div class="q-body"><span class="segment q-seg" data-start="468.0" data-end="476.0" title="7:48">When the needle has come into contact with the body of the vertebra, it is redirected to past just ancho-lactually. </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="476.0" data-end="481.0" title="7:56">You might feel a loss of resistance as the serous fascia is penetrated. </span></li>
+<li><span class="segment a-seg" data-start="481.0" data-end="491.0" title="8:01">It is really important to aspirate for blood or cerebrospinal fluid, than a testos of local anesthetic mixed with radiographic contrast is injected. </span></li>
+<li><span class="segment a-seg" data-start="491.0" data-end="500.0" title="8:11">This should show a band of contrast along the vertebral column, covering the relevant lumbar vertebral levels. </span></li>
+<li><span class="segment a-seg" data-start="500.0" data-end="507.0" title="8:20">If contrast dissipates quickly, the needle may be intravascular. </span></li>
+<li><span class="segment a-seg" data-start="507.0" data-end="514.0" title="8:27">Otherwise, you may see contrast spreading into the retroperdalial compartment or into the serous muscle. </span></li>
+<li><span class="segment a-seg" data-start="514.0" data-end="521.0" title="8:34">Latchal and antroposterior images should be attained to make sure the needle is in the correct place. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="521.0">
+  <div class="q-label">Q9</div>
+  <div class="q-body"><span class="segment q-seg" data-start="521.0" data-end="526.0" title="8:41">What specific complications of this block do you know? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="526.0" data-end="535.0" title="8:46">The local anesthetic toxicity may be caused by inadvertent intravascular injection into the outer or inferior vena cava. </span></li>
+<li><span class="segment a-seg" data-start="535.0" data-end="545.0" title="8:55">Intrathical injection may occur, which would cause a profound motor block or permanent paralysis if neurolitig agents were being used. </span></li>
+<li><span class="segment a-seg" data-start="545.0" data-end="555.0" title="9:05">The block can also cause profound hypotension, so intravenous access, full monitoring and access to resuscitation equipment is mandatory. </span></li>
+<li><span class="segment a-seg" data-start="555.0" data-end="561.0" title="9:15">Other complications are a ureotereic damage and a jackuletary failure. </span></li>
+<li><span class="segment a-seg" data-start="561.0" data-end="569.0" title="9:21">Also, post-sympathetic to meet neuropathic pain can occur with neurolitic techniques. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="569.0">
+  <div class="q-label">Q10</div>
+  <div class="q-body"><span class="segment q-seg" data-start="569.0" data-end="573.0" title="9:29">Can you describe the anatomical cause, the scotic nerve? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="573.0" data-end="584.0" title="9:33">Whilst revising, practice drawing a simple line diagram of the sacral plexus, the sciatic nerve and its divisions, adding in some of its relations and landmarks to help you remember its core. </span></li>
+<li><span class="segment a-seg" data-start="584.0" data-end="596.0" title="9:44">The sciatic nerve arises from the sacral plexus, which is formed by the nerve roots of L4, L5 and S1 to 3. </span></li>
+<li><span class="segment a-seg" data-start="596.0" data-end="604.0" title="9:56">It passes anterior to the pyrophamous muscle and exits the pelvis through the greater sciatic notch. </span></li>
+<li><span class="segment a-seg" data-start="604.0" data-end="612.0" title="10:04">It passes into the posterior thigh between the ischial tuberosity and the greater tricanta of the femur. </span></li>
+<li><span class="segment a-seg" data-start="612.0" data-end="621.0" title="10:12">It then passes posterior to the femur, before dividing into the tibial and common perineal nerves in the popletyl thossa. </span></li>
+<li><span class="segment a-seg" data-start="621.0" data-end="629.0" title="10:21">The tibial nerve passes medially and divides into the sural and posterior tibial nerves. </span></li>
+<li><span class="segment a-seg" data-start="629.0" data-end="638.0" title="10:29">The common perineal nerve passes naturally and divides into the deep and superficial plantar nerves. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="638.0">
+  <div class="q-label">Q11</div>
+  <div class="q-body"><span class="segment q-seg" data-start="638.0" data-end="643.0" title="10:38">Can you describe the motor and sensory functions of the scotic nerve? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="643.0" data-end="655.0" title="10:43">The sciatic nerve is motor to the hamstrings, psilias, gastric nemius, the perineal muscles, tibialis anterior and the muscles of the foot. </span></li>
+<li><span class="segment a-seg" data-start="655.0" data-end="667.0" title="10:55">It is sensory to the hip and knee joints, and most of the leg accept the medial side of the knee and calf, which is supplied by the saffronous nerve, which is a branch of the femoral nerve. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="667.0">
+  <div class="q-label">Q12</div>
+  <div class="q-body"><span class="segment q-seg" data-start="667.0" data-end="672.0" title="11:07">When might we want to perform a scotic nerve block? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="672.0" data-end="681.0" title="11:12">The sciatic nerve block can be used alone to provide post-op analgesia for ankle and foot surgery or analgesia for fractures of the lower leg. </span></li>
+<li><span class="segment a-seg" data-start="681.0" data-end="689.0" title="11:21">In combination with a femoral nerve block, it can be used for analgesia for knee and lower leg surgery and amputations. </span></li>
+<li><span class="segment a-seg" data-start="689.0" data-end="696.0" title="11:29">In the chronic pain setting, it can be used for ischemic pain and for CRPS. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="696.0">
+  <div class="q-label">Q13</div>
+  <div class="q-body"><span class="segment q-seg" data-start="696.0" data-end="700.0" title="11:36">What are the different approaches to the scotic nerve block? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="700.0" data-end="704.0" title="11:40">You are unlikely to be asked to describe more than one or two approaches. </span></li>
+<li><span class="segment a-seg" data-start="704.0" data-end="712.0" title="11:44">Again, we have provided them all for the sake of completeness. Draw a diagram if it helps you to remember the anatomy. </span></li>
+<li><span class="segment a-seg" data-start="712.0" data-end="719.0" title="11:52">There are three posterior, one anterior and one lateral approach to the sciatic nerve. </span></li>
+<li><span class="segment a-seg" data-start="719.0" data-end="729.0" title="11:59">LeBats posterior approach is performed with a patient in the lateral position with the upper leg flexed at 90 degrees at the hip and knee. </span></li>
+<li><span class="segment a-seg" data-start="729.0" data-end="741.0" title="12:09">I draw two lines, one from the posterior superior iliac spine to the greater tricanta and the other from the greater tricanta to the sacral hiatus. </span></li>
+<li><span class="segment a-seg" data-start="741.0" data-end="746.0" title="12:21">I then drop a third line at 90 degrees from the upper line. </span></li>
+<li><span class="segment a-seg" data-start="746.0" data-end="752.0" title="12:26">The insertion point is where this perpendicular line hits my lower line. </span></li>
+<li><span class="segment a-seg" data-start="752.0" data-end="758.0" title="12:32">I use a 100mm needle inserted at 90 degrees. </span></li>
+<li><span class="segment a-seg" data-start="758.0" data-end="768.0" title="12:38">The end point I am looking for is plant inflection, which I would normally expect at about 6cm. </span></li>
+<li><span class="segment a-seg" data-start="768.0" data-end="778.0" title="12:48">Another posterior approach takes place with the patient in the supine position, with the leg flexed at 90 degrees at the hip and knee. </span></li>
+<li><span class="segment a-seg" data-start="778.0" data-end="784.0" title="12:58">I draw line from the greater tricanta to the ischial tuberosity. </span></li>
+<li><span class="segment a-seg" data-start="784.0" data-end="788.0" title="13:04">The midpoint of this line is the insertion point. </span></li>
+<li><span class="segment a-seg" data-start="788.0" data-end="793.0" title="13:08">I use a 100mm needle inserted at 90 degrees. </span></li>
+<li><span class="segment a-seg" data-start="793.0" data-end="801.0" title="13:13">The end point I am looking for is plant inflection, which I would expect at about 6cm. </span></li>
+<li><span class="segment a-seg" data-start="801.0" data-end="805.0" title="13:21">The third posterior approach is the popliteal fossa block. </span></li>
+<li><span class="segment a-seg" data-start="805.0" data-end="816.0" title="13:25">This can be performed with the patient either prone with the leg straight or supine with the hip and knee flexed at 90 degrees. </span></li>
+<li><span class="segment a-seg" data-start="816.0" data-end="827.0" title="13:36">The insertion point is 7 to 8cm proximal and 1cm lateral to the midpoint of the skin crease of the knee. </span></li>
+<li><span class="segment a-seg" data-start="827.0" data-end="833.0" title="13:47">I use a 50mm needle inserted at 45 degrees proximally. </span></li>
+<li><span class="segment a-seg" data-start="833.0" data-end="837.0" title="13:53">The end point I am looking for is plant inflection. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="837.0">
+  <div class="q-label">Q14</div>
+  <div class="q-body"><span class="segment q-seg" data-start="837.0" data-end="846.0" title="13:57">However, the nerve may have already divided at this point, so I may get dorsiflection caused by stimulation of the common perineal nerve. </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="846.0" data-end="858.0" title="14:06">If this occurs, I deposit half the local anaesthetic at this point and then redirect the needle immediately to locate the tibial nerve, looking for plant inflection. </span></li>
+<li><span class="segment a-seg" data-start="858.0" data-end="864.0" title="14:18">I would then deposit the rest of the local anaesthetic in that position. </span></li>
+<li><span class="segment a-seg" data-start="864.0" data-end="870.0" title="14:24">The anterior approach to the sciatic nerve is performed with the patient in the supine position. </span></li>
+<li><span class="segment a-seg" data-start="870.0" data-end="876.0" title="14:30">I draw a line connecting the anterior superior ilax pine and the pubic tubicle. </span></li>
+<li><span class="segment a-seg" data-start="876.0" data-end="884.0" title="14:36">I then divide this into thirds and drop a perpendicular from the junction of the middle and medial thirds of this line. </span></li>
+<li><span class="segment a-seg" data-start="884.0" data-end="890.0" title="14:44">The insertion point is where this line meets a parallel line at the level of the greater tricanta. </span></li>
+<li><span class="segment a-seg" data-start="890.0" data-end="895.0" title="14:50">I use a 100mm needle inserted at 90 degrees. </span></li>
+<li><span class="segment a-seg" data-start="895.0" data-end="902.0" title="14:55">The end point I am looking for is plant inflection, which I would expect at about 8-10cm. </span></li>
+<li><span class="segment a-seg" data-start="902.0" data-end="907.0" title="15:02">If I hit bone, I redirect the needle immediately. </span></li>
+<li><span class="segment a-seg" data-start="907.0" data-end="911.0" title="15:07">The lateral approach is performed with the patient in the supine position. </span></li>
+<li><span class="segment a-seg" data-start="911.0" data-end="917.0" title="15:11">A line is drawn down the thigh from the posterior border of the greater tricanta. </span></li>
+<li><span class="segment a-seg" data-start="917.0" data-end="923.0" title="15:17">The insertion point is halfway between the knee and the greater tricanta. </span></li>
+<li><span class="segment a-seg" data-start="923.0" data-end="927.0" title="15:23">I use a 100mm needle inserted at 90 degrees. </span></li>
+<li><span class="segment a-seg" data-start="927.0" data-end="934.0" title="15:27">The end point I am looking for is plant inflection, which I would expect at about 8-10cm depth. </span></li>
+<li><span class="segment a-seg" data-start="934.0" data-end="938.0" title="15:34">If I hit bone, I redirect posteriorly. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="938.0">
+  <div class="q-label">Q15</div>
+  <div class="q-body"><span class="segment q-seg" data-start="938.0" data-end="942.0" title="15:38">What general safety measures do you employ when performing a regional block? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="942.0" data-end="946.0" title="15:42">I take a full medical anaesthetic history and ask about drug allergies. </span></li>
+<li><span class="segment a-seg" data-start="946.0" data-end="950.8" title="15:46">I secure intravenous access and ensure that full airway and cardiovascular </span></li>
+<li><span class="segment a-seg" data-start="950.8" data-end="954.0" title="15:50">resuscitation equipment is immediately available. </span></li>
+<li><span class="segment a-seg" data-start="954.0" data-end="959.0" title="15:54">Patients should be fully monitored according to the Royal College of Anestas Guidelines. </span></li>
+<li><span class="segment a-seg" data-start="959.0" data-end="967.0" title="15:59">I use a strict Aceptic technique with antiseptic solution, sterile gloves and sterile disposable needles. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="967.0">
+  <div class="q-label">Q16</div>
+  <div class="q-body"><span class="segment q-seg" data-start="967.0" data-end="973.0" title="16:07">In general, what methods are available to identify nerves when performing blocks? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="973.0" data-end="976.0" title="16:13">You can identify nerves in several ways. </span></li>
+<li><span class="segment a-seg" data-start="976.0" data-end="981.0" title="16:16">The most basic way is to use anatomical landmarks to find the insertion point. </span></li>
+<li><span class="segment a-seg" data-start="981.0" data-end="986.0" title="16:21">You can then insert the needle to a given depth, such as in the paraverta block. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="986.0">
+  <div class="q-label">Q17</div>
+  <div class="q-body"><span class="segment q-seg" data-start="986.0" data-end="990.0" title="16:26">Will there may be an end point such as a pop through fascia? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="990.0" data-end="998.0" title="16:30">Some anestas listed parastheia in the distribution of the nerve concerned, though with this there is a risk of nerve damage. </span></li>
+<li><span class="segment a-seg" data-start="998.0" data-end="1007.0" title="16:38">Loss of resistance techniques can be used, for example in an epidural insertion, a so-as compartment and paraverta block. </span></li>
+<li><span class="segment a-seg" data-start="1007.0" data-end="1011.0" title="16:47">This can be the loss of resistance to injection of air or saline. </span></li>
+<li><span class="segment a-seg" data-start="1011.0" data-end="1022.0" title="16:51">Another method is to transvix an artery lying within a nerve sheath, such as the auxiliary artery in auxiliary brachial plexus block. </span></li>
+<li><span class="segment a-seg" data-start="1023.0" data-end="1034.0" title="17:03">Most anestists now use nerve stimulation techniques, either with a non-invasive probe to help identify the nerves or with special insulated needles. </span></li>
+<li><span class="segment a-seg" data-start="1034.0" data-end="1046.0" title="17:14">Lastly, ultrasound guided techniques are gaining popularity and may be combined with other techniques to improve accuracy and hence efficacy of your local anaesthetic block. </span></li>
+<li><span class="segment a-seg" data-start="1047.0" data-end="1055.0" title="17:27">This allows visualization of the nerve surrounding structures and the block needle in real time. </span></li>
+<li><span class="segment a-seg" data-start="1055.0" data-end="1061.0" title="17:35">The spread of local anaesthetic around the nerve can also be seen and would predict a successful block. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="1061.0">
+  <div class="q-label">Q18</div>
+  <div class="q-body"><span class="segment q-seg" data-start="1061.0" data-end="1065.667" title="17:41">What are the basic principles behind nerve stimulators? </span><span class="segment q-seg" data-start="1065.667" data-end="1068.0" title="17:45">How do they work? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="1068.0" data-end="1075.0" title="17:48">Electrical impulses are delivered via a needle to elicity the parastheia or the muscle movement associated with the nerve concerned. </span></li>
+<li><span class="segment a-seg" data-start="1075.0" data-end="1083.0" title="17:55">They can help to reduce the incidence of nerve damage because the aim of the technique is to get the tip of the needle very close to the nerve without touching it. </span></li>
+<li><span class="segment a-seg" data-start="1083.0" data-end="1087.0" title="18:03">They still require a thorough knowledge of the relevant anatomy. </span></li>
+<li><span class="segment a-seg" data-start="1087.0" data-end="1098.0" title="18:07">Talk us through how you would use a peripheral nerve stimulator. We'll assume you have IV access, monitoring, school assistance and there are no contraindications. </span></li>
+<li><span class="segment a-seg" data-start="1099.0" data-end="1112.0" title="18:19">I would connect the positive lead to an ETG electrode at least 20 centimeters from the needle insertion site and the negative lead to an insulated nerve stimulator needle of the required length. </span></li>
+<li><span class="segment a-seg" data-start="1112.0" data-end="1123.0" title="18:32">I remember which lead is which as I could remember that the patient is positive and the needle is negative so P for patient positive and N for needle negative. </span></li>
+<li><span class="segment a-seg" data-start="1124.0" data-end="1131.0" title="18:44">I set the duration of impulse at about 100 milliseconds or less and the frequency of impulse at 1 to 2 hertz. </span></li>
+<li><span class="segment a-seg" data-start="1131.0" data-end="1144.0" title="18:51">To start with I set the delivered current at 1 to 2 milliamps. I then prep the area, inject some local anaesthetic into the skin with an orange needle, wait for it to work and then insert the stimulator needle. </span></li>
+<li><span class="segment a-seg" data-start="1144.0" data-end="1152.0" title="19:04">I look for synchronous muscle movement in the desired distribution and when I get it I reduce the current. </span></li>
+<li><span class="segment a-seg" data-start="1152.0" data-end="1163.0" title="19:12">Movement should still be present at half a milliamp but should disappear at 0.2 milliamps or the needle might be within the nerve. </span></li>
+<li><span class="segment a-seg" data-start="1163.0" data-end="1168.0" title="19:23">It's really important to aspirate at this point to check for intravascular placement. </span></li>
+<li><span class="segment a-seg" data-start="1168.0" data-end="1177.0" title="19:28">I then inject 1 mil of local anaesthetic at which point the motor response should disappear as the nerve is displaced away from the needle tip. </span></li>
+<li><span class="segment a-seg" data-start="1177.0" data-end="1186.0" title="19:37">Injection should be painless and without resistance. If not I would consider a different position. </span></li>
+<li><span class="segment a-seg" data-start="1186.0" data-end="1197.0" title="19:46">I usually get an assistant to inject the local and get them to aspirate after every 5 mils injected to check that the needle tip has not migrated into a blood vessel. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="1197.0">
+  <div class="q-label">Q19</div>
+  <div class="q-body"><span class="segment q-seg" data-start="1197.0" data-end="1203.0" title="19:57">Could you compare and contrast LiDOKAE number pivocaine when used for nerve blockade? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="1203.0" data-end="1211.0" title="20:03">Both are amide local anaesthetic solutions commonly used in nerve blocks. LiDOKAE has a rapid onset and short duration of action. </span></li>
+<li><span class="segment a-seg" data-start="1211.0" data-end="1222.0" title="20:11">It causes vasodinitation at the site of injection and so the addition of adrenaline, 1 in 200,000, slows its systemic absorption and prolongs the duration of block. </span></li>
+<li><span class="segment a-seg" data-start="1222.0" data-end="1230.0" title="20:22">The maximum dose is 3 milg per kilogram or 7 milg per kilogram if adrenaline is added. </span></li>
+<li><span class="segment a-seg" data-start="1230.0" data-end="1237.0" title="20:30">Pivocaine has a slower onset of action and longer duration of action. It lasts 2 to 3 times longer than LiDOKAE. </span></li>
+<li><span class="segment a-seg" data-start="1237.0" data-end="1245.0" title="20:37">It does not cause vasodilitation so the addition of adrenaline has no effect on its systemic absorption or its duration of action. </span></li>
+<li><span class="segment a-seg" data-start="1245.0" data-end="1248.0" title="20:45">The maximum dose is 2 milg per kilogram. </span></li>
+<li><span class="segment a-seg" data-start="1248.0" data-end="1259.0" title="20:48">LiDOKAE the S and Antima of Pivocaine is less cardiac toxic. Its maximum dose is also 2 milg per kilogram. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="1259.0">
+  <div class="q-label">Q20</div>
+  <div class="q-body"><span class="segment q-seg" data-start="1259.0" data-end="1264.0" title="20:59">How are the drugs different in case of toxicity? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="1264.0" data-end="1279.0" title="21:04">With LiDOKAE, cerebral irritation occurs before myocardial depression so the patient may experience perioral tingling, dizziness, visual disturbance and tinnitus, progressing to tremors and then seizures. </span></li>
+<li><span class="segment a-seg" data-start="1279.0" data-end="1289.0" title="21:19">With Pivocaine, myocardial depression is prominent so the patient may have cardiovascular collapse without any neurological signs or symptoms. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="1289.0">
+  <div class="q-label">Q21</div>
+  <div class="q-body"><span class="segment q-seg" data-start="1289.0" data-end="1292.0" title="21:29">What do you know about Ropivocaine? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="1292.0" data-end="1302.0" title="21:32">Ropivocaine has an onset of action similar to Ropivocaine but causes some vasoconstriction which may prolong its duration of action. </span></li>
+<li><span class="segment a-seg" data-start="1302.0" data-end="1307.0" title="21:42">Like Bupivocaine, its maximum dose is 2 milg per kilogram. </span></li>
+<li><span class="segment a-seg" data-start="1307.0" data-end="1313.0" title="21:47">It is marketed as causing less motorblog and cardiotoxicity than Bupivocaine. </span></li>
+<li><span class="segment a-seg" data-start="1313.0" data-end="1317.0" title="21:53">But this may just be due to its lower potency. </span></li>
+  </ul>
+</div>
+</div>
+
 </div>
 
 <div class="subtitle-bar">
-  <span class="subtitle-text empty" id="subtitle-text">Play audio to see live subtitles&#8230;</span>
+  <span id="subtitle-text" class="empty">Play audio to see live subtitles&#8230;</span>
 </div>
 
 <script>
-
-const audio    = document.getElementById('audio');
-const allSegs  = Array.from(document.querySelectorAll('.segment'));
-const allBlocks = Array.from(document.querySelectorAll('.t-block'));
+const audio      = document.getElementById('audio');
+const allSegs    = Array.from(document.querySelectorAll('.segment'));
 const subtitleEl = document.getElementById('subtitle-text');
-let activeSegEl   = null;
-let activeBlockEl = null;
-let searchMatches = [];
-let searchIdx     = 0;
+let activeSegEl  = null;
+let searchMatches = [], searchIdx = 0;
 
-// Duration display
 audio.addEventListener('loadedmetadata', () => {
   const m = Math.floor(audio.duration / 60);
   const s = Math.floor(audio.duration %% 60).toString().padStart(2,'0');
   document.getElementById('dur').textContent = m + ':' + s;
 });
 
-// Seek helper
-function seekTo(t) {
-  audio.currentTime = t;
-  audio.play();
-}
+function seekTo(t) { audio.currentTime = t; audio.play(); }
 
-// Block gutter click
-document.querySelectorAll('.t-gutter').forEach(g => {
-  g.addEventListener('click', () => seekTo(parseFloat(g.dataset.start)));
+// Q-block header click
+document.querySelectorAll('.q-block').forEach(q => {
+  q.addEventListener('click', e => {
+    if (!e.target.classList.contains('segment')) seekTo(parseFloat(q.dataset.start));
+  });
 });
 
-// Segment click
+// Individual segment click
 allSegs.forEach(s => {
-  s.addEventListener('click', e => {
-    e.stopPropagation();
-    seekTo(parseFloat(s.dataset.start));
-  });
+  s.addEventListener('click', e => { e.stopPropagation(); seekTo(parseFloat(s.dataset.start)); });
 });
 
 // Real-time tracking
 audio.addEventListener('timeupdate', () => {
   const t = audio.currentTime;
-
-  // Find active segment (last one whose start <= t)
   let found = null;
   for (let i = allSegs.length - 1; i >= 0; i--) {
     if (parseFloat(allSegs[i].dataset.start) <= t) { found = allSegs[i]; break; }
   }
-
   if (found && found !== activeSegEl) {
-    // Clear previous
-    if (activeSegEl) activeSegEl.classList.remove('active');
-    if (activeBlockEl) {
-      activeBlockEl.classList.remove('block-active');
-      const pg = activeBlockEl.querySelector('.t-gutter');
-      if (pg) pg.classList.remove('gutter-active');
+    if (activeSegEl) {
+      activeSegEl.classList.remove('active');
+      const pli = activeSegEl.closest('li');
+      if (pli) pli.classList.remove('li-active');
+      const pq = activeSegEl.closest('.q-block');
+      if (pq) pq.classList.remove('q-active');
     }
-    // Set new
     found.classList.add('active');
-    const block = found.closest('.t-block');
-    if (block) {
-      block.classList.add('block-active');
-      const g = block.querySelector('.t-gutter');
-      if (g) g.classList.add('gutter-active');
-      activeBlockEl = block;
-    }
+    const li = found.closest('li');
+    if (li) li.classList.add('li-active');
+    const qb = found.closest('.q-block');
+    if (qb) qb.classList.add('q-active');
     activeSegEl = found;
 
-    // Update subtitle
     subtitleEl.textContent = found.textContent.trim();
     subtitleEl.classList.remove('empty');
 
-    // Auto-scroll (only when not searching)
-    if (!document.getElementById('search').value) {
+    if (!document.getElementById('search').value)
       found.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }
   }
 });
 
@@ -371,17 +636,13 @@ searchInput.addEventListener('keydown', e => {
     el.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
 });
-
 function runSearch() {
   const q = searchInput.value.trim().toLowerCase();
   allSegs.forEach(s => s.classList.remove('search-match','search-current'));
   searchMatches = [];
   if (!q) return;
   allSegs.forEach(s => {
-    if (s.textContent.toLowerCase().includes(q)) {
-      s.classList.add('search-match');
-      searchMatches.push(s);
-    }
+    if (s.textContent.toLowerCase().includes(q)) { s.classList.add('search-match'); searchMatches.push(s); }
   });
   if (!searchMatches.length) return;
   searchIdx = 0;

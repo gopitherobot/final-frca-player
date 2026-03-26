@@ -5,10 +5,19 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ENT — Bleeding Tonsil and Foreign Body</title>
 <style>
-
   :root {
-    --accent:    #f59e0b;
-    --body-bg:   #f1f5f9;
+    --q-bg:       #1e3a5f;
+    --q-text:     #ffffff;
+    --q-label:    #60a5fa;
+    --a-bg:       #ffffff;
+    --a-border:   #e2e8f0;
+    --a-label:    #059669;
+    --active-q:   #f59e0b;
+    --active-a:   #dbeafe;
+    --accent:     #f59e0b;
+    --body-bg:    #f1f5f9;
+    --pre-bg:     #fef9c3;
+    --pre-border: #fcd34d;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
@@ -40,22 +49,9 @@
     margin-bottom: 4px;
     letter-spacing: 0.01em;
   }
-  .header-sub {
-    font-size: 0.72rem;
-    color: #94a3b8;
-    font-style: italic;
-  }
-  audio {
-    height: 36px;
-    accent-color: var(--accent);
-    flex-shrink: 0;
-  }
-  .back-link {
-    font-size: 0.8rem;
-    color: #94a3b8;
-    text-decoration: none;
-    white-space: nowrap;
-  }
+  .header-sub { font-size: 0.72rem; color: #94a3b8; font-style: italic; }
+  audio { height: 36px; accent-color: var(--accent); flex-shrink: 0; }
+  .back-link { font-size: 0.8rem; color: #94a3b8; text-decoration: none; white-space: nowrap; }
   .back-link:hover { color: #60a5fa; }
 
   /* ── Toolbar ── */
@@ -69,30 +65,17 @@
     border-bottom: 1px solid #334155;
   }
   .toolbar input {
-    flex: 1;
-    max-width: 380px;
+    flex: 1; max-width: 380px;
     padding: 5px 11px;
-    border: 1px solid #475569;
-    border-radius: 6px;
-    background: #0f172a;
-    color: #e2e8f0;
-    font-size: 0.83rem;
-    outline: none;
+    border: 1px solid #475569; border-radius: 6px;
+    background: #0f172a; color: #e2e8f0; font-size: 0.83rem; outline: none;
   }
   .toolbar input:focus { border-color: var(--accent); }
   .toolbar input::placeholder { color: #64748b; }
-  .stats {
-    font-size: 0.72rem;
-    color: #64748b;
-    white-space: nowrap;
-  }
+  .stats { font-size: 0.72rem; color: #64748b; white-space: nowrap; }
 
   /* ── Scroll area ── */
-  .scroll-area {
-    flex: 1;
-    overflow-y: auto;
-    padding: 20px;
-  }
+  .scroll-area { flex: 1; overflow-y: auto; padding: 20px; }
   .scroll-area::-webkit-scrollbar { width: 6px; }
   .scroll-area::-webkit-scrollbar-track { background: transparent; }
   .scroll-area::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
@@ -107,68 +90,77 @@
     display: flex;
     align-items: center;
   }
-  .subtitle-text {
-    font-size: 0.9rem;
-    color: #e2e8f0;
-    line-height: 1.5;
-    font-style: italic;
-  }
-  .subtitle-text.empty { color: #475569; }
+  #subtitle-text { font-size: 0.88rem; color: #e2e8f0; line-height: 1.5; font-style: italic; }
+  #subtitle-text.empty { color: #475569; }
 
-  /* ── Transcript blocks ── */
-  .t-block {
-    background: #ffffff;
-    border: 1px solid #e2e8f0;
-    border-radius: 10px;
-    margin-bottom: 14px;
-    overflow: hidden;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
-    display: flex;
-  }
-  .t-block.block-active {
-    border-color: var(--accent);
-    box-shadow: 0 0 0 2px rgba(37,99,235,0.15);
-  }
-  .t-gutter {
-    background: #0f172a;
-    width: 52px;
-    flex-shrink: 0;
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
-    padding-top: 14px;
-    cursor: pointer;
-  }
-  .t-gutter:hover { background: #1e293b; }
-  .t-timestamp {
-    font-size: 0.7rem;
-    color: #64748b;
-    font-family: monospace;
-    font-weight: 600;
-    letter-spacing: 0.02em;
-  }
-  .t-gutter.gutter-active .t-timestamp { color: var(--accent); }
-  .t-body {
-    flex: 1;
+  /* ── Preamble ── */
+  .preamble-block {
+    background: var(--pre-bg);
+    border-left: 4px solid var(--pre-border);
+    border-radius: 0 8px 8px 0;
     padding: 12px 16px;
-    line-height: 1.75;
-    font-size: 0.92rem;
-    color: #1e293b;
+    margin-bottom: 20px;
+    font-size: 0.88rem;
+    color: #78350f;
+    font-style: italic;
+    line-height: 1.7;
   }
 
-  /* ── Segments ── */
-  .segment {
+  /* ── Q&A pair ── */
+  .qa-pair { margin-bottom: 20px; border-radius: 10px; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+
+  /* Question block */
+  .q-block {
+    background: var(--q-bg);
+    padding: 14px 18px;
+    display: flex; gap: 14px; align-items: flex-start;
     cursor: pointer;
-    border-radius: 3px;
-    transition: background 0.1s;
+    transition: background 0.15s;
   }
-  .segment:hover { background: #eff6ff; }
-  .segment.active {
-    background: #bfdbfe;
-    outline: 2px solid #3b82f6;
-    outline-offset: 1px;
-    border-radius: 3px;
+  .q-block:hover { background: #1d4ed8; }
+  .q-block.q-active { background: var(--active-q); }
+  .q-label {
+    font-size: 0.7rem; font-weight: 700;
+    color: var(--q-label);
+    background: rgba(96,165,250,0.15);
+    border: 1px solid rgba(96,165,250,0.3);
+    border-radius: 5px; padding: 3px 7px;
+    white-space: nowrap; margin-top: 2px; letter-spacing: 0.05em;
+    flex-shrink: 0;
   }
+  .q-body { flex: 1; font-size: 0.97rem; font-weight: 600; color: var(--q-text); line-height: 1.55; }
+
+  /* Answer block */
+  .a-block {
+    background: var(--a-bg);
+    border: 1px solid var(--a-border); border-top: none;
+    padding: 14px 18px;
+    display: flex; gap: 14px; align-items: flex-start;
+  }
+  .a-label {
+    font-size: 0.7rem; font-weight: 700;
+    color: var(--a-label);
+    background: #d1fae5; border: 1px solid #6ee7b7;
+    border-radius: 5px; padding: 3px 9px;
+    white-space: nowrap; margin-top: 2px; letter-spacing: 0.05em;
+    flex-shrink: 0;
+  }
+  .a-body { flex: 1; list-style: none; padding: 0; }
+  .a-body li {
+    padding: 4px 0 4px 14px;
+    border-left: 3px solid transparent;
+    line-height: 1.7; font-size: 0.92rem; color: #1e293b;
+    border-radius: 0 4px 4px 0;
+    transition: background 0.15s;
+  }
+  .a-body li:not(:last-child) { border-bottom: 1px solid #f1f5f9; }
+
+  /* ── Segments (clickable) ── */
+  .segment { cursor: pointer; border-radius: 3px; }
+  .q-seg:hover { background: rgba(255,255,255,0.18); }
+  .a-seg:hover { background: #eff6ff; }
+  .segment.active { background: #bfdbfe; outline: 2px solid #3b82f6; outline-offset: 1px; }
+  .a-body li.li-active { background: var(--active-a); border-left-color: var(--accent); }
   .segment.search-match  { background: #fef9c3; }
   .segment.search-current { background: #fde047; outline: 2px solid #ca8a04; }
 
@@ -187,208 +179,470 @@
 
 <div class="toolbar">
   <input type="text" id="search" placeholder="Search transcript&#8230; (Enter = next match)">
-  <span class="stats" id="stats">229 segments &nbsp;|&nbsp; <span id="dur">loading&#8230;</span></span>
+  <span class="stats" id="stats">18 questions &nbsp;|&nbsp; 229 segments &nbsp;|&nbsp; <span id="dur">loading&#8230;</span></span>
 </div>
 
 <div class="scroll-area" id="scroll-area">
-<div class="t-block">
-  <div class="t-gutter" data-start="0.0"><span class="t-timestamp">0:00</span></div>
-  <div class="t-body"><span class="segment" data-start="0.0" data-end="5.6" title="0:00">Acute ENT emergencies one, bleeding tonsil and foreign body. </span><span class="segment" data-start="5.6" data-end="8.24" title="0:05">Part one, the bleeding tonsil. </span><span class="segment" data-start="8.24" data-end="13.2" title="0:08">This is a common scenario in the clinical viber which will be expected to know well. </span><span class="segment" data-start="13.2" data-end="16.8" title="0:13">The examinels will not be sympathetic if you miss the key points. </span><span class="segment" data-start="16.8" data-end="18.96" title="0:16">Case scenario. </span><span class="segment" data-start="18.96" data-end="23.16" title="0:18">You are called in the middle of the night by the ENT ST3. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="23.16"><span class="t-timestamp">0:23</span></div>
-  <div class="t-body"><span class="segment" data-start="23.16" data-end="26.44" title="0:23">He would like to take a six-year-old girl to theatre who is bleeding eight hours post </span><span class="segment" data-start="26.44" data-end="28.44" title="0:26">tonne selectomy. </span><span class="segment" data-start="28.44" data-end="31.96" title="0:28">He would like to proceed immediately and as he is starting to make plans transfer </span><span class="segment" data-start="31.96" data-end="32.96" title="0:31">the patient. </span><span class="segment" data-start="32.96" data-end="37.04" title="0:32">He says he'll meet you in theatre. </span><span class="segment" data-start="37.04" data-end="41.36" title="0:37">What are the key issues with this case? </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="41.36"><span class="t-timestamp">0:41</span></div>
-  <div class="t-body"><span class="segment" data-start="41.36" data-end="45.44" title="0:41">This case illustrates a number of anesthetic challenges. </span><span class="segment" data-start="45.44" data-end="51.8" title="0:45">It is a pediatric case involving a difficult airway which will be shared with the surgeon. </span><span class="segment" data-start="51.8" data-end="58.4" title="0:51">The child may be hemodynamically compromised and is at risk of pulmonary aspiration. </span><span class="segment" data-start="58.4" data-end="63.76" title="0:58">These issues are further complicated by the likely presence of anxious parents and </span><span class="segment" data-start="63.76" data-end="66.84" title="1:03">a child who is likely to be upset. </span><span class="segment" data-start="66.84" data-end="71.88" title="1:06">The extent of blood loss will be difficult to quantify as the child may have swallowed </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="71.88"><span class="t-timestamp">1:11</span></div>
-  <div class="t-body"><span class="segment" data-start="71.88" data-end="74.96" title="1:11">it instead of spitting it out. </span><span class="segment" data-start="74.96" data-end="82.6" title="1:14">Signs of hemodynamic compromise should therefore be assessed and resuscitated promptly. </span><span class="segment" data-start="82.6" data-end="88.56" title="1:22">Serengoscopy and intubation will be challenging as the airway may be compromised by a demer </span><span class="segment" data-start="88.56" data-end="90.56" title="1:28">and blood. </span><span class="segment" data-start="90.56" data-end="96.2" title="1:30">Children have smaller, more reactive airways which tolerate manipulation less well. </span><span class="segment" data-start="96.2" data-end="102.52" title="1:36">They also have a reduced functional residual capacity and can desaturate rapidly. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="102.52"><span class="t-timestamp">1:42</span></div>
-  <div class="t-body"><span class="segment" data-start="102.52" data-end="107.4" title="1:42">The likelihood of a stomach full of blood further endangers the airway due to the risk </span><span class="segment" data-start="107.4" data-end="110.8" title="1:47">of aspiration. </span><span class="segment" data-start="110.8" data-end="118.36" title="1:50">Other issues specific to pediatric anesthesia include difficult intravenous access, communication </span><span class="segment" data-start="118.36" data-end="125.52" title="1:58">difficulties, anxious parents, temperature regulation and altered drug dosages. </span><span class="segment" data-start="125.52" data-end="129.84" title="2:05">How would you respond the ENT doctor? </span><span class="segment" data-start="129.84" data-end="135.88" title="2:09">I would inform the ENT doctor that the patient should not leave the ward until I had reviewed </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="135.88"><span class="t-timestamp">2:15</span></div>
-  <div class="t-body"><span class="segment" data-start="135.88" data-end="139.52" title="2:15">her and done a thorough preoperative assessment. </span><span class="segment" data-start="139.52" data-end="146.36" title="2:19">In these cases there can be substantial occult blood loss and the child's hemodynamic status </span><span class="segment" data-start="146.36" data-end="149.08" title="2:26">needs to be assessed carefully. </span><span class="segment" data-start="149.08" data-end="154.8" title="2:29">Adequate fluid resuscitation should be carried out prior to induction as children compensate </span><span class="segment" data-start="154.8" data-end="158.0" title="2:34">well despite considerable blood loss. </span><span class="segment" data-start="158.0" data-end="163.12" title="2:38">I would also need to discuss this case with the duty consultant prior to proceeding and </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="163.12"><span class="t-timestamp">2:43</span></div>
-  <div class="t-body"><span class="segment" data-start="163.12" data-end="165.88" title="2:43">transferring the child to theatre. </span><span class="segment" data-start="165.88" data-end="171.48" title="2:45">What information do you look for during your preoperative assessment? </span><span class="segment" data-start="171.48" data-end="176.8" title="2:51">The most important thing to determine is the presence of hypotherlemic shock. </span><span class="segment" data-start="176.8" data-end="182.44" title="2:56">I would assess this by thorough history, examination and investigations. </span><span class="segment" data-start="182.44" data-end="188.12" title="3:02">I would ask the nurses and parents about excessive swallowing that would suggest occult bleeding </span><span class="segment" data-start="188.12" data-end="190.04" title="3:08">or vomiting of blood. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="190.04"><span class="t-timestamp">3:10</span></div>
-  <div class="t-body"><span class="segment" data-start="190.04" data-end="196.24" title="3:10">I would examine the child to assess capillary refill time, level of consciousness and signs </span><span class="segment" data-start="196.24" data-end="200.24" title="3:16">of shock such as paloar and core peripheries. </span><span class="segment" data-start="200.24" data-end="206.24" title="3:20">I would review the ward charts for heart rate, blood pressure, respiratory rate and urine </span><span class="segment" data-start="206.24" data-end="207.64" title="3:26">output. </span><span class="segment" data-start="207.64" data-end="214.44" title="3:27">Hypotension and decreasing GCS are late signs of hypotherlemic shock in children and would </span><span class="segment" data-start="214.44" data-end="217.28" title="3:34">suggest decomposition. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="217.28"><span class="t-timestamp">3:37</span></div>
-  <div class="t-body"><span class="segment" data-start="217.28" data-end="222.04" title="3:37">Intravenous access should be present but this should not be assumed and it should be </span><span class="segment" data-start="222.04" data-end="223.4" title="3:42">checked for. </span><span class="segment" data-start="223.4" data-end="230.52" title="3:43">I would also request a full blood count, clotting screen and cross match. </span><span class="segment" data-start="230.52" data-end="236.32" title="3:50">I would also take a routine anaesthetic history and review the initial anaesthetic chart </span><span class="segment" data-start="236.32" data-end="237.96" title="3:56">and the drug chart. </span><span class="segment" data-start="237.96" data-end="245.32" title="3:57">I would specifically look for the size of endotracheal tube used, analgesia administered and any difficulties </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="245.32"><span class="t-timestamp">4:05</span></div>
-  <div class="t-body"><span class="segment" data-start="245.32" data-end="248.52" title="4:05">encountered during the initial procedure. </span><span class="segment" data-start="248.52" data-end="251.68" title="4:08">The child's heart rate is 120 beats per minute. </span><span class="segment" data-start="251.68" data-end="257.52" title="4:11">Her respiratory rate is 30 beats per minute and her blood pressure is 80 on 40mm to mercury. </span><span class="segment" data-start="257.52" data-end="262.84" title="4:17">Capillary refill time is 4 seconds and extremities are cool to touch. </span><span class="segment" data-start="262.84" data-end="266.04" title="4:22">She's the phargic and contains faintly of being sick. </span><span class="segment" data-start="266.04" data-end="270.0" title="4:26">How would you resuscitate this child? </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="270.0"><span class="t-timestamp">4:30</span></div>
-  <div class="t-body"><span class="segment" data-start="270.0" data-end="275.08" title="4:30">Given these vital signs, it is clear that the child has suffered substantial blood loss </span><span class="segment" data-start="275.4" data-end="278.44" title="4:35">and requires urgent resuscitation. </span><span class="segment" data-start="278.44" data-end="283.92" title="4:38">I would discuss this case with the consultant on call at the earliest opportunity, as this </span><span class="segment" data-start="283.92" data-end="287.8" title="4:43">case should be carried out by an experienced anesthetist. </span><span class="segment" data-start="287.8" data-end="293.68" title="4:47">The child should be given high-flow oxygen, via a non-rebreathing face mask and intravenous </span><span class="segment" data-start="293.68" data-end="298.08" title="4:53">access should be established if this has not already been done. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="298.08"><span class="t-timestamp">4:58</span></div>
-  <div class="t-body"><span class="segment" data-start="298.08" data-end="303.52" title="4:58">Fluid resuscitation should be guided by clinical signs and the child should be moved to an </span><span class="segment" data-start="303.52" data-end="305.92" title="5:03">area with appropriate monitoring. </span><span class="segment" data-start="305.92" data-end="310.84" title="5:05">The most suitable place is often the anesthetic room. </span><span class="segment" data-start="310.84" data-end="316.8" title="5:10">The bleeding needs to be stopped surgically as soon as possible, however adequate resuscitation </span><span class="segment" data-start="316.8" data-end="323.48" title="5:16">needs to have taken place prior to induction of anesthesia to avoid cardiovascular collapse. </span><span class="segment" data-start="323.48" data-end="330.24" title="5:23">Initial resuscitation should be with boluses of 20 mils per kilo of crystalloid or colloid. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="330.24"><span class="t-timestamp">5:30</span></div>
-  <div class="t-body"><span class="segment" data-start="330.24" data-end="335.0" title="5:30">Once the full blood count and clotting screen is known, the use of blood product should </span><span class="segment" data-start="335.0" data-end="336.64" title="5:35">be considered. </span><span class="segment" data-start="336.64" data-end="341.8" title="5:36">The child should be reassessed after each fluid bolus until she is considered stable </span><span class="segment" data-start="341.8" data-end="344.52" title="5:41">enough to proceed with induction. </span><span class="segment" data-start="344.52" data-end="348.52" title="5:44">How would you anesthetise this child? </span><span class="segment" data-start="348.52" data-end="354.12" title="5:48">I would anesthetise this child in theatre with the help of an experienced assistant. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="354.12"><span class="t-timestamp">5:54</span></div>
-  <div class="t-body"><span class="segment" data-start="354.12" data-end="359.8" title="5:54">I would want two suction circuits available in case one became blocked by a blood clot. </span><span class="segment" data-start="359.8" data-end="365.84" title="5:59">I would prepare a selection of endotracheal tubes, the same size as used previously and </span><span class="segment" data-start="365.84" data-end="367.88" title="6:05">half a size smaller. </span><span class="segment" data-start="367.88" data-end="372.8" title="6:07">I would have two of each available in case one became blocked with blood. </span><span class="segment" data-start="372.8" data-end="380.72" title="6:12">The child should be fully monitored according to the AAGBI minimum standards of monitoring. </span><span class="segment" data-start="380.72" data-end="386.12" title="6:20">The two choices of anesthetic for a bleeding tonsil are inhalational induction in the left </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="386.12"><span class="t-timestamp">6:26</span></div>
-  <div class="t-body"><span class="segment" data-start="386.12" data-end="391.28" title="6:26">lateral and head down position or a rapid sequence induction. </span><span class="segment" data-start="391.28" data-end="397.64" title="6:31">The main advantage of an inhalational induction is that spontaneous ventilation is maintained. </span><span class="segment" data-start="397.64" data-end="402.24" title="6:37">The head down position encourages blood in the airway to drain away from the laryngeal </span><span class="segment" data-start="402.24" data-end="403.24" title="6:42">inlet. </span><span class="segment" data-start="403.24" data-end="406.88" title="6:43">However, this technique can be more challenging. </span><span class="segment" data-start="406.88" data-end="413.32" title="6:46">I am more familiar with a rapid sequence induction in the supine position using fire pentone </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="413.32"><span class="t-timestamp">6:53</span></div>
-  <div class="t-body"><span class="segment" data-start="413.32" data-end="417.92" title="6:53">and succcemethonium and it is usually the preferred option. </span><span class="segment" data-start="417.92" data-end="423.48" title="6:57">This enables a more rapid procurement of a secure airway with a tracheal tube. </span><span class="segment" data-start="423.48" data-end="429.2" title="7:03">Once the airway is secure, I would allow the patient to breathe spontaneously with an air </span><span class="segment" data-start="429.2" data-end="435.04" title="7:09">oxygen mixture and appropriate concentrations of a volatile agent. </span><span class="segment" data-start="435.04" data-end="441.08" title="7:15">Simple analgesics, opioids and fluids can then be titrated to response. </span><span class="segment" data-start="441.08" data-end="446.88" title="7:21">To the end of surgery, I would insert a wide bore or a gastric tube to empty the stomach </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="446.88"><span class="t-timestamp">7:26</span></div>
-  <div class="t-body"><span class="segment" data-start="446.88" data-end="452.9" title="7:26">of blood and then extubate the patient in the left lateral head down position either </span><span class="segment" data-start="452.9" data-end="456.68" title="7:32">fully awake or in a deep plane of anesthesia. </span><span class="segment" data-start="456.68" data-end="461.32" title="7:36">What postoperative care should the child receive? </span><span class="segment" data-start="461.32" data-end="466.6" title="7:41">The child should go to recovery for an extended stay with close monitoring. </span><span class="segment" data-start="466.6" data-end="472.16" title="7:46">A full blood count and clotting screen should be sent postoperatively and any abnormalities </span><span class="segment" data-start="472.16" data-end="473.56" title="7:52">corrected. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="473.56"><span class="t-timestamp">7:53</span></div>
-  <div class="t-body"><span class="segment" data-start="473.56" data-end="479.12" title="7:53">What is the difference between a primary and secondary tonsular bleed? </span><span class="segment" data-start="479.12" data-end="486.4" title="7:59">The incidence of bleeding following a tonsulaectomy is 0.5 to 2% and it is usually caused by either </span><span class="segment" data-start="486.4" data-end="489.08" title="8:06">venous or capillary ooze. </span><span class="segment" data-start="489.08" data-end="496.4" title="8:09">A primary bleed occurs in the immediate postoperative period, usually within 24 hours of surgery and </span><span class="segment" data-start="496.4" data-end="501.0" title="8:16">is usually caused by poor hemostasis during the surgery. </span><span class="segment" data-start="501.0" data-end="507.44" title="8:21">A secondary bleed can occur up to 28 days post tonsulaectomy and is usually secondary </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="507.44"><span class="t-timestamp">8:27</span></div>
-  <div class="t-body"><span class="segment" data-start="507.44" data-end="514.52" title="8:27">to infection or less commonly caused by loosen vessel ties or sloughing of dead tissue. </span><span class="segment" data-start="514.52" data-end="519.16" title="8:34">What is the blood supply to the tonsula bed? </span><span class="segment" data-start="519.16" data-end="524.44" title="8:39">The tonsules are supplied by the external corroded artery and its branches. </span><span class="segment" data-start="524.44" data-end="530.52" title="8:44">The superior pole is supplied by the tonsula branches of the ascending pharyngeal artery </span><span class="segment" data-start="530.52" data-end="533.04" title="8:50">and lesser palatine artery. </span><span class="segment" data-start="533.04" data-end="540.04" title="8:53">And the inferior pole is supplied by the ascending palatine artery, dorsal lingual artery and </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="540.04"><span class="t-timestamp">9:00</span></div>
-  <div class="t-body"><span class="segment" data-start="540.04" data-end="543.12" title="9:00">the facial artery branches. </span><span class="segment" data-start="543.12" data-end="548.82" title="9:03">Vena's drainage of the tonsules is via the lingual vein, the pharyngeal and tonsula </span><span class="segment" data-start="548.82" data-end="550.88" title="9:08">capsule plexuses. </span><span class="segment" data-start="550.88" data-end="556.56" title="9:10">What are the risk factors for a predisposition to post tonsulaectomy bleeding? </span><span class="segment" data-start="556.56" data-end="561.8" title="9:16">The surgical technique is the most important determinant of risk of post tonsulaectomy </span><span class="segment" data-start="561.8" data-end="563.12" title="9:21">bleeding. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="563.12"><span class="t-timestamp">9:23</span></div>
-  <div class="t-body"><span class="segment" data-start="563.12" data-end="568.36" title="9:23">The use of diothermia carries three times the risk of postoperative bleeding compared </span><span class="segment" data-start="568.36" data-end="572.44" title="9:28">to a more traditional technique using ties and packs. </span><span class="segment" data-start="572.44" data-end="577.44" title="9:32">The latter, however, is accompanied by more intraoperative bleeding. </span><span class="segment" data-start="577.44" data-end="584.44" title="9:37">Other risk factors for post tonsulaectomy bleed include increasing age and being male. </span><span class="segment" data-start="584.44" data-end="588.84" title="9:44">Part 2. </span><span class="segment" data-start="588.84" data-end="591.44" title="9:48">Spolador inhaled foreign body. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="591.44"><span class="t-timestamp">9:51</span></div>
-  <div class="t-body"><span class="segment" data-start="591.44" data-end="596.8" title="9:51">A two-year-old boy presents on the emergency list for a rigid bronchoscopy to remove an </span><span class="segment" data-start="596.8" data-end="598.44" title="9:56">aspirator peanut. </span><span class="segment" data-start="598.44" data-end="603.76" title="9:58">What are the key considerations in this case? </span><span class="segment" data-start="603.76" data-end="609.8" title="10:03">The most important considerations are whether established or impending airway compromise is </span><span class="segment" data-start="609.8" data-end="611.08" title="10:09">present. </span><span class="segment" data-start="611.08" data-end="616.96" title="10:11">Other anesthetic challenges include a shared airway and the risk of pulmonary aspiration, </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="616.96"><span class="t-timestamp">10:16</span></div>
-  <div class="t-body"><span class="segment" data-start="616.96" data-end="620.28" title="10:16">particularly if the patient is not starved. </span><span class="segment" data-start="620.28" data-end="627.52" title="10:20">How can differentiate between upper and lower airway obstruction and why is this important? </span><span class="segment" data-start="627.52" data-end="633.08" title="10:27">It is important to differentiate between upper and lower airway obstruction as they are </span><span class="segment" data-start="633.08" data-end="635.48" title="10:33">managed differently. </span><span class="segment" data-start="635.48" data-end="641.64" title="10:35">Foreign bodies in the upper airway may present as emergencies requiring immediate attention. </span><span class="segment" data-start="641.64" data-end="646.68" title="10:41">The child is more likely to present acutely with respiratory distress. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="646.68"><span class="t-timestamp">10:46</span></div>
-  <div class="t-body"><span class="segment" data-start="646.68" data-end="649.36" title="10:46">They may have stride or and drooling. </span><span class="segment" data-start="649.36" data-end="655.04" title="10:49">They may be using accessory muscles of respiration and have intercostal recession. </span><span class="segment" data-start="655.04" data-end="661.0" title="10:55">In extreme cases they can even present with complete respiratory obstruction. </span><span class="segment" data-start="661.0" data-end="666.52" title="11:01">The narrowest point of a pediatric airway is at the level of the cryoid ring and therefore </span><span class="segment" data-start="666.52" data-end="671.72" title="11:06">foreign bodies can lodge at this point. </span><span class="segment" data-start="671.72" data-end="677.84" title="11:11">Foreign bodies that lodge more distally tend to present later and less acutely. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="677.84"><span class="t-timestamp">11:17</span></div>
-  <div class="t-body"><span class="segment" data-start="677.84" data-end="684.32" title="11:17">The child may present with a persisting cough, bronchospasm and signs of infection. </span><span class="segment" data-start="684.32" data-end="690.8" title="11:24">If they are pyrexial or have raised inflammatory markers, they will require a course of antibiotics. </span><span class="segment" data-start="691.12" data-end="697.32" title="11:31">The oil from a peanut is especially irritant and can cause mucosal edema and chemical </span><span class="segment" data-start="697.32" data-end="699.4" title="11:37">pneumonitis. </span><span class="segment" data-start="699.4" data-end="704.88" title="11:39">In addition to a thorough history and examination, chest radiographs may help determine the </span><span class="segment" data-start="704.88" data-end="707.32" title="11:44">location of the foreign body. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="707.32"><span class="t-timestamp">11:47</span></div>
-  <div class="t-body"><span class="segment" data-start="707.32" data-end="712.72" title="11:47">If the foreign body is radio loosened, areas of hyperinflation from air trapping may be </span><span class="segment" data-start="712.72" data-end="716.8" title="11:52">present distal to the site of the foreign body. </span><span class="segment" data-start="716.8" data-end="722.88" title="11:56">What further information do you like about this case prior to proceeding with the case? </span><span class="segment" data-start="722.88" data-end="727.48" title="12:02">Firstly, I would like to know whether the child was stable and whether there were signs </span><span class="segment" data-start="727.48" data-end="729.88" title="12:07">of respiratory distress. </span><span class="segment" data-start="729.88" data-end="735.8" title="12:09">If I suspected the airway was compromised, I would attend the child immediately and request </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="735.8"><span class="t-timestamp">12:15</span></div>
-  <div class="t-body"><span class="segment" data-start="735.8" data-end="737.32" title="12:15">senior help. </span><span class="segment" data-start="737.32" data-end="743.12" title="12:17">However, if the child was stable, I would take a thorough preoperative history and examine </span><span class="segment" data-start="743.12" data-end="744.32" title="12:23">the child. </span><span class="segment" data-start="744.32" data-end="749.44" title="12:24">I would review the chest x-ray to determine the level at which the foreign body has become </span><span class="segment" data-start="749.44" data-end="751.04" title="12:29">lodged. </span><span class="segment" data-start="751.04" data-end="754.48" title="12:31">Would you pre-medicate the child? </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="754.48"><span class="t-timestamp">12:34</span></div>
-  <div class="t-body"><span class="segment" data-start="754.48" data-end="760.0" title="12:34">I would request topical local anesthetic cream to be applied to both hands prior to intravenous </span><span class="segment" data-start="760.0" data-end="761.48" title="12:40">cannulation. </span><span class="segment" data-start="761.48" data-end="765.56" title="12:41">I would also consider the use of an anticholinergic agent. </span><span class="segment" data-start="765.56" data-end="771.88" title="12:45">This may be helpful as it would decrease secretions and vagal tone, thus aiding intubation and </span><span class="segment" data-start="771.88" data-end="775.88" title="12:51">avoiding braddocardia during instrumentation of the airway. </span><span class="segment" data-start="775.88" data-end="780.04" title="12:55">I would, however, avoid sedative pre-medication. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="780.04"><span class="t-timestamp">13:00</span></div>
-  <div class="t-body"><span class="segment" data-start="780.04" data-end="782.64" title="13:00">The child is stable when calm by his mother. </span><span class="segment" data-start="782.64" data-end="786.2" title="13:02">He is mild stride or when upset and is drooling. </span><span class="segment" data-start="786.2" data-end="791.4" title="13:06">He has a heart rate of 130 beats per minute and a respiratory rate of 24 breaths per minute, </span><span class="segment" data-start="791.4" data-end="795.28" title="13:11">with an arterial saturation of 100 percent on air. </span><span class="segment" data-start="795.28" data-end="799.64" title="13:15">Radiographically the coin is seen at the level of the crycord cartilage. </span><span class="segment" data-start="799.64" data-end="803.52" title="13:19">How would your niece's child? </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="803.52"><span class="t-timestamp">13:23</span></div>
-  <div class="t-body"><span class="segment" data-start="803.52" data-end="809.32" title="13:23">In this case, there is sufficient airway compromise to proceed with anesthesia without allowing </span><span class="segment" data-start="809.32" data-end="811.28" title="13:29">time for fasting. </span><span class="segment" data-start="811.28" data-end="817.2" title="13:31">I would contact the consultant on call and ask for them to come in, as this child is only </span><span class="segment" data-start="817.2" data-end="821.52" title="13:37">two years old and a second pair of hands will be necessary. </span><span class="segment" data-start="821.52" data-end="826.72" title="13:41">I would also request the help of an experienced anesthetic assistant. </span><span class="segment" data-start="826.72" data-end="832.6" title="13:46">Prior to induction of anesthesia, I would ensure the ENT surgeons were immediately available </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="832.6"><span class="t-timestamp">13:52</span></div>
-  <div class="t-body"><span class="segment" data-start="832.6" data-end="838.6" title="13:52">and ready to proceed with a bronchoscopy or help establish a surgical airway if complete </span><span class="segment" data-start="838.6" data-end="842.28" title="13:58">respiratory obstruction should ensue. </span><span class="segment" data-start="842.28" data-end="848.32" title="14:02">I would check all my equipment prior to induction and ensure all connections are compatible with </span><span class="segment" data-start="848.32" data-end="850.28" title="14:08">the rigid broncuscope. </span><span class="segment" data-start="850.28" data-end="856.6" title="14:10">My preferred option for induction of anesthesia is inhalation of seabuffluorane in 100 percent </span><span class="segment" data-start="856.6" data-end="859.84" title="14:16">oxygen sitting on their parent's lap. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="859.84"><span class="t-timestamp">14:19</span></div>
-  <div class="t-body"><span class="segment" data-start="859.84" data-end="865.16" title="14:19">I would avoid neuromuscular blockers as loss of muscular tone could result in loss of the </span><span class="segment" data-start="865.16" data-end="870.08" title="14:25">airway as well as it resulting in the need for bag mask ventilation. </span><span class="segment" data-start="870.08" data-end="875.76" title="14:30">This could push the foreign body down further causing complete occlusion, air trapping or </span><span class="segment" data-start="875.76" data-end="879.72" title="14:35">in extreme cases attention pneumothorax. </span><span class="segment" data-start="879.72" data-end="887.04" title="14:39">I would spray the cords with local anesthetic to decrease stimulation during instrumentation. </span><span class="segment" data-start="887.04" data-end="893.08" title="14:47">Retrieval of the foreign body can be attempted when a deep enough plane of anesthesia is achieved. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="893.08"><span class="t-timestamp">14:53</span></div>
-  <div class="t-body"><span class="segment" data-start="893.08" data-end="899.24" title="14:53">Hallothane is sometimes preferred because its offset of action is slower than seabuffluorane </span><span class="segment" data-start="899.24" data-end="904.2" title="14:59">and therefore the patient is less likely to lighten during periods of breath holding </span><span class="segment" data-start="904.2" data-end="906.04" title="15:04">and apnea. </span><span class="segment" data-start="906.08" data-end="910.84" title="15:06">There are various anesthetic options during retrieval of the foreign body. </span><span class="segment" data-start="910.84" data-end="916.96" title="15:10">A T-piece can be connected to a store's rigid ventilating broncuscope which allows delivery </span><span class="segment" data-start="916.96" data-end="922.2" title="15:16">of volatile and oxygen to a spontaneously breathing patient. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="922.2"><span class="t-timestamp">15:22</span></div>
-  <div class="t-body"><span class="segment" data-start="922.2" data-end="927.12" title="15:22">Intermittent positive pressure ventilation can be delivered with this system but as previously </span><span class="segment" data-start="927.12" data-end="930.52" title="15:27">discussed is best avoided in this case. </span><span class="segment" data-start="930.52" data-end="936.84" title="15:30">In deflation with a Sanders injector is not recommended for the same reasons. </span><span class="segment" data-start="936.84" data-end="942.72" title="15:36">My preferred technique would be to allow the child to breathe spontaneously and attach </span><span class="segment" data-start="942.72" data-end="947.52" title="15:42">the T-piece to the broncuscope during foreign body removal. </span><span class="segment" data-start="947.52" data-end="954.56" title="15:47">The child's vital signs should be continuously monitored and the chest continually observed. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="954.56"><span class="t-timestamp">15:54</span></div>
-  <div class="t-body"><span class="segment" data-start="954.56" data-end="960.88" title="15:54">The most common problems encountered will be hyper-tension, tachycardia or ventricular </span><span class="segment" data-start="960.88" data-end="967.32" title="16:00">ectopic beats, hypoxia, hyper-carbure and coughing. </span><span class="segment" data-start="967.32" data-end="972.92" title="16:07">I would administer dexamethasone to decrease the incidence of airway edema. </span><span class="segment" data-start="972.92" data-end="979.08" title="16:12">With prior consent from the parents I would give rectal or intravenous paracetamol and </span><span class="segment" data-start="979.08" data-end="983.16" title="16:19">rectal dichlorphenac if there were no contraindications. </span><span class="segment" data-start="983.16" data-end="988.72" title="16:23">I would avoid opiates as postoperative pain is uncommon. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="988.72"><span class="t-timestamp">16:28</span></div>
-  <div class="t-body"><span class="segment" data-start="988.72" data-end="994.16" title="16:28">Postoperatively the child should have a prolonged stay in the recovery room to observe for </span><span class="segment" data-start="994.16" data-end="998.8" title="16:34">reactive edema and monitor respiratory function. </span><span class="segment" data-start="998.8" data-end="1002.76" title="16:38">With the method of anaesthesia in postoperative care differ if there was a foreign body </span><span class="segment" data-start="1002.76" data-end="1006.64" title="16:42">lodging the lower airways. </span><span class="segment" data-start="1006.64" data-end="1012.88" title="16:46">With lower airway obstruction the avoidance of bag mask ventilation and intermittent positive </span><span class="segment" data-start="1012.88" data-end="1016.04" title="16:52">pressure ventilation is less critical. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="1016.04"><span class="t-timestamp">16:56</span></div>
-  <div class="t-body"><span class="segment" data-start="1016.04" data-end="1020.84" title="16:56">The surgeon will often need to push the foreign body more distal until it can be grasped </span><span class="segment" data-start="1020.84" data-end="1023.64" title="17:00">by four steps. </span><span class="segment" data-start="1023.64" data-end="1029.08" title="17:03">Cases of lower airway foreign body aspiration are less likely to present acutely with airway </span><span class="segment" data-start="1029.08" data-end="1034.12" title="17:09">compromise and therefore there will be time to ensure the patient is starved. </span><span class="segment" data-start="1034.12" data-end="1039.96" title="17:14">However there may be signs of pneumonia or pneumonitis which may require treatment prior </span><span class="segment" data-start="1039.96" data-end="1042.16" title="17:19">to surgery. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="1042.24"><span class="t-timestamp">17:22</span></div>
-  <div class="t-body"><span class="segment" data-start="1042.24" data-end="1049.16" title="17:22">Postoperatively the child should be extubated awake in the head down and left lateral position. </span><span class="segment" data-start="1049.16" data-end="1054.76" title="17:29">As in upper airway foreign body removal the child should have a prolonged stay in recovery </span><span class="segment" data-start="1054.76" data-end="1059.48" title="17:34">to observe for reactive edema and monitor respiratory function. </span><span class="segment" data-start="1059.48" data-end="1065.52" title="17:39">The child may need a course of steroids and antibiotics and if the obstruction was prolonged </span><span class="segment" data-start="1065.52" data-end="1069.76" title="17:45">physiotherapy and humidified oxygen may be beneficial. </span><span class="segment" data-start="1069.76" data-end="1075.52" title="17:49">If the child shows signs of sepsis they should be monitored in a high dependency environment </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="1075.52"><span class="t-timestamp">17:55</span></div>
-  <div class="t-body"><span class="segment" data-start="1075.52" data-end="1076.76" title="17:55">until these resolve. </span></div>
+<div class="preamble-block"><span class="segment a-seg" data-start="0.0" data-end="5.6" title="0:00">Acute ENT emergencies one, bleeding tonsil and foreign body. </span><span class="segment a-seg" data-start="5.6" data-end="8.24" title="0:05">Part one, the bleeding tonsil. </span><span class="segment a-seg" data-start="8.24" data-end="13.2" title="0:08">This is a common scenario in the clinical viber which will be expected to know well. </span><span class="segment a-seg" data-start="13.2" data-end="16.8" title="0:13">The examinels will not be sympathetic if you miss the key points. </span><span class="segment a-seg" data-start="16.8" data-end="18.96" title="0:16">Case scenario. </span><span class="segment a-seg" data-start="18.96" data-end="23.16" title="0:18">You are called in the middle of the night by the ENT ST3. </span><span class="segment a-seg" data-start="23.16" data-end="26.44" title="0:23">He would like to take a six-year-old girl to theatre who is bleeding eight hours post </span><span class="segment a-seg" data-start="26.44" data-end="28.44" title="0:26">tonne selectomy. </span><span class="segment a-seg" data-start="28.44" data-end="31.96" title="0:28">He would like to proceed immediately and as he is starting to make plans transfer </span><span class="segment a-seg" data-start="31.96" data-end="32.96" title="0:31">the patient. </span><span class="segment a-seg" data-start="32.96" data-end="37.04" title="0:32">He says he'll meet you in theatre. </span></div>
+<div class="qa-pair">
+<div class="q-block" data-start="37.04">
+  <div class="q-label">Q1</div>
+  <div class="q-body"><span class="segment q-seg" data-start="37.04" data-end="41.36" title="0:37">What are the key issues with this case? </span></div>
 </div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="41.36" data-end="45.44" title="0:41">This case illustrates a number of anesthetic challenges. </span></li>
+<li><span class="segment a-seg" data-start="45.44" data-end="51.8" title="0:45">It is a pediatric case involving a difficult airway which will be shared with the surgeon. </span></li>
+<li><span class="segment a-seg" data-start="51.8" data-end="58.4" title="0:51">The child may be hemodynamically compromised and is at risk of pulmonary aspiration. </span></li>
+<li><span class="segment a-seg" data-start="58.4" data-end="63.76" title="0:58">These issues are further complicated by the likely presence of anxious parents and </span></li>
+<li><span class="segment a-seg" data-start="63.76" data-end="66.84" title="1:03">a child who is likely to be upset. </span></li>
+<li><span class="segment a-seg" data-start="66.84" data-end="71.88" title="1:06">The extent of blood loss will be difficult to quantify as the child may have swallowed </span></li>
+<li><span class="segment a-seg" data-start="71.88" data-end="74.96" title="1:11">it instead of spitting it out. </span></li>
+<li><span class="segment a-seg" data-start="74.96" data-end="82.6" title="1:14">Signs of hemodynamic compromise should therefore be assessed and resuscitated promptly. </span></li>
+<li><span class="segment a-seg" data-start="82.6" data-end="88.56" title="1:22">Serengoscopy and intubation will be challenging as the airway may be compromised by a demer </span></li>
+<li><span class="segment a-seg" data-start="88.56" data-end="90.56" title="1:28">and blood. </span></li>
+<li><span class="segment a-seg" data-start="90.56" data-end="96.2" title="1:30">Children have smaller, more reactive airways which tolerate manipulation less well. </span></li>
+<li><span class="segment a-seg" data-start="96.2" data-end="102.52" title="1:36">They also have a reduced functional residual capacity and can desaturate rapidly. </span></li>
+<li><span class="segment a-seg" data-start="102.52" data-end="107.4" title="1:42">The likelihood of a stomach full of blood further endangers the airway due to the risk </span></li>
+<li><span class="segment a-seg" data-start="107.4" data-end="110.8" title="1:47">of aspiration. </span></li>
+<li><span class="segment a-seg" data-start="110.8" data-end="118.36" title="1:50">Other issues specific to pediatric anesthesia include difficult intravenous access, communication </span></li>
+<li><span class="segment a-seg" data-start="118.36" data-end="125.52" title="1:58">difficulties, anxious parents, temperature regulation and altered drug dosages. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="125.52">
+  <div class="q-label">Q2</div>
+  <div class="q-body"><span class="segment q-seg" data-start="125.52" data-end="129.84" title="2:05">How would you respond the ENT doctor? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="129.84" data-end="135.88" title="2:09">I would inform the ENT doctor that the patient should not leave the ward until I had reviewed </span></li>
+<li><span class="segment a-seg" data-start="135.88" data-end="139.52" title="2:15">her and done a thorough preoperative assessment. </span></li>
+<li><span class="segment a-seg" data-start="139.52" data-end="146.36" title="2:19">In these cases there can be substantial occult blood loss and the child's hemodynamic status </span></li>
+<li><span class="segment a-seg" data-start="146.36" data-end="149.08" title="2:26">needs to be assessed carefully. </span></li>
+<li><span class="segment a-seg" data-start="149.08" data-end="154.8" title="2:29">Adequate fluid resuscitation should be carried out prior to induction as children compensate </span></li>
+<li><span class="segment a-seg" data-start="154.8" data-end="158.0" title="2:34">well despite considerable blood loss. </span></li>
+<li><span class="segment a-seg" data-start="158.0" data-end="163.12" title="2:38">I would also need to discuss this case with the duty consultant prior to proceeding and </span></li>
+<li><span class="segment a-seg" data-start="163.12" data-end="165.88" title="2:43">transferring the child to theatre. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="165.88">
+  <div class="q-label">Q3</div>
+  <div class="q-body"><span class="segment q-seg" data-start="165.88" data-end="171.48" title="2:45">What information do you look for during your preoperative assessment? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="171.48" data-end="176.8" title="2:51">The most important thing to determine is the presence of hypotherlemic shock. </span></li>
+<li><span class="segment a-seg" data-start="176.8" data-end="182.44" title="2:56">I would assess this by thorough history, examination and investigations. </span></li>
+<li><span class="segment a-seg" data-start="182.44" data-end="188.12" title="3:02">I would ask the nurses and parents about excessive swallowing that would suggest occult bleeding </span></li>
+<li><span class="segment a-seg" data-start="188.12" data-end="190.04" title="3:08">or vomiting of blood. </span></li>
+<li><span class="segment a-seg" data-start="190.04" data-end="196.24" title="3:10">I would examine the child to assess capillary refill time, level of consciousness and signs </span></li>
+<li><span class="segment a-seg" data-start="196.24" data-end="200.24" title="3:16">of shock such as paloar and core peripheries. </span></li>
+<li><span class="segment a-seg" data-start="200.24" data-end="206.24" title="3:20">I would review the ward charts for heart rate, blood pressure, respiratory rate and urine </span></li>
+<li><span class="segment a-seg" data-start="206.24" data-end="207.64" title="3:26">output. </span></li>
+<li><span class="segment a-seg" data-start="207.64" data-end="214.44" title="3:27">Hypotension and decreasing GCS are late signs of hypotherlemic shock in children and would </span></li>
+<li><span class="segment a-seg" data-start="214.44" data-end="217.28" title="3:34">suggest decomposition. </span></li>
+<li><span class="segment a-seg" data-start="217.28" data-end="222.04" title="3:37">Intravenous access should be present but this should not be assumed and it should be </span></li>
+<li><span class="segment a-seg" data-start="222.04" data-end="223.4" title="3:42">checked for. </span></li>
+<li><span class="segment a-seg" data-start="223.4" data-end="230.52" title="3:43">I would also request a full blood count, clotting screen and cross match. </span></li>
+<li><span class="segment a-seg" data-start="230.52" data-end="236.32" title="3:50">I would also take a routine anaesthetic history and review the initial anaesthetic chart </span></li>
+<li><span class="segment a-seg" data-start="236.32" data-end="237.96" title="3:56">and the drug chart. </span></li>
+<li><span class="segment a-seg" data-start="237.96" data-end="245.32" title="3:57">I would specifically look for the size of endotracheal tube used, analgesia administered and any difficulties </span></li>
+<li><span class="segment a-seg" data-start="245.32" data-end="248.52" title="4:05">encountered during the initial procedure. </span></li>
+<li><span class="segment a-seg" data-start="248.52" data-end="251.68" title="4:08">The child's heart rate is 120 beats per minute. </span></li>
+<li><span class="segment a-seg" data-start="251.68" data-end="257.52" title="4:11">Her respiratory rate is 30 beats per minute and her blood pressure is 80 on 40mm to mercury. </span></li>
+<li><span class="segment a-seg" data-start="257.52" data-end="262.84" title="4:17">Capillary refill time is 4 seconds and extremities are cool to touch. </span></li>
+<li><span class="segment a-seg" data-start="262.84" data-end="266.04" title="4:22">She's the phargic and contains faintly of being sick. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="266.04">
+  <div class="q-label">Q4</div>
+  <div class="q-body"><span class="segment q-seg" data-start="266.04" data-end="270.0" title="4:26">How would you resuscitate this child? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="270.0" data-end="275.08" title="4:30">Given these vital signs, it is clear that the child has suffered substantial blood loss </span></li>
+<li><span class="segment a-seg" data-start="275.4" data-end="278.44" title="4:35">and requires urgent resuscitation. </span></li>
+<li><span class="segment a-seg" data-start="278.44" data-end="283.92" title="4:38">I would discuss this case with the consultant on call at the earliest opportunity, as this </span></li>
+<li><span class="segment a-seg" data-start="283.92" data-end="287.8" title="4:43">case should be carried out by an experienced anesthetist. </span></li>
+<li><span class="segment a-seg" data-start="287.8" data-end="293.68" title="4:47">The child should be given high-flow oxygen, via a non-rebreathing face mask and intravenous </span></li>
+<li><span class="segment a-seg" data-start="293.68" data-end="298.08" title="4:53">access should be established if this has not already been done. </span></li>
+<li><span class="segment a-seg" data-start="298.08" data-end="303.52" title="4:58">Fluid resuscitation should be guided by clinical signs and the child should be moved to an </span></li>
+<li><span class="segment a-seg" data-start="303.52" data-end="305.92" title="5:03">area with appropriate monitoring. </span></li>
+<li><span class="segment a-seg" data-start="305.92" data-end="310.84" title="5:05">The most suitable place is often the anesthetic room. </span></li>
+<li><span class="segment a-seg" data-start="310.84" data-end="316.8" title="5:10">The bleeding needs to be stopped surgically as soon as possible, however adequate resuscitation </span></li>
+<li><span class="segment a-seg" data-start="316.8" data-end="323.48" title="5:16">needs to have taken place prior to induction of anesthesia to avoid cardiovascular collapse. </span></li>
+<li><span class="segment a-seg" data-start="323.48" data-end="330.24" title="5:23">Initial resuscitation should be with boluses of 20 mils per kilo of crystalloid or colloid. </span></li>
+<li><span class="segment a-seg" data-start="330.24" data-end="335.0" title="5:30">Once the full blood count and clotting screen is known, the use of blood product should </span></li>
+<li><span class="segment a-seg" data-start="335.0" data-end="336.64" title="5:35">be considered. </span></li>
+<li><span class="segment a-seg" data-start="336.64" data-end="341.8" title="5:36">The child should be reassessed after each fluid bolus until she is considered stable </span></li>
+<li><span class="segment a-seg" data-start="341.8" data-end="344.52" title="5:41">enough to proceed with induction. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="344.52">
+  <div class="q-label">Q5</div>
+  <div class="q-body"><span class="segment q-seg" data-start="344.52" data-end="348.52" title="5:44">How would you anesthetise this child? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="348.52" data-end="354.12" title="5:48">I would anesthetise this child in theatre with the help of an experienced assistant. </span></li>
+<li><span class="segment a-seg" data-start="354.12" data-end="359.8" title="5:54">I would want two suction circuits available in case one became blocked by a blood clot. </span></li>
+<li><span class="segment a-seg" data-start="359.8" data-end="365.84" title="5:59">I would prepare a selection of endotracheal tubes, the same size as used previously and </span></li>
+<li><span class="segment a-seg" data-start="365.84" data-end="367.88" title="6:05">half a size smaller. </span></li>
+<li><span class="segment a-seg" data-start="367.88" data-end="372.8" title="6:07">I would have two of each available in case one became blocked with blood. </span></li>
+<li><span class="segment a-seg" data-start="372.8" data-end="380.72" title="6:12">The child should be fully monitored according to the AAGBI minimum standards of monitoring. </span></li>
+<li><span class="segment a-seg" data-start="380.72" data-end="386.12" title="6:20">The two choices of anesthetic for a bleeding tonsil are inhalational induction in the left </span></li>
+<li><span class="segment a-seg" data-start="386.12" data-end="391.28" title="6:26">lateral and head down position or a rapid sequence induction. </span></li>
+<li><span class="segment a-seg" data-start="391.28" data-end="397.64" title="6:31">The main advantage of an inhalational induction is that spontaneous ventilation is maintained. </span></li>
+<li><span class="segment a-seg" data-start="397.64" data-end="402.24" title="6:37">The head down position encourages blood in the airway to drain away from the laryngeal </span></li>
+<li><span class="segment a-seg" data-start="402.24" data-end="403.24" title="6:42">inlet. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="403.24">
+  <div class="q-label">Q6</div>
+  <div class="q-body"><span class="segment q-seg" data-start="403.24" data-end="406.88" title="6:43">However, this technique can be more challenging. </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="406.88" data-end="413.32" title="6:46">I am more familiar with a rapid sequence induction in the supine position using fire pentone </span></li>
+<li><span class="segment a-seg" data-start="413.32" data-end="417.92" title="6:53">and succcemethonium and it is usually the preferred option. </span></li>
+<li><span class="segment a-seg" data-start="417.92" data-end="423.48" title="6:57">This enables a more rapid procurement of a secure airway with a tracheal tube. </span></li>
+<li><span class="segment a-seg" data-start="423.48" data-end="429.2" title="7:03">Once the airway is secure, I would allow the patient to breathe spontaneously with an air </span></li>
+<li><span class="segment a-seg" data-start="429.2" data-end="435.04" title="7:09">oxygen mixture and appropriate concentrations of a volatile agent. </span></li>
+<li><span class="segment a-seg" data-start="435.04" data-end="441.08" title="7:15">Simple analgesics, opioids and fluids can then be titrated to response. </span></li>
+<li><span class="segment a-seg" data-start="441.08" data-end="446.88" title="7:21">To the end of surgery, I would insert a wide bore or a gastric tube to empty the stomach </span></li>
+<li><span class="segment a-seg" data-start="446.88" data-end="452.9" title="7:26">of blood and then extubate the patient in the left lateral head down position either </span></li>
+<li><span class="segment a-seg" data-start="452.9" data-end="456.68" title="7:32">fully awake or in a deep plane of anesthesia. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="456.68">
+  <div class="q-label">Q7</div>
+  <div class="q-body"><span class="segment q-seg" data-start="456.68" data-end="461.32" title="7:36">What postoperative care should the child receive? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="461.32" data-end="466.6" title="7:41">The child should go to recovery for an extended stay with close monitoring. </span></li>
+<li><span class="segment a-seg" data-start="466.6" data-end="472.16" title="7:46">A full blood count and clotting screen should be sent postoperatively and any abnormalities </span></li>
+<li><span class="segment a-seg" data-start="472.16" data-end="473.56" title="7:52">corrected. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="473.56">
+  <div class="q-label">Q8</div>
+  <div class="q-body"><span class="segment q-seg" data-start="473.56" data-end="479.12" title="7:53">What is the difference between a primary and secondary tonsular bleed? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="479.12" data-end="486.4" title="7:59">The incidence of bleeding following a tonsulaectomy is 0.5 to 2% and it is usually caused by either </span></li>
+<li><span class="segment a-seg" data-start="486.4" data-end="489.08" title="8:06">venous or capillary ooze. </span></li>
+<li><span class="segment a-seg" data-start="489.08" data-end="496.4" title="8:09">A primary bleed occurs in the immediate postoperative period, usually within 24 hours of surgery and </span></li>
+<li><span class="segment a-seg" data-start="496.4" data-end="501.0" title="8:16">is usually caused by poor hemostasis during the surgery. </span></li>
+<li><span class="segment a-seg" data-start="501.0" data-end="507.44" title="8:21">A secondary bleed can occur up to 28 days post tonsulaectomy and is usually secondary </span></li>
+<li><span class="segment a-seg" data-start="507.44" data-end="514.52" title="8:27">to infection or less commonly caused by loosen vessel ties or sloughing of dead tissue. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="514.52">
+  <div class="q-label">Q9</div>
+  <div class="q-body"><span class="segment q-seg" data-start="514.52" data-end="519.16" title="8:34">What is the blood supply to the tonsula bed? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="519.16" data-end="524.44" title="8:39">The tonsules are supplied by the external corroded artery and its branches. </span></li>
+<li><span class="segment a-seg" data-start="524.44" data-end="530.52" title="8:44">The superior pole is supplied by the tonsula branches of the ascending pharyngeal artery </span></li>
+<li><span class="segment a-seg" data-start="530.52" data-end="533.04" title="8:50">and lesser palatine artery. </span></li>
+<li><span class="segment a-seg" data-start="533.04" data-end="540.04" title="8:53">And the inferior pole is supplied by the ascending palatine artery, dorsal lingual artery and </span></li>
+<li><span class="segment a-seg" data-start="540.04" data-end="543.12" title="9:00">the facial artery branches. </span></li>
+<li><span class="segment a-seg" data-start="543.12" data-end="548.82" title="9:03">Vena's drainage of the tonsules is via the lingual vein, the pharyngeal and tonsula </span></li>
+<li><span class="segment a-seg" data-start="548.82" data-end="550.88" title="9:08">capsule plexuses. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="550.88">
+  <div class="q-label">Q10</div>
+  <div class="q-body"><span class="segment q-seg" data-start="550.88" data-end="556.56" title="9:10">What are the risk factors for a predisposition to post tonsulaectomy bleeding? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="556.56" data-end="561.8" title="9:16">The surgical technique is the most important determinant of risk of post tonsulaectomy </span></li>
+<li><span class="segment a-seg" data-start="561.8" data-end="563.12" title="9:21">bleeding. </span></li>
+<li><span class="segment a-seg" data-start="563.12" data-end="568.36" title="9:23">The use of diothermia carries three times the risk of postoperative bleeding compared </span></li>
+<li><span class="segment a-seg" data-start="568.36" data-end="572.44" title="9:28">to a more traditional technique using ties and packs. </span></li>
+<li><span class="segment a-seg" data-start="572.44" data-end="577.44" title="9:32">The latter, however, is accompanied by more intraoperative bleeding. </span></li>
+<li><span class="segment a-seg" data-start="577.44" data-end="584.44" title="9:37">Other risk factors for post tonsulaectomy bleed include increasing age and being male. </span></li>
+<li><span class="segment a-seg" data-start="584.44" data-end="588.84" title="9:44">Part 2. </span></li>
+<li><span class="segment a-seg" data-start="588.84" data-end="591.44" title="9:48">Spolador inhaled foreign body. </span></li>
+<li><span class="segment a-seg" data-start="591.44" data-end="596.8" title="9:51">A two-year-old boy presents on the emergency list for a rigid bronchoscopy to remove an </span></li>
+<li><span class="segment a-seg" data-start="596.8" data-end="598.44" title="9:56">aspirator peanut. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="598.44">
+  <div class="q-label">Q11</div>
+  <div class="q-body"><span class="segment q-seg" data-start="598.44" data-end="603.76" title="9:58">What are the key considerations in this case? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="603.76" data-end="609.8" title="10:03">The most important considerations are whether established or impending airway compromise is </span></li>
+<li><span class="segment a-seg" data-start="609.8" data-end="611.08" title="10:09">present. </span></li>
+<li><span class="segment a-seg" data-start="611.08" data-end="616.96" title="10:11">Other anesthetic challenges include a shared airway and the risk of pulmonary aspiration, </span></li>
+<li><span class="segment a-seg" data-start="616.96" data-end="620.28" title="10:16">particularly if the patient is not starved. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="620.28">
+  <div class="q-label">Q12</div>
+  <div class="q-body"><span class="segment q-seg" data-start="620.28" data-end="627.52" title="10:20">How can differentiate between upper and lower airway obstruction and why is this important? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="627.52" data-end="633.08" title="10:27">It is important to differentiate between upper and lower airway obstruction as they are </span></li>
+<li><span class="segment a-seg" data-start="633.08" data-end="635.48" title="10:33">managed differently. </span></li>
+<li><span class="segment a-seg" data-start="635.48" data-end="641.64" title="10:35">Foreign bodies in the upper airway may present as emergencies requiring immediate attention. </span></li>
+<li><span class="segment a-seg" data-start="641.64" data-end="646.68" title="10:41">The child is more likely to present acutely with respiratory distress. </span></li>
+<li><span class="segment a-seg" data-start="646.68" data-end="649.36" title="10:46">They may have stride or and drooling. </span></li>
+<li><span class="segment a-seg" data-start="649.36" data-end="655.04" title="10:49">They may be using accessory muscles of respiration and have intercostal recession. </span></li>
+<li><span class="segment a-seg" data-start="655.04" data-end="661.0" title="10:55">In extreme cases they can even present with complete respiratory obstruction. </span></li>
+<li><span class="segment a-seg" data-start="661.0" data-end="666.52" title="11:01">The narrowest point of a pediatric airway is at the level of the cryoid ring and therefore </span></li>
+<li><span class="segment a-seg" data-start="666.52" data-end="671.72" title="11:06">foreign bodies can lodge at this point. </span></li>
+<li><span class="segment a-seg" data-start="671.72" data-end="677.84" title="11:11">Foreign bodies that lodge more distally tend to present later and less acutely. </span></li>
+<li><span class="segment a-seg" data-start="677.84" data-end="684.32" title="11:17">The child may present with a persisting cough, bronchospasm and signs of infection. </span></li>
+<li><span class="segment a-seg" data-start="684.32" data-end="690.8" title="11:24">If they are pyrexial or have raised inflammatory markers, they will require a course of antibiotics. </span></li>
+<li><span class="segment a-seg" data-start="691.12" data-end="697.32" title="11:31">The oil from a peanut is especially irritant and can cause mucosal edema and chemical </span></li>
+<li><span class="segment a-seg" data-start="697.32" data-end="699.4" title="11:37">pneumonitis. </span></li>
+<li><span class="segment a-seg" data-start="699.4" data-end="704.88" title="11:39">In addition to a thorough history and examination, chest radiographs may help determine the </span></li>
+<li><span class="segment a-seg" data-start="704.88" data-end="707.32" title="11:44">location of the foreign body. </span></li>
+<li><span class="segment a-seg" data-start="707.32" data-end="712.72" title="11:47">If the foreign body is radio loosened, areas of hyperinflation from air trapping may be </span></li>
+<li><span class="segment a-seg" data-start="712.72" data-end="716.8" title="11:52">present distal to the site of the foreign body. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="716.8">
+  <div class="q-label">Q13</div>
+  <div class="q-body"><span class="segment q-seg" data-start="716.8" data-end="722.88" title="11:56">What further information do you like about this case prior to proceeding with the case? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="722.88" data-end="727.48" title="12:02">Firstly, I would like to know whether the child was stable and whether there were signs </span></li>
+<li><span class="segment a-seg" data-start="727.48" data-end="729.88" title="12:07">of respiratory distress. </span></li>
+<li><span class="segment a-seg" data-start="729.88" data-end="735.8" title="12:09">If I suspected the airway was compromised, I would attend the child immediately and request </span></li>
+<li><span class="segment a-seg" data-start="735.8" data-end="737.32" title="12:15">senior help. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="737.32">
+  <div class="q-label">Q14</div>
+  <div class="q-body"><span class="segment q-seg" data-start="737.32" data-end="743.12" title="12:17">However, if the child was stable, I would take a thorough preoperative history and examine </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="743.12" data-end="744.32" title="12:23">the child. </span></li>
+<li><span class="segment a-seg" data-start="744.32" data-end="749.44" title="12:24">I would review the chest x-ray to determine the level at which the foreign body has become </span></li>
+<li><span class="segment a-seg" data-start="749.44" data-end="751.04" title="12:29">lodged. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="751.04">
+  <div class="q-label">Q15</div>
+  <div class="q-body"><span class="segment q-seg" data-start="751.04" data-end="754.48" title="12:31">Would you pre-medicate the child? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="754.48" data-end="760.0" title="12:34">I would request topical local anesthetic cream to be applied to both hands prior to intravenous </span></li>
+<li><span class="segment a-seg" data-start="760.0" data-end="761.48" title="12:40">cannulation. </span></li>
+<li><span class="segment a-seg" data-start="761.48" data-end="765.56" title="12:41">I would also consider the use of an anticholinergic agent. </span></li>
+<li><span class="segment a-seg" data-start="765.56" data-end="771.88" title="12:45">This may be helpful as it would decrease secretions and vagal tone, thus aiding intubation and </span></li>
+<li><span class="segment a-seg" data-start="771.88" data-end="775.88" title="12:51">avoiding braddocardia during instrumentation of the airway. </span></li>
+<li><span class="segment a-seg" data-start="775.88" data-end="780.04" title="12:55">I would, however, avoid sedative pre-medication. </span></li>
+<li><span class="segment a-seg" data-start="780.04" data-end="782.64" title="13:00">The child is stable when calm by his mother. </span></li>
+<li><span class="segment a-seg" data-start="782.64" data-end="786.2" title="13:02">He is mild stride or when upset and is drooling. </span></li>
+<li><span class="segment a-seg" data-start="786.2" data-end="791.4" title="13:06">He has a heart rate of 130 beats per minute and a respiratory rate of 24 breaths per minute, </span></li>
+<li><span class="segment a-seg" data-start="791.4" data-end="795.28" title="13:11">with an arterial saturation of 100 percent on air. </span></li>
+<li><span class="segment a-seg" data-start="795.28" data-end="799.64" title="13:15">Radiographically the coin is seen at the level of the crycord cartilage. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="799.64">
+  <div class="q-label">Q16</div>
+  <div class="q-body"><span class="segment q-seg" data-start="799.64" data-end="803.52" title="13:19">How would your niece's child? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="803.52" data-end="809.32" title="13:23">In this case, there is sufficient airway compromise to proceed with anesthesia without allowing </span></li>
+<li><span class="segment a-seg" data-start="809.32" data-end="811.28" title="13:29">time for fasting. </span></li>
+<li><span class="segment a-seg" data-start="811.28" data-end="817.2" title="13:31">I would contact the consultant on call and ask for them to come in, as this child is only </span></li>
+<li><span class="segment a-seg" data-start="817.2" data-end="821.52" title="13:37">two years old and a second pair of hands will be necessary. </span></li>
+<li><span class="segment a-seg" data-start="821.52" data-end="826.72" title="13:41">I would also request the help of an experienced anesthetic assistant. </span></li>
+<li><span class="segment a-seg" data-start="826.72" data-end="832.6" title="13:46">Prior to induction of anesthesia, I would ensure the ENT surgeons were immediately available </span></li>
+<li><span class="segment a-seg" data-start="832.6" data-end="838.6" title="13:52">and ready to proceed with a bronchoscopy or help establish a surgical airway if complete </span></li>
+<li><span class="segment a-seg" data-start="838.6" data-end="842.28" title="13:58">respiratory obstruction should ensue. </span></li>
+<li><span class="segment a-seg" data-start="842.28" data-end="848.32" title="14:02">I would check all my equipment prior to induction and ensure all connections are compatible with </span></li>
+<li><span class="segment a-seg" data-start="848.32" data-end="850.28" title="14:08">the rigid broncuscope. </span></li>
+<li><span class="segment a-seg" data-start="850.28" data-end="856.6" title="14:10">My preferred option for induction of anesthesia is inhalation of seabuffluorane in 100 percent </span></li>
+<li><span class="segment a-seg" data-start="856.6" data-end="859.84" title="14:16">oxygen sitting on their parent's lap. </span></li>
+<li><span class="segment a-seg" data-start="859.84" data-end="865.16" title="14:19">I would avoid neuromuscular blockers as loss of muscular tone could result in loss of the </span></li>
+<li><span class="segment a-seg" data-start="865.16" data-end="870.08" title="14:25">airway as well as it resulting in the need for bag mask ventilation. </span></li>
+<li><span class="segment a-seg" data-start="870.08" data-end="875.76" title="14:30">This could push the foreign body down further causing complete occlusion, air trapping or </span></li>
+<li><span class="segment a-seg" data-start="875.76" data-end="879.72" title="14:35">in extreme cases attention pneumothorax. </span></li>
+<li><span class="segment a-seg" data-start="879.72" data-end="887.04" title="14:39">I would spray the cords with local anesthetic to decrease stimulation during instrumentation. </span></li>
+<li><span class="segment a-seg" data-start="887.04" data-end="893.08" title="14:47">Retrieval of the foreign body can be attempted when a deep enough plane of anesthesia is achieved. </span></li>
+<li><span class="segment a-seg" data-start="893.08" data-end="899.24" title="14:53">Hallothane is sometimes preferred because its offset of action is slower than seabuffluorane </span></li>
+<li><span class="segment a-seg" data-start="899.24" data-end="904.2" title="14:59">and therefore the patient is less likely to lighten during periods of breath holding </span></li>
+<li><span class="segment a-seg" data-start="904.2" data-end="906.04" title="15:04">and apnea. </span></li>
+<li><span class="segment a-seg" data-start="906.08" data-end="910.84" title="15:06">There are various anesthetic options during retrieval of the foreign body. </span></li>
+<li><span class="segment a-seg" data-start="910.84" data-end="916.96" title="15:10">A T-piece can be connected to a store's rigid ventilating broncuscope which allows delivery </span></li>
+<li><span class="segment a-seg" data-start="916.96" data-end="922.2" title="15:16">of volatile and oxygen to a spontaneously breathing patient. </span></li>
+<li><span class="segment a-seg" data-start="922.2" data-end="927.12" title="15:22">Intermittent positive pressure ventilation can be delivered with this system but as previously </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="927.12">
+  <div class="q-label">Q17</div>
+  <div class="q-body"><span class="segment q-seg" data-start="927.12" data-end="930.52" title="15:27">discussed is best avoided in this case. </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="930.52" data-end="936.84" title="15:30">In deflation with a Sanders injector is not recommended for the same reasons. </span></li>
+<li><span class="segment a-seg" data-start="936.84" data-end="942.72" title="15:36">My preferred technique would be to allow the child to breathe spontaneously and attach </span></li>
+<li><span class="segment a-seg" data-start="942.72" data-end="947.52" title="15:42">the T-piece to the broncuscope during foreign body removal. </span></li>
+<li><span class="segment a-seg" data-start="947.52" data-end="954.56" title="15:47">The child's vital signs should be continuously monitored and the chest continually observed. </span></li>
+<li><span class="segment a-seg" data-start="954.56" data-end="960.88" title="15:54">The most common problems encountered will be hyper-tension, tachycardia or ventricular </span></li>
+<li><span class="segment a-seg" data-start="960.88" data-end="967.32" title="16:00">ectopic beats, hypoxia, hyper-carbure and coughing. </span></li>
+<li><span class="segment a-seg" data-start="967.32" data-end="972.92" title="16:07">I would administer dexamethasone to decrease the incidence of airway edema. </span></li>
+<li><span class="segment a-seg" data-start="972.92" data-end="979.08" title="16:12">With prior consent from the parents I would give rectal or intravenous paracetamol and </span></li>
+<li><span class="segment a-seg" data-start="979.08" data-end="983.16" title="16:19">rectal dichlorphenac if there were no contraindications. </span></li>
+<li><span class="segment a-seg" data-start="983.16" data-end="988.72" title="16:23">I would avoid opiates as postoperative pain is uncommon. </span></li>
+<li><span class="segment a-seg" data-start="988.72" data-end="994.16" title="16:28">Postoperatively the child should have a prolonged stay in the recovery room to observe for </span></li>
+<li><span class="segment a-seg" data-start="994.16" data-end="998.8" title="16:34">reactive edema and monitor respiratory function. </span></li>
+<li><span class="segment a-seg" data-start="998.8" data-end="1002.76" title="16:38">With the method of anaesthesia in postoperative care differ if there was a foreign body </span></li>
+<li><span class="segment a-seg" data-start="1002.76" data-end="1006.64" title="16:42">lodging the lower airways. </span></li>
+<li><span class="segment a-seg" data-start="1006.64" data-end="1012.88" title="16:46">With lower airway obstruction the avoidance of bag mask ventilation and intermittent positive </span></li>
+<li><span class="segment a-seg" data-start="1012.88" data-end="1016.04" title="16:52">pressure ventilation is less critical. </span></li>
+<li><span class="segment a-seg" data-start="1016.04" data-end="1020.84" title="16:56">The surgeon will often need to push the foreign body more distal until it can be grasped </span></li>
+<li><span class="segment a-seg" data-start="1020.84" data-end="1023.64" title="17:00">by four steps. </span></li>
+<li><span class="segment a-seg" data-start="1023.64" data-end="1029.08" title="17:03">Cases of lower airway foreign body aspiration are less likely to present acutely with airway </span></li>
+<li><span class="segment a-seg" data-start="1029.08" data-end="1034.12" title="17:09">compromise and therefore there will be time to ensure the patient is starved. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="1034.12">
+  <div class="q-label">Q18</div>
+  <div class="q-body"><span class="segment q-seg" data-start="1034.12" data-end="1039.96" title="17:14">However there may be signs of pneumonia or pneumonitis which may require treatment prior </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="1039.96" data-end="1042.16" title="17:19">to surgery. </span></li>
+<li><span class="segment a-seg" data-start="1042.24" data-end="1049.16" title="17:22">Postoperatively the child should be extubated awake in the head down and left lateral position. </span></li>
+<li><span class="segment a-seg" data-start="1049.16" data-end="1054.76" title="17:29">As in upper airway foreign body removal the child should have a prolonged stay in recovery </span></li>
+<li><span class="segment a-seg" data-start="1054.76" data-end="1059.48" title="17:34">to observe for reactive edema and monitor respiratory function. </span></li>
+<li><span class="segment a-seg" data-start="1059.48" data-end="1065.52" title="17:39">The child may need a course of steroids and antibiotics and if the obstruction was prolonged </span></li>
+<li><span class="segment a-seg" data-start="1065.52" data-end="1069.76" title="17:45">physiotherapy and humidified oxygen may be beneficial. </span></li>
+<li><span class="segment a-seg" data-start="1069.76" data-end="1075.52" title="17:49">If the child shows signs of sepsis they should be monitored in a high dependency environment </span></li>
+<li><span class="segment a-seg" data-start="1075.52" data-end="1076.76" title="17:55">until these resolve. </span></li>
+  </ul>
+</div>
+</div>
+
 </div>
 
 <div class="subtitle-bar">
-  <span class="subtitle-text empty" id="subtitle-text">Play audio to see live subtitles&#8230;</span>
+  <span id="subtitle-text" class="empty">Play audio to see live subtitles&#8230;</span>
 </div>
 
 <script>
-
-const audio    = document.getElementById('audio');
-const allSegs  = Array.from(document.querySelectorAll('.segment'));
-const allBlocks = Array.from(document.querySelectorAll('.t-block'));
+const audio      = document.getElementById('audio');
+const allSegs    = Array.from(document.querySelectorAll('.segment'));
 const subtitleEl = document.getElementById('subtitle-text');
-let activeSegEl   = null;
-let activeBlockEl = null;
-let searchMatches = [];
-let searchIdx     = 0;
+let activeSegEl  = null;
+let searchMatches = [], searchIdx = 0;
 
-// Duration display
 audio.addEventListener('loadedmetadata', () => {
   const m = Math.floor(audio.duration / 60);
   const s = Math.floor(audio.duration %% 60).toString().padStart(2,'0');
   document.getElementById('dur').textContent = m + ':' + s;
 });
 
-// Seek helper
-function seekTo(t) {
-  audio.currentTime = t;
-  audio.play();
-}
+function seekTo(t) { audio.currentTime = t; audio.play(); }
 
-// Block gutter click
-document.querySelectorAll('.t-gutter').forEach(g => {
-  g.addEventListener('click', () => seekTo(parseFloat(g.dataset.start)));
+// Q-block header click
+document.querySelectorAll('.q-block').forEach(q => {
+  q.addEventListener('click', e => {
+    if (!e.target.classList.contains('segment')) seekTo(parseFloat(q.dataset.start));
+  });
 });
 
-// Segment click
+// Individual segment click
 allSegs.forEach(s => {
-  s.addEventListener('click', e => {
-    e.stopPropagation();
-    seekTo(parseFloat(s.dataset.start));
-  });
+  s.addEventListener('click', e => { e.stopPropagation(); seekTo(parseFloat(s.dataset.start)); });
 });
 
 // Real-time tracking
 audio.addEventListener('timeupdate', () => {
   const t = audio.currentTime;
-
-  // Find active segment (last one whose start <= t)
   let found = null;
   for (let i = allSegs.length - 1; i >= 0; i--) {
     if (parseFloat(allSegs[i].dataset.start) <= t) { found = allSegs[i]; break; }
   }
-
   if (found && found !== activeSegEl) {
-    // Clear previous
-    if (activeSegEl) activeSegEl.classList.remove('active');
-    if (activeBlockEl) {
-      activeBlockEl.classList.remove('block-active');
-      const pg = activeBlockEl.querySelector('.t-gutter');
-      if (pg) pg.classList.remove('gutter-active');
+    if (activeSegEl) {
+      activeSegEl.classList.remove('active');
+      const pli = activeSegEl.closest('li');
+      if (pli) pli.classList.remove('li-active');
+      const pq = activeSegEl.closest('.q-block');
+      if (pq) pq.classList.remove('q-active');
     }
-    // Set new
     found.classList.add('active');
-    const block = found.closest('.t-block');
-    if (block) {
-      block.classList.add('block-active');
-      const g = block.querySelector('.t-gutter');
-      if (g) g.classList.add('gutter-active');
-      activeBlockEl = block;
-    }
+    const li = found.closest('li');
+    if (li) li.classList.add('li-active');
+    const qb = found.closest('.q-block');
+    if (qb) qb.classList.add('q-active');
     activeSegEl = found;
 
-    // Update subtitle
     subtitleEl.textContent = found.textContent.trim();
     subtitleEl.classList.remove('empty');
 
-    // Auto-scroll (only when not searching)
-    if (!document.getElementById('search').value) {
+    if (!document.getElementById('search').value)
       found.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }
   }
 });
 
@@ -404,17 +658,13 @@ searchInput.addEventListener('keydown', e => {
     el.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
 });
-
 function runSearch() {
   const q = searchInput.value.trim().toLowerCase();
   allSegs.forEach(s => s.classList.remove('search-match','search-current'));
   searchMatches = [];
   if (!q) return;
   allSegs.forEach(s => {
-    if (s.textContent.toLowerCase().includes(q)) {
-      s.classList.add('search-match');
-      searchMatches.push(s);
-    }
+    if (s.textContent.toLowerCase().includes(q)) { s.classList.add('search-match'); searchMatches.push(s); }
   });
   if (!searchMatches.length) return;
   searchIdx = 0;

@@ -5,10 +5,19 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Obstetrics — Medical Diseases Complicating Pregnancy 1</title>
 <style>
-
   :root {
-    --accent:    #db2777;
-    --body-bg:   #f1f5f9;
+    --q-bg:       #1e3a5f;
+    --q-text:     #ffffff;
+    --q-label:    #60a5fa;
+    --a-bg:       #ffffff;
+    --a-border:   #e2e8f0;
+    --a-label:    #059669;
+    --active-q:   #db2777;
+    --active-a:   #dbeafe;
+    --accent:     #db2777;
+    --body-bg:    #f1f5f9;
+    --pre-bg:     #fef9c3;
+    --pre-border: #fcd34d;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
@@ -40,22 +49,9 @@
     margin-bottom: 4px;
     letter-spacing: 0.01em;
   }
-  .header-sub {
-    font-size: 0.72rem;
-    color: #94a3b8;
-    font-style: italic;
-  }
-  audio {
-    height: 36px;
-    accent-color: var(--accent);
-    flex-shrink: 0;
-  }
-  .back-link {
-    font-size: 0.8rem;
-    color: #94a3b8;
-    text-decoration: none;
-    white-space: nowrap;
-  }
+  .header-sub { font-size: 0.72rem; color: #94a3b8; font-style: italic; }
+  audio { height: 36px; accent-color: var(--accent); flex-shrink: 0; }
+  .back-link { font-size: 0.8rem; color: #94a3b8; text-decoration: none; white-space: nowrap; }
   .back-link:hover { color: #60a5fa; }
 
   /* ── Toolbar ── */
@@ -69,30 +65,17 @@
     border-bottom: 1px solid #334155;
   }
   .toolbar input {
-    flex: 1;
-    max-width: 380px;
+    flex: 1; max-width: 380px;
     padding: 5px 11px;
-    border: 1px solid #475569;
-    border-radius: 6px;
-    background: #0f172a;
-    color: #e2e8f0;
-    font-size: 0.83rem;
-    outline: none;
+    border: 1px solid #475569; border-radius: 6px;
+    background: #0f172a; color: #e2e8f0; font-size: 0.83rem; outline: none;
   }
   .toolbar input:focus { border-color: var(--accent); }
   .toolbar input::placeholder { color: #64748b; }
-  .stats {
-    font-size: 0.72rem;
-    color: #64748b;
-    white-space: nowrap;
-  }
+  .stats { font-size: 0.72rem; color: #64748b; white-space: nowrap; }
 
   /* ── Scroll area ── */
-  .scroll-area {
-    flex: 1;
-    overflow-y: auto;
-    padding: 20px;
-  }
+  .scroll-area { flex: 1; overflow-y: auto; padding: 20px; }
   .scroll-area::-webkit-scrollbar { width: 6px; }
   .scroll-area::-webkit-scrollbar-track { background: transparent; }
   .scroll-area::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
@@ -107,68 +90,77 @@
     display: flex;
     align-items: center;
   }
-  .subtitle-text {
-    font-size: 0.9rem;
-    color: #e2e8f0;
-    line-height: 1.5;
-    font-style: italic;
-  }
-  .subtitle-text.empty { color: #475569; }
+  #subtitle-text { font-size: 0.88rem; color: #e2e8f0; line-height: 1.5; font-style: italic; }
+  #subtitle-text.empty { color: #475569; }
 
-  /* ── Transcript blocks ── */
-  .t-block {
-    background: #ffffff;
-    border: 1px solid #e2e8f0;
-    border-radius: 10px;
-    margin-bottom: 14px;
-    overflow: hidden;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
-    display: flex;
-  }
-  .t-block.block-active {
-    border-color: var(--accent);
-    box-shadow: 0 0 0 2px rgba(37,99,235,0.15);
-  }
-  .t-gutter {
-    background: #0f172a;
-    width: 52px;
-    flex-shrink: 0;
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
-    padding-top: 14px;
-    cursor: pointer;
-  }
-  .t-gutter:hover { background: #1e293b; }
-  .t-timestamp {
-    font-size: 0.7rem;
-    color: #64748b;
-    font-family: monospace;
-    font-weight: 600;
-    letter-spacing: 0.02em;
-  }
-  .t-gutter.gutter-active .t-timestamp { color: var(--accent); }
-  .t-body {
-    flex: 1;
+  /* ── Preamble ── */
+  .preamble-block {
+    background: var(--pre-bg);
+    border-left: 4px solid var(--pre-border);
+    border-radius: 0 8px 8px 0;
     padding: 12px 16px;
-    line-height: 1.75;
-    font-size: 0.92rem;
-    color: #1e293b;
+    margin-bottom: 20px;
+    font-size: 0.88rem;
+    color: #78350f;
+    font-style: italic;
+    line-height: 1.7;
   }
 
-  /* ── Segments ── */
-  .segment {
+  /* ── Q&A pair ── */
+  .qa-pair { margin-bottom: 20px; border-radius: 10px; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+
+  /* Question block */
+  .q-block {
+    background: var(--q-bg);
+    padding: 14px 18px;
+    display: flex; gap: 14px; align-items: flex-start;
     cursor: pointer;
-    border-radius: 3px;
-    transition: background 0.1s;
+    transition: background 0.15s;
   }
-  .segment:hover { background: #eff6ff; }
-  .segment.active {
-    background: #bfdbfe;
-    outline: 2px solid #3b82f6;
-    outline-offset: 1px;
-    border-radius: 3px;
+  .q-block:hover { background: #1d4ed8; }
+  .q-block.q-active { background: var(--active-q); }
+  .q-label {
+    font-size: 0.7rem; font-weight: 700;
+    color: var(--q-label);
+    background: rgba(96,165,250,0.15);
+    border: 1px solid rgba(96,165,250,0.3);
+    border-radius: 5px; padding: 3px 7px;
+    white-space: nowrap; margin-top: 2px; letter-spacing: 0.05em;
+    flex-shrink: 0;
   }
+  .q-body { flex: 1; font-size: 0.97rem; font-weight: 600; color: var(--q-text); line-height: 1.55; }
+
+  /* Answer block */
+  .a-block {
+    background: var(--a-bg);
+    border: 1px solid var(--a-border); border-top: none;
+    padding: 14px 18px;
+    display: flex; gap: 14px; align-items: flex-start;
+  }
+  .a-label {
+    font-size: 0.7rem; font-weight: 700;
+    color: var(--a-label);
+    background: #d1fae5; border: 1px solid #6ee7b7;
+    border-radius: 5px; padding: 3px 9px;
+    white-space: nowrap; margin-top: 2px; letter-spacing: 0.05em;
+    flex-shrink: 0;
+  }
+  .a-body { flex: 1; list-style: none; padding: 0; }
+  .a-body li {
+    padding: 4px 0 4px 14px;
+    border-left: 3px solid transparent;
+    line-height: 1.7; font-size: 0.92rem; color: #1e293b;
+    border-radius: 0 4px 4px 0;
+    transition: background 0.15s;
+  }
+  .a-body li:not(:last-child) { border-bottom: 1px solid #f1f5f9; }
+
+  /* ── Segments (clickable) ── */
+  .segment { cursor: pointer; border-radius: 3px; }
+  .q-seg:hover { background: rgba(255,255,255,0.18); }
+  .a-seg:hover { background: #eff6ff; }
+  .segment.active { background: #bfdbfe; outline: 2px solid #3b82f6; outline-offset: 1px; }
+  .a-body li.li-active { background: var(--active-a); border-left-color: var(--accent); }
   .segment.search-match  { background: #fef9c3; }
   .segment.search-current { background: #fde047; outline: 2px solid #ca8a04; }
 
@@ -187,154 +179,357 @@
 
 <div class="toolbar">
   <input type="text" id="search" placeholder="Search transcript&#8230; (Enter = next match)">
-  <span class="stats" id="stats">123 segments &nbsp;|&nbsp; <span id="dur">loading&#8230;</span></span>
+  <span class="stats" id="stats">17 questions &nbsp;|&nbsp; 123 segments &nbsp;|&nbsp; <span id="dur">loading&#8230;</span></span>
 </div>
 
 <div class="scroll-area" id="scroll-area">
-<div class="t-block">
-  <div class="t-gutter" data-start="0.0"><span class="t-timestamp">0:00</span></div>
-  <div class="t-body"><span class="segment" data-start="0.0" data-end="4.0" title="0:00">Medical disease is complicating pregnancy one. </span><span class="segment" data-start="4.0" data-end="8.24" title="0:04">You are now the anesthetist present at an electosterion section for a healthy primate </span><span class="segment" data-start="8.24" data-end="11.6" title="0:08">diagnosis of the breach presentation. </span><span class="segment" data-start="11.6" data-end="16.44" title="0:11">She had an uneventful spinal anesthetic and uneventful delivery. </span><span class="segment" data-start="16.44" data-end="20.12" title="0:16">The obstetricians are suturing the uterus when she becomes a cutely short of breath or </span><span class="segment" data-start="20.12" data-end="22.64" title="0:20">dyspnic. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="22.64"><span class="t-timestamp">0:22</span></div>
-  <div class="t-body"><span class="segment" data-start="22.64" data-end="26.76" title="0:22">What potential differential diagnoses would you consider in this case? </span><span class="segment" data-start="26.76" data-end="32.04" title="0:26">This is a clinical question that is initially testing your ability to cover all the potential </span><span class="segment" data-start="32.04" data-end="33.36" title="0:32">problems. </span><span class="segment" data-start="33.36" data-end="38.08" title="0:33">Use a structured approach to try and remember as many possibilities as you can whilst </span><span class="segment" data-start="38.08" data-end="44.2" title="0:38">recognising the important conditions particular to this situation. </span><span class="segment" data-start="44.2" data-end="48.96" title="0:44">There are a number of potential causes of shortness of breath in women undergoing an elective </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="48.96"><span class="t-timestamp">0:48</span></div>
-  <div class="t-body"><span class="segment" data-start="48.96" data-end="52.64" title="0:48">caesarian section under spinal anesthesia. </span><span class="segment" data-start="52.64" data-end="58.6" title="0:52">These may be divided into respiratory, cardiovascular or drug related problems. </span><span class="segment" data-start="58.6" data-end="62.52" title="0:58">The respiratory complications may be due to bronchospasm. </span><span class="segment" data-start="62.52" data-end="70.92" title="1:02">This may be associated with asthma, hyperreactive airways and a smoker, anaphylaxis or aspiration. </span><span class="segment" data-start="70.92" data-end="78.04" title="1:10">Further potential respiratory causes are hypoxia secondary to atelectasis, pulmonary edema, </span><span class="segment" data-start="78.04" data-end="84.48" title="1:18">pulmonary embolism which might be amniotic fluid or blood clot or even enumothorax. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="84.48"><span class="t-timestamp">1:24</span></div>
-  <div class="t-body"><span class="segment" data-start="84.48" data-end="89.8" title="1:24">Cardiovascular complications such as acute hemorrhage or decompensation from pre-existing </span><span class="segment" data-start="89.8" data-end="94.32" title="1:29">valve or cardiac disease may have caused the disneyer. </span><span class="segment" data-start="94.32" data-end="100.2" title="1:34">Finally, there may be a drug related problem such as a high spinal, anaphylaxis or drug </span><span class="segment" data-start="100.2" data-end="104.44" title="1:40">reaction such as carboprost induced bronchospasm. </span><span class="segment" data-start="104.44" data-end="108.72" title="1:44">How common is amniotic fluid embolism? </span><span class="segment" data-start="108.72" data-end="111.6" title="1:48">Amniotic fluid embolism is uncommon. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="111.6"><span class="t-timestamp">1:51</span></div>
-  <div class="t-body"><span class="segment" data-start="111.6" data-end="117.68" title="1:51">Its incidence varies from 1 in 8000 to 1 in 80000 pregnancies. </span><span class="segment" data-start="117.68" data-end="122.96" title="1:57">It accounts for 0.8 maternal deaths per 100,000 deliveries. </span><span class="segment" data-start="122.96" data-end="127.64" title="2:02">The disease process occurs most frequently during labour. </span><span class="segment" data-start="127.64" data-end="133.72" title="2:07">Risk factors associated with developing amniotic fluid embolism may be divided into maternal, </span><span class="segment" data-start="133.72" data-end="137.28" title="2:13">fetal and uterine or placental. </span><span class="segment" data-start="137.28" data-end="144.08" title="2:17">Maternal factors include multiparous, older mothers and women with a history of atop. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="144.08"><span class="t-timestamp">2:24</span></div>
-  <div class="t-body"><span class="segment" data-start="144.08" data-end="152.16" title="2:24">Fetal factors include inter-uteraide death, muconium stained lycore and microsomia. </span><span class="segment" data-start="152.16" data-end="160.08" title="2:32">Uterine or placental factors include polyhydramneus, choreoamneonitis, strong or tetanic uterine </span><span class="segment" data-start="160.08" data-end="164.92" title="2:40">contractions, uterine rupture and placenta accretia. </span><span class="segment" data-start="164.92" data-end="170.88" title="2:44">Can you describe the pathophysiology of amniotic fluid embolism? </span><span class="segment" data-start="170.88" data-end="176.44" title="2:50">Amniotic fluid enters the maternal circulation via ruptured membranes or uterine vessels </span><span class="segment" data-start="176.44" data-end="180.52" title="2:56">down a pressure gradient from uterus to vein. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="180.52"><span class="t-timestamp">3:00</span></div>
-  <div class="t-body"><span class="segment" data-start="180.52" data-end="186.92" title="3:00">The fetal antigens in the fluid then stimulate the release of a cascade of biochemical mediators. </span><span class="segment" data-start="186.92" data-end="193.12" title="3:06">Initially these cause pulmonary artery vasospasm followed by acute elevation of right ventricular </span><span class="segment" data-start="193.12" data-end="196.76" title="3:13">pressures and right ventricular dysfunction. </span><span class="segment" data-start="196.76" data-end="202.4" title="3:16">This in turn leads to hypoxemia, hypotension and myocardial damage. </span><span class="segment" data-start="202.4" data-end="208.4" title="3:22">The patient may then develop left ventricular failure and pulmonary edema. </span><span class="segment" data-start="208.4" data-end="213.56" title="3:28">Disseminated intravascular coagulopathy may also be a feature of this condition. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="213.56"><span class="t-timestamp">3:33</span></div>
-  <div class="t-body"><span class="segment" data-start="213.56" data-end="217.88" title="3:33">What are the features of amniotic fluid embolism? </span><span class="segment" data-start="217.88" data-end="223.92" title="3:37">The symptoms of amniotic fluid embolism range from disneyer, cough and wheeze to headache </span><span class="segment" data-start="223.92" data-end="226.04" title="3:43">and chest pain. </span><span class="segment" data-start="226.04" data-end="234.16" title="3:46">Signs include fetal distress, hypoxia, tachyipnea, bronchospasm, hypocapnea if intubated due to </span><span class="segment" data-start="234.16" data-end="243.48" title="3:54">reduced cardiac output, tachycardia, hypotension, seizures, uterine atone, hemorrhage and coagulopathy. </span><span class="segment" data-start="244.28" data-end="249.16" title="4:04">Is there any specific management for suspected amniotic fluid embolism? </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="249.16"><span class="t-timestamp">4:09</span></div>
-  <div class="t-body"><span class="segment" data-start="249.16" data-end="253.4" title="4:09">No. The management is supportive and preventative. </span><span class="segment" data-start="253.4" data-end="258.4" title="4:13">Resuscitation of the pregnant woman should always be performed in the left lateral position </span><span class="segment" data-start="258.4" data-end="264.12" title="4:18">until the baby is delivered with aggressive treatment of hypoxia, cardiovascular failure </span><span class="segment" data-start="264.12" data-end="265.92" title="4:24">and coagulopathy. </span><span class="segment" data-start="265.92" data-end="269.88" title="4:25">Okay, let's move on to some pharmacology. </span><span class="segment" data-start="269.88" data-end="273.44" title="4:29">What is a toxicolistic agent? What are they used for? </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="273.44"><span class="t-timestamp">4:33</span></div>
-  <div class="t-body"><span class="segment" data-start="273.44" data-end="277.44" title="4:33">Name some examples in the mechanism of action. </span><span class="segment" data-start="277.44" data-end="282.08" title="4:37">Tocaolytics are drugs that are used to inhibit uterine contraction. </span><span class="segment" data-start="282.08" data-end="288.12" title="4:42">They may be indicated to inhibit premature labor or to reduce uterine contractions in cases </span><span class="segment" data-start="288.12" data-end="291.52" title="4:48">of uterine inversion or chord prolapse. </span><span class="segment" data-start="291.52" data-end="295.76" title="4:51">Drugs that are used can be classified according to their mode of action. </span><span class="segment" data-start="295.76" data-end="303.92" title="4:55">Drugs may act as oxytocin receptor antagonists, calcium channel antagonists, beta-2 adrenocept </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="303.92"><span class="t-timestamp">5:03</span></div>
-  <div class="t-body"><span class="segment" data-start="303.92" data-end="309.48" title="5:03">antagonists or act via nitric oxide. </span><span class="segment" data-start="309.48" data-end="314.84" title="5:09">Atosiban is a specific oxytocin receptor antagonist. </span><span class="segment" data-start="314.84" data-end="320.72" title="5:14">Calcium channel antagonists such as nephedipine, magnesium sulfate and the volatile agents may </span><span class="segment" data-start="320.72" data-end="322.4" title="5:20">be used. </span><span class="segment" data-start="322.4" data-end="328.96" title="5:22">Drugs acting on beta receptors include salbutamol, terbutiline and ritidrin, although </span><span class="segment" data-start="328.96" data-end="334.52" title="5:28">this particular medication is no longer recommended because of its poor side effects. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="334.52"><span class="t-timestamp">5:34</span></div>
-  <div class="t-body"><span class="segment" data-start="334.52" data-end="341.6" title="5:34">GTN may be used sublingually to relax uterine smooth muscle acting as a nitric oxide donor. </span><span class="segment" data-start="341.6" data-end="344.48" title="5:41">What about the drugs that stimulate the uterus? </span><span class="segment" data-start="344.48" data-end="349.32" title="5:44">What drugs do we use to aid uterine contraction? </span><span class="segment" data-start="349.32" data-end="354.04" title="5:49">The uterus contains a number of receptors that can be stimulated to cause contraction </span><span class="segment" data-start="354.04" data-end="356.08" title="5:54">of its smooth muscle. </span><span class="segment" data-start="356.08" data-end="365.28" title="5:56">These include oxytocin receptors, alpha-1 adrenoceptes, serotonergic and prostaglandin receptors. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="365.28"><span class="t-timestamp">6:05</span></div>
-  <div class="t-body"><span class="segment" data-start="365.28" data-end="371.04" title="6:05">Syntocinon is a synthetic oxytocin analogue that acts to increase both the frequency </span><span class="segment" data-start="371.04" data-end="373.64" title="6:11">and force of contractions. </span><span class="segment" data-start="373.64" data-end="379.28" title="6:13">It does cause peripheral vasodilitation and so can induce hypotension and a reflex </span><span class="segment" data-start="379.28" data-end="381.52" title="6:19">tachycardia. </span><span class="segment" data-start="381.52" data-end="388.28" title="6:21">Ergo-metrine is an ergot alkaloid that acts via adreno and serotonergic receptors to </span><span class="segment" data-start="388.28" data-end="391.64" title="6:28">stimulate uterine contraction. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="391.64"><span class="t-timestamp">6:31</span></div>
-  <div class="t-body"><span class="segment" data-start="391.64" data-end="398.12" title="6:31">Side effects include hypertension, coronary artery vasospasm and is a potent ametic. </span><span class="segment" data-start="398.12" data-end="403.52" title="6:38">Finally, prostaglandin analogue are used to stimulate uterine contraction. </span><span class="segment" data-start="403.52" data-end="408.52" title="6:43">These include prostaglandin F2 alpha or carboprost. </span><span class="segment" data-start="408.52" data-end="414.68" title="6:48">The side effects of carboprost include bronchospasm, pyrexia, flushing and hypotension. </span><span class="segment" data-start="414.68" data-end="419.76" title="6:54">It is contraindicated in patients with asthma. </span><span class="segment" data-start="419.76" data-end="425.16" title="6:59">All of these drugs are used in a stepwise manner when treating severe postpartum hemorrhage </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="425.16"><span class="t-timestamp">7:05</span></div>
-  <div class="t-body"><span class="segment" data-start="425.16" data-end="428.36" title="7:05">in conjunction with surgical interventions. </span><span class="segment" data-start="428.36" data-end="432.6" title="7:08">How do you define massive obstetric hemorrhage? </span><span class="segment" data-start="432.6" data-end="438.66" title="7:12">A massive obstetric hemorrhage may be described as greater than 1.5 litres of blood loss, a </span><span class="segment" data-start="438.66" data-end="444.88" title="7:18">fall in hemoglobin of more than 4 grams per desolita or a transfusion of more than 4 units </span><span class="segment" data-start="444.88" data-end="446.8" title="7:24">of blood. </span><span class="segment" data-start="446.8" data-end="452.52" title="7:26">Obstetric hemorrhage can also be split into antipartum and postpartum hemorrhage. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="452.52"><span class="t-timestamp">7:32</span></div>
-  <div class="t-body"><span class="segment" data-start="452.52" data-end="457.4" title="7:32">Antipartum is any bleed after 24 weeks and before delivery. </span><span class="segment" data-start="457.4" data-end="463.56" title="7:37">Hemorrhage occurs after delivery and may be further split into primary within 24 hours </span><span class="segment" data-start="463.56" data-end="467.16" title="7:43">or secondary within six weeks of delivery. </span><span class="segment" data-start="467.16" data-end="472.08" title="7:47">What is the blood flow to the uterus and why is it important? </span><span class="segment" data-start="472.08" data-end="479.04" title="7:52">Uterine blood flow increases from less than 5% to 10% of cardiac output at term or 1 </span><span class="segment" data-start="479.04" data-end="480.88" title="7:59">litre per minute. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="480.88"><span class="t-timestamp">8:00</span></div>
-  <div class="t-body"><span class="segment" data-start="480.88" data-end="484.8" title="8:00">Thus hemorrhage may be brisk and potentially uncontrollable. </span><span class="segment" data-start="484.8" data-end="490.44" title="8:04">What clinical signs may be evident in a woman who is bleeding postpartum? </span><span class="segment" data-start="490.44" data-end="495.52" title="8:10">The respiratory rate will increase initially and then attackicardia will develop. </span><span class="segment" data-start="495.52" data-end="501.56" title="8:15">This may be the only sign until 30% to 40% blood loss since maternal blood volume expands </span><span class="segment" data-start="501.56" data-end="503.68" title="8:21">prior to delivery. </span><span class="segment" data-start="503.68" data-end="508.68" title="8:23">A auto-caval compression will compound hemodynamic instability. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="508.68"><span class="t-timestamp">8:28</span></div>
-  <div class="t-body"><span class="segment" data-start="508.68" data-end="515.72" title="8:28">Hypotension reduced urine output and changes in conscious level will occur if bleeding continues. </span><span class="segment" data-start="515.72" data-end="520.52" title="8:35">What might be the first sign in a woman with antipartum hemorrhage? </span><span class="segment" data-start="520.52" data-end="525.8" title="8:40">The bleeding may be concealed and so fetal distress may be the first sign. </span><span class="segment" data-start="525.8" data-end="530.0" title="8:45">What are the causes of obstetric hemorrhage? </span><span class="segment" data-start="530.0" data-end="534.2" title="8:50">The cause is varied depending on the timing of the bleeding. </span><span class="segment" data-start="534.2" data-end="540.8" title="8:54">The pregnancy bleeding may be due to incomplete or septic abortion or a rupture dectopic. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="540.8"><span class="t-timestamp">9:00</span></div>
-  <div class="t-body"><span class="segment" data-start="540.8" data-end="548.6" title="9:00">Antipartum hemorrhage may be due to placenta-previa, abruption, uterine rupture or trauma. </span><span class="segment" data-start="548.6" data-end="551.64" title="9:08">Can you tell me any risk factors for abruption? </span><span class="segment" data-start="551.64" data-end="560.36" title="9:11">Yes, maternal hypertension, uterine over-distention, previous abruption, smoking and trauma. </span><span class="segment" data-start="560.36" data-end="564.36" title="9:20">And what about uterine rupture? </span><span class="segment" data-start="564.36" data-end="567.84" title="9:24">Previous cesarean section is the most common risk factor. </span><span class="segment" data-start="567.84" data-end="572.76" title="9:27">Now let's talk about the causes of postpartum hemorrhage. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="572.76"><span class="t-timestamp">9:32</span></div>
-  <div class="t-body"><span class="segment" data-start="572.76" data-end="577.48" title="9:32">Postpartum hemorrhage is most commonly due to uterine atony. </span><span class="segment" data-start="577.48" data-end="582.96" title="9:37">Additional causes include retained products of conception or placental or genital tract </span><span class="segment" data-start="582.96" data-end="590.4" title="9:42">trauma, abnormally adherent placental beds, clotting defects or uterine inversion. </span><span class="segment" data-start="590.4" data-end="595.08" title="9:50">So what are the risk factors for uterine atony? </span><span class="segment" data-start="595.08" data-end="601.0" title="9:55">These include prolonged or augmented labour, uterine over-distention, abnormalities or </span><span class="segment" data-start="601.0" data-end="606.8" title="10:01">multiple gestation, increased parity and increased maternal age. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="606.8"><span class="t-timestamp">10:06</span></div>
-  <div class="t-body"><span class="segment" data-start="606.8" data-end="611.84" title="10:06">And why might a woman develop a clotting abnormality? </span><span class="segment" data-start="611.84" data-end="617.42" title="10:11">Should a uterine death lead to chryagulopathy as does amniotic fluid embolism, sepsis, </span><span class="segment" data-start="617.42" data-end="624.04" title="10:17">preoclampsia, abruption and acute hemorrhage, from beside a peenia of pregnancy may also occur? </span></div>
+<div class="preamble-block"><span class="segment a-seg" data-start="0.0" data-end="4.0" title="0:00">Medical disease is complicating pregnancy one. </span><span class="segment a-seg" data-start="4.0" data-end="8.24" title="0:04">You are now the anesthetist present at an electosterion section for a healthy primate </span><span class="segment a-seg" data-start="8.24" data-end="11.6" title="0:08">diagnosis of the breach presentation. </span><span class="segment a-seg" data-start="11.6" data-end="16.44" title="0:11">She had an uneventful spinal anesthetic and uneventful delivery. </span><span class="segment a-seg" data-start="16.44" data-end="20.12" title="0:16">The obstetricians are suturing the uterus when she becomes a cutely short of breath or </span><span class="segment a-seg" data-start="20.12" data-end="22.64" title="0:20">dyspnic. </span></div>
+<div class="qa-pair">
+<div class="q-block" data-start="22.64">
+  <div class="q-label">Q1</div>
+  <div class="q-body"><span class="segment q-seg" data-start="22.64" data-end="26.76" title="0:22">What potential differential diagnoses would you consider in this case? </span></div>
 </div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="26.76" data-end="32.04" title="0:26">This is a clinical question that is initially testing your ability to cover all the potential </span></li>
+<li><span class="segment a-seg" data-start="32.04" data-end="33.36" title="0:32">problems. </span></li>
+<li><span class="segment a-seg" data-start="33.36" data-end="38.08" title="0:33">Use a structured approach to try and remember as many possibilities as you can whilst </span></li>
+<li><span class="segment a-seg" data-start="38.08" data-end="44.2" title="0:38">recognising the important conditions particular to this situation. </span></li>
+<li><span class="segment a-seg" data-start="44.2" data-end="48.96" title="0:44">There are a number of potential causes of shortness of breath in women undergoing an elective </span></li>
+<li><span class="segment a-seg" data-start="48.96" data-end="52.64" title="0:48">caesarian section under spinal anesthesia. </span></li>
+<li><span class="segment a-seg" data-start="52.64" data-end="58.6" title="0:52">These may be divided into respiratory, cardiovascular or drug related problems. </span></li>
+<li><span class="segment a-seg" data-start="58.6" data-end="62.52" title="0:58">The respiratory complications may be due to bronchospasm. </span></li>
+<li><span class="segment a-seg" data-start="62.52" data-end="70.92" title="1:02">This may be associated with asthma, hyperreactive airways and a smoker, anaphylaxis or aspiration. </span></li>
+<li><span class="segment a-seg" data-start="70.92" data-end="78.04" title="1:10">Further potential respiratory causes are hypoxia secondary to atelectasis, pulmonary edema, </span></li>
+<li><span class="segment a-seg" data-start="78.04" data-end="84.48" title="1:18">pulmonary embolism which might be amniotic fluid or blood clot or even enumothorax. </span></li>
+<li><span class="segment a-seg" data-start="84.48" data-end="89.8" title="1:24">Cardiovascular complications such as acute hemorrhage or decompensation from pre-existing </span></li>
+<li><span class="segment a-seg" data-start="89.8" data-end="94.32" title="1:29">valve or cardiac disease may have caused the disneyer. </span></li>
+<li><span class="segment a-seg" data-start="94.32" data-end="100.2" title="1:34">Finally, there may be a drug related problem such as a high spinal, anaphylaxis or drug </span></li>
+<li><span class="segment a-seg" data-start="100.2" data-end="104.44" title="1:40">reaction such as carboprost induced bronchospasm. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="104.44">
+  <div class="q-label">Q2</div>
+  <div class="q-body"><span class="segment q-seg" data-start="104.44" data-end="108.72" title="1:44">How common is amniotic fluid embolism? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="108.72" data-end="111.6" title="1:48">Amniotic fluid embolism is uncommon. </span></li>
+<li><span class="segment a-seg" data-start="111.6" data-end="117.68" title="1:51">Its incidence varies from 1 in 8000 to 1 in 80000 pregnancies. </span></li>
+<li><span class="segment a-seg" data-start="117.68" data-end="122.96" title="1:57">It accounts for 0.8 maternal deaths per 100,000 deliveries. </span></li>
+<li><span class="segment a-seg" data-start="122.96" data-end="127.64" title="2:02">The disease process occurs most frequently during labour. </span></li>
+<li><span class="segment a-seg" data-start="127.64" data-end="133.72" title="2:07">Risk factors associated with developing amniotic fluid embolism may be divided into maternal, </span></li>
+<li><span class="segment a-seg" data-start="133.72" data-end="137.28" title="2:13">fetal and uterine or placental. </span></li>
+<li><span class="segment a-seg" data-start="137.28" data-end="144.08" title="2:17">Maternal factors include multiparous, older mothers and women with a history of atop. </span></li>
+<li><span class="segment a-seg" data-start="144.08" data-end="152.16" title="2:24">Fetal factors include inter-uteraide death, muconium stained lycore and microsomia. </span></li>
+<li><span class="segment a-seg" data-start="152.16" data-end="160.08" title="2:32">Uterine or placental factors include polyhydramneus, choreoamneonitis, strong or tetanic uterine </span></li>
+<li><span class="segment a-seg" data-start="160.08" data-end="164.92" title="2:40">contractions, uterine rupture and placenta accretia. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="164.92">
+  <div class="q-label">Q3</div>
+  <div class="q-body"><span class="segment q-seg" data-start="164.92" data-end="170.88" title="2:44">Can you describe the pathophysiology of amniotic fluid embolism? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="170.88" data-end="176.44" title="2:50">Amniotic fluid enters the maternal circulation via ruptured membranes or uterine vessels </span></li>
+<li><span class="segment a-seg" data-start="176.44" data-end="180.52" title="2:56">down a pressure gradient from uterus to vein. </span></li>
+<li><span class="segment a-seg" data-start="180.52" data-end="186.92" title="3:00">The fetal antigens in the fluid then stimulate the release of a cascade of biochemical mediators. </span></li>
+<li><span class="segment a-seg" data-start="186.92" data-end="193.12" title="3:06">Initially these cause pulmonary artery vasospasm followed by acute elevation of right ventricular </span></li>
+<li><span class="segment a-seg" data-start="193.12" data-end="196.76" title="3:13">pressures and right ventricular dysfunction. </span></li>
+<li><span class="segment a-seg" data-start="196.76" data-end="202.4" title="3:16">This in turn leads to hypoxemia, hypotension and myocardial damage. </span></li>
+<li><span class="segment a-seg" data-start="202.4" data-end="208.4" title="3:22">The patient may then develop left ventricular failure and pulmonary edema. </span></li>
+<li><span class="segment a-seg" data-start="208.4" data-end="213.56" title="3:28">Disseminated intravascular coagulopathy may also be a feature of this condition. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="213.56">
+  <div class="q-label">Q4</div>
+  <div class="q-body"><span class="segment q-seg" data-start="213.56" data-end="217.88" title="3:33">What are the features of amniotic fluid embolism? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="217.88" data-end="223.92" title="3:37">The symptoms of amniotic fluid embolism range from disneyer, cough and wheeze to headache </span></li>
+<li><span class="segment a-seg" data-start="223.92" data-end="226.04" title="3:43">and chest pain. </span></li>
+<li><span class="segment a-seg" data-start="226.04" data-end="234.16" title="3:46">Signs include fetal distress, hypoxia, tachyipnea, bronchospasm, hypocapnea if intubated due to </span></li>
+<li><span class="segment a-seg" data-start="234.16" data-end="243.48" title="3:54">reduced cardiac output, tachycardia, hypotension, seizures, uterine atone, hemorrhage and coagulopathy. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="244.28">
+  <div class="q-label">Q5</div>
+  <div class="q-body"><span class="segment q-seg" data-start="244.28" data-end="249.16" title="4:04">Is there any specific management for suspected amniotic fluid embolism? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="249.16" data-end="253.4" title="4:09">No. The management is supportive and preventative. </span></li>
+<li><span class="segment a-seg" data-start="253.4" data-end="258.4" title="4:13">Resuscitation of the pregnant woman should always be performed in the left lateral position </span></li>
+<li><span class="segment a-seg" data-start="258.4" data-end="264.12" title="4:18">until the baby is delivered with aggressive treatment of hypoxia, cardiovascular failure </span></li>
+<li><span class="segment a-seg" data-start="264.12" data-end="265.92" title="4:24">and coagulopathy. </span></li>
+<li><span class="segment a-seg" data-start="265.92" data-end="269.88" title="4:25">Okay, let's move on to some pharmacology. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="269.88">
+  <div class="q-label">Q6</div>
+  <div class="q-body"><span class="segment q-seg" data-start="269.88" data-end="271.66" title="4:29">What is a toxicolistic agent? </span><span class="segment q-seg" data-start="271.66" data-end="273.44" title="4:31">What are they used for? </span><span class="segment q-seg" data-start="273.44" data-end="277.44" title="4:33">Name some examples in the mechanism of action. </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="277.44" data-end="282.08" title="4:37">Tocaolytics are drugs that are used to inhibit uterine contraction. </span></li>
+<li><span class="segment a-seg" data-start="282.08" data-end="288.12" title="4:42">They may be indicated to inhibit premature labor or to reduce uterine contractions in cases </span></li>
+<li><span class="segment a-seg" data-start="288.12" data-end="291.52" title="4:48">of uterine inversion or chord prolapse. </span></li>
+<li><span class="segment a-seg" data-start="291.52" data-end="295.76" title="4:51">Drugs that are used can be classified according to their mode of action. </span></li>
+<li><span class="segment a-seg" data-start="295.76" data-end="303.92" title="4:55">Drugs may act as oxytocin receptor antagonists, calcium channel antagonists, beta-2 adrenocept </span></li>
+<li><span class="segment a-seg" data-start="303.92" data-end="309.48" title="5:03">antagonists or act via nitric oxide. </span></li>
+<li><span class="segment a-seg" data-start="309.48" data-end="314.84" title="5:09">Atosiban is a specific oxytocin receptor antagonist. </span></li>
+<li><span class="segment a-seg" data-start="314.84" data-end="320.72" title="5:14">Calcium channel antagonists such as nephedipine, magnesium sulfate and the volatile agents may </span></li>
+<li><span class="segment a-seg" data-start="320.72" data-end="322.4" title="5:20">be used. </span></li>
+<li><span class="segment a-seg" data-start="322.4" data-end="328.96" title="5:22">Drugs acting on beta receptors include salbutamol, terbutiline and ritidrin, although </span></li>
+<li><span class="segment a-seg" data-start="328.96" data-end="334.52" title="5:28">this particular medication is no longer recommended because of its poor side effects. </span></li>
+<li><span class="segment a-seg" data-start="334.52" data-end="341.6" title="5:34">GTN may be used sublingually to relax uterine smooth muscle acting as a nitric oxide donor. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="341.6">
+  <div class="q-label">Q7</div>
+  <div class="q-body"><span class="segment q-seg" data-start="341.6" data-end="344.48" title="5:41">What about the drugs that stimulate the uterus? </span><span class="segment q-seg" data-start="344.48" data-end="349.32" title="5:44">What drugs do we use to aid uterine contraction? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="349.32" data-end="354.04" title="5:49">The uterus contains a number of receptors that can be stimulated to cause contraction </span></li>
+<li><span class="segment a-seg" data-start="354.04" data-end="356.08" title="5:54">of its smooth muscle. </span></li>
+<li><span class="segment a-seg" data-start="356.08" data-end="365.28" title="5:56">These include oxytocin receptors, alpha-1 adrenoceptes, serotonergic and prostaglandin receptors. </span></li>
+<li><span class="segment a-seg" data-start="365.28" data-end="371.04" title="6:05">Syntocinon is a synthetic oxytocin analogue that acts to increase both the frequency </span></li>
+<li><span class="segment a-seg" data-start="371.04" data-end="373.64" title="6:11">and force of contractions. </span></li>
+<li><span class="segment a-seg" data-start="373.64" data-end="379.28" title="6:13">It does cause peripheral vasodilitation and so can induce hypotension and a reflex </span></li>
+<li><span class="segment a-seg" data-start="379.28" data-end="381.52" title="6:19">tachycardia. </span></li>
+<li><span class="segment a-seg" data-start="381.52" data-end="388.28" title="6:21">Ergo-metrine is an ergot alkaloid that acts via adreno and serotonergic receptors to </span></li>
+<li><span class="segment a-seg" data-start="388.28" data-end="391.64" title="6:28">stimulate uterine contraction. </span></li>
+<li><span class="segment a-seg" data-start="391.64" data-end="398.12" title="6:31">Side effects include hypertension, coronary artery vasospasm and is a potent ametic. </span></li>
+<li><span class="segment a-seg" data-start="398.12" data-end="403.52" title="6:38">Finally, prostaglandin analogue are used to stimulate uterine contraction. </span></li>
+<li><span class="segment a-seg" data-start="403.52" data-end="408.52" title="6:43">These include prostaglandin F2 alpha or carboprost. </span></li>
+<li><span class="segment a-seg" data-start="408.52" data-end="414.68" title="6:48">The side effects of carboprost include bronchospasm, pyrexia, flushing and hypotension. </span></li>
+<li><span class="segment a-seg" data-start="414.68" data-end="419.76" title="6:54">It is contraindicated in patients with asthma. </span></li>
+<li><span class="segment a-seg" data-start="419.76" data-end="425.16" title="6:59">All of these drugs are used in a stepwise manner when treating severe postpartum hemorrhage </span></li>
+<li><span class="segment a-seg" data-start="425.16" data-end="428.36" title="7:05">in conjunction with surgical interventions. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="428.36">
+  <div class="q-label">Q8</div>
+  <div class="q-body"><span class="segment q-seg" data-start="428.36" data-end="432.6" title="7:08">How do you define massive obstetric hemorrhage? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="432.6" data-end="438.66" title="7:12">A massive obstetric hemorrhage may be described as greater than 1.5 litres of blood loss, a </span></li>
+<li><span class="segment a-seg" data-start="438.66" data-end="444.88" title="7:18">fall in hemoglobin of more than 4 grams per desolita or a transfusion of more than 4 units </span></li>
+<li><span class="segment a-seg" data-start="444.88" data-end="446.8" title="7:24">of blood. </span></li>
+<li><span class="segment a-seg" data-start="446.8" data-end="452.52" title="7:26">Obstetric hemorrhage can also be split into antipartum and postpartum hemorrhage. </span></li>
+<li><span class="segment a-seg" data-start="452.52" data-end="457.4" title="7:32">Antipartum is any bleed after 24 weeks and before delivery. </span></li>
+<li><span class="segment a-seg" data-start="457.4" data-end="463.56" title="7:37">Hemorrhage occurs after delivery and may be further split into primary within 24 hours </span></li>
+<li><span class="segment a-seg" data-start="463.56" data-end="467.16" title="7:43">or secondary within six weeks of delivery. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="467.16">
+  <div class="q-label">Q9</div>
+  <div class="q-body"><span class="segment q-seg" data-start="467.16" data-end="472.08" title="7:47">What is the blood flow to the uterus and why is it important? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="472.08" data-end="479.04" title="7:52">Uterine blood flow increases from less than 5% to 10% of cardiac output at term or 1 </span></li>
+<li><span class="segment a-seg" data-start="479.04" data-end="480.88" title="7:59">litre per minute. </span></li>
+<li><span class="segment a-seg" data-start="480.88" data-end="484.8" title="8:00">Thus hemorrhage may be brisk and potentially uncontrollable. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="484.8">
+  <div class="q-label">Q10</div>
+  <div class="q-body"><span class="segment q-seg" data-start="484.8" data-end="490.44" title="8:04">What clinical signs may be evident in a woman who is bleeding postpartum? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="490.44" data-end="495.52" title="8:10">The respiratory rate will increase initially and then attackicardia will develop. </span></li>
+<li><span class="segment a-seg" data-start="495.52" data-end="501.56" title="8:15">This may be the only sign until 30% to 40% blood loss since maternal blood volume expands </span></li>
+<li><span class="segment a-seg" data-start="501.56" data-end="503.68" title="8:21">prior to delivery. </span></li>
+<li><span class="segment a-seg" data-start="503.68" data-end="508.68" title="8:23">A auto-caval compression will compound hemodynamic instability. </span></li>
+<li><span class="segment a-seg" data-start="508.68" data-end="515.72" title="8:28">Hypotension reduced urine output and changes in conscious level will occur if bleeding continues. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="515.72">
+  <div class="q-label">Q11</div>
+  <div class="q-body"><span class="segment q-seg" data-start="515.72" data-end="520.52" title="8:35">What might be the first sign in a woman with antipartum hemorrhage? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="520.52" data-end="525.8" title="8:40">The bleeding may be concealed and so fetal distress may be the first sign. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="525.8">
+  <div class="q-label">Q12</div>
+  <div class="q-body"><span class="segment q-seg" data-start="525.8" data-end="530.0" title="8:45">What are the causes of obstetric hemorrhage? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="530.0" data-end="534.2" title="8:50">The cause is varied depending on the timing of the bleeding. </span></li>
+<li><span class="segment a-seg" data-start="534.2" data-end="540.8" title="8:54">The pregnancy bleeding may be due to incomplete or septic abortion or a rupture dectopic. </span></li>
+<li><span class="segment a-seg" data-start="540.8" data-end="548.6" title="9:00">Antipartum hemorrhage may be due to placenta-previa, abruption, uterine rupture or trauma. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="548.6">
+  <div class="q-label">Q13</div>
+  <div class="q-body"><span class="segment q-seg" data-start="548.6" data-end="551.64" title="9:08">Can you tell me any risk factors for abruption? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="551.64" data-end="560.36" title="9:11">Yes, maternal hypertension, uterine over-distention, previous abruption, smoking and trauma. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="560.36">
+  <div class="q-label">Q14</div>
+  <div class="q-body"><span class="segment q-seg" data-start="560.36" data-end="564.36" title="9:20">And what about uterine rupture? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="564.36" data-end="567.84" title="9:24">Previous cesarean section is the most common risk factor. </span></li>
+<li><span class="segment a-seg" data-start="567.84" data-end="572.76" title="9:27">Now let's talk about the causes of postpartum hemorrhage. </span></li>
+<li><span class="segment a-seg" data-start="572.76" data-end="577.48" title="9:32">Postpartum hemorrhage is most commonly due to uterine atony. </span></li>
+<li><span class="segment a-seg" data-start="577.48" data-end="582.96" title="9:37">Additional causes include retained products of conception or placental or genital tract </span></li>
+<li><span class="segment a-seg" data-start="582.96" data-end="590.4" title="9:42">trauma, abnormally adherent placental beds, clotting defects or uterine inversion. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="590.4">
+  <div class="q-label">Q15</div>
+  <div class="q-body"><span class="segment q-seg" data-start="590.4" data-end="595.08" title="9:50">So what are the risk factors for uterine atony? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="595.08" data-end="601.0" title="9:55">These include prolonged or augmented labour, uterine over-distention, abnormalities or </span></li>
+<li><span class="segment a-seg" data-start="601.0" data-end="606.8" title="10:01">multiple gestation, increased parity and increased maternal age. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="606.8">
+  <div class="q-label">Q16</div>
+  <div class="q-body"><span class="segment q-seg" data-start="606.8" data-end="611.84" title="10:06">And why might a woman develop a clotting abnormality? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="611.84" data-end="617.42" title="10:11">Should a uterine death lead to chryagulopathy as does amniotic fluid embolism, sepsis, </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="617.42">
+  <div class="q-label">Q17</div>
+  <div class="q-body"><span class="segment q-seg" data-start="617.42" data-end="624.04" title="10:17">preoclampsia, abruption and acute hemorrhage, from beside a peenia of pregnancy may also occur? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+  </ul>
+</div>
+</div>
+
 </div>
 
 <div class="subtitle-bar">
-  <span class="subtitle-text empty" id="subtitle-text">Play audio to see live subtitles&#8230;</span>
+  <span id="subtitle-text" class="empty">Play audio to see live subtitles&#8230;</span>
 </div>
 
 <script>
-
-const audio    = document.getElementById('audio');
-const allSegs  = Array.from(document.querySelectorAll('.segment'));
-const allBlocks = Array.from(document.querySelectorAll('.t-block'));
+const audio      = document.getElementById('audio');
+const allSegs    = Array.from(document.querySelectorAll('.segment'));
 const subtitleEl = document.getElementById('subtitle-text');
-let activeSegEl   = null;
-let activeBlockEl = null;
-let searchMatches = [];
-let searchIdx     = 0;
+let activeSegEl  = null;
+let searchMatches = [], searchIdx = 0;
 
-// Duration display
 audio.addEventListener('loadedmetadata', () => {
   const m = Math.floor(audio.duration / 60);
   const s = Math.floor(audio.duration %% 60).toString().padStart(2,'0');
   document.getElementById('dur').textContent = m + ':' + s;
 });
 
-// Seek helper
-function seekTo(t) {
-  audio.currentTime = t;
-  audio.play();
-}
+function seekTo(t) { audio.currentTime = t; audio.play(); }
 
-// Block gutter click
-document.querySelectorAll('.t-gutter').forEach(g => {
-  g.addEventListener('click', () => seekTo(parseFloat(g.dataset.start)));
+// Q-block header click
+document.querySelectorAll('.q-block').forEach(q => {
+  q.addEventListener('click', e => {
+    if (!e.target.classList.contains('segment')) seekTo(parseFloat(q.dataset.start));
+  });
 });
 
-// Segment click
+// Individual segment click
 allSegs.forEach(s => {
-  s.addEventListener('click', e => {
-    e.stopPropagation();
-    seekTo(parseFloat(s.dataset.start));
-  });
+  s.addEventListener('click', e => { e.stopPropagation(); seekTo(parseFloat(s.dataset.start)); });
 });
 
 // Real-time tracking
 audio.addEventListener('timeupdate', () => {
   const t = audio.currentTime;
-
-  // Find active segment (last one whose start <= t)
   let found = null;
   for (let i = allSegs.length - 1; i >= 0; i--) {
     if (parseFloat(allSegs[i].dataset.start) <= t) { found = allSegs[i]; break; }
   }
-
   if (found && found !== activeSegEl) {
-    // Clear previous
-    if (activeSegEl) activeSegEl.classList.remove('active');
-    if (activeBlockEl) {
-      activeBlockEl.classList.remove('block-active');
-      const pg = activeBlockEl.querySelector('.t-gutter');
-      if (pg) pg.classList.remove('gutter-active');
+    if (activeSegEl) {
+      activeSegEl.classList.remove('active');
+      const pli = activeSegEl.closest('li');
+      if (pli) pli.classList.remove('li-active');
+      const pq = activeSegEl.closest('.q-block');
+      if (pq) pq.classList.remove('q-active');
     }
-    // Set new
     found.classList.add('active');
-    const block = found.closest('.t-block');
-    if (block) {
-      block.classList.add('block-active');
-      const g = block.querySelector('.t-gutter');
-      if (g) g.classList.add('gutter-active');
-      activeBlockEl = block;
-    }
+    const li = found.closest('li');
+    if (li) li.classList.add('li-active');
+    const qb = found.closest('.q-block');
+    if (qb) qb.classList.add('q-active');
     activeSegEl = found;
 
-    // Update subtitle
     subtitleEl.textContent = found.textContent.trim();
     subtitleEl.classList.remove('empty');
 
-    // Auto-scroll (only when not searching)
-    if (!document.getElementById('search').value) {
+    if (!document.getElementById('search').value)
       found.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }
   }
 });
 
@@ -350,17 +545,13 @@ searchInput.addEventListener('keydown', e => {
     el.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
 });
-
 function runSearch() {
   const q = searchInput.value.trim().toLowerCase();
   allSegs.forEach(s => s.classList.remove('search-match','search-current'));
   searchMatches = [];
   if (!q) return;
   allSegs.forEach(s => {
-    if (s.textContent.toLowerCase().includes(q)) {
-      s.classList.add('search-match');
-      searchMatches.push(s);
-    }
+    if (s.textContent.toLowerCase().includes(q)) { s.classList.add('search-match'); searchMatches.push(s); }
   });
   if (!searchMatches.length) return;
   searchIdx = 0;

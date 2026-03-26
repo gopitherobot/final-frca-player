@@ -5,10 +5,19 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Cardiac Anaesthesia — Arrhythmias</title>
 <style>
-
   :root {
-    --accent:    #ef4444;
-    --body-bg:   #f1f5f9;
+    --q-bg:       #1e3a5f;
+    --q-text:     #ffffff;
+    --q-label:    #60a5fa;
+    --a-bg:       #ffffff;
+    --a-border:   #e2e8f0;
+    --a-label:    #059669;
+    --active-q:   #ef4444;
+    --active-a:   #dbeafe;
+    --accent:     #ef4444;
+    --body-bg:    #f1f5f9;
+    --pre-bg:     #fef9c3;
+    --pre-border: #fcd34d;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
@@ -40,22 +49,9 @@
     margin-bottom: 4px;
     letter-spacing: 0.01em;
   }
-  .header-sub {
-    font-size: 0.72rem;
-    color: #94a3b8;
-    font-style: italic;
-  }
-  audio {
-    height: 36px;
-    accent-color: var(--accent);
-    flex-shrink: 0;
-  }
-  .back-link {
-    font-size: 0.8rem;
-    color: #94a3b8;
-    text-decoration: none;
-    white-space: nowrap;
-  }
+  .header-sub { font-size: 0.72rem; color: #94a3b8; font-style: italic; }
+  audio { height: 36px; accent-color: var(--accent); flex-shrink: 0; }
+  .back-link { font-size: 0.8rem; color: #94a3b8; text-decoration: none; white-space: nowrap; }
   .back-link:hover { color: #60a5fa; }
 
   /* ── Toolbar ── */
@@ -69,30 +65,17 @@
     border-bottom: 1px solid #334155;
   }
   .toolbar input {
-    flex: 1;
-    max-width: 380px;
+    flex: 1; max-width: 380px;
     padding: 5px 11px;
-    border: 1px solid #475569;
-    border-radius: 6px;
-    background: #0f172a;
-    color: #e2e8f0;
-    font-size: 0.83rem;
-    outline: none;
+    border: 1px solid #475569; border-radius: 6px;
+    background: #0f172a; color: #e2e8f0; font-size: 0.83rem; outline: none;
   }
   .toolbar input:focus { border-color: var(--accent); }
   .toolbar input::placeholder { color: #64748b; }
-  .stats {
-    font-size: 0.72rem;
-    color: #64748b;
-    white-space: nowrap;
-  }
+  .stats { font-size: 0.72rem; color: #64748b; white-space: nowrap; }
 
   /* ── Scroll area ── */
-  .scroll-area {
-    flex: 1;
-    overflow-y: auto;
-    padding: 20px;
-  }
+  .scroll-area { flex: 1; overflow-y: auto; padding: 20px; }
   .scroll-area::-webkit-scrollbar { width: 6px; }
   .scroll-area::-webkit-scrollbar-track { background: transparent; }
   .scroll-area::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
@@ -107,68 +90,77 @@
     display: flex;
     align-items: center;
   }
-  .subtitle-text {
-    font-size: 0.9rem;
-    color: #e2e8f0;
-    line-height: 1.5;
-    font-style: italic;
-  }
-  .subtitle-text.empty { color: #475569; }
+  #subtitle-text { font-size: 0.88rem; color: #e2e8f0; line-height: 1.5; font-style: italic; }
+  #subtitle-text.empty { color: #475569; }
 
-  /* ── Transcript blocks ── */
-  .t-block {
-    background: #ffffff;
-    border: 1px solid #e2e8f0;
-    border-radius: 10px;
-    margin-bottom: 14px;
-    overflow: hidden;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
-    display: flex;
-  }
-  .t-block.block-active {
-    border-color: var(--accent);
-    box-shadow: 0 0 0 2px rgba(37,99,235,0.15);
-  }
-  .t-gutter {
-    background: #0f172a;
-    width: 52px;
-    flex-shrink: 0;
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
-    padding-top: 14px;
-    cursor: pointer;
-  }
-  .t-gutter:hover { background: #1e293b; }
-  .t-timestamp {
-    font-size: 0.7rem;
-    color: #64748b;
-    font-family: monospace;
-    font-weight: 600;
-    letter-spacing: 0.02em;
-  }
-  .t-gutter.gutter-active .t-timestamp { color: var(--accent); }
-  .t-body {
-    flex: 1;
+  /* ── Preamble ── */
+  .preamble-block {
+    background: var(--pre-bg);
+    border-left: 4px solid var(--pre-border);
+    border-radius: 0 8px 8px 0;
     padding: 12px 16px;
-    line-height: 1.75;
-    font-size: 0.92rem;
-    color: #1e293b;
+    margin-bottom: 20px;
+    font-size: 0.88rem;
+    color: #78350f;
+    font-style: italic;
+    line-height: 1.7;
   }
 
-  /* ── Segments ── */
-  .segment {
+  /* ── Q&A pair ── */
+  .qa-pair { margin-bottom: 20px; border-radius: 10px; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+
+  /* Question block */
+  .q-block {
+    background: var(--q-bg);
+    padding: 14px 18px;
+    display: flex; gap: 14px; align-items: flex-start;
     cursor: pointer;
-    border-radius: 3px;
-    transition: background 0.1s;
+    transition: background 0.15s;
   }
-  .segment:hover { background: #eff6ff; }
-  .segment.active {
-    background: #bfdbfe;
-    outline: 2px solid #3b82f6;
-    outline-offset: 1px;
-    border-radius: 3px;
+  .q-block:hover { background: #1d4ed8; }
+  .q-block.q-active { background: var(--active-q); }
+  .q-label {
+    font-size: 0.7rem; font-weight: 700;
+    color: var(--q-label);
+    background: rgba(96,165,250,0.15);
+    border: 1px solid rgba(96,165,250,0.3);
+    border-radius: 5px; padding: 3px 7px;
+    white-space: nowrap; margin-top: 2px; letter-spacing: 0.05em;
+    flex-shrink: 0;
   }
+  .q-body { flex: 1; font-size: 0.97rem; font-weight: 600; color: var(--q-text); line-height: 1.55; }
+
+  /* Answer block */
+  .a-block {
+    background: var(--a-bg);
+    border: 1px solid var(--a-border); border-top: none;
+    padding: 14px 18px;
+    display: flex; gap: 14px; align-items: flex-start;
+  }
+  .a-label {
+    font-size: 0.7rem; font-weight: 700;
+    color: var(--a-label);
+    background: #d1fae5; border: 1px solid #6ee7b7;
+    border-radius: 5px; padding: 3px 9px;
+    white-space: nowrap; margin-top: 2px; letter-spacing: 0.05em;
+    flex-shrink: 0;
+  }
+  .a-body { flex: 1; list-style: none; padding: 0; }
+  .a-body li {
+    padding: 4px 0 4px 14px;
+    border-left: 3px solid transparent;
+    line-height: 1.7; font-size: 0.92rem; color: #1e293b;
+    border-radius: 0 4px 4px 0;
+    transition: background 0.15s;
+  }
+  .a-body li:not(:last-child) { border-bottom: 1px solid #f1f5f9; }
+
+  /* ── Segments (clickable) ── */
+  .segment { cursor: pointer; border-radius: 3px; }
+  .q-seg:hover { background: rgba(255,255,255,0.18); }
+  .a-seg:hover { background: #eff6ff; }
+  .segment.active { background: #bfdbfe; outline: 2px solid #3b82f6; outline-offset: 1px; }
+  .a-body li.li-active { background: var(--active-a); border-left-color: var(--accent); }
   .segment.search-match  { background: #fef9c3; }
   .segment.search-current { background: #fde047; outline: 2px solid #ca8a04; }
 
@@ -187,133 +179,200 @@
 
 <div class="toolbar">
   <input type="text" id="search" placeholder="Search transcript&#8230; (Enter = next match)">
-  <span class="stats" id="stats">79 segments &nbsp;|&nbsp; <span id="dur">loading&#8230;</span></span>
+  <span class="stats" id="stats">5 questions &nbsp;|&nbsp; 79 segments &nbsp;|&nbsp; <span id="dur">loading&#8230;</span></span>
 </div>
 
 <div class="scroll-area" id="scroll-area">
-<div class="t-block">
-  <div class="t-gutter" data-start="0.0"><span class="t-timestamp">0:00</span></div>
-  <div class="t-body"><span class="segment" data-start="0.0" data-end="4.32" title="0:00">Errithmiers. Can you define and classify Errithmiers? </span><span class="segment" data-start="6.56" data-end="12.16" title="0:06">Errithmiers is defined as an abnormal heart rhythm. They can be broadly classified as </span><span class="segment" data-start="12.16" data-end="18.8" title="0:12">tacky Errithmiers or bratty Errithmiers depending on the rate. An alternative classification </span><span class="segment" data-start="18.8" data-end="24.24" title="0:18">is based on the pathophysiology of the Errithmier and is discussed further in the next few minutes. </span><span class="segment" data-start="24.24" data-end="29.12" title="0:24">Why do Errithmiers occur? </span><span class="segment" data-start="29.12" data-end="37.84" title="0:29">Errithmiers can occur due to disorders of impulse formation or auto-maticity, and this explains </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="37.84"><span class="t-timestamp">0:37</span></div>
-  <div class="t-body"><span class="segment" data-start="37.84" data-end="44.48" title="0:37">sinus node arrest, premature beats, atrial fibrillation and sick sinus syndrome. </span><span class="segment" data-start="45.6" data-end="52.0" title="0:45">Abnamalities of impulse conduction lead to heart blocks and establishment of reentry circuits. </span><span class="segment" data-start="52.96" data-end="60.0" title="0:52">Reentry is the underlying mechanism for paroxysmal superventricular tachycardia and atrial flutter. </span><span class="segment" data-start="60.96" data-end="67.12" title="1:00">Triggered activity occurs when abnormal electrical activity persists after repolarisation </span><span class="segment" data-start="67.12" data-end="73.76" title="1:07">and reaches a threshold level required to trigger a new depolarisation. This can occur in ventricular </span><span class="segment" data-start="73.76" data-end="81.84" title="1:13">tachycardia in the prolonged QT syndrome. Apart from the above mechanisms, there are several predisposing </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="81.92"><span class="t-timestamp">1:21</span></div>
-  <div class="t-body"><span class="segment" data-start="81.92" data-end="89.28" title="1:21">factors that lead to Errithmiers. They are genetic abnormalities, myocardial ischemia, acquired </span><span class="segment" data-start="89.28" data-end="97.12" title="1:29">structural heart disease, hypoxia, hypercarbia, electrolyte abnormalities, hormonal imbalance </span><span class="segment" data-start="97.12" data-end="104.24" title="1:37">like phyrotoxicosis and drugs which alter conduction, auto-maticity and refractory period. </span><span class="segment" data-start="106.32" data-end="109.6" title="1:46">Can you classify bradycardia and explain their management? </span><span class="segment" data-start="111.84" data-end="118.96" title="1:51">Sinus bradycardia is defined as a heart rate less than 60 beats per minute with normal PQRS </span><span class="segment" data-start="118.96" data-end="126.56" title="1:58">and T waves on ECG. This is normal in fit and young people in athletes and during sleep. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="127.52"><span class="t-timestamp">2:07</span></div>
-  <div class="t-body"><span class="segment" data-start="127.52" data-end="134.16" title="2:07">Pathological causes are hypothyroidism raised intracranial pressure and intense </span><span class="segment" data-start="134.16" data-end="141.92" title="2:14">vagal stimulation such as stretching the peritoneum. If he modynamically stable, these patients </span><span class="segment" data-start="141.92" data-end="148.4" title="2:21">do not require treatment. However, if the rate is less than 40 beats per minute, they should be treated </span><span class="segment" data-start="148.4" data-end="156.32" title="2:28">with anti-muscarinic drugs or beta agonists. Heart blocks occur due to atroventricular </span><span class="segment" data-start="156.32" data-end="161.92" title="2:36">conduction abnormalities. They can be classified as first degree heart block, </span><span class="segment" data-start="161.92" data-end="168.64" title="2:41">diagnosed by a prolonged PR interval of greater than 200 milliseconds. They usually require </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="168.64"><span class="t-timestamp">2:48</span></div>
-  <div class="t-body"><span class="segment" data-start="168.64" data-end="177.12" title="2:48">no treatment. Second degree heart blocks are classified as MOBITS type 1 and MOBITS type 2. </span><span class="segment" data-start="178.16" data-end="184.08" title="2:58">In MOBITS type 1 block, the PR interval increases with each successive beat </span><span class="segment" data-start="184.08" data-end="191.76" title="3:04">until a QRS complex is dropped. When it occurs in young and fit patients with a high vagal tone, </span><span class="segment" data-start="192.08" data-end="199.52" title="3:12">it is usually benign. In MOBITS type 2 block, there is an intermittent failure of conduction </span><span class="segment" data-start="199.52" data-end="207.28" title="3:19">with a 2 to 1 or 3 to 1 pattern. These patients are at a risk of sudden death and need pacing </span><span class="segment" data-start="207.28" data-end="214.24" title="3:27">preoperatively. In third degree heart block, there is complete interruption of atroventricular </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="214.24"><span class="t-timestamp">3:34</span></div>
-  <div class="t-body"><span class="segment" data-start="214.24" data-end="221.76" title="3:34">conduction. The ventricular rate bears no relation to the atrial rate. The P waves are not followed </span><span class="segment" data-start="221.92" data-end="229.44" title="3:41">by QRS complexes. In the initial management of patients with bradicaridia, give 100% oxygen, </span><span class="segment" data-start="230.16" data-end="237.92" title="3:50">record a 12 lead ECG and look for adverse signs which are a systolic blood pressure less than 90 </span><span class="segment" data-start="237.92" data-end="245.2" title="3:57">millimeters of mercury, a heart rate less than 40 beats per minute, signs of heart failure, </span><span class="segment" data-start="245.28" data-end="252.0" title="4:05">and ventricular arrhythmias. If any of these are present, give a dose of 500 micrograms of </span><span class="segment" data-start="252.0" data-end="260.88" title="4:12">atropine intravenously. If there is an unsatisfactory response or there are risk factors of A </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="260.88"><span class="t-timestamp">4:20</span></div>
-  <div class="t-body"><span class="segment" data-start="260.88" data-end="268.0" title="4:20">systole, for example a MOBITS type 2 block, ventricular pauses of greater than 3 seconds, </span><span class="segment" data-start="268.72" data-end="276.16" title="4:28">recent ASIS-tally or complete heart block, then further doses of 500 micrograms of atropine </span><span class="segment" data-start="276.16" data-end="284.88" title="4:36">can be given up to a maximum of 3 milligrams. In addition, adrenaline 2 to 10 micrograms per minute </span><span class="segment" data-start="284.88" data-end="292.32" title="4:44">can be administered and transcutaneous pacing instituted. These are only holding measures and </span><span class="segment" data-start="292.4" data-end="297.92" title="4:52">expert help should be sought and transvenous pacing arranged as soon as possible. </span><span class="segment" data-start="299.2" data-end="304.56" title="4:59">Other drugs that can be tried in the interim are isoprenoline, aminophiline, </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="305.12"><span class="t-timestamp">5:05</span></div>
-  <div class="t-body"><span class="segment" data-start="305.12" data-end="311.84" title="5:05">glycopyralate instead of atropine and glucagon if beta blocker or calcium overdose are suspected. </span><span class="segment" data-start="314.24" data-end="316.88" title="5:14">What are the indications for preoperative pacing? </span><span class="segment" data-start="317.12" data-end="320.8" title="5:17">Symptomatic bradiarythmia, </span><span class="segment" data-start="321.52" data-end="326.24" title="5:21">trifocicular block or MOBITS type 2 or complete heart block. </span><span class="segment" data-start="328.8" data-end="331.68" title="5:28">Can you classify tachyarythmias and explain their management? </span><span class="segment" data-start="333.92" data-end="339.28" title="5:33">They can be classified broadly as superventricular and ventricular in origin. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="340.24"><span class="t-timestamp">5:40</span></div>
-  <div class="t-body"><span class="segment" data-start="340.24" data-end="345.76" title="5:40">Sinous tachycardia is defined as a heart rate of greater than 100 beats per minute </span><span class="segment" data-start="345.84" data-end="356.48" title="5:45">and it occurs with fever, emotions, exercise, pain, anemia, hyperthyroidism, shock and alcohol abuse. </span><span class="segment" data-start="358.08" data-end="366.08" title="5:58">Superventricular tachycardias are narrow complex with a QRS duration of less than 120 milliseconds. </span><span class="segment" data-start="366.88" data-end="373.84" title="6:06">They include atrial fibrillation, atrial flutter, atrial ventricular functional tachycardia, </span><span class="segment" data-start="374.48" data-end="380.0" title="6:14">multifocal atrial tachycardia and paroxysmal reentrant tachycardia. </span><span class="segment" data-start="380.88" data-end="387.6" title="6:20">Initial management includes the administration of 100% oxygen, venous cannulation, </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="387.6"><span class="t-timestamp">6:27</span></div>
-  <div class="t-body"><span class="segment" data-start="387.6" data-end="392.96" title="6:27">continuous heart rate measurement and blood pressure measurement, and the recording of a 12 lead </span><span class="segment" data-start="392.96" data-end="400.4" title="6:32">ECG and rhythm strip. Adverse signs include reduced conscious level, a systolic blood pressure </span><span class="segment" data-start="400.4" data-end="408.4" title="6:40">less than 90mm of mercury, chest pain and heart failure. In the event of these adverse signs, </span><span class="segment" data-start="408.4" data-end="416.32" title="6:48">patients will need to be electrically cardiaverted using a synchronized by-phasic DC shock of 150 </span><span class="segment" data-start="416.32" data-end="422.8" title="6:56">jewels. Remember, cardiaversion will require sedation or general anesthesia, depending on the </span><span class="segment" data-start="422.8" data-end="430.32" title="7:02">fasting status of the patient. If the patient is diagnosed as having new AF, i.e. of onset </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="430.32"><span class="t-timestamp">7:10</span></div>
-  <div class="t-body"><span class="segment" data-start="430.32" data-end="436.56" title="7:10">of less than 48 hours, then 300 mg of amyodeurone as a loading dose can be given, </span><span class="segment" data-start="436.56" data-end="440.8" title="7:16">followed by maintenance dose of 900 mg over 24 hours. </span><span class="segment" data-start="443.04" data-end="448.96" title="7:23">Narrow complex tachycardia, with a regular rhythm, should be treated with vagal maneuvers in the first </span><span class="segment" data-start="448.96" data-end="455.44" title="7:28">instance. Failure to return to sinus rhythm should be treated with incremental doses of intravenous </span><span class="segment" data-start="455.6" data-end="463.44" title="7:35">adenosine, starting with 6 mg up to a 12 mg bolus. If the patient reverts to sinus rhythm, </span><span class="segment" data-start="463.44" data-end="470.64" title="7:43">the probable cause is a paroxysmol-superventricular tachycardia, and a 12 lead ECG should be recorded, </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="470.64"><span class="t-timestamp">7:50</span></div>
-  <div class="t-body"><span class="segment" data-start="470.64" data-end="477.44" title="7:50">and appropriate anti-arhythmic prophylaxis instituted. Failure to return to sinus rhythm may </span><span class="segment" data-start="477.44" data-end="483.76" title="7:57">indicate atrial flutter. Give beta blockers, continue to provide supportive treatment, </span><span class="segment" data-start="483.76" data-end="490.88" title="8:03">and seek further expert advice. In all of the above situations, look for reversible causes </span><span class="segment" data-start="490.88" data-end="497.84" title="8:10">and treat these appropriately. Ventricular tachycardias are broad complex tachycardias. </span><span class="segment" data-start="498.48" data-end="505.68" title="8:18">If adverse signs are present, treat as per narrow complex tachycardias. If the patient is stable </span><span class="segment" data-start="505.68" data-end="511.84" title="8:25">and the heart rate is regular or the rhythm is uncertain, give 300 mg of amyodeurone, </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="511.84"><span class="t-timestamp">8:31</span></div>
-  <div class="t-body"><span class="segment" data-start="511.84" data-end="519.36" title="8:31">followed by 900 mg over 24 hours. If the patient is known to have a superventricular tachycardia </span><span class="segment" data-start="519.36" data-end="524.72" title="8:39">with a bundle branch block, give adenosine as per the narrow complex tachycardia protocol. </span><span class="segment" data-start="525.52" data-end="532.32" title="8:45">Broad complex tachycardia with irregular rhythm is more complicated and expert advice is required. </span><span class="segment" data-start="532.96" data-end="538.72" title="8:52">The possibilities include atrial fibrillation with a bundle branch block, which should be treated </span><span class="segment" data-start="538.72" data-end="544.8" title="8:58">as a narrow complex tachycardia. Other causes are pre-excitation atrial fibrillation </span><span class="segment" data-start="544.8" data-end="552.16" title="9:04">and polymorphic ventricular tachycardia or torsade de poire. Polymorphic ventricular tachycardia </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="552.16"><span class="t-timestamp">9:12</span></div>
-  <div class="t-body"><span class="segment" data-start="552.16" data-end="556.56" title="9:12">should be treated with magnesium 2g over 10 minutes. </span></div>
+<div class="qa-pair">
+<div class="q-block" data-start="0.0">
+  <div class="q-label">Q1</div>
+  <div class="q-body"><span class="segment q-seg" data-start="0.0" data-end="4.32" title="0:00">Errithmiers. Can you define and classify Errithmiers? </span></div>
 </div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="6.56" data-end="12.16" title="0:06">Errithmiers is defined as an abnormal heart rhythm. They can be broadly classified as </span></li>
+<li><span class="segment a-seg" data-start="12.16" data-end="18.8" title="0:12">tacky Errithmiers or bratty Errithmiers depending on the rate. An alternative classification </span></li>
+<li><span class="segment a-seg" data-start="18.8" data-end="24.24" title="0:18">is based on the pathophysiology of the Errithmier and is discussed further in the next few minutes. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="24.24">
+  <div class="q-label">Q2</div>
+  <div class="q-body"><span class="segment q-seg" data-start="24.24" data-end="29.12" title="0:24">Why do Errithmiers occur? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="29.12" data-end="37.84" title="0:29">Errithmiers can occur due to disorders of impulse formation or auto-maticity, and this explains </span></li>
+<li><span class="segment a-seg" data-start="37.84" data-end="44.48" title="0:37">sinus node arrest, premature beats, atrial fibrillation and sick sinus syndrome. </span></li>
+<li><span class="segment a-seg" data-start="45.6" data-end="52.0" title="0:45">Abnamalities of impulse conduction lead to heart blocks and establishment of reentry circuits. </span></li>
+<li><span class="segment a-seg" data-start="52.96" data-end="60.0" title="0:52">Reentry is the underlying mechanism for paroxysmal superventricular tachycardia and atrial flutter. </span></li>
+<li><span class="segment a-seg" data-start="60.96" data-end="67.12" title="1:00">Triggered activity occurs when abnormal electrical activity persists after repolarisation </span></li>
+<li><span class="segment a-seg" data-start="67.12" data-end="73.76" title="1:07">and reaches a threshold level required to trigger a new depolarisation. This can occur in ventricular </span></li>
+<li><span class="segment a-seg" data-start="73.76" data-end="81.84" title="1:13">tachycardia in the prolonged QT syndrome. Apart from the above mechanisms, there are several predisposing </span></li>
+<li><span class="segment a-seg" data-start="81.92" data-end="89.28" title="1:21">factors that lead to Errithmiers. They are genetic abnormalities, myocardial ischemia, acquired </span></li>
+<li><span class="segment a-seg" data-start="89.28" data-end="97.12" title="1:29">structural heart disease, hypoxia, hypercarbia, electrolyte abnormalities, hormonal imbalance </span></li>
+<li><span class="segment a-seg" data-start="97.12" data-end="104.24" title="1:37">like phyrotoxicosis and drugs which alter conduction, auto-maticity and refractory period. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="106.32">
+  <div class="q-label">Q3</div>
+  <div class="q-body"><span class="segment q-seg" data-start="106.32" data-end="109.6" title="1:46">Can you classify bradycardia and explain their management? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="111.84" data-end="118.96" title="1:51">Sinus bradycardia is defined as a heart rate less than 60 beats per minute with normal PQRS </span></li>
+<li><span class="segment a-seg" data-start="118.96" data-end="126.56" title="1:58">and T waves on ECG. This is normal in fit and young people in athletes and during sleep. </span></li>
+<li><span class="segment a-seg" data-start="127.52" data-end="134.16" title="2:07">Pathological causes are hypothyroidism raised intracranial pressure and intense </span></li>
+<li><span class="segment a-seg" data-start="134.16" data-end="141.92" title="2:14">vagal stimulation such as stretching the peritoneum. If he modynamically stable, these patients </span></li>
+<li><span class="segment a-seg" data-start="141.92" data-end="148.4" title="2:21">do not require treatment. However, if the rate is less than 40 beats per minute, they should be treated </span></li>
+<li><span class="segment a-seg" data-start="148.4" data-end="156.32" title="2:28">with anti-muscarinic drugs or beta agonists. Heart blocks occur due to atroventricular </span></li>
+<li><span class="segment a-seg" data-start="156.32" data-end="161.92" title="2:36">conduction abnormalities. They can be classified as first degree heart block, </span></li>
+<li><span class="segment a-seg" data-start="161.92" data-end="168.64" title="2:41">diagnosed by a prolonged PR interval of greater than 200 milliseconds. They usually require </span></li>
+<li><span class="segment a-seg" data-start="168.64" data-end="177.12" title="2:48">no treatment. Second degree heart blocks are classified as MOBITS type 1 and MOBITS type 2. </span></li>
+<li><span class="segment a-seg" data-start="178.16" data-end="184.08" title="2:58">In MOBITS type 1 block, the PR interval increases with each successive beat </span></li>
+<li><span class="segment a-seg" data-start="184.08" data-end="191.76" title="3:04">until a QRS complex is dropped. When it occurs in young and fit patients with a high vagal tone, </span></li>
+<li><span class="segment a-seg" data-start="192.08" data-end="199.52" title="3:12">it is usually benign. In MOBITS type 2 block, there is an intermittent failure of conduction </span></li>
+<li><span class="segment a-seg" data-start="199.52" data-end="207.28" title="3:19">with a 2 to 1 or 3 to 1 pattern. These patients are at a risk of sudden death and need pacing </span></li>
+<li><span class="segment a-seg" data-start="207.28" data-end="214.24" title="3:27">preoperatively. In third degree heart block, there is complete interruption of atroventricular </span></li>
+<li><span class="segment a-seg" data-start="214.24" data-end="221.76" title="3:34">conduction. The ventricular rate bears no relation to the atrial rate. The P waves are not followed </span></li>
+<li><span class="segment a-seg" data-start="221.92" data-end="229.44" title="3:41">by QRS complexes. In the initial management of patients with bradicaridia, give 100% oxygen, </span></li>
+<li><span class="segment a-seg" data-start="230.16" data-end="237.92" title="3:50">record a 12 lead ECG and look for adverse signs which are a systolic blood pressure less than 90 </span></li>
+<li><span class="segment a-seg" data-start="237.92" data-end="245.2" title="3:57">millimeters of mercury, a heart rate less than 40 beats per minute, signs of heart failure, </span></li>
+<li><span class="segment a-seg" data-start="245.28" data-end="252.0" title="4:05">and ventricular arrhythmias. If any of these are present, give a dose of 500 micrograms of </span></li>
+<li><span class="segment a-seg" data-start="252.0" data-end="260.88" title="4:12">atropine intravenously. If there is an unsatisfactory response or there are risk factors of A </span></li>
+<li><span class="segment a-seg" data-start="260.88" data-end="268.0" title="4:20">systole, for example a MOBITS type 2 block, ventricular pauses of greater than 3 seconds, </span></li>
+<li><span class="segment a-seg" data-start="268.72" data-end="276.16" title="4:28">recent ASIS-tally or complete heart block, then further doses of 500 micrograms of atropine </span></li>
+<li><span class="segment a-seg" data-start="276.16" data-end="284.88" title="4:36">can be given up to a maximum of 3 milligrams. In addition, adrenaline 2 to 10 micrograms per minute </span></li>
+<li><span class="segment a-seg" data-start="284.88" data-end="292.32" title="4:44">can be administered and transcutaneous pacing instituted. These are only holding measures and </span></li>
+<li><span class="segment a-seg" data-start="292.4" data-end="297.92" title="4:52">expert help should be sought and transvenous pacing arranged as soon as possible. </span></li>
+<li><span class="segment a-seg" data-start="299.2" data-end="304.56" title="4:59">Other drugs that can be tried in the interim are isoprenoline, aminophiline, </span></li>
+<li><span class="segment a-seg" data-start="305.12" data-end="311.84" title="5:05">glycopyralate instead of atropine and glucagon if beta blocker or calcium overdose are suspected. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="314.24">
+  <div class="q-label">Q4</div>
+  <div class="q-body"><span class="segment q-seg" data-start="314.24" data-end="316.88" title="5:14">What are the indications for preoperative pacing? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="317.12" data-end="320.8" title="5:17">Symptomatic bradiarythmia, </span></li>
+<li><span class="segment a-seg" data-start="321.52" data-end="326.24" title="5:21">trifocicular block or MOBITS type 2 or complete heart block. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="328.8">
+  <div class="q-label">Q5</div>
+  <div class="q-body"><span class="segment q-seg" data-start="328.8" data-end="331.68" title="5:28">Can you classify tachyarythmias and explain their management? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="333.92" data-end="339.28" title="5:33">They can be classified broadly as superventricular and ventricular in origin. </span></li>
+<li><span class="segment a-seg" data-start="340.24" data-end="345.76" title="5:40">Sinous tachycardia is defined as a heart rate of greater than 100 beats per minute </span></li>
+<li><span class="segment a-seg" data-start="345.84" data-end="356.48" title="5:45">and it occurs with fever, emotions, exercise, pain, anemia, hyperthyroidism, shock and alcohol abuse. </span></li>
+<li><span class="segment a-seg" data-start="358.08" data-end="366.08" title="5:58">Superventricular tachycardias are narrow complex with a QRS duration of less than 120 milliseconds. </span></li>
+<li><span class="segment a-seg" data-start="366.88" data-end="373.84" title="6:06">They include atrial fibrillation, atrial flutter, atrial ventricular functional tachycardia, </span></li>
+<li><span class="segment a-seg" data-start="374.48" data-end="380.0" title="6:14">multifocal atrial tachycardia and paroxysmal reentrant tachycardia. </span></li>
+<li><span class="segment a-seg" data-start="380.88" data-end="387.6" title="6:20">Initial management includes the administration of 100% oxygen, venous cannulation, </span></li>
+<li><span class="segment a-seg" data-start="387.6" data-end="392.96" title="6:27">continuous heart rate measurement and blood pressure measurement, and the recording of a 12 lead </span></li>
+<li><span class="segment a-seg" data-start="392.96" data-end="400.4" title="6:32">ECG and rhythm strip. Adverse signs include reduced conscious level, a systolic blood pressure </span></li>
+<li><span class="segment a-seg" data-start="400.4" data-end="408.4" title="6:40">less than 90mm of mercury, chest pain and heart failure. In the event of these adverse signs, </span></li>
+<li><span class="segment a-seg" data-start="408.4" data-end="416.32" title="6:48">patients will need to be electrically cardiaverted using a synchronized by-phasic DC shock of 150 </span></li>
+<li><span class="segment a-seg" data-start="416.32" data-end="422.8" title="6:56">jewels. Remember, cardiaversion will require sedation or general anesthesia, depending on the </span></li>
+<li><span class="segment a-seg" data-start="422.8" data-end="430.32" title="7:02">fasting status of the patient. If the patient is diagnosed as having new AF, i.e. of onset </span></li>
+<li><span class="segment a-seg" data-start="430.32" data-end="436.56" title="7:10">of less than 48 hours, then 300 mg of amyodeurone as a loading dose can be given, </span></li>
+<li><span class="segment a-seg" data-start="436.56" data-end="440.8" title="7:16">followed by maintenance dose of 900 mg over 24 hours. </span></li>
+<li><span class="segment a-seg" data-start="443.04" data-end="448.96" title="7:23">Narrow complex tachycardia, with a regular rhythm, should be treated with vagal maneuvers in the first </span></li>
+<li><span class="segment a-seg" data-start="448.96" data-end="455.44" title="7:28">instance. Failure to return to sinus rhythm should be treated with incremental doses of intravenous </span></li>
+<li><span class="segment a-seg" data-start="455.6" data-end="463.44" title="7:35">adenosine, starting with 6 mg up to a 12 mg bolus. If the patient reverts to sinus rhythm, </span></li>
+<li><span class="segment a-seg" data-start="463.44" data-end="470.64" title="7:43">the probable cause is a paroxysmol-superventricular tachycardia, and a 12 lead ECG should be recorded, </span></li>
+<li><span class="segment a-seg" data-start="470.64" data-end="477.44" title="7:50">and appropriate anti-arhythmic prophylaxis instituted. Failure to return to sinus rhythm may </span></li>
+<li><span class="segment a-seg" data-start="477.44" data-end="483.76" title="7:57">indicate atrial flutter. Give beta blockers, continue to provide supportive treatment, </span></li>
+<li><span class="segment a-seg" data-start="483.76" data-end="490.88" title="8:03">and seek further expert advice. In all of the above situations, look for reversible causes </span></li>
+<li><span class="segment a-seg" data-start="490.88" data-end="497.84" title="8:10">and treat these appropriately. Ventricular tachycardias are broad complex tachycardias. </span></li>
+<li><span class="segment a-seg" data-start="498.48" data-end="505.68" title="8:18">If adverse signs are present, treat as per narrow complex tachycardias. If the patient is stable </span></li>
+<li><span class="segment a-seg" data-start="505.68" data-end="511.84" title="8:25">and the heart rate is regular or the rhythm is uncertain, give 300 mg of amyodeurone, </span></li>
+<li><span class="segment a-seg" data-start="511.84" data-end="519.36" title="8:31">followed by 900 mg over 24 hours. If the patient is known to have a superventricular tachycardia </span></li>
+<li><span class="segment a-seg" data-start="519.36" data-end="524.72" title="8:39">with a bundle branch block, give adenosine as per the narrow complex tachycardia protocol. </span></li>
+<li><span class="segment a-seg" data-start="525.52" data-end="532.32" title="8:45">Broad complex tachycardia with irregular rhythm is more complicated and expert advice is required. </span></li>
+<li><span class="segment a-seg" data-start="532.96" data-end="538.72" title="8:52">The possibilities include atrial fibrillation with a bundle branch block, which should be treated </span></li>
+<li><span class="segment a-seg" data-start="538.72" data-end="544.8" title="8:58">as a narrow complex tachycardia. Other causes are pre-excitation atrial fibrillation </span></li>
+<li><span class="segment a-seg" data-start="544.8" data-end="552.16" title="9:04">and polymorphic ventricular tachycardia or torsade de poire. Polymorphic ventricular tachycardia </span></li>
+<li><span class="segment a-seg" data-start="552.16" data-end="556.56" title="9:12">should be treated with magnesium 2g over 10 minutes. </span></li>
+  </ul>
+</div>
+</div>
+
 </div>
 
 <div class="subtitle-bar">
-  <span class="subtitle-text empty" id="subtitle-text">Play audio to see live subtitles&#8230;</span>
+  <span id="subtitle-text" class="empty">Play audio to see live subtitles&#8230;</span>
 </div>
 
 <script>
-
-const audio    = document.getElementById('audio');
-const allSegs  = Array.from(document.querySelectorAll('.segment'));
-const allBlocks = Array.from(document.querySelectorAll('.t-block'));
+const audio      = document.getElementById('audio');
+const allSegs    = Array.from(document.querySelectorAll('.segment'));
 const subtitleEl = document.getElementById('subtitle-text');
-let activeSegEl   = null;
-let activeBlockEl = null;
-let searchMatches = [];
-let searchIdx     = 0;
+let activeSegEl  = null;
+let searchMatches = [], searchIdx = 0;
 
-// Duration display
 audio.addEventListener('loadedmetadata', () => {
   const m = Math.floor(audio.duration / 60);
   const s = Math.floor(audio.duration %% 60).toString().padStart(2,'0');
   document.getElementById('dur').textContent = m + ':' + s;
 });
 
-// Seek helper
-function seekTo(t) {
-  audio.currentTime = t;
-  audio.play();
-}
+function seekTo(t) { audio.currentTime = t; audio.play(); }
 
-// Block gutter click
-document.querySelectorAll('.t-gutter').forEach(g => {
-  g.addEventListener('click', () => seekTo(parseFloat(g.dataset.start)));
+// Q-block header click
+document.querySelectorAll('.q-block').forEach(q => {
+  q.addEventListener('click', e => {
+    if (!e.target.classList.contains('segment')) seekTo(parseFloat(q.dataset.start));
+  });
 });
 
-// Segment click
+// Individual segment click
 allSegs.forEach(s => {
-  s.addEventListener('click', e => {
-    e.stopPropagation();
-    seekTo(parseFloat(s.dataset.start));
-  });
+  s.addEventListener('click', e => { e.stopPropagation(); seekTo(parseFloat(s.dataset.start)); });
 });
 
 // Real-time tracking
 audio.addEventListener('timeupdate', () => {
   const t = audio.currentTime;
-
-  // Find active segment (last one whose start <= t)
   let found = null;
   for (let i = allSegs.length - 1; i >= 0; i--) {
     if (parseFloat(allSegs[i].dataset.start) <= t) { found = allSegs[i]; break; }
   }
-
   if (found && found !== activeSegEl) {
-    // Clear previous
-    if (activeSegEl) activeSegEl.classList.remove('active');
-    if (activeBlockEl) {
-      activeBlockEl.classList.remove('block-active');
-      const pg = activeBlockEl.querySelector('.t-gutter');
-      if (pg) pg.classList.remove('gutter-active');
+    if (activeSegEl) {
+      activeSegEl.classList.remove('active');
+      const pli = activeSegEl.closest('li');
+      if (pli) pli.classList.remove('li-active');
+      const pq = activeSegEl.closest('.q-block');
+      if (pq) pq.classList.remove('q-active');
     }
-    // Set new
     found.classList.add('active');
-    const block = found.closest('.t-block');
-    if (block) {
-      block.classList.add('block-active');
-      const g = block.querySelector('.t-gutter');
-      if (g) g.classList.add('gutter-active');
-      activeBlockEl = block;
-    }
+    const li = found.closest('li');
+    if (li) li.classList.add('li-active');
+    const qb = found.closest('.q-block');
+    if (qb) qb.classList.add('q-active');
     activeSegEl = found;
 
-    // Update subtitle
     subtitleEl.textContent = found.textContent.trim();
     subtitleEl.classList.remove('empty');
 
-    // Auto-scroll (only when not searching)
-    if (!document.getElementById('search').value) {
+    if (!document.getElementById('search').value)
       found.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }
   }
 });
 
@@ -329,17 +388,13 @@ searchInput.addEventListener('keydown', e => {
     el.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
 });
-
 function runSearch() {
   const q = searchInput.value.trim().toLowerCase();
   allSegs.forEach(s => s.classList.remove('search-match','search-current'));
   searchMatches = [];
   if (!q) return;
   allSegs.forEach(s => {
-    if (s.textContent.toLowerCase().includes(q)) {
-      s.classList.add('search-match');
-      searchMatches.push(s);
-    }
+    if (s.textContent.toLowerCase().includes(q)) { s.classList.add('search-match'); searchMatches.push(s); }
   });
   if (!searchMatches.length) return;
   searchIdx = 0;

@@ -5,10 +5,19 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Paediatric & Neonatal — Pyloric Stenosis</title>
 <style>
-
   :root {
-    --accent:    #fbbf24;
-    --body-bg:   #f1f5f9;
+    --q-bg:       #1e3a5f;
+    --q-text:     #ffffff;
+    --q-label:    #60a5fa;
+    --a-bg:       #ffffff;
+    --a-border:   #e2e8f0;
+    --a-label:    #059669;
+    --active-q:   #fbbf24;
+    --active-a:   #dbeafe;
+    --accent:     #fbbf24;
+    --body-bg:    #f1f5f9;
+    --pre-bg:     #fef9c3;
+    --pre-border: #fcd34d;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
@@ -40,22 +49,9 @@
     margin-bottom: 4px;
     letter-spacing: 0.01em;
   }
-  .header-sub {
-    font-size: 0.72rem;
-    color: #94a3b8;
-    font-style: italic;
-  }
-  audio {
-    height: 36px;
-    accent-color: var(--accent);
-    flex-shrink: 0;
-  }
-  .back-link {
-    font-size: 0.8rem;
-    color: #94a3b8;
-    text-decoration: none;
-    white-space: nowrap;
-  }
+  .header-sub { font-size: 0.72rem; color: #94a3b8; font-style: italic; }
+  audio { height: 36px; accent-color: var(--accent); flex-shrink: 0; }
+  .back-link { font-size: 0.8rem; color: #94a3b8; text-decoration: none; white-space: nowrap; }
   .back-link:hover { color: #60a5fa; }
 
   /* ── Toolbar ── */
@@ -69,30 +65,17 @@
     border-bottom: 1px solid #334155;
   }
   .toolbar input {
-    flex: 1;
-    max-width: 380px;
+    flex: 1; max-width: 380px;
     padding: 5px 11px;
-    border: 1px solid #475569;
-    border-radius: 6px;
-    background: #0f172a;
-    color: #e2e8f0;
-    font-size: 0.83rem;
-    outline: none;
+    border: 1px solid #475569; border-radius: 6px;
+    background: #0f172a; color: #e2e8f0; font-size: 0.83rem; outline: none;
   }
   .toolbar input:focus { border-color: var(--accent); }
   .toolbar input::placeholder { color: #64748b; }
-  .stats {
-    font-size: 0.72rem;
-    color: #64748b;
-    white-space: nowrap;
-  }
+  .stats { font-size: 0.72rem; color: #64748b; white-space: nowrap; }
 
   /* ── Scroll area ── */
-  .scroll-area {
-    flex: 1;
-    overflow-y: auto;
-    padding: 20px;
-  }
+  .scroll-area { flex: 1; overflow-y: auto; padding: 20px; }
   .scroll-area::-webkit-scrollbar { width: 6px; }
   .scroll-area::-webkit-scrollbar-track { background: transparent; }
   .scroll-area::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
@@ -107,68 +90,77 @@
     display: flex;
     align-items: center;
   }
-  .subtitle-text {
-    font-size: 0.9rem;
-    color: #e2e8f0;
-    line-height: 1.5;
-    font-style: italic;
-  }
-  .subtitle-text.empty { color: #475569; }
+  #subtitle-text { font-size: 0.88rem; color: #e2e8f0; line-height: 1.5; font-style: italic; }
+  #subtitle-text.empty { color: #475569; }
 
-  /* ── Transcript blocks ── */
-  .t-block {
-    background: #ffffff;
-    border: 1px solid #e2e8f0;
-    border-radius: 10px;
-    margin-bottom: 14px;
-    overflow: hidden;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
-    display: flex;
-  }
-  .t-block.block-active {
-    border-color: var(--accent);
-    box-shadow: 0 0 0 2px rgba(37,99,235,0.15);
-  }
-  .t-gutter {
-    background: #0f172a;
-    width: 52px;
-    flex-shrink: 0;
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
-    padding-top: 14px;
-    cursor: pointer;
-  }
-  .t-gutter:hover { background: #1e293b; }
-  .t-timestamp {
-    font-size: 0.7rem;
-    color: #64748b;
-    font-family: monospace;
-    font-weight: 600;
-    letter-spacing: 0.02em;
-  }
-  .t-gutter.gutter-active .t-timestamp { color: var(--accent); }
-  .t-body {
-    flex: 1;
+  /* ── Preamble ── */
+  .preamble-block {
+    background: var(--pre-bg);
+    border-left: 4px solid var(--pre-border);
+    border-radius: 0 8px 8px 0;
     padding: 12px 16px;
-    line-height: 1.75;
-    font-size: 0.92rem;
-    color: #1e293b;
+    margin-bottom: 20px;
+    font-size: 0.88rem;
+    color: #78350f;
+    font-style: italic;
+    line-height: 1.7;
   }
 
-  /* ── Segments ── */
-  .segment {
+  /* ── Q&A pair ── */
+  .qa-pair { margin-bottom: 20px; border-radius: 10px; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+
+  /* Question block */
+  .q-block {
+    background: var(--q-bg);
+    padding: 14px 18px;
+    display: flex; gap: 14px; align-items: flex-start;
     cursor: pointer;
-    border-radius: 3px;
-    transition: background 0.1s;
+    transition: background 0.15s;
   }
-  .segment:hover { background: #eff6ff; }
-  .segment.active {
-    background: #bfdbfe;
-    outline: 2px solid #3b82f6;
-    outline-offset: 1px;
-    border-radius: 3px;
+  .q-block:hover { background: #1d4ed8; }
+  .q-block.q-active { background: var(--active-q); }
+  .q-label {
+    font-size: 0.7rem; font-weight: 700;
+    color: var(--q-label);
+    background: rgba(96,165,250,0.15);
+    border: 1px solid rgba(96,165,250,0.3);
+    border-radius: 5px; padding: 3px 7px;
+    white-space: nowrap; margin-top: 2px; letter-spacing: 0.05em;
+    flex-shrink: 0;
   }
+  .q-body { flex: 1; font-size: 0.97rem; font-weight: 600; color: var(--q-text); line-height: 1.55; }
+
+  /* Answer block */
+  .a-block {
+    background: var(--a-bg);
+    border: 1px solid var(--a-border); border-top: none;
+    padding: 14px 18px;
+    display: flex; gap: 14px; align-items: flex-start;
+  }
+  .a-label {
+    font-size: 0.7rem; font-weight: 700;
+    color: var(--a-label);
+    background: #d1fae5; border: 1px solid #6ee7b7;
+    border-radius: 5px; padding: 3px 9px;
+    white-space: nowrap; margin-top: 2px; letter-spacing: 0.05em;
+    flex-shrink: 0;
+  }
+  .a-body { flex: 1; list-style: none; padding: 0; }
+  .a-body li {
+    padding: 4px 0 4px 14px;
+    border-left: 3px solid transparent;
+    line-height: 1.7; font-size: 0.92rem; color: #1e293b;
+    border-radius: 0 4px 4px 0;
+    transition: background 0.15s;
+  }
+  .a-body li:not(:last-child) { border-bottom: 1px solid #f1f5f9; }
+
+  /* ── Segments (clickable) ── */
+  .segment { cursor: pointer; border-radius: 3px; }
+  .q-seg:hover { background: rgba(255,255,255,0.18); }
+  .a-seg:hover { background: #eff6ff; }
+  .segment.active { background: #bfdbfe; outline: 2px solid #3b82f6; outline-offset: 1px; }
+  .a-body li.li-active { background: var(--active-a); border-left-color: var(--accent); }
   .segment.search-match  { background: #fef9c3; }
   .segment.search-current { background: #fde047; outline: 2px solid #ca8a04; }
 
@@ -187,202 +179,456 @@
 
 <div class="toolbar">
   <input type="text" id="search" placeholder="Search transcript&#8230; (Enter = next match)">
-  <span class="stats" id="stats">218 segments &nbsp;|&nbsp; <span id="dur">loading&#8230;</span></span>
+  <span class="stats" id="stats">17 questions &nbsp;|&nbsp; 218 segments &nbsp;|&nbsp; <span id="dur">loading&#8230;</span></span>
 </div>
 
 <div class="scroll-area" id="scroll-area">
-<div class="t-block">
-  <div class="t-gutter" data-start="0.0"><span class="t-timestamp">0:00</span></div>
-  <div class="t-body"><span class="segment" data-start="0.0" data-end="2.4" title="0:00">Pyloric stenosis. </span><span class="segment" data-start="2.4" data-end="5.68" title="0:02">This were generally form part of a clinical viber. </span><span class="segment" data-start="5.68" data-end="10.74" title="0:05">The biochemical abnormalities are frequently asked and so make sure you can explain them </span><span class="segment" data-start="10.74" data-end="11.98" title="0:10">thoroughly. </span><span class="segment" data-start="11.98" data-end="17.28" title="0:11">What is congenital hypertrophic pyloric stenosis? </span><span class="segment" data-start="17.28" data-end="22.88" title="0:17">Pyloric stenosis is a congenital narrowing of the gastric outflow tract caused by hypertrophy </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="22.88"><span class="t-timestamp">0:22</span></div>
-  <div class="t-body"><span class="segment" data-start="22.88" data-end="25.52" title="0:22">of the circular pyloric muscle. </span><span class="segment" data-start="25.52" data-end="30.4" title="0:25">The cause is unknown but there is a genetic predisposition. </span><span class="segment" data-start="30.4" data-end="34.06" title="0:30">The condition occurs in one in 500 births. </span><span class="segment" data-start="34.06" data-end="39.04" title="0:34">It is the most frequent cause of intestinal obstruction in infancy and the commonest small </span><span class="segment" data-start="39.04" data-end="44.0" title="0:39">baby condition treated outside a special centre. </span><span class="segment" data-start="44.0" data-end="47.92" title="0:44">Boys are affected much more than girls with a ratio of 4 to 1. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="47.92"><span class="t-timestamp">0:47</span></div>
-  <div class="t-body"><span class="segment" data-start="47.92" data-end="53.1" title="0:47">40 to 60% of cases occur in first born children. </span><span class="segment" data-start="53.1" data-end="56.98" title="0:53">The condition is also more common in the white population. </span><span class="segment" data-start="56.98" data-end="62.72" title="0:56">Pyloric stenosis can also be acquired in adults as a result of gastric carcinoma or chronic </span><span class="segment" data-start="62.72" data-end="64.7" title="1:02">peptycholceration. </span><span class="segment" data-start="64.7" data-end="68.46" title="1:04">These conditions will not be discussed in this podcast. </span><span class="segment" data-start="68.46" data-end="72.38" title="1:08">How does pyloric stenosis present? </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="72.38"><span class="t-timestamp">1:12</span></div>
-  <div class="t-body"><span class="segment" data-start="72.38" data-end="77.94" title="1:12">The patient usually presents at 4 to 6 weeks of age with worsening symptoms of persistent, </span><span class="segment" data-start="77.94" data-end="81.54" title="1:17">projectile, non-bilius vomiting. </span><span class="segment" data-start="81.54" data-end="86.5" title="1:21">The infant typically feeds well but then vomits after each feed. </span><span class="segment" data-start="86.5" data-end="90.5" title="1:26">The infant will be hungry and may have lost weight. </span><span class="segment" data-start="90.5" data-end="95.86" title="1:30">On examination a hard mass may be palpable in the epigastrium. </span><span class="segment" data-start="95.86" data-end="102.14" title="1:35">This is classically 1 to 2 centimetres in diameter and located in the right upper quadrant </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="102.14"><span class="t-timestamp">1:42</span></div>
-  <div class="t-body"><span class="segment" data-start="102.14" data-end="105.86" title="1:42">at the lateral edge of the rectus abdominis muscle. </span><span class="segment" data-start="105.86" data-end="108.66" title="1:45">The infant is often dehydrated. </span><span class="segment" data-start="108.66" data-end="113.46" title="1:48">What might arterial blood gas and urinalysis show? </span><span class="segment" data-start="113.46" data-end="123.86" title="1:53">Arterial blood gas will demonstrate a marked metabolic alkylosis with hypocholemia and hypochloremia. </span><span class="segment" data-start="123.86" data-end="129.06" title="2:03">Urinalysis will show acidic urine with high levels of potassium. </span><span class="segment" data-start="129.06" data-end="131.66" title="2:09">How can the blood gas results be explained? </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="131.66"><span class="t-timestamp">2:11</span></div>
-  <div class="t-body"><span class="segment" data-start="131.66" data-end="133.5" title="2:11">This is complicated folks. </span><span class="segment" data-start="133.5" data-end="136.7" title="2:13">Try and keep your explanation simple. </span><span class="segment" data-start="136.7" data-end="142.02" title="2:16">By talking through the gastrointestinal changes followed by the renal compensation and then </span><span class="segment" data-start="142.02" data-end="148.78" title="2:22">the respiratory alterations you will be able to remember all the key facts. </span><span class="segment" data-start="148.78" data-end="153.66" title="2:28">The blood gas results are due to a combination of gastrointestinal, renal and respiratory </span><span class="segment" data-start="153.66" data-end="155.5" title="2:33">changes. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="155.5"><span class="t-timestamp">2:35</span></div>
-  <div class="t-body"><span class="segment" data-start="155.5" data-end="159.98" title="2:35">With regards to the gastrointestinal system it is important to know the components of the </span><span class="segment" data-start="159.98" data-end="165.7" title="2:39">gastric and small bowel secretions and the differences between normal vomiting and vomiting </span><span class="segment" data-start="165.7" data-end="168.74" title="2:45">in pyloric stenosis. </span><span class="segment" data-start="168.74" data-end="171.98" title="2:48">Gastric fluid is rich in hydrogen chloride. </span><span class="segment" data-start="171.98" data-end="176.98" title="2:51">This is neutralised by the bicarbonate ions secreted by the small bowel. </span><span class="segment" data-start="176.98" data-end="181.94" title="2:56">In normal vomiting there is a mixture of gastric and small bowel fluid. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="181.94"><span class="t-timestamp">3:01</span></div>
-  <div class="t-body"><span class="segment" data-start="181.94" data-end="186.5" title="3:01">There is therefore no change in the plasma pH but fluid and electrolyte loss will lead </span><span class="segment" data-start="186.5" data-end="189.34" title="3:06">to dehydration. </span><span class="segment" data-start="189.34" data-end="195.98" title="3:09">In pyloric stenosis the vomit does not contain bicarbonate due to the pyloric obstruction </span><span class="segment" data-start="195.98" data-end="198.5" title="3:15">preventing mixing. </span><span class="segment" data-start="198.5" data-end="204.22" title="3:18">There is therefore only hydrogen and chloride ion loss. </span><span class="segment" data-start="204.22" data-end="210.46" title="3:24">Due to these biochemical changes the kidney is presented with a large bicarbonate load. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="210.46"><span class="t-timestamp">3:30</span></div>
-  <div class="t-body"><span class="segment" data-start="210.46" data-end="217.78" title="3:30">This exceeds the absorptive threshold and so initially alkaline urine is seen. </span><span class="segment" data-start="217.78" data-end="222.86" title="3:37">Strong vomiting however leads to hypervalemia and dehydration. </span><span class="segment" data-start="222.86" data-end="230.3" title="3:42">This causes activation of the reeninanger tensin-aldusteroine axis in an attempt to restore circulating </span><span class="segment" data-start="230.3" data-end="232.1" title="3:50">volume. </span><span class="segment" data-start="232.1" data-end="238.66" title="3:52">The aldosterone acts on the kidney to retain sodium at the expense of potassium and hydrogen </span><span class="segment" data-start="238.66" data-end="240.22" title="3:58">ions. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="240.22"><span class="t-timestamp">4:00</span></div>
-  <div class="t-body"><span class="segment" data-start="240.22" data-end="246.7" title="4:00">This leads to the production of a paradoxical acid urine and worsening hypocholemia and </span><span class="segment" data-start="246.7" data-end="250.1" title="4:06">metabolic alkalosis. </span><span class="segment" data-start="250.1" data-end="255.86" title="4:10">The child may attempt to compensate for the metabolic alkalosis by using the respiratory </span><span class="segment" data-start="255.86" data-end="256.86" title="4:15">system. </span><span class="segment" data-start="256.86" data-end="264.26" title="4:16">They may hypoventilate to produce hypercapnia but this will never be sufficient to correct </span><span class="segment" data-start="264.26" data-end="268.66" title="4:24">the alkalosis as the hypoxic drive will then be triggered. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="268.66"><span class="t-timestamp">4:28</span></div>
-  <div class="t-body"><span class="segment" data-start="268.66" data-end="274.26" title="4:28">What other biochemical or hematological changes might be seen? </span><span class="segment" data-start="274.26" data-end="283.06" title="4:34">Hypocholisemia, hemoconstantration, mild uremia and unconjugated hyperbili-rubinemia may </span><span class="segment" data-start="283.06" data-end="284.06" title="4:43">be seen. </span><span class="segment" data-start="284.06" data-end="289.38" title="4:44">A five-week-old infant is brought into your hospital and diagnosed parlorics tonosis. </span><span class="segment" data-start="289.38" data-end="291.7" title="4:49">He is moderately dehydrated. </span><span class="segment" data-start="291.7" data-end="300.5" title="4:51">Oteroblod gases demonstrated pH of 7.6, chloride of 80 mmL and potassium of 3.0 mmL. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="300.5"><span class="t-timestamp">5:00</span></div>
-  <div class="t-body"><span class="segment" data-start="300.5" data-end="305.1" title="5:00">But by carbonate ion concentration is 32 mmL. </span><span class="segment" data-start="305.1" data-end="308.1" title="5:05">The child was born at term by normal vaginal delivery. </span><span class="segment" data-start="308.1" data-end="312.14" title="5:08">There are no other cases on the emergency list and the surgeon is keen to proceed as </span><span class="segment" data-start="312.14" data-end="314.66" title="5:12">soon as possible. </span><span class="segment" data-start="314.66" data-end="318.58" title="5:14">What are the issues with this case? </span><span class="segment" data-start="318.58" data-end="320.74" title="5:18">There are a number of issues with this case. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="320.74"><span class="t-timestamp">5:20</span></div>
-  <div class="t-body"><span class="segment" data-start="320.74" data-end="326.14" title="5:20">These can be divided into problems specific to the pyloric stenosis and the general problems </span><span class="segment" data-start="326.14" data-end="330.18" title="5:26">associated with an esotizing a young infant. </span><span class="segment" data-start="330.18" data-end="335.38" title="5:30">With regards to the issues relating specifically to the condition, these include the markedly </span><span class="segment" data-start="335.38" data-end="341.06" title="5:35">deranged acid-based status and dehydrated infant and the increased risk of regurgitation </span><span class="segment" data-start="341.06" data-end="344.02" title="5:41">due to the obstruction. </span><span class="segment" data-start="344.02" data-end="348.3" title="5:44">Pyloric stenosis correction is not an emergency. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="348.3"><span class="t-timestamp">5:48</span></div>
-  <div class="t-body"><span class="segment" data-start="348.3" data-end="353.78" title="5:48">The infant should be fully resuscitated and the electrolytes that are deranged corrected </span><span class="segment" data-start="353.78" data-end="357.66" title="5:53">prior to surgical intervention. </span><span class="segment" data-start="357.66" data-end="363.94" title="5:57">The challenges of anesthetizing a small infant include the altered anatomy and physiology, </span><span class="segment" data-start="363.94" data-end="370.1" title="6:03">the presence of anxious parents, difficulty obtaining intravenous access and the altered </span><span class="segment" data-start="370.1" data-end="373.66" title="6:10">drug doses required. </span><span class="segment" data-start="373.66" data-end="377.66" title="6:13">This case should be undertaken with the support of a consultant and heastist experienced in </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="377.66"><span class="t-timestamp">6:17</span></div>
-  <div class="t-body"><span class="segment" data-start="377.66" data-end="379.46" title="6:17">paediatrics. </span><span class="segment" data-start="379.46" data-end="383.58" title="6:19">How would you go about resuscitating this infant? </span><span class="segment" data-start="383.58" data-end="388.02" title="6:23">The infant needs to be resuscitated in an area where the nursing staff are trained in </span><span class="segment" data-start="388.02" data-end="390.62" title="6:28">the management of these cases. </span><span class="segment" data-start="390.62" data-end="395.1" title="6:30">This might be a pediatric surgical ward or a high dependency unit. </span><span class="segment" data-start="395.1" data-end="399.38" title="6:35">The parents should be with the infant whenever possible. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="399.38"><span class="t-timestamp">6:39</span></div>
-  <div class="t-body"><span class="segment" data-start="399.38" data-end="403.46" title="6:39">I would assess the degree of dehydration and obtain intravenous access. </span><span class="segment" data-start="403.46" data-end="409.06" title="6:43">A full blood count, renal function tests, liver function tests and group and whole should </span><span class="segment" data-start="409.06" data-end="411.7" title="6:49">be sent along with blood gases. </span><span class="segment" data-start="411.7" data-end="418.86" title="6:51">These will aid the resuscitation and help to decide on the required potassium supplementation. </span><span class="segment" data-start="418.86" data-end="424.54" title="6:58">Regular blood gases will help to ascertain the success of resuscitation. </span><span class="segment" data-start="424.54" data-end="430.1" title="7:04">And nasogastric tubes should be placed to remove the gastric residue and four hourly washouts </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="430.1"><span class="t-timestamp">7:10</span></div>
-  <div class="t-body"><span class="segment" data-start="430.1" data-end="432.38" title="7:10">performed. </span><span class="segment" data-start="432.38" data-end="434.7" title="7:12">Regular observations need to be taken. </span><span class="segment" data-start="434.7" data-end="440.62" title="7:14">These will include respiratory rate, oxygen saturation, heart rate, blood pressure, conscious </span><span class="segment" data-start="440.62" data-end="445.82" title="7:20">level, urine output and ongoing nasogastric losses. </span><span class="segment" data-start="445.82" data-end="451.02" title="7:25">How would you assess the degree of dehydration in this infant? </span><span class="segment" data-start="451.02" data-end="454.1" title="7:31">Assessment can be divided into history and examination. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="454.1"><span class="t-timestamp">7:34</span></div>
-  <div class="t-body"><span class="segment" data-start="454.1" data-end="458.22" title="7:34">In my history I would ask the parents how much the infant had been vomiting and how much </span><span class="segment" data-start="458.22" data-end="460.5" title="7:38">he had been taking orally. </span><span class="segment" data-start="460.5" data-end="465.74" title="7:40">I would ask about any dire rare and whether the infant had been febrile. </span><span class="segment" data-start="465.74" data-end="470.58" title="7:45">I would also inquire about whether the parents had noticed a change in how often the infant </span><span class="segment" data-start="470.58" data-end="475.42" title="7:50">was wetting his nappy and whether they had noticed any change in the infant's alertness </span><span class="segment" data-start="475.42" data-end="477.98" title="7:55">or conscious level. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="477.98"><span class="t-timestamp">7:57</span></div>
-  <div class="t-body"><span class="segment" data-start="477.98" data-end="481.14" title="7:57">I would then examine the infant. </span><span class="segment" data-start="481.14" data-end="488.82" title="8:01">Looking for dry mucus membranes, a sunken fontanel and dyes, tachycardia, hypotension, decreased </span><span class="segment" data-start="488.82" data-end="493.66" title="8:08">conscious level and a prolonged capillary refill time. </span><span class="segment" data-start="493.66" data-end="500.9" title="8:13">As an estimate, an infant who is less than 5% dehydrated might have a reduced urine output. </span><span class="segment" data-start="500.9" data-end="508.22" title="8:20">At 5% dehydration, an infant would have dry mucus membranes and decreased urine output. </span><span class="segment" data-start="508.22" data-end="515.22" title="8:28">And at 10% dehydration, an infant would reveal the previous signs with additional tachycardia. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="515.22"><span class="t-timestamp">8:35</span></div>
-  <div class="t-body"><span class="segment" data-start="515.22" data-end="521.26" title="8:35">An infant that is more than 10% dehydrated would have all the above and shock and probably </span><span class="segment" data-start="521.26" data-end="523.74" title="8:41">a reduced conscious level. </span><span class="segment" data-start="523.74" data-end="528.38" title="8:43">How do you approach fluid management in this case? </span><span class="segment" data-start="528.38" data-end="534.82" title="8:48">Fluid management can be divided into resuscitation fluids, maintenance fluids and ongoing losses. </span><span class="segment" data-start="534.82" data-end="540.46" title="8:54">Resuscitation fluids should be calculated by assessing the degree of dehydration. </span><span class="segment" data-start="540.46" data-end="545.82" title="9:00">The volume of fluid required to replace this can then be calculated by multiplying the </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="545.82"><span class="t-timestamp">9:05</span></div>
-  <div class="t-body"><span class="segment" data-start="545.82" data-end="552.14" title="9:05">percentage dehydration by the weight of the infant multiplied by 10. </span><span class="segment" data-start="552.14" data-end="558.54" title="9:12">Hartman's solution or 0.9% saline are both appropriate fluids. </span><span class="segment" data-start="558.54" data-end="564.98" title="9:18">Half of the fluid deficit should be corrected within the first 24 hours, followed by half </span><span class="segment" data-start="564.98" data-end="570.02" title="9:24">over the second 24 hours. </span><span class="segment" data-start="570.02" data-end="573.98" title="9:30">In addition to this, maintenance fluids are given. </span><span class="segment" data-start="573.98" data-end="581.34" title="9:33">This may also be Hartman's solution or 0.45% saline with 5% dextrose. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="581.34"><span class="t-timestamp">9:41</span></div>
-  <div class="t-body"><span class="segment" data-start="581.34" data-end="589.58" title="9:41">The 4-2-1 rule can be used to decide the amount of fluid to give per hour to a pediatric patient. </span><span class="segment" data-start="589.58" data-end="594.94" title="9:49">Four milspicula gram is given for the first 10 kilograms of body weight of the infant, </span><span class="segment" data-start="594.94" data-end="600.7" title="9:54">followed by 2 milspicula gram for the second 10 kilograms body weight, and then 1 mil </span><span class="segment" data-start="600.7" data-end="604.98" title="10:00">per kilogram for each of the following 10 kilograms. </span><span class="segment" data-start="604.98" data-end="609.98" title="10:04">Although you would not expect a 6-wheat infant to weigh more than 5 kilograms. </span><span class="segment" data-start="609.98" data-end="613.7" title="10:09">What is this regimen based on? </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="613.7"><span class="t-timestamp">10:13</span></div>
-  <div class="t-body"><span class="segment" data-start="613.7" data-end="619.74" title="10:13">This regimen is based on the amount of water required to give formula feed orally. </span><span class="segment" data-start="619.74" data-end="626.26" title="10:19">On the assumption that the required calorie intake is 100 kilocalories per kilogram per day. </span><span class="segment" data-start="626.26" data-end="631.18" title="10:26">The water supplied is an excess of actual maintenance requirements. </span><span class="segment" data-start="631.18" data-end="636.98" title="10:31">The calculation relies on good renal function to excrete excess water. </span><span class="segment" data-start="636.98" data-end="644.06" title="10:36">Outside the neonatal period, hypoglycemia is rare, but water load can be a problem. </span><span class="segment" data-start="644.06" data-end="650.7" title="10:44">It may be preferable to use 0.9% saline with added glucose of 5 to 10%. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="650.7"><span class="t-timestamp">10:50</span></div>
-  <div class="t-body"><span class="segment" data-start="650.7" data-end="654.3" title="10:50">Checking frequently for hypoglycemia. </span><span class="segment" data-start="654.3" data-end="659.62" title="10:54">Do you know how much potassium you would expect out of the maintenance fluids? </span><span class="segment" data-start="659.62" data-end="664.3" title="10:59">Three milimoles per kilogram per 24 hours of potassium should be added to the maintenance </span><span class="segment" data-start="664.3" data-end="668.82" title="11:04">fluids, as guided by the regular blood gas analysis. </span><span class="segment" data-start="668.82" data-end="673.22" title="11:08">When would you be happy to proceed with anesthesia? </span><span class="segment" data-start="673.26" data-end="681.46" title="11:13">I would want the infant to be normal velemic, and so I would be satisfied once the infant had had two wet nappies. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="681.46"><span class="t-timestamp">11:21</span></div>
-  <div class="t-body"><span class="segment" data-start="681.46" data-end="688.98" title="11:21">If the infant had been catheterized, I would aim for a urine output of 1 to 2 mils per kilogram per hour. </span><span class="segment" data-start="688.98" data-end="694.62" title="11:28">Blood chloride concentration should be above 95 milimoles per liter. </span><span class="segment" data-start="694.62" data-end="700.98" title="11:34">The alkylosis will not be totally corrected until the chloride exceeds 105 milimoles per liter. </span><span class="segment" data-start="701.02" data-end="708.34" title="11:41">And so I would accept a pH less than 7.5 with a basic excess less than 6 milimoles per liter. </span><span class="segment" data-start="708.34" data-end="712.86" title="11:48">I would want the bicarmlet concentration to be below 30 milimoles per liter, </span><span class="segment" data-start="712.86" data-end="717.42" title="11:52">and the potassium concentration to be within the normal range. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="717.42"><span class="t-timestamp">11:57</span></div>
-  <div class="t-body"><span class="segment" data-start="717.42" data-end="722.46" title="11:57">How long is a polaroid myosamely take and how is it performed? </span><span class="segment" data-start="722.46" data-end="726.1" title="12:02">This procedure tends to take about 30 minutes to an hour. </span><span class="segment" data-start="726.1" data-end="729.46" title="12:06">It may be performed open or laparoscopically. </span><span class="segment" data-start="729.46" data-end="735.18" title="12:09">Laparoscopic surgeon on infants is generally only performed in specialist centres. </span><span class="segment" data-start="735.18" data-end="739.22" title="12:15">How do you niestitis as infant? </span><span class="segment" data-start="739.22" data-end="743.22" title="12:19">A senior experienced pediatric anesthesis should be present. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="743.22"><span class="t-timestamp">12:23</span></div>
-  <div class="t-body"><span class="segment" data-start="743.22" data-end="746.06" title="12:23">Prior to induction, I would aspirate the nasogastric tube, </span><span class="segment" data-start="746.06" data-end="751.42" title="12:26">attempting to suction all four quadrants of the stomach by moving the infant. </span><span class="segment" data-start="751.42" data-end="757.34" title="12:31">Both inhalational and rapid-sequence inductions with and without cryocopresure have been described. </span><span class="segment" data-start="757.34" data-end="760.94" title="12:37">An adequate dose of muscle relaxant must be given. </span><span class="segment" data-start="760.94" data-end="765.7" title="12:40">I would secure the airway in appropriate size, uncafed endochial tube. </span><span class="segment" data-start="765.7" data-end="770.54" title="12:45">A size 3.5 millimetre tube would be probably adequate for this infant, </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="770.54"><span class="t-timestamp">12:50</span></div>
-  <div class="t-body"><span class="segment" data-start="770.54" data-end="774.26" title="12:50">but I would have a three and a four also available. </span><span class="segment" data-start="774.26" data-end="778.38" title="12:54">I would then hand ventilate the infant before connecting to either an air's T-piece </span><span class="segment" data-start="778.38" data-end="784.02" title="12:58">or pediatric circle system using pressure control ventilation. </span><span class="segment" data-start="784.02" data-end="790.78" title="13:04">Parasetamol, local anaesthetic infiltration and opioids can all be given for analgesia. </span><span class="segment" data-start="790.78" data-end="794.3" title="13:10">The paracetamol can be given intravenously. </span><span class="segment" data-start="794.3" data-end="799.42" title="13:14">Add a dose of 7.5 mg per kilogram every four to six hours </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="799.42"><span class="t-timestamp">13:19</span></div>
-  <div class="t-body"><span class="segment" data-start="799.42" data-end="804.82" title="13:19">to a maximum of 30 mg per kilogram in a 24-hour period. </span><span class="segment" data-start="804.82" data-end="808.94" title="13:24">Suppositories are available and the dose is 30 mg per kilo loading, </span><span class="segment" data-start="808.94" data-end="816.62" title="13:28">and dose followed by 20 mg per kilo every eight hours to a maximum of 60 mg in 24 hours. </span><span class="segment" data-start="816.62" data-end="823.26" title="13:36">The smallest repository is 60 mg, then 125 mg and 250 mg. </span><span class="segment" data-start="823.26" data-end="827.46" title="13:43">The infant would therefore need to be at least two kilograms to be able to receive </span><span class="segment" data-start="827.46" data-end="830.42" title="13:47">the smallest rectal dose of paracetamol. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="830.42"><span class="t-timestamp">13:50</span></div>
-  <div class="t-body"><span class="segment" data-start="830.42" data-end="838.14" title="13:50">You cannot cut the repository because the active drug may not be distributed evenly through the wax. </span><span class="segment" data-start="838.18" data-end="842.94" title="13:58">The dose of local anaesthetic needs to be calculated depending on the size of the infant. </span><span class="segment" data-start="842.94" data-end="846.66" title="14:02">If your pivocaine is used, the dose is two milligrams per kilogram, </span><span class="segment" data-start="846.66" data-end="854.06" title="14:06">and so in a four kilogram infant, 6.4 ml of 0.125 percent pivocaine may be used. </span><span class="segment" data-start="854.06" data-end="858.5" title="14:14">Local infiltration can be performed by the surgeons. </span><span class="segment" data-start="858.5" data-end="863.78" title="14:18">More fiend may be given intravenously at a dose of 200 mg per kilogram, </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="863.78"><span class="t-timestamp">14:23</span></div>
-  <div class="t-body"><span class="segment" data-start="863.78" data-end="867.22" title="14:23">but this is not often required. </span><span class="segment" data-start="867.26" data-end="870.74" title="14:27">The nasogastric tube can be removed at the end of surgery, </span><span class="segment" data-start="870.74" data-end="875.18" title="14:30">and the infant should be extubated in the left lateral position. </span><span class="segment" data-start="875.18" data-end="879.7" title="14:35">What would be your post-op instructions for the infant? </span><span class="segment" data-start="879.7" data-end="882.9" title="14:39">Due to the potential risk of post-operative atnias, </span><span class="segment" data-start="882.9" data-end="885.7" title="14:42">up to 60 weeks post gestational age, </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="885.7"><span class="t-timestamp">14:45</span></div>
-  <div class="t-body"><span class="segment" data-start="885.7" data-end="891.22" title="14:45">the infant should be monitored with an apnea alarm and oxygen saturation probe. </span><span class="segment" data-start="891.22" data-end="894.82" title="14:51">Feding can be started about six hours after the operation, </span><span class="segment" data-start="894.82" data-end="898.5" title="14:54">unless the bowel new cozer has been breached. </span><span class="segment" data-start="898.5" data-end="903.46" title="14:58">Intravenous maintenance fluids should be continued until feeding is established. </span><span class="segment" data-start="903.46" data-end="906.62" title="15:03">The first feed should be clear fluid. </span><span class="segment" data-start="906.62" data-end="910.5" title="15:06">I would prescribe regular paracetamol for analgesia. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="910.5"><span class="t-timestamp">15:10</span></div>
-  <div class="t-body"><span class="segment" data-start="910.5" data-end="915.18" title="15:10">How can you assess pain in pediatric patients? </span><span class="segment" data-start="915.18" data-end="917.86" title="15:15">Pain assessment can be difficult in children </span><span class="segment" data-start="917.86" data-end="921.46" title="15:17">due to communication and behavioral challenges. </span><span class="segment" data-start="921.46" data-end="926.98" title="15:21">Specific pain assessment tools have therefore been developed for pediatric patients. </span><span class="segment" data-start="926.98" data-end="931.54" title="15:26">Assessment should be performed regularly with the support of the parents. </span><span class="segment" data-start="931.54" data-end="933.94" title="15:31">Since pain is a subjective experience, </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="933.94"><span class="t-timestamp">15:33</span></div>
-  <div class="t-body"><span class="segment" data-start="933.94" data-end="939.94" title="15:33">it is important to seek the child's self-reportive pain whenever possible. </span><span class="segment" data-start="939.94" data-end="944.42" title="15:39">The anotal assessment uses a combination of physiological and behavioral markers, </span><span class="segment" data-start="944.42" data-end="948.06" title="15:44">including facial expressions, body and limb movements, </span><span class="segment" data-start="948.06" data-end="953.66" title="15:48">cry, sleeplessness, cardiovascular and respiratory changes. </span><span class="segment" data-start="953.66" data-end="958.38" title="15:53">Examples of tools available are the neonatal and infant pain scale </span><span class="segment" data-start="958.38" data-end="964.54" title="15:58">and the neonatal pain, agitation and sedative score, end pass. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="964.54"><span class="t-timestamp">16:04</span></div>
-  <div class="t-body"><span class="segment" data-start="964.54" data-end="967.9" title="16:04">Infant assessment is also purely observational. </span><span class="segment" data-start="967.9" data-end="972.94" title="16:07">Behavioral pain indicators include facial expression, irritability, </span><span class="segment" data-start="972.94" data-end="976.94" title="16:12">unusual posture, screaming, sobbing or whimpering, </span><span class="segment" data-start="976.94" data-end="983.9" title="16:16">reluctance to move, increased clingingness, loss of appetite and disturbed sleep pattern. </span><span class="segment" data-start="983.9" data-end="988.14" title="16:23">Examples of tools available are the face legs activity cry </span><span class="segment" data-start="988.14" data-end="995.42" title="16:28">and consolation scale or flack and the objective pain scores OPS. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="995.42"><span class="t-timestamp">16:35</span></div>
-  <div class="t-body"><span class="segment" data-start="995.42" data-end="1000.38" title="16:35">Preschool children may be able to self-report pain when given appropriate tools. </span><span class="segment" data-start="1000.38" data-end="1006.38" title="16:40">For example, faces is a face-based scale with happy to crying faces </span><span class="segment" data-start="1006.38" data-end="1009.74" title="16:46">which represent the pain scale. </span><span class="segment" data-start="1009.74" data-end="1014.46" title="16:49">School children can usually communicate pain severity and location. </span><span class="segment" data-start="1014.46" data-end="1020.86" title="16:54">They understand numerical concepts and so may use numerical rating scales. </span><span class="segment" data-start="1020.86" data-end="1028.7" title="17:00">Other tools including faces, color-based scales and visual analogue scales are also available. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="1028.7"><span class="t-timestamp">17:08</span></div>
-  <div class="t-body"><span class="segment" data-start="1028.7" data-end="1034.86" title="17:08">Finally, adolescents may communicate pain severity, location and intensity </span><span class="segment" data-start="1034.86" data-end="1039.66" title="17:14">and they can use visual analogue scales or numerical rating scales. </span></div>
+<div class="preamble-block"><span class="segment a-seg" data-start="0.0" data-end="2.4" title="0:00">Pyloric stenosis. </span><span class="segment a-seg" data-start="2.4" data-end="5.68" title="0:02">This were generally form part of a clinical viber. </span><span class="segment a-seg" data-start="5.68" data-end="10.74" title="0:05">The biochemical abnormalities are frequently asked and so make sure you can explain them </span><span class="segment a-seg" data-start="10.74" data-end="11.98" title="0:10">thoroughly. </span></div>
+<div class="qa-pair">
+<div class="q-block" data-start="11.98">
+  <div class="q-label">Q1</div>
+  <div class="q-body"><span class="segment q-seg" data-start="11.98" data-end="17.28" title="0:11">What is congenital hypertrophic pyloric stenosis? </span></div>
 </div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="17.28" data-end="22.88" title="0:17">Pyloric stenosis is a congenital narrowing of the gastric outflow tract caused by hypertrophy </span></li>
+<li><span class="segment a-seg" data-start="22.88" data-end="25.52" title="0:22">of the circular pyloric muscle. </span></li>
+<li><span class="segment a-seg" data-start="25.52" data-end="30.4" title="0:25">The cause is unknown but there is a genetic predisposition. </span></li>
+<li><span class="segment a-seg" data-start="30.4" data-end="34.06" title="0:30">The condition occurs in one in 500 births. </span></li>
+<li><span class="segment a-seg" data-start="34.06" data-end="39.04" title="0:34">It is the most frequent cause of intestinal obstruction in infancy and the commonest small </span></li>
+<li><span class="segment a-seg" data-start="39.04" data-end="44.0" title="0:39">baby condition treated outside a special centre. </span></li>
+<li><span class="segment a-seg" data-start="44.0" data-end="47.92" title="0:44">Boys are affected much more than girls with a ratio of 4 to 1. </span></li>
+<li><span class="segment a-seg" data-start="47.92" data-end="53.1" title="0:47">40 to 60% of cases occur in first born children. </span></li>
+<li><span class="segment a-seg" data-start="53.1" data-end="56.98" title="0:53">The condition is also more common in the white population. </span></li>
+<li><span class="segment a-seg" data-start="56.98" data-end="62.72" title="0:56">Pyloric stenosis can also be acquired in adults as a result of gastric carcinoma or chronic </span></li>
+<li><span class="segment a-seg" data-start="62.72" data-end="64.7" title="1:02">peptycholceration. </span></li>
+<li><span class="segment a-seg" data-start="64.7" data-end="68.46" title="1:04">These conditions will not be discussed in this podcast. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="68.46">
+  <div class="q-label">Q2</div>
+  <div class="q-body"><span class="segment q-seg" data-start="68.46" data-end="72.38" title="1:08">How does pyloric stenosis present? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="72.38" data-end="77.94" title="1:12">The patient usually presents at 4 to 6 weeks of age with worsening symptoms of persistent, </span></li>
+<li><span class="segment a-seg" data-start="77.94" data-end="81.54" title="1:17">projectile, non-bilius vomiting. </span></li>
+<li><span class="segment a-seg" data-start="81.54" data-end="86.5" title="1:21">The infant typically feeds well but then vomits after each feed. </span></li>
+<li><span class="segment a-seg" data-start="86.5" data-end="90.5" title="1:26">The infant will be hungry and may have lost weight. </span></li>
+<li><span class="segment a-seg" data-start="90.5" data-end="95.86" title="1:30">On examination a hard mass may be palpable in the epigastrium. </span></li>
+<li><span class="segment a-seg" data-start="95.86" data-end="102.14" title="1:35">This is classically 1 to 2 centimetres in diameter and located in the right upper quadrant </span></li>
+<li><span class="segment a-seg" data-start="102.14" data-end="105.86" title="1:42">at the lateral edge of the rectus abdominis muscle. </span></li>
+<li><span class="segment a-seg" data-start="105.86" data-end="108.66" title="1:45">The infant is often dehydrated. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="108.66">
+  <div class="q-label">Q3</div>
+  <div class="q-body"><span class="segment q-seg" data-start="108.66" data-end="113.46" title="1:48">What might arterial blood gas and urinalysis show? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="113.46" data-end="123.86" title="1:53">Arterial blood gas will demonstrate a marked metabolic alkylosis with hypocholemia and hypochloremia. </span></li>
+<li><span class="segment a-seg" data-start="123.86" data-end="129.06" title="2:03">Urinalysis will show acidic urine with high levels of potassium. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="129.06">
+  <div class="q-label">Q4</div>
+  <div class="q-body"><span class="segment q-seg" data-start="129.06" data-end="131.66" title="2:09">How can the blood gas results be explained? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="131.66" data-end="133.5" title="2:11">This is complicated folks. </span></li>
+<li><span class="segment a-seg" data-start="133.5" data-end="136.7" title="2:13">Try and keep your explanation simple. </span></li>
+<li><span class="segment a-seg" data-start="136.7" data-end="142.02" title="2:16">By talking through the gastrointestinal changes followed by the renal compensation and then </span></li>
+<li><span class="segment a-seg" data-start="142.02" data-end="148.78" title="2:22">the respiratory alterations you will be able to remember all the key facts. </span></li>
+<li><span class="segment a-seg" data-start="148.78" data-end="153.66" title="2:28">The blood gas results are due to a combination of gastrointestinal, renal and respiratory </span></li>
+<li><span class="segment a-seg" data-start="153.66" data-end="155.5" title="2:33">changes. </span></li>
+<li><span class="segment a-seg" data-start="155.5" data-end="159.98" title="2:35">With regards to the gastrointestinal system it is important to know the components of the </span></li>
+<li><span class="segment a-seg" data-start="159.98" data-end="165.7" title="2:39">gastric and small bowel secretions and the differences between normal vomiting and vomiting </span></li>
+<li><span class="segment a-seg" data-start="165.7" data-end="168.74" title="2:45">in pyloric stenosis. </span></li>
+<li><span class="segment a-seg" data-start="168.74" data-end="171.98" title="2:48">Gastric fluid is rich in hydrogen chloride. </span></li>
+<li><span class="segment a-seg" data-start="171.98" data-end="176.98" title="2:51">This is neutralised by the bicarbonate ions secreted by the small bowel. </span></li>
+<li><span class="segment a-seg" data-start="176.98" data-end="181.94" title="2:56">In normal vomiting there is a mixture of gastric and small bowel fluid. </span></li>
+<li><span class="segment a-seg" data-start="181.94" data-end="186.5" title="3:01">There is therefore no change in the plasma pH but fluid and electrolyte loss will lead </span></li>
+<li><span class="segment a-seg" data-start="186.5" data-end="189.34" title="3:06">to dehydration. </span></li>
+<li><span class="segment a-seg" data-start="189.34" data-end="195.98" title="3:09">In pyloric stenosis the vomit does not contain bicarbonate due to the pyloric obstruction </span></li>
+<li><span class="segment a-seg" data-start="195.98" data-end="198.5" title="3:15">preventing mixing. </span></li>
+<li><span class="segment a-seg" data-start="198.5" data-end="204.22" title="3:18">There is therefore only hydrogen and chloride ion loss. </span></li>
+<li><span class="segment a-seg" data-start="204.22" data-end="210.46" title="3:24">Due to these biochemical changes the kidney is presented with a large bicarbonate load. </span></li>
+<li><span class="segment a-seg" data-start="210.46" data-end="217.78" title="3:30">This exceeds the absorptive threshold and so initially alkaline urine is seen. </span></li>
+<li><span class="segment a-seg" data-start="217.78" data-end="222.86" title="3:37">Strong vomiting however leads to hypervalemia and dehydration. </span></li>
+<li><span class="segment a-seg" data-start="222.86" data-end="230.3" title="3:42">This causes activation of the reeninanger tensin-aldusteroine axis in an attempt to restore circulating </span></li>
+<li><span class="segment a-seg" data-start="230.3" data-end="232.1" title="3:50">volume. </span></li>
+<li><span class="segment a-seg" data-start="232.1" data-end="238.66" title="3:52">The aldosterone acts on the kidney to retain sodium at the expense of potassium and hydrogen </span></li>
+<li><span class="segment a-seg" data-start="238.66" data-end="240.22" title="3:58">ions. </span></li>
+<li><span class="segment a-seg" data-start="240.22" data-end="246.7" title="4:00">This leads to the production of a paradoxical acid urine and worsening hypocholemia and </span></li>
+<li><span class="segment a-seg" data-start="246.7" data-end="250.1" title="4:06">metabolic alkalosis. </span></li>
+<li><span class="segment a-seg" data-start="250.1" data-end="255.86" title="4:10">The child may attempt to compensate for the metabolic alkalosis by using the respiratory </span></li>
+<li><span class="segment a-seg" data-start="255.86" data-end="256.86" title="4:15">system. </span></li>
+<li><span class="segment a-seg" data-start="256.86" data-end="264.26" title="4:16">They may hypoventilate to produce hypercapnia but this will never be sufficient to correct </span></li>
+<li><span class="segment a-seg" data-start="264.26" data-end="268.66" title="4:24">the alkalosis as the hypoxic drive will then be triggered. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="268.66">
+  <div class="q-label">Q5</div>
+  <div class="q-body"><span class="segment q-seg" data-start="268.66" data-end="274.26" title="4:28">What other biochemical or hematological changes might be seen? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="274.26" data-end="283.06" title="4:34">Hypocholisemia, hemoconstantration, mild uremia and unconjugated hyperbili-rubinemia may </span></li>
+<li><span class="segment a-seg" data-start="283.06" data-end="284.06" title="4:43">be seen. </span></li>
+<li><span class="segment a-seg" data-start="284.06" data-end="289.38" title="4:44">A five-week-old infant is brought into your hospital and diagnosed parlorics tonosis. </span></li>
+<li><span class="segment a-seg" data-start="289.38" data-end="291.7" title="4:49">He is moderately dehydrated. </span></li>
+<li><span class="segment a-seg" data-start="291.7" data-end="300.5" title="4:51">Oteroblod gases demonstrated pH of 7.6, chloride of 80 mmL and potassium of 3.0 mmL. </span></li>
+<li><span class="segment a-seg" data-start="300.5" data-end="305.1" title="5:00">But by carbonate ion concentration is 32 mmL. </span></li>
+<li><span class="segment a-seg" data-start="305.1" data-end="308.1" title="5:05">The child was born at term by normal vaginal delivery. </span></li>
+<li><span class="segment a-seg" data-start="308.1" data-end="312.14" title="5:08">There are no other cases on the emergency list and the surgeon is keen to proceed as </span></li>
+<li><span class="segment a-seg" data-start="312.14" data-end="314.66" title="5:12">soon as possible. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="314.66">
+  <div class="q-label">Q6</div>
+  <div class="q-body"><span class="segment q-seg" data-start="314.66" data-end="318.58" title="5:14">What are the issues with this case? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="318.58" data-end="320.74" title="5:18">There are a number of issues with this case. </span></li>
+<li><span class="segment a-seg" data-start="320.74" data-end="326.14" title="5:20">These can be divided into problems specific to the pyloric stenosis and the general problems </span></li>
+<li><span class="segment a-seg" data-start="326.14" data-end="330.18" title="5:26">associated with an esotizing a young infant. </span></li>
+<li><span class="segment a-seg" data-start="330.18" data-end="335.38" title="5:30">With regards to the issues relating specifically to the condition, these include the markedly </span></li>
+<li><span class="segment a-seg" data-start="335.38" data-end="341.06" title="5:35">deranged acid-based status and dehydrated infant and the increased risk of regurgitation </span></li>
+<li><span class="segment a-seg" data-start="341.06" data-end="344.02" title="5:41">due to the obstruction. </span></li>
+<li><span class="segment a-seg" data-start="344.02" data-end="348.3" title="5:44">Pyloric stenosis correction is not an emergency. </span></li>
+<li><span class="segment a-seg" data-start="348.3" data-end="353.78" title="5:48">The infant should be fully resuscitated and the electrolytes that are deranged corrected </span></li>
+<li><span class="segment a-seg" data-start="353.78" data-end="357.66" title="5:53">prior to surgical intervention. </span></li>
+<li><span class="segment a-seg" data-start="357.66" data-end="363.94" title="5:57">The challenges of anesthetizing a small infant include the altered anatomy and physiology, </span></li>
+<li><span class="segment a-seg" data-start="363.94" data-end="370.1" title="6:03">the presence of anxious parents, difficulty obtaining intravenous access and the altered </span></li>
+<li><span class="segment a-seg" data-start="370.1" data-end="373.66" title="6:10">drug doses required. </span></li>
+<li><span class="segment a-seg" data-start="373.66" data-end="377.66" title="6:13">This case should be undertaken with the support of a consultant and heastist experienced in </span></li>
+<li><span class="segment a-seg" data-start="377.66" data-end="379.46" title="6:17">paediatrics. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="379.46">
+  <div class="q-label">Q7</div>
+  <div class="q-body"><span class="segment q-seg" data-start="379.46" data-end="383.58" title="6:19">How would you go about resuscitating this infant? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="383.58" data-end="388.02" title="6:23">The infant needs to be resuscitated in an area where the nursing staff are trained in </span></li>
+<li><span class="segment a-seg" data-start="388.02" data-end="390.62" title="6:28">the management of these cases. </span></li>
+<li><span class="segment a-seg" data-start="390.62" data-end="395.1" title="6:30">This might be a pediatric surgical ward or a high dependency unit. </span></li>
+<li><span class="segment a-seg" data-start="395.1" data-end="399.38" title="6:35">The parents should be with the infant whenever possible. </span></li>
+<li><span class="segment a-seg" data-start="399.38" data-end="403.46" title="6:39">I would assess the degree of dehydration and obtain intravenous access. </span></li>
+<li><span class="segment a-seg" data-start="403.46" data-end="409.06" title="6:43">A full blood count, renal function tests, liver function tests and group and whole should </span></li>
+<li><span class="segment a-seg" data-start="409.06" data-end="411.7" title="6:49">be sent along with blood gases. </span></li>
+<li><span class="segment a-seg" data-start="411.7" data-end="418.86" title="6:51">These will aid the resuscitation and help to decide on the required potassium supplementation. </span></li>
+<li><span class="segment a-seg" data-start="418.86" data-end="424.54" title="6:58">Regular blood gases will help to ascertain the success of resuscitation. </span></li>
+<li><span class="segment a-seg" data-start="424.54" data-end="430.1" title="7:04">And nasogastric tubes should be placed to remove the gastric residue and four hourly washouts </span></li>
+<li><span class="segment a-seg" data-start="430.1" data-end="432.38" title="7:10">performed. </span></li>
+<li><span class="segment a-seg" data-start="432.38" data-end="434.7" title="7:12">Regular observations need to be taken. </span></li>
+<li><span class="segment a-seg" data-start="434.7" data-end="440.62" title="7:14">These will include respiratory rate, oxygen saturation, heart rate, blood pressure, conscious </span></li>
+<li><span class="segment a-seg" data-start="440.62" data-end="445.82" title="7:20">level, urine output and ongoing nasogastric losses. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="445.82">
+  <div class="q-label">Q8</div>
+  <div class="q-body"><span class="segment q-seg" data-start="445.82" data-end="451.02" title="7:25">How would you assess the degree of dehydration in this infant? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="451.02" data-end="454.1" title="7:31">Assessment can be divided into history and examination. </span></li>
+<li><span class="segment a-seg" data-start="454.1" data-end="458.22" title="7:34">In my history I would ask the parents how much the infant had been vomiting and how much </span></li>
+<li><span class="segment a-seg" data-start="458.22" data-end="460.5" title="7:38">he had been taking orally. </span></li>
+<li><span class="segment a-seg" data-start="460.5" data-end="465.74" title="7:40">I would ask about any dire rare and whether the infant had been febrile. </span></li>
+<li><span class="segment a-seg" data-start="465.74" data-end="470.58" title="7:45">I would also inquire about whether the parents had noticed a change in how often the infant </span></li>
+<li><span class="segment a-seg" data-start="470.58" data-end="475.42" title="7:50">was wetting his nappy and whether they had noticed any change in the infant's alertness </span></li>
+<li><span class="segment a-seg" data-start="475.42" data-end="477.98" title="7:55">or conscious level. </span></li>
+<li><span class="segment a-seg" data-start="477.98" data-end="481.14" title="7:57">I would then examine the infant. </span></li>
+<li><span class="segment a-seg" data-start="481.14" data-end="488.82" title="8:01">Looking for dry mucus membranes, a sunken fontanel and dyes, tachycardia, hypotension, decreased </span></li>
+<li><span class="segment a-seg" data-start="488.82" data-end="493.66" title="8:08">conscious level and a prolonged capillary refill time. </span></li>
+<li><span class="segment a-seg" data-start="493.66" data-end="500.9" title="8:13">As an estimate, an infant who is less than 5% dehydrated might have a reduced urine output. </span></li>
+<li><span class="segment a-seg" data-start="500.9" data-end="508.22" title="8:20">At 5% dehydration, an infant would have dry mucus membranes and decreased urine output. </span></li>
+<li><span class="segment a-seg" data-start="508.22" data-end="515.22" title="8:28">And at 10% dehydration, an infant would reveal the previous signs with additional tachycardia. </span></li>
+<li><span class="segment a-seg" data-start="515.22" data-end="521.26" title="8:35">An infant that is more than 10% dehydrated would have all the above and shock and probably </span></li>
+<li><span class="segment a-seg" data-start="521.26" data-end="523.74" title="8:41">a reduced conscious level. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="523.74">
+  <div class="q-label">Q9</div>
+  <div class="q-body"><span class="segment q-seg" data-start="523.74" data-end="528.38" title="8:43">How do you approach fluid management in this case? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="528.38" data-end="534.82" title="8:48">Fluid management can be divided into resuscitation fluids, maintenance fluids and ongoing losses. </span></li>
+<li><span class="segment a-seg" data-start="534.82" data-end="540.46" title="8:54">Resuscitation fluids should be calculated by assessing the degree of dehydration. </span></li>
+<li><span class="segment a-seg" data-start="540.46" data-end="545.82" title="9:00">The volume of fluid required to replace this can then be calculated by multiplying the </span></li>
+<li><span class="segment a-seg" data-start="545.82" data-end="552.14" title="9:05">percentage dehydration by the weight of the infant multiplied by 10. </span></li>
+<li><span class="segment a-seg" data-start="552.14" data-end="558.54" title="9:12">Hartman's solution or 0.9% saline are both appropriate fluids. </span></li>
+<li><span class="segment a-seg" data-start="558.54" data-end="564.98" title="9:18">Half of the fluid deficit should be corrected within the first 24 hours, followed by half </span></li>
+<li><span class="segment a-seg" data-start="564.98" data-end="570.02" title="9:24">over the second 24 hours. </span></li>
+<li><span class="segment a-seg" data-start="570.02" data-end="573.98" title="9:30">In addition to this, maintenance fluids are given. </span></li>
+<li><span class="segment a-seg" data-start="573.98" data-end="581.34" title="9:33">This may also be Hartman's solution or 0.45% saline with 5% dextrose. </span></li>
+<li><span class="segment a-seg" data-start="581.34" data-end="589.58" title="9:41">The 4-2-1 rule can be used to decide the amount of fluid to give per hour to a pediatric patient. </span></li>
+<li><span class="segment a-seg" data-start="589.58" data-end="594.94" title="9:49">Four milspicula gram is given for the first 10 kilograms of body weight of the infant, </span></li>
+<li><span class="segment a-seg" data-start="594.94" data-end="600.7" title="9:54">followed by 2 milspicula gram for the second 10 kilograms body weight, and then 1 mil </span></li>
+<li><span class="segment a-seg" data-start="600.7" data-end="604.98" title="10:00">per kilogram for each of the following 10 kilograms. </span></li>
+<li><span class="segment a-seg" data-start="604.98" data-end="609.98" title="10:04">Although you would not expect a 6-wheat infant to weigh more than 5 kilograms. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="609.98">
+  <div class="q-label">Q10</div>
+  <div class="q-body"><span class="segment q-seg" data-start="609.98" data-end="613.7" title="10:09">What is this regimen based on? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="613.7" data-end="619.74" title="10:13">This regimen is based on the amount of water required to give formula feed orally. </span></li>
+<li><span class="segment a-seg" data-start="619.74" data-end="626.26" title="10:19">On the assumption that the required calorie intake is 100 kilocalories per kilogram per day. </span></li>
+<li><span class="segment a-seg" data-start="626.26" data-end="631.18" title="10:26">The water supplied is an excess of actual maintenance requirements. </span></li>
+<li><span class="segment a-seg" data-start="631.18" data-end="636.98" title="10:31">The calculation relies on good renal function to excrete excess water. </span></li>
+<li><span class="segment a-seg" data-start="636.98" data-end="644.06" title="10:36">Outside the neonatal period, hypoglycemia is rare, but water load can be a problem. </span></li>
+<li><span class="segment a-seg" data-start="644.06" data-end="650.7" title="10:44">It may be preferable to use 0.9% saline with added glucose of 5 to 10%. </span></li>
+<li><span class="segment a-seg" data-start="650.7" data-end="654.3" title="10:50">Checking frequently for hypoglycemia. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="654.3">
+  <div class="q-label">Q11</div>
+  <div class="q-body"><span class="segment q-seg" data-start="654.3" data-end="659.62" title="10:54">Do you know how much potassium you would expect out of the maintenance fluids? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="659.62" data-end="664.3" title="10:59">Three milimoles per kilogram per 24 hours of potassium should be added to the maintenance </span></li>
+<li><span class="segment a-seg" data-start="664.3" data-end="668.82" title="11:04">fluids, as guided by the regular blood gas analysis. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="668.82">
+  <div class="q-label">Q12</div>
+  <div class="q-body"><span class="segment q-seg" data-start="668.82" data-end="673.22" title="11:08">When would you be happy to proceed with anesthesia? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="673.26" data-end="681.46" title="11:13">I would want the infant to be normal velemic, and so I would be satisfied once the infant had had two wet nappies. </span></li>
+<li><span class="segment a-seg" data-start="681.46" data-end="688.98" title="11:21">If the infant had been catheterized, I would aim for a urine output of 1 to 2 mils per kilogram per hour. </span></li>
+<li><span class="segment a-seg" data-start="688.98" data-end="694.62" title="11:28">Blood chloride concentration should be above 95 milimoles per liter. </span></li>
+<li><span class="segment a-seg" data-start="694.62" data-end="700.98" title="11:34">The alkylosis will not be totally corrected until the chloride exceeds 105 milimoles per liter. </span></li>
+<li><span class="segment a-seg" data-start="701.02" data-end="708.34" title="11:41">And so I would accept a pH less than 7.5 with a basic excess less than 6 milimoles per liter. </span></li>
+<li><span class="segment a-seg" data-start="708.34" data-end="712.86" title="11:48">I would want the bicarmlet concentration to be below 30 milimoles per liter, </span></li>
+<li><span class="segment a-seg" data-start="712.86" data-end="717.42" title="11:52">and the potassium concentration to be within the normal range. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="717.42">
+  <div class="q-label">Q13</div>
+  <div class="q-body"><span class="segment q-seg" data-start="717.42" data-end="722.46" title="11:57">How long is a polaroid myosamely take and how is it performed? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="722.46" data-end="726.1" title="12:02">This procedure tends to take about 30 minutes to an hour. </span></li>
+<li><span class="segment a-seg" data-start="726.1" data-end="729.46" title="12:06">It may be performed open or laparoscopically. </span></li>
+<li><span class="segment a-seg" data-start="729.46" data-end="735.18" title="12:09">Laparoscopic surgeon on infants is generally only performed in specialist centres. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="735.18">
+  <div class="q-label">Q14</div>
+  <div class="q-body"><span class="segment q-seg" data-start="735.18" data-end="739.22" title="12:15">How do you niestitis as infant? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="739.22" data-end="743.22" title="12:19">A senior experienced pediatric anesthesis should be present. </span></li>
+<li><span class="segment a-seg" data-start="743.22" data-end="746.06" title="12:23">Prior to induction, I would aspirate the nasogastric tube, </span></li>
+<li><span class="segment a-seg" data-start="746.06" data-end="751.42" title="12:26">attempting to suction all four quadrants of the stomach by moving the infant. </span></li>
+<li><span class="segment a-seg" data-start="751.42" data-end="757.34" title="12:31">Both inhalational and rapid-sequence inductions with and without cryocopresure have been described. </span></li>
+<li><span class="segment a-seg" data-start="757.34" data-end="760.94" title="12:37">An adequate dose of muscle relaxant must be given. </span></li>
+<li><span class="segment a-seg" data-start="760.94" data-end="765.7" title="12:40">I would secure the airway in appropriate size, uncafed endochial tube. </span></li>
+<li><span class="segment a-seg" data-start="765.7" data-end="770.54" title="12:45">A size 3.5 millimetre tube would be probably adequate for this infant, </span></li>
+<li><span class="segment a-seg" data-start="770.54" data-end="774.26" title="12:50">but I would have a three and a four also available. </span></li>
+<li><span class="segment a-seg" data-start="774.26" data-end="778.38" title="12:54">I would then hand ventilate the infant before connecting to either an air's T-piece </span></li>
+<li><span class="segment a-seg" data-start="778.38" data-end="784.02" title="12:58">or pediatric circle system using pressure control ventilation. </span></li>
+<li><span class="segment a-seg" data-start="784.02" data-end="790.78" title="13:04">Parasetamol, local anaesthetic infiltration and opioids can all be given for analgesia. </span></li>
+<li><span class="segment a-seg" data-start="790.78" data-end="794.3" title="13:10">The paracetamol can be given intravenously. </span></li>
+<li><span class="segment a-seg" data-start="794.3" data-end="799.42" title="13:14">Add a dose of 7.5 mg per kilogram every four to six hours </span></li>
+<li><span class="segment a-seg" data-start="799.42" data-end="804.82" title="13:19">to a maximum of 30 mg per kilogram in a 24-hour period. </span></li>
+<li><span class="segment a-seg" data-start="804.82" data-end="808.94" title="13:24">Suppositories are available and the dose is 30 mg per kilo loading, </span></li>
+<li><span class="segment a-seg" data-start="808.94" data-end="816.62" title="13:28">and dose followed by 20 mg per kilo every eight hours to a maximum of 60 mg in 24 hours. </span></li>
+<li><span class="segment a-seg" data-start="816.62" data-end="823.26" title="13:36">The smallest repository is 60 mg, then 125 mg and 250 mg. </span></li>
+<li><span class="segment a-seg" data-start="823.26" data-end="827.46" title="13:43">The infant would therefore need to be at least two kilograms to be able to receive </span></li>
+<li><span class="segment a-seg" data-start="827.46" data-end="830.42" title="13:47">the smallest rectal dose of paracetamol. </span></li>
+<li><span class="segment a-seg" data-start="830.42" data-end="838.14" title="13:50">You cannot cut the repository because the active drug may not be distributed evenly through the wax. </span></li>
+<li><span class="segment a-seg" data-start="838.18" data-end="842.94" title="13:58">The dose of local anaesthetic needs to be calculated depending on the size of the infant. </span></li>
+<li><span class="segment a-seg" data-start="842.94" data-end="846.66" title="14:02">If your pivocaine is used, the dose is two milligrams per kilogram, </span></li>
+<li><span class="segment a-seg" data-start="846.66" data-end="854.06" title="14:06">and so in a four kilogram infant, 6.4 ml of 0.125 percent pivocaine may be used. </span></li>
+<li><span class="segment a-seg" data-start="854.06" data-end="858.5" title="14:14">Local infiltration can be performed by the surgeons. </span></li>
+<li><span class="segment a-seg" data-start="858.5" data-end="863.78" title="14:18">More fiend may be given intravenously at a dose of 200 mg per kilogram, </span></li>
+<li><span class="segment a-seg" data-start="863.78" data-end="867.22" title="14:23">but this is not often required. </span></li>
+<li><span class="segment a-seg" data-start="867.26" data-end="870.74" title="14:27">The nasogastric tube can be removed at the end of surgery, </span></li>
+<li><span class="segment a-seg" data-start="870.74" data-end="875.18" title="14:30">and the infant should be extubated in the left lateral position. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="875.18">
+  <div class="q-label">Q15</div>
+  <div class="q-body"><span class="segment q-seg" data-start="875.18" data-end="879.7" title="14:35">What would be your post-op instructions for the infant? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="879.7" data-end="882.9" title="14:39">Due to the potential risk of post-operative atnias, </span></li>
+<li><span class="segment a-seg" data-start="882.9" data-end="885.7" title="14:42">up to 60 weeks post gestational age, </span></li>
+<li><span class="segment a-seg" data-start="885.7" data-end="891.22" title="14:45">the infant should be monitored with an apnea alarm and oxygen saturation probe. </span></li>
+<li><span class="segment a-seg" data-start="891.22" data-end="894.82" title="14:51">Feding can be started about six hours after the operation, </span></li>
+<li><span class="segment a-seg" data-start="894.82" data-end="898.5" title="14:54">unless the bowel new cozer has been breached. </span></li>
+<li><span class="segment a-seg" data-start="898.5" data-end="903.46" title="14:58">Intravenous maintenance fluids should be continued until feeding is established. </span></li>
+<li><span class="segment a-seg" data-start="903.46" data-end="906.62" title="15:03">The first feed should be clear fluid. </span></li>
+<li><span class="segment a-seg" data-start="906.62" data-end="910.5" title="15:06">I would prescribe regular paracetamol for analgesia. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="910.5">
+  <div class="q-label">Q16</div>
+  <div class="q-body"><span class="segment q-seg" data-start="910.5" data-end="915.18" title="15:10">How can you assess pain in pediatric patients? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="915.18" data-end="917.86" title="15:15">Pain assessment can be difficult in children </span></li>
+<li><span class="segment a-seg" data-start="917.86" data-end="921.46" title="15:17">due to communication and behavioral challenges. </span></li>
+<li><span class="segment a-seg" data-start="921.46" data-end="926.98" title="15:21">Specific pain assessment tools have therefore been developed for pediatric patients. </span></li>
+<li><span class="segment a-seg" data-start="926.98" data-end="931.54" title="15:26">Assessment should be performed regularly with the support of the parents. </span></li>
+<li><span class="segment a-seg" data-start="931.54" data-end="933.94" title="15:31">Since pain is a subjective experience, </span></li>
+<li><span class="segment a-seg" data-start="933.94" data-end="939.94" title="15:33">it is important to seek the child's self-reportive pain whenever possible. </span></li>
+<li><span class="segment a-seg" data-start="939.94" data-end="944.42" title="15:39">The anotal assessment uses a combination of physiological and behavioral markers, </span></li>
+<li><span class="segment a-seg" data-start="944.42" data-end="948.06" title="15:44">including facial expressions, body and limb movements, </span></li>
+<li><span class="segment a-seg" data-start="948.06" data-end="953.66" title="15:48">cry, sleeplessness, cardiovascular and respiratory changes. </span></li>
+<li><span class="segment a-seg" data-start="953.66" data-end="958.38" title="15:53">Examples of tools available are the neonatal and infant pain scale </span></li>
+<li><span class="segment a-seg" data-start="958.38" data-end="964.54" title="15:58">and the neonatal pain, agitation and sedative score, end pass. </span></li>
+<li><span class="segment a-seg" data-start="964.54" data-end="967.9" title="16:04">Infant assessment is also purely observational. </span></li>
+<li><span class="segment a-seg" data-start="967.9" data-end="972.94" title="16:07">Behavioral pain indicators include facial expression, irritability, </span></li>
+<li><span class="segment a-seg" data-start="972.94" data-end="976.94" title="16:12">unusual posture, screaming, sobbing or whimpering, </span></li>
+<li><span class="segment a-seg" data-start="976.94" data-end="983.9" title="16:16">reluctance to move, increased clingingness, loss of appetite and disturbed sleep pattern. </span></li>
+<li><span class="segment a-seg" data-start="983.9" data-end="988.14" title="16:23">Examples of tools available are the face legs activity cry </span></li>
+<li><span class="segment a-seg" data-start="988.14" data-end="995.42" title="16:28">and consolation scale or flack and the objective pain scores OPS. </span></li>
+<li><span class="segment a-seg" data-start="995.42" data-end="1000.38" title="16:35">Preschool children may be able to self-report pain when given appropriate tools. </span></li>
+<li><span class="segment a-seg" data-start="1000.38" data-end="1006.38" title="16:40">For example, faces is a face-based scale with happy to crying faces </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="1006.38">
+  <div class="q-label">Q17</div>
+  <div class="q-body"><span class="segment q-seg" data-start="1006.38" data-end="1009.74" title="16:46">which represent the pain scale. </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="1009.74" data-end="1014.46" title="16:49">School children can usually communicate pain severity and location. </span></li>
+<li><span class="segment a-seg" data-start="1014.46" data-end="1020.86" title="16:54">They understand numerical concepts and so may use numerical rating scales. </span></li>
+<li><span class="segment a-seg" data-start="1020.86" data-end="1028.7" title="17:00">Other tools including faces, color-based scales and visual analogue scales are also available. </span></li>
+<li><span class="segment a-seg" data-start="1028.7" data-end="1034.86" title="17:08">Finally, adolescents may communicate pain severity, location and intensity </span></li>
+<li><span class="segment a-seg" data-start="1034.86" data-end="1039.66" title="17:14">and they can use visual analogue scales or numerical rating scales. </span></li>
+  </ul>
+</div>
+</div>
+
 </div>
 
 <div class="subtitle-bar">
-  <span class="subtitle-text empty" id="subtitle-text">Play audio to see live subtitles&#8230;</span>
+  <span id="subtitle-text" class="empty">Play audio to see live subtitles&#8230;</span>
 </div>
 
 <script>
-
-const audio    = document.getElementById('audio');
-const allSegs  = Array.from(document.querySelectorAll('.segment'));
-const allBlocks = Array.from(document.querySelectorAll('.t-block'));
+const audio      = document.getElementById('audio');
+const allSegs    = Array.from(document.querySelectorAll('.segment'));
 const subtitleEl = document.getElementById('subtitle-text');
-let activeSegEl   = null;
-let activeBlockEl = null;
-let searchMatches = [];
-let searchIdx     = 0;
+let activeSegEl  = null;
+let searchMatches = [], searchIdx = 0;
 
-// Duration display
 audio.addEventListener('loadedmetadata', () => {
   const m = Math.floor(audio.duration / 60);
   const s = Math.floor(audio.duration %% 60).toString().padStart(2,'0');
   document.getElementById('dur').textContent = m + ':' + s;
 });
 
-// Seek helper
-function seekTo(t) {
-  audio.currentTime = t;
-  audio.play();
-}
+function seekTo(t) { audio.currentTime = t; audio.play(); }
 
-// Block gutter click
-document.querySelectorAll('.t-gutter').forEach(g => {
-  g.addEventListener('click', () => seekTo(parseFloat(g.dataset.start)));
+// Q-block header click
+document.querySelectorAll('.q-block').forEach(q => {
+  q.addEventListener('click', e => {
+    if (!e.target.classList.contains('segment')) seekTo(parseFloat(q.dataset.start));
+  });
 });
 
-// Segment click
+// Individual segment click
 allSegs.forEach(s => {
-  s.addEventListener('click', e => {
-    e.stopPropagation();
-    seekTo(parseFloat(s.dataset.start));
-  });
+  s.addEventListener('click', e => { e.stopPropagation(); seekTo(parseFloat(s.dataset.start)); });
 });
 
 // Real-time tracking
 audio.addEventListener('timeupdate', () => {
   const t = audio.currentTime;
-
-  // Find active segment (last one whose start <= t)
   let found = null;
   for (let i = allSegs.length - 1; i >= 0; i--) {
     if (parseFloat(allSegs[i].dataset.start) <= t) { found = allSegs[i]; break; }
   }
-
   if (found && found !== activeSegEl) {
-    // Clear previous
-    if (activeSegEl) activeSegEl.classList.remove('active');
-    if (activeBlockEl) {
-      activeBlockEl.classList.remove('block-active');
-      const pg = activeBlockEl.querySelector('.t-gutter');
-      if (pg) pg.classList.remove('gutter-active');
+    if (activeSegEl) {
+      activeSegEl.classList.remove('active');
+      const pli = activeSegEl.closest('li');
+      if (pli) pli.classList.remove('li-active');
+      const pq = activeSegEl.closest('.q-block');
+      if (pq) pq.classList.remove('q-active');
     }
-    // Set new
     found.classList.add('active');
-    const block = found.closest('.t-block');
-    if (block) {
-      block.classList.add('block-active');
-      const g = block.querySelector('.t-gutter');
-      if (g) g.classList.add('gutter-active');
-      activeBlockEl = block;
-    }
+    const li = found.closest('li');
+    if (li) li.classList.add('li-active');
+    const qb = found.closest('.q-block');
+    if (qb) qb.classList.add('q-active');
     activeSegEl = found;
 
-    // Update subtitle
     subtitleEl.textContent = found.textContent.trim();
     subtitleEl.classList.remove('empty');
 
-    // Auto-scroll (only when not searching)
-    if (!document.getElementById('search').value) {
+    if (!document.getElementById('search').value)
       found.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }
   }
 });
 
@@ -398,17 +644,13 @@ searchInput.addEventListener('keydown', e => {
     el.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
 });
-
 function runSearch() {
   const q = searchInput.value.trim().toLowerCase();
   allSegs.forEach(s => s.classList.remove('search-match','search-current'));
   searchMatches = [];
   if (!q) return;
   allSegs.forEach(s => {
-    if (s.textContent.toLowerCase().includes(q)) {
-      s.classList.add('search-match');
-      searchMatches.push(s);
-    }
+    if (s.textContent.toLowerCase().includes(q)) { s.classList.add('search-match'); searchMatches.push(s); }
   });
   if (!searchMatches.length) return;
   searchIdx = 0;

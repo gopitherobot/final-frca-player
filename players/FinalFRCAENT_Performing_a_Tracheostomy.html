@@ -5,10 +5,19 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ENT — Performing a Tracheostomy</title>
 <style>
-
   :root {
-    --accent:    #f59e0b;
-    --body-bg:   #f1f5f9;
+    --q-bg:       #1e3a5f;
+    --q-text:     #ffffff;
+    --q-label:    #60a5fa;
+    --a-bg:       #ffffff;
+    --a-border:   #e2e8f0;
+    --a-label:    #059669;
+    --active-q:   #f59e0b;
+    --active-a:   #dbeafe;
+    --accent:     #f59e0b;
+    --body-bg:    #f1f5f9;
+    --pre-bg:     #fef9c3;
+    --pre-border: #fcd34d;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
@@ -40,22 +49,9 @@
     margin-bottom: 4px;
     letter-spacing: 0.01em;
   }
-  .header-sub {
-    font-size: 0.72rem;
-    color: #94a3b8;
-    font-style: italic;
-  }
-  audio {
-    height: 36px;
-    accent-color: var(--accent);
-    flex-shrink: 0;
-  }
-  .back-link {
-    font-size: 0.8rem;
-    color: #94a3b8;
-    text-decoration: none;
-    white-space: nowrap;
-  }
+  .header-sub { font-size: 0.72rem; color: #94a3b8; font-style: italic; }
+  audio { height: 36px; accent-color: var(--accent); flex-shrink: 0; }
+  .back-link { font-size: 0.8rem; color: #94a3b8; text-decoration: none; white-space: nowrap; }
   .back-link:hover { color: #60a5fa; }
 
   /* ── Toolbar ── */
@@ -69,30 +65,17 @@
     border-bottom: 1px solid #334155;
   }
   .toolbar input {
-    flex: 1;
-    max-width: 380px;
+    flex: 1; max-width: 380px;
     padding: 5px 11px;
-    border: 1px solid #475569;
-    border-radius: 6px;
-    background: #0f172a;
-    color: #e2e8f0;
-    font-size: 0.83rem;
-    outline: none;
+    border: 1px solid #475569; border-radius: 6px;
+    background: #0f172a; color: #e2e8f0; font-size: 0.83rem; outline: none;
   }
   .toolbar input:focus { border-color: var(--accent); }
   .toolbar input::placeholder { color: #64748b; }
-  .stats {
-    font-size: 0.72rem;
-    color: #64748b;
-    white-space: nowrap;
-  }
+  .stats { font-size: 0.72rem; color: #64748b; white-space: nowrap; }
 
   /* ── Scroll area ── */
-  .scroll-area {
-    flex: 1;
-    overflow-y: auto;
-    padding: 20px;
-  }
+  .scroll-area { flex: 1; overflow-y: auto; padding: 20px; }
   .scroll-area::-webkit-scrollbar { width: 6px; }
   .scroll-area::-webkit-scrollbar-track { background: transparent; }
   .scroll-area::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
@@ -107,68 +90,77 @@
     display: flex;
     align-items: center;
   }
-  .subtitle-text {
-    font-size: 0.9rem;
-    color: #e2e8f0;
-    line-height: 1.5;
-    font-style: italic;
-  }
-  .subtitle-text.empty { color: #475569; }
+  #subtitle-text { font-size: 0.88rem; color: #e2e8f0; line-height: 1.5; font-style: italic; }
+  #subtitle-text.empty { color: #475569; }
 
-  /* ── Transcript blocks ── */
-  .t-block {
-    background: #ffffff;
-    border: 1px solid #e2e8f0;
-    border-radius: 10px;
-    margin-bottom: 14px;
-    overflow: hidden;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
-    display: flex;
-  }
-  .t-block.block-active {
-    border-color: var(--accent);
-    box-shadow: 0 0 0 2px rgba(37,99,235,0.15);
-  }
-  .t-gutter {
-    background: #0f172a;
-    width: 52px;
-    flex-shrink: 0;
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
-    padding-top: 14px;
-    cursor: pointer;
-  }
-  .t-gutter:hover { background: #1e293b; }
-  .t-timestamp {
-    font-size: 0.7rem;
-    color: #64748b;
-    font-family: monospace;
-    font-weight: 600;
-    letter-spacing: 0.02em;
-  }
-  .t-gutter.gutter-active .t-timestamp { color: var(--accent); }
-  .t-body {
-    flex: 1;
+  /* ── Preamble ── */
+  .preamble-block {
+    background: var(--pre-bg);
+    border-left: 4px solid var(--pre-border);
+    border-radius: 0 8px 8px 0;
     padding: 12px 16px;
-    line-height: 1.75;
-    font-size: 0.92rem;
-    color: #1e293b;
+    margin-bottom: 20px;
+    font-size: 0.88rem;
+    color: #78350f;
+    font-style: italic;
+    line-height: 1.7;
   }
 
-  /* ── Segments ── */
-  .segment {
+  /* ── Q&A pair ── */
+  .qa-pair { margin-bottom: 20px; border-radius: 10px; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+
+  /* Question block */
+  .q-block {
+    background: var(--q-bg);
+    padding: 14px 18px;
+    display: flex; gap: 14px; align-items: flex-start;
     cursor: pointer;
-    border-radius: 3px;
-    transition: background 0.1s;
+    transition: background 0.15s;
   }
-  .segment:hover { background: #eff6ff; }
-  .segment.active {
-    background: #bfdbfe;
-    outline: 2px solid #3b82f6;
-    outline-offset: 1px;
-    border-radius: 3px;
+  .q-block:hover { background: #1d4ed8; }
+  .q-block.q-active { background: var(--active-q); }
+  .q-label {
+    font-size: 0.7rem; font-weight: 700;
+    color: var(--q-label);
+    background: rgba(96,165,250,0.15);
+    border: 1px solid rgba(96,165,250,0.3);
+    border-radius: 5px; padding: 3px 7px;
+    white-space: nowrap; margin-top: 2px; letter-spacing: 0.05em;
+    flex-shrink: 0;
   }
+  .q-body { flex: 1; font-size: 0.97rem; font-weight: 600; color: var(--q-text); line-height: 1.55; }
+
+  /* Answer block */
+  .a-block {
+    background: var(--a-bg);
+    border: 1px solid var(--a-border); border-top: none;
+    padding: 14px 18px;
+    display: flex; gap: 14px; align-items: flex-start;
+  }
+  .a-label {
+    font-size: 0.7rem; font-weight: 700;
+    color: var(--a-label);
+    background: #d1fae5; border: 1px solid #6ee7b7;
+    border-radius: 5px; padding: 3px 9px;
+    white-space: nowrap; margin-top: 2px; letter-spacing: 0.05em;
+    flex-shrink: 0;
+  }
+  .a-body { flex: 1; list-style: none; padding: 0; }
+  .a-body li {
+    padding: 4px 0 4px 14px;
+    border-left: 3px solid transparent;
+    line-height: 1.7; font-size: 0.92rem; color: #1e293b;
+    border-radius: 0 4px 4px 0;
+    transition: background 0.15s;
+  }
+  .a-body li:not(:last-child) { border-bottom: 1px solid #f1f5f9; }
+
+  /* ── Segments (clickable) ── */
+  .segment { cursor: pointer; border-radius: 3px; }
+  .q-seg:hover { background: rgba(255,255,255,0.18); }
+  .a-seg:hover { background: #eff6ff; }
+  .segment.active { background: #bfdbfe; outline: 2px solid #3b82f6; outline-offset: 1px; }
+  .a-body li.li-active { background: var(--active-a); border-left-color: var(--accent); }
   .segment.search-match  { background: #fef9c3; }
   .segment.search-current { background: #fde047; outline: 2px solid #ca8a04; }
 
@@ -187,169 +179,407 @@
 
 <div class="toolbar">
   <input type="text" id="search" placeholder="Search transcript&#8230; (Enter = next match)">
-  <span class="stats" id="stats">156 segments &nbsp;|&nbsp; <span id="dur">loading&#8230;</span></span>
+  <span class="stats" id="stats">18 questions &nbsp;|&nbsp; 156 segments &nbsp;|&nbsp; <span id="dur">loading&#8230;</span></span>
 </div>
 
 <div class="scroll-area" id="scroll-area">
-<div class="t-block">
-  <div class="t-gutter" data-start="0.0"><span class="t-timestamp">0:00</span></div>
-  <div class="t-body"><span class="segment" data-start="0.0" data-end="5.92" title="0:00">Acute ENT Immersion Cs. 3. Performing a Track Yostomy </span><span class="segment" data-start="5.92" data-end="12.64" title="0:05">Your cooldown to the Immersion Cs. to see a rugby player who has been on the receiving end of a high tackle to his neck. </span><span class="segment" data-start="12.64" data-end="20.48" title="0:12">He has neck pain, bruising over his anterior neck, stride-or, hemotypsis and a horse voice. </span><span class="segment" data-start="20.48" data-end="23.76" title="0:20">What injury do you suspect and how will he manage him? </span><span class="segment" data-start="23.84" data-end="28.48" title="0:23">This is an uncommon injury but it is an ENT surgical emergency. </span><span class="segment" data-start="28.48" data-end="32.88" title="0:28">Remember to adopt the advanced trauma life support approach in all trauma scenarios. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="35.2"><span class="t-timestamp">0:35</span></div>
-  <div class="t-body"><span class="segment" data-start="35.2" data-end="41.44" title="0:35">I suspect he has a laryngeal injury. This is an ENT surgical emergency </span><span class="segment" data-start="41.44" data-end="45.2" title="0:41">as swelling of the injured larynx can lead to airway obstruction. </span><span class="segment" data-start="46.4" data-end="52.32" title="0:46">I would approach his management as I would with all trauma patients with an ABC approach. </span><span class="segment" data-start="53.2" data-end="59.2" title="0:53">I would begin to assess his airway, ensuring that cervical spine precautions were in place, </span><span class="segment" data-start="59.2" data-end="66.32" title="0:59">as he is at risk of a cervical spine fracture. I know he already has stride-or and hemoptosis, </span><span class="segment" data-start="66.32" data-end="70.48" title="1:06">and I would be aware that his airway may deteriorate at any point. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="71.28"><span class="t-timestamp">1:11</span></div>
-  <div class="t-body"><span class="segment" data-start="71.28" data-end="78.56" title="1:11">With patient reassurance and explanation, I would administer oxygen at 15 litres per minute, </span><span class="segment" data-start="78.64" data-end="84.08" title="1:18">via a non-rebreedermask and then examine him for signs of adequate ventilation, </span><span class="segment" data-start="84.72" data-end="92.56" title="1:24">namely his colour, chest expansion, respiratory rate, breath sounds and oxygen saturations. </span><span class="segment" data-start="93.36" data-end="100.08" title="1:33">I would then assess his circulation, looking for signs of shock and obtaining intravenous access. </span><span class="segment" data-start="100.72" data-end="104.08" title="1:40">He is saturating well in oxygen and has a normal respiratory rate. </span><span class="segment" data-start="104.8" data-end="106.24" title="1:44">He is hemodynamically normal. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="106.32"><span class="t-timestamp">1:46</span></div>
-  <div class="t-body"><span class="segment" data-start="106.32" data-end="108.16" title="1:46">Poor you next. </span><span class="segment" data-start="110.64" data-end="117.2" title="1:50">He needs to be transferred to the operating theatre for an awake tracheostomy and a local anesthetic. </span><span class="segment" data-start="118.0" data-end="124.48" title="1:58">He may have a laryngeal fracture and so endotracheal intubation via direct larynoscopy may be </span><span class="segment" data-start="124.48" data-end="131.36" title="2:04">very difficult and there is a risk of losing the airway. I would call my anesthetic consultant </span><span class="segment" data-start="131.44" data-end="137.44" title="2:11">and the ENT surgeons to attend urgently and prepare my own equipment for a potential </span><span class="segment" data-start="137.44" data-end="140.88" title="2:17">difficult intubation should the patient deteriorate. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="145.12"><span class="t-timestamp">2:25</span></div>
-  <div class="t-body"><span class="segment" data-start="145.12" data-end="150.64" title="2:25">I would get the difficult intubation trolley into theatre and make sure I had access to </span><span class="segment" data-start="150.64" data-end="157.36" title="2:30">macintosh and maccoileringoscope blades, a gum elastic bougie, a laryngeal mask of the </span><span class="segment" data-start="157.44" data-end="165.12" title="2:37">cracked size, a range of endotracheal tubes including a micro laryngeoscopy tube and equipment for </span><span class="segment" data-start="165.12" data-end="172.4" title="2:45">crycothyroidotomy including the high pressure ventilator. I would also ask for the fibre optic </span><span class="segment" data-start="172.4" data-end="175.84" title="2:52">bronchoscope. How do you plan to manage the patient's airway? </span><span class="segment" data-start="178.16" data-end="184.32" title="2:58">Ideally the patient would be able to tolerate an awake tracheostomy under local anesthesia. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="184.4"><span class="t-timestamp">3:04</span></div>
-  <div class="t-body"><span class="segment" data-start="184.4" data-end="189.28" title="3:04">I would call for senior help and stay with the patient throughout the procedure. </span><span class="segment" data-start="190.48" data-end="195.68" title="3:10">Unfortunately before the ENT surgeon arrives the patient's condition deteriorates and </span><span class="segment" data-start="195.68" data-end="202.48" title="3:15">his oxygen saturation start to fall. On examination he has very poor air entry. What will he do now? </span><span class="segment" data-start="204.64" data-end="211.28" title="3:24">I would assess the patient and seek to gain control of the airway. I would pre-oxygenate him as much </span><span class="segment" data-start="211.44" data-end="217.92" title="3:31">as possible with a tight fitting bag valve mask. I would ask for the crycothyroidotomy kit to be </span><span class="segment" data-start="217.92" data-end="224.64" title="3:37">opened and then perform a rapid sequence induction of anesthesia using an induction agent and </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="224.64"><span class="t-timestamp">3:44</span></div>
-  <div class="t-body"><span class="segment" data-start="224.64" data-end="230.56" title="3:44">succcemethonium with manual inline stabilisation as there is a question of neck injury. </span><span class="segment" data-start="231.44" data-end="236.96" title="3:51">I would then attempt direct laryngeoscopy and see whether it was possible to visualise the </span><span class="segment" data-start="236.96" data-end="243.6" title="3:56">glottis. If I saw the glottis I would pass a gum elastic bougie and then rail road and </span><span class="segment" data-start="243.6" data-end="251.04" title="4:03">appropriately sized tracheal tube through the visible lumen. Unfortunately on direct laryngeoscopy </span><span class="segment" data-start="251.04" data-end="256.32" title="4:11">you can only see balladistortis and swollen pharyngeal and naryngeal structures and lots of blood. </span><span class="segment" data-start="257.68" data-end="262.64" title="4:17">Even after suctioning you see no glottic opening and the patient's oxygen saturation is falling </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="262.72"><span class="t-timestamp">4:22</span></div>
-  <div class="t-body"><span class="segment" data-start="262.72" data-end="272.56" title="4:22">rapidly. What will you do now? I now need to perform an emergency crycothyroidotomy. There are three </span><span class="segment" data-start="272.56" data-end="282.16" title="4:32">available techniques, surgical, cannula and seldomer techniques. Good. Can you describe the technique </span><span class="segment" data-start="282.16" data-end="287.28" title="4:42">you will use paying particular attention to anatomy of the neck? You will probably be asked to </span><span class="segment" data-start="287.76" data-end="291.44" title="4:47">describe one of these techniques and you are unlikely to have done any of them in anger. </span><span class="segment" data-start="292.72" data-end="296.88" title="4:52">Make sure you know the anatomy and all the steps involved in at least one technique. </span><span class="segment" data-start="297.52" data-end="300.48" title="4:57">We have included all three techniques here for completeness. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="302.48"><span class="t-timestamp">5:02</span></div>
-  <div class="t-body"><span class="segment" data-start="302.48" data-end="308.0" title="5:02">The larynx lies at the level of the fourth to sixth cervical vertebrae. It is made up of the </span><span class="segment" data-start="308.0" data-end="316.56" title="5:08">thyroid, crycoid, eretinoid, kineiform and cornuculot cartilages. The only ones palpable at the </span><span class="segment" data-start="316.56" data-end="323.2" title="5:16">front of the neck are the thyroid and crycoid cartilages. The thyroid cartilage is the most </span><span class="segment" data-start="323.2" data-end="331.12" title="5:23">prominent laryngeal cartilage and is usually palpated easily especially in men. The crycoid lies </span><span class="segment" data-start="331.12" data-end="338.8" title="5:31">inferior to this at the level of C6. It is a signet ring shape with the narrower band portion lying </span><span class="segment" data-start="338.8" data-end="345.84" title="5:38">anteriorly. The crycothyroid membrane is a palpable groove between the lower border of the thyroid </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="345.84"><span class="t-timestamp">5:45</span></div>
-  <div class="t-body"><span class="segment" data-start="345.84" data-end="352.64" title="5:45">cartilage and the upper border of the crycoid cartilage. It is usually easy to palpate, </span><span class="segment" data-start="352.64" data-end="356.56" title="5:52">though may not be in this case as there is injury to the front of the neck. </span><span class="segment" data-start="357.6" data-end="363.92" title="5:57">To perform a surgical crycothyroidotomy, I would extend the patient's neck as much as possible. </span><span class="segment" data-start="364.56" data-end="370.0" title="6:04">The patient is at risk of a cervical spine injury, but this is a life-saving intervention. </span><span class="segment" data-start="370.96" data-end="376.56" title="6:10">I would then use the thumb and forefinger of my non-dominant hand to stabilize the </span><span class="segment" data-start="376.56" data-end="381.76" title="6:16">crycothyroid membrane and to protect the lateral vascular structures from injury. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="382.96"><span class="t-timestamp">6:22</span></div>
-  <div class="t-body"><span class="segment" data-start="382.96" data-end="388.88" title="6:22">I would make a transverse incision through the skin and crycothyroid membrane being careful not </span><span class="segment" data-start="388.88" data-end="396.16" title="6:28">to damage the crycoid cartilage. I would then leave the scalpel in position and insert either </span><span class="segment" data-start="396.16" data-end="402.8" title="6:36">a tracheal hook, a pair of forefeps or a gummelastic bougie into the incision alongside the scalpel. </span><span class="segment" data-start="403.84" data-end="408.96" title="6:43">I would enlarge the opening with whichever instrument I was using and leave it in situ. </span><span class="segment" data-start="409.76" data-end="416.08" title="6:49">I would then insert a size 6-endertracheal tube, either over the bougie or alongside the </span><span class="segment" data-start="416.08" data-end="424.08" title="6:56">forefeps or tracheal hook. I would then connect a circuit and ventilate the patient with 100% oxygen </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="424.08"><span class="t-timestamp">7:04</span></div>
-  <div class="t-body"><span class="segment" data-start="424.08" data-end="428.72" title="7:04">and check that this is effective, then secure the tube to prevent dislodgement. </span><span class="segment" data-start="429.84" data-end="436.56" title="7:09">To perform a cannula crycothyroidotomy, I would attach a 14 gauge intravenous cannula or a </span><span class="segment" data-start="436.56" data-end="445.04" title="7:16">revousin cannula to a 5 mil syringe. The revousin cannula is especially designed cannula for crycothyroidotomy. </span><span class="segment" data-start="445.76" data-end="451.52" title="7:25">It is more resistant to kinking and has a flange to attach it to the neck. It has both </span><span class="segment" data-start="451.52" data-end="459.2" title="7:31">lurelock and 15mm connections. I would place a hand on the neck to identify and stabilise the </span><span class="segment" data-start="459.2" data-end="465.6" title="7:39">crycothyroid membrane and to protect the lateral vascular structures from injury from the needle. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="466.48"><span class="t-timestamp">7:46</span></div>
-  <div class="t-body"><span class="segment" data-start="466.48" data-end="472.88" title="7:46">I would then insert the needle and cannula through the crycothyroid membrane at a 45 degree angle </span><span class="segment" data-start="472.88" data-end="480.88" title="7:52">cordily, asperating as I go. When I had successfully asperated air, I would advance the cannula </span><span class="segment" data-start="480.88" data-end="487.28" title="8:00">over the needle, being careful not to damage the posterior tracheal wall. I would then remove the </span><span class="segment" data-start="487.28" data-end="493.84" title="8:07">needle and then recheck that air can be asperated from the cannula and connect to a high pressure </span><span class="segment" data-start="493.84" data-end="499.12" title="8:13">oxygen supply. What oxygen supply can you connect a cannula to? </span><span class="segment" data-start="501.52" data-end="509.92" title="8:21">Canually require high pressure ventilation, which means wall oxygen at 400kPa. This involves </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="509.92"><span class="t-timestamp">8:29</span></div>
-  <div class="t-body"><span class="segment" data-start="509.92" data-end="516.56" title="8:29">either connecting oxygen tubing to a wall flow meter turned on full, or using a specialised </span><span class="segment" data-start="516.56" data-end="525.04" title="8:36">high pressure ventilator, such as the Sanders injector or maniaget. Ideally, I would use a specialised </span><span class="segment" data-start="525.04" data-end="530.48" title="8:45">ventilator to save having to make something out of oxygen tubing under three-way tap. </span><span class="segment" data-start="531.44" data-end="537.84" title="8:51">The common gas outlet of the anaesthetic machine cannot be used, as there is a pressure relief valve </span><span class="segment" data-start="537.84" data-end="543.6" title="8:57">which will vent at 40kPa, which is insufficient for high pressure ventilation. </span><span class="segment" data-start="544.56" data-end="550.48" title="9:04">I would need to allow a long time for exploration, which needs to occur through the upper airway </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="550.48"><span class="t-timestamp">9:10</span></div>
-  <div class="t-body"><span class="segment" data-start="550.48" data-end="557.76" title="9:10">to avoid volume trauma. Good. Now, what is the third method of performing a crycothyroidosomy? </span><span class="segment" data-start="560.0" data-end="566.24" title="9:20">Many anaesthetists are used to performing percutaneous tracheostomies on the intensive care unit, </span><span class="segment" data-start="566.24" data-end="572.24" title="9:26">using a saldinger technique with either serial dilatation or a rhino dilator. </span><span class="segment" data-start="573.04" data-end="579.28" title="9:33">They may therefore choose to use a saldinger-based technique to perform an emergency crycothyroidotomy. </span><span class="segment" data-start="580.64" data-end="587.68" title="9:40">There are now cuffed size 6 emergency crycothyroidotomy kits available, and there is evidence that they </span><span class="segment" data-start="587.68" data-end="593.44" title="9:47">can be inserted nearly as quickly as a surgical airway and may cause fewer complications. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="593.6"><span class="t-timestamp">9:53</span></div>
-  <div class="t-body"><span class="segment" data-start="593.6" data-end="600.96" title="9:53">The kits contain a cannula, which I would insert just as for an emergency cannula crycothyroidotomy. </span><span class="segment" data-start="600.96" data-end="607.04" title="10:00">I would then insert the guide wire through the cannula and make a horizontal incision in the skin </span><span class="segment" data-start="607.04" data-end="614.24" title="10:07">either side of the wire. I would rail-road the dilator over the wire and dilate the airway orifice. </span><span class="segment" data-start="614.24" data-end="620.16" title="10:14">Finally, I would rail-road the tube over the wire, attach a breathing circuit, </span><span class="segment" data-start="620.72" data-end="628.32" title="10:20">and ventilate with 100% oxygen. It is important to observe the patient for chest movement </span><span class="segment" data-start="628.32" data-end="634.4" title="10:28">and check the neck to exclude swelling from gas getting into surrounding tissues rather than the </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="634.4"><span class="t-timestamp">10:34</span></div>
-  <div class="t-body"><span class="segment" data-start="634.4" data-end="639.04" title="10:34">trachea. What are the potential complications of crycothyroidotomy? </span><span class="segment" data-start="641.36" data-end="647.28" title="10:41">The immediate complications are mouth position. The creation of a false passage, </span><span class="segment" data-start="647.28" data-end="654.88" title="10:47">issoffergeal perforation, surgical emphysema and hemorrhage. On trying to ventilate the patient, </span><span class="segment" data-start="654.88" data-end="663.04" title="10:54">you can cause surgical emphysema, barotroma and pneumothorax. Also cannula may kink or become </span><span class="segment" data-start="663.04" data-end="668.72" title="11:03">displaced. How does a percutaneous tracheostomy differ from a crycothyroidotomy? </span><span class="segment" data-start="670.96" data-end="676.96" title="11:10">Percutaneous tracheostomy is usually performed electively on intensive care patients </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="676.96"><span class="t-timestamp">11:16</span></div>
-  <div class="t-body"><span class="segment" data-start="676.96" data-end="683.84" title="11:16">within the intensive care unit itself, whereas crycothyroidotomy is an emergency airway rescue </span><span class="segment" data-start="683.84" data-end="690.88" title="11:23">technique. The anatomy differs in that percutaneous tracheostomies are inserted through the anterior </span><span class="segment" data-start="690.88" data-end="697.52" title="11:30">tracheal wall, below the crycoid cartilage, whereas crycothyroidotomy is performed by the </span><span class="segment" data-start="697.52" data-end="705.44" title="11:37">crycothyroid membrane. Percutaneous tracheostomies are usually inserted between the second and third </span><span class="segment" data-start="705.44" data-end="712.4" title="11:45">tracheal rings, as higher approaches can predispose to tracheal stenosis after decannulation. </span><span class="segment" data-start="713.6" data-end="719.44" title="11:53">This risk is balanced by the fact that the thyroid isthmus lies between the second and fourth </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="719.44"><span class="t-timestamp">11:59</span></div>
-  <div class="t-body"><span class="segment" data-start="719.44" data-end="725.92" title="11:59">tracheal rings, so there is a risk of damage to this structure causing hemorrhage. However, </span><span class="segment" data-start="725.92" data-end="733.28" title="12:05">the dilation technique will often tampernard any bleeding. In orally-intervated patients, </span><span class="segment" data-start="733.28" data-end="739.28" title="12:13">percutaneous tracheostomy is usually performed with a second operator, observing the procedure </span><span class="segment" data-start="739.28" data-end="744.96" title="12:19">from inside the trachea with the use of a fiber optic bronchoscope down the tracheal tube. </span><span class="segment" data-start="746.16" data-end="752.24" title="12:26">What are the general indications for tracheostomy? Remember, as always, to categorize if possible. </span><span class="segment" data-start="754.56" data-end="761.84" title="12:34">The indications can be subdivided into those for airway obstruction, those for airway protection, </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="761.84"><span class="t-timestamp">12:41</span></div>
-  <div class="t-body"><span class="segment" data-start="761.84" data-end="770.16" title="12:41">and intensive care uses. Airway obstruction may be caused by tumors, trauma, burns, </span><span class="segment" data-start="770.16" data-end="778.24" title="12:50">anaphylaxis, and infections such as epiglottitis. Airway protection might be necessary </span><span class="segment" data-start="778.24" data-end="785.28" title="12:58">during head and neck surgery in neurological or muscle diseases such as Guillain-Barre syndrome, </span><span class="segment" data-start="785.36" data-end="794.4" title="13:05">Bulba pauses, and head injury. On the intensive care unit, patients may require tracheostomy to aid </span><span class="segment" data-start="794.4" data-end="799.6" title="13:14">sputum removal if they have a poor cough or are producing excessive secretions. </span><span class="segment" data-start="800.56" data-end="806.96" title="13:20">Tracheostomies may also facilitate weaning from ventilation as they decrease the work of breathing </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="806.96"><span class="t-timestamp">13:26</span></div>
-  <div class="t-body"><span class="segment" data-start="806.96" data-end="812.96" title="13:26">compared to an oral or nasal tracheal tube and allow for easier suctioning of secretions. </span><span class="segment" data-start="813.2" data-end="819.68" title="13:33">Tracheostomies also allow the patient to be awake during a long wean, therefore avoiding </span><span class="segment" data-start="819.68" data-end="827.68" title="13:39">the complications of long-term sedation. Early tracheostomy has been found in a recent trial to </span><span class="segment" data-start="827.68" data-end="833.36" title="13:47">decrease the number of ventilator days, though there was no significant difference in mortality. </span><span class="segment" data-start="834.56" data-end="838.96" title="13:54">You are asked to take an intubate ICU patient theatre for a surgical tracheostomy. </span><span class="segment" data-start="839.2" data-end="844.8" title="13:59">One of the potential pitfalls and how to ensure the airway is maintained throughout the operation. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="847.28"><span class="t-timestamp">14:07</span></div>
-  <div class="t-body"><span class="segment" data-start="847.28" data-end="853.36" title="14:07">Intensive care unit patients are often sick and their management can be complicated. </span><span class="segment" data-start="853.36" data-end="859.6" title="14:13">I may not know the patient, so I would get a full handover and make sure I had read the notes, </span><span class="segment" data-start="859.6" data-end="864.56" title="14:19">examined the patient, and had seen recent blood gase and other blood results. </span><span class="segment" data-start="864.8" data-end="871.52" title="14:24">I would also like to see a recent chest X-ray and make sure I knew the optimal length of the </span><span class="segment" data-start="871.52" data-end="878.88" title="14:31">tracheal tube for the patient. I would make sure I knew the patient's ventilator requirements and </span><span class="segment" data-start="878.88" data-end="884.96" title="14:38">what infusions they are on. I would make sure I had full monitoring for transfer and take a </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="884.96"><span class="t-timestamp">14:44</span></div>
-  <div class="t-body"><span class="segment" data-start="884.96" data-end="892.64" title="14:44">skilled assistant with me. I would have a transfer bag with all of the relevant drugs and equipment for transfer. </span><span class="segment" data-start="892.88" data-end="898.24" title="14:52">Let us assume you have transferred the patient to the operating theatre and they are safely on the table. </span><span class="segment" data-start="899.2" data-end="902.08" title="14:59">Talk me through the operation and your role in maintaining the airway. </span><span class="segment" data-start="904.56" data-end="911.04" title="15:04">Patient positioning involves extending the neck. At which point the tube can become dislodged. </span><span class="segment" data-start="911.04" data-end="919.6" title="15:11">I would stabilise the tube at this point. Once in position I would put the patient on 100% oxygen. </span><span class="segment" data-start="919.84" data-end="929.6" title="15:19">The surgeons dissect down to the trachea and then make a vertical incision through one of the second to fourth tracheal rings. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="929.6"><span class="t-timestamp">15:29</span></div>
-  <div class="t-body"><span class="segment" data-start="929.6" data-end="937.28" title="15:29">They then make a flap or hole in the trachea at which point the oral tracheal tube can be visualised. </span><span class="segment" data-start="938.16" data-end="946.32" title="15:38">There is a risk of damage to the cuff during this process, so I would listen for a cuff leak and watch the oxygen saturations. </span><span class="segment" data-start="947.2" data-end="951.68" title="15:47">When the surgeons are ready they ask for the tracheal tube to be withdrawn. </span><span class="segment" data-start="952.48" data-end="958.32" title="15:52">I do this slowly and leave some of it within the larynx in case it needs to be re-inverted. </span><span class="segment" data-start="959.2" data-end="967.2" title="15:59">The tracheostomy tube is inserted which can be difficult. At this point there will be limited ventilation </span><span class="segment" data-start="967.2" data-end="970.96" title="16:07">due to the presence of the tracheostomy tube within the tracheal lumen. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="971.84"><span class="t-timestamp">16:11</span></div>
-  <div class="t-body"><span class="segment" data-start="971.84" data-end="978.72" title="16:11">The tracheostomy tube cuff is then inflated and the breathing circuit is then swapped onto the tracheostomy tube. </span><span class="segment" data-start="979.92" data-end="987.92" title="16:19">I would examine the patient for bilateral chest expansion, check the capnography trace and the oxygen saturations. </span><span class="segment" data-start="988.8" data-end="996.32" title="16:28">At this point the responsibility for holding and securing the tracheostomy tube is transferred to the surgeons </span><span class="segment" data-start="996.32" data-end="1003.28" title="16:36">who may place sutures or secure the tube by tying. I would only remove the oral tube </span><span class="segment" data-start="1003.28" data-end="1009.12" title="16:43">when I was convinced the tracheostomy was sighted correctly. If there was any doubt at all, </span><span class="segment" data-start="1009.12" data-end="1015.52" title="16:49">I would insert the fibroptic bronchoscope to check looking for positioning with respect to the carina. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="1016.8"><span class="t-timestamp">16:56</span></div>
-  <div class="t-body"><span class="segment" data-start="1016.8" data-end="1018.4" title="16:56">Do you know what stay sutures are? </span><span class="segment" data-start="1018.8" data-end="1027.04" title="16:58">These are long sutures placed into the lateral walls of the tracheal orifice during tracheostomy. </span><span class="segment" data-start="1027.76" data-end="1033.36" title="17:07">The tubes of which are taped to the patient's neck either side of the tracheostomy tube. </span><span class="segment" data-start="1034.16" data-end="1039.52" title="17:14">They are used to help re-insertion of the tracheostomy tube, should it require changing, </span><span class="segment" data-start="1039.52" data-end="1046.24" title="17:19">fall out or become displaced. Pulling on them brings the tracheal orifice closer to the surface </span><span class="segment" data-start="1046.24" data-end="1050.72" title="17:26">of the skin so that the orifice can be visualised more easily. </span></div>
+<div class="preamble-block"><span class="segment a-seg" data-start="0.0" data-end="5.92" title="0:00">Acute ENT Immersion Cs. 3. Performing a Track Yostomy </span><span class="segment a-seg" data-start="5.92" data-end="12.64" title="0:05">Your cooldown to the Immersion Cs. to see a rugby player who has been on the receiving end of a high tackle to his neck. </span><span class="segment a-seg" data-start="12.64" data-end="20.48" title="0:12">He has neck pain, bruising over his anterior neck, stride-or, hemotypsis and a horse voice. </span></div>
+<div class="qa-pair">
+<div class="q-block" data-start="20.48">
+  <div class="q-label">Q1</div>
+  <div class="q-body"><span class="segment q-seg" data-start="20.48" data-end="23.76" title="0:20">What injury do you suspect and how will he manage him? </span></div>
 </div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="23.84" data-end="28.48" title="0:23">This is an uncommon injury but it is an ENT surgical emergency. </span></li>
+<li><span class="segment a-seg" data-start="28.48" data-end="32.88" title="0:28">Remember to adopt the advanced trauma life support approach in all trauma scenarios. </span></li>
+<li><span class="segment a-seg" data-start="35.2" data-end="41.44" title="0:35">I suspect he has a laryngeal injury. This is an ENT surgical emergency </span></li>
+<li><span class="segment a-seg" data-start="41.44" data-end="45.2" title="0:41">as swelling of the injured larynx can lead to airway obstruction. </span></li>
+<li><span class="segment a-seg" data-start="46.4" data-end="52.32" title="0:46">I would approach his management as I would with all trauma patients with an ABC approach. </span></li>
+<li><span class="segment a-seg" data-start="53.2" data-end="59.2" title="0:53">I would begin to assess his airway, ensuring that cervical spine precautions were in place, </span></li>
+<li><span class="segment a-seg" data-start="59.2" data-end="66.32" title="0:59">as he is at risk of a cervical spine fracture. I know he already has stride-or and hemoptosis, </span></li>
+<li><span class="segment a-seg" data-start="66.32" data-end="70.48" title="1:06">and I would be aware that his airway may deteriorate at any point. </span></li>
+<li><span class="segment a-seg" data-start="71.28" data-end="78.56" title="1:11">With patient reassurance and explanation, I would administer oxygen at 15 litres per minute, </span></li>
+<li><span class="segment a-seg" data-start="78.64" data-end="84.08" title="1:18">via a non-rebreedermask and then examine him for signs of adequate ventilation, </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="84.72">
+  <div class="q-label">Q2</div>
+  <div class="q-body"><span class="segment q-seg" data-start="84.72" data-end="92.56" title="1:24">namely his colour, chest expansion, respiratory rate, breath sounds and oxygen saturations. </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="93.36" data-end="100.08" title="1:33">I would then assess his circulation, looking for signs of shock and obtaining intravenous access. </span></li>
+<li><span class="segment a-seg" data-start="100.72" data-end="104.08" title="1:40">He is saturating well in oxygen and has a normal respiratory rate. </span></li>
+<li><span class="segment a-seg" data-start="104.8" data-end="106.24" title="1:44">He is hemodynamically normal. </span></li>
+<li><span class="segment a-seg" data-start="106.32" data-end="108.16" title="1:46">Poor you next. </span></li>
+<li><span class="segment a-seg" data-start="110.64" data-end="117.2" title="1:50">He needs to be transferred to the operating theatre for an awake tracheostomy and a local anesthetic. </span></li>
+<li><span class="segment a-seg" data-start="118.0" data-end="124.48" title="1:58">He may have a laryngeal fracture and so endotracheal intubation via direct larynoscopy may be </span></li>
+<li><span class="segment a-seg" data-start="124.48" data-end="131.36" title="2:04">very difficult and there is a risk of losing the airway. I would call my anesthetic consultant </span></li>
+<li><span class="segment a-seg" data-start="131.44" data-end="137.44" title="2:11">and the ENT surgeons to attend urgently and prepare my own equipment for a potential </span></li>
+<li><span class="segment a-seg" data-start="137.44" data-end="140.88" title="2:17">difficult intubation should the patient deteriorate. </span></li>
+<li><span class="segment a-seg" data-start="145.12" data-end="150.64" title="2:25">I would get the difficult intubation trolley into theatre and make sure I had access to </span></li>
+<li><span class="segment a-seg" data-start="150.64" data-end="157.36" title="2:30">macintosh and maccoileringoscope blades, a gum elastic bougie, a laryngeal mask of the </span></li>
+<li><span class="segment a-seg" data-start="157.44" data-end="165.12" title="2:37">cracked size, a range of endotracheal tubes including a micro laryngeoscopy tube and equipment for </span></li>
+<li><span class="segment a-seg" data-start="165.12" data-end="172.4" title="2:45">crycothyroidotomy including the high pressure ventilator. I would also ask for the fibre optic </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="172.4">
+  <div class="q-label">Q3</div>
+  <div class="q-body"><span class="segment q-seg" data-start="172.4" data-end="175.84" title="2:52">bronchoscope. How do you plan to manage the patient's airway? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="178.16" data-end="184.32" title="2:58">Ideally the patient would be able to tolerate an awake tracheostomy under local anesthesia. </span></li>
+<li><span class="segment a-seg" data-start="184.4" data-end="189.28" title="3:04">I would call for senior help and stay with the patient throughout the procedure. </span></li>
+<li><span class="segment a-seg" data-start="190.48" data-end="195.68" title="3:10">Unfortunately before the ENT surgeon arrives the patient's condition deteriorates and </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="195.68">
+  <div class="q-label">Q4</div>
+  <div class="q-body"><span class="segment q-seg" data-start="195.68" data-end="202.48" title="3:15">his oxygen saturation start to fall. On examination he has very poor air entry. What will he do now? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="204.64" data-end="211.28" title="3:24">I would assess the patient and seek to gain control of the airway. I would pre-oxygenate him as much </span></li>
+<li><span class="segment a-seg" data-start="211.44" data-end="217.92" title="3:31">as possible with a tight fitting bag valve mask. I would ask for the crycothyroidotomy kit to be </span></li>
+<li><span class="segment a-seg" data-start="217.92" data-end="224.64" title="3:37">opened and then perform a rapid sequence induction of anesthesia using an induction agent and </span></li>
+<li><span class="segment a-seg" data-start="224.64" data-end="230.56" title="3:44">succcemethonium with manual inline stabilisation as there is a question of neck injury. </span></li>
+<li><span class="segment a-seg" data-start="231.44" data-end="236.96" title="3:51">I would then attempt direct laryngeoscopy and see whether it was possible to visualise the </span></li>
+<li><span class="segment a-seg" data-start="236.96" data-end="243.6" title="3:56">glottis. If I saw the glottis I would pass a gum elastic bougie and then rail road and </span></li>
+<li><span class="segment a-seg" data-start="243.6" data-end="251.04" title="4:03">appropriately sized tracheal tube through the visible lumen. Unfortunately on direct laryngeoscopy </span></li>
+<li><span class="segment a-seg" data-start="251.04" data-end="256.32" title="4:11">you can only see balladistortis and swollen pharyngeal and naryngeal structures and lots of blood. </span></li>
+<li><span class="segment a-seg" data-start="257.68" data-end="262.64" title="4:17">Even after suctioning you see no glottic opening and the patient's oxygen saturation is falling </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="262.72">
+  <div class="q-label">Q5</div>
+  <div class="q-body"><span class="segment q-seg" data-start="262.72" data-end="266.193" title="4:22">rapidly. What will you do now? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="266.193" data-end="272.56" title="4:26">I now need to perform an emergency crycothyroidotomy. There are three </span></li>
+<li><span class="segment a-seg" data-start="272.56" data-end="282.16" title="4:32">available techniques, surgical, cannula and seldomer techniques. Good. Can you describe the technique </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="282.16">
+  <div class="q-label">Q6</div>
+  <div class="q-body"><span class="segment q-seg" data-start="282.16" data-end="285.473" title="4:42">you will use paying particular attention to anatomy of the neck? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="285.473" data-end="287.28" title="4:45">You will probably be asked to </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="287.76">
+  <div class="q-label">Q7</div>
+  <div class="q-body"><span class="segment q-seg" data-start="287.76" data-end="291.44" title="4:47">describe one of these techniques and you are unlikely to have done any of them in anger. </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="292.72" data-end="296.88" title="4:52">Make sure you know the anatomy and all the steps involved in at least one technique. </span></li>
+<li><span class="segment a-seg" data-start="297.52" data-end="300.48" title="4:57">We have included all three techniques here for completeness. </span></li>
+<li><span class="segment a-seg" data-start="302.48" data-end="308.0" title="5:02">The larynx lies at the level of the fourth to sixth cervical vertebrae. It is made up of the </span></li>
+<li><span class="segment a-seg" data-start="308.0" data-end="316.56" title="5:08">thyroid, crycoid, eretinoid, kineiform and cornuculot cartilages. The only ones palpable at the </span></li>
+<li><span class="segment a-seg" data-start="316.56" data-end="323.2" title="5:16">front of the neck are the thyroid and crycoid cartilages. The thyroid cartilage is the most </span></li>
+<li><span class="segment a-seg" data-start="323.2" data-end="331.12" title="5:23">prominent laryngeal cartilage and is usually palpated easily especially in men. The crycoid lies </span></li>
+<li><span class="segment a-seg" data-start="331.12" data-end="338.8" title="5:31">inferior to this at the level of C6. It is a signet ring shape with the narrower band portion lying </span></li>
+<li><span class="segment a-seg" data-start="338.8" data-end="345.84" title="5:38">anteriorly. The crycothyroid membrane is a palpable groove between the lower border of the thyroid </span></li>
+<li><span class="segment a-seg" data-start="345.84" data-end="352.64" title="5:45">cartilage and the upper border of the crycoid cartilage. It is usually easy to palpate, </span></li>
+<li><span class="segment a-seg" data-start="352.64" data-end="356.56" title="5:52">though may not be in this case as there is injury to the front of the neck. </span></li>
+<li><span class="segment a-seg" data-start="357.6" data-end="363.92" title="5:57">To perform a surgical crycothyroidotomy, I would extend the patient's neck as much as possible. </span></li>
+<li><span class="segment a-seg" data-start="364.56" data-end="370.0" title="6:04">The patient is at risk of a cervical spine injury, but this is a life-saving intervention. </span></li>
+<li><span class="segment a-seg" data-start="370.96" data-end="376.56" title="6:10">I would then use the thumb and forefinger of my non-dominant hand to stabilize the </span></li>
+<li><span class="segment a-seg" data-start="376.56" data-end="381.76" title="6:16">crycothyroid membrane and to protect the lateral vascular structures from injury. </span></li>
+<li><span class="segment a-seg" data-start="382.96" data-end="388.88" title="6:22">I would make a transverse incision through the skin and crycothyroid membrane being careful not </span></li>
+<li><span class="segment a-seg" data-start="388.88" data-end="396.16" title="6:28">to damage the crycoid cartilage. I would then leave the scalpel in position and insert either </span></li>
+<li><span class="segment a-seg" data-start="396.16" data-end="402.8" title="6:36">a tracheal hook, a pair of forefeps or a gummelastic bougie into the incision alongside the scalpel. </span></li>
+<li><span class="segment a-seg" data-start="403.84" data-end="408.96" title="6:43">I would enlarge the opening with whichever instrument I was using and leave it in situ. </span></li>
+<li><span class="segment a-seg" data-start="409.76" data-end="416.08" title="6:49">I would then insert a size 6-endertracheal tube, either over the bougie or alongside the </span></li>
+<li><span class="segment a-seg" data-start="416.08" data-end="424.08" title="6:56">forefeps or tracheal hook. I would then connect a circuit and ventilate the patient with 100% oxygen </span></li>
+<li><span class="segment a-seg" data-start="424.08" data-end="428.72" title="7:04">and check that this is effective, then secure the tube to prevent dislodgement. </span></li>
+<li><span class="segment a-seg" data-start="429.84" data-end="436.56" title="7:09">To perform a cannula crycothyroidotomy, I would attach a 14 gauge intravenous cannula or a </span></li>
+<li><span class="segment a-seg" data-start="436.56" data-end="445.04" title="7:16">revousin cannula to a 5 mil syringe. The revousin cannula is especially designed cannula for crycothyroidotomy. </span></li>
+<li><span class="segment a-seg" data-start="445.76" data-end="451.52" title="7:25">It is more resistant to kinking and has a flange to attach it to the neck. It has both </span></li>
+<li><span class="segment a-seg" data-start="451.52" data-end="459.2" title="7:31">lurelock and 15mm connections. I would place a hand on the neck to identify and stabilise the </span></li>
+<li><span class="segment a-seg" data-start="459.2" data-end="465.6" title="7:39">crycothyroid membrane and to protect the lateral vascular structures from injury from the needle. </span></li>
+<li><span class="segment a-seg" data-start="466.48" data-end="472.88" title="7:46">I would then insert the needle and cannula through the crycothyroid membrane at a 45 degree angle </span></li>
+<li><span class="segment a-seg" data-start="472.88" data-end="480.88" title="7:52">cordily, asperating as I go. When I had successfully asperated air, I would advance the cannula </span></li>
+<li><span class="segment a-seg" data-start="480.88" data-end="487.28" title="8:00">over the needle, being careful not to damage the posterior tracheal wall. I would then remove the </span></li>
+<li><span class="segment a-seg" data-start="487.28" data-end="493.84" title="8:07">needle and then recheck that air can be asperated from the cannula and connect to a high pressure </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="493.84">
+  <div class="q-label">Q8</div>
+  <div class="q-body"><span class="segment q-seg" data-start="493.84" data-end="499.12" title="8:13">oxygen supply. What oxygen supply can you connect a cannula to? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="501.52" data-end="509.92" title="8:21">Canually require high pressure ventilation, which means wall oxygen at 400kPa. This involves </span></li>
+<li><span class="segment a-seg" data-start="509.92" data-end="516.56" title="8:29">either connecting oxygen tubing to a wall flow meter turned on full, or using a specialised </span></li>
+<li><span class="segment a-seg" data-start="516.56" data-end="525.04" title="8:36">high pressure ventilator, such as the Sanders injector or maniaget. Ideally, I would use a specialised </span></li>
+<li><span class="segment a-seg" data-start="525.04" data-end="530.48" title="8:45">ventilator to save having to make something out of oxygen tubing under three-way tap. </span></li>
+<li><span class="segment a-seg" data-start="531.44" data-end="537.84" title="8:51">The common gas outlet of the anaesthetic machine cannot be used, as there is a pressure relief valve </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="537.84">
+  <div class="q-label">Q9</div>
+  <div class="q-body"><span class="segment q-seg" data-start="537.84" data-end="543.6" title="8:57">which will vent at 40kPa, which is insufficient for high pressure ventilation. </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="544.56" data-end="550.48" title="9:04">I would need to allow a long time for exploration, which needs to occur through the upper airway </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="550.48">
+  <div class="q-label">Q10</div>
+  <div class="q-body"><span class="segment q-seg" data-start="550.48" data-end="557.76" title="9:10">to avoid volume trauma. Good. Now, what is the third method of performing a crycothyroidosomy? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="560.0" data-end="566.24" title="9:20">Many anaesthetists are used to performing percutaneous tracheostomies on the intensive care unit, </span></li>
+<li><span class="segment a-seg" data-start="566.24" data-end="572.24" title="9:26">using a saldinger technique with either serial dilatation or a rhino dilator. </span></li>
+<li><span class="segment a-seg" data-start="573.04" data-end="579.28" title="9:33">They may therefore choose to use a saldinger-based technique to perform an emergency crycothyroidotomy. </span></li>
+<li><span class="segment a-seg" data-start="580.64" data-end="587.68" title="9:40">There are now cuffed size 6 emergency crycothyroidotomy kits available, and there is evidence that they </span></li>
+<li><span class="segment a-seg" data-start="587.68" data-end="593.44" title="9:47">can be inserted nearly as quickly as a surgical airway and may cause fewer complications. </span></li>
+<li><span class="segment a-seg" data-start="593.6" data-end="600.96" title="9:53">The kits contain a cannula, which I would insert just as for an emergency cannula crycothyroidotomy. </span></li>
+<li><span class="segment a-seg" data-start="600.96" data-end="607.04" title="10:00">I would then insert the guide wire through the cannula and make a horizontal incision in the skin </span></li>
+<li><span class="segment a-seg" data-start="607.04" data-end="614.24" title="10:07">either side of the wire. I would rail-road the dilator over the wire and dilate the airway orifice. </span></li>
+<li><span class="segment a-seg" data-start="614.24" data-end="620.16" title="10:14">Finally, I would rail-road the tube over the wire, attach a breathing circuit, </span></li>
+<li><span class="segment a-seg" data-start="620.72" data-end="628.32" title="10:20">and ventilate with 100% oxygen. It is important to observe the patient for chest movement </span></li>
+<li><span class="segment a-seg" data-start="628.32" data-end="634.4" title="10:28">and check the neck to exclude swelling from gas getting into surrounding tissues rather than the </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="634.4">
+  <div class="q-label">Q11</div>
+  <div class="q-body"><span class="segment q-seg" data-start="634.4" data-end="639.04" title="10:34">trachea. What are the potential complications of crycothyroidotomy? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="641.36" data-end="647.28" title="10:41">The immediate complications are mouth position. The creation of a false passage, </span></li>
+<li><span class="segment a-seg" data-start="647.28" data-end="654.88" title="10:47">issoffergeal perforation, surgical emphysema and hemorrhage. On trying to ventilate the patient, </span></li>
+<li><span class="segment a-seg" data-start="654.88" data-end="663.04" title="10:54">you can cause surgical emphysema, barotroma and pneumothorax. Also cannula may kink or become </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="663.04">
+  <div class="q-label">Q12</div>
+  <div class="q-body"><span class="segment q-seg" data-start="663.04" data-end="668.72" title="11:03">displaced. How does a percutaneous tracheostomy differ from a crycothyroidotomy? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="670.96" data-end="676.96" title="11:10">Percutaneous tracheostomy is usually performed electively on intensive care patients </span></li>
+<li><span class="segment a-seg" data-start="676.96" data-end="683.84" title="11:16">within the intensive care unit itself, whereas crycothyroidotomy is an emergency airway rescue </span></li>
+<li><span class="segment a-seg" data-start="683.84" data-end="690.88" title="11:23">technique. The anatomy differs in that percutaneous tracheostomies are inserted through the anterior </span></li>
+<li><span class="segment a-seg" data-start="690.88" data-end="697.52" title="11:30">tracheal wall, below the crycoid cartilage, whereas crycothyroidotomy is performed by the </span></li>
+<li><span class="segment a-seg" data-start="697.52" data-end="705.44" title="11:37">crycothyroid membrane. Percutaneous tracheostomies are usually inserted between the second and third </span></li>
+<li><span class="segment a-seg" data-start="705.44" data-end="712.4" title="11:45">tracheal rings, as higher approaches can predispose to tracheal stenosis after decannulation. </span></li>
+<li><span class="segment a-seg" data-start="713.6" data-end="719.44" title="11:53">This risk is balanced by the fact that the thyroid isthmus lies between the second and fourth </span></li>
+<li><span class="segment a-seg" data-start="719.44" data-end="725.92" title="11:59">tracheal rings, so there is a risk of damage to this structure causing hemorrhage. However, </span></li>
+<li><span class="segment a-seg" data-start="725.92" data-end="733.28" title="12:05">the dilation technique will often tampernard any bleeding. In orally-intervated patients, </span></li>
+<li><span class="segment a-seg" data-start="733.28" data-end="739.28" title="12:13">percutaneous tracheostomy is usually performed with a second operator, observing the procedure </span></li>
+<li><span class="segment a-seg" data-start="739.28" data-end="744.96" title="12:19">from inside the trachea with the use of a fiber optic bronchoscope down the tracheal tube. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="746.16">
+  <div class="q-label">Q13</div>
+  <div class="q-body"><span class="segment q-seg" data-start="746.16" data-end="749.2" title="12:26">What are the general indications for tracheostomy? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="749.2" data-end="752.24" title="12:29">Remember, as always, to categorize if possible. </span></li>
+<li><span class="segment a-seg" data-start="754.56" data-end="761.84" title="12:34">The indications can be subdivided into those for airway obstruction, those for airway protection, </span></li>
+<li><span class="segment a-seg" data-start="761.84" data-end="770.16" title="12:41">and intensive care uses. Airway obstruction may be caused by tumors, trauma, burns, </span></li>
+<li><span class="segment a-seg" data-start="770.16" data-end="778.24" title="12:50">anaphylaxis, and infections such as epiglottitis. Airway protection might be necessary </span></li>
+<li><span class="segment a-seg" data-start="778.24" data-end="785.28" title="12:58">during head and neck surgery in neurological or muscle diseases such as Guillain-Barre syndrome, </span></li>
+<li><span class="segment a-seg" data-start="785.36" data-end="794.4" title="13:05">Bulba pauses, and head injury. On the intensive care unit, patients may require tracheostomy to aid </span></li>
+<li><span class="segment a-seg" data-start="794.4" data-end="799.6" title="13:14">sputum removal if they have a poor cough or are producing excessive secretions. </span></li>
+<li><span class="segment a-seg" data-start="800.56" data-end="806.96" title="13:20">Tracheostomies may also facilitate weaning from ventilation as they decrease the work of breathing </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="806.96">
+  <div class="q-label">Q14</div>
+  <div class="q-body"><span class="segment q-seg" data-start="806.96" data-end="812.96" title="13:26">compared to an oral or nasal tracheal tube and allow for easier suctioning of secretions. </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="813.2" data-end="819.68" title="13:33">Tracheostomies also allow the patient to be awake during a long wean, therefore avoiding </span></li>
+<li><span class="segment a-seg" data-start="819.68" data-end="827.68" title="13:39">the complications of long-term sedation. Early tracheostomy has been found in a recent trial to </span></li>
+<li><span class="segment a-seg" data-start="827.68" data-end="833.36" title="13:47">decrease the number of ventilator days, though there was no significant difference in mortality. </span></li>
+<li><span class="segment a-seg" data-start="834.56" data-end="838.96" title="13:54">You are asked to take an intubate ICU patient theatre for a surgical tracheostomy. </span></li>
+<li><span class="segment a-seg" data-start="839.2" data-end="844.8" title="13:59">One of the potential pitfalls and how to ensure the airway is maintained throughout the operation. </span></li>
+<li><span class="segment a-seg" data-start="847.28" data-end="853.36" title="14:07">Intensive care unit patients are often sick and their management can be complicated. </span></li>
+<li><span class="segment a-seg" data-start="853.36" data-end="859.6" title="14:13">I may not know the patient, so I would get a full handover and make sure I had read the notes, </span></li>
+<li><span class="segment a-seg" data-start="859.6" data-end="864.56" title="14:19">examined the patient, and had seen recent blood gase and other blood results. </span></li>
+<li><span class="segment a-seg" data-start="864.8" data-end="871.52" title="14:24">I would also like to see a recent chest X-ray and make sure I knew the optimal length of the </span></li>
+<li><span class="segment a-seg" data-start="871.52" data-end="878.88" title="14:31">tracheal tube for the patient. I would make sure I knew the patient's ventilator requirements and </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="878.88">
+  <div class="q-label">Q15</div>
+  <div class="q-body"><span class="segment q-seg" data-start="878.88" data-end="884.96" title="14:38">what infusions they are on. I would make sure I had full monitoring for transfer and take a </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="884.96" data-end="892.64" title="14:44">skilled assistant with me. I would have a transfer bag with all of the relevant drugs and equipment for transfer. </span></li>
+<li><span class="segment a-seg" data-start="892.88" data-end="898.24" title="14:52">Let us assume you have transferred the patient to the operating theatre and they are safely on the table. </span></li>
+<li><span class="segment a-seg" data-start="899.2" data-end="902.08" title="14:59">Talk me through the operation and your role in maintaining the airway. </span></li>
+<li><span class="segment a-seg" data-start="904.56" data-end="911.04" title="15:04">Patient positioning involves extending the neck. At which point the tube can become dislodged. </span></li>
+<li><span class="segment a-seg" data-start="911.04" data-end="919.6" title="15:11">I would stabilise the tube at this point. Once in position I would put the patient on 100% oxygen. </span></li>
+<li><span class="segment a-seg" data-start="919.84" data-end="929.6" title="15:19">The surgeons dissect down to the trachea and then make a vertical incision through one of the second to fourth tracheal rings. </span></li>
+<li><span class="segment a-seg" data-start="929.6" data-end="937.28" title="15:29">They then make a flap or hole in the trachea at which point the oral tracheal tube can be visualised. </span></li>
+<li><span class="segment a-seg" data-start="938.16" data-end="946.32" title="15:38">There is a risk of damage to the cuff during this process, so I would listen for a cuff leak and watch the oxygen saturations. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="947.2">
+  <div class="q-label">Q16</div>
+  <div class="q-body"><span class="segment q-seg" data-start="947.2" data-end="951.68" title="15:47">When the surgeons are ready they ask for the tracheal tube to be withdrawn. </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="952.48" data-end="958.32" title="15:52">I do this slowly and leave some of it within the larynx in case it needs to be re-inverted. </span></li>
+<li><span class="segment a-seg" data-start="959.2" data-end="967.2" title="15:59">The tracheostomy tube is inserted which can be difficult. At this point there will be limited ventilation </span></li>
+<li><span class="segment a-seg" data-start="967.2" data-end="970.96" title="16:07">due to the presence of the tracheostomy tube within the tracheal lumen. </span></li>
+<li><span class="segment a-seg" data-start="971.84" data-end="978.72" title="16:11">The tracheostomy tube cuff is then inflated and the breathing circuit is then swapped onto the tracheostomy tube. </span></li>
+<li><span class="segment a-seg" data-start="979.92" data-end="987.92" title="16:19">I would examine the patient for bilateral chest expansion, check the capnography trace and the oxygen saturations. </span></li>
+<li><span class="segment a-seg" data-start="988.8" data-end="996.32" title="16:28">At this point the responsibility for holding and securing the tracheostomy tube is transferred to the surgeons </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="996.32">
+  <div class="q-label">Q17</div>
+  <div class="q-body"><span class="segment q-seg" data-start="996.32" data-end="1003.28" title="16:36">who may place sutures or secure the tube by tying. I would only remove the oral tube </span><span class="segment q-seg" data-start="1003.28" data-end="1009.12" title="16:43">when I was convinced the tracheostomy was sighted correctly. If there was any doubt at all, </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="1009.12" data-end="1015.52" title="16:49">I would insert the fibroptic bronchoscope to check looking for positioning with respect to the carina. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="1016.8">
+  <div class="q-label">Q18</div>
+  <div class="q-body"><span class="segment q-seg" data-start="1016.8" data-end="1018.4" title="16:56">Do you know what stay sutures are? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="1018.8" data-end="1027.04" title="16:58">These are long sutures placed into the lateral walls of the tracheal orifice during tracheostomy. </span></li>
+<li><span class="segment a-seg" data-start="1027.76" data-end="1033.36" title="17:07">The tubes of which are taped to the patient's neck either side of the tracheostomy tube. </span></li>
+<li><span class="segment a-seg" data-start="1034.16" data-end="1039.52" title="17:14">They are used to help re-insertion of the tracheostomy tube, should it require changing, </span></li>
+<li><span class="segment a-seg" data-start="1039.52" data-end="1046.24" title="17:19">fall out or become displaced. Pulling on them brings the tracheal orifice closer to the surface </span></li>
+<li><span class="segment a-seg" data-start="1046.24" data-end="1050.72" title="17:26">of the skin so that the orifice can be visualised more easily. </span></li>
+  </ul>
+</div>
+</div>
+
 </div>
 
 <div class="subtitle-bar">
-  <span class="subtitle-text empty" id="subtitle-text">Play audio to see live subtitles&#8230;</span>
+  <span id="subtitle-text" class="empty">Play audio to see live subtitles&#8230;</span>
 </div>
 
 <script>
-
-const audio    = document.getElementById('audio');
-const allSegs  = Array.from(document.querySelectorAll('.segment'));
-const allBlocks = Array.from(document.querySelectorAll('.t-block'));
+const audio      = document.getElementById('audio');
+const allSegs    = Array.from(document.querySelectorAll('.segment'));
 const subtitleEl = document.getElementById('subtitle-text');
-let activeSegEl   = null;
-let activeBlockEl = null;
-let searchMatches = [];
-let searchIdx     = 0;
+let activeSegEl  = null;
+let searchMatches = [], searchIdx = 0;
 
-// Duration display
 audio.addEventListener('loadedmetadata', () => {
   const m = Math.floor(audio.duration / 60);
   const s = Math.floor(audio.duration %% 60).toString().padStart(2,'0');
   document.getElementById('dur').textContent = m + ':' + s;
 });
 
-// Seek helper
-function seekTo(t) {
-  audio.currentTime = t;
-  audio.play();
-}
+function seekTo(t) { audio.currentTime = t; audio.play(); }
 
-// Block gutter click
-document.querySelectorAll('.t-gutter').forEach(g => {
-  g.addEventListener('click', () => seekTo(parseFloat(g.dataset.start)));
+// Q-block header click
+document.querySelectorAll('.q-block').forEach(q => {
+  q.addEventListener('click', e => {
+    if (!e.target.classList.contains('segment')) seekTo(parseFloat(q.dataset.start));
+  });
 });
 
-// Segment click
+// Individual segment click
 allSegs.forEach(s => {
-  s.addEventListener('click', e => {
-    e.stopPropagation();
-    seekTo(parseFloat(s.dataset.start));
-  });
+  s.addEventListener('click', e => { e.stopPropagation(); seekTo(parseFloat(s.dataset.start)); });
 });
 
 // Real-time tracking
 audio.addEventListener('timeupdate', () => {
   const t = audio.currentTime;
-
-  // Find active segment (last one whose start <= t)
   let found = null;
   for (let i = allSegs.length - 1; i >= 0; i--) {
     if (parseFloat(allSegs[i].dataset.start) <= t) { found = allSegs[i]; break; }
   }
-
   if (found && found !== activeSegEl) {
-    // Clear previous
-    if (activeSegEl) activeSegEl.classList.remove('active');
-    if (activeBlockEl) {
-      activeBlockEl.classList.remove('block-active');
-      const pg = activeBlockEl.querySelector('.t-gutter');
-      if (pg) pg.classList.remove('gutter-active');
+    if (activeSegEl) {
+      activeSegEl.classList.remove('active');
+      const pli = activeSegEl.closest('li');
+      if (pli) pli.classList.remove('li-active');
+      const pq = activeSegEl.closest('.q-block');
+      if (pq) pq.classList.remove('q-active');
     }
-    // Set new
     found.classList.add('active');
-    const block = found.closest('.t-block');
-    if (block) {
-      block.classList.add('block-active');
-      const g = block.querySelector('.t-gutter');
-      if (g) g.classList.add('gutter-active');
-      activeBlockEl = block;
-    }
+    const li = found.closest('li');
+    if (li) li.classList.add('li-active');
+    const qb = found.closest('.q-block');
+    if (qb) qb.classList.add('q-active');
     activeSegEl = found;
 
-    // Update subtitle
     subtitleEl.textContent = found.textContent.trim();
     subtitleEl.classList.remove('empty');
 
-    // Auto-scroll (only when not searching)
-    if (!document.getElementById('search').value) {
+    if (!document.getElementById('search').value)
       found.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }
   }
 });
 
@@ -365,17 +595,13 @@ searchInput.addEventListener('keydown', e => {
     el.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
 });
-
 function runSearch() {
   const q = searchInput.value.trim().toLowerCase();
   allSegs.forEach(s => s.classList.remove('search-match','search-current'));
   searchMatches = [];
   if (!q) return;
   allSegs.forEach(s => {
-    if (s.textContent.toLowerCase().includes(q)) {
-      s.classList.add('search-match');
-      searchMatches.push(s);
-    }
+    if (s.textContent.toLowerCase().includes(q)) { s.classList.add('search-match'); searchMatches.push(s); }
   });
   if (!searchMatches.length) return;
   searchIdx = 0;

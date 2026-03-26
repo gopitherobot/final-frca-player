@@ -5,10 +5,19 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ENT — Difficult Intubation</title>
 <style>
-
   :root {
-    --accent:    #f59e0b;
-    --body-bg:   #f1f5f9;
+    --q-bg:       #1e3a5f;
+    --q-text:     #ffffff;
+    --q-label:    #60a5fa;
+    --a-bg:       #ffffff;
+    --a-border:   #e2e8f0;
+    --a-label:    #059669;
+    --active-q:   #f59e0b;
+    --active-a:   #dbeafe;
+    --accent:     #f59e0b;
+    --body-bg:    #f1f5f9;
+    --pre-bg:     #fef9c3;
+    --pre-border: #fcd34d;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
@@ -40,22 +49,9 @@
     margin-bottom: 4px;
     letter-spacing: 0.01em;
   }
-  .header-sub {
-    font-size: 0.72rem;
-    color: #94a3b8;
-    font-style: italic;
-  }
-  audio {
-    height: 36px;
-    accent-color: var(--accent);
-    flex-shrink: 0;
-  }
-  .back-link {
-    font-size: 0.8rem;
-    color: #94a3b8;
-    text-decoration: none;
-    white-space: nowrap;
-  }
+  .header-sub { font-size: 0.72rem; color: #94a3b8; font-style: italic; }
+  audio { height: 36px; accent-color: var(--accent); flex-shrink: 0; }
+  .back-link { font-size: 0.8rem; color: #94a3b8; text-decoration: none; white-space: nowrap; }
   .back-link:hover { color: #60a5fa; }
 
   /* ── Toolbar ── */
@@ -69,30 +65,17 @@
     border-bottom: 1px solid #334155;
   }
   .toolbar input {
-    flex: 1;
-    max-width: 380px;
+    flex: 1; max-width: 380px;
     padding: 5px 11px;
-    border: 1px solid #475569;
-    border-radius: 6px;
-    background: #0f172a;
-    color: #e2e8f0;
-    font-size: 0.83rem;
-    outline: none;
+    border: 1px solid #475569; border-radius: 6px;
+    background: #0f172a; color: #e2e8f0; font-size: 0.83rem; outline: none;
   }
   .toolbar input:focus { border-color: var(--accent); }
   .toolbar input::placeholder { color: #64748b; }
-  .stats {
-    font-size: 0.72rem;
-    color: #64748b;
-    white-space: nowrap;
-  }
+  .stats { font-size: 0.72rem; color: #64748b; white-space: nowrap; }
 
   /* ── Scroll area ── */
-  .scroll-area {
-    flex: 1;
-    overflow-y: auto;
-    padding: 20px;
-  }
+  .scroll-area { flex: 1; overflow-y: auto; padding: 20px; }
   .scroll-area::-webkit-scrollbar { width: 6px; }
   .scroll-area::-webkit-scrollbar-track { background: transparent; }
   .scroll-area::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
@@ -107,68 +90,77 @@
     display: flex;
     align-items: center;
   }
-  .subtitle-text {
-    font-size: 0.9rem;
-    color: #e2e8f0;
-    line-height: 1.5;
-    font-style: italic;
-  }
-  .subtitle-text.empty { color: #475569; }
+  #subtitle-text { font-size: 0.88rem; color: #e2e8f0; line-height: 1.5; font-style: italic; }
+  #subtitle-text.empty { color: #475569; }
 
-  /* ── Transcript blocks ── */
-  .t-block {
-    background: #ffffff;
-    border: 1px solid #e2e8f0;
-    border-radius: 10px;
-    margin-bottom: 14px;
-    overflow: hidden;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
-    display: flex;
-  }
-  .t-block.block-active {
-    border-color: var(--accent);
-    box-shadow: 0 0 0 2px rgba(37,99,235,0.15);
-  }
-  .t-gutter {
-    background: #0f172a;
-    width: 52px;
-    flex-shrink: 0;
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
-    padding-top: 14px;
-    cursor: pointer;
-  }
-  .t-gutter:hover { background: #1e293b; }
-  .t-timestamp {
-    font-size: 0.7rem;
-    color: #64748b;
-    font-family: monospace;
-    font-weight: 600;
-    letter-spacing: 0.02em;
-  }
-  .t-gutter.gutter-active .t-timestamp { color: var(--accent); }
-  .t-body {
-    flex: 1;
+  /* ── Preamble ── */
+  .preamble-block {
+    background: var(--pre-bg);
+    border-left: 4px solid var(--pre-border);
+    border-radius: 0 8px 8px 0;
     padding: 12px 16px;
-    line-height: 1.75;
-    font-size: 0.92rem;
-    color: #1e293b;
+    margin-bottom: 20px;
+    font-size: 0.88rem;
+    color: #78350f;
+    font-style: italic;
+    line-height: 1.7;
   }
 
-  /* ── Segments ── */
-  .segment {
+  /* ── Q&A pair ── */
+  .qa-pair { margin-bottom: 20px; border-radius: 10px; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+
+  /* Question block */
+  .q-block {
+    background: var(--q-bg);
+    padding: 14px 18px;
+    display: flex; gap: 14px; align-items: flex-start;
     cursor: pointer;
-    border-radius: 3px;
-    transition: background 0.1s;
+    transition: background 0.15s;
   }
-  .segment:hover { background: #eff6ff; }
-  .segment.active {
-    background: #bfdbfe;
-    outline: 2px solid #3b82f6;
-    outline-offset: 1px;
-    border-radius: 3px;
+  .q-block:hover { background: #1d4ed8; }
+  .q-block.q-active { background: var(--active-q); }
+  .q-label {
+    font-size: 0.7rem; font-weight: 700;
+    color: var(--q-label);
+    background: rgba(96,165,250,0.15);
+    border: 1px solid rgba(96,165,250,0.3);
+    border-radius: 5px; padding: 3px 7px;
+    white-space: nowrap; margin-top: 2px; letter-spacing: 0.05em;
+    flex-shrink: 0;
   }
+  .q-body { flex: 1; font-size: 0.97rem; font-weight: 600; color: var(--q-text); line-height: 1.55; }
+
+  /* Answer block */
+  .a-block {
+    background: var(--a-bg);
+    border: 1px solid var(--a-border); border-top: none;
+    padding: 14px 18px;
+    display: flex; gap: 14px; align-items: flex-start;
+  }
+  .a-label {
+    font-size: 0.7rem; font-weight: 700;
+    color: var(--a-label);
+    background: #d1fae5; border: 1px solid #6ee7b7;
+    border-radius: 5px; padding: 3px 9px;
+    white-space: nowrap; margin-top: 2px; letter-spacing: 0.05em;
+    flex-shrink: 0;
+  }
+  .a-body { flex: 1; list-style: none; padding: 0; }
+  .a-body li {
+    padding: 4px 0 4px 14px;
+    border-left: 3px solid transparent;
+    line-height: 1.7; font-size: 0.92rem; color: #1e293b;
+    border-radius: 0 4px 4px 0;
+    transition: background 0.15s;
+  }
+  .a-body li:not(:last-child) { border-bottom: 1px solid #f1f5f9; }
+
+  /* ── Segments (clickable) ── */
+  .segment { cursor: pointer; border-radius: 3px; }
+  .q-seg:hover { background: rgba(255,255,255,0.18); }
+  .a-seg:hover { background: #eff6ff; }
+  .segment.active { background: #bfdbfe; outline: 2px solid #3b82f6; outline-offset: 1px; }
+  .a-body li.li-active { background: var(--active-a); border-left-color: var(--accent); }
   .segment.search-match  { background: #fef9c3; }
   .segment.search-current { background: #fde047; outline: 2px solid #ca8a04; }
 
@@ -187,157 +179,388 @@
 
 <div class="toolbar">
   <input type="text" id="search" placeholder="Search transcript&#8230; (Enter = next match)">
-  <span class="stats" id="stats">127 segments &nbsp;|&nbsp; <span id="dur">loading&#8230;</span></span>
+  <span class="stats" id="stats">19 questions &nbsp;|&nbsp; 127 segments &nbsp;|&nbsp; <span id="dur">loading&#8230;</span></span>
 </div>
 
 <div class="scroll-area" id="scroll-area">
-<div class="t-block">
-  <div class="t-gutter" data-start="0.0"><span class="t-timestamp">0:00</span></div>
-  <div class="t-body"><span class="segment" data-start="0.0" data-end="6.0" title="0:00">Prediction of a difficult track hill intubation and the management of intubation difficulties. </span><span class="segment" data-start="6.0" data-end="11.0" title="0:06">In your day to day practice, how do you attempt to predict a difficult track hill intubation? </span><span class="segment" data-start="11.0" data-end="16.0" title="0:11">Remember to classify your answer. A great way to approach this question is </span><span class="segment" data-start="16.0" data-end="22.0" title="0:16">History, Examination and Investigations. There are a lot of different aspects to remember here. </span><span class="segment" data-start="22.0" data-end="26.0" title="0:22">It may help to jot things down on a piece of paper. </span><span class="segment" data-start="26.0" data-end="31.0" title="0:26">There are many factors that might contribute to a difficult intubation. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="31.0"><span class="t-timestamp">0:31</span></div>
-  <div class="t-body"><span class="segment" data-start="31.0" data-end="36.0" title="0:31">I therefore approach airway assessment in a systematic way. </span><span class="segment" data-start="36.0" data-end="40.0" title="0:36">I take a full medical and anaesthetic history from the patient, </span><span class="segment" data-start="40.0" data-end="45.0" title="0:40">paying particular attention to previous airway management. </span><span class="segment" data-start="45.0" data-end="50.0" title="0:45">The patient may have been told that they are difficult to intubate </span><span class="segment" data-start="50.0" data-end="55.0" title="0:50">and may even have been given a card, letter or medical hurt bracelet. </span><span class="segment" data-start="55.0" data-end="60.0" title="0:55">They may have medical conditions which are associated with difficult intubation </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="60.0"><span class="t-timestamp">1:00</span></div>
-  <div class="t-body"><span class="segment" data-start="60.0" data-end="65.0" title="1:00">such as rheumatoid arthritis or ankylosing spondylitis. </span><span class="segment" data-start="65.0" data-end="70.0" title="1:05">I check previous anaesthetic charts for airway difficulties and </span><span class="segment" data-start="70.0" data-end="77.0" title="1:10">Kormak and Lehane gradings, bearing in mind that these may have changed over time. </span><span class="segment" data-start="77.0" data-end="81.0" title="1:17">I then examine the patient. On general examination, </span><span class="segment" data-start="81.0" data-end="87.0" title="1:21">findings that are associated with difficult intubation are obesity, pregnancy, </span><span class="segment" data-start="87.0" data-end="94.0" title="1:27">large breasts, a short thick neck, goiter, hematoma or other mass in the neck, </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="94.0"><span class="t-timestamp">1:34</span></div>
-  <div class="t-body"><span class="segment" data-start="94.0" data-end="102.0" title="1:34">micro or macrognathy, prominent upper incisors, high arched palate, large tongue, </span><span class="segment" data-start="102.0" data-end="109.0" title="1:42">undilimited mouth opening. Are there any more specific airway assessments that we use? </span><span class="segment" data-start="109.0" data-end="113.0" title="1:49">There are several bedside tests that can be performed. </span><span class="segment" data-start="113.0" data-end="119.0" title="1:53">None of these is entirely reliable, but in combination they may predict a difficult intubation </span><span class="segment" data-start="119.0" data-end="127.0" title="1:59">about 75% of the time. I regularly use the modified malampati test. </span><span class="segment" data-start="127.0" data-end="131.0" title="2:07">Can you tell me how you'd perform this test? </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="131.0"><span class="t-timestamp">2:11</span></div>
-  <div class="t-body"><span class="segment" data-start="131.0" data-end="135.0" title="2:11">This involves visually inspecting the pharyngeal structures </span><span class="segment" data-start="135.0" data-end="141.0" title="2:15">with the patient sitting, with the mouth fully open, tone protruded and without </span><span class="segment" data-start="141.0" data-end="148.0" title="2:21">fination. In a class one view, the soft palate, uvula and tonsular pillars </span><span class="segment" data-start="148.0" data-end="155.0" title="2:28">are visible. In class two, the soft palate and the base of the uvula, in class three, </span><span class="segment" data-start="155.0" data-end="160.0" title="2:35">the soft palate only, and in class four, just the hard palate. </span><span class="segment" data-start="160.0" data-end="167.0" title="2:40">This test yields many false positive results and 50% false negative results. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="167.0"><span class="t-timestamp">2:47</span></div>
-  <div class="t-body"><span class="segment" data-start="167.0" data-end="171.0" title="2:47">What are the bedside assessments do you perform? </span><span class="segment" data-start="171.0" data-end="178.0" title="2:51">Another bedside test is the thyrimental distance, which is the distance in centimeters </span><span class="segment" data-start="178.0" data-end="185.0" title="2:58">from the notch of the thyroid cartilage to the chin with the head fully extended. </span><span class="segment" data-start="185.0" data-end="190.0" title="3:05">A distance of less than seven centimeters is associated with difficult </span><span class="segment" data-start="190.0" data-end="193.0" title="3:10">intubation. </span><span class="segment" data-start="193.0" data-end="200.0" title="3:13">I also always assess mouth opening. Less than three centimeters is abnormal in an </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="200.0"><span class="t-timestamp">3:20</span></div>
-  <div class="t-body"><span class="segment" data-start="200.0" data-end="205.0" title="3:20">adult. Mouth opening can be affected by acute local pain and </span><span class="segment" data-start="205.0" data-end="210.0" title="3:25">inflammation, so it's important to try to assess whether pain is the only </span><span class="segment" data-start="210.0" data-end="216.0" title="3:30">limiting factor, in which case mouth opening can often improve on induction of </span><span class="segment" data-start="216.0" data-end="218.0" title="3:36">anesthesia. </span><span class="segment" data-start="218.0" data-end="224.0" title="3:38">I also test jaw protrusion. The patient should be able to protrude the lower </span><span class="segment" data-start="224.0" data-end="231.0" title="3:44">incisors in front of the upper incisors. I also assess neck extension at the </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="231.0"><span class="t-timestamp">3:51</span></div>
-  <div class="t-body"><span class="segment" data-start="231.0" data-end="238.0" title="3:51">Atlanta-Excipital joint. A range of movement of 35 degrees or more is normal. </span><span class="segment" data-start="238.0" data-end="244.0" title="3:58">This may be limited by arthritis and collosing spondylitis, injury or surgery </span><span class="segment" data-start="244.0" data-end="250.0" title="4:04">to the cervical spine, a rigid collar or the need for manual inline stabilization. </span><span class="segment" data-start="250.0" data-end="255.0" title="4:10">How specific and sensitive are these tests? </span><span class="segment" data-start="255.0" data-end="261.0" title="4:15">A combination of a modified mal and patty test, grade three or four, with a </span><span class="segment" data-start="261.0" data-end="266.0" title="4:21">thyrimental distance of less than seven centimeters, has been shown to be highly </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="266.0"><span class="t-timestamp">4:26</span></div>
-  <div class="t-body"><span class="segment" data-start="266.0" data-end="273.0" title="4:26">sensitive and specific for a grade four, calmer can lehane view at larangoscopy. </span><span class="segment" data-start="273.0" data-end="276.0" title="4:33">Do you know of any scoring systems for predicting a difficult </span><span class="segment" data-start="276.0" data-end="278.0" title="4:36">airway? </span><span class="segment" data-start="278.0" data-end="285.0" title="4:38">The Wilson-Risk score combines five patient factors. Weight, head and neck </span><span class="segment" data-start="285.0" data-end="292.0" title="4:45">movement, mouth and jaw movement, receding jaw and prominent incisors. </span><span class="segment" data-start="292.0" data-end="299.0" title="4:52">These are scored from zero to two. A score of over three predicts 75% of </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="299.0"><span class="t-timestamp">4:59</span></div>
-  <div class="t-body"><span class="segment" data-start="299.0" data-end="304.0" title="4:59">difficult intubations but has a false positive rate of 12%. </span><span class="segment" data-start="304.0" data-end="309.0" title="5:04">Is there anything else we can do to investigate further? </span><span class="segment" data-start="309.0" data-end="315.0" title="5:09">There are several special airway investigations we can request. X-rays can be used </span><span class="segment" data-start="315.0" data-end="320.0" title="5:15">to assess the amount of neck extension at the Atlanta-Excipital or Atlanta </span><span class="segment" data-start="320.0" data-end="325.0" title="5:20">Axial joints or the relative length and depth of the mandible. </span><span class="segment" data-start="325.0" data-end="331.0" title="5:25">We can get CT scans to look for soft tissue swelling or airway compression by </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="331.0"><span class="t-timestamp">5:31</span></div>
-  <div class="t-body"><span class="segment" data-start="331.0" data-end="337.0" title="5:31">extrinsic forces. We can also perform fiber optic examination usually by </span><span class="segment" data-start="337.0" data-end="343.0" title="5:37">nasal endoscopy to help to predict the view we might get at direct larangoscopy. </span><span class="segment" data-start="343.0" data-end="347.0" title="5:43">You would use René's Tyser healthy adult patient for an elective operation </span><span class="segment" data-start="347.0" data-end="352.0" title="5:47">during track ill intubation. After your airway assessment you conclude that </span><span class="segment" data-start="352.0" data-end="356.0" title="5:52">intubation by direct larangoscopy will be difficult or impossible. </span><span class="segment" data-start="356.0" data-end="358.0" title="5:56">How will you proceed? </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="358.0"><span class="t-timestamp">5:58</span></div>
-  <div class="t-body"><span class="segment" data-start="358.0" data-end="362.0" title="5:58">Remember the exam is all about putting patient safety first. </span><span class="segment" data-start="362.0" data-end="367.0" title="6:02">You are going to perform an awake fiber optic intubation. There are many </span><span class="segment" data-start="367.0" data-end="372.0" title="6:07">recipes for awake intubation and you may have limited experience. Choose a recipe </span><span class="segment" data-start="372.0" data-end="377.0" title="6:12">and plan it and be prepared to justify the method you use. </span><span class="segment" data-start="377.0" data-end="382.0" title="6:17">I would explain to the patient that they require awake intubation. I would </span><span class="segment" data-start="382.0" data-end="388.0" title="6:22">describe the technique to them and run through exactly what they would experience. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="388.0"><span class="t-timestamp">6:28</span></div>
-  <div class="t-body"><span class="segment" data-start="388.0" data-end="392.0" title="6:28">I would try to put the patient at ease and reassure them. </span><span class="segment" data-start="392.0" data-end="396.0" title="6:32">Can you outline a method for awake intubation? </span><span class="segment" data-start="396.0" data-end="402.0" title="6:36">I gain informed consent and ensure minimum monitoring standards are in place. </span><span class="segment" data-start="402.0" data-end="408.0" title="6:42">The procedure requires a skilled assistant and ideally a second anacetist. </span><span class="segment" data-start="408.0" data-end="414.0" title="6:48">I would secure intravenous access and have an intravenous infusion running. </span><span class="segment" data-start="414.0" data-end="420.0" title="6:54">I give glycopyralate 200 micrograms intravenously as an anti-silogog </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="420.0"><span class="t-timestamp">7:00</span></div>
-  <div class="t-body"><span class="segment" data-start="420.0" data-end="427.0" title="7:00">and then spray both nostrils with a vasoconstrictor, usually xylomatazoline spray. </span><span class="segment" data-start="427.0" data-end="435.0" title="7:07">I have found a low dose remyfentinal infusion to be useful for its sedative and antitussive properties. </span><span class="segment" data-start="435.0" data-end="442.0" title="7:15">I run this at a rate that results in a respiratory rate of 8 to 10 breaths per minute. </span><span class="segment" data-start="442.0" data-end="446.0" title="7:22">There are many ways to provide local anesthesia for the airway </span><span class="segment" data-start="446.0" data-end="454.0" title="7:26">but the method I prefer is to atomise 2% lidocaine with a 3-way tap attached to a long 20 gauge cannula </span><span class="segment" data-start="454.0" data-end="461.0" title="7:34">and oxygen tubing with oxygen running at 2 litres per minute as the driving gas. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="461.0"><span class="t-timestamp">7:41</span></div>
-  <div class="t-body"><span class="segment" data-start="461.0" data-end="468.0" title="7:41">I then atomise 1 mil of 2% lidocaine on inspiration every 1 to 2 minutes </span><span class="segment" data-start="468.0" data-end="472.0" title="7:48">until there is an obvious change in the patient's voice. </span><span class="segment" data-start="472.0" data-end="477.0" title="7:52">What is the maximum dose of lidocaine that you would use? </span><span class="segment" data-start="477.0" data-end="487.0" title="7:57">I use a maximum dose of 8 milligrams per kilogram, which is recommended by the British thoracic society guidelines for flexible bronchoscopy. </span><span class="segment" data-start="487.0" data-end="492.0" title="8:07">What can the needs to do to prepare for the unanticipated failed intubation? </span><span class="segment" data-start="492.0" data-end="496.0" title="8:12">This question is designed to assess your safety as an inistist. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="496.0"><span class="t-timestamp">8:16</span></div>
-  <div class="t-body"><span class="segment" data-start="496.0" data-end="501.0" title="8:16">The examiner wants to establish that if this potentially life threatening situation happens to you, </span><span class="segment" data-start="501.0" data-end="508.0" title="8:21">you will approach it in a calm and measured way with patient safety as your prime concern. </span><span class="segment" data-start="508.0" data-end="519.0" title="8:28">About half of difficult intubations are not predicted and so anistatists should prepare for all intubations as if failure could occur. </span><span class="segment" data-start="519.0" data-end="529.0" title="8:39">On a basic level, we should ensure that we are familiar with all of the airway equipment and techniques that can be used during a difficult intubation. </span><span class="segment" data-start="529.0" data-end="536.0" title="8:49">We should all know exactly what equipment is available on the difficult intubation trolley and where it is. </span><span class="segment" data-start="536.0" data-end="545.0" title="8:56">A trolley should be present in all operating theatre suites, intensive care units and emergency departments. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="545.0"><span class="t-timestamp">9:05</span></div>
-  <div class="t-body"><span class="segment" data-start="545.0" data-end="555.0" title="9:05">Difficult intubation is a rare occurrence, so we need to practice the rescue techniques, for example on mannequins or in simulators. </span><span class="segment" data-start="555.0" data-end="560.0" title="9:15">We should also be familiar with a difficult intubation algorithm. </span><span class="segment" data-start="560.0" data-end="565.0" title="9:20">Which difficult intubation algorithm do you use? </span><span class="segment" data-start="565.0" data-end="582.0" title="9:25">I use the difficult airway society guidelines. These are well regarded, evidence-based guidelines, which give separate, structured approaches to a difficult intubation during routine and rapid sequence induction. </span><span class="segment" data-start="582.0" data-end="592.0" title="9:42">I always have a clear plan A and plan B, which I communicate to my assistant before any intubation attempt. </span><span class="segment" data-start="592.0" data-end="598.0" title="9:52">The guidelines emphasize optimization of the initial intubation attempt. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="598.0"><span class="t-timestamp">9:58</span></div>
-  <div class="t-body"><span class="segment" data-start="598.0" data-end="610.0" title="9:58">Summoning senior anesthetic help as soon as possible, avoiding repeated attempts at larynxoscopy and maintaining oxygenation above all else. </span><span class="segment" data-start="610.0" data-end="620.0" title="10:10">You perform a rapid sequence induction of anesthesia and a patient in whom you would not predict difficulty and obtain a callmack and lehane grade 4 view on larynxoscopy. </span><span class="segment" data-start="620.0" data-end="622.0" title="10:20">How do you approach this situation? </span><span class="segment" data-start="622.0" data-end="632.0" title="10:22">You should have a difficult airway algorithm such as the difficult airway society guideline or the one used in your own hospital committed to memory. </span><span class="segment" data-start="632.0" data-end="647.0" title="10:32">Firstly, I would ensure oxygenation at all times and if oxygen saturation start to fall, I would abandon intubation attempts and ventilate the patient with a face mask and airway adjuncts. </span><span class="segment" data-start="647.0" data-end="654.0" title="10:47">Let us assume that the oxygen saturation is maintained in the first instance. How would you proceed? </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="654.0"><span class="t-timestamp">10:54</span></div>
-  <div class="t-body"><span class="segment" data-start="654.0" data-end="669.0" title="10:54">Initially, I would attempt to optimize the initial view at larynxoscopy. I would ensure that the head was in the correct position and try external laryngeal manipulation like backward, upward, right, wood pressure. </span><span class="segment" data-start="669.0" data-end="685.0" title="11:09">I may try an alternative larynxoscope blade such as the McCoy or a straight blade. If I obtained a view of any laryngeal structures, I would attempt to pass a gammelastic bougie either under direct vision or blindly into the midline. </span><span class="segment" data-start="685.0" data-end="694.0" title="11:25">If I was successful, I may feel clicks as the bougie passes down the trachea and hold up as the tip of the bougie reaches the carina. </span><span class="segment" data-start="694.0" data-end="701.0" title="11:34">Unfortunately, none of your maneuvers allowed you to intubate. What should you do next? </span><span class="segment" data-start="701.0" data-end="716.0" title="11:41">I would avoid repeated attempts at laryngeoscopy and would not give a second dose of muscle relaxant. After three attempts at intubation or if oxygen saturation began to fall, I would abandon attempts at intubation. </span><span class="segment" data-start="716.0" data-end="741.0" title="11:56">I would call for senior help and concentrate all of my efforts on oxygenating the patient. I would allow the patient to awake unless surgery is immediately life threatening. Initially, I would attempt to face mask ventilation with airway adjuncts such as an auro-pharyngeal or nasopharyngeal airway and a two-person technique if necessary. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="741.0"><span class="t-timestamp">12:21</span></div>
-  <div class="t-body"><span class="segment" data-start="741.0" data-end="760.0" title="12:21">If oxygen saturation falls below 90% using these techniques, I would attempt to insert a laryngeal mask airway. This may involve reducing crycoyd pressure both for insertion and subsequent ventilation, but this is acceptable in the circumstances. </span><span class="segment" data-start="760.0" data-end="775.0" title="12:40">Despite your best efforts, you are unable to ventilate the patient with the bag valve mask or the laryngeal mask airway. Your patient is sign-osed with falling oxygen saturations. No senior help is available. Now what will you do? </span><span class="segment" data-start="775.0" data-end="789.0" title="12:55">Don't mess about here. You are all the way down the Plan D of the Difficult Airway Society guidelines that can't intubate, can't ventilate scenario. You have to perform a crycothyroidosomy. </span><span class="segment" data-start="790.0" data-end="804.0" title="13:10">The patient requires a crycothyroidotomy, which I could either achieve with a cannula or a surgical technique. I could use either a standard intravenous cannula or a specialized crycothyroidotomy cannula. </span><span class="segment" data-start="804.0" data-end="808.0" title="13:24">What oxygen supply can you connect these two? </span><span class="segment" data-start="808.0" data-end="817.0" title="13:28">These cannuli require high pressure ventilation, which means wall oxygen at 400 kilopascals. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="817.0"><span class="t-timestamp">13:37</span></div>
-  <div class="t-body"><span class="segment" data-start="817.0" data-end="831.0" title="13:37">This involves either connecting oxygen tubing to a wall flow meter turned to 15 litres per minute, or using a specialized high pressure ventilator, such as the Sanders or Manuject. </span><span class="segment" data-start="831.0" data-end="844.0" title="13:51">The common gas outlet of the anaesthetic machine cannot be used as there is a pressure relief valve, which will vent at 4 kilopascals, which is insufficient for high pressure ventilation. </span><span class="segment" data-start="844.0" data-end="851.0" title="14:04">I would need to allow a long time for exploration, which needs to occur through the upper airway to avoid volume trauma. </span><span class="segment" data-start="851.0" data-end="856.0" title="14:11">What is your alternative to needle techniques? </span><span class="segment" data-start="856.0" data-end="873.0" title="14:16">The other option is a surgical technique, which I could perform with either a kit that employs a celldinger technique, or by incising the skin and crycothyroid membrane using a scalpel, then dilating the orifice in order to insert a standard endotracheal tube </span><span class="segment" data-start="873.0" data-end="877.0" title="14:33">of approximately size 6mm of internal diameter. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="877.0"><span class="t-timestamp">14:37</span></div>
-  <div class="t-body"><span class="segment" data-start="877.0" data-end="880.0" title="14:37">You've saved the patient's life. Well done. </span></div>
+<div class="preamble-block"><span class="segment a-seg" data-start="0.0" data-end="6.0" title="0:00">Prediction of a difficult track hill intubation and the management of intubation difficulties. </span></div>
+<div class="qa-pair">
+<div class="q-block" data-start="6.0">
+  <div class="q-label">Q1</div>
+  <div class="q-body"><span class="segment q-seg" data-start="6.0" data-end="11.0" title="0:06">In your day to day practice, how do you attempt to predict a difficult track hill intubation? </span></div>
 </div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="11.0" data-end="16.0" title="0:11">Remember to classify your answer. A great way to approach this question is </span></li>
+<li><span class="segment a-seg" data-start="16.0" data-end="22.0" title="0:16">History, Examination and Investigations. There are a lot of different aspects to remember here. </span></li>
+<li><span class="segment a-seg" data-start="22.0" data-end="26.0" title="0:22">It may help to jot things down on a piece of paper. </span></li>
+<li><span class="segment a-seg" data-start="26.0" data-end="31.0" title="0:26">There are many factors that might contribute to a difficult intubation. </span></li>
+<li><span class="segment a-seg" data-start="31.0" data-end="36.0" title="0:31">I therefore approach airway assessment in a systematic way. </span></li>
+<li><span class="segment a-seg" data-start="36.0" data-end="40.0" title="0:36">I take a full medical and anaesthetic history from the patient, </span></li>
+<li><span class="segment a-seg" data-start="40.0" data-end="45.0" title="0:40">paying particular attention to previous airway management. </span></li>
+<li><span class="segment a-seg" data-start="45.0" data-end="50.0" title="0:45">The patient may have been told that they are difficult to intubate </span></li>
+<li><span class="segment a-seg" data-start="50.0" data-end="55.0" title="0:50">and may even have been given a card, letter or medical hurt bracelet. </span></li>
+<li><span class="segment a-seg" data-start="55.0" data-end="60.0" title="0:55">They may have medical conditions which are associated with difficult intubation </span></li>
+<li><span class="segment a-seg" data-start="60.0" data-end="65.0" title="1:00">such as rheumatoid arthritis or ankylosing spondylitis. </span></li>
+<li><span class="segment a-seg" data-start="65.0" data-end="70.0" title="1:05">I check previous anaesthetic charts for airway difficulties and </span></li>
+<li><span class="segment a-seg" data-start="70.0" data-end="77.0" title="1:10">Kormak and Lehane gradings, bearing in mind that these may have changed over time. </span></li>
+<li><span class="segment a-seg" data-start="77.0" data-end="81.0" title="1:17">I then examine the patient. On general examination, </span></li>
+<li><span class="segment a-seg" data-start="81.0" data-end="87.0" title="1:21">findings that are associated with difficult intubation are obesity, pregnancy, </span></li>
+<li><span class="segment a-seg" data-start="87.0" data-end="94.0" title="1:27">large breasts, a short thick neck, goiter, hematoma or other mass in the neck, </span></li>
+<li><span class="segment a-seg" data-start="94.0" data-end="102.0" title="1:34">micro or macrognathy, prominent upper incisors, high arched palate, large tongue, </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="102.0">
+  <div class="q-label">Q2</div>
+  <div class="q-body"><span class="segment q-seg" data-start="102.0" data-end="109.0" title="1:42">undilimited mouth opening. Are there any more specific airway assessments that we use? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="109.0" data-end="113.0" title="1:49">There are several bedside tests that can be performed. </span></li>
+<li><span class="segment a-seg" data-start="113.0" data-end="119.0" title="1:53">None of these is entirely reliable, but in combination they may predict a difficult intubation </span></li>
+<li><span class="segment a-seg" data-start="119.0" data-end="127.0" title="1:59">about 75% of the time. I regularly use the modified malampati test. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="127.0">
+  <div class="q-label">Q3</div>
+  <div class="q-body"><span class="segment q-seg" data-start="127.0" data-end="131.0" title="2:07">Can you tell me how you'd perform this test? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="131.0" data-end="135.0" title="2:11">This involves visually inspecting the pharyngeal structures </span></li>
+<li><span class="segment a-seg" data-start="135.0" data-end="141.0" title="2:15">with the patient sitting, with the mouth fully open, tone protruded and without </span></li>
+<li><span class="segment a-seg" data-start="141.0" data-end="148.0" title="2:21">fination. In a class one view, the soft palate, uvula and tonsular pillars </span></li>
+<li><span class="segment a-seg" data-start="148.0" data-end="155.0" title="2:28">are visible. In class two, the soft palate and the base of the uvula, in class three, </span></li>
+<li><span class="segment a-seg" data-start="155.0" data-end="160.0" title="2:35">the soft palate only, and in class four, just the hard palate. </span></li>
+<li><span class="segment a-seg" data-start="160.0" data-end="167.0" title="2:40">This test yields many false positive results and 50% false negative results. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="167.0">
+  <div class="q-label">Q4</div>
+  <div class="q-body"><span class="segment q-seg" data-start="167.0" data-end="171.0" title="2:47">What are the bedside assessments do you perform? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="171.0" data-end="178.0" title="2:51">Another bedside test is the thyrimental distance, which is the distance in centimeters </span></li>
+<li><span class="segment a-seg" data-start="178.0" data-end="185.0" title="2:58">from the notch of the thyroid cartilage to the chin with the head fully extended. </span></li>
+<li><span class="segment a-seg" data-start="185.0" data-end="190.0" title="3:05">A distance of less than seven centimeters is associated with difficult </span></li>
+<li><span class="segment a-seg" data-start="190.0" data-end="193.0" title="3:10">intubation. </span></li>
+<li><span class="segment a-seg" data-start="193.0" data-end="200.0" title="3:13">I also always assess mouth opening. Less than three centimeters is abnormal in an </span></li>
+<li><span class="segment a-seg" data-start="200.0" data-end="205.0" title="3:20">adult. Mouth opening can be affected by acute local pain and </span></li>
+<li><span class="segment a-seg" data-start="205.0" data-end="210.0" title="3:25">inflammation, so it's important to try to assess whether pain is the only </span></li>
+<li><span class="segment a-seg" data-start="210.0" data-end="216.0" title="3:30">limiting factor, in which case mouth opening can often improve on induction of </span></li>
+<li><span class="segment a-seg" data-start="216.0" data-end="218.0" title="3:36">anesthesia. </span></li>
+<li><span class="segment a-seg" data-start="218.0" data-end="224.0" title="3:38">I also test jaw protrusion. The patient should be able to protrude the lower </span></li>
+<li><span class="segment a-seg" data-start="224.0" data-end="231.0" title="3:44">incisors in front of the upper incisors. I also assess neck extension at the </span></li>
+<li><span class="segment a-seg" data-start="231.0" data-end="238.0" title="3:51">Atlanta-Excipital joint. A range of movement of 35 degrees or more is normal. </span></li>
+<li><span class="segment a-seg" data-start="238.0" data-end="244.0" title="3:58">This may be limited by arthritis and collosing spondylitis, injury or surgery </span></li>
+<li><span class="segment a-seg" data-start="244.0" data-end="250.0" title="4:04">to the cervical spine, a rigid collar or the need for manual inline stabilization. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="250.0">
+  <div class="q-label">Q5</div>
+  <div class="q-body"><span class="segment q-seg" data-start="250.0" data-end="255.0" title="4:10">How specific and sensitive are these tests? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="255.0" data-end="261.0" title="4:15">A combination of a modified mal and patty test, grade three or four, with a </span></li>
+<li><span class="segment a-seg" data-start="261.0" data-end="266.0" title="4:21">thyrimental distance of less than seven centimeters, has been shown to be highly </span></li>
+<li><span class="segment a-seg" data-start="266.0" data-end="273.0" title="4:26">sensitive and specific for a grade four, calmer can lehane view at larangoscopy. </span></li>
+<li><span class="segment a-seg" data-start="273.0" data-end="276.0" title="4:33">Do you know of any scoring systems for predicting a difficult </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="276.0">
+  <div class="q-label">Q6</div>
+  <div class="q-body"><span class="segment q-seg" data-start="276.0" data-end="278.0" title="4:36">airway? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="278.0" data-end="285.0" title="4:38">The Wilson-Risk score combines five patient factors. Weight, head and neck </span></li>
+<li><span class="segment a-seg" data-start="285.0" data-end="292.0" title="4:45">movement, mouth and jaw movement, receding jaw and prominent incisors. </span></li>
+<li><span class="segment a-seg" data-start="292.0" data-end="299.0" title="4:52">These are scored from zero to two. A score of over three predicts 75% of </span></li>
+<li><span class="segment a-seg" data-start="299.0" data-end="304.0" title="4:59">difficult intubations but has a false positive rate of 12%. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="304.0">
+  <div class="q-label">Q7</div>
+  <div class="q-body"><span class="segment q-seg" data-start="304.0" data-end="309.0" title="5:04">Is there anything else we can do to investigate further? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="309.0" data-end="315.0" title="5:09">There are several special airway investigations we can request. X-rays can be used </span></li>
+<li><span class="segment a-seg" data-start="315.0" data-end="320.0" title="5:15">to assess the amount of neck extension at the Atlanta-Excipital or Atlanta </span></li>
+<li><span class="segment a-seg" data-start="320.0" data-end="325.0" title="5:20">Axial joints or the relative length and depth of the mandible. </span></li>
+<li><span class="segment a-seg" data-start="325.0" data-end="331.0" title="5:25">We can get CT scans to look for soft tissue swelling or airway compression by </span></li>
+<li><span class="segment a-seg" data-start="331.0" data-end="337.0" title="5:31">extrinsic forces. We can also perform fiber optic examination usually by </span></li>
+<li><span class="segment a-seg" data-start="337.0" data-end="343.0" title="5:37">nasal endoscopy to help to predict the view we might get at direct larangoscopy. </span></li>
+<li><span class="segment a-seg" data-start="343.0" data-end="347.0" title="5:43">You would use René's Tyser healthy adult patient for an elective operation </span></li>
+<li><span class="segment a-seg" data-start="347.0" data-end="352.0" title="5:47">during track ill intubation. After your airway assessment you conclude that </span></li>
+<li><span class="segment a-seg" data-start="352.0" data-end="356.0" title="5:52">intubation by direct larangoscopy will be difficult or impossible. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="356.0">
+  <div class="q-label">Q8</div>
+  <div class="q-body"><span class="segment q-seg" data-start="356.0" data-end="358.0" title="5:56">How will you proceed? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="358.0" data-end="362.0" title="5:58">Remember the exam is all about putting patient safety first. </span></li>
+<li><span class="segment a-seg" data-start="362.0" data-end="367.0" title="6:02">You are going to perform an awake fiber optic intubation. There are many </span></li>
+<li><span class="segment a-seg" data-start="367.0" data-end="372.0" title="6:07">recipes for awake intubation and you may have limited experience. Choose a recipe </span></li>
+<li><span class="segment a-seg" data-start="372.0" data-end="377.0" title="6:12">and plan it and be prepared to justify the method you use. </span></li>
+<li><span class="segment a-seg" data-start="377.0" data-end="382.0" title="6:17">I would explain to the patient that they require awake intubation. I would </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="382.0">
+  <div class="q-label">Q9</div>
+  <div class="q-body"><span class="segment q-seg" data-start="382.0" data-end="388.0" title="6:22">describe the technique to them and run through exactly what they would experience. </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="388.0" data-end="392.0" title="6:28">I would try to put the patient at ease and reassure them. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="392.0">
+  <div class="q-label">Q10</div>
+  <div class="q-body"><span class="segment q-seg" data-start="392.0" data-end="396.0" title="6:32">Can you outline a method for awake intubation? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="396.0" data-end="402.0" title="6:36">I gain informed consent and ensure minimum monitoring standards are in place. </span></li>
+<li><span class="segment a-seg" data-start="402.0" data-end="408.0" title="6:42">The procedure requires a skilled assistant and ideally a second anacetist. </span></li>
+<li><span class="segment a-seg" data-start="408.0" data-end="414.0" title="6:48">I would secure intravenous access and have an intravenous infusion running. </span></li>
+<li><span class="segment a-seg" data-start="414.0" data-end="420.0" title="6:54">I give glycopyralate 200 micrograms intravenously as an anti-silogog </span></li>
+<li><span class="segment a-seg" data-start="420.0" data-end="427.0" title="7:00">and then spray both nostrils with a vasoconstrictor, usually xylomatazoline spray. </span></li>
+<li><span class="segment a-seg" data-start="427.0" data-end="435.0" title="7:07">I have found a low dose remyfentinal infusion to be useful for its sedative and antitussive properties. </span></li>
+<li><span class="segment a-seg" data-start="435.0" data-end="442.0" title="7:15">I run this at a rate that results in a respiratory rate of 8 to 10 breaths per minute. </span></li>
+<li><span class="segment a-seg" data-start="442.0" data-end="446.0" title="7:22">There are many ways to provide local anesthesia for the airway </span></li>
+<li><span class="segment a-seg" data-start="446.0" data-end="454.0" title="7:26">but the method I prefer is to atomise 2% lidocaine with a 3-way tap attached to a long 20 gauge cannula </span></li>
+<li><span class="segment a-seg" data-start="454.0" data-end="461.0" title="7:34">and oxygen tubing with oxygen running at 2 litres per minute as the driving gas. </span></li>
+<li><span class="segment a-seg" data-start="461.0" data-end="468.0" title="7:41">I then atomise 1 mil of 2% lidocaine on inspiration every 1 to 2 minutes </span></li>
+<li><span class="segment a-seg" data-start="468.0" data-end="472.0" title="7:48">until there is an obvious change in the patient's voice. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="472.0">
+  <div class="q-label">Q11</div>
+  <div class="q-body"><span class="segment q-seg" data-start="472.0" data-end="477.0" title="7:52">What is the maximum dose of lidocaine that you would use? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="477.0" data-end="487.0" title="7:57">I use a maximum dose of 8 milligrams per kilogram, which is recommended by the British thoracic society guidelines for flexible bronchoscopy. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="487.0">
+  <div class="q-label">Q12</div>
+  <div class="q-body"><span class="segment q-seg" data-start="487.0" data-end="492.0" title="8:07">What can the needs to do to prepare for the unanticipated failed intubation? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="492.0" data-end="496.0" title="8:12">This question is designed to assess your safety as an inistist. </span></li>
+<li><span class="segment a-seg" data-start="496.0" data-end="501.0" title="8:16">The examiner wants to establish that if this potentially life threatening situation happens to you, </span></li>
+<li><span class="segment a-seg" data-start="501.0" data-end="508.0" title="8:21">you will approach it in a calm and measured way with patient safety as your prime concern. </span></li>
+<li><span class="segment a-seg" data-start="508.0" data-end="519.0" title="8:28">About half of difficult intubations are not predicted and so anistatists should prepare for all intubations as if failure could occur. </span></li>
+<li><span class="segment a-seg" data-start="519.0" data-end="529.0" title="8:39">On a basic level, we should ensure that we are familiar with all of the airway equipment and techniques that can be used during a difficult intubation. </span></li>
+<li><span class="segment a-seg" data-start="529.0" data-end="536.0" title="8:49">We should all know exactly what equipment is available on the difficult intubation trolley and where it is. </span></li>
+<li><span class="segment a-seg" data-start="536.0" data-end="545.0" title="8:56">A trolley should be present in all operating theatre suites, intensive care units and emergency departments. </span></li>
+<li><span class="segment a-seg" data-start="545.0" data-end="555.0" title="9:05">Difficult intubation is a rare occurrence, so we need to practice the rescue techniques, for example on mannequins or in simulators. </span></li>
+<li><span class="segment a-seg" data-start="555.0" data-end="560.0" title="9:15">We should also be familiar with a difficult intubation algorithm. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="560.0">
+  <div class="q-label">Q13</div>
+  <div class="q-body"><span class="segment q-seg" data-start="560.0" data-end="565.0" title="9:20">Which difficult intubation algorithm do you use? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="565.0" data-end="582.0" title="9:25">I use the difficult airway society guidelines. These are well regarded, evidence-based guidelines, which give separate, structured approaches to a difficult intubation during routine and rapid sequence induction. </span></li>
+<li><span class="segment a-seg" data-start="582.0" data-end="592.0" title="9:42">I always have a clear plan A and plan B, which I communicate to my assistant before any intubation attempt. </span></li>
+<li><span class="segment a-seg" data-start="592.0" data-end="598.0" title="9:52">The guidelines emphasize optimization of the initial intubation attempt. </span></li>
+<li><span class="segment a-seg" data-start="598.0" data-end="610.0" title="9:58">Summoning senior anesthetic help as soon as possible, avoiding repeated attempts at larynxoscopy and maintaining oxygenation above all else. </span></li>
+<li><span class="segment a-seg" data-start="610.0" data-end="620.0" title="10:10">You perform a rapid sequence induction of anesthesia and a patient in whom you would not predict difficulty and obtain a callmack and lehane grade 4 view on larynxoscopy. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="620.0">
+  <div class="q-label">Q14</div>
+  <div class="q-body"><span class="segment q-seg" data-start="620.0" data-end="622.0" title="10:20">How do you approach this situation? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="622.0" data-end="632.0" title="10:22">You should have a difficult airway algorithm such as the difficult airway society guideline or the one used in your own hospital committed to memory. </span></li>
+<li><span class="segment a-seg" data-start="632.0" data-end="647.0" title="10:32">Firstly, I would ensure oxygenation at all times and if oxygen saturation start to fall, I would abandon intubation attempts and ventilate the patient with a face mask and airway adjuncts. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="647.0">
+  <div class="q-label">Q15</div>
+  <div class="q-body"><span class="segment q-seg" data-start="647.0" data-end="654.0" title="10:47">Let us assume that the oxygen saturation is maintained in the first instance. How would you proceed? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="654.0" data-end="669.0" title="10:54">Initially, I would attempt to optimize the initial view at larynxoscopy. I would ensure that the head was in the correct position and try external laryngeal manipulation like backward, upward, right, wood pressure. </span></li>
+<li><span class="segment a-seg" data-start="669.0" data-end="685.0" title="11:09">I may try an alternative larynxoscope blade such as the McCoy or a straight blade. If I obtained a view of any laryngeal structures, I would attempt to pass a gammelastic bougie either under direct vision or blindly into the midline. </span></li>
+<li><span class="segment a-seg" data-start="685.0" data-end="694.0" title="11:25">If I was successful, I may feel clicks as the bougie passes down the trachea and hold up as the tip of the bougie reaches the carina. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="694.0">
+  <div class="q-label">Q16</div>
+  <div class="q-body"><span class="segment q-seg" data-start="694.0" data-end="701.0" title="11:34">Unfortunately, none of your maneuvers allowed you to intubate. What should you do next? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="701.0" data-end="716.0" title="11:41">I would avoid repeated attempts at laryngeoscopy and would not give a second dose of muscle relaxant. After three attempts at intubation or if oxygen saturation began to fall, I would abandon attempts at intubation. </span></li>
+<li><span class="segment a-seg" data-start="716.0" data-end="741.0" title="11:56">I would call for senior help and concentrate all of my efforts on oxygenating the patient. I would allow the patient to awake unless surgery is immediately life threatening. Initially, I would attempt to face mask ventilation with airway adjuncts such as an auro-pharyngeal or nasopharyngeal airway and a two-person technique if necessary. </span></li>
+<li><span class="segment a-seg" data-start="741.0" data-end="760.0" title="12:21">If oxygen saturation falls below 90% using these techniques, I would attempt to insert a laryngeal mask airway. This may involve reducing crycoyd pressure both for insertion and subsequent ventilation, but this is acceptable in the circumstances. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="760.0">
+  <div class="q-label">Q17</div>
+  <div class="q-body"><span class="segment q-seg" data-start="760.0" data-end="775.0" title="12:40">Despite your best efforts, you are unable to ventilate the patient with the bag valve mask or the laryngeal mask airway. Your patient is sign-osed with falling oxygen saturations. No senior help is available. Now what will you do? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="775.0" data-end="789.0" title="12:55">Don't mess about here. You are all the way down the Plan D of the Difficult Airway Society guidelines that can't intubate, can't ventilate scenario. You have to perform a crycothyroidosomy. </span></li>
+<li><span class="segment a-seg" data-start="790.0" data-end="804.0" title="13:10">The patient requires a crycothyroidotomy, which I could either achieve with a cannula or a surgical technique. I could use either a standard intravenous cannula or a specialized crycothyroidotomy cannula. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="804.0">
+  <div class="q-label">Q18</div>
+  <div class="q-body"><span class="segment q-seg" data-start="804.0" data-end="808.0" title="13:24">What oxygen supply can you connect these two? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="808.0" data-end="817.0" title="13:28">These cannuli require high pressure ventilation, which means wall oxygen at 400 kilopascals. </span></li>
+<li><span class="segment a-seg" data-start="817.0" data-end="831.0" title="13:37">This involves either connecting oxygen tubing to a wall flow meter turned to 15 litres per minute, or using a specialized high pressure ventilator, such as the Sanders or Manuject. </span></li>
+<li><span class="segment a-seg" data-start="831.0" data-end="844.0" title="13:51">The common gas outlet of the anaesthetic machine cannot be used as there is a pressure relief valve, which will vent at 4 kilopascals, which is insufficient for high pressure ventilation. </span></li>
+<li><span class="segment a-seg" data-start="844.0" data-end="851.0" title="14:04">I would need to allow a long time for exploration, which needs to occur through the upper airway to avoid volume trauma. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="851.0">
+  <div class="q-label">Q19</div>
+  <div class="q-body"><span class="segment q-seg" data-start="851.0" data-end="856.0" title="14:11">What is your alternative to needle techniques? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="856.0" data-end="873.0" title="14:16">The other option is a surgical technique, which I could perform with either a kit that employs a celldinger technique, or by incising the skin and crycothyroid membrane using a scalpel, then dilating the orifice in order to insert a standard endotracheal tube </span></li>
+<li><span class="segment a-seg" data-start="873.0" data-end="877.0" title="14:33">of approximately size 6mm of internal diameter. </span></li>
+<li><span class="segment a-seg" data-start="877.0" data-end="880.0" title="14:37">You've saved the patient's life. Well done. </span></li>
+  </ul>
+</div>
+</div>
+
 </div>
 
 <div class="subtitle-bar">
-  <span class="subtitle-text empty" id="subtitle-text">Play audio to see live subtitles&#8230;</span>
+  <span id="subtitle-text" class="empty">Play audio to see live subtitles&#8230;</span>
 </div>
 
 <script>
-
-const audio    = document.getElementById('audio');
-const allSegs  = Array.from(document.querySelectorAll('.segment'));
-const allBlocks = Array.from(document.querySelectorAll('.t-block'));
+const audio      = document.getElementById('audio');
+const allSegs    = Array.from(document.querySelectorAll('.segment'));
 const subtitleEl = document.getElementById('subtitle-text');
-let activeSegEl   = null;
-let activeBlockEl = null;
-let searchMatches = [];
-let searchIdx     = 0;
+let activeSegEl  = null;
+let searchMatches = [], searchIdx = 0;
 
-// Duration display
 audio.addEventListener('loadedmetadata', () => {
   const m = Math.floor(audio.duration / 60);
   const s = Math.floor(audio.duration %% 60).toString().padStart(2,'0');
   document.getElementById('dur').textContent = m + ':' + s;
 });
 
-// Seek helper
-function seekTo(t) {
-  audio.currentTime = t;
-  audio.play();
-}
+function seekTo(t) { audio.currentTime = t; audio.play(); }
 
-// Block gutter click
-document.querySelectorAll('.t-gutter').forEach(g => {
-  g.addEventListener('click', () => seekTo(parseFloat(g.dataset.start)));
+// Q-block header click
+document.querySelectorAll('.q-block').forEach(q => {
+  q.addEventListener('click', e => {
+    if (!e.target.classList.contains('segment')) seekTo(parseFloat(q.dataset.start));
+  });
 });
 
-// Segment click
+// Individual segment click
 allSegs.forEach(s => {
-  s.addEventListener('click', e => {
-    e.stopPropagation();
-    seekTo(parseFloat(s.dataset.start));
-  });
+  s.addEventListener('click', e => { e.stopPropagation(); seekTo(parseFloat(s.dataset.start)); });
 });
 
 // Real-time tracking
 audio.addEventListener('timeupdate', () => {
   const t = audio.currentTime;
-
-  // Find active segment (last one whose start <= t)
   let found = null;
   for (let i = allSegs.length - 1; i >= 0; i--) {
     if (parseFloat(allSegs[i].dataset.start) <= t) { found = allSegs[i]; break; }
   }
-
   if (found && found !== activeSegEl) {
-    // Clear previous
-    if (activeSegEl) activeSegEl.classList.remove('active');
-    if (activeBlockEl) {
-      activeBlockEl.classList.remove('block-active');
-      const pg = activeBlockEl.querySelector('.t-gutter');
-      if (pg) pg.classList.remove('gutter-active');
+    if (activeSegEl) {
+      activeSegEl.classList.remove('active');
+      const pli = activeSegEl.closest('li');
+      if (pli) pli.classList.remove('li-active');
+      const pq = activeSegEl.closest('.q-block');
+      if (pq) pq.classList.remove('q-active');
     }
-    // Set new
     found.classList.add('active');
-    const block = found.closest('.t-block');
-    if (block) {
-      block.classList.add('block-active');
-      const g = block.querySelector('.t-gutter');
-      if (g) g.classList.add('gutter-active');
-      activeBlockEl = block;
-    }
+    const li = found.closest('li');
+    if (li) li.classList.add('li-active');
+    const qb = found.closest('.q-block');
+    if (qb) qb.classList.add('q-active');
     activeSegEl = found;
 
-    // Update subtitle
     subtitleEl.textContent = found.textContent.trim();
     subtitleEl.classList.remove('empty');
 
-    // Auto-scroll (only when not searching)
-    if (!document.getElementById('search').value) {
+    if (!document.getElementById('search').value)
       found.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }
   }
 });
 
@@ -353,17 +576,13 @@ searchInput.addEventListener('keydown', e => {
     el.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
 });
-
 function runSearch() {
   const q = searchInput.value.trim().toLowerCase();
   allSegs.forEach(s => s.classList.remove('search-match','search-current'));
   searchMatches = [];
   if (!q) return;
   allSegs.forEach(s => {
-    if (s.textContent.toLowerCase().includes(q)) {
-      s.classList.add('search-match');
-      searchMatches.push(s);
-    }
+    if (s.textContent.toLowerCase().includes(q)) { s.classList.add('search-match'); searchMatches.push(s); }
   });
   if (!searchMatches.length) return;
   searchIdx = 0;

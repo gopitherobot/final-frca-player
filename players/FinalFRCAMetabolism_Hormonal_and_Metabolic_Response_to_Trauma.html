@@ -5,10 +5,19 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Metabolism — Hormonal and Metabolic Response to Trauma</title>
 <style>
-
   :root {
-    --accent:    #10b981;
-    --body-bg:   #f1f5f9;
+    --q-bg:       #1e3a5f;
+    --q-text:     #ffffff;
+    --q-label:    #60a5fa;
+    --a-bg:       #ffffff;
+    --a-border:   #e2e8f0;
+    --a-label:    #059669;
+    --active-q:   #10b981;
+    --active-a:   #dbeafe;
+    --accent:     #10b981;
+    --body-bg:    #f1f5f9;
+    --pre-bg:     #fef9c3;
+    --pre-border: #fcd34d;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
@@ -40,22 +49,9 @@
     margin-bottom: 4px;
     letter-spacing: 0.01em;
   }
-  .header-sub {
-    font-size: 0.72rem;
-    color: #94a3b8;
-    font-style: italic;
-  }
-  audio {
-    height: 36px;
-    accent-color: var(--accent);
-    flex-shrink: 0;
-  }
-  .back-link {
-    font-size: 0.8rem;
-    color: #94a3b8;
-    text-decoration: none;
-    white-space: nowrap;
-  }
+  .header-sub { font-size: 0.72rem; color: #94a3b8; font-style: italic; }
+  audio { height: 36px; accent-color: var(--accent); flex-shrink: 0; }
+  .back-link { font-size: 0.8rem; color: #94a3b8; text-decoration: none; white-space: nowrap; }
   .back-link:hover { color: #60a5fa; }
 
   /* ── Toolbar ── */
@@ -69,30 +65,17 @@
     border-bottom: 1px solid #334155;
   }
   .toolbar input {
-    flex: 1;
-    max-width: 380px;
+    flex: 1; max-width: 380px;
     padding: 5px 11px;
-    border: 1px solid #475569;
-    border-radius: 6px;
-    background: #0f172a;
-    color: #e2e8f0;
-    font-size: 0.83rem;
-    outline: none;
+    border: 1px solid #475569; border-radius: 6px;
+    background: #0f172a; color: #e2e8f0; font-size: 0.83rem; outline: none;
   }
   .toolbar input:focus { border-color: var(--accent); }
   .toolbar input::placeholder { color: #64748b; }
-  .stats {
-    font-size: 0.72rem;
-    color: #64748b;
-    white-space: nowrap;
-  }
+  .stats { font-size: 0.72rem; color: #64748b; white-space: nowrap; }
 
   /* ── Scroll area ── */
-  .scroll-area {
-    flex: 1;
-    overflow-y: auto;
-    padding: 20px;
-  }
+  .scroll-area { flex: 1; overflow-y: auto; padding: 20px; }
   .scroll-area::-webkit-scrollbar { width: 6px; }
   .scroll-area::-webkit-scrollbar-track { background: transparent; }
   .scroll-area::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
@@ -107,68 +90,77 @@
     display: flex;
     align-items: center;
   }
-  .subtitle-text {
-    font-size: 0.9rem;
-    color: #e2e8f0;
-    line-height: 1.5;
-    font-style: italic;
-  }
-  .subtitle-text.empty { color: #475569; }
+  #subtitle-text { font-size: 0.88rem; color: #e2e8f0; line-height: 1.5; font-style: italic; }
+  #subtitle-text.empty { color: #475569; }
 
-  /* ── Transcript blocks ── */
-  .t-block {
-    background: #ffffff;
-    border: 1px solid #e2e8f0;
-    border-radius: 10px;
-    margin-bottom: 14px;
-    overflow: hidden;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
-    display: flex;
-  }
-  .t-block.block-active {
-    border-color: var(--accent);
-    box-shadow: 0 0 0 2px rgba(37,99,235,0.15);
-  }
-  .t-gutter {
-    background: #0f172a;
-    width: 52px;
-    flex-shrink: 0;
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
-    padding-top: 14px;
-    cursor: pointer;
-  }
-  .t-gutter:hover { background: #1e293b; }
-  .t-timestamp {
-    font-size: 0.7rem;
-    color: #64748b;
-    font-family: monospace;
-    font-weight: 600;
-    letter-spacing: 0.02em;
-  }
-  .t-gutter.gutter-active .t-timestamp { color: var(--accent); }
-  .t-body {
-    flex: 1;
+  /* ── Preamble ── */
+  .preamble-block {
+    background: var(--pre-bg);
+    border-left: 4px solid var(--pre-border);
+    border-radius: 0 8px 8px 0;
     padding: 12px 16px;
-    line-height: 1.75;
-    font-size: 0.92rem;
-    color: #1e293b;
+    margin-bottom: 20px;
+    font-size: 0.88rem;
+    color: #78350f;
+    font-style: italic;
+    line-height: 1.7;
   }
 
-  /* ── Segments ── */
-  .segment {
+  /* ── Q&A pair ── */
+  .qa-pair { margin-bottom: 20px; border-radius: 10px; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+
+  /* Question block */
+  .q-block {
+    background: var(--q-bg);
+    padding: 14px 18px;
+    display: flex; gap: 14px; align-items: flex-start;
     cursor: pointer;
-    border-radius: 3px;
-    transition: background 0.1s;
+    transition: background 0.15s;
   }
-  .segment:hover { background: #eff6ff; }
-  .segment.active {
-    background: #bfdbfe;
-    outline: 2px solid #3b82f6;
-    outline-offset: 1px;
-    border-radius: 3px;
+  .q-block:hover { background: #1d4ed8; }
+  .q-block.q-active { background: var(--active-q); }
+  .q-label {
+    font-size: 0.7rem; font-weight: 700;
+    color: var(--q-label);
+    background: rgba(96,165,250,0.15);
+    border: 1px solid rgba(96,165,250,0.3);
+    border-radius: 5px; padding: 3px 7px;
+    white-space: nowrap; margin-top: 2px; letter-spacing: 0.05em;
+    flex-shrink: 0;
   }
+  .q-body { flex: 1; font-size: 0.97rem; font-weight: 600; color: var(--q-text); line-height: 1.55; }
+
+  /* Answer block */
+  .a-block {
+    background: var(--a-bg);
+    border: 1px solid var(--a-border); border-top: none;
+    padding: 14px 18px;
+    display: flex; gap: 14px; align-items: flex-start;
+  }
+  .a-label {
+    font-size: 0.7rem; font-weight: 700;
+    color: var(--a-label);
+    background: #d1fae5; border: 1px solid #6ee7b7;
+    border-radius: 5px; padding: 3px 9px;
+    white-space: nowrap; margin-top: 2px; letter-spacing: 0.05em;
+    flex-shrink: 0;
+  }
+  .a-body { flex: 1; list-style: none; padding: 0; }
+  .a-body li {
+    padding: 4px 0 4px 14px;
+    border-left: 3px solid transparent;
+    line-height: 1.7; font-size: 0.92rem; color: #1e293b;
+    border-radius: 0 4px 4px 0;
+    transition: background 0.15s;
+  }
+  .a-body li:not(:last-child) { border-bottom: 1px solid #f1f5f9; }
+
+  /* ── Segments (clickable) ── */
+  .segment { cursor: pointer; border-radius: 3px; }
+  .q-seg:hover { background: rgba(255,255,255,0.18); }
+  .a-seg:hover { background: #eff6ff; }
+  .segment.active { background: #bfdbfe; outline: 2px solid #3b82f6; outline-offset: 1px; }
+  .a-body li.li-active { background: var(--active-a); border-left-color: var(--accent); }
   .segment.search-match  { background: #fef9c3; }
   .segment.search-current { background: #fde047; outline: 2px solid #ca8a04; }
 
@@ -187,148 +179,340 @@
 
 <div class="toolbar">
   <input type="text" id="search" placeholder="Search transcript&#8230; (Enter = next match)">
-  <span class="stats" id="stats">113 segments &nbsp;|&nbsp; <span id="dur">loading&#8230;</span></span>
+  <span class="stats" id="stats">15 questions &nbsp;|&nbsp; 113 segments &nbsp;|&nbsp; <span id="dur">loading&#8230;</span></span>
 </div>
 
 <div class="scroll-area" id="scroll-area">
-<div class="t-block">
-  <div class="t-gutter" data-start="0.0"><span class="t-timestamp">0:00</span></div>
-  <div class="t-body"><span class="segment" data-start="0.0" data-end="6.4" title="0:00">Hormonal and Metabolic Response is trauma. A 24-year-old motorcyclist is brought into </span><span class="segment" data-start="6.4" data-end="12.48" title="0:06">emergency following a road traffic accident. He has sustained a fractured to his right femur </span><span class="segment" data-start="12.48" data-end="17.52" title="0:12">and you're asked taken to theatre for a femoral nailing. What is the stress response? </span><span class="segment" data-start="19.84" data-end="27.12" title="0:19">The stress response is a cascade of widespread hormonal and metabolic changes that occur in </span><span class="segment" data-start="27.12" data-end="34.88" title="0:27">response to trauma. It is a complex neuroendocrine response, the net effect of which is to increase </span><span class="segment" data-start="34.88" data-end="41.28" title="0:34">catabolism and release endogenous fuel stores. What can trigger the stress response? </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="43.44"><span class="t-timestamp">0:43</span></div>
-  <div class="t-body"><span class="segment" data-start="43.44" data-end="50.88" title="0:43">The stress response occurs secondary to an exogenous insult such as trauma. It can also occur </span><span class="segment" data-start="50.88" data-end="57.28" title="0:50">following surgery, secondary to burns or severe infection and has been reported to occur </span><span class="segment" data-start="57.28" data-end="64.24" title="0:57">following strenuous exercise. The magnitude of the response is related to the degree of initial </span><span class="segment" data-start="64.24" data-end="71.76" title="1:04">trauma. How is the response initiated? Think about local responses, then systemic responses. </span><span class="segment" data-start="73.6" data-end="79.92" title="1:13">At the site of tissue damage there is a local release of cytokines which triggers the acute </span><span class="segment" data-start="79.92" data-end="86.72" title="1:19">phase response and local inflammation. Sematic and autonomic afference are transmitted from </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="86.72"><span class="t-timestamp">1:26</span></div>
-  <div class="t-body"><span class="segment" data-start="86.72" data-end="93.68" title="1:26">the point of tissue damage to the central nervous system via ascending pathways in the spinal cord. </span><span class="segment" data-start="94.8" data-end="102.72" title="1:34">These signals trigger the hypotherlamic pituitary adrenal axis, releasing cortisol and stimulate </span><span class="segment" data-start="102.72" data-end="109.52" title="1:42">the sympathetic adrenal response, releasing cataclylamines. What are the characteristics of the </span><span class="segment" data-start="109.52" data-end="118.56" title="1:49">resultant state? The stress response leads to an increase in catabolism, a release of endogenous </span><span class="segment" data-start="118.56" data-end="126.48" title="1:58">energy substrates and fluid retention along with an increase in sympathetic tone. In evolutionary </span><span class="segment" data-start="126.48" data-end="133.84" title="2:06">terms this mechanism would help to increase an injured animal's chance of survival. Can I describe </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="133.84"><span class="t-timestamp">2:13</span></div>
-  <div class="t-body"><span class="segment" data-start="133.84" data-end="138.88" title="2:13">the sympathetic adrenal response? Try and answer these questions from first principles. </span><span class="segment" data-start="141.04" data-end="147.84" title="2:21">This is mediated via the hypothalamus and the autonomic nervous system with the release of a </span><span class="segment" data-start="147.84" data-end="154.88" title="2:27">adrenal medullary cataclylamines. There is also increased presynaptic norepinephrine release. </span><span class="segment" data-start="155.68" data-end="162.16" title="2:35">This leads to cardiovascular stimulation with resultant tachycardia and hyper tension. </span><span class="segment" data-start="162.32" data-end="171.04" title="2:42">Cataclylamine effects on other organs include increased brain alertness, increased plasma lactate, </span><span class="segment" data-start="171.04" data-end="178.64" title="2:51">increased basal metabolic rate, suppression of insulin release, increased glucagon release, </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="178.64"><span class="t-timestamp">2:58</span></div>
-  <div class="t-body"><span class="segment" data-start="178.64" data-end="186.4" title="2:58">and release of renin from the renal juxtaglomerular apparatus. The renin angiotensin system </span><span class="segment" data-start="186.8" data-end="193.6" title="3:06">stimulates aldosterone release, which leads to sodium and water retention. Can I describe the role </span><span class="segment" data-start="193.6" data-end="202.48" title="3:13">of the hypothalmic pituitary adrenal axis? Hypothelamic releasing factors stimulate the anterior </span><span class="segment" data-start="202.48" data-end="208.56" title="3:22">pituitary to release adrenocortocotrophic hormone, growth hormone, and prolactin. </span><span class="segment" data-start="209.2" data-end="215.84" title="3:29">Release of acth, stimulates the adrenal cortex, increasing the production of cortisol. </span><span class="segment" data-start="216.64" data-end="224.08" title="3:36">Growth hormone enhances protein synthesis and inhibits breakdown, stimulates lipolysis, </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="224.08"><span class="t-timestamp">3:44</span></div>
-  <div class="t-body"><span class="segment" data-start="224.08" data-end="230.4" title="3:44">and antagonizes insulin. Prolactin is also released but its role is unclear. </span><span class="segment" data-start="231.52" data-end="237.68" title="3:51">Levels of other anterior pituitary hormones, including thyroid stimulating hormone, </span><span class="segment" data-start="237.68" data-end="244.56" title="3:57">remain essentially unchanged. The posterior pituitary produces increased levels of </span><span class="segment" data-start="244.56" data-end="252.96" title="4:04">argonine vasopressin or ADH, which causes water retention, concentrated urine, and potassium loss. </span><span class="segment" data-start="254.24" data-end="263.44" title="4:14">What roles does cortisol play? Cortisol has major protein catabolic effects and has anti-inflammatory </span><span class="segment" data-start="263.44" data-end="270.48" title="4:23">effects, which help to modulate the overall stress response. Cortisol also antagonizes the </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="270.48"><span class="t-timestamp">4:30</span></div>
-  <div class="t-body"><span class="segment" data-start="270.48" data-end="276.72" title="4:30">effects of insulin and growth hormone, and has negative feedback effects on the release of </span><span class="segment" data-start="276.72" data-end="283.68" title="4:36">corticotrophin releasing hormone from the hypothalamus and acth from the anterior pituitary. </span><span class="segment" data-start="284.48" data-end="290.24" title="4:44">Cortisol is released from the adrenal cortex after stimulation by acth. </span><span class="segment" data-start="290.96" data-end="298.56" title="4:50">This leads to a state of catabolism with protein breakdown, lipolysis, increased glucose </span><span class="segment" data-start="298.56" data-end="307.28" title="4:58">production, and decreased glucose uptake in peripheral tissues. Cortisol is also anti-inflammatory, </span><span class="segment" data-start="307.28" data-end="314.08" title="5:07">inhibiting leukocyte migration into damaged areas, and inhibits synthesis of various inflammatory </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="314.08"><span class="t-timestamp">5:14</span></div>
-  <div class="t-body"><span class="segment" data-start="314.08" data-end="321.84" title="5:14">mediators, including prostaglandins. Glucocorticoids are required for cataclylamines to exert </span><span class="segment" data-start="321.84" data-end="326.0" title="5:21">their pressur effects. What is cytokines and how do they act? </span><span class="segment" data-start="328.16" data-end="334.8" title="5:28">Cytokines are like a peptides whose role is in signaling between cells of the immune system </span><span class="segment" data-start="334.8" data-end="342.0" title="5:34">and hemopoetic systems. They are produced by activated lymphocytes, macrophages, </span><span class="segment" data-start="342.0" data-end="350.32" title="5:42">fibroblasts, and endothelial cells in response to tissue injury. Cytokines can be pro-inflammatory, </span><span class="segment" data-start="350.32" data-end="357.92" title="5:50">such as interleukin-6, and TNF-alpha, or can be anti-inflammatory, such as interleukin-4, </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="357.92"><span class="t-timestamp">5:57</span></div>
-  <div class="t-body"><span class="segment" data-start="357.92" data-end="365.2" title="5:57">and interleukin-10. Cytokines play an important role in mediating immunity and inflammation </span><span class="segment" data-start="365.2" data-end="372.72" title="6:05">by acting on surface receptors of target cells. The effects of the cytokine activation are mostly </span><span class="segment" data-start="372.72" data-end="379.76" title="6:12">local, but can be systemic. Effects include the production of the acute phase response, </span><span class="segment" data-start="379.76" data-end="387.6" title="6:19">fever, granulocytosis, hemostasis, tissue damage limitation, and promotion of healing. </span><span class="segment" data-start="388.24" data-end="396.32" title="6:28">What is the acute phase response comprised of? The acute phase response is the body's response </span><span class="segment" data-start="396.32" data-end="404.96" title="6:36">to cytokines produced in the stress response, in particular interleukin-6, interleukin-1, and TNF. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="405.76"><span class="t-timestamp">6:45</span></div>
-  <div class="t-body"><span class="segment" data-start="405.76" data-end="413.28" title="6:45">It comprises increased hepatic synthesis of acute phase proteins, such as C-reactive protein, </span><span class="segment" data-start="413.28" data-end="421.52" title="6:53">D-dimer, feratin, and complement components. Hepatic synthesis of other proteins, </span><span class="segment" data-start="421.52" data-end="429.44" title="7:01">such as albumin and transferin, is reduced. Raised prostaglandin E levels lead to fever. </span><span class="segment" data-start="430.0" data-end="436.72" title="7:10">The response also leads to increased vascular permeability, leukocyte activation, </span><span class="segment" data-start="436.72" data-end="440.88" title="7:16">and further activation of the hypotherlamic pituitary axis. </span><span class="segment" data-start="441.6" data-end="445.84" title="7:21">What are the potential detrimental effects the stress response may have? </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="447.6"><span class="t-timestamp">7:27</span></div>
-  <div class="t-body"><span class="segment" data-start="447.6" data-end="455.2" title="7:27">Protein catabolism leads to dramatic muscle loss. Hypertension and tachycardia </span><span class="segment" data-start="455.2" data-end="460.56" title="7:35">can stress the myocardium and produce ischemia in susceptible individuals. </span><span class="segment" data-start="461.76" data-end="467.76" title="7:41">Hyperglycemia can lead to an impaired immune response and poor tissue healing. </span><span class="segment" data-start="468.32" data-end="473.36" title="7:48">It can cause an osmotic diuresis and can lead to organ dysfunction. </span><span class="segment" data-start="474.88" data-end="482.08" title="7:54">Electrolite disturbances, particularly hypocholemia, can cause muscle weakness and promoter </span><span class="segment" data-start="482.08" data-end="489.04" title="8:02">rhythmias. Fluid overload as a result of increased anti-diuretic hormone activity </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="489.04"><span class="t-timestamp">8:09</span></div>
-  <div class="t-body"><span class="segment" data-start="489.04" data-end="494.08" title="8:09">and exogenous fluid administration can cause congestive cardiac failure. </span><span class="segment" data-start="494.88" data-end="501.92" title="8:14">Fluid overload can also impair wound healing, including an asthmotic breakdown and can cause an </span><span class="segment" data-start="501.92" data-end="510.56" title="8:21">ilius. The pro-quagulant state can increase the likelihood of deep vein thrombosis or pulmonary </span><span class="segment" data-start="510.56" data-end="519.36" title="8:30">embolite and can make coronary or cerebral ischemia more likely. Altered gastrointestinal motility </span><span class="segment" data-start="519.44" data-end="526.72" title="8:39">can cause nausea, vomiting, diarrhea or constipation and in the medium term leads to problems with </span><span class="segment" data-start="526.72" data-end="534.16" title="8:46">nutrition. Immuno suppression increases the likelihood of poor wound healing and increases </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="534.16"><span class="t-timestamp">8:54</span></div>
-  <div class="t-body"><span class="segment" data-start="534.16" data-end="540.8" title="8:54">susceptibility to nose acomial infection. What is the significance of the stress response for </span><span class="segment" data-start="540.8" data-end="548.0" title="9:00">anesthetists? The stress response occurs in the majority of patients that anesthetists deal </span><span class="segment" data-start="548.08" data-end="556.4" title="9:08">within theatre. In elective cases, the onset of the stress response is predictable. In emergency cases, </span><span class="segment" data-start="556.4" data-end="562.88" title="9:16">the stress response may well be underway at the time of anesthetic induction. The goal for the </span><span class="segment" data-start="562.88" data-end="569.12" title="9:22">anesthetist is to try and minimise the undesirable consequences of the stress response. </span><span class="segment" data-start="570.32" data-end="572.32" title="9:30">How can the stress response be modulated? </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="573.28"><span class="t-timestamp">9:33</span></div>
-  <div class="t-body"><span class="segment" data-start="573.28" data-end="580.64" title="9:33">The stress response can be influenced by choice of anesthetic technique and anesthetic agents. </span><span class="segment" data-start="581.28" data-end="587.92" title="9:41">It can be modulated by choice of surgical technique. Other methods that may have a role are </span><span class="segment" data-start="587.92" data-end="595.6" title="9:47">nutrition, hormone therapy and temperature control. Tell me how anesthesia may influence the stress </span><span class="segment" data-start="596.24" data-end="601.04" title="9:56">response. Think of the drugs you use for a general anesthetic and what effects they may have. </span><span class="segment" data-start="603.28" data-end="608.4" title="10:03">The use of various anesthetic agents may influence the stress response. </span><span class="segment" data-start="609.2" data-end="615.52" title="10:09">It tomodate blocks 11 beta hydroxylase and therefore reduces cortisol production. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="616.16"><span class="t-timestamp">10:16</span></div>
-  <div class="t-body"><span class="segment" data-start="616.16" data-end="620.0" title="10:16">This occurs for up to 8 hours following a single induction dose. </span><span class="segment" data-start="620.72" data-end="626.96" title="10:20">Use of automatist contentious as it has been shown to increase mortality when used as an </span><span class="segment" data-start="626.96" data-end="634.96" title="10:26">infusion in intensive care patients. Benzodiazepines may also have an inhibitory effect on steroid </span><span class="segment" data-start="634.96" data-end="641.28" title="10:34">production at the hypotherlamic pituitary level, but the significance of this is not known. </span><span class="segment" data-start="641.44" data-end="648.16" title="10:41">Clonodyne may also decrease sympathetic adrenal and cardiovascular responses to surgery. </span><span class="segment" data-start="649.6" data-end="656.72" title="10:49">Opioids have also been used to attenuate the stress response. Injected opioids have been shown </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="656.72"><span class="t-timestamp">10:56</span></div>
-  <div class="t-body"><span class="segment" data-start="656.72" data-end="662.8" title="10:56">to block ACTH release through reduced CRH release at the hypotherlamic level. </span><span class="segment" data-start="663.68" data-end="668.64" title="11:03">Alphentonyl has been shown to reduce cytokine levels after abdominal surgery. </span><span class="segment" data-start="669.52" data-end="676.96" title="11:09">However, the relatively large doses required lead to profound respiratory depression postoperatively </span><span class="segment" data-start="676.96" data-end="680.8" title="11:16">and increase the need for postoperative respiratory support. </span><span class="segment" data-start="682.24" data-end="689.76" title="11:22">Using regional anesthesia may influence the stress response. Nurexial blockade is known to block </span><span class="segment" data-start="689.76" data-end="696.16" title="11:29">the hypotherlamic pituitary adrenal axis response by blocking both the afferent activation of </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="696.16"><span class="t-timestamp">11:36</span></div>
-  <div class="t-body"><span class="segment" data-start="696.16" data-end="702.88" title="11:36">the hypothalamus and blocking efferent stimulation of the liver, adrenals and pancreas. </span><span class="segment" data-start="703.92" data-end="710.0" title="11:43">Cytokine responses are unaltered however as these are stimulated by local tissue damage. </span><span class="segment" data-start="711.6" data-end="714.56" title="11:51">What are the methods of altering the stress response you are aware of? </span><span class="segment" data-start="716.64" data-end="722.4" title="11:56">Beta blockers. The use of beta blockers to attenuate the sympathetic response </span><span class="segment" data-start="722.4" data-end="726.4" title="12:02">has been proven to be beneficial in high-risk cardiac patients. </span><span class="segment" data-start="727.6" data-end="734.56" title="12:07">Hormonal. Inchelin can be used to modulate the hyperglycemic state which is part of the stress </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="734.56"><span class="t-timestamp">12:14</span></div>
-  <div class="t-body"><span class="segment" data-start="734.56" data-end="744.16" title="12:14">response. Tight glycemic control remains controversial. Steroids. The level of endogenous </span><span class="segment" data-start="744.16" data-end="751.12" title="12:24">cortisol present in response to surgery can significantly downregulate into Luke in 6 production. </span><span class="segment" data-start="751.92" data-end="758.56" title="12:31">However, in using therapeutic steroids the benefits of suppressing the cytokine response </span><span class="segment" data-start="758.56" data-end="764.88" title="12:38">are at a price of increased complications such as wound infection and wound breakdown. </span><span class="segment" data-start="766.24" data-end="772.24" title="12:46">Cyrgyzical techniques. Using less invasive surgical techniques where possible </span><span class="segment" data-start="772.24" data-end="779.04" title="12:52">may reduce the inflammatory response. Cytokine release is reduced in laparoscopic surgery, </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="779.04"><span class="t-timestamp">12:59</span></div>
-  <div class="t-body"><span class="segment" data-start="779.04" data-end="784.64" title="12:59">leading to quicker recovery and faster discharge from hospital. Nutrition. </span><span class="segment" data-start="785.44" data-end="792.4" title="13:05">Entral feeding has been shown to improve recovery in critically ill patients. Immunonutrition </span><span class="segment" data-start="792.4" data-end="800.32" title="13:12">has been of particular use such as the supplementation of glutamine, arginine and omega-3 fatty acids. </span><span class="segment" data-start="801.92" data-end="808.64" title="13:21">Temperature control. The metabolic response to hyperthermia is prevented by maintaining </span><span class="segment" data-start="808.64" data-end="818.24" title="13:28">a normal temperature throughout the management period. </span></div>
+<div class="preamble-block"><span class="segment a-seg" data-start="0.0" data-end="6.4" title="0:00">Hormonal and Metabolic Response is trauma. A 24-year-old motorcyclist is brought into </span><span class="segment a-seg" data-start="6.4" data-end="12.48" title="0:06">emergency following a road traffic accident. He has sustained a fractured to his right femur </span></div>
+<div class="qa-pair">
+<div class="q-block" data-start="12.48">
+  <div class="q-label">Q1</div>
+  <div class="q-body"><span class="segment q-seg" data-start="12.48" data-end="17.52" title="0:12">and you're asked taken to theatre for a femoral nailing. What is the stress response? </span></div>
 </div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="19.84" data-end="27.12" title="0:19">The stress response is a cascade of widespread hormonal and metabolic changes that occur in </span></li>
+<li><span class="segment a-seg" data-start="27.12" data-end="34.88" title="0:27">response to trauma. It is a complex neuroendocrine response, the net effect of which is to increase </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="34.88">
+  <div class="q-label">Q2</div>
+  <div class="q-body"><span class="segment q-seg" data-start="34.88" data-end="41.28" title="0:34">catabolism and release endogenous fuel stores. What can trigger the stress response? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="43.44" data-end="50.88" title="0:43">The stress response occurs secondary to an exogenous insult such as trauma. It can also occur </span></li>
+<li><span class="segment a-seg" data-start="50.88" data-end="57.28" title="0:50">following surgery, secondary to burns or severe infection and has been reported to occur </span></li>
+<li><span class="segment a-seg" data-start="57.28" data-end="64.24" title="0:57">following strenuous exercise. The magnitude of the response is related to the degree of initial </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="64.24">
+  <div class="q-label">Q3</div>
+  <div class="q-body"><span class="segment q-seg" data-start="64.24" data-end="67.711" title="1:04">trauma. How is the response initiated? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="67.711" data-end="71.76" title="1:07">Think about local responses, then systemic responses. </span></li>
+<li><span class="segment a-seg" data-start="73.6" data-end="79.92" title="1:13">At the site of tissue damage there is a local release of cytokines which triggers the acute </span></li>
+<li><span class="segment a-seg" data-start="79.92" data-end="86.72" title="1:19">phase response and local inflammation. Sematic and autonomic afference are transmitted from </span></li>
+<li><span class="segment a-seg" data-start="86.72" data-end="93.68" title="1:26">the point of tissue damage to the central nervous system via ascending pathways in the spinal cord. </span></li>
+<li><span class="segment a-seg" data-start="94.8" data-end="102.72" title="1:34">These signals trigger the hypotherlamic pituitary adrenal axis, releasing cortisol and stimulate </span></li>
+<li><span class="segment a-seg" data-start="102.72" data-end="109.52" title="1:42">the sympathetic adrenal response, releasing cataclylamines. What are the characteristics of the </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="109.52">
+  <div class="q-label">Q4</div>
+  <div class="q-body"><span class="segment q-seg" data-start="109.52" data-end="110.725" title="1:49">resultant state? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="110.725" data-end="118.56" title="1:50">The stress response leads to an increase in catabolism, a release of endogenous </span></li>
+<li><span class="segment a-seg" data-start="118.56" data-end="126.48" title="1:58">energy substrates and fluid retention along with an increase in sympathetic tone. In evolutionary </span></li>
+<li><span class="segment a-seg" data-start="126.48" data-end="133.84" title="2:06">terms this mechanism would help to increase an injured animal's chance of survival. Can I describe </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="133.84">
+  <div class="q-label">Q5</div>
+  <div class="q-body"><span class="segment q-seg" data-start="133.84" data-end="135.52" title="2:13">the sympathetic adrenal response? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="135.52" data-end="138.88" title="2:15">Try and answer these questions from first principles. </span></li>
+<li><span class="segment a-seg" data-start="141.04" data-end="147.84" title="2:21">This is mediated via the hypothalamus and the autonomic nervous system with the release of a </span></li>
+<li><span class="segment a-seg" data-start="147.84" data-end="154.88" title="2:27">adrenal medullary cataclylamines. There is also increased presynaptic norepinephrine release. </span></li>
+<li><span class="segment a-seg" data-start="155.68" data-end="162.16" title="2:35">This leads to cardiovascular stimulation with resultant tachycardia and hyper tension. </span></li>
+<li><span class="segment a-seg" data-start="162.32" data-end="171.04" title="2:42">Cataclylamine effects on other organs include increased brain alertness, increased plasma lactate, </span></li>
+<li><span class="segment a-seg" data-start="171.04" data-end="178.64" title="2:51">increased basal metabolic rate, suppression of insulin release, increased glucagon release, </span></li>
+<li><span class="segment a-seg" data-start="178.64" data-end="186.4" title="2:58">and release of renin from the renal juxtaglomerular apparatus. The renin angiotensin system </span></li>
+<li><span class="segment a-seg" data-start="186.8" data-end="193.6" title="3:06">stimulates aldosterone release, which leads to sodium and water retention. Can I describe the role </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="193.6">
+  <div class="q-label">Q6</div>
+  <div class="q-body"><span class="segment q-seg" data-start="193.6" data-end="198.04" title="3:13">of the hypothalmic pituitary adrenal axis? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="198.04" data-end="202.48" title="3:18">Hypothelamic releasing factors stimulate the anterior </span></li>
+<li><span class="segment a-seg" data-start="202.48" data-end="208.56" title="3:22">pituitary to release adrenocortocotrophic hormone, growth hormone, and prolactin. </span></li>
+<li><span class="segment a-seg" data-start="209.2" data-end="215.84" title="3:29">Release of acth, stimulates the adrenal cortex, increasing the production of cortisol. </span></li>
+<li><span class="segment a-seg" data-start="216.64" data-end="224.08" title="3:36">Growth hormone enhances protein synthesis and inhibits breakdown, stimulates lipolysis, </span></li>
+<li><span class="segment a-seg" data-start="224.08" data-end="230.4" title="3:44">and antagonizes insulin. Prolactin is also released but its role is unclear. </span></li>
+<li><span class="segment a-seg" data-start="231.52" data-end="237.68" title="3:51">Levels of other anterior pituitary hormones, including thyroid stimulating hormone, </span></li>
+<li><span class="segment a-seg" data-start="237.68" data-end="244.56" title="3:57">remain essentially unchanged. The posterior pituitary produces increased levels of </span></li>
+<li><span class="segment a-seg" data-start="244.56" data-end="252.96" title="4:04">argonine vasopressin or ADH, which causes water retention, concentrated urine, and potassium loss. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="254.24">
+  <div class="q-label">Q7</div>
+  <div class="q-body"><span class="segment q-seg" data-start="254.24" data-end="257.526" title="4:14">What roles does cortisol play? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="257.526" data-end="263.44" title="4:17">Cortisol has major protein catabolic effects and has anti-inflammatory </span></li>
+<li><span class="segment a-seg" data-start="263.44" data-end="270.48" title="4:23">effects, which help to modulate the overall stress response. Cortisol also antagonizes the </span></li>
+<li><span class="segment a-seg" data-start="270.48" data-end="276.72" title="4:30">effects of insulin and growth hormone, and has negative feedback effects on the release of </span></li>
+<li><span class="segment a-seg" data-start="276.72" data-end="283.68" title="4:36">corticotrophin releasing hormone from the hypothalamus and acth from the anterior pituitary. </span></li>
+<li><span class="segment a-seg" data-start="284.48" data-end="290.24" title="4:44">Cortisol is released from the adrenal cortex after stimulation by acth. </span></li>
+<li><span class="segment a-seg" data-start="290.96" data-end="298.56" title="4:50">This leads to a state of catabolism with protein breakdown, lipolysis, increased glucose </span></li>
+<li><span class="segment a-seg" data-start="298.56" data-end="307.28" title="4:58">production, and decreased glucose uptake in peripheral tissues. Cortisol is also anti-inflammatory, </span></li>
+<li><span class="segment a-seg" data-start="307.28" data-end="314.08" title="5:07">inhibiting leukocyte migration into damaged areas, and inhibits synthesis of various inflammatory </span></li>
+<li><span class="segment a-seg" data-start="314.08" data-end="321.84" title="5:14">mediators, including prostaglandins. Glucocorticoids are required for cataclylamines to exert </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="321.84">
+  <div class="q-label">Q8</div>
+  <div class="q-body"><span class="segment q-seg" data-start="321.84" data-end="326.0" title="5:21">their pressur effects. What is cytokines and how do they act? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="328.16" data-end="334.8" title="5:28">Cytokines are like a peptides whose role is in signaling between cells of the immune system </span></li>
+<li><span class="segment a-seg" data-start="334.8" data-end="342.0" title="5:34">and hemopoetic systems. They are produced by activated lymphocytes, macrophages, </span></li>
+<li><span class="segment a-seg" data-start="342.0" data-end="350.32" title="5:42">fibroblasts, and endothelial cells in response to tissue injury. Cytokines can be pro-inflammatory, </span></li>
+<li><span class="segment a-seg" data-start="350.32" data-end="357.92" title="5:50">such as interleukin-6, and TNF-alpha, or can be anti-inflammatory, such as interleukin-4, </span></li>
+<li><span class="segment a-seg" data-start="357.92" data-end="365.2" title="5:57">and interleukin-10. Cytokines play an important role in mediating immunity and inflammation </span></li>
+<li><span class="segment a-seg" data-start="365.2" data-end="372.72" title="6:05">by acting on surface receptors of target cells. The effects of the cytokine activation are mostly </span></li>
+<li><span class="segment a-seg" data-start="372.72" data-end="379.76" title="6:12">local, but can be systemic. Effects include the production of the acute phase response, </span></li>
+<li><span class="segment a-seg" data-start="379.76" data-end="387.6" title="6:19">fever, granulocytosis, hemostasis, tissue damage limitation, and promotion of healing. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="388.24">
+  <div class="q-label">Q9</div>
+  <div class="q-body"><span class="segment q-seg" data-start="388.24" data-end="392.28" title="6:28">What is the acute phase response comprised of? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="392.28" data-end="396.32" title="6:32">The acute phase response is the body's response </span></li>
+<li><span class="segment a-seg" data-start="396.32" data-end="404.96" title="6:36">to cytokines produced in the stress response, in particular interleukin-6, interleukin-1, and TNF. </span></li>
+<li><span class="segment a-seg" data-start="405.76" data-end="413.28" title="6:45">It comprises increased hepatic synthesis of acute phase proteins, such as C-reactive protein, </span></li>
+<li><span class="segment a-seg" data-start="413.28" data-end="421.52" title="6:53">D-dimer, feratin, and complement components. Hepatic synthesis of other proteins, </span></li>
+<li><span class="segment a-seg" data-start="421.52" data-end="429.44" title="7:01">such as albumin and transferin, is reduced. Raised prostaglandin E levels lead to fever. </span></li>
+<li><span class="segment a-seg" data-start="430.0" data-end="436.72" title="7:10">The response also leads to increased vascular permeability, leukocyte activation, </span></li>
+<li><span class="segment a-seg" data-start="436.72" data-end="440.88" title="7:16">and further activation of the hypotherlamic pituitary axis. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="441.6">
+  <div class="q-label">Q10</div>
+  <div class="q-body"><span class="segment q-seg" data-start="441.6" data-end="445.84" title="7:21">What are the potential detrimental effects the stress response may have? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="447.6" data-end="455.2" title="7:27">Protein catabolism leads to dramatic muscle loss. Hypertension and tachycardia </span></li>
+<li><span class="segment a-seg" data-start="455.2" data-end="460.56" title="7:35">can stress the myocardium and produce ischemia in susceptible individuals. </span></li>
+<li><span class="segment a-seg" data-start="461.76" data-end="467.76" title="7:41">Hyperglycemia can lead to an impaired immune response and poor tissue healing. </span></li>
+<li><span class="segment a-seg" data-start="468.32" data-end="473.36" title="7:48">It can cause an osmotic diuresis and can lead to organ dysfunction. </span></li>
+<li><span class="segment a-seg" data-start="474.88" data-end="482.08" title="7:54">Electrolite disturbances, particularly hypocholemia, can cause muscle weakness and promoter </span></li>
+<li><span class="segment a-seg" data-start="482.08" data-end="489.04" title="8:02">rhythmias. Fluid overload as a result of increased anti-diuretic hormone activity </span></li>
+<li><span class="segment a-seg" data-start="489.04" data-end="494.08" title="8:09">and exogenous fluid administration can cause congestive cardiac failure. </span></li>
+<li><span class="segment a-seg" data-start="494.88" data-end="501.92" title="8:14">Fluid overload can also impair wound healing, including an asthmotic breakdown and can cause an </span></li>
+<li><span class="segment a-seg" data-start="501.92" data-end="510.56" title="8:21">ilius. The pro-quagulant state can increase the likelihood of deep vein thrombosis or pulmonary </span></li>
+<li><span class="segment a-seg" data-start="510.56" data-end="519.36" title="8:30">embolite and can make coronary or cerebral ischemia more likely. Altered gastrointestinal motility </span></li>
+<li><span class="segment a-seg" data-start="519.44" data-end="526.72" title="8:39">can cause nausea, vomiting, diarrhea or constipation and in the medium term leads to problems with </span></li>
+<li><span class="segment a-seg" data-start="526.72" data-end="534.16" title="8:46">nutrition. Immuno suppression increases the likelihood of poor wound healing and increases </span></li>
+<li><span class="segment a-seg" data-start="534.16" data-end="540.8" title="8:54">susceptibility to nose acomial infection. What is the significance of the stress response for </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="540.8">
+  <div class="q-label">Q11</div>
+  <div class="q-body"><span class="segment q-seg" data-start="540.8" data-end="541.354" title="9:00">anesthetists? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="541.354" data-end="548.0" title="9:01">The stress response occurs in the majority of patients that anesthetists deal </span></li>
+<li><span class="segment a-seg" data-start="548.08" data-end="556.4" title="9:08">within theatre. In elective cases, the onset of the stress response is predictable. In emergency cases, </span></li>
+<li><span class="segment a-seg" data-start="556.4" data-end="562.88" title="9:16">the stress response may well be underway at the time of anesthetic induction. The goal for the </span></li>
+<li><span class="segment a-seg" data-start="562.88" data-end="569.12" title="9:22">anesthetist is to try and minimise the undesirable consequences of the stress response. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="570.32">
+  <div class="q-label">Q12</div>
+  <div class="q-body"><span class="segment q-seg" data-start="570.32" data-end="572.32" title="9:30">How can the stress response be modulated? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="573.28" data-end="580.64" title="9:33">The stress response can be influenced by choice of anesthetic technique and anesthetic agents. </span></li>
+<li><span class="segment a-seg" data-start="581.28" data-end="587.92" title="9:41">It can be modulated by choice of surgical technique. Other methods that may have a role are </span></li>
+<li><span class="segment a-seg" data-start="587.92" data-end="595.6" title="9:47">nutrition, hormone therapy and temperature control. Tell me how anesthesia may influence the stress </span></li>
+<li><span class="segment a-seg" data-start="596.24" data-end="601.04" title="9:56">response. Think of the drugs you use for a general anesthetic and what effects they may have. </span></li>
+<li><span class="segment a-seg" data-start="603.28" data-end="608.4" title="10:03">The use of various anesthetic agents may influence the stress response. </span></li>
+<li><span class="segment a-seg" data-start="609.2" data-end="615.52" title="10:09">It tomodate blocks 11 beta hydroxylase and therefore reduces cortisol production. </span></li>
+<li><span class="segment a-seg" data-start="616.16" data-end="620.0" title="10:16">This occurs for up to 8 hours following a single induction dose. </span></li>
+<li><span class="segment a-seg" data-start="620.72" data-end="626.96" title="10:20">Use of automatist contentious as it has been shown to increase mortality when used as an </span></li>
+<li><span class="segment a-seg" data-start="626.96" data-end="634.96" title="10:26">infusion in intensive care patients. Benzodiazepines may also have an inhibitory effect on steroid </span></li>
+<li><span class="segment a-seg" data-start="634.96" data-end="641.28" title="10:34">production at the hypotherlamic pituitary level, but the significance of this is not known. </span></li>
+<li><span class="segment a-seg" data-start="641.44" data-end="648.16" title="10:41">Clonodyne may also decrease sympathetic adrenal and cardiovascular responses to surgery. </span></li>
+<li><span class="segment a-seg" data-start="649.6" data-end="656.72" title="10:49">Opioids have also been used to attenuate the stress response. Injected opioids have been shown </span></li>
+<li><span class="segment a-seg" data-start="656.72" data-end="662.8" title="10:56">to block ACTH release through reduced CRH release at the hypotherlamic level. </span></li>
+<li><span class="segment a-seg" data-start="663.68" data-end="668.64" title="11:03">Alphentonyl has been shown to reduce cytokine levels after abdominal surgery. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="669.52">
+  <div class="q-label">Q13</div>
+  <div class="q-body"><span class="segment q-seg" data-start="669.52" data-end="676.96" title="11:09">However, the relatively large doses required lead to profound respiratory depression postoperatively </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="676.96" data-end="680.8" title="11:16">and increase the need for postoperative respiratory support. </span></li>
+<li><span class="segment a-seg" data-start="682.24" data-end="689.76" title="11:22">Using regional anesthesia may influence the stress response. Nurexial blockade is known to block </span></li>
+<li><span class="segment a-seg" data-start="689.76" data-end="696.16" title="11:29">the hypotherlamic pituitary adrenal axis response by blocking both the afferent activation of </span></li>
+<li><span class="segment a-seg" data-start="696.16" data-end="702.88" title="11:36">the hypothalamus and blocking efferent stimulation of the liver, adrenals and pancreas. </span></li>
+<li><span class="segment a-seg" data-start="703.92" data-end="710.0" title="11:43">Cytokine responses are unaltered however as these are stimulated by local tissue damage. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="711.6">
+  <div class="q-label">Q14</div>
+  <div class="q-body"><span class="segment q-seg" data-start="711.6" data-end="714.56" title="11:51">What are the methods of altering the stress response you are aware of? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="716.64" data-end="722.4" title="11:56">Beta blockers. The use of beta blockers to attenuate the sympathetic response </span></li>
+<li><span class="segment a-seg" data-start="722.4" data-end="726.4" title="12:02">has been proven to be beneficial in high-risk cardiac patients. </span></li>
+<li><span class="segment a-seg" data-start="727.6" data-end="734.56" title="12:07">Hormonal. Inchelin can be used to modulate the hyperglycemic state which is part of the stress </span></li>
+<li><span class="segment a-seg" data-start="734.56" data-end="744.16" title="12:14">response. Tight glycemic control remains controversial. Steroids. The level of endogenous </span></li>
+<li><span class="segment a-seg" data-start="744.16" data-end="751.12" title="12:24">cortisol present in response to surgery can significantly downregulate into Luke in 6 production. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="751.92">
+  <div class="q-label">Q15</div>
+  <div class="q-body"><span class="segment q-seg" data-start="751.92" data-end="758.56" title="12:31">However, in using therapeutic steroids the benefits of suppressing the cytokine response </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="758.56" data-end="764.88" title="12:38">are at a price of increased complications such as wound infection and wound breakdown. </span></li>
+<li><span class="segment a-seg" data-start="766.24" data-end="772.24" title="12:46">Cyrgyzical techniques. Using less invasive surgical techniques where possible </span></li>
+<li><span class="segment a-seg" data-start="772.24" data-end="779.04" title="12:52">may reduce the inflammatory response. Cytokine release is reduced in laparoscopic surgery, </span></li>
+<li><span class="segment a-seg" data-start="779.04" data-end="784.64" title="12:59">leading to quicker recovery and faster discharge from hospital. Nutrition. </span></li>
+<li><span class="segment a-seg" data-start="785.44" data-end="792.4" title="13:05">Entral feeding has been shown to improve recovery in critically ill patients. Immunonutrition </span></li>
+<li><span class="segment a-seg" data-start="792.4" data-end="800.32" title="13:12">has been of particular use such as the supplementation of glutamine, arginine and omega-3 fatty acids. </span></li>
+<li><span class="segment a-seg" data-start="801.92" data-end="808.64" title="13:21">Temperature control. The metabolic response to hyperthermia is prevented by maintaining </span></li>
+<li><span class="segment a-seg" data-start="808.64" data-end="818.24" title="13:28">a normal temperature throughout the management period. </span></li>
+  </ul>
+</div>
+</div>
+
 </div>
 
 <div class="subtitle-bar">
-  <span class="subtitle-text empty" id="subtitle-text">Play audio to see live subtitles&#8230;</span>
+  <span id="subtitle-text" class="empty">Play audio to see live subtitles&#8230;</span>
 </div>
 
 <script>
-
-const audio    = document.getElementById('audio');
-const allSegs  = Array.from(document.querySelectorAll('.segment'));
-const allBlocks = Array.from(document.querySelectorAll('.t-block'));
+const audio      = document.getElementById('audio');
+const allSegs    = Array.from(document.querySelectorAll('.segment'));
 const subtitleEl = document.getElementById('subtitle-text');
-let activeSegEl   = null;
-let activeBlockEl = null;
-let searchMatches = [];
-let searchIdx     = 0;
+let activeSegEl  = null;
+let searchMatches = [], searchIdx = 0;
 
-// Duration display
 audio.addEventListener('loadedmetadata', () => {
   const m = Math.floor(audio.duration / 60);
   const s = Math.floor(audio.duration %% 60).toString().padStart(2,'0');
   document.getElementById('dur').textContent = m + ':' + s;
 });
 
-// Seek helper
-function seekTo(t) {
-  audio.currentTime = t;
-  audio.play();
-}
+function seekTo(t) { audio.currentTime = t; audio.play(); }
 
-// Block gutter click
-document.querySelectorAll('.t-gutter').forEach(g => {
-  g.addEventListener('click', () => seekTo(parseFloat(g.dataset.start)));
+// Q-block header click
+document.querySelectorAll('.q-block').forEach(q => {
+  q.addEventListener('click', e => {
+    if (!e.target.classList.contains('segment')) seekTo(parseFloat(q.dataset.start));
+  });
 });
 
-// Segment click
+// Individual segment click
 allSegs.forEach(s => {
-  s.addEventListener('click', e => {
-    e.stopPropagation();
-    seekTo(parseFloat(s.dataset.start));
-  });
+  s.addEventListener('click', e => { e.stopPropagation(); seekTo(parseFloat(s.dataset.start)); });
 });
 
 // Real-time tracking
 audio.addEventListener('timeupdate', () => {
   const t = audio.currentTime;
-
-  // Find active segment (last one whose start <= t)
   let found = null;
   for (let i = allSegs.length - 1; i >= 0; i--) {
     if (parseFloat(allSegs[i].dataset.start) <= t) { found = allSegs[i]; break; }
   }
-
   if (found && found !== activeSegEl) {
-    // Clear previous
-    if (activeSegEl) activeSegEl.classList.remove('active');
-    if (activeBlockEl) {
-      activeBlockEl.classList.remove('block-active');
-      const pg = activeBlockEl.querySelector('.t-gutter');
-      if (pg) pg.classList.remove('gutter-active');
+    if (activeSegEl) {
+      activeSegEl.classList.remove('active');
+      const pli = activeSegEl.closest('li');
+      if (pli) pli.classList.remove('li-active');
+      const pq = activeSegEl.closest('.q-block');
+      if (pq) pq.classList.remove('q-active');
     }
-    // Set new
     found.classList.add('active');
-    const block = found.closest('.t-block');
-    if (block) {
-      block.classList.add('block-active');
-      const g = block.querySelector('.t-gutter');
-      if (g) g.classList.add('gutter-active');
-      activeBlockEl = block;
-    }
+    const li = found.closest('li');
+    if (li) li.classList.add('li-active');
+    const qb = found.closest('.q-block');
+    if (qb) qb.classList.add('q-active');
     activeSegEl = found;
 
-    // Update subtitle
     subtitleEl.textContent = found.textContent.trim();
     subtitleEl.classList.remove('empty');
 
-    // Auto-scroll (only when not searching)
-    if (!document.getElementById('search').value) {
+    if (!document.getElementById('search').value)
       found.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }
   }
 });
 
@@ -344,17 +528,13 @@ searchInput.addEventListener('keydown', e => {
     el.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
 });
-
 function runSearch() {
   const q = searchInput.value.trim().toLowerCase();
   allSegs.forEach(s => s.classList.remove('search-match','search-current'));
   searchMatches = [];
   if (!q) return;
   allSegs.forEach(s => {
-    if (s.textContent.toLowerCase().includes(q)) {
-      s.classList.add('search-match');
-      searchMatches.push(s);
-    }
+    if (s.textContent.toLowerCase().includes(q)) { s.classList.add('search-match'); searchMatches.push(s); }
   });
   if (!searchMatches.length) return;
   searchIdx = 0;

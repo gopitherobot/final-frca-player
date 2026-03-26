@@ -5,10 +5,19 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Paediatric & Neonatal — Development in infancy and childhood</title>
 <style>
-
   :root {
-    --accent:    #fbbf24;
-    --body-bg:   #f1f5f9;
+    --q-bg:       #1e3a5f;
+    --q-text:     #ffffff;
+    --q-label:    #60a5fa;
+    --a-bg:       #ffffff;
+    --a-border:   #e2e8f0;
+    --a-label:    #059669;
+    --active-q:   #fbbf24;
+    --active-a:   #dbeafe;
+    --accent:     #fbbf24;
+    --body-bg:    #f1f5f9;
+    --pre-bg:     #fef9c3;
+    --pre-border: #fcd34d;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
@@ -40,22 +49,9 @@
     margin-bottom: 4px;
     letter-spacing: 0.01em;
   }
-  .header-sub {
-    font-size: 0.72rem;
-    color: #94a3b8;
-    font-style: italic;
-  }
-  audio {
-    height: 36px;
-    accent-color: var(--accent);
-    flex-shrink: 0;
-  }
-  .back-link {
-    font-size: 0.8rem;
-    color: #94a3b8;
-    text-decoration: none;
-    white-space: nowrap;
-  }
+  .header-sub { font-size: 0.72rem; color: #94a3b8; font-style: italic; }
+  audio { height: 36px; accent-color: var(--accent); flex-shrink: 0; }
+  .back-link { font-size: 0.8rem; color: #94a3b8; text-decoration: none; white-space: nowrap; }
   .back-link:hover { color: #60a5fa; }
 
   /* ── Toolbar ── */
@@ -69,30 +65,17 @@
     border-bottom: 1px solid #334155;
   }
   .toolbar input {
-    flex: 1;
-    max-width: 380px;
+    flex: 1; max-width: 380px;
     padding: 5px 11px;
-    border: 1px solid #475569;
-    border-radius: 6px;
-    background: #0f172a;
-    color: #e2e8f0;
-    font-size: 0.83rem;
-    outline: none;
+    border: 1px solid #475569; border-radius: 6px;
+    background: #0f172a; color: #e2e8f0; font-size: 0.83rem; outline: none;
   }
   .toolbar input:focus { border-color: var(--accent); }
   .toolbar input::placeholder { color: #64748b; }
-  .stats {
-    font-size: 0.72rem;
-    color: #64748b;
-    white-space: nowrap;
-  }
+  .stats { font-size: 0.72rem; color: #64748b; white-space: nowrap; }
 
   /* ── Scroll area ── */
-  .scroll-area {
-    flex: 1;
-    overflow-y: auto;
-    padding: 20px;
-  }
+  .scroll-area { flex: 1; overflow-y: auto; padding: 20px; }
   .scroll-area::-webkit-scrollbar { width: 6px; }
   .scroll-area::-webkit-scrollbar-track { background: transparent; }
   .scroll-area::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
@@ -107,68 +90,77 @@
     display: flex;
     align-items: center;
   }
-  .subtitle-text {
-    font-size: 0.9rem;
-    color: #e2e8f0;
-    line-height: 1.5;
-    font-style: italic;
-  }
-  .subtitle-text.empty { color: #475569; }
+  #subtitle-text { font-size: 0.88rem; color: #e2e8f0; line-height: 1.5; font-style: italic; }
+  #subtitle-text.empty { color: #475569; }
 
-  /* ── Transcript blocks ── */
-  .t-block {
-    background: #ffffff;
-    border: 1px solid #e2e8f0;
-    border-radius: 10px;
-    margin-bottom: 14px;
-    overflow: hidden;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
-    display: flex;
-  }
-  .t-block.block-active {
-    border-color: var(--accent);
-    box-shadow: 0 0 0 2px rgba(37,99,235,0.15);
-  }
-  .t-gutter {
-    background: #0f172a;
-    width: 52px;
-    flex-shrink: 0;
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
-    padding-top: 14px;
-    cursor: pointer;
-  }
-  .t-gutter:hover { background: #1e293b; }
-  .t-timestamp {
-    font-size: 0.7rem;
-    color: #64748b;
-    font-family: monospace;
-    font-weight: 600;
-    letter-spacing: 0.02em;
-  }
-  .t-gutter.gutter-active .t-timestamp { color: var(--accent); }
-  .t-body {
-    flex: 1;
+  /* ── Preamble ── */
+  .preamble-block {
+    background: var(--pre-bg);
+    border-left: 4px solid var(--pre-border);
+    border-radius: 0 8px 8px 0;
     padding: 12px 16px;
-    line-height: 1.75;
-    font-size: 0.92rem;
-    color: #1e293b;
+    margin-bottom: 20px;
+    font-size: 0.88rem;
+    color: #78350f;
+    font-style: italic;
+    line-height: 1.7;
   }
 
-  /* ── Segments ── */
-  .segment {
+  /* ── Q&A pair ── */
+  .qa-pair { margin-bottom: 20px; border-radius: 10px; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+
+  /* Question block */
+  .q-block {
+    background: var(--q-bg);
+    padding: 14px 18px;
+    display: flex; gap: 14px; align-items: flex-start;
     cursor: pointer;
-    border-radius: 3px;
-    transition: background 0.1s;
+    transition: background 0.15s;
   }
-  .segment:hover { background: #eff6ff; }
-  .segment.active {
-    background: #bfdbfe;
-    outline: 2px solid #3b82f6;
-    outline-offset: 1px;
-    border-radius: 3px;
+  .q-block:hover { background: #1d4ed8; }
+  .q-block.q-active { background: var(--active-q); }
+  .q-label {
+    font-size: 0.7rem; font-weight: 700;
+    color: var(--q-label);
+    background: rgba(96,165,250,0.15);
+    border: 1px solid rgba(96,165,250,0.3);
+    border-radius: 5px; padding: 3px 7px;
+    white-space: nowrap; margin-top: 2px; letter-spacing: 0.05em;
+    flex-shrink: 0;
   }
+  .q-body { flex: 1; font-size: 0.97rem; font-weight: 600; color: var(--q-text); line-height: 1.55; }
+
+  /* Answer block */
+  .a-block {
+    background: var(--a-bg);
+    border: 1px solid var(--a-border); border-top: none;
+    padding: 14px 18px;
+    display: flex; gap: 14px; align-items: flex-start;
+  }
+  .a-label {
+    font-size: 0.7rem; font-weight: 700;
+    color: var(--a-label);
+    background: #d1fae5; border: 1px solid #6ee7b7;
+    border-radius: 5px; padding: 3px 9px;
+    white-space: nowrap; margin-top: 2px; letter-spacing: 0.05em;
+    flex-shrink: 0;
+  }
+  .a-body { flex: 1; list-style: none; padding: 0; }
+  .a-body li {
+    padding: 4px 0 4px 14px;
+    border-left: 3px solid transparent;
+    line-height: 1.7; font-size: 0.92rem; color: #1e293b;
+    border-radius: 0 4px 4px 0;
+    transition: background 0.15s;
+  }
+  .a-body li:not(:last-child) { border-bottom: 1px solid #f1f5f9; }
+
+  /* ── Segments (clickable) ── */
+  .segment { cursor: pointer; border-radius: 3px; }
+  .q-seg:hover { background: rgba(255,255,255,0.18); }
+  .a-seg:hover { background: #eff6ff; }
+  .segment.active { background: #bfdbfe; outline: 2px solid #3b82f6; outline-offset: 1px; }
+  .a-body li.li-active { background: var(--active-a); border-left-color: var(--accent); }
   .segment.search-match  { background: #fef9c3; }
   .segment.search-current { background: #fde047; outline: 2px solid #ca8a04; }
 
@@ -187,187 +179,516 @@
 
 <div class="toolbar">
   <input type="text" id="search" placeholder="Search transcript&#8230; (Enter = next match)">
-  <span class="stats" id="stats">188 segments &nbsp;|&nbsp; <span id="dur">loading&#8230;</span></span>
+  <span class="stats" id="stats">26 questions &nbsp;|&nbsp; 188 segments &nbsp;|&nbsp; <span id="dur">loading&#8230;</span></span>
 </div>
 
 <div class="scroll-area" id="scroll-area">
-<div class="t-block">
-  <div class="t-gutter" data-start="0.0"><span class="t-timestamp">0:00</span></div>
-  <div class="t-body"><span class="segment" data-start="0.0" data-end="2.4" title="0:00">Development in infancy and childhood. </span><span class="segment" data-start="2.4" data-end="6.56" title="0:02">The developmental changes that occur during infancy and childhood </span><span class="segment" data-start="6.56" data-end="9.84" title="0:06">have significant implications to the anesthetist. </span><span class="segment" data-start="9.84" data-end="13.52" title="0:09">They are regularly examined in clinical and science viabuses. </span><span class="segment" data-start="13.52" data-end="18.56" title="0:13">A good understanding of the anatomical and physiological changes is vital. </span><span class="segment" data-start="18.56" data-end="22.08" title="0:18">Let's start by classifying the different ages of pediatric patients. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="22.08"><span class="t-timestamp">0:22</span></div>
-  <div class="t-body"><span class="segment" data-start="22.08" data-end="27.2" title="0:22">Can you tell me how we decide when a neonate has become an infant or child? </span><span class="segment" data-start="27.2" data-end="31.76" title="0:27">A neonate is a baby within 44 weeks from the date of conception. </span><span class="segment" data-start="32.56" data-end="39.68" title="0:32">This description therefore includes premature babies and full-term babies up to one month old. </span><span class="segment" data-start="40.8" data-end="48.32" title="0:40">An infant is described as being over 44 weeks post-conceptual age and up to 12 months. </span><span class="segment" data-start="48.88" data-end="55.44" title="0:48">A child is aged 1 to 12 years and adolescent is 13 to 16 </span><span class="segment" data-start="55.52" data-end="61.2" title="0:55">and an adult is over 16. Good. That will help us to further describe the changes that occur </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="61.2"><span class="t-timestamp">1:01</span></div>
-  <div class="t-body"><span class="segment" data-start="61.2" data-end="64.72" title="1:01">during development. How might you classify those changes? </span><span class="segment" data-start="66.48" data-end="72.0" title="1:06">The changes may be divided into physiological and anatomical alterations. </span><span class="segment" data-start="72.64" data-end="76.56" title="1:12">They may also be further subdivided into the body systems. </span><span class="segment" data-start="79.2" data-end="83.44" title="1:19">Can you talk me through the anatomical differences between a pediatric and adult patient </span><span class="segment" data-start="83.52" data-end="88.16" title="1:23">that occur in the respiratory system? Why are these important to the anesthetist? </span><span class="segment" data-start="88.72" data-end="93.68" title="1:28">It might help to remember everything by starting at the head and then working your way down the </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="93.68"><span class="t-timestamp">1:33</span></div>
-  <div class="t-body"><span class="segment" data-start="93.68" data-end="102.56" title="1:33">respiratory system. The infant has a large head with a prominent occipote. The neck is short </span><span class="segment" data-start="102.56" data-end="109.04" title="1:42">and the mandible relatively small. The tongue and epiglottis are large which can predispose to </span><span class="segment" data-start="109.12" data-end="116.4" title="1:49">airway obstruction. The larynx is at the level of the third or fourth cervical vertebrae in infants. </span><span class="segment" data-start="117.12" data-end="122.72" title="1:57">This is high when compared to the adult level of the fifth or sixth cervical vertebrae. </span><span class="segment" data-start="123.76" data-end="129.84" title="2:03">The higher position of the larynx and the shape of the epiglottis mean that it may be easier to </span><span class="segment" data-start="129.84" data-end="134.64" title="2:09">intubate an infant with a straight luringous goat blade rather than a curved blade. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="135.2"><span class="t-timestamp">2:15</span></div>
-  <div class="t-body"><span class="segment" data-start="135.2" data-end="141.84" title="2:15">The narrowest part of the pediatric airway is the crycoid cartilage rather than the cords as in </span><span class="segment" data-start="141.84" data-end="148.64" title="2:21">the adult. This has led to the use of uncuffed tubes for children less than 10 years old, </span><span class="segment" data-start="148.64" data-end="155.6" title="2:28">since the crycoid cartilage acts as a cuff. Uncuffed tubes are thought to reduce the risk of </span><span class="segment" data-start="155.6" data-end="164.56" title="2:35">baratoma to the tracheal lumen. The size of tracheal tube for a neonate is approximately 3 to 3.5 </span><span class="segment" data-start="164.56" data-end="172.72" title="2:44">millimeters in turn or diameter, although this may vary. A small leak should always be present </span><span class="segment" data-start="172.72" data-end="179.04" title="2:52">to ensure minimal risk of trauma to the tracheal lining. The formula for guiding tracheal tube </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="179.04"><span class="t-timestamp">2:59</span></div>
-  <div class="t-body"><span class="segment" data-start="179.04" data-end="187.36" title="2:59">size is aged divided by 4 plus 4. The trachea may be less than 4 centimeters in length in the neonate. </span><span class="segment" data-start="188.08" data-end="193.92" title="3:08">This can lead to endobronculine intubation if the anesthetist is not meticulous </span><span class="segment" data-start="193.92" data-end="200.56" title="3:13">when positioning and securing the endotracheal tube. The formula for the length of an orotracheal </span><span class="segment" data-start="200.56" data-end="209.68" title="3:20">tube is aged divided by 2 plus 12. This gives the length at the lips. For nasal tubes, the number </span><span class="segment" data-start="209.68" data-end="218.8" title="3:29">to add is 15 rather than 12. The carina branches at the same angle on both sides of the chest in </span><span class="segment" data-start="218.8" data-end="226.16" title="3:38">infants. The airways are also much smaller in diameter than in adults. Any additional narrowing </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="226.16"><span class="t-timestamp">3:46</span></div>
-  <div class="t-body"><span class="segment" data-start="226.16" data-end="233.04" title="3:46">will lead to a marked increase in resistance to airflow. In infants, the intercostal muscles and </span><span class="segment" data-start="233.04" data-end="239.76" title="3:53">the diaphragm are weaker with fewer type 1 fibers. They therefore fatigue faster than adults. </span><span class="segment" data-start="240.56" data-end="246.48" title="4:00">The diaphragm is the main muscle responsible for respiration and so anything that compromises </span><span class="segment" data-start="246.48" data-end="253.84" title="4:06">its efficiency such as abdominal distension will cause breathing difficulties. The chest wall </span><span class="segment" data-start="253.84" data-end="259.12" title="4:13">is also more compliant and so recession is a marker of respiratory effort. </span><span class="segment" data-start="259.92" data-end="263.04" title="4:19">What about the physiological changes that occur in the respiratory system? </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="264.96"><span class="t-timestamp">4:24</span></div>
-  <div class="t-body"><span class="segment" data-start="264.96" data-end="272.0" title="4:24">The pediatric patient has a much higher oxygen consumption than an adult. A neonate has an </span><span class="segment" data-start="272.0" data-end="280.48" title="4:32">oxygen consumption of 6 to 9 mils per kilo per minute when compared to the adult 2 to 3 mils per kilo per </span><span class="segment" data-start="280.48" data-end="288.56" title="4:40">minute. The alveola minute volume is increased in order to meet this increased demand. Since the </span><span class="segment" data-start="288.56" data-end="296.0" title="4:48">tidal volume of approximately 7 mils per kilo is similar for pediatric and adult patients, </span><span class="segment" data-start="296.0" data-end="303.84" title="4:56">the increase is achieved by changes in respiratory rate. A neonate's respiratory rate ranges from </span><span class="segment" data-start="303.84" data-end="312.96" title="5:03">40 to 60 breaths per minute, a child's 20 to 30 and the adult range is 12 to 24 breaths per minute. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="312.96"><span class="t-timestamp">5:12</span></div>
-  <div class="t-body"><span class="segment" data-start="312.96" data-end="320.72" title="5:12">The significant difference in oxygen consumption means that neonates will desaturate faster than adults. </span><span class="segment" data-start="320.8" data-end="326.4" title="5:20">Can you talk me through the changes in functional residual capacity and closing capacity? </span><span class="segment" data-start="328.8" data-end="336.0" title="5:28">The functional residual capacity is similar for pediatric and adult patients. The value is about </span><span class="segment" data-start="336.0" data-end="344.0" title="5:36">30 mils per kilo. In infants, neonates and young children, closing capacity encroaches on the </span><span class="segment" data-start="344.0" data-end="349.44" title="5:44">functional residual capacity, leading to airway closure at the end of exploration. </span><span class="segment" data-start="350.24" data-end="356.08" title="5:50">In order to counteract this, partial adduction of the cords occurs during exploration, </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="356.08"><span class="t-timestamp">5:56</span></div>
-  <div class="t-body"><span class="segment" data-start="356.08" data-end="363.6" title="5:56">producing physiological CPAP. When an esoteric and infant or young child using a spontaneously </span><span class="segment" data-start="363.6" data-end="369.28" title="6:03">breathing technique, CPAP will aid oxygenation and reduce the work of breathing. </span><span class="segment" data-start="369.68" data-end="376.8" title="6:09">When a pediatric patient is fully ventilated, the respiratory rate and the tidal volume should </span><span class="segment" data-start="376.8" data-end="383.76" title="6:16">be set appropriately. Positive end-experatory pressure can be used to avoid airway closure </span><span class="segment" data-start="383.76" data-end="390.32" title="6:23">and improve oxygenation. What can you tell me about the control of respiration in a neonatal </span><span class="segment" data-start="390.32" data-end="398.64" title="6:30">young infant? The neonatal respiratory control is immature. The peripheral chemo receptor response </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="398.64"><span class="t-timestamp">6:38</span></div>
-  <div class="t-body"><span class="segment" data-start="398.64" data-end="405.84" title="6:38">to hypoxia and to the central chemo receptor response to carbon dioxide are both weak and blunted. </span><span class="segment" data-start="406.64" data-end="414.64" title="6:46">Appneas may occur up to 60 weeks post-gestational age. These patients need to be monitored post-operatively </span><span class="segment" data-start="414.64" data-end="420.32" title="6:54">within Appnea monitor. Now let's move on to the cardiovascular system. </span><span class="segment" data-start="421.44" data-end="423.92" title="7:01">Can you briefly summarize the changes that occur at birth? </span><span class="segment" data-start="424.64" data-end="430.0" title="7:04">This topic is also discussed in the neonatal physiology podcast. Try and talk through the </span><span class="segment" data-start="430.0" data-end="434.64" title="7:10">changes as they occur so that the examiner knows that you have a strong grasp of the basics. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="436.88"><span class="t-timestamp">7:16</span></div>
-  <div class="t-body"><span class="segment" data-start="436.88" data-end="444.56" title="7:16">At birth, the site of gas transfer switches from the placenta to the lungs. As the first breath is </span><span class="segment" data-start="444.56" data-end="453.12" title="7:24">taken, the lungs expand and the pulmonary vascular resistance falls by 80%. Pulmonary blood flow </span><span class="segment" data-start="453.12" data-end="460.24" title="7:33">increases dramatically. The systemic vascular resistance increases due to the exclusion of the </span><span class="segment" data-start="460.24" data-end="468.0" title="7:40">large low resistance placental vascular bed when the umbilical cord is clamped. The foreman ovale </span><span class="segment" data-start="468.0" data-end="473.12" title="7:48">closes because of the reversal of the pressure gradient between the left and right ventricles. </span><span class="segment" data-start="474.0" data-end="479.68" title="7:54">Blood flow through the ductus arteriosus is reversed due to the reduction in pulmonary </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="479.68"><span class="t-timestamp">7:59</span></div>
-  <div class="t-body"><span class="segment" data-start="479.68" data-end="487.04" title="7:59">resistance and increase in systemic vascular resistance. The increase in the partial pressure </span><span class="segment" data-start="487.04" data-end="493.92" title="8:07">of oxygen and reduction in prostaglandin E2 stimulates closure of the ductus arteriosus. </span><span class="segment" data-start="495.84" data-end="499.68" title="8:15">Over what time period the foreman ovale inductor arteriosus close? </span><span class="segment" data-start="501.84" data-end="507.04" title="8:21">The foreman ovale closes as soon as the pressure reverses within the heart, </span><span class="segment" data-start="507.04" data-end="513.04" title="8:27">but it can reopen within the next five years of life. The ductus arteriosus </span><span class="segment" data-start="513.04" data-end="518.08" title="8:33">contracts in the first few days of life and then fibrosis within a month. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="519.6"><span class="t-timestamp">8:39</span></div>
-  <div class="t-body"><span class="segment" data-start="519.6" data-end="523.92" title="8:39">Can you first tell me about the anatomical and physiological changes to the cardiovascular system? </span><span class="segment" data-start="525.84" data-end="534.4" title="8:45">The neonatal heart has uncompliant stiff ventricles. At birth, the right and left ventricles are </span><span class="segment" data-start="534.4" data-end="540.8" title="8:54">similar in size. The cardiac output is high to meet the high oxygen consumption. </span><span class="segment" data-start="541.52" data-end="553.04" title="9:01">In a neonate, cardiac output is 200 to 250mph compared to 80mph in an adult. Stroke volume is </span><span class="segment" data-start="553.04" data-end="559.92" title="9:13">relatively fixed and so the only way to increase the cardiac output is by increasing the heart rate. </span><span class="segment" data-start="560.72" data-end="568.24" title="9:20">The average heart rate in the neonate is 120 beats per minute, falling to 100 in childhood </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="568.24"><span class="t-timestamp">9:28</span></div>
-  <div class="t-body"><span class="segment" data-start="568.24" data-end="576.88" title="9:28">and 75 as an adult. The blood pressure is lower in the pediatric population. A neonate would </span><span class="segment" data-start="576.88" data-end="585.2" title="9:36">have a systolic pressure of 50 to 90mph of mercury, a child 95 to 110mph of mercury, </span><span class="segment" data-start="585.2" data-end="594.4" title="9:45">and an adult the same 95 to 110mph of mercury. Bradicardias are poorly tolerated in pediatric </span><span class="segment" data-start="594.4" data-end="601.84" title="9:54">patients due to the concomitant fall in cardiac output. What about the hematological system? </span><span class="segment" data-start="604.16" data-end="609.92" title="10:04">The blood volume is greater in a neonate than an adult. The neonate value is approximately </span><span class="segment" data-start="609.92" data-end="620.48" title="10:09">9mph, falling to 80mph in a child and then 70mph in an adult. Extracellular fluid is greater </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="620.48"><span class="t-timestamp">10:20</span></div>
-  <div class="t-body"><span class="segment" data-start="620.48" data-end="628.32" title="10:20">in the neonate. 40% of body water is extracellular in the neonate compared to about 20% in the adult. </span><span class="segment" data-start="629.12" data-end="635.84" title="10:29">By the age of 2, this difference has disappeared. The greater metabolic rate results in a </span><span class="segment" data-start="635.84" data-end="643.04" title="10:35">faster turnover of extracellular fluid in the neonate and infant. Interruptions in normal intake </span><span class="segment" data-start="643.04" data-end="649.92" title="10:43">can lead to the rapid onset of dehydration. How would you approach fluid management in a child? </span><span class="segment" data-start="652.4" data-end="659.84" title="10:52">I would consider fluids in terms of maintenance, replacement and deficit. With regards to </span><span class="segment" data-start="659.84" data-end="666.96" title="10:59">maintenance fluids, I would use the 4 to 1 rule. This means for the first 10kg of the weight of </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="666.96"><span class="t-timestamp">11:06</span></div>
-  <div class="t-body"><span class="segment" data-start="666.96" data-end="676.64" title="11:06">the child, I will require to give 4mph per hour. For the next 10kg, 2mph per hour, and for every </span><span class="segment" data-start="676.64" data-end="686.8" title="11:16">subsequent 10kg, 1mph per hour. Replacement fluid includes all ongoing losses. These losses should </span><span class="segment" data-start="686.8" data-end="693.76" title="11:26">be closely monitored, for example weighing swabs and measuring suction fluid. For abdominal </span><span class="segment" data-start="693.76" data-end="701.84" title="11:33">surgery, approximately 10mph per kilo per hour is lost. Calculation of the fluid deficit requires </span><span class="segment" data-start="701.84" data-end="709.28" title="11:41">clinical assessment of the child. A 5% loss might present as dry skin and mucus membranes. </span><span class="segment" data-start="710.08" data-end="716.16" title="11:50">10% loss would lead to cool peripheries, depressed fontanelle and oliguria. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="716.96"><span class="t-timestamp">11:56</span></div>
-  <div class="t-body"><span class="segment" data-start="716.96" data-end="725.2" title="11:56">15% losses would lead to changes in conscious level and hypotension. Replacement is calculated as </span><span class="segment" data-start="725.2" data-end="731.92" title="12:05">10mph multiplied by the percentage deficit. This should be given over 24 hours. </span><span class="segment" data-start="732.08" data-end="739.6" title="12:12">What fluids might not be appropriate for children? This question is testing to see whether you are </span><span class="segment" data-start="739.6" data-end="744.64" title="12:19">aware of any recent changes in practice due to safety alerts and that you are keeping up to date with </span><span class="segment" data-start="744.64" data-end="756.32" title="12:24">the literature. Hypotonic fluids, such as 0.18% sodium chloride, with 4% glucose, are no longer </span><span class="segment" data-start="756.32" data-end="764.96" title="12:36">recommended for pediatric patients since the NPSA report in 2007. This report highlighted the </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="764.96"><span class="t-timestamp">12:44</span></div>
-  <div class="t-body"><span class="segment" data-start="764.96" data-end="772.0" title="12:44">link between hyponatremia and serious injury or death in patients receiving these solutions. </span><span class="segment" data-start="772.88" data-end="781.04" title="12:52">Surgery, pain and dehydration all stimulate ADH release which increases water reuptake </span><span class="segment" data-start="781.04" data-end="789.36" title="13:01">and worsens the risk of hyponatremia. Despite this advice, dextrose solutions do need to be given </span><span class="segment" data-start="789.36" data-end="795.52" title="13:09">to neonates or children below the third centile for weight since they are at risk of severe </span><span class="segment" data-start="795.52" data-end="802.56" title="13:15">hypoglycemia. Close monitoring of blood glucose and sodium levels are required in these cases. </span><span class="segment" data-start="804.56" data-end="806.96" title="13:24">Can you tell me anything about hemoglobin and neonates? </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="807.44"><span class="t-timestamp">13:27</span></div>
-  <div class="t-body"><span class="segment" data-start="807.44" data-end="816.24" title="13:27">The fetal oxyhemoglobin curve is shifted to the left due to a reduction in 2-3 DPG. </span><span class="segment" data-start="816.24" data-end="822.16" title="13:36">It is therefore better suited to take up oxygen at the lower partial pressures present in the </span><span class="segment" data-start="822.16" data-end="830.4" title="13:42">placenta but oxygen is also less readily released. In order to maintain oxygenation to the tissues, </span><span class="segment" data-start="830.4" data-end="836.96" title="13:50">the neonate has a high hemoglobin concentration of about 17 grams per deciliter. </span><span class="segment" data-start="836.96" data-end="844.24" title="13:56">The blood volume is increased and the cardiac output is high. A physiological anemia occurs at </span><span class="segment" data-start="844.24" data-end="849.68" title="14:04">about three months when fetal hemoglobin is replaced by adult HBA. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="851.68"><span class="t-timestamp">14:11</span></div>
-  <div class="t-body"><span class="segment" data-start="851.68" data-end="854.08" title="14:11">When are you considering transfusing a bleeding infant? </span><span class="segment" data-start="854.32" data-end="862.96" title="14:14">Generally, I would give blood if the hematocrit felt less than 25 percent or the estimated </span><span class="segment" data-start="862.96" data-end="866.56" title="14:22">blood loss was greater than 20 percent of the blood volume. </span><span class="segment" data-start="866.56" data-end="871.12" title="14:26">What about changes that occur to clotting factors and platelets? </span><span class="segment" data-start="871.12" data-end="879.92" title="14:31">The vitamin K dependent clotting factors, 2, 7 and 9, are deficient in the first few months. </span><span class="segment" data-start="880.8" data-end="886.8" title="14:40">Therefore, vitamin K is given to newborn babies. Placidluc function is also reduced. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="888.16"><span class="t-timestamp">14:48</span></div>
-  <div class="t-body"><span class="segment" data-start="888.16" data-end="891.12" title="14:48">Why are neonates and infants at risk of hypothermia? </span><span class="segment" data-start="892.48" data-end="899.92" title="14:52">The pediatric patient is at risk of hypothermia due to increased heat loss and poor compensatory </span><span class="segment" data-start="899.92" data-end="907.68" title="14:59">mechanisms. Heat is lost by increased thermal conduction from thin skin and lower levels of body fat. </span><span class="segment" data-start="908.64" data-end="915.6" title="15:08">A high body surface area to weight ratio and increased minute ventilation further contributes </span><span class="segment" data-start="915.6" data-end="922.0" title="15:15">to the loss. Infants less than three months old undergo non-shivering thermogenesis. </span><span class="segment" data-start="923.12" data-end="929.92" title="15:23">Production of heat from brown fat is inefficient and actually increases oxygen consumption. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="930.88"><span class="t-timestamp">15:30</span></div>
-  <div class="t-body"><span class="segment" data-start="930.88" data-end="937.52" title="15:30">In older infants and children, shivering is ineffective due to limited muscle mass. </span><span class="segment" data-start="937.6" data-end="943.36" title="15:37">Veso-constriction is also poor. Why is this important to the anesthetist? </span><span class="segment" data-start="944.32" data-end="947.6" title="15:44">This question could also lead on to the effects of hypothermia. </span><span class="segment" data-start="948.24" data-end="953.44" title="15:48">This is covered in the hypothermia podcast and only a brief summary is given in the following answer. </span><span class="segment" data-start="954.88" data-end="962.48" title="15:54">It is vital to pay careful attention to temperature and warming since hypothermia can cause large </span><span class="segment" data-start="962.48" data-end="970.64" title="16:02">increases in oxygen consumption and detrimental effects on cardiac output, nervous and hematological </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="970.64"><span class="t-timestamp">16:10</span></div>
-  <div class="t-body"><span class="segment" data-start="970.64" data-end="978.0" title="16:10">systems. As anesthetists, we can avoid this by monitoring body temperature and considering </span><span class="segment" data-start="978.0" data-end="986.16" title="16:18">covering, avoiding exposure, increasing ambient temperatures, heating covers, warming fluids, </span><span class="segment" data-start="986.24" data-end="990.08" title="16:26">heat and moisture exchanges and to circle breathing systems. </span><span class="segment" data-start="992.24" data-end="994.72" title="16:32">Can you tell me about any changes in the central nervous system? </span><span class="segment" data-start="996.56" data-end="1002.72" title="16:36">In neonates and infants, the anterior fontanel may be used to assess the intracranial pressure. </span><span class="segment" data-start="1003.36" data-end="1012.08" title="16:43">This ossifies by about 18 months. The cerebral blood flow is lower in a neonate, about 50 </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="1012.08"><span class="t-timestamp">16:52</span></div>
-  <div class="t-body"><span class="segment" data-start="1012.08" data-end="1019.44" title="16:52">mils per 100 grams per minute. It then rises significantly in childhood to about 100 mils per </span><span class="segment" data-start="1019.44" data-end="1024.48" title="16:59">hundred grams per minute before returning to the lower levels during adulthood. </span><span class="segment" data-start="1025.68" data-end="1032.96" title="17:05">Cerebral oxygen consumption is also much higher during childhood, reaching values of 5.8 </span><span class="segment" data-start="1032.96" data-end="1040.4" title="17:12">mils per 100 grams per minute compared to adult levels of 3.5 mils per 100 grams per minute. </span><span class="segment" data-start="1040.88" data-end="1048.88" title="17:20">The blood brain barrier is in complete at birth. The volume of cerebrospinal fluid is proportionally </span><span class="segment" data-start="1048.88" data-end="1057.2" title="17:28">larger in infants than adults, for rather than 2 mils per kilo. At term, the spinal cord terminates </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="1057.2"><span class="t-timestamp">17:37</span></div>
-  <div class="t-body"><span class="segment" data-start="1057.2" data-end="1066.4" title="17:37">at L3. It then recedes to L1-2 by adolescence. The sacral hiatus is large and not ossified, </span><span class="segment" data-start="1066.4" data-end="1069.76" title="17:46">making it an attractive location for cordal anesthesia. </span><span class="segment" data-start="1070.8" data-end="1077.68" title="17:50">Myelination is incomplete until 1-3 years of age. The sympathetic nervous system is not </span><span class="segment" data-start="1077.68" data-end="1082.72" title="17:57">fully developed until 6 years and so bradycardias are relatively common. </span><span class="segment" data-start="1084.48" data-end="1088.4" title="18:04">How do the actions of general anesthetic agents differ in the pediatric patient? </span><span class="segment" data-start="1088.8" data-end="1097.84" title="18:08">With regards to the inhalational agents, both induction and emergence are more rapid due to the </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="1097.84"><span class="t-timestamp">18:17</span></div>
-  <div class="t-body"><span class="segment" data-start="1097.84" data-end="1105.2" title="18:17">greater alveolar ventilation. Minimum alveolar concentration is reduced in neonates, whilst in </span><span class="segment" data-start="1105.2" data-end="1113.2" title="18:25">infants and children it increases by a further 30% of that of adults. In neonates, the immature </span><span class="segment" data-start="1113.2" data-end="1119.84" title="18:33">blood brain barrier and reduced metabolism leads to increased sensitivity to barbiturates and </span><span class="segment" data-start="1119.84" data-end="1126.4" title="18:39">opioids. Reduced doses are required. In older children, higher doses are needed. </span><span class="segment" data-start="1127.68" data-end="1135.04" title="18:47">Prophefall infusions are not licensed for children below 3 years of age due to reports of neurological, </span><span class="segment" data-start="1135.04" data-end="1138.16" title="18:55">cardiac, renal and hepatic impairment. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="1139.04"><span class="t-timestamp">18:59</span></div>
-  <div class="t-body"><span class="segment" data-start="1139.04" data-end="1142.08" title="18:59">Do the muscle relaxants also have different effects? </span><span class="segment" data-start="1144.0" data-end="1150.96" title="19:04">Neonates and infants have increased sensitivity to muscle relaxants at the neuromuscular junction. </span><span class="segment" data-start="1151.52" data-end="1156.72" title="19:11">A similar loading dose to adults needs to be given due to dilution of the drug by the </span><span class="segment" data-start="1156.72" data-end="1164.0" title="19:16">larger volume of distribution. The reduced glomerular filtration rate, clearance and increased </span><span class="segment" data-start="1164.08" data-end="1170.88" title="19:24">sensitivity leads to prolonged effects. What can you tell me about the changes to the renal system? </span><span class="segment" data-start="1172.96" data-end="1179.92" title="19:32">The glomerular filtration rate and renal blood flow are low at birth and gradually increase. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="1179.92"><span class="t-timestamp">19:39</span></div>
-  <div class="t-body"><span class="segment" data-start="1179.92" data-end="1186.48" title="19:39">The kidney initially has limited concentrating ability and mechanisms to maintain fluid, </span><span class="segment" data-start="1186.48" data-end="1194.0" title="19:46">electrolyte and acid-based homeostasis. Values reach those of the adult by about 12 months. </span><span class="segment" data-start="1194.8" data-end="1202.56" title="19:54">Infants cannot handle large water or sodium loads. Uranoutput is normally 1-2 mils per kilo per hour. </span><span class="segment" data-start="1203.68" data-end="1204.72" title="20:03">And what about the liver? </span><span class="segment" data-start="1206.56" data-end="1213.12" title="20:06">At birth, the vitamin K dependent clotting factors are low as our glucose storage levels. </span><span class="segment" data-start="1214.0" data-end="1219.84" title="20:14">Physiological jaundice may occur near and ataly due to increased red blood cell breakdown </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="1219.84"><span class="t-timestamp">20:19</span></div>
-  <div class="t-body"><span class="segment" data-start="1219.84" data-end="1229.12" title="20:19">with limited ability to metabolize unconjugated bilirubin. Phase 1 and 2 reactions take 2-3 months </span><span class="segment" data-start="1229.12" data-end="1235.6" title="20:29">to reach full activity. Can you give me some guidelines for fasting for the pediatric patient? </span><span class="segment" data-start="1235.84" data-end="1244.32" title="20:35">The current guidelines in my hospital are that no food should be consumed for 6 hours preceding </span><span class="segment" data-start="1244.32" data-end="1251.68" title="20:44">the operation, including formula and cow's milk. No breast milk should be taken for 4 hours </span><span class="segment" data-start="1251.68" data-end="1258.48" title="20:51">and no clear liquid for 2 hours. Finally, what psychological changes might occur and how might </span><span class="segment" data-start="1258.48" data-end="1266.48" title="20:58">they affect the ineastest? In infants less than 6 months, no separation anxiety occurs. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="1267.28"><span class="t-timestamp">21:07</span></div>
-  <div class="t-body"><span class="segment" data-start="1267.28" data-end="1273.76" title="21:07">From 6 months to 4 years, behavior is unpredictable and separation anxiety is seen. </span><span class="segment" data-start="1274.48" data-end="1278.72" title="21:14">It is important to try and keep the care with the patient as much as possible. </span><span class="segment" data-start="1279.68" data-end="1284.0" title="21:19">School children are upset by the thought of the surgical procedure, </span><span class="segment" data-start="1284.0" data-end="1290.88" title="21:24">its mutilating effects and pain. We need to bear this in mind when explaining the induction, </span><span class="segment" data-start="1290.88" data-end="1297.92" title="21:30">operation and post-operative analgesia. With regards to adolescents, they find the loss of </span><span class="segment" data-start="1297.92" data-end="1305.68" title="21:37">control and thought of pain upsetting. Their reliance on a career is varied. It is important to use </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="1305.68"><span class="t-timestamp">21:45</span></div>
-  <div class="t-body"><span class="segment" data-start="1305.68" data-end="1312.32" title="21:45">the preoperative visit as an opportunity to assess the child and take time to build up a rapport </span><span class="segment" data-start="1312.32" data-end="1314.32" title="21:52">with both them and their carers. </span></div>
+<div class="preamble-block"><span class="segment a-seg" data-start="0.0" data-end="2.4" title="0:00">Development in infancy and childhood. </span><span class="segment a-seg" data-start="2.4" data-end="6.56" title="0:02">The developmental changes that occur during infancy and childhood </span><span class="segment a-seg" data-start="6.56" data-end="9.84" title="0:06">have significant implications to the anesthetist. </span><span class="segment a-seg" data-start="9.84" data-end="13.52" title="0:09">They are regularly examined in clinical and science viabuses. </span><span class="segment a-seg" data-start="13.52" data-end="18.56" title="0:13">A good understanding of the anatomical and physiological changes is vital. </span><span class="segment a-seg" data-start="18.56" data-end="22.08" title="0:18">Let's start by classifying the different ages of pediatric patients. </span></div>
+<div class="qa-pair">
+<div class="q-block" data-start="22.08">
+  <div class="q-label">Q1</div>
+  <div class="q-body"><span class="segment q-seg" data-start="22.08" data-end="27.2" title="0:22">Can you tell me how we decide when a neonate has become an infant or child? </span></div>
 </div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="27.2" data-end="31.76" title="0:27">A neonate is a baby within 44 weeks from the date of conception. </span></li>
+<li><span class="segment a-seg" data-start="32.56" data-end="39.68" title="0:32">This description therefore includes premature babies and full-term babies up to one month old. </span></li>
+<li><span class="segment a-seg" data-start="40.8" data-end="48.32" title="0:40">An infant is described as being over 44 weeks post-conceptual age and up to 12 months. </span></li>
+<li><span class="segment a-seg" data-start="48.88" data-end="55.44" title="0:48">A child is aged 1 to 12 years and adolescent is 13 to 16 </span></li>
+<li><span class="segment a-seg" data-start="55.52" data-end="61.2" title="0:55">and an adult is over 16. Good. That will help us to further describe the changes that occur </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="61.2">
+  <div class="q-label">Q2</div>
+  <div class="q-body"><span class="segment q-seg" data-start="61.2" data-end="64.72" title="1:01">during development. How might you classify those changes? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="66.48" data-end="72.0" title="1:06">The changes may be divided into physiological and anatomical alterations. </span></li>
+<li><span class="segment a-seg" data-start="72.64" data-end="76.56" title="1:12">They may also be further subdivided into the body systems. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="79.2">
+  <div class="q-label">Q3</div>
+  <div class="q-body"><span class="segment q-seg" data-start="79.2" data-end="83.44" title="1:19">Can you talk me through the anatomical differences between a pediatric and adult patient </span><span class="segment q-seg" data-start="83.52" data-end="85.662" title="1:23">that occur in the respiratory system? </span><span class="segment q-seg" data-start="85.662" data-end="88.16" title="1:25">Why are these important to the anesthetist? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="88.72" data-end="93.68" title="1:28">It might help to remember everything by starting at the head and then working your way down the </span></li>
+<li><span class="segment a-seg" data-start="93.68" data-end="102.56" title="1:33">respiratory system. The infant has a large head with a prominent occipote. The neck is short </span></li>
+<li><span class="segment a-seg" data-start="102.56" data-end="109.04" title="1:42">and the mandible relatively small. The tongue and epiglottis are large which can predispose to </span></li>
+<li><span class="segment a-seg" data-start="109.12" data-end="116.4" title="1:49">airway obstruction. The larynx is at the level of the third or fourth cervical vertebrae in infants. </span></li>
+<li><span class="segment a-seg" data-start="117.12" data-end="122.72" title="1:57">This is high when compared to the adult level of the fifth or sixth cervical vertebrae. </span></li>
+<li><span class="segment a-seg" data-start="123.76" data-end="129.84" title="2:03">The higher position of the larynx and the shape of the epiglottis mean that it may be easier to </span></li>
+<li><span class="segment a-seg" data-start="129.84" data-end="134.64" title="2:09">intubate an infant with a straight luringous goat blade rather than a curved blade. </span></li>
+<li><span class="segment a-seg" data-start="135.2" data-end="141.84" title="2:15">The narrowest part of the pediatric airway is the crycoid cartilage rather than the cords as in </span></li>
+<li><span class="segment a-seg" data-start="141.84" data-end="148.64" title="2:21">the adult. This has led to the use of uncuffed tubes for children less than 10 years old, </span></li>
+<li><span class="segment a-seg" data-start="148.64" data-end="155.6" title="2:28">since the crycoid cartilage acts as a cuff. Uncuffed tubes are thought to reduce the risk of </span></li>
+<li><span class="segment a-seg" data-start="155.6" data-end="164.56" title="2:35">baratoma to the tracheal lumen. The size of tracheal tube for a neonate is approximately 3 to 3.5 </span></li>
+<li><span class="segment a-seg" data-start="164.56" data-end="172.72" title="2:44">millimeters in turn or diameter, although this may vary. A small leak should always be present </span></li>
+<li><span class="segment a-seg" data-start="172.72" data-end="179.04" title="2:52">to ensure minimal risk of trauma to the tracheal lining. The formula for guiding tracheal tube </span></li>
+<li><span class="segment a-seg" data-start="179.04" data-end="187.36" title="2:59">size is aged divided by 4 plus 4. The trachea may be less than 4 centimeters in length in the neonate. </span></li>
+<li><span class="segment a-seg" data-start="188.08" data-end="193.92" title="3:08">This can lead to endobronculine intubation if the anesthetist is not meticulous </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="193.92">
+  <div class="q-label">Q4</div>
+  <div class="q-body"><span class="segment q-seg" data-start="193.92" data-end="200.56" title="3:13">when positioning and securing the endotracheal tube. The formula for the length of an orotracheal </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="200.56" data-end="209.68" title="3:20">tube is aged divided by 2 plus 12. This gives the length at the lips. For nasal tubes, the number </span></li>
+<li><span class="segment a-seg" data-start="209.68" data-end="218.8" title="3:29">to add is 15 rather than 12. The carina branches at the same angle on both sides of the chest in </span></li>
+<li><span class="segment a-seg" data-start="218.8" data-end="226.16" title="3:38">infants. The airways are also much smaller in diameter than in adults. Any additional narrowing </span></li>
+<li><span class="segment a-seg" data-start="226.16" data-end="233.04" title="3:46">will lead to a marked increase in resistance to airflow. In infants, the intercostal muscles and </span></li>
+<li><span class="segment a-seg" data-start="233.04" data-end="239.76" title="3:53">the diaphragm are weaker with fewer type 1 fibers. They therefore fatigue faster than adults. </span></li>
+<li><span class="segment a-seg" data-start="240.56" data-end="246.48" title="4:00">The diaphragm is the main muscle responsible for respiration and so anything that compromises </span></li>
+<li><span class="segment a-seg" data-start="246.48" data-end="253.84" title="4:06">its efficiency such as abdominal distension will cause breathing difficulties. The chest wall </span></li>
+<li><span class="segment a-seg" data-start="253.84" data-end="259.12" title="4:13">is also more compliant and so recession is a marker of respiratory effort. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="259.92">
+  <div class="q-label">Q5</div>
+  <div class="q-body"><span class="segment q-seg" data-start="259.92" data-end="263.04" title="4:19">What about the physiological changes that occur in the respiratory system? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="264.96" data-end="272.0" title="4:24">The pediatric patient has a much higher oxygen consumption than an adult. A neonate has an </span></li>
+<li><span class="segment a-seg" data-start="272.0" data-end="280.48" title="4:32">oxygen consumption of 6 to 9 mils per kilo per minute when compared to the adult 2 to 3 mils per kilo per </span></li>
+<li><span class="segment a-seg" data-start="280.48" data-end="288.56" title="4:40">minute. The alveola minute volume is increased in order to meet this increased demand. Since the </span></li>
+<li><span class="segment a-seg" data-start="288.56" data-end="296.0" title="4:48">tidal volume of approximately 7 mils per kilo is similar for pediatric and adult patients, </span></li>
+<li><span class="segment a-seg" data-start="296.0" data-end="303.84" title="4:56">the increase is achieved by changes in respiratory rate. A neonate's respiratory rate ranges from </span></li>
+<li><span class="segment a-seg" data-start="303.84" data-end="312.96" title="5:03">40 to 60 breaths per minute, a child's 20 to 30 and the adult range is 12 to 24 breaths per minute. </span></li>
+<li><span class="segment a-seg" data-start="312.96" data-end="320.72" title="5:12">The significant difference in oxygen consumption means that neonates will desaturate faster than adults. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="320.8">
+  <div class="q-label">Q6</div>
+  <div class="q-body"><span class="segment q-seg" data-start="320.8" data-end="326.4" title="5:20">Can you talk me through the changes in functional residual capacity and closing capacity? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="328.8" data-end="336.0" title="5:28">The functional residual capacity is similar for pediatric and adult patients. The value is about </span></li>
+<li><span class="segment a-seg" data-start="336.0" data-end="344.0" title="5:36">30 mils per kilo. In infants, neonates and young children, closing capacity encroaches on the </span></li>
+<li><span class="segment a-seg" data-start="344.0" data-end="349.44" title="5:44">functional residual capacity, leading to airway closure at the end of exploration. </span></li>
+<li><span class="segment a-seg" data-start="350.24" data-end="356.08" title="5:50">In order to counteract this, partial adduction of the cords occurs during exploration, </span></li>
+<li><span class="segment a-seg" data-start="356.08" data-end="363.6" title="5:56">producing physiological CPAP. When an esoteric and infant or young child using a spontaneously </span></li>
+<li><span class="segment a-seg" data-start="363.6" data-end="369.28" title="6:03">breathing technique, CPAP will aid oxygenation and reduce the work of breathing. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="369.68">
+  <div class="q-label">Q7</div>
+  <div class="q-body"><span class="segment q-seg" data-start="369.68" data-end="376.8" title="6:09">When a pediatric patient is fully ventilated, the respiratory rate and the tidal volume should </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="376.8" data-end="383.76" title="6:16">be set appropriately. Positive end-experatory pressure can be used to avoid airway closure </span></li>
+<li><span class="segment a-seg" data-start="383.76" data-end="390.32" title="6:23">and improve oxygenation. What can you tell me about the control of respiration in a neonatal </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="390.32">
+  <div class="q-label">Q8</div>
+  <div class="q-body"><span class="segment q-seg" data-start="390.32" data-end="391.6" title="6:30">young infant? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="391.6" data-end="398.64" title="6:31">The neonatal respiratory control is immature. The peripheral chemo receptor response </span></li>
+<li><span class="segment a-seg" data-start="398.64" data-end="405.84" title="6:38">to hypoxia and to the central chemo receptor response to carbon dioxide are both weak and blunted. </span></li>
+<li><span class="segment a-seg" data-start="406.64" data-end="414.64" title="6:46">Appneas may occur up to 60 weeks post-gestational age. These patients need to be monitored post-operatively </span></li>
+<li><span class="segment a-seg" data-start="414.64" data-end="420.32" title="6:54">within Appnea monitor. Now let's move on to the cardiovascular system. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="421.44">
+  <div class="q-label">Q9</div>
+  <div class="q-body"><span class="segment q-seg" data-start="421.44" data-end="423.92" title="7:01">Can you briefly summarize the changes that occur at birth? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="424.64" data-end="430.0" title="7:04">This topic is also discussed in the neonatal physiology podcast. Try and talk through the </span></li>
+<li><span class="segment a-seg" data-start="430.0" data-end="434.64" title="7:10">changes as they occur so that the examiner knows that you have a strong grasp of the basics. </span></li>
+<li><span class="segment a-seg" data-start="436.88" data-end="444.56" title="7:16">At birth, the site of gas transfer switches from the placenta to the lungs. As the first breath is </span></li>
+<li><span class="segment a-seg" data-start="444.56" data-end="453.12" title="7:24">taken, the lungs expand and the pulmonary vascular resistance falls by 80%. Pulmonary blood flow </span></li>
+<li><span class="segment a-seg" data-start="453.12" data-end="460.24" title="7:33">increases dramatically. The systemic vascular resistance increases due to the exclusion of the </span></li>
+<li><span class="segment a-seg" data-start="460.24" data-end="468.0" title="7:40">large low resistance placental vascular bed when the umbilical cord is clamped. The foreman ovale </span></li>
+<li><span class="segment a-seg" data-start="468.0" data-end="473.12" title="7:48">closes because of the reversal of the pressure gradient between the left and right ventricles. </span></li>
+<li><span class="segment a-seg" data-start="474.0" data-end="479.68" title="7:54">Blood flow through the ductus arteriosus is reversed due to the reduction in pulmonary </span></li>
+<li><span class="segment a-seg" data-start="479.68" data-end="487.04" title="7:59">resistance and increase in systemic vascular resistance. The increase in the partial pressure </span></li>
+<li><span class="segment a-seg" data-start="487.04" data-end="493.92" title="8:07">of oxygen and reduction in prostaglandin E2 stimulates closure of the ductus arteriosus. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="495.84">
+  <div class="q-label">Q10</div>
+  <div class="q-body"><span class="segment q-seg" data-start="495.84" data-end="499.68" title="8:15">Over what time period the foreman ovale inductor arteriosus close? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="501.84" data-end="507.04" title="8:21">The foreman ovale closes as soon as the pressure reverses within the heart, </span></li>
+<li><span class="segment a-seg" data-start="507.04" data-end="513.04" title="8:27">but it can reopen within the next five years of life. The ductus arteriosus </span></li>
+<li><span class="segment a-seg" data-start="513.04" data-end="518.08" title="8:33">contracts in the first few days of life and then fibrosis within a month. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="519.6">
+  <div class="q-label">Q11</div>
+  <div class="q-body"><span class="segment q-seg" data-start="519.6" data-end="523.92" title="8:39">Can you first tell me about the anatomical and physiological changes to the cardiovascular system? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="525.84" data-end="534.4" title="8:45">The neonatal heart has uncompliant stiff ventricles. At birth, the right and left ventricles are </span></li>
+<li><span class="segment a-seg" data-start="534.4" data-end="540.8" title="8:54">similar in size. The cardiac output is high to meet the high oxygen consumption. </span></li>
+<li><span class="segment a-seg" data-start="541.52" data-end="553.04" title="9:01">In a neonate, cardiac output is 200 to 250mph compared to 80mph in an adult. Stroke volume is </span></li>
+<li><span class="segment a-seg" data-start="553.04" data-end="559.92" title="9:13">relatively fixed and so the only way to increase the cardiac output is by increasing the heart rate. </span></li>
+<li><span class="segment a-seg" data-start="560.72" data-end="568.24" title="9:20">The average heart rate in the neonate is 120 beats per minute, falling to 100 in childhood </span></li>
+<li><span class="segment a-seg" data-start="568.24" data-end="576.88" title="9:28">and 75 as an adult. The blood pressure is lower in the pediatric population. A neonate would </span></li>
+<li><span class="segment a-seg" data-start="576.88" data-end="585.2" title="9:36">have a systolic pressure of 50 to 90mph of mercury, a child 95 to 110mph of mercury, </span></li>
+<li><span class="segment a-seg" data-start="585.2" data-end="594.4" title="9:45">and an adult the same 95 to 110mph of mercury. Bradicardias are poorly tolerated in pediatric </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="594.4">
+  <div class="q-label">Q12</div>
+  <div class="q-body"><span class="segment q-seg" data-start="594.4" data-end="601.84" title="9:54">patients due to the concomitant fall in cardiac output. What about the hematological system? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="604.16" data-end="609.92" title="10:04">The blood volume is greater in a neonate than an adult. The neonate value is approximately </span></li>
+<li><span class="segment a-seg" data-start="609.92" data-end="620.48" title="10:09">9mph, falling to 80mph in a child and then 70mph in an adult. Extracellular fluid is greater </span></li>
+<li><span class="segment a-seg" data-start="620.48" data-end="628.32" title="10:20">in the neonate. 40% of body water is extracellular in the neonate compared to about 20% in the adult. </span></li>
+<li><span class="segment a-seg" data-start="629.12" data-end="635.84" title="10:29">By the age of 2, this difference has disappeared. The greater metabolic rate results in a </span></li>
+<li><span class="segment a-seg" data-start="635.84" data-end="643.04" title="10:35">faster turnover of extracellular fluid in the neonate and infant. Interruptions in normal intake </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="643.04">
+  <div class="q-label">Q13</div>
+  <div class="q-body"><span class="segment q-seg" data-start="643.04" data-end="649.92" title="10:43">can lead to the rapid onset of dehydration. How would you approach fluid management in a child? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="652.4" data-end="659.84" title="10:52">I would consider fluids in terms of maintenance, replacement and deficit. With regards to </span></li>
+<li><span class="segment a-seg" data-start="659.84" data-end="666.96" title="10:59">maintenance fluids, I would use the 4 to 1 rule. This means for the first 10kg of the weight of </span></li>
+<li><span class="segment a-seg" data-start="666.96" data-end="676.64" title="11:06">the child, I will require to give 4mph per hour. For the next 10kg, 2mph per hour, and for every </span></li>
+<li><span class="segment a-seg" data-start="676.64" data-end="686.8" title="11:16">subsequent 10kg, 1mph per hour. Replacement fluid includes all ongoing losses. These losses should </span></li>
+<li><span class="segment a-seg" data-start="686.8" data-end="693.76" title="11:26">be closely monitored, for example weighing swabs and measuring suction fluid. For abdominal </span></li>
+<li><span class="segment a-seg" data-start="693.76" data-end="701.84" title="11:33">surgery, approximately 10mph per kilo per hour is lost. Calculation of the fluid deficit requires </span></li>
+<li><span class="segment a-seg" data-start="701.84" data-end="709.28" title="11:41">clinical assessment of the child. A 5% loss might present as dry skin and mucus membranes. </span></li>
+<li><span class="segment a-seg" data-start="710.08" data-end="716.16" title="11:50">10% loss would lead to cool peripheries, depressed fontanelle and oliguria. </span></li>
+<li><span class="segment a-seg" data-start="716.96" data-end="725.2" title="11:56">15% losses would lead to changes in conscious level and hypotension. Replacement is calculated as </span></li>
+<li><span class="segment a-seg" data-start="725.2" data-end="731.92" title="12:05">10mph multiplied by the percentage deficit. This should be given over 24 hours. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="732.08">
+  <div class="q-label">Q14</div>
+  <div class="q-body"><span class="segment q-seg" data-start="732.08" data-end="735.619" title="12:12">What fluids might not be appropriate for children? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="735.619" data-end="739.6" title="12:15">This question is testing to see whether you are </span></li>
+<li><span class="segment a-seg" data-start="739.6" data-end="744.64" title="12:19">aware of any recent changes in practice due to safety alerts and that you are keeping up to date with </span></li>
+<li><span class="segment a-seg" data-start="744.64" data-end="756.32" title="12:24">the literature. Hypotonic fluids, such as 0.18% sodium chloride, with 4% glucose, are no longer </span></li>
+<li><span class="segment a-seg" data-start="756.32" data-end="764.96" title="12:36">recommended for pediatric patients since the NPSA report in 2007. This report highlighted the </span></li>
+<li><span class="segment a-seg" data-start="764.96" data-end="772.0" title="12:44">link between hyponatremia and serious injury or death in patients receiving these solutions. </span></li>
+<li><span class="segment a-seg" data-start="772.88" data-end="781.04" title="12:52">Surgery, pain and dehydration all stimulate ADH release which increases water reuptake </span></li>
+<li><span class="segment a-seg" data-start="781.04" data-end="789.36" title="13:01">and worsens the risk of hyponatremia. Despite this advice, dextrose solutions do need to be given </span></li>
+<li><span class="segment a-seg" data-start="789.36" data-end="795.52" title="13:09">to neonates or children below the third centile for weight since they are at risk of severe </span></li>
+<li><span class="segment a-seg" data-start="795.52" data-end="802.56" title="13:15">hypoglycemia. Close monitoring of blood glucose and sodium levels are required in these cases. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="804.56">
+  <div class="q-label">Q15</div>
+  <div class="q-body"><span class="segment q-seg" data-start="804.56" data-end="806.96" title="13:24">Can you tell me anything about hemoglobin and neonates? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="807.44" data-end="816.24" title="13:27">The fetal oxyhemoglobin curve is shifted to the left due to a reduction in 2-3 DPG. </span></li>
+<li><span class="segment a-seg" data-start="816.24" data-end="822.16" title="13:36">It is therefore better suited to take up oxygen at the lower partial pressures present in the </span></li>
+<li><span class="segment a-seg" data-start="822.16" data-end="830.4" title="13:42">placenta but oxygen is also less readily released. In order to maintain oxygenation to the tissues, </span></li>
+<li><span class="segment a-seg" data-start="830.4" data-end="836.96" title="13:50">the neonate has a high hemoglobin concentration of about 17 grams per deciliter. </span></li>
+<li><span class="segment a-seg" data-start="836.96" data-end="844.24" title="13:56">The blood volume is increased and the cardiac output is high. A physiological anemia occurs at </span></li>
+<li><span class="segment a-seg" data-start="844.24" data-end="849.68" title="14:04">about three months when fetal hemoglobin is replaced by adult HBA. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="851.68">
+  <div class="q-label">Q16</div>
+  <div class="q-body"><span class="segment q-seg" data-start="851.68" data-end="854.08" title="14:11">When are you considering transfusing a bleeding infant? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="854.32" data-end="862.96" title="14:14">Generally, I would give blood if the hematocrit felt less than 25 percent or the estimated </span></li>
+<li><span class="segment a-seg" data-start="862.96" data-end="866.56" title="14:22">blood loss was greater than 20 percent of the blood volume. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="866.56">
+  <div class="q-label">Q17</div>
+  <div class="q-body"><span class="segment q-seg" data-start="866.56" data-end="871.12" title="14:26">What about changes that occur to clotting factors and platelets? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="871.12" data-end="879.92" title="14:31">The vitamin K dependent clotting factors, 2, 7 and 9, are deficient in the first few months. </span></li>
+<li><span class="segment a-seg" data-start="880.8" data-end="886.8" title="14:40">Therefore, vitamin K is given to newborn babies. Placidluc function is also reduced. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="888.16">
+  <div class="q-label">Q18</div>
+  <div class="q-body"><span class="segment q-seg" data-start="888.16" data-end="891.12" title="14:48">Why are neonates and infants at risk of hypothermia? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="892.48" data-end="899.92" title="14:52">The pediatric patient is at risk of hypothermia due to increased heat loss and poor compensatory </span></li>
+<li><span class="segment a-seg" data-start="899.92" data-end="907.68" title="14:59">mechanisms. Heat is lost by increased thermal conduction from thin skin and lower levels of body fat. </span></li>
+<li><span class="segment a-seg" data-start="908.64" data-end="915.6" title="15:08">A high body surface area to weight ratio and increased minute ventilation further contributes </span></li>
+<li><span class="segment a-seg" data-start="915.6" data-end="922.0" title="15:15">to the loss. Infants less than three months old undergo non-shivering thermogenesis. </span></li>
+<li><span class="segment a-seg" data-start="923.12" data-end="929.92" title="15:23">Production of heat from brown fat is inefficient and actually increases oxygen consumption. </span></li>
+<li><span class="segment a-seg" data-start="930.88" data-end="937.52" title="15:30">In older infants and children, shivering is ineffective due to limited muscle mass. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="937.6">
+  <div class="q-label">Q19</div>
+  <div class="q-body"><span class="segment q-seg" data-start="937.6" data-end="943.36" title="15:37">Veso-constriction is also poor. Why is this important to the anesthetist? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="944.32" data-end="947.6" title="15:44">This question could also lead on to the effects of hypothermia. </span></li>
+<li><span class="segment a-seg" data-start="948.24" data-end="953.44" title="15:48">This is covered in the hypothermia podcast and only a brief summary is given in the following answer. </span></li>
+<li><span class="segment a-seg" data-start="954.88" data-end="962.48" title="15:54">It is vital to pay careful attention to temperature and warming since hypothermia can cause large </span></li>
+<li><span class="segment a-seg" data-start="962.48" data-end="970.64" title="16:02">increases in oxygen consumption and detrimental effects on cardiac output, nervous and hematological </span></li>
+<li><span class="segment a-seg" data-start="970.64" data-end="978.0" title="16:10">systems. As anesthetists, we can avoid this by monitoring body temperature and considering </span></li>
+<li><span class="segment a-seg" data-start="978.0" data-end="986.16" title="16:18">covering, avoiding exposure, increasing ambient temperatures, heating covers, warming fluids, </span></li>
+<li><span class="segment a-seg" data-start="986.24" data-end="990.08" title="16:26">heat and moisture exchanges and to circle breathing systems. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="992.24">
+  <div class="q-label">Q20</div>
+  <div class="q-body"><span class="segment q-seg" data-start="992.24" data-end="994.72" title="16:32">Can you tell me about any changes in the central nervous system? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="996.56" data-end="1002.72" title="16:36">In neonates and infants, the anterior fontanel may be used to assess the intracranial pressure. </span></li>
+<li><span class="segment a-seg" data-start="1003.36" data-end="1012.08" title="16:43">This ossifies by about 18 months. The cerebral blood flow is lower in a neonate, about 50 </span></li>
+<li><span class="segment a-seg" data-start="1012.08" data-end="1019.44" title="16:52">mils per 100 grams per minute. It then rises significantly in childhood to about 100 mils per </span></li>
+<li><span class="segment a-seg" data-start="1019.44" data-end="1024.48" title="16:59">hundred grams per minute before returning to the lower levels during adulthood. </span></li>
+<li><span class="segment a-seg" data-start="1025.68" data-end="1032.96" title="17:05">Cerebral oxygen consumption is also much higher during childhood, reaching values of 5.8 </span></li>
+<li><span class="segment a-seg" data-start="1032.96" data-end="1040.4" title="17:12">mils per 100 grams per minute compared to adult levels of 3.5 mils per 100 grams per minute. </span></li>
+<li><span class="segment a-seg" data-start="1040.88" data-end="1048.88" title="17:20">The blood brain barrier is in complete at birth. The volume of cerebrospinal fluid is proportionally </span></li>
+<li><span class="segment a-seg" data-start="1048.88" data-end="1057.2" title="17:28">larger in infants than adults, for rather than 2 mils per kilo. At term, the spinal cord terminates </span></li>
+<li><span class="segment a-seg" data-start="1057.2" data-end="1066.4" title="17:37">at L3. It then recedes to L1-2 by adolescence. The sacral hiatus is large and not ossified, </span></li>
+<li><span class="segment a-seg" data-start="1066.4" data-end="1069.76" title="17:46">making it an attractive location for cordal anesthesia. </span></li>
+<li><span class="segment a-seg" data-start="1070.8" data-end="1077.68" title="17:50">Myelination is incomplete until 1-3 years of age. The sympathetic nervous system is not </span></li>
+<li><span class="segment a-seg" data-start="1077.68" data-end="1082.72" title="17:57">fully developed until 6 years and so bradycardias are relatively common. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="1084.48">
+  <div class="q-label">Q21</div>
+  <div class="q-body"><span class="segment q-seg" data-start="1084.48" data-end="1088.4" title="18:04">How do the actions of general anesthetic agents differ in the pediatric patient? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="1088.8" data-end="1097.84" title="18:08">With regards to the inhalational agents, both induction and emergence are more rapid due to the </span></li>
+<li><span class="segment a-seg" data-start="1097.84" data-end="1105.2" title="18:17">greater alveolar ventilation. Minimum alveolar concentration is reduced in neonates, whilst in </span></li>
+<li><span class="segment a-seg" data-start="1105.2" data-end="1113.2" title="18:25">infants and children it increases by a further 30% of that of adults. In neonates, the immature </span></li>
+<li><span class="segment a-seg" data-start="1113.2" data-end="1119.84" title="18:33">blood brain barrier and reduced metabolism leads to increased sensitivity to barbiturates and </span></li>
+<li><span class="segment a-seg" data-start="1119.84" data-end="1126.4" title="18:39">opioids. Reduced doses are required. In older children, higher doses are needed. </span></li>
+<li><span class="segment a-seg" data-start="1127.68" data-end="1135.04" title="18:47">Prophefall infusions are not licensed for children below 3 years of age due to reports of neurological, </span></li>
+<li><span class="segment a-seg" data-start="1135.04" data-end="1138.16" title="18:55">cardiac, renal and hepatic impairment. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="1139.04">
+  <div class="q-label">Q22</div>
+  <div class="q-body"><span class="segment q-seg" data-start="1139.04" data-end="1142.08" title="18:59">Do the muscle relaxants also have different effects? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="1144.0" data-end="1150.96" title="19:04">Neonates and infants have increased sensitivity to muscle relaxants at the neuromuscular junction. </span></li>
+<li><span class="segment a-seg" data-start="1151.52" data-end="1156.72" title="19:11">A similar loading dose to adults needs to be given due to dilution of the drug by the </span></li>
+<li><span class="segment a-seg" data-start="1156.72" data-end="1164.0" title="19:16">larger volume of distribution. The reduced glomerular filtration rate, clearance and increased </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="1164.08">
+  <div class="q-label">Q23</div>
+  <div class="q-body"><span class="segment q-seg" data-start="1164.08" data-end="1170.88" title="19:24">sensitivity leads to prolonged effects. What can you tell me about the changes to the renal system? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="1172.96" data-end="1179.92" title="19:32">The glomerular filtration rate and renal blood flow are low at birth and gradually increase. </span></li>
+<li><span class="segment a-seg" data-start="1179.92" data-end="1186.48" title="19:39">The kidney initially has limited concentrating ability and mechanisms to maintain fluid, </span></li>
+<li><span class="segment a-seg" data-start="1186.48" data-end="1194.0" title="19:46">electrolyte and acid-based homeostasis. Values reach those of the adult by about 12 months. </span></li>
+<li><span class="segment a-seg" data-start="1194.8" data-end="1202.56" title="19:54">Infants cannot handle large water or sodium loads. Uranoutput is normally 1-2 mils per kilo per hour. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="1203.68">
+  <div class="q-label">Q24</div>
+  <div class="q-body"><span class="segment q-seg" data-start="1203.68" data-end="1204.72" title="20:03">And what about the liver? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="1206.56" data-end="1213.12" title="20:06">At birth, the vitamin K dependent clotting factors are low as our glucose storage levels. </span></li>
+<li><span class="segment a-seg" data-start="1214.0" data-end="1219.84" title="20:14">Physiological jaundice may occur near and ataly due to increased red blood cell breakdown </span></li>
+<li><span class="segment a-seg" data-start="1219.84" data-end="1229.12" title="20:19">with limited ability to metabolize unconjugated bilirubin. Phase 1 and 2 reactions take 2-3 months </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="1229.12">
+  <div class="q-label">Q25</div>
+  <div class="q-body"><span class="segment q-seg" data-start="1229.12" data-end="1235.6" title="20:29">to reach full activity. Can you give me some guidelines for fasting for the pediatric patient? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="1235.84" data-end="1244.32" title="20:35">The current guidelines in my hospital are that no food should be consumed for 6 hours preceding </span></li>
+<li><span class="segment a-seg" data-start="1244.32" data-end="1251.68" title="20:44">the operation, including formula and cow's milk. No breast milk should be taken for 4 hours </span></li>
+<li><span class="segment a-seg" data-start="1251.68" data-end="1258.48" title="20:51">and no clear liquid for 2 hours. Finally, what psychological changes might occur and how might </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="1258.48">
+  <div class="q-label">Q26</div>
+  <div class="q-body"><span class="segment q-seg" data-start="1258.48" data-end="1260.766" title="20:58">they affect the ineastest? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="1260.766" data-end="1266.48" title="21:00">In infants less than 6 months, no separation anxiety occurs. </span></li>
+<li><span class="segment a-seg" data-start="1267.28" data-end="1273.76" title="21:07">From 6 months to 4 years, behavior is unpredictable and separation anxiety is seen. </span></li>
+<li><span class="segment a-seg" data-start="1274.48" data-end="1278.72" title="21:14">It is important to try and keep the care with the patient as much as possible. </span></li>
+<li><span class="segment a-seg" data-start="1279.68" data-end="1284.0" title="21:19">School children are upset by the thought of the surgical procedure, </span></li>
+<li><span class="segment a-seg" data-start="1284.0" data-end="1290.88" title="21:24">its mutilating effects and pain. We need to bear this in mind when explaining the induction, </span></li>
+<li><span class="segment a-seg" data-start="1290.88" data-end="1297.92" title="21:30">operation and post-operative analgesia. With regards to adolescents, they find the loss of </span></li>
+<li><span class="segment a-seg" data-start="1297.92" data-end="1305.68" title="21:37">control and thought of pain upsetting. Their reliance on a career is varied. It is important to use </span></li>
+<li><span class="segment a-seg" data-start="1305.68" data-end="1312.32" title="21:45">the preoperative visit as an opportunity to assess the child and take time to build up a rapport </span></li>
+<li><span class="segment a-seg" data-start="1312.32" data-end="1314.32" title="21:52">with both them and their carers. </span></li>
+  </ul>
+</div>
+</div>
+
 </div>
 
 <div class="subtitle-bar">
-  <span class="subtitle-text empty" id="subtitle-text">Play audio to see live subtitles&#8230;</span>
+  <span id="subtitle-text" class="empty">Play audio to see live subtitles&#8230;</span>
 </div>
 
 <script>
-
-const audio    = document.getElementById('audio');
-const allSegs  = Array.from(document.querySelectorAll('.segment'));
-const allBlocks = Array.from(document.querySelectorAll('.t-block'));
+const audio      = document.getElementById('audio');
+const allSegs    = Array.from(document.querySelectorAll('.segment'));
 const subtitleEl = document.getElementById('subtitle-text');
-let activeSegEl   = null;
-let activeBlockEl = null;
-let searchMatches = [];
-let searchIdx     = 0;
+let activeSegEl  = null;
+let searchMatches = [], searchIdx = 0;
 
-// Duration display
 audio.addEventListener('loadedmetadata', () => {
   const m = Math.floor(audio.duration / 60);
   const s = Math.floor(audio.duration %% 60).toString().padStart(2,'0');
   document.getElementById('dur').textContent = m + ':' + s;
 });
 
-// Seek helper
-function seekTo(t) {
-  audio.currentTime = t;
-  audio.play();
-}
+function seekTo(t) { audio.currentTime = t; audio.play(); }
 
-// Block gutter click
-document.querySelectorAll('.t-gutter').forEach(g => {
-  g.addEventListener('click', () => seekTo(parseFloat(g.dataset.start)));
+// Q-block header click
+document.querySelectorAll('.q-block').forEach(q => {
+  q.addEventListener('click', e => {
+    if (!e.target.classList.contains('segment')) seekTo(parseFloat(q.dataset.start));
+  });
 });
 
-// Segment click
+// Individual segment click
 allSegs.forEach(s => {
-  s.addEventListener('click', e => {
-    e.stopPropagation();
-    seekTo(parseFloat(s.dataset.start));
-  });
+  s.addEventListener('click', e => { e.stopPropagation(); seekTo(parseFloat(s.dataset.start)); });
 });
 
 // Real-time tracking
 audio.addEventListener('timeupdate', () => {
   const t = audio.currentTime;
-
-  // Find active segment (last one whose start <= t)
   let found = null;
   for (let i = allSegs.length - 1; i >= 0; i--) {
     if (parseFloat(allSegs[i].dataset.start) <= t) { found = allSegs[i]; break; }
   }
-
   if (found && found !== activeSegEl) {
-    // Clear previous
-    if (activeSegEl) activeSegEl.classList.remove('active');
-    if (activeBlockEl) {
-      activeBlockEl.classList.remove('block-active');
-      const pg = activeBlockEl.querySelector('.t-gutter');
-      if (pg) pg.classList.remove('gutter-active');
+    if (activeSegEl) {
+      activeSegEl.classList.remove('active');
+      const pli = activeSegEl.closest('li');
+      if (pli) pli.classList.remove('li-active');
+      const pq = activeSegEl.closest('.q-block');
+      if (pq) pq.classList.remove('q-active');
     }
-    // Set new
     found.classList.add('active');
-    const block = found.closest('.t-block');
-    if (block) {
-      block.classList.add('block-active');
-      const g = block.querySelector('.t-gutter');
-      if (g) g.classList.add('gutter-active');
-      activeBlockEl = block;
-    }
+    const li = found.closest('li');
+    if (li) li.classList.add('li-active');
+    const qb = found.closest('.q-block');
+    if (qb) qb.classList.add('q-active');
     activeSegEl = found;
 
-    // Update subtitle
     subtitleEl.textContent = found.textContent.trim();
     subtitleEl.classList.remove('empty');
 
-    // Auto-scroll (only when not searching)
-    if (!document.getElementById('search').value) {
+    if (!document.getElementById('search').value)
       found.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }
   }
 });
 
@@ -383,17 +704,13 @@ searchInput.addEventListener('keydown', e => {
     el.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
 });
-
 function runSearch() {
   const q = searchInput.value.trim().toLowerCase();
   allSegs.forEach(s => s.classList.remove('search-match','search-current'));
   searchMatches = [];
   if (!q) return;
   allSegs.forEach(s => {
-    if (s.textContent.toLowerCase().includes(q)) {
-      s.classList.add('search-match');
-      searchMatches.push(s);
-    }
+    if (s.textContent.toLowerCase().includes(q)) { s.classList.add('search-match'); searchMatches.push(s); }
   });
   if (!searchMatches.length) return;
   searchIdx = 0;

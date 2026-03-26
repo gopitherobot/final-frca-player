@@ -5,10 +5,19 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Gastrointestinal Tract — Oesophageal Reflux</title>
 <style>
-
   :root {
-    --accent:    #f97316;
-    --body-bg:   #f1f5f9;
+    --q-bg:       #1e3a5f;
+    --q-text:     #ffffff;
+    --q-label:    #60a5fa;
+    --a-bg:       #ffffff;
+    --a-border:   #e2e8f0;
+    --a-label:    #059669;
+    --active-q:   #f97316;
+    --active-a:   #dbeafe;
+    --accent:     #f97316;
+    --body-bg:    #f1f5f9;
+    --pre-bg:     #fef9c3;
+    --pre-border: #fcd34d;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
@@ -40,22 +49,9 @@
     margin-bottom: 4px;
     letter-spacing: 0.01em;
   }
-  .header-sub {
-    font-size: 0.72rem;
-    color: #94a3b8;
-    font-style: italic;
-  }
-  audio {
-    height: 36px;
-    accent-color: var(--accent);
-    flex-shrink: 0;
-  }
-  .back-link {
-    font-size: 0.8rem;
-    color: #94a3b8;
-    text-decoration: none;
-    white-space: nowrap;
-  }
+  .header-sub { font-size: 0.72rem; color: #94a3b8; font-style: italic; }
+  audio { height: 36px; accent-color: var(--accent); flex-shrink: 0; }
+  .back-link { font-size: 0.8rem; color: #94a3b8; text-decoration: none; white-space: nowrap; }
   .back-link:hover { color: #60a5fa; }
 
   /* ── Toolbar ── */
@@ -69,30 +65,17 @@
     border-bottom: 1px solid #334155;
   }
   .toolbar input {
-    flex: 1;
-    max-width: 380px;
+    flex: 1; max-width: 380px;
     padding: 5px 11px;
-    border: 1px solid #475569;
-    border-radius: 6px;
-    background: #0f172a;
-    color: #e2e8f0;
-    font-size: 0.83rem;
-    outline: none;
+    border: 1px solid #475569; border-radius: 6px;
+    background: #0f172a; color: #e2e8f0; font-size: 0.83rem; outline: none;
   }
   .toolbar input:focus { border-color: var(--accent); }
   .toolbar input::placeholder { color: #64748b; }
-  .stats {
-    font-size: 0.72rem;
-    color: #64748b;
-    white-space: nowrap;
-  }
+  .stats { font-size: 0.72rem; color: #64748b; white-space: nowrap; }
 
   /* ── Scroll area ── */
-  .scroll-area {
-    flex: 1;
-    overflow-y: auto;
-    padding: 20px;
-  }
+  .scroll-area { flex: 1; overflow-y: auto; padding: 20px; }
   .scroll-area::-webkit-scrollbar { width: 6px; }
   .scroll-area::-webkit-scrollbar-track { background: transparent; }
   .scroll-area::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
@@ -107,68 +90,77 @@
     display: flex;
     align-items: center;
   }
-  .subtitle-text {
-    font-size: 0.9rem;
-    color: #e2e8f0;
-    line-height: 1.5;
-    font-style: italic;
-  }
-  .subtitle-text.empty { color: #475569; }
+  #subtitle-text { font-size: 0.88rem; color: #e2e8f0; line-height: 1.5; font-style: italic; }
+  #subtitle-text.empty { color: #475569; }
 
-  /* ── Transcript blocks ── */
-  .t-block {
-    background: #ffffff;
-    border: 1px solid #e2e8f0;
-    border-radius: 10px;
-    margin-bottom: 14px;
-    overflow: hidden;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
-    display: flex;
-  }
-  .t-block.block-active {
-    border-color: var(--accent);
-    box-shadow: 0 0 0 2px rgba(37,99,235,0.15);
-  }
-  .t-gutter {
-    background: #0f172a;
-    width: 52px;
-    flex-shrink: 0;
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
-    padding-top: 14px;
-    cursor: pointer;
-  }
-  .t-gutter:hover { background: #1e293b; }
-  .t-timestamp {
-    font-size: 0.7rem;
-    color: #64748b;
-    font-family: monospace;
-    font-weight: 600;
-    letter-spacing: 0.02em;
-  }
-  .t-gutter.gutter-active .t-timestamp { color: var(--accent); }
-  .t-body {
-    flex: 1;
+  /* ── Preamble ── */
+  .preamble-block {
+    background: var(--pre-bg);
+    border-left: 4px solid var(--pre-border);
+    border-radius: 0 8px 8px 0;
     padding: 12px 16px;
-    line-height: 1.75;
-    font-size: 0.92rem;
-    color: #1e293b;
+    margin-bottom: 20px;
+    font-size: 0.88rem;
+    color: #78350f;
+    font-style: italic;
+    line-height: 1.7;
   }
 
-  /* ── Segments ── */
-  .segment {
+  /* ── Q&A pair ── */
+  .qa-pair { margin-bottom: 20px; border-radius: 10px; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+
+  /* Question block */
+  .q-block {
+    background: var(--q-bg);
+    padding: 14px 18px;
+    display: flex; gap: 14px; align-items: flex-start;
     cursor: pointer;
-    border-radius: 3px;
-    transition: background 0.1s;
+    transition: background 0.15s;
   }
-  .segment:hover { background: #eff6ff; }
-  .segment.active {
-    background: #bfdbfe;
-    outline: 2px solid #3b82f6;
-    outline-offset: 1px;
-    border-radius: 3px;
+  .q-block:hover { background: #1d4ed8; }
+  .q-block.q-active { background: var(--active-q); }
+  .q-label {
+    font-size: 0.7rem; font-weight: 700;
+    color: var(--q-label);
+    background: rgba(96,165,250,0.15);
+    border: 1px solid rgba(96,165,250,0.3);
+    border-radius: 5px; padding: 3px 7px;
+    white-space: nowrap; margin-top: 2px; letter-spacing: 0.05em;
+    flex-shrink: 0;
   }
+  .q-body { flex: 1; font-size: 0.97rem; font-weight: 600; color: var(--q-text); line-height: 1.55; }
+
+  /* Answer block */
+  .a-block {
+    background: var(--a-bg);
+    border: 1px solid var(--a-border); border-top: none;
+    padding: 14px 18px;
+    display: flex; gap: 14px; align-items: flex-start;
+  }
+  .a-label {
+    font-size: 0.7rem; font-weight: 700;
+    color: var(--a-label);
+    background: #d1fae5; border: 1px solid #6ee7b7;
+    border-radius: 5px; padding: 3px 9px;
+    white-space: nowrap; margin-top: 2px; letter-spacing: 0.05em;
+    flex-shrink: 0;
+  }
+  .a-body { flex: 1; list-style: none; padding: 0; }
+  .a-body li {
+    padding: 4px 0 4px 14px;
+    border-left: 3px solid transparent;
+    line-height: 1.7; font-size: 0.92rem; color: #1e293b;
+    border-radius: 0 4px 4px 0;
+    transition: background 0.15s;
+  }
+  .a-body li:not(:last-child) { border-bottom: 1px solid #f1f5f9; }
+
+  /* ── Segments (clickable) ── */
+  .segment { cursor: pointer; border-radius: 3px; }
+  .q-seg:hover { background: rgba(255,255,255,0.18); }
+  .a-seg:hover { background: #eff6ff; }
+  .segment.active { background: #bfdbfe; outline: 2px solid #3b82f6; outline-offset: 1px; }
+  .a-body li.li-active { background: var(--active-a); border-left-color: var(--accent); }
   .segment.search-match  { background: #fef9c3; }
   .segment.search-current { background: #fde047; outline: 2px solid #ca8a04; }
 
@@ -187,136 +179,228 @@
 
 <div class="toolbar">
   <input type="text" id="search" placeholder="Search transcript&#8230; (Enter = next match)">
-  <span class="stats" id="stats">89 segments &nbsp;|&nbsp; <span id="dur">loading&#8230;</span></span>
+  <span class="stats" id="stats">7 questions &nbsp;|&nbsp; 89 segments &nbsp;|&nbsp; <span id="dur">loading&#8230;</span></span>
 </div>
 
 <div class="scroll-area" id="scroll-area">
-<div class="t-block">
-  <div class="t-gutter" data-start="0.0"><span class="t-timestamp">0:00</span></div>
-  <div class="t-body"><span class="segment" data-start="0.0" data-end="2.0" title="0:00">There's offered you a reflux. </span><span class="segment" data-start="2.0" data-end="5.0" title="0:02">Describe the anatomy of thisophagus. </span><span class="segment" data-start="6.0" data-end="12.0" title="0:06">The esophagus is a muscular tube connecting the pharynx to the stomach. </span><span class="segment" data-start="12.0" data-end="21.0" title="0:12">The upper third of the esophagus consists of an outer longitudinal and an inner circular layer of striated muscle. </span><span class="segment" data-start="21.0" data-end="25.0" title="0:21">The lower two-thirds consists of smooth muscle. </span><span class="segment" data-start="25.0" data-end="30.0" title="0:25">The inner lumen consists of stratified squamous epithelium. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="31.0"><span class="t-timestamp">0:31</span></div>
-  <div class="t-body"><span class="segment" data-start="31.0" data-end="34.0" title="0:31">There are two esophageals fictors. </span><span class="segment" data-start="34.0" data-end="41.0" title="0:34">The first, the cryocrypharangius muscle, acts as the functional upper esophageals fictor </span><span class="segment" data-start="41.0" data-end="48.0" title="0:41">and has a high resting intra-luminal pressure of 6.7 to 13.3 kilopascals. </span><span class="segment" data-start="48.0" data-end="56.0" title="0:48">The second, the lower esophageals fictor, is a functional entity rather than an anatomical one. </span><span class="segment" data-start="56.0" data-end="64.0" title="0:56">It results from thickened, tonically contracted smooth muscle at the lowest 2 to 4 cm of the esophagus </span><span class="segment" data-start="64.0" data-end="74.0" title="1:04">and it has a resting pressure of 2 to 3.3 kilopascals above the gastric pressure, which prevents gastroesophageal reflux. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="75.0"><span class="t-timestamp">1:15</span></div>
-  <div class="t-body"><span class="segment" data-start="75.0" data-end="79.0" title="1:15">What is the barrier pressure and what is its significance? </span><span class="segment" data-start="80.0" data-end="87.0" title="1:20">Barrier pressure is the lower esophageals fictor pressure minus the intra-gastric pressure. </span><span class="segment" data-start="87.0" data-end="94.0" title="1:27">The significance is that the lower esophageals fictor pressure is reduced by pregnancy under drugs, </span><span class="segment" data-start="94.0" data-end="102.0" title="1:34">such as atropine and succimethonium, and that the intra-gastric pressure is increased in the fed state. </span><span class="segment" data-start="102.0" data-end="109.0" title="1:42">When one encroaches on the other, barrier pressure fails and reflux is possible. </span><span class="segment" data-start="109.0" data-end="112.0" title="1:49">Describe the anatomy of the stomach. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="113.0"><span class="t-timestamp">1:53</span></div>
-  <div class="t-body"><span class="segment" data-start="113.0" data-end="119.0" title="1:53">Functionally, the stomach is made up of the fundus, the body and the antrum. </span><span class="segment" data-start="119.0" data-end="124.0" title="1:59">Each muscle layer forms a syncytium, acting as a unit. </span><span class="segment" data-start="125.0" data-end="134.0" title="2:05">Between the stomach and the duodenum is the pyloric sphinctor, a junction formed by thickened circular smooth muscle. </span><span class="segment" data-start="134.0" data-end="139.0" title="2:14">The stomach has an intrinsic and extrinsic nerve supply. </span><span class="segment" data-start="139.0" data-end="145.0" title="2:19">The extrinsic nerve supply is from the sympathetic and parasympathetic nervous systems. </span><span class="segment" data-start="145.0" data-end="152.0" title="2:25">The sympathetic supply via the celiac plexus inhibits motility. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="152.0"><span class="t-timestamp">2:32</span></div>
-  <div class="t-body"><span class="segment" data-start="152.0" data-end="158.0" title="2:32">The parasympathetic supply via the vagus nerve stimulates motility. </span><span class="segment" data-start="158.0" data-end="168.0" title="2:38">The intrinsic nerve supply is responsible for parastalsis and is formed by mysna's plexus, which is sub-mucosal, </span><span class="segment" data-start="168.0" data-end="175.0" title="2:48">and the our backs plexus, which lies between the circular and longitudinal muscle layers of the stomach. </span><span class="segment" data-start="175.0" data-end="178.0" title="2:55">How is gastric emptying normally controlled? </span><span class="segment" data-start="179.0" data-end="182.0" title="2:59">And what are the cause of delayed gastric emptying? </span><span class="segment" data-start="182.0" data-end="189.0" title="3:02">As always with this sort of question, a classification will aid your answer and impress the examiner. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="189.0"><span class="t-timestamp">3:09</span></div>
-  <div class="t-body"><span class="segment" data-start="189.0" data-end="197.0" title="3:09">The physical state and chemical composition of a substance affect the speed at which it is emptied from the stomach. </span><span class="segment" data-start="197.0" data-end="201.0" title="3:17">Liquid's emptying more rapidly than solids. </span><span class="segment" data-start="201.0" data-end="209.0" title="3:21">The rate of emptying of solids depends on the rate at which crime is broken down into small particles. </span><span class="segment" data-start="209.0" data-end="219.0" title="3:29">Increased gastric volume produces distension, which provokes vagal reflexes leading to increased gastric emptying. </span><span class="segment" data-start="219.0" data-end="228.0" title="3:39">Both gastric distension and high protein content of food stimulate gastric secretion, which enhances gastric emptying. </span><span class="segment" data-start="228.0" data-end="240.0" title="3:48">Nutrients in the duodenum activate chemoreceptors which inhibit gastric emptying, allowing time for further digestion and absorption in the small intestine. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="240.0"><span class="t-timestamp">4:00</span></div>
-  <div class="t-body"><span class="segment" data-start="240.0" data-end="255.0" title="4:00">Hypertonicity, fatty acids and hydrogen ions activate the secretion of colycysticinin, secretin, and gastric inhibitory peptide, which inhibit gastric emptying. </span><span class="segment" data-start="255.0" data-end="264.0" title="4:15">Many factors cause delayed gastric emptying and can be classified as physiological, pathological, and pharmacological. </span><span class="segment" data-start="264.0" data-end="276.0" title="4:24">Physiological causes include pain, anxiety, pregnancy and age, pathological causes include gastrointestinal obstruction, </span><span class="segment" data-start="276.0" data-end="285.0" title="4:36">electrolyte abnormalities, diabetes, gastritis, raised intracranial pressure and migraine. </span><span class="segment" data-start="285.0" data-end="296.0" title="4:45">Pharmacological causes include opioids, anticholinergics, sympathetic medics, alcohol and dopamine ergics. </span><span class="segment" data-start="296.0" data-end="300.0" title="4:56">What is gastric acid and what stimulates its production? </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="300.0"><span class="t-timestamp">5:00</span></div>
-  <div class="t-body"><span class="segment" data-start="300.0" data-end="315.0" title="5:00">To help you answer the second part of this question, a simple diagram of a parietal cell, including the three main receptors and the hydrogen ion pump, will impress the examiner and will aid you if a further question about drug actions is asked. </span><span class="segment" data-start="316.0" data-end="325.0" title="5:16">Gastric secretions include hydrochloric acid, pepsin, gastrin, mucus and intrinsic factor. </span><span class="segment" data-start="325.0" data-end="335.0" title="5:25">The parietal cells secrete hydrochloric acid and intrinsic factor. The cells are located in the body and fundus of the stomach. </span><span class="segment" data-start="336.0" data-end="346.0" title="5:36">A pH of 1 to 1.5 is needed for optimal pepsin activity as well as providing a degree of antimicrobial activity. </span><span class="segment" data-start="346.0" data-end="361.0" title="5:46">Pepsin initiates protein digestion, intrinsic factor is necessary for vitamin B12 absorption in the terminal isleum and mucus is essential for protection of the mucusal cells. </span><span class="segment" data-start="361.0" data-end="379.0" title="6:01">The three most important factors that act on the parietal cell to stimulate hydrochloric acid production are histamine, via H2 receptors, acetylcholine, via M1 muscarinic receptors and gastrin-vigastrin receptors. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="379.0"><span class="t-timestamp">6:19</span></div>
-  <div class="t-body"><span class="segment" data-start="379.0" data-end="385.0" title="6:19">These receptors are located on the basalateral membrane of the parietal cell. </span><span class="segment" data-start="385.0" data-end="391.0" title="6:25">The apical membrane contains an ATP-dependent hydrogenine pump. </span><span class="segment" data-start="391.0" data-end="398.0" title="6:31">The three receptors on the basalateral membrane utilize second messenger systems. </span><span class="segment" data-start="398.0" data-end="408.0" title="6:38">Acetylcholine and gastrin increase intracellular concentrations of calcium via ionocyte-altryphosphate activation. </span><span class="segment" data-start="408.0" data-end="415.0" title="6:48">The histamine receptors activate adenyl cyclase via g-stimulatory proteins. </span><span class="segment" data-start="415.0" data-end="420.0" title="6:55">This results in an increase in cyclic AMP levels. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="420.0"><span class="t-timestamp">7:00</span></div>
-  <div class="t-body"><span class="segment" data-start="420.0" data-end="432.0" title="7:00">Increased calcium and cyclic AMP causes activation of specific protein kinases which increase the activity of the hydrogen ion pump. </span><span class="segment" data-start="432.0" data-end="441.0" title="7:12">Hydrogen ions are produced by the reaction of carbon dioxide with water under the influence of carbonic and hydraise. </span><span class="segment" data-start="441.0" data-end="449.0" title="7:21">The hydrogen ions are then actively transported into the lumen by the hydrogen potassium ATP-dependent pump. </span><span class="segment" data-start="449.0" data-end="460.0" title="7:29">By carbonate ions pass across the basalateral membrane in exchange for chloride ions via an anti-port mechanism. </span><span class="segment" data-start="460.0" data-end="469.0" title="7:40">The logical control of gastric acid production may be considered in terms of chivalic, gastric and intestinal factors. </span><span class="segment" data-start="469.0" data-end="478.0" title="7:49">Chivalic factors such as anticipation, sight, smell and taste are mediated via the vagus nerve. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="478.0"><span class="t-timestamp">7:58</span></div>
-  <div class="t-body"><span class="segment" data-start="478.0" data-end="486.0" title="7:58">This occurs before food ingestion and can be responsible for up to 50% of gastric acid secretion. </span><span class="segment" data-start="486.0" data-end="491.0" title="8:06">The gastric phase is initiated by the entry of food into the stomach. </span><span class="segment" data-start="491.0" data-end="495.0" title="8:11">Acid secretion is stimulated in several ways. </span><span class="segment" data-start="495.0" data-end="508.0" title="8:15">Distention of the stomach activates mechanoreceptors, stimulating vagal reflexes, gastrin release from g-cells and acid secretion from parietal cells. </span><span class="segment" data-start="508.0" data-end="515.0" title="8:28">The acidic pH enhances pepsinogen secretion mediated by local reflexes. </span><span class="segment" data-start="515.0" data-end="524.0" title="8:35">The intestinal phase is initiated as chime enters the duodenum, stimulating further gastrin release. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="524.0"><span class="t-timestamp">8:44</span></div>
-  <div class="t-body"><span class="segment" data-start="524.0" data-end="530.0" title="8:44">But this is of minor importance compared with chivalic and gastric factors. </span><span class="segment" data-start="530.0" data-end="537.0" title="8:50">What factors predisposed of vomiting or regurgitation and aspiration of gastric contents? </span><span class="segment" data-start="537.0" data-end="540.0" title="8:57">Vomiting is an active process. </span><span class="segment" data-start="540.0" data-end="549.0" title="9:00">As it is more likely to occur during the lighter planes of anesthesia, it is more common during induction of and emergence from anesthesia. </span><span class="segment" data-start="549.0" data-end="553.0" title="9:09">It should not occur during maintenance of anesthesia. </span><span class="segment" data-start="553.0" data-end="562.0" title="9:13">Regurgitation is a passive process, therefore it may occur at any time and is not always immediately apparent. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="562.0"><span class="t-timestamp">9:22</span></div>
-  <div class="t-body"><span class="segment" data-start="562.0" data-end="572.0" title="9:22">Because regurgitation usually occurs during deep anesthesia, laryngeal reflexes are absent and the risk of aspiration is high. </span><span class="segment" data-start="572.0" data-end="591.0" title="9:32">The most common factors are non-elective surgical procedures, light anesthesia, acute or chronic upper or lower gastrin-tastinal pathology, obesity, opioid medication, impaired conscious level, lyphotomy position, </span><span class="segment" data-start="591.0" data-end="598.0" title="9:51">physical tearway or intubation, gastrointestinal reflux and hiatus hernia. </span><span class="segment" data-start="598.0" data-end="603.0" title="9:58">A patient with a known hiatus hernia presents for an emergency laparotomy. </span><span class="segment" data-start="603.0" data-end="609.0" title="10:03">What drugs would you use pre-operatively to reduce the risk of regurgitation and aspiration? </span><span class="segment" data-start="609.0" data-end="620.0" title="10:09">My aims in this case would be to promote gastric emptying, reduce gastric acid production and neutralize gastric acidity. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="620.0"><span class="t-timestamp">10:20</span></div>
-  <div class="t-body"><span class="segment" data-start="620.0" data-end="624.0" title="10:20">To promote gastric emptying I would give metaclopromide. </span><span class="segment" data-start="624.0" data-end="636.0" title="10:24">Its prokinetic actions are mediated by antagonism of peripheral dopaminergic receptors and selective stimulation of gastric muscarinic receptors. </span><span class="segment" data-start="636.0" data-end="644.0" title="10:36">This results in an increased lower esophageal sphincter tone and relaxation of the pylorus. </span><span class="segment" data-start="644.0" data-end="658.0" title="10:44">To reduce gastric acid production I would use either a histamine 2 receptor antagonist such as renitidine or a proton pump inhibitor such as a meprizol or lanzoprizol. </span><span class="segment" data-start="658.0" data-end="670.0" title="10:58">Renitidine is a competitive antagonist of H2 receptors at parietal cells, the gastric pH is raised and the volume of secretions is reduced. </span><span class="segment" data-start="670.0" data-end="674.0" title="11:10">It does not affect the lower esophageal sphincter. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="674.0"><span class="t-timestamp">11:14</span></div>
-  <div class="t-body"><span class="segment" data-start="674.0" data-end="685.0" title="11:14">A meprizol reversibly blocks the hydrogen ion pump in the apical membrane of the parietal cell, the final common pathway of gastric acid secretion. </span><span class="segment" data-start="685.0" data-end="690.0" title="11:25">Again, it does not affect lower esophageal sphincter tone. </span><span class="segment" data-start="690.0" data-end="700.0" title="11:30">Proton pump inhibitors have a greater potential to achieve absolute inhibition of acid secretion compared with H2 receptor antagonists. </span><span class="segment" data-start="700.0" data-end="710.0" title="11:40">I would use an antacid such as sodium bicarbonate to raise the pH of gastric contents immediately before induction. </span><span class="segment" data-start="710.0" data-end="716.0" title="11:50">30 millimoles of sodium citrate just prior to induction is another alternative. </span></div>
+<div class="preamble-block"><span class="segment a-seg" data-start="0.0" data-end="2.0" title="0:00">There's offered you a reflux. </span></div>
+<div class="qa-pair">
+<div class="q-block" data-start="2.0">
+  <div class="q-label">Q1</div>
+  <div class="q-body"><span class="segment q-seg" data-start="2.0" data-end="5.0" title="0:02">Describe the anatomy of thisophagus. </span></div>
 </div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="6.0" data-end="12.0" title="0:06">The esophagus is a muscular tube connecting the pharynx to the stomach. </span></li>
+<li><span class="segment a-seg" data-start="12.0" data-end="21.0" title="0:12">The upper third of the esophagus consists of an outer longitudinal and an inner circular layer of striated muscle. </span></li>
+<li><span class="segment a-seg" data-start="21.0" data-end="25.0" title="0:21">The lower two-thirds consists of smooth muscle. </span></li>
+<li><span class="segment a-seg" data-start="25.0" data-end="30.0" title="0:25">The inner lumen consists of stratified squamous epithelium. </span></li>
+<li><span class="segment a-seg" data-start="31.0" data-end="34.0" title="0:31">There are two esophageals fictors. </span></li>
+<li><span class="segment a-seg" data-start="34.0" data-end="41.0" title="0:34">The first, the cryocrypharangius muscle, acts as the functional upper esophageals fictor </span></li>
+<li><span class="segment a-seg" data-start="41.0" data-end="48.0" title="0:41">and has a high resting intra-luminal pressure of 6.7 to 13.3 kilopascals. </span></li>
+<li><span class="segment a-seg" data-start="48.0" data-end="56.0" title="0:48">The second, the lower esophageals fictor, is a functional entity rather than an anatomical one. </span></li>
+<li><span class="segment a-seg" data-start="56.0" data-end="64.0" title="0:56">It results from thickened, tonically contracted smooth muscle at the lowest 2 to 4 cm of the esophagus </span></li>
+<li><span class="segment a-seg" data-start="64.0" data-end="74.0" title="1:04">and it has a resting pressure of 2 to 3.3 kilopascals above the gastric pressure, which prevents gastroesophageal reflux. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="75.0">
+  <div class="q-label">Q2</div>
+  <div class="q-body"><span class="segment q-seg" data-start="75.0" data-end="79.0" title="1:15">What is the barrier pressure and what is its significance? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="80.0" data-end="87.0" title="1:20">Barrier pressure is the lower esophageals fictor pressure minus the intra-gastric pressure. </span></li>
+<li><span class="segment a-seg" data-start="87.0" data-end="94.0" title="1:27">The significance is that the lower esophageals fictor pressure is reduced by pregnancy under drugs, </span></li>
+<li><span class="segment a-seg" data-start="94.0" data-end="102.0" title="1:34">such as atropine and succimethonium, and that the intra-gastric pressure is increased in the fed state. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="102.0">
+  <div class="q-label">Q3</div>
+  <div class="q-body"><span class="segment q-seg" data-start="102.0" data-end="109.0" title="1:42">When one encroaches on the other, barrier pressure fails and reflux is possible. </span><span class="segment q-seg" data-start="109.0" data-end="112.0" title="1:49">Describe the anatomy of the stomach. </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="113.0" data-end="119.0" title="1:53">Functionally, the stomach is made up of the fundus, the body and the antrum. </span></li>
+<li><span class="segment a-seg" data-start="119.0" data-end="124.0" title="1:59">Each muscle layer forms a syncytium, acting as a unit. </span></li>
+<li><span class="segment a-seg" data-start="125.0" data-end="134.0" title="2:05">Between the stomach and the duodenum is the pyloric sphinctor, a junction formed by thickened circular smooth muscle. </span></li>
+<li><span class="segment a-seg" data-start="134.0" data-end="139.0" title="2:14">The stomach has an intrinsic and extrinsic nerve supply. </span></li>
+<li><span class="segment a-seg" data-start="139.0" data-end="145.0" title="2:19">The extrinsic nerve supply is from the sympathetic and parasympathetic nervous systems. </span></li>
+<li><span class="segment a-seg" data-start="145.0" data-end="152.0" title="2:25">The sympathetic supply via the celiac plexus inhibits motility. </span></li>
+<li><span class="segment a-seg" data-start="152.0" data-end="158.0" title="2:32">The parasympathetic supply via the vagus nerve stimulates motility. </span></li>
+<li><span class="segment a-seg" data-start="158.0" data-end="168.0" title="2:38">The intrinsic nerve supply is responsible for parastalsis and is formed by mysna's plexus, which is sub-mucosal, </span></li>
+<li><span class="segment a-seg" data-start="168.0" data-end="175.0" title="2:48">and the our backs plexus, which lies between the circular and longitudinal muscle layers of the stomach. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="175.0">
+  <div class="q-label">Q4</div>
+  <div class="q-body"><span class="segment q-seg" data-start="175.0" data-end="178.0" title="2:55">How is gastric emptying normally controlled? </span><span class="segment q-seg" data-start="179.0" data-end="182.0" title="2:59">And what are the cause of delayed gastric emptying? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="182.0" data-end="189.0" title="3:02">As always with this sort of question, a classification will aid your answer and impress the examiner. </span></li>
+<li><span class="segment a-seg" data-start="189.0" data-end="197.0" title="3:09">The physical state and chemical composition of a substance affect the speed at which it is emptied from the stomach. </span></li>
+<li><span class="segment a-seg" data-start="197.0" data-end="201.0" title="3:17">Liquid's emptying more rapidly than solids. </span></li>
+<li><span class="segment a-seg" data-start="201.0" data-end="209.0" title="3:21">The rate of emptying of solids depends on the rate at which crime is broken down into small particles. </span></li>
+<li><span class="segment a-seg" data-start="209.0" data-end="219.0" title="3:29">Increased gastric volume produces distension, which provokes vagal reflexes leading to increased gastric emptying. </span></li>
+<li><span class="segment a-seg" data-start="219.0" data-end="228.0" title="3:39">Both gastric distension and high protein content of food stimulate gastric secretion, which enhances gastric emptying. </span></li>
+<li><span class="segment a-seg" data-start="228.0" data-end="240.0" title="3:48">Nutrients in the duodenum activate chemoreceptors which inhibit gastric emptying, allowing time for further digestion and absorption in the small intestine. </span></li>
+<li><span class="segment a-seg" data-start="240.0" data-end="255.0" title="4:00">Hypertonicity, fatty acids and hydrogen ions activate the secretion of colycysticinin, secretin, and gastric inhibitory peptide, which inhibit gastric emptying. </span></li>
+<li><span class="segment a-seg" data-start="255.0" data-end="264.0" title="4:15">Many factors cause delayed gastric emptying and can be classified as physiological, pathological, and pharmacological. </span></li>
+<li><span class="segment a-seg" data-start="264.0" data-end="276.0" title="4:24">Physiological causes include pain, anxiety, pregnancy and age, pathological causes include gastrointestinal obstruction, </span></li>
+<li><span class="segment a-seg" data-start="276.0" data-end="285.0" title="4:36">electrolyte abnormalities, diabetes, gastritis, raised intracranial pressure and migraine. </span></li>
+<li><span class="segment a-seg" data-start="285.0" data-end="296.0" title="4:45">Pharmacological causes include opioids, anticholinergics, sympathetic medics, alcohol and dopamine ergics. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="296.0">
+  <div class="q-label">Q5</div>
+  <div class="q-body"><span class="segment q-seg" data-start="296.0" data-end="300.0" title="4:56">What is gastric acid and what stimulates its production? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="300.0" data-end="315.0" title="5:00">To help you answer the second part of this question, a simple diagram of a parietal cell, including the three main receptors and the hydrogen ion pump, will impress the examiner and will aid you if a further question about drug actions is asked. </span></li>
+<li><span class="segment a-seg" data-start="316.0" data-end="325.0" title="5:16">Gastric secretions include hydrochloric acid, pepsin, gastrin, mucus and intrinsic factor. </span></li>
+<li><span class="segment a-seg" data-start="325.0" data-end="335.0" title="5:25">The parietal cells secrete hydrochloric acid and intrinsic factor. The cells are located in the body and fundus of the stomach. </span></li>
+<li><span class="segment a-seg" data-start="336.0" data-end="346.0" title="5:36">A pH of 1 to 1.5 is needed for optimal pepsin activity as well as providing a degree of antimicrobial activity. </span></li>
+<li><span class="segment a-seg" data-start="346.0" data-end="361.0" title="5:46">Pepsin initiates protein digestion, intrinsic factor is necessary for vitamin B12 absorption in the terminal isleum and mucus is essential for protection of the mucusal cells. </span></li>
+<li><span class="segment a-seg" data-start="361.0" data-end="379.0" title="6:01">The three most important factors that act on the parietal cell to stimulate hydrochloric acid production are histamine, via H2 receptors, acetylcholine, via M1 muscarinic receptors and gastrin-vigastrin receptors. </span></li>
+<li><span class="segment a-seg" data-start="379.0" data-end="385.0" title="6:19">These receptors are located on the basalateral membrane of the parietal cell. </span></li>
+<li><span class="segment a-seg" data-start="385.0" data-end="391.0" title="6:25">The apical membrane contains an ATP-dependent hydrogenine pump. </span></li>
+<li><span class="segment a-seg" data-start="391.0" data-end="398.0" title="6:31">The three receptors on the basalateral membrane utilize second messenger systems. </span></li>
+<li><span class="segment a-seg" data-start="398.0" data-end="408.0" title="6:38">Acetylcholine and gastrin increase intracellular concentrations of calcium via ionocyte-altryphosphate activation. </span></li>
+<li><span class="segment a-seg" data-start="408.0" data-end="415.0" title="6:48">The histamine receptors activate adenyl cyclase via g-stimulatory proteins. </span></li>
+<li><span class="segment a-seg" data-start="415.0" data-end="420.0" title="6:55">This results in an increase in cyclic AMP levels. </span></li>
+<li><span class="segment a-seg" data-start="420.0" data-end="432.0" title="7:00">Increased calcium and cyclic AMP causes activation of specific protein kinases which increase the activity of the hydrogen ion pump. </span></li>
+<li><span class="segment a-seg" data-start="432.0" data-end="441.0" title="7:12">Hydrogen ions are produced by the reaction of carbon dioxide with water under the influence of carbonic and hydraise. </span></li>
+<li><span class="segment a-seg" data-start="441.0" data-end="449.0" title="7:21">The hydrogen ions are then actively transported into the lumen by the hydrogen potassium ATP-dependent pump. </span></li>
+<li><span class="segment a-seg" data-start="449.0" data-end="460.0" title="7:29">By carbonate ions pass across the basalateral membrane in exchange for chloride ions via an anti-port mechanism. </span></li>
+<li><span class="segment a-seg" data-start="460.0" data-end="469.0" title="7:40">The logical control of gastric acid production may be considered in terms of chivalic, gastric and intestinal factors. </span></li>
+<li><span class="segment a-seg" data-start="469.0" data-end="478.0" title="7:49">Chivalic factors such as anticipation, sight, smell and taste are mediated via the vagus nerve. </span></li>
+<li><span class="segment a-seg" data-start="478.0" data-end="486.0" title="7:58">This occurs before food ingestion and can be responsible for up to 50% of gastric acid secretion. </span></li>
+<li><span class="segment a-seg" data-start="486.0" data-end="491.0" title="8:06">The gastric phase is initiated by the entry of food into the stomach. </span></li>
+<li><span class="segment a-seg" data-start="491.0" data-end="495.0" title="8:11">Acid secretion is stimulated in several ways. </span></li>
+<li><span class="segment a-seg" data-start="495.0" data-end="508.0" title="8:15">Distention of the stomach activates mechanoreceptors, stimulating vagal reflexes, gastrin release from g-cells and acid secretion from parietal cells. </span></li>
+<li><span class="segment a-seg" data-start="508.0" data-end="515.0" title="8:28">The acidic pH enhances pepsinogen secretion mediated by local reflexes. </span></li>
+<li><span class="segment a-seg" data-start="515.0" data-end="524.0" title="8:35">The intestinal phase is initiated as chime enters the duodenum, stimulating further gastrin release. </span></li>
+<li><span class="segment a-seg" data-start="524.0" data-end="530.0" title="8:44">But this is of minor importance compared with chivalic and gastric factors. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="530.0">
+  <div class="q-label">Q6</div>
+  <div class="q-body"><span class="segment q-seg" data-start="530.0" data-end="537.0" title="8:50">What factors predisposed of vomiting or regurgitation and aspiration of gastric contents? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="537.0" data-end="540.0" title="8:57">Vomiting is an active process. </span></li>
+<li><span class="segment a-seg" data-start="540.0" data-end="549.0" title="9:00">As it is more likely to occur during the lighter planes of anesthesia, it is more common during induction of and emergence from anesthesia. </span></li>
+<li><span class="segment a-seg" data-start="549.0" data-end="553.0" title="9:09">It should not occur during maintenance of anesthesia. </span></li>
+<li><span class="segment a-seg" data-start="553.0" data-end="562.0" title="9:13">Regurgitation is a passive process, therefore it may occur at any time and is not always immediately apparent. </span></li>
+<li><span class="segment a-seg" data-start="562.0" data-end="572.0" title="9:22">Because regurgitation usually occurs during deep anesthesia, laryngeal reflexes are absent and the risk of aspiration is high. </span></li>
+<li><span class="segment a-seg" data-start="572.0" data-end="591.0" title="9:32">The most common factors are non-elective surgical procedures, light anesthesia, acute or chronic upper or lower gastrin-tastinal pathology, obesity, opioid medication, impaired conscious level, lyphotomy position, </span></li>
+<li><span class="segment a-seg" data-start="591.0" data-end="598.0" title="9:51">physical tearway or intubation, gastrointestinal reflux and hiatus hernia. </span></li>
+<li><span class="segment a-seg" data-start="598.0" data-end="603.0" title="9:58">A patient with a known hiatus hernia presents for an emergency laparotomy. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="603.0">
+  <div class="q-label">Q7</div>
+  <div class="q-body"><span class="segment q-seg" data-start="603.0" data-end="609.0" title="10:03">What drugs would you use pre-operatively to reduce the risk of regurgitation and aspiration? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="609.0" data-end="620.0" title="10:09">My aims in this case would be to promote gastric emptying, reduce gastric acid production and neutralize gastric acidity. </span></li>
+<li><span class="segment a-seg" data-start="620.0" data-end="624.0" title="10:20">To promote gastric emptying I would give metaclopromide. </span></li>
+<li><span class="segment a-seg" data-start="624.0" data-end="636.0" title="10:24">Its prokinetic actions are mediated by antagonism of peripheral dopaminergic receptors and selective stimulation of gastric muscarinic receptors. </span></li>
+<li><span class="segment a-seg" data-start="636.0" data-end="644.0" title="10:36">This results in an increased lower esophageal sphincter tone and relaxation of the pylorus. </span></li>
+<li><span class="segment a-seg" data-start="644.0" data-end="658.0" title="10:44">To reduce gastric acid production I would use either a histamine 2 receptor antagonist such as renitidine or a proton pump inhibitor such as a meprizol or lanzoprizol. </span></li>
+<li><span class="segment a-seg" data-start="658.0" data-end="670.0" title="10:58">Renitidine is a competitive antagonist of H2 receptors at parietal cells, the gastric pH is raised and the volume of secretions is reduced. </span></li>
+<li><span class="segment a-seg" data-start="670.0" data-end="674.0" title="11:10">It does not affect the lower esophageal sphincter. </span></li>
+<li><span class="segment a-seg" data-start="674.0" data-end="685.0" title="11:14">A meprizol reversibly blocks the hydrogen ion pump in the apical membrane of the parietal cell, the final common pathway of gastric acid secretion. </span></li>
+<li><span class="segment a-seg" data-start="685.0" data-end="690.0" title="11:25">Again, it does not affect lower esophageal sphincter tone. </span></li>
+<li><span class="segment a-seg" data-start="690.0" data-end="700.0" title="11:30">Proton pump inhibitors have a greater potential to achieve absolute inhibition of acid secretion compared with H2 receptor antagonists. </span></li>
+<li><span class="segment a-seg" data-start="700.0" data-end="710.0" title="11:40">I would use an antacid such as sodium bicarbonate to raise the pH of gastric contents immediately before induction. </span></li>
+<li><span class="segment a-seg" data-start="710.0" data-end="716.0" title="11:50">30 millimoles of sodium citrate just prior to induction is another alternative. </span></li>
+  </ul>
+</div>
+</div>
+
 </div>
 
 <div class="subtitle-bar">
-  <span class="subtitle-text empty" id="subtitle-text">Play audio to see live subtitles&#8230;</span>
+  <span id="subtitle-text" class="empty">Play audio to see live subtitles&#8230;</span>
 </div>
 
 <script>
-
-const audio    = document.getElementById('audio');
-const allSegs  = Array.from(document.querySelectorAll('.segment'));
-const allBlocks = Array.from(document.querySelectorAll('.t-block'));
+const audio      = document.getElementById('audio');
+const allSegs    = Array.from(document.querySelectorAll('.segment'));
 const subtitleEl = document.getElementById('subtitle-text');
-let activeSegEl   = null;
-let activeBlockEl = null;
-let searchMatches = [];
-let searchIdx     = 0;
+let activeSegEl  = null;
+let searchMatches = [], searchIdx = 0;
 
-// Duration display
 audio.addEventListener('loadedmetadata', () => {
   const m = Math.floor(audio.duration / 60);
   const s = Math.floor(audio.duration %% 60).toString().padStart(2,'0');
   document.getElementById('dur').textContent = m + ':' + s;
 });
 
-// Seek helper
-function seekTo(t) {
-  audio.currentTime = t;
-  audio.play();
-}
+function seekTo(t) { audio.currentTime = t; audio.play(); }
 
-// Block gutter click
-document.querySelectorAll('.t-gutter').forEach(g => {
-  g.addEventListener('click', () => seekTo(parseFloat(g.dataset.start)));
+// Q-block header click
+document.querySelectorAll('.q-block').forEach(q => {
+  q.addEventListener('click', e => {
+    if (!e.target.classList.contains('segment')) seekTo(parseFloat(q.dataset.start));
+  });
 });
 
-// Segment click
+// Individual segment click
 allSegs.forEach(s => {
-  s.addEventListener('click', e => {
-    e.stopPropagation();
-    seekTo(parseFloat(s.dataset.start));
-  });
+  s.addEventListener('click', e => { e.stopPropagation(); seekTo(parseFloat(s.dataset.start)); });
 });
 
 // Real-time tracking
 audio.addEventListener('timeupdate', () => {
   const t = audio.currentTime;
-
-  // Find active segment (last one whose start <= t)
   let found = null;
   for (let i = allSegs.length - 1; i >= 0; i--) {
     if (parseFloat(allSegs[i].dataset.start) <= t) { found = allSegs[i]; break; }
   }
-
   if (found && found !== activeSegEl) {
-    // Clear previous
-    if (activeSegEl) activeSegEl.classList.remove('active');
-    if (activeBlockEl) {
-      activeBlockEl.classList.remove('block-active');
-      const pg = activeBlockEl.querySelector('.t-gutter');
-      if (pg) pg.classList.remove('gutter-active');
+    if (activeSegEl) {
+      activeSegEl.classList.remove('active');
+      const pli = activeSegEl.closest('li');
+      if (pli) pli.classList.remove('li-active');
+      const pq = activeSegEl.closest('.q-block');
+      if (pq) pq.classList.remove('q-active');
     }
-    // Set new
     found.classList.add('active');
-    const block = found.closest('.t-block');
-    if (block) {
-      block.classList.add('block-active');
-      const g = block.querySelector('.t-gutter');
-      if (g) g.classList.add('gutter-active');
-      activeBlockEl = block;
-    }
+    const li = found.closest('li');
+    if (li) li.classList.add('li-active');
+    const qb = found.closest('.q-block');
+    if (qb) qb.classList.add('q-active');
     activeSegEl = found;
 
-    // Update subtitle
     subtitleEl.textContent = found.textContent.trim();
     subtitleEl.classList.remove('empty');
 
-    // Auto-scroll (only when not searching)
-    if (!document.getElementById('search').value) {
+    if (!document.getElementById('search').value)
       found.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }
   }
 });
 
@@ -332,17 +416,13 @@ searchInput.addEventListener('keydown', e => {
     el.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
 });
-
 function runSearch() {
   const q = searchInput.value.trim().toLowerCase();
   allSegs.forEach(s => s.classList.remove('search-match','search-current'));
   searchMatches = [];
   if (!q) return;
   allSegs.forEach(s => {
-    if (s.textContent.toLowerCase().includes(q)) {
-      s.classList.add('search-match');
-      searchMatches.push(s);
-    }
+    if (s.textContent.toLowerCase().includes(q)) { s.classList.add('search-match'); searchMatches.push(s); }
   });
   if (!searchMatches.length) return;
   searchIdx = 0;

@@ -1,87 +1,168 @@
 #!/usr/bin/env python3
-"""Generate Final FRCA interactive player HTML files from transcript JSON cache."""
+"""Generate Final FRCA interactive Q&A player HTML files from transcript JSON cache."""
 
-import json
-import os
-import re
+import json, re, os
 from pathlib import Path
 
-BASE_DIR = Path(__file__).parent
+BASE_DIR  = Path(__file__).parent
 CACHE_DIR = BASE_DIR / "_transcripts_cache"
 OUT_DIR   = BASE_DIR / "players"
 OUT_DIR.mkdir(exist_ok=True)
 
 # ── Category metadata ──────────────────────────────────────────────────────────
 CATEGORIES = {
-    "Cardiac_Anaesthesia":       {"label": "Cardiac Anaesthesia",        "color": "#ef4444", "cls": "cat-cardiac"},
-    "Day_Stay":                  {"label": "Day Stay",                   "color": "#6b7280", "cls": "cat-daystay"},
-    "ENT":                       {"label": "ENT",                        "color": "#f59e0b", "cls": "cat-ent"},
-    "Emergency_Medicine":        {"label": "Emergency Medicine",         "color": "#dc2626", "cls": "cat-em"},
-    "Endocrinology":             {"label": "Endocrinology",              "color": "#8b5cf6", "cls": "cat-endo"},
-    "Gastrointestinal_Tract":    {"label": "Gastrointestinal Tract",     "color": "#f97316", "cls": "cat-git"},
-    "Haematological":            {"label": "Haematological",             "color": "#ec4899", "cls": "cat-haem"},
-    "Hepatology":                {"label": "Hepatology",                 "color": "#b45309", "cls": "cat-hep"},
-    "Intensive_Care_Medicine":   {"label": "Intensive Care Medicine",    "color": "#0ea5e9", "cls": "cat-icm"},
-    "Metabolism":                {"label": "Metabolism",                 "color": "#10b981", "cls": "cat-meta"},
-    "Neurosurgical_Anaesthesia": {"label": "Neurosurgical Anaesthesia",  "color": "#6366f1", "cls": "cat-neuro"},
-    "Obstetrics":                {"label": "Obstetrics",                 "color": "#db2777", "cls": "cat-obs"},
-    "Ophthalmic":                {"label": "Ophthalmic",                 "color": "#059669", "cls": "cat-ophth"},
-    "Orthopaedics":              {"label": "Orthopaedics",               "color": "#64748b", "cls": "cat-ortho"},
-    "Paediatric_and_Neonatal":   {"label": "Paediatric & Neonatal",      "color": "#fbbf24", "cls": "cat-paeds"},
-    "Pain":                      {"label": "Pain",                       "color": "#a855f7", "cls": "cat-pain"},
-    "Regional_Anaesthesia":      {"label": "Regional Anaesthesia",       "color": "#2563eb", "cls": "cat-reg"},
-    "Renal":                     {"label": "Renal",                      "color": "#0891b2", "cls": "cat-renal"},
-    "Thoracics":                 {"label": "Thoracics",                  "color": "#7c3aed", "cls": "cat-thor"},
-    "Vascular":                  {"label": "Vascular",                   "color": "#ea580c", "cls": "cat-vasc"},
+    "Cardiac_Anaesthesia":       {"label": "Cardiac Anaesthesia",       "color": "#ef4444", "cls": "cat-cardiac"},
+    "Day_Stay":                  {"label": "Day Stay",                  "color": "#6b7280", "cls": "cat-daystay"},
+    "ENT":                       {"label": "ENT",                       "color": "#f59e0b", "cls": "cat-ent"},
+    "Emergency_Medicine":        {"label": "Emergency Medicine",        "color": "#dc2626", "cls": "cat-em"},
+    "Endocrinology":             {"label": "Endocrinology",             "color": "#8b5cf6", "cls": "cat-endo"},
+    "Gastrointestinal_Tract":    {"label": "Gastrointestinal Tract",    "color": "#f97316", "cls": "cat-git"},
+    "Haematological":            {"label": "Haematological",            "color": "#ec4899", "cls": "cat-haem"},
+    "Hepatology":                {"label": "Hepatology",                "color": "#b45309", "cls": "cat-hep"},
+    "Intensive_Care_Medicine":   {"label": "Intensive Care Medicine",   "color": "#0ea5e9", "cls": "cat-icm"},
+    "Metabolism":                {"label": "Metabolism",                "color": "#10b981", "cls": "cat-meta"},
+    "Neurosurgical_Anaesthesia": {"label": "Neurosurgical Anaesthesia", "color": "#6366f1", "cls": "cat-neuro"},
+    "Obstetrics":                {"label": "Obstetrics",                "color": "#db2777", "cls": "cat-obs"},
+    "Ophthalmic":                {"label": "Ophthalmic",                "color": "#059669", "cls": "cat-ophth"},
+    "Orthopaedics":              {"label": "Orthopaedics",              "color": "#64748b", "cls": "cat-ortho"},
+    "Paediatric_and_Neonatal":   {"label": "Paediatric & Neonatal",     "color": "#fbbf24", "cls": "cat-paeds"},
+    "Pain":                      {"label": "Pain",                      "color": "#a855f7", "cls": "cat-pain"},
+    "Regional_Anaesthesia":      {"label": "Regional Anaesthesia",      "color": "#2563eb", "cls": "cat-reg"},
+    "Renal":                     {"label": "Renal",                     "color": "#0891b2", "cls": "cat-renal"},
+    "Thoracics":                 {"label": "Thoracics",                 "color": "#7c3aed", "cls": "cat-thor"},
+    "Vascular":                  {"label": "Vascular",                  "color": "#ea580c", "cls": "cat-vasc"},
 }
 
-# ── Helpers ────────────────────────────────────────────────────────────────────
+# Interrogative openers that signal a question even without '?'
+Q_OPENERS = re.compile(
+    r'^(what|how|why|when|where|who|which|can you|could you|tell me|describe|explain|define|'
+    r'compare|contrast|classify|outline|give me|list|name|discuss|elaborate|would you)',
+    re.IGNORECASE
+)
+
 def fmt_time(secs):
-    """Convert seconds to M:SS string."""
     m = int(secs) // 60
     s = int(secs) % 60
     return f"{m}:{s:02d}"
 
 def parse_filename(stem):
-    """
-    Stem like: FinalFRCACardiac_Anaesthesia_Hypertension
-    Returns (category_key, topic_label, mp3_name)
-    """
-    # Strip leading FinalFRCA
     rest = stem[len("FinalFRCA"):]
-    # Match category
-    matched_cat = None
     for cat_key in sorted(CATEGORIES.keys(), key=len, reverse=True):
         if rest.startswith(cat_key + "_"):
-            matched_cat = cat_key
             topic_raw = rest[len(cat_key) + 1:]
-            break
-    if matched_cat is None:
-        # Fallback: first segment before second underscore group
-        parts = rest.split("_", 1)
-        matched_cat = parts[0]
-        topic_raw = parts[1] if len(parts) > 1 else rest
-    topic_label = topic_raw.replace("_", " ")
-    mp3_name = stem + ".mp3"
-    return matched_cat, topic_label, mp3_name
+            return cat_key, topic_raw.replace("_", " "), stem + ".mp3"
+    parts = rest.split("_", 1)
+    return parts[0], (parts[1].replace("_", " ") if len(parts) > 1 else rest), stem + ".mp3"
 
-def group_segments(segments, group_size=6):
-    """Group flat segments list into blocks of ~group_size."""
-    groups = []
-    for i in range(0, len(segments), group_size):
-        groups.append(segments[i:i + group_size])
-    return groups
+# ── Q&A parser ─────────────────────────────────────────────────────────────────
+def expand_segments(segments):
+    """
+    Split segments at '?' boundaries so each chunk is either:
+      is_q=True  (ends with ?)
+      is_q=False (plain answer/preamble text)
+    Also detect interrogative openers without '?'.
+    """
+    expanded = []
+    for seg in segments:
+        raw = seg["text"].strip()
+        if not raw:
+            continue
+        if "?" not in raw:
+            # Check if whole segment is a question via opener
+            is_q = bool(Q_OPENERS.match(raw))
+            expanded.append({"text": raw, "start": round(seg["start"], 3),
+                              "end": round(seg["end"], 3), "is_q": is_q})
+            continue
 
-def is_question_seg(text):
-    """Heuristic: segment likely contains/ends a question."""
-    t = text.strip()
-    return t.endswith("?") or "?" in t[-30:]
+        # Split the segment text at every '?'
+        parts = re.split(r"(\?)", raw)
+        chunks = []
+        buf = ""
+        for p in parts:
+            if p == "?":
+                buf += "?"
+                if buf.strip():
+                    chunks.append((buf.strip(), True))
+                buf = ""
+            else:
+                buf = p
+        if buf.strip():
+            # Trailing text after last ? → check opener
+            is_q = bool(Q_OPENERS.match(buf.strip()))
+            chunks.append((buf.strip(), is_q))
 
-# ── Player HTML generator ──────────────────────────────────────────────────────
-CSS = """
+        # Distribute timestamps proportionally
+        total_words = max(sum(len(c[0].split()) for c in chunks), 1)
+        dur = seg["end"] - seg["start"]
+        cur = seg["start"]
+        for txt, is_q in chunks:
+            if not txt:
+                continue
+            w = max(len(txt.split()), 1)
+            end = round(cur + dur * w / total_words, 3)
+            expanded.append({"text": txt, "start": round(cur, 3),
+                              "end": end, "is_q": is_q})
+            cur = end
+
+    return expanded
+
+
+def build_qa_blocks(segments):
+    """
+    Returns list of blocks:
+      {"type": "preamble", "segs": [...]}
+      {"type": "qa",  "q_segs": [...], "a_segs": [...]}
+    """
+    expanded = expand_segments(segments)
+    blocks = []
+    i, n = 0, len(expanded)
+
+    # Preamble: non-question segments before the first question
+    preamble = []
+    while i < n and not expanded[i]["is_q"]:
+        preamble.append(expanded[i])
+        i += 1
+    if preamble:
+        blocks.append({"type": "preamble", "segs": preamble})
+
+    # Q/A pairs
+    while i < n:
+        if expanded[i]["is_q"]:
+            q_segs = []
+            while i < n and expanded[i]["is_q"]:
+                q_segs.append(expanded[i])
+                i += 1
+            a_segs = []
+            while i < n and not expanded[i]["is_q"]:
+                a_segs.append(expanded[i])
+                i += 1
+            blocks.append({"type": "qa", "q_segs": q_segs, "a_segs": a_segs})
+        else:
+            # Stray non-question segment — attach to previous answer
+            if blocks and blocks[-1]["type"] == "qa":
+                blocks[-1]["a_segs"].append(expanded[i])
+            else:
+                blocks.append({"type": "preamble", "segs": [expanded[i]]})
+            i += 1
+
+    return blocks
+
+
+# ── HTML builder ───────────────────────────────────────────────────────────────
+CSS = """\
   :root {
-    --accent:    %(accent)s;
-    --body-bg:   #f1f5f9;
+    --q-bg:       #1e3a5f;
+    --q-text:     #ffffff;
+    --q-label:    #60a5fa;
+    --a-bg:       #ffffff;
+    --a-border:   #e2e8f0;
+    --a-label:    #059669;
+    --active-q:   %(accent)s;
+    --active-a:   #dbeafe;
+    --accent:     %(accent)s;
+    --body-bg:    #f1f5f9;
+    --pre-bg:     #fef9c3;
+    --pre-border: #fcd34d;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
@@ -113,22 +194,9 @@ CSS = """
     margin-bottom: 4px;
     letter-spacing: 0.01em;
   }
-  .header-sub {
-    font-size: 0.72rem;
-    color: #94a3b8;
-    font-style: italic;
-  }
-  audio {
-    height: 36px;
-    accent-color: var(--accent);
-    flex-shrink: 0;
-  }
-  .back-link {
-    font-size: 0.8rem;
-    color: #94a3b8;
-    text-decoration: none;
-    white-space: nowrap;
-  }
+  .header-sub { font-size: 0.72rem; color: #94a3b8; font-style: italic; }
+  audio { height: 36px; accent-color: var(--accent); flex-shrink: 0; }
+  .back-link { font-size: 0.8rem; color: #94a3b8; text-decoration: none; white-space: nowrap; }
   .back-link:hover { color: #60a5fa; }
 
   /* ── Toolbar ── */
@@ -142,30 +210,17 @@ CSS = """
     border-bottom: 1px solid #334155;
   }
   .toolbar input {
-    flex: 1;
-    max-width: 380px;
+    flex: 1; max-width: 380px;
     padding: 5px 11px;
-    border: 1px solid #475569;
-    border-radius: 6px;
-    background: #0f172a;
-    color: #e2e8f0;
-    font-size: 0.83rem;
-    outline: none;
+    border: 1px solid #475569; border-radius: 6px;
+    background: #0f172a; color: #e2e8f0; font-size: 0.83rem; outline: none;
   }
   .toolbar input:focus { border-color: var(--accent); }
   .toolbar input::placeholder { color: #64748b; }
-  .stats {
-    font-size: 0.72rem;
-    color: #64748b;
-    white-space: nowrap;
-  }
+  .stats { font-size: 0.72rem; color: #64748b; white-space: nowrap; }
 
   /* ── Scroll area ── */
-  .scroll-area {
-    flex: 1;
-    overflow-y: auto;
-    padding: 20px;
-  }
+  .scroll-area { flex: 1; overflow-y: auto; padding: 20px; }
   .scroll-area::-webkit-scrollbar { width: 6px; }
   .scroll-area::-webkit-scrollbar-track { background: transparent; }
   .scroll-area::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
@@ -180,145 +235,135 @@ CSS = """
     display: flex;
     align-items: center;
   }
-  .subtitle-text {
-    font-size: 0.9rem;
-    color: #e2e8f0;
-    line-height: 1.5;
-    font-style: italic;
-  }
-  .subtitle-text.empty { color: #475569; }
+  #subtitle-text { font-size: 0.88rem; color: #e2e8f0; line-height: 1.5; font-style: italic; }
+  #subtitle-text.empty { color: #475569; }
 
-  /* ── Transcript blocks ── */
-  .t-block {
-    background: #ffffff;
-    border: 1px solid #e2e8f0;
-    border-radius: 10px;
-    margin-bottom: 14px;
-    overflow: hidden;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
-    display: flex;
-  }
-  .t-block.block-active {
-    border-color: var(--accent);
-    box-shadow: 0 0 0 2px rgba(37,99,235,0.15);
-  }
-  .t-gutter {
-    background: #0f172a;
-    width: 52px;
-    flex-shrink: 0;
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
-    padding-top: 14px;
-    cursor: pointer;
-  }
-  .t-gutter:hover { background: #1e293b; }
-  .t-timestamp {
-    font-size: 0.7rem;
-    color: #64748b;
-    font-family: monospace;
-    font-weight: 600;
-    letter-spacing: 0.02em;
-  }
-  .t-gutter.gutter-active .t-timestamp { color: var(--accent); }
-  .t-body {
-    flex: 1;
+  /* ── Preamble ── */
+  .preamble-block {
+    background: var(--pre-bg);
+    border-left: 4px solid var(--pre-border);
+    border-radius: 0 8px 8px 0;
     padding: 12px 16px;
-    line-height: 1.75;
-    font-size: 0.92rem;
-    color: #1e293b;
+    margin-bottom: 20px;
+    font-size: 0.88rem;
+    color: #78350f;
+    font-style: italic;
+    line-height: 1.7;
   }
 
-  /* ── Segments ── */
-  .segment {
+  /* ── Q&A pair ── */
+  .qa-pair { margin-bottom: 20px; border-radius: 10px; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+
+  /* Question block */
+  .q-block {
+    background: var(--q-bg);
+    padding: 14px 18px;
+    display: flex; gap: 14px; align-items: flex-start;
     cursor: pointer;
-    border-radius: 3px;
-    transition: background 0.1s;
+    transition: background 0.15s;
   }
-  .segment:hover { background: #eff6ff; }
-  .segment.active {
-    background: #bfdbfe;
-    outline: 2px solid #3b82f6;
-    outline-offset: 1px;
-    border-radius: 3px;
+  .q-block:hover { background: #1d4ed8; }
+  .q-block.q-active { background: var(--active-q); }
+  .q-label {
+    font-size: 0.7rem; font-weight: 700;
+    color: var(--q-label);
+    background: rgba(96,165,250,0.15);
+    border: 1px solid rgba(96,165,250,0.3);
+    border-radius: 5px; padding: 3px 7px;
+    white-space: nowrap; margin-top: 2px; letter-spacing: 0.05em;
+    flex-shrink: 0;
   }
+  .q-body { flex: 1; font-size: 0.97rem; font-weight: 600; color: var(--q-text); line-height: 1.55; }
+
+  /* Answer block */
+  .a-block {
+    background: var(--a-bg);
+    border: 1px solid var(--a-border); border-top: none;
+    padding: 14px 18px;
+    display: flex; gap: 14px; align-items: flex-start;
+  }
+  .a-label {
+    font-size: 0.7rem; font-weight: 700;
+    color: var(--a-label);
+    background: #d1fae5; border: 1px solid #6ee7b7;
+    border-radius: 5px; padding: 3px 9px;
+    white-space: nowrap; margin-top: 2px; letter-spacing: 0.05em;
+    flex-shrink: 0;
+  }
+  .a-body { flex: 1; list-style: none; padding: 0; }
+  .a-body li {
+    padding: 4px 0 4px 14px;
+    border-left: 3px solid transparent;
+    line-height: 1.7; font-size: 0.92rem; color: #1e293b;
+    border-radius: 0 4px 4px 0;
+    transition: background 0.15s;
+  }
+  .a-body li:not(:last-child) { border-bottom: 1px solid #f1f5f9; }
+
+  /* ── Segments (clickable) ── */
+  .segment { cursor: pointer; border-radius: 3px; }
+  .q-seg:hover { background: rgba(255,255,255,0.18); }
+  .a-seg:hover { background: #eff6ff; }
+  .segment.active { background: #bfdbfe; outline: 2px solid #3b82f6; outline-offset: 1px; }
+  .a-body li.li-active { background: var(--active-a); border-left-color: var(--accent); }
   .segment.search-match  { background: #fef9c3; }
   .segment.search-current { background: #fde047; outline: 2px solid #ca8a04; }
 """
 
-JS = """
-const audio    = document.getElementById('audio');
-const allSegs  = Array.from(document.querySelectorAll('.segment'));
-const allBlocks = Array.from(document.querySelectorAll('.t-block'));
+JS = """\
+const audio      = document.getElementById('audio');
+const allSegs    = Array.from(document.querySelectorAll('.segment'));
 const subtitleEl = document.getElementById('subtitle-text');
-let activeSegEl   = null;
-let activeBlockEl = null;
-let searchMatches = [];
-let searchIdx     = 0;
+let activeSegEl  = null;
+let searchMatches = [], searchIdx = 0;
 
-// Duration display
 audio.addEventListener('loadedmetadata', () => {
   const m = Math.floor(audio.duration / 60);
   const s = Math.floor(audio.duration %% 60).toString().padStart(2,'0');
   document.getElementById('dur').textContent = m + ':' + s;
 });
 
-// Seek helper
-function seekTo(t) {
-  audio.currentTime = t;
-  audio.play();
-}
+function seekTo(t) { audio.currentTime = t; audio.play(); }
 
-// Block gutter click
-document.querySelectorAll('.t-gutter').forEach(g => {
-  g.addEventListener('click', () => seekTo(parseFloat(g.dataset.start)));
+// Q-block header click
+document.querySelectorAll('.q-block').forEach(q => {
+  q.addEventListener('click', e => {
+    if (!e.target.classList.contains('segment')) seekTo(parseFloat(q.dataset.start));
+  });
 });
 
-// Segment click
+// Individual segment click
 allSegs.forEach(s => {
-  s.addEventListener('click', e => {
-    e.stopPropagation();
-    seekTo(parseFloat(s.dataset.start));
-  });
+  s.addEventListener('click', e => { e.stopPropagation(); seekTo(parseFloat(s.dataset.start)); });
 });
 
 // Real-time tracking
 audio.addEventListener('timeupdate', () => {
   const t = audio.currentTime;
-
-  // Find active segment (last one whose start <= t)
   let found = null;
   for (let i = allSegs.length - 1; i >= 0; i--) {
     if (parseFloat(allSegs[i].dataset.start) <= t) { found = allSegs[i]; break; }
   }
-
   if (found && found !== activeSegEl) {
-    // Clear previous
-    if (activeSegEl) activeSegEl.classList.remove('active');
-    if (activeBlockEl) {
-      activeBlockEl.classList.remove('block-active');
-      const pg = activeBlockEl.querySelector('.t-gutter');
-      if (pg) pg.classList.remove('gutter-active');
+    if (activeSegEl) {
+      activeSegEl.classList.remove('active');
+      const pli = activeSegEl.closest('li');
+      if (pli) pli.classList.remove('li-active');
+      const pq = activeSegEl.closest('.q-block');
+      if (pq) pq.classList.remove('q-active');
     }
-    // Set new
     found.classList.add('active');
-    const block = found.closest('.t-block');
-    if (block) {
-      block.classList.add('block-active');
-      const g = block.querySelector('.t-gutter');
-      if (g) g.classList.add('gutter-active');
-      activeBlockEl = block;
-    }
+    const li = found.closest('li');
+    if (li) li.classList.add('li-active');
+    const qb = found.closest('.q-block');
+    if (qb) qb.classList.add('q-active');
     activeSegEl = found;
 
-    // Update subtitle
     subtitleEl.textContent = found.textContent.trim();
     subtitleEl.classList.remove('empty');
 
-    // Auto-scroll (only when not searching)
-    if (!document.getElementById('search').value) {
+    if (!document.getElementById('search').value)
       found.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }
   }
 });
 
@@ -334,17 +379,13 @@ searchInput.addEventListener('keydown', e => {
     el.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
 });
-
 function runSearch() {
   const q = searchInput.value.trim().toLowerCase();
   allSegs.forEach(s => s.classList.remove('search-match','search-current'));
   searchMatches = [];
   if (!q) return;
   allSegs.forEach(s => {
-    if (s.textContent.toLowerCase().includes(q)) {
-      s.classList.add('search-match');
-      searchMatches.push(s);
-    }
+    if (s.textContent.toLowerCase().includes(q)) { s.classList.add('search-match'); searchMatches.push(s); }
   });
   if (!searchMatches.length) return;
   searchIdx = 0;
@@ -353,45 +394,61 @@ function runSearch() {
 }
 """
 
-def generate_player(stem, cat_key, topic_label, mp3_name, segments, accent):
-    cat_info = CATEGORIES.get(cat_key, {"label": cat_key.replace("_", " "), "color": "#2563eb"})
-    cat_label = cat_info["label"]
-    n_segs = len(segments)
-    groups = group_segments(segments, group_size=6)
 
-    # Build transcript HTML
-    blocks_html = []
-    for grp in groups:
-        if not grp:
-            continue
-        block_start = grp[0]["start"]
-        ts = fmt_time(block_start)
-        segs_html = []
-        for seg in grp:
-            txt = seg["text"].strip()
-            if not txt:
-                continue
-            s_start = round(seg["start"], 3)
-            s_end   = round(seg["end"], 3)
-            title   = fmt_time(s_start)
-            segs_html.append(
-                f'<span class="segment" data-start="{s_start}" data-end="{s_end}" title="{title}">{txt} </span>'
+def seg_span(seg, cls):
+    t = seg["text"].replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
+    return (f'<span class="segment {cls}" data-start="{seg["start"]}" '
+            f'data-end="{seg["end"]}" title="{fmt_time(seg["start"])}">{t} </span>')
+
+
+def generate_player(stem, cat_key, topic_label, mp3_name, segments, accent):
+    cat_info  = CATEGORIES.get(cat_key, {"label": cat_key.replace("_"," "), "color": accent})
+    cat_label = cat_info["label"]
+    blocks    = build_qa_blocks(segments)
+
+    n_questions = sum(1 for b in blocks if b["type"] == "qa")
+    n_segs      = len(segments)
+
+    body_parts = []
+    q_num = 0
+
+    for block in blocks:
+        if block["type"] == "preamble":
+            spans = "".join(seg_span(s, "a-seg") for s in block["segs"])
+            body_parts.append(f'<div class="preamble-block">{spans}</div>\n')
+
+        elif block["type"] == "qa":
+            q_num += 1
+            q_segs = block["q_segs"]
+            a_segs = block["a_segs"]
+
+            # Q block
+            first_start = q_segs[0]["start"] if q_segs else 0
+            q_spans = "".join(seg_span(s, "q-seg") for s in q_segs)
+            q_html = (f'<div class="q-block" data-start="{first_start}">\n'
+                      f'  <div class="q-label">Q{q_num}</div>\n'
+                      f'  <div class="q-body">{q_spans}</div>\n'
+                      f'</div>\n')
+
+            # A block
+            li_items = "".join(
+                f'<li>{seg_span(s, "a-seg")}</li>\n' for s in a_segs
             )
-        if not segs_html:
-            continue
-        blocks_html.append(f"""<div class="t-block">
-  <div class="t-gutter" data-start="{round(block_start,3)}"><span class="t-timestamp">{ts}</span></div>
-  <div class="t-body">{''.join(segs_html)}</div>
-</div>""")
+            a_html = (f'<div class="a-block">\n'
+                      f'  <div class="a-label">A</div>\n'
+                      f'  <ul class="a-body">\n{li_items}  </ul>\n'
+                      f'</div>\n')
+
+            body_parts.append(f'<div class="qa-pair">\n{q_html}{a_html}</div>\n')
 
     css = CSS % {"accent": accent}
 
-    html = f"""<!DOCTYPE html>
+    return f"""<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>{cat_label} — {topic_label}</title>
+<title>{cat_label} \u2014 {topic_label}</title>
 <style>
 {css}
 </style>
@@ -400,7 +457,7 @@ def generate_player(stem, cat_key, topic_label, mp3_name, segments, accent):
 
 <div class="header">
   <div class="header-left">
-    <h1>{cat_label} — {topic_label}</h1>
+    <h1>{cat_label} \u2014 {topic_label}</h1>
     <div class="header-sub">Final FRCA &mdash; Exam Viva Simulation &mdash; Click any phrase to seek</div>
   </div>
   <audio id="audio" src="../{mp3_name}" controls preload="metadata"></audio>
@@ -409,15 +466,15 @@ def generate_player(stem, cat_key, topic_label, mp3_name, segments, accent):
 
 <div class="toolbar">
   <input type="text" id="search" placeholder="Search transcript&#8230; (Enter = next match)">
-  <span class="stats" id="stats">{n_segs} segments &nbsp;|&nbsp; <span id="dur">loading&#8230;</span></span>
+  <span class="stats" id="stats">{n_questions} questions &nbsp;|&nbsp; {n_segs} segments &nbsp;|&nbsp; <span id="dur">loading&#8230;</span></span>
 </div>
 
 <div class="scroll-area" id="scroll-area">
-{''.join(blocks_html)}
+{"".join(body_parts)}
 </div>
 
 <div class="subtitle-bar">
-  <span class="subtitle-text empty" id="subtitle-text">Play audio to see live subtitles&#8230;</span>
+  <span id="subtitle-text" class="empty">Play audio to see live subtitles&#8230;</span>
 </div>
 
 <script>
@@ -426,22 +483,23 @@ def generate_player(stem, cat_key, topic_label, mp3_name, segments, accent):
 </body>
 </html>
 """
-    return html
 
-# ── Index HTML generator ───────────────────────────────────────────────────────
+
+# ── Index HTML ─────────────────────────────────────────────────────────────────
 def generate_index(entries_by_cat):
-    """entries_by_cat: {cat_key: [(html_filename, topic_label), ...]}"""
     cat_sections = []
-    for cat_key, entries in sorted(entries_by_cat.items(), key=lambda x: CATEGORIES.get(x[0], {}).get("label", x[0])):
-        info = CATEGORIES.get(cat_key, {"label": cat_key.replace("_", " "), "color": "#2563eb", "cls": "cat-" + cat_key.lower()})
+    for cat_key, entries in sorted(entries_by_cat.items(),
+                                    key=lambda x: CATEGORIES.get(x[0], {}).get("label", x[0])):
+        info  = CATEGORIES.get(cat_key, {"label": cat_key, "color": "#2563eb", "cls": "cat-other"})
         color = info["color"]
         label = info["label"]
         cls   = info["cls"]
         cards = "\n".join(
-            f'<a class="card {cls}" href="{fn}"><div class="card-prefix" style="color:{color}">{label}</div>{tl}</a>'
+            f'<a class="card {cls}" href="{fn}">'
+            f'<div class="card-prefix" style="color:{color}">{label}</div>{tl}</a>'
             for fn, tl in sorted(entries, key=lambda x: x[1])
         )
-        section = f"""<div class="category">
+        cat_sections.append(f"""<div class="category">
 <div class="cat-header">
   <div class="cat-dot" style="background:{color}"></div>
   <h2>{label}</h2>
@@ -450,15 +508,9 @@ def generate_index(entries_by_cat):
 <div class="grid">
 {cards}
 </div>
-</div>"""
-        cat_sections.append(section)
+</div>""")
 
-    css_vars = "\n".join(
-        f"  .{info['cls']} .cat-dot {{ background: {info['color']}; }}"
-        for info in CATEGORIES.values()
-    )
-
-    html = f"""<!DOCTYPE html>
+    return f"""<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -469,96 +521,42 @@ def generate_index(entries_by_cat):
   * {{ box-sizing: border-box; margin: 0; padding: 0; }}
   body {{
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    background: #0f172a;
-    color: #e2e8f0;
-    min-height: 100vh;
-    padding: 32px 24px;
+    background: #0f172a; color: #e2e8f0; min-height: 100vh; padding: 32px 24px;
   }}
-  .top-header {{
-    text-align: center;
-    margin-bottom: 36px;
-  }}
+  .top-header {{ text-align: center; margin-bottom: 36px; }}
   .top-header h1 {{
-    font-size: 1.6rem;
-    color: #f1f5f9;
-    font-weight: 800;
-    letter-spacing: -0.02em;
-    margin-bottom: 6px;
+    font-size: 1.6rem; color: #f1f5f9; font-weight: 800;
+    letter-spacing: -0.02em; margin-bottom: 6px;
   }}
-  .top-header p {{
-    font-size: 0.85rem;
-    color: #64748b;
-  }}
-  .filter-wrap {{
-    max-width: 480px;
-    margin: 0 auto 32px;
-  }}
+  .top-header p {{ font-size: 0.85rem; color: #64748b; }}
+  .filter-wrap {{ max-width: 480px; margin: 0 auto 32px; }}
   .filter-wrap input {{
-    width: 100%;
-    padding: 10px 16px;
-    border: 1px solid #334155;
-    border-radius: 8px;
-    background: #1e293b;
-    color: #e2e8f0;
-    font-size: 0.9rem;
-    outline: none;
+    width: 100%; padding: 10px 16px;
+    border: 1px solid #334155; border-radius: 8px;
+    background: #1e293b; color: #e2e8f0; font-size: 0.9rem; outline: none;
   }}
   .filter-wrap input:focus {{ border-color: var(--accent); }}
   .filter-wrap input::placeholder {{ color: #475569; }}
   .category {{ margin-bottom: 36px; }}
-  .cat-header {{
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin-bottom: 14px;
-  }}
+  .cat-header {{ display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }}
   .cat-header h2 {{
-    font-size: 0.7rem;
-    text-transform: uppercase;
-    letter-spacing: 0.12em;
-    font-weight: 700;
-    color: #94a3b8;
+    font-size: 0.7rem; text-transform: uppercase;
+    letter-spacing: 0.12em; font-weight: 700; color: #94a3b8;
   }}
-  .cat-line {{
-    flex: 1;
-    height: 1px;
-    background: #1e293b;
-  }}
-  .cat-dot {{
-    width: 10px; height: 10px;
-    border-radius: 50%;
-    flex-shrink: 0;
-  }}
-{css_vars}
-  .grid {{
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-    gap: 10px;
-  }}
+  .cat-line {{ flex: 1; height: 1px; background: #1e293b; }}
+  .cat-dot {{ width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }}
+  .grid {{ display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 10px; }}
   .card {{
-    background: #1e293b;
-    border: 1px solid #334155;
-    border-radius: 8px;
-    padding: 12px 16px;
-    text-decoration: none;
-    color: #cbd5e1;
-    font-size: 0.85rem;
-    line-height: 1.4;
-    display: block;
+    background: #1e293b; border: 1px solid #334155; border-radius: 8px;
+    padding: 12px 16px; text-decoration: none; color: #cbd5e1;
+    font-size: 0.85rem; line-height: 1.4; display: block;
     transition: border-color 0.15s, color 0.15s, transform 0.1s;
   }}
-  .card:hover {{
-    border-color: var(--accent);
-    color: #93c5fd;
-    transform: translateY(-1px);
-  }}
+  .card:hover {{ border-color: var(--accent); color: #93c5fd; transform: translateY(-1px); }}
   .card.hidden {{ display: none; }}
   .card-prefix {{
-    font-size: 0.65rem;
-    font-weight: 700;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    margin-bottom: 4px;
+    font-size: 0.65rem; font-weight: 700;
+    letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 4px;
   }}
 </style>
 </head>
@@ -567,13 +565,10 @@ def generate_index(entries_by_cat):
   <h1>Final FRCA &mdash; Viva Exam Player</h1>
   <p>Interactive audio + transcript. Click any phrase to jump to that moment in the recording.</p>
 </div>
-
 <div class="filter-wrap">
   <input type="text" id="filter" placeholder="Filter topics&#8230;" oninput="filterCards(this.value)">
 </div>
-
-{''.join(cat_sections)}
-
+{"".join(cat_sections)}
 <script>
 function filterCards(q) {{
   q = q.toLowerCase();
@@ -585,19 +580,19 @@ function filterCards(q) {{
 </body>
 </html>
 """
-    return html
+
 
 # ── Main ───────────────────────────────────────────────────────────────────────
 def main():
-    json_files = sorted(CACHE_DIR.glob("*.json"))
+    json_files   = sorted(CACHE_DIR.glob("*.json"))
     entries_by_cat = {}
-    generated = 0
+    generated    = 0
 
     for jf in json_files:
-        stem = jf.stem  # e.g. FinalFRCACardiac_Anaesthesia_Hypertension
+        stem = jf.stem
         cat_key, topic_label, mp3_name = parse_filename(stem)
         cat_info = CATEGORIES.get(cat_key, {"label": cat_key, "color": "#2563eb", "cls": "cat-other"})
-        accent = cat_info["color"]
+        accent   = cat_info["color"]
 
         with open(jf, encoding="utf-8") as f:
             data = json.load(f)
@@ -607,24 +602,23 @@ def main():
             print(f"  SKIP (no segments): {stem}")
             continue
 
-        html_filename = stem + ".html"
-        out_path = OUT_DIR / html_filename
-
-        html = generate_player(stem, cat_key, topic_label, mp3_name, segments, accent)
+        html      = generate_player(stem, cat_key, topic_label, mp3_name, segments, accent)
+        out_path  = OUT_DIR / (stem + ".html")
         with open(out_path, "w", encoding="utf-8") as f:
             f.write(html)
 
-        if cat_key not in entries_by_cat:
-            entries_by_cat[cat_key] = []
-        entries_by_cat[cat_key].append((html_filename, topic_label))
+        # Count questions for reporting
+        blocks    = build_qa_blocks(segments)
+        n_q       = sum(1 for b in blocks if b["type"] == "qa")
+        entries_by_cat.setdefault(cat_key, []).append((stem + ".html", topic_label))
         generated += 1
-        print(f"  OK  [{cat_info['label']}] {topic_label}")
+        print(f"  OK  [{cat_info['label']}] {topic_label}  ({n_q} Qs, {len(segments)} segs)")
 
-    # Write index
     index_html = generate_index(entries_by_cat)
     with open(OUT_DIR / "index.html", "w", encoding="utf-8") as f:
         f.write(index_html)
-    print(f"\nDone. Generated {generated} player files + index.html → {OUT_DIR}")
+    print(f"\nDone. {generated} player files + index.html written to {OUT_DIR}")
+
 
 if __name__ == "__main__":
     main()

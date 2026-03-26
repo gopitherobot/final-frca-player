@@ -5,10 +5,19 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Thoracics — Anaesthesia for Bronchoscopy</title>
 <style>
-
   :root {
-    --accent:    #7c3aed;
-    --body-bg:   #f1f5f9;
+    --q-bg:       #1e3a5f;
+    --q-text:     #ffffff;
+    --q-label:    #60a5fa;
+    --a-bg:       #ffffff;
+    --a-border:   #e2e8f0;
+    --a-label:    #059669;
+    --active-q:   #7c3aed;
+    --active-a:   #dbeafe;
+    --accent:     #7c3aed;
+    --body-bg:    #f1f5f9;
+    --pre-bg:     #fef9c3;
+    --pre-border: #fcd34d;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
@@ -40,22 +49,9 @@
     margin-bottom: 4px;
     letter-spacing: 0.01em;
   }
-  .header-sub {
-    font-size: 0.72rem;
-    color: #94a3b8;
-    font-style: italic;
-  }
-  audio {
-    height: 36px;
-    accent-color: var(--accent);
-    flex-shrink: 0;
-  }
-  .back-link {
-    font-size: 0.8rem;
-    color: #94a3b8;
-    text-decoration: none;
-    white-space: nowrap;
-  }
+  .header-sub { font-size: 0.72rem; color: #94a3b8; font-style: italic; }
+  audio { height: 36px; accent-color: var(--accent); flex-shrink: 0; }
+  .back-link { font-size: 0.8rem; color: #94a3b8; text-decoration: none; white-space: nowrap; }
   .back-link:hover { color: #60a5fa; }
 
   /* ── Toolbar ── */
@@ -69,30 +65,17 @@
     border-bottom: 1px solid #334155;
   }
   .toolbar input {
-    flex: 1;
-    max-width: 380px;
+    flex: 1; max-width: 380px;
     padding: 5px 11px;
-    border: 1px solid #475569;
-    border-radius: 6px;
-    background: #0f172a;
-    color: #e2e8f0;
-    font-size: 0.83rem;
-    outline: none;
+    border: 1px solid #475569; border-radius: 6px;
+    background: #0f172a; color: #e2e8f0; font-size: 0.83rem; outline: none;
   }
   .toolbar input:focus { border-color: var(--accent); }
   .toolbar input::placeholder { color: #64748b; }
-  .stats {
-    font-size: 0.72rem;
-    color: #64748b;
-    white-space: nowrap;
-  }
+  .stats { font-size: 0.72rem; color: #64748b; white-space: nowrap; }
 
   /* ── Scroll area ── */
-  .scroll-area {
-    flex: 1;
-    overflow-y: auto;
-    padding: 20px;
-  }
+  .scroll-area { flex: 1; overflow-y: auto; padding: 20px; }
   .scroll-area::-webkit-scrollbar { width: 6px; }
   .scroll-area::-webkit-scrollbar-track { background: transparent; }
   .scroll-area::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
@@ -107,68 +90,77 @@
     display: flex;
     align-items: center;
   }
-  .subtitle-text {
-    font-size: 0.9rem;
-    color: #e2e8f0;
-    line-height: 1.5;
-    font-style: italic;
-  }
-  .subtitle-text.empty { color: #475569; }
+  #subtitle-text { font-size: 0.88rem; color: #e2e8f0; line-height: 1.5; font-style: italic; }
+  #subtitle-text.empty { color: #475569; }
 
-  /* ── Transcript blocks ── */
-  .t-block {
-    background: #ffffff;
-    border: 1px solid #e2e8f0;
-    border-radius: 10px;
-    margin-bottom: 14px;
-    overflow: hidden;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
-    display: flex;
-  }
-  .t-block.block-active {
-    border-color: var(--accent);
-    box-shadow: 0 0 0 2px rgba(37,99,235,0.15);
-  }
-  .t-gutter {
-    background: #0f172a;
-    width: 52px;
-    flex-shrink: 0;
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
-    padding-top: 14px;
-    cursor: pointer;
-  }
-  .t-gutter:hover { background: #1e293b; }
-  .t-timestamp {
-    font-size: 0.7rem;
-    color: #64748b;
-    font-family: monospace;
-    font-weight: 600;
-    letter-spacing: 0.02em;
-  }
-  .t-gutter.gutter-active .t-timestamp { color: var(--accent); }
-  .t-body {
-    flex: 1;
+  /* ── Preamble ── */
+  .preamble-block {
+    background: var(--pre-bg);
+    border-left: 4px solid var(--pre-border);
+    border-radius: 0 8px 8px 0;
     padding: 12px 16px;
-    line-height: 1.75;
-    font-size: 0.92rem;
-    color: #1e293b;
+    margin-bottom: 20px;
+    font-size: 0.88rem;
+    color: #78350f;
+    font-style: italic;
+    line-height: 1.7;
   }
 
-  /* ── Segments ── */
-  .segment {
+  /* ── Q&A pair ── */
+  .qa-pair { margin-bottom: 20px; border-radius: 10px; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+
+  /* Question block */
+  .q-block {
+    background: var(--q-bg);
+    padding: 14px 18px;
+    display: flex; gap: 14px; align-items: flex-start;
     cursor: pointer;
-    border-radius: 3px;
-    transition: background 0.1s;
+    transition: background 0.15s;
   }
-  .segment:hover { background: #eff6ff; }
-  .segment.active {
-    background: #bfdbfe;
-    outline: 2px solid #3b82f6;
-    outline-offset: 1px;
-    border-radius: 3px;
+  .q-block:hover { background: #1d4ed8; }
+  .q-block.q-active { background: var(--active-q); }
+  .q-label {
+    font-size: 0.7rem; font-weight: 700;
+    color: var(--q-label);
+    background: rgba(96,165,250,0.15);
+    border: 1px solid rgba(96,165,250,0.3);
+    border-radius: 5px; padding: 3px 7px;
+    white-space: nowrap; margin-top: 2px; letter-spacing: 0.05em;
+    flex-shrink: 0;
   }
+  .q-body { flex: 1; font-size: 0.97rem; font-weight: 600; color: var(--q-text); line-height: 1.55; }
+
+  /* Answer block */
+  .a-block {
+    background: var(--a-bg);
+    border: 1px solid var(--a-border); border-top: none;
+    padding: 14px 18px;
+    display: flex; gap: 14px; align-items: flex-start;
+  }
+  .a-label {
+    font-size: 0.7rem; font-weight: 700;
+    color: var(--a-label);
+    background: #d1fae5; border: 1px solid #6ee7b7;
+    border-radius: 5px; padding: 3px 9px;
+    white-space: nowrap; margin-top: 2px; letter-spacing: 0.05em;
+    flex-shrink: 0;
+  }
+  .a-body { flex: 1; list-style: none; padding: 0; }
+  .a-body li {
+    padding: 4px 0 4px 14px;
+    border-left: 3px solid transparent;
+    line-height: 1.7; font-size: 0.92rem; color: #1e293b;
+    border-radius: 0 4px 4px 0;
+    transition: background 0.15s;
+  }
+  .a-body li:not(:last-child) { border-bottom: 1px solid #f1f5f9; }
+
+  /* ── Segments (clickable) ── */
+  .segment { cursor: pointer; border-radius: 3px; }
+  .q-seg:hover { background: rgba(255,255,255,0.18); }
+  .a-seg:hover { background: #eff6ff; }
+  .segment.active { background: #bfdbfe; outline: 2px solid #3b82f6; outline-offset: 1px; }
+  .a-body li.li-active { background: var(--active-a); border-left-color: var(--accent); }
   .segment.search-match  { background: #fef9c3; }
   .segment.search-current { background: #fde047; outline: 2px solid #ca8a04; }
 
@@ -187,253 +179,651 @@
 
 <div class="toolbar">
   <input type="text" id="search" placeholder="Search transcript&#8230; (Enter = next match)">
-  <span class="stats" id="stats">324 segments &nbsp;|&nbsp; <span id="dur">loading&#8230;</span></span>
+  <span class="stats" id="stats">27 questions &nbsp;|&nbsp; 324 segments &nbsp;|&nbsp; <span id="dur">loading&#8230;</span></span>
 </div>
 
 <div class="scroll-area" id="scroll-area">
-<div class="t-block">
-  <div class="t-gutter" data-start="0.0"><span class="t-timestamp">0:00</span></div>
-  <div class="t-body"><span class="segment" data-start="0.0" data-end="2.44" title="0:00">Anasthesia for bronchoscopy. </span><span class="segment" data-start="4.2" data-end="7.88" title="0:04">You have a 76-year-old man listed for Richard Bronchoscopy. </span><span class="segment" data-start="8.56" data-end="11.88" title="0:08">One information is important in the pre-operative assessment. </span><span class="segment" data-start="13.24" data-end="17.8" title="0:13">Patients listed for bronchoscopy fall into two categories. </span><span class="segment" data-start="17.96" data-end="21.36" title="0:17">Those having an isolated procedure, for example, </span><span class="segment" data-start="21.36" data-end="26.6" title="0:21">patients undergoing a thoracotomy will be bronchoscope to prior to surgery. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="26.88"><span class="t-timestamp">0:26</span></div>
-  <div class="t-body"><span class="segment" data-start="26.88" data-end="31.56" title="0:26">The second group is when bronchoscopy is combined with a therapeutic procedure, </span><span class="segment" data-start="31.56" data-end="35.36" title="0:31">such as tracheal dilatation or stent insertion. </span><span class="segment" data-start="35.36" data-end="39.2" title="0:35">It is therefore essential to evaluate the upper airway </span><span class="segment" data-start="39.2" data-end="42.64" title="0:39">and assess for signs and symptoms of obstruction, </span><span class="segment" data-start="42.64" data-end="46.28" title="0:42">for example, stride or and breathlessness at rest. </span><span class="segment" data-start="46.84" data-end="50.2" title="0:46">A cardiovascular history is also very important </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="50.2"><span class="t-timestamp">0:50</span></div>
-  <div class="t-body"><span class="segment" data-start="50.2" data-end="54.28" title="0:50">as patients with lung cancer are often elderly smokers. </span><span class="segment" data-start="54.72" data-end="57.04" title="0:54">What investigations would you request? </span><span class="segment" data-start="57.04" data-end="59.64" title="0:57">Make sure you can justify each investigation </span><span class="segment" data-start="59.64" data-end="61.92" title="0:59">and that you are familiar with them. </span><span class="segment" data-start="61.92" data-end="63.92" title="1:01">Expect to be shown a flow volume loop </span><span class="segment" data-start="63.92" data-end="67.48" title="1:03">when discussing obstructive or restrictive primary deficits. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="67.48"><span class="t-timestamp">1:07</span></div>
-  <div class="t-body"><span class="segment" data-start="67.48" data-end="71.44" title="1:07">This is fundamental physiology, which all anacetaceous should know well. </span><span class="segment" data-start="73.16" data-end="77.16" title="1:13">A chest x-ray is mandatory to assess pulmonary pathology </span><span class="segment" data-start="77.16" data-end="80.44" title="1:17">and to determine if the trachea is deviated. </span><span class="segment" data-start="80.72" data-end="83.88" title="1:20">CT and MRI scans may be indicated </span><span class="segment" data-start="83.88" data-end="86.6" title="1:23">and should be reviewed preoperatively. </span><span class="segment" data-start="86.6" data-end="91.4" title="1:26">Lung function tests are helpful in defining the degree of obstruction, </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="91.4"><span class="t-timestamp">1:31</span></div>
-  <div class="t-body"><span class="segment" data-start="91.4" data-end="94.32" title="1:31">particularly flow volume loops. </span><span class="segment" data-start="94.32" data-end="98.44" title="1:34">Routine bloods and an ECG should be sought. </span><span class="segment" data-start="98.44" data-end="103.0" title="1:38">Rigid bronchoscopy requires significant neck extension </span><span class="segment" data-start="103.0" data-end="106.16" title="1:43">and so lateral neck x-ray should be sought </span><span class="segment" data-start="106.16" data-end="108.84" title="1:46">in patients with a history of neck problems </span><span class="segment" data-start="108.88" data-end="111.32" title="1:48">or rheumatoid arthritis. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="111.32"><span class="t-timestamp">1:51</span></div>
-  <div class="t-body"><span class="segment" data-start="111.32" data-end="114.56" title="1:51">Does bronchoscopy always require a general anaesthetic? </span><span class="segment" data-start="116.08" data-end="119.8" title="1:56">No. Flexible bronchoscopy is usually carried out </span><span class="segment" data-start="119.8" data-end="125.04" title="1:59">by respiratory physicians with topical, local anaesthesia and sedation. </span><span class="segment" data-start="125.88" data-end="127.96" title="2:05">Make sure you have an appropriate management plan </span><span class="segment" data-start="127.96" data-end="130.56" title="2:07">for topical anaesthesia of the airway, </span><span class="segment" data-start="130.56" data-end="134.04" title="2:10">as this is important for a weak fibrooptic intubation. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="134.84"><span class="t-timestamp">2:14</span></div>
-  <div class="t-body"><span class="segment" data-start="134.84" data-end="138.4" title="2:14">What anaesthetic technique would you use for this patient? </span><span class="segment" data-start="138.44" data-end="140.56" title="2:18">There is no one correct answer. </span><span class="segment" data-start="140.56" data-end="142.96" title="2:20">Think about what conditions you are aiming to achieve </span><span class="segment" data-start="142.96" data-end="145.8" title="2:22">and what equipment you may have available. </span><span class="segment" data-start="145.8" data-end="150.28" title="2:25">Simplify your answer to induction, maintenance and post-operative management. </span><span class="segment" data-start="152.12" data-end="155.76" title="2:32">The aims of bronchoscopy for an isolated procedure </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="155.76"><span class="t-timestamp">2:35</span></div>
-  <div class="t-body"><span class="segment" data-start="155.76" data-end="160.52" title="2:35">are to provide anaesthesia with abolished respiratory reflexes, </span><span class="segment" data-start="160.52" data-end="166.16" title="2:40">muscular re-naxation, safe ventilation and rapid emergence. </span><span class="segment" data-start="166.2" data-end="170.68" title="2:46">I would use intravenous glycopyralate as an anti-silogog. </span><span class="segment" data-start="170.68" data-end="174.96" title="2:50">If the airway is patent, then intravenous propyl is appropriate </span><span class="segment" data-start="174.96" data-end="177.0" title="2:54">with a short-acting muscle relaxant, </span><span class="segment" data-start="177.0" data-end="180.28" title="2:57">such as succcemethonium or mivocurium. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="180.28"><span class="t-timestamp">3:00</span></div>
-  <div class="t-body"><span class="segment" data-start="180.28" data-end="184.2" title="3:00">Bronchoscopy can cause a profound phaser presser response </span><span class="segment" data-start="184.2" data-end="187.72" title="3:04">and this must be controlled with short-acting opioids </span><span class="segment" data-start="187.72" data-end="190.32" title="3:07">and short-acting beta blockers. </span><span class="segment" data-start="190.32" data-end="195.32" title="3:10">Remi fentanyl infusions in combination with propyl or sever fluorane </span><span class="segment" data-start="195.36" data-end="200.16" title="3:15">can provide good cardiovascular stability with rapid recovery. </span><span class="segment" data-start="200.16" data-end="205.08" title="3:20">The vocal cords can be sprayed with lidocaine, four mills of four percent </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="205.08"><span class="t-timestamp">3:25</span></div>
-  <div class="t-body"><span class="segment" data-start="205.08" data-end="208.32" title="3:25">to minimise post-operative luringus pasm. </span><span class="segment" data-start="208.32" data-end="212.2" title="3:28">The patient should be positioned with their head on a single pillow, </span><span class="segment" data-start="212.2" data-end="215.24" title="3:32">I would take care to protect the eyes and teeth </span><span class="segment" data-start="215.24" data-end="218.28" title="3:35">and monitor the degree of neck extension required </span><span class="segment" data-start="218.28" data-end="221.2" title="3:38">as the bronchoscope is advanced. </span><span class="segment" data-start="221.2" data-end="223.4" title="3:41">What ventilator strategies can you use? </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="225.48"><span class="t-timestamp">3:45</span></div>
-  <div class="t-body"><span class="segment" data-start="225.48" data-end="229.64" title="3:45">The most important thing to recognise is that the airway is shared </span><span class="segment" data-start="229.64" data-end="231.08" title="3:49">in this procedure. </span><span class="segment" data-start="231.08" data-end="235.84" title="3:51">I am aware that there are two ventilator strategies that can be employed. </span><span class="segment" data-start="235.84" data-end="238.4" title="3:55">Intermittent positive pressure ventilation </span><span class="segment" data-start="238.4" data-end="241.16" title="3:58">via the ventilating arm of the bronchoscope </span><span class="segment" data-start="241.16" data-end="244.64" title="4:01">or using the Sanders or other injector devices </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="244.64"><span class="t-timestamp">4:04</span></div>
-  <div class="t-body"><span class="segment" data-start="244.64" data-end="248.08" title="4:04">such as the Maniaget Injector. </span><span class="segment" data-start="248.08" data-end="250.64" title="4:08">The difference between the Sanders Injector </span><span class="segment" data-start="250.64" data-end="255.28" title="4:10">and the Maniaget Injector is that the Sanders has no pressure control. </span><span class="segment" data-start="255.56" data-end="257.4" title="4:15">So when the trigger is pressed, </span><span class="segment" data-start="257.4" data-end="260.96" title="4:17">there is full pipeline pressure applied to the needle. </span><span class="segment" data-start="260.96" data-end="264.0" title="4:20">Maniaget has a variable pressure output </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="264.0"><span class="t-timestamp">4:24</span></div>
-  <div class="t-body"><span class="segment" data-start="264.0" data-end="267.44" title="4:24">and can thus be used for smaller patients. </span><span class="segment" data-start="267.44" data-end="271.2" title="4:27">Can you go into more detail about these differing techniques? </span><span class="segment" data-start="272.32" data-end="276.36" title="4:32">The Injector uses a high pressure oxygen supply </span><span class="segment" data-start="276.36" data-end="279.16" title="4:36">to release a jet of oxygen from a needle </span><span class="segment" data-start="279.16" data-end="282.12" title="4:39">at the operator end of the bronchoscope. </span><span class="segment" data-start="282.12" data-end="284.48" title="4:42">This creates a Venturi effect </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="284.48"><span class="t-timestamp">4:44</span></div>
-  <div class="t-body"><span class="segment" data-start="284.48" data-end="286.8" title="4:44">in training atmospheric air </span><span class="segment" data-start="286.8" data-end="291.4" title="4:46">and producing positive pressure at the distal end of the bronchoscope. </span><span class="segment" data-start="291.4" data-end="294.52" title="4:51">Intermittent inflation and deflation </span><span class="segment" data-start="294.52" data-end="300.4" title="4:54">provide satisfactory oxygenation and carbon dioxide clearance. </span><span class="segment" data-start="300.4" data-end="304.8" title="5:00">It is essential that there is free passage of air from the upper airway </span><span class="segment" data-start="304.8" data-end="308.72" title="5:04">to allow entrainment and also passive exploration </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="308.72"><span class="t-timestamp">5:08</span></div>
-  <div class="t-body"><span class="segment" data-start="308.72" data-end="311.28" title="5:08">thereby avoiding volume trauma. </span><span class="segment" data-start="311.32" data-end="315.2" title="5:11">This method is usually preferred in adults. </span><span class="segment" data-start="315.2" data-end="318.96" title="5:15">When using an Injector, the needle size is important </span><span class="segment" data-start="318.96" data-end="323.2" title="5:18">as it affects the amount of air entrained via the Venturi. </span><span class="segment" data-start="323.2" data-end="325.36" title="5:23">If too large a needle is used, </span><span class="segment" data-start="325.36" data-end="328.76" title="5:25">it can cause dangerous bariturum. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="328.76"><span class="t-timestamp">5:28</span></div>
-  <div class="t-body"><span class="segment" data-start="328.76" data-end="332.16" title="5:28">The ventilating bronchoscope has a glass window </span><span class="segment" data-start="332.16" data-end="335.84" title="5:32">or a rubber diaphragm to enable passage of instruments </span><span class="segment" data-start="335.84" data-end="340.16" title="5:35">and a sidearm that can be connected to the anesthetic circuit. </span><span class="segment" data-start="340.2" data-end="344.48" title="5:40">This technique is most commonly used in infants and children </span><span class="segment" data-start="344.48" data-end="347.52" title="5:44">using a T-piece and hand ventilation. </span><span class="segment" data-start="347.52" data-end="350.28" title="5:47">There is minimal risk of bariturum. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="350.28"><span class="t-timestamp">5:50</span></div>
-  <div class="t-body"><span class="segment" data-start="350.28" data-end="352.88" title="5:50">How would you maintain anesthesia? </span><span class="segment" data-start="352.88" data-end="357.48" title="5:52">Demonstrate your awareness of the complications of the different techniques. </span><span class="segment" data-start="358.48" data-end="361.08" title="5:58">When the ventilating bronchoscope is used, </span><span class="segment" data-start="361.08" data-end="363.64" title="6:01">a volatile agent can be used. </span><span class="segment" data-start="363.64" data-end="365.92" title="6:03">Rapid emergence is desirable, </span><span class="segment" data-start="365.92" data-end="368.76" title="6:05">therefore, seaver fluorane or des fluorane </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="368.8"><span class="t-timestamp">6:08</span></div>
-  <div class="t-body"><span class="segment" data-start="368.8" data-end="370.56" title="6:08">are the agents of choice, </span><span class="segment" data-start="370.56" data-end="373.64" title="6:10">but I exercise caution with the latter agent </span><span class="segment" data-start="373.64" data-end="376.24" title="6:13">as it can cause airway irritation. </span><span class="segment" data-start="377.12" data-end="379.48" title="6:17">The use of the Sanders Injector </span><span class="segment" data-start="379.48" data-end="382.96" title="6:19">means an intravenous technique must be employed. </span><span class="segment" data-start="382.96" data-end="387.4" title="6:22">Prophefall is the ideal agent due to its rapid offset. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="387.4"><span class="t-timestamp">6:27</span></div>
-  <div class="t-body"><span class="segment" data-start="387.4" data-end="390.52" title="6:27">This can be used as an intermittent bolus doses, </span><span class="segment" data-start="390.52" data-end="393.76" title="6:30">but I prefer a target controlled infusion </span><span class="segment" data-start="393.76" data-end="398.08" title="6:33">as awareness is a potential and not uncommon complication. </span><span class="segment" data-start="398.08" data-end="400.16" title="6:38">If your answers are progressing well, </span><span class="segment" data-start="400.16" data-end="403.8" title="6:40">proceed to post-operative management without prompting. </span><span class="segment" data-start="404.88" data-end="408.4" title="6:44">Unless bronchoscopies to be followed by a procedure, </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="408.4"><span class="t-timestamp">6:48</span></div>
-  <div class="t-body"><span class="segment" data-start="408.4" data-end="411.12" title="6:48">muscular relaxation should be reversed </span><span class="segment" data-start="411.12" data-end="413.88" title="6:51">and rapid emergence is desirable. </span><span class="segment" data-start="413.88" data-end="417.36" title="6:53">The patient should be nursed with an oxygen face mask </span><span class="segment" data-start="417.36" data-end="421.8" title="6:57">and in the lateral position with the diseased side down. </span><span class="segment" data-start="421.8" data-end="425.88" title="7:01">Potential complications include damage to the teeth, </span><span class="segment" data-start="425.88" data-end="428.72" title="7:05">aspiration of blood, awareness, </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="428.72"><span class="t-timestamp">7:08</span></div>
-  <div class="t-body"><span class="segment" data-start="428.72" data-end="431.8" title="7:08">pharyngeal rupture, airway rupture, </span><span class="segment" data-start="431.8" data-end="433.4" title="7:11">cardiac arrhythmias, </span><span class="segment" data-start="433.4" data-end="437.2" title="7:13">hyper-tension and myocardial ischemia. </span><span class="segment" data-start="437.2" data-end="440.16" title="7:17">Be prepared to expand on the complications. </span><span class="segment" data-start="440.16" data-end="442.8" title="7:20">For example, airway rupture may present </span><span class="segment" data-start="442.8" data-end="445.48" title="7:22">as a pneumothorax which could be attention, </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="445.48"><span class="t-timestamp">7:25</span></div>
-  <div class="t-body"><span class="segment" data-start="445.48" data-end="448.76" title="7:25">tracusophageal fistula or surgical infosema. </span><span class="segment" data-start="450.0" data-end="452.8" title="7:30">How do patients with inhaled foreign bodies present? </span><span class="segment" data-start="453.8" data-end="458.88" title="7:33">This problem occurs most frequently in children under the age of three, </span><span class="segment" data-start="458.88" data-end="462.8" title="7:38">but can occur at any age, particularly in the abtunded. </span><span class="segment" data-start="462.8" data-end="465.8" title="7:42">A specific history is often absent </span><span class="segment" data-start="465.8" data-end="470.8" title="7:45">and presentation is variable from acute upper airway obstruction </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="470.8"><span class="t-timestamp">7:50</span></div>
-  <div class="t-body"><span class="segment" data-start="470.8" data-end="473.8" title="7:50">to a more insidious onset with a chronic cough, </span><span class="segment" data-start="473.8" data-end="476.8" title="7:53">recurrent chest infection that fails to improve </span><span class="segment" data-start="476.8" data-end="480.8" title="7:56">following antibiotic therapy and unilateral wheeze. </span><span class="segment" data-start="481.64" data-end="484.48" title="8:01">Foreign bodies should always be removed </span><span class="segment" data-start="484.48" data-end="487.36" title="8:04">as they can trigger an inflammatory response, </span><span class="segment" data-start="487.36" data-end="490.28" title="8:07">causing distal collapse and infection. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="490.28"><span class="t-timestamp">8:10</span></div>
-  <div class="t-body"><span class="segment" data-start="490.28" data-end="492.96" title="8:10">This is particularly a problem with peanuts </span><span class="segment" data-start="492.96" data-end="495.84" title="8:12">as they liberate and irritant oil. </span><span class="segment" data-start="495.84" data-end="498.68" title="8:15">Is a chest x-ray indication this clinical scenario? </span><span class="segment" data-start="500.52" data-end="505.6" title="8:20">If there is a good history and the patient has acute upper airway obstruction, </span><span class="segment" data-start="505.6" data-end="508.48" title="8:25">there may not be time to perform a chest x-ray. </span><span class="segment" data-start="508.48" data-end="510.2" title="8:28">However, this is unusual. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="510.24"><span class="t-timestamp">8:30</span></div>
-  <div class="t-body"><span class="segment" data-start="510.24" data-end="512.32" title="8:30">The chest x-ray may be normal, </span><span class="segment" data-start="512.32" data-end="515.2" title="8:32">it may show a radio opaque foreign body </span><span class="segment" data-start="515.2" data-end="519.4" title="8:35">and in the chronic case often shows non-specific changes </span><span class="segment" data-start="519.4" data-end="522.84" title="8:39">of atelectasis and consolidation. </span><span class="segment" data-start="522.84" data-end="527.68" title="8:42">Inspiratory and expiratory films may reveal hyperinflation </span><span class="segment" data-start="527.68" data-end="531.56" title="8:47">with the foreign body acting as a ball valve in the main broncus. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="532.44"><span class="t-timestamp">8:52</span></div>
-  <div class="t-body"><span class="segment" data-start="532.44" data-end="533.92" title="8:52">How would you necessitate a patient </span><span class="segment" data-start="533.92" data-end="536.16" title="8:53">when inhaled foreign body? </span><span class="segment" data-start="536.16" data-end="537.84" title="8:56">This is a fairly open question </span><span class="segment" data-start="537.84" data-end="540.84" title="8:57">and you must give a balanced account of the two schools of thought. </span><span class="segment" data-start="543.0" data-end="547.2" title="9:03">Good vascular access and routine monitoring are required. </span><span class="segment" data-start="547.2" data-end="550.44" title="9:07">The traditional approach is an inhalational induction. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="550.44"><span class="t-timestamp">9:10</span></div>
-  <div class="t-body"><span class="segment" data-start="550.44" data-end="552.96" title="9:10">This is the most common approach in children, </span><span class="segment" data-start="552.96" data-end="556.52" title="9:12">the main advantage being that the airway can be safely maintained </span><span class="segment" data-start="556.52" data-end="559.28" title="9:16">until bronchoscopy is performed. </span><span class="segment" data-start="559.28" data-end="563.12" title="9:19">Anesthesia can then be maintained with an inhalational agent </span><span class="segment" data-start="563.12" data-end="566.04" title="9:23">under the patient spontaneously breathing. </span><span class="segment" data-start="566.08" data-end="569.08" title="9:26">However, to avoid the use of a muscle relaxant, </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="569.08"><span class="t-timestamp">9:29</span></div>
-  <div class="t-body"><span class="segment" data-start="569.08" data-end="571.6" title="9:29">the depth of anesthesia has to be searched </span><span class="segment" data-start="571.6" data-end="573.88" title="9:31">that with the current agents available, </span><span class="segment" data-start="573.88" data-end="576.84" title="9:33">patients are usually rendered apneic. </span><span class="segment" data-start="576.84" data-end="579.28" title="9:36">Hallothene allowed very deep plains of anesthesia </span><span class="segment" data-start="579.28" data-end="581.6" title="9:39">and a spontaneous breathing patient. </span><span class="segment" data-start="581.6" data-end="583.88" title="9:41">It also provided good relaxation. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="585.88"><span class="t-timestamp">9:45</span></div>
-  <div class="t-body"><span class="segment" data-start="585.88" data-end="589.56" title="9:45">Therefore, a common approach is an inhalational induction </span><span class="segment" data-start="589.56" data-end="592.72" title="9:49">with civa fluorane, followed by muscle relaxation </span><span class="segment" data-start="592.72" data-end="594.68" title="9:52">with succcemethonium. </span><span class="segment" data-start="594.72" data-end="597.6" title="9:54">Ventilation is then gently taken over </span><span class="segment" data-start="597.6" data-end="600.52" title="9:57">using the T-piece attached to the side arm </span><span class="segment" data-start="600.52" data-end="602.64" title="10:00">of the ventilating bronchoscope. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="602.64"><span class="t-timestamp">10:02</span></div>
-  <div class="t-body"><span class="segment" data-start="602.64" data-end="606.96" title="10:02">It is important to maintain a high concentration of oxygen. </span><span class="segment" data-start="606.96" data-end="610.52" title="10:06">Incremental small doses of succcemethonium can be given </span><span class="segment" data-start="610.52" data-end="613.0" title="10:10">if the procedure is likely to be quick, </span><span class="segment" data-start="613.0" data-end="616.12" title="10:13">but it is important to manage the possible bradicardia </span><span class="segment" data-start="616.12" data-end="617.8" title="10:16">with intravenous atropine. </span><span class="segment" data-start="618.84" data-end="621.44" title="10:18">Intermittent positive pressure ventilation </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="621.44"><span class="t-timestamp">10:21</span></div>
-  <div class="t-body"><span class="segment" data-start="621.44" data-end="623.24" title="10:21">was traditionally avoided </span><span class="segment" data-start="623.28" data-end="625.28" title="10:23">as there is concern that the foreign body </span><span class="segment" data-start="625.28" data-end="627.2" title="10:25">could get blown more distally </span><span class="segment" data-start="627.2" data-end="629.12" title="10:27">or may cause a ball-like effect </span><span class="segment" data-start="629.12" data-end="631.64" title="10:29">resulting in distal air trapping. </span><span class="segment" data-start="631.64" data-end="633.92" title="10:31">This argument is counted by the belief </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="633.92"><span class="t-timestamp">10:33</span></div>
-  <div class="t-body"><span class="segment" data-start="633.92" data-end="636.56" title="10:33">that any foreign body requiring removal </span><span class="segment" data-start="636.56" data-end="640.08" title="10:36">is already impacted and unlikely to be displaced. </span><span class="segment" data-start="641.04" data-end="643.68" title="10:41">In adults, whether Venturi method of ventilation </span><span class="segment" data-start="643.68" data-end="647.8" title="10:43">can be used safely, intravenous induction with propifol </span><span class="segment" data-start="647.8" data-end="650.88" title="10:47">followed by succcemethonium provides a rapid </span><span class="segment" data-start="650.88" data-end="653.08" title="10:50">and safe way to secure the airway. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="654.2"><span class="t-timestamp">10:54</span></div>
-  <div class="t-body"><span class="segment" data-start="654.2" data-end="657.56" title="10:54">For maintenance, one could use incremental intravenous </span><span class="segment" data-start="657.56" data-end="661.32" title="10:57">boluses of both an anesthetic and analgesic, </span><span class="segment" data-start="661.32" data-end="664.44" title="11:01">for example, alfentinil and propifol, </span><span class="segment" data-start="664.44" data-end="666.88" title="11:04">but more precise control can be obtained </span><span class="segment" data-start="666.88" data-end="669.76" title="11:06">using a target controlled infusion. </span><span class="segment" data-start="669.76" data-end="673.88" title="11:09">Propifol and remyventinil would be especially suitable. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="673.88"><span class="t-timestamp">11:13</span></div>
-  <div class="t-body"><span class="segment" data-start="673.88" data-end="676.16" title="11:13">What are the post-operative complications? </span><span class="segment" data-start="678.48" data-end="681.56" title="11:18">The main concern following repeated instrumentation </span><span class="segment" data-start="681.56" data-end="684.48" title="11:21">of the airway is laryngeal stride or. </span><span class="segment" data-start="684.48" data-end="687.28" title="11:24">This can be managed with nebulized adrenaline, </span><span class="segment" data-start="687.28" data-end="690.76" title="11:27">five mills of a one in 10,000 concentration </span><span class="segment" data-start="690.76" data-end="693.2" title="11:30">repeated every two to four hours </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="693.2"><span class="t-timestamp">11:33</span></div>
-  <div class="t-body"><span class="segment" data-start="693.2" data-end="695.4" title="11:33">and intravenous texamethasone, </span><span class="segment" data-start="695.4" data-end="700.4" title="11:35">600 micrograms per kilogram per day in four divided doses. </span><span class="segment" data-start="700.64" data-end="703.76" title="11:40">Severe stride or may require re-intubation </span><span class="segment" data-start="703.76" data-end="707.28" title="11:43">and a smaller endotracheal tube should be available. </span><span class="segment" data-start="707.28" data-end="710.88" title="11:47">Prolonged ventilation is occasionally required. </span><span class="segment" data-start="710.92" data-end="713.76" title="11:50">What are the bronchoscopic interventions you are of? </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="715.92"><span class="t-timestamp">11:55</span></div>
-  <div class="t-body"><span class="segment" data-start="715.92" data-end="717.84" title="11:55">In critical stenosis, </span><span class="segment" data-start="717.84" data-end="720.56" title="11:57">a diachyobronkyl stent can be cited, </span><span class="segment" data-start="720.56" data-end="723.44" title="12:00">either as paliation or until definitive surgery </span><span class="segment" data-start="723.44" data-end="725.12" title="12:03">can be undertaken. </span><span class="segment" data-start="725.12" data-end="727.36" title="12:05">Diothermia resection of tumors </span><span class="segment" data-start="727.36" data-end="729.8" title="12:07">and laser therapy to debulk tumors </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="729.8"><span class="t-timestamp">12:09</span></div>
-  <div class="t-body"><span class="segment" data-start="729.8" data-end="731.84" title="12:09">are relatively common procedures. </span><span class="segment" data-start="732.76" data-end="735.04" title="12:12">What are the important anesthetic considerations </span><span class="segment" data-start="735.04" data-end="736.28" title="12:15">for these procedures? </span><span class="segment" data-start="737.2" data-end="738.28" title="12:17">If you get this far, </span><span class="segment" data-start="738.28" data-end="740.16" title="12:18">you're doing very well in your fibre. </span><span class="segment" data-start="741.88" data-end="744.44" title="12:21">Preoxygenation is essential </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="744.44"><span class="t-timestamp">12:24</span></div>
-  <div class="t-body"><span class="segment" data-start="744.44" data-end="746.92" title="12:24">with cautious induction of anesthesia </span><span class="segment" data-start="746.92" data-end="749.6" title="12:26">as complete loss of the airway as possible. </span><span class="segment" data-start="749.6" data-end="752.68" title="12:29">Intravenous and inhalational induction </span><span class="segment" data-start="752.68" data-end="755.68" title="12:32">both have advantages and disadvantages. </span><span class="segment" data-start="755.68" data-end="757.88" title="12:35">The most important aspect </span><span class="segment" data-start="757.88" data-end="760.72" title="12:37">is to have a skilled bronchoscopist to hand </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="760.72"><span class="t-timestamp">12:40</span></div>
-  <div class="t-body"><span class="segment" data-start="760.72" data-end="764.08" title="12:40">as this may be the only way to relieve the obstruction. </span><span class="segment" data-start="764.68" data-end="768.16" title="12:44">The routine precautions should always be adhered to </span><span class="segment" data-start="768.16" data-end="769.64" title="12:48">when using lasers. </span><span class="segment" data-start="769.92" data-end="772.88" title="12:49">A low concentration of inspired oxygen, </span><span class="segment" data-start="772.88" data-end="774.88" title="12:52">avoiding nitrous oxide </span><span class="segment" data-start="774.88" data-end="778.92" title="12:54">and using short bursts of laser treatment are essential. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="778.92"><span class="t-timestamp">12:58</span></div>
-  <div class="t-body"><span class="segment" data-start="778.92" data-end="780.92" title="12:58">Using a metal bronchoscope </span><span class="segment" data-start="780.92" data-end="782.96" title="13:00">avoids the need for foil wrapped </span><span class="segment" data-start="782.96" data-end="785.16" title="13:02">or metal endotracheal tubes </span><span class="segment" data-start="785.16" data-end="787.4" title="13:05">for Dracheal and endotracheal tumor </span><span class="segment" data-start="787.4" data-end="789.12" title="13:07">assection with a laser. </span><span class="segment" data-start="790.12" data-end="792.84" title="13:10">It is essential that good communication </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="792.84"><span class="t-timestamp">13:12</span></div>
-  <div class="t-body"><span class="segment" data-start="792.84" data-end="795.04" title="13:12">is maintained with the surgeon. </span><span class="segment" data-start="795.04" data-end="797.48" title="13:15">You mentioned earlier that flexible bronchoscopies </span><span class="segment" data-start="797.48" data-end="800.56" title="13:17">performed under local anaesthetic incidation. </span><span class="segment" data-start="800.56" data-end="803.56" title="13:20">Do you ever come across this technique in your practice? </span><span class="segment" data-start="805.24" data-end="807.68" title="13:25">Yes, this technique is performed </span><span class="segment" data-start="807.68" data-end="810.48" title="13:27">for awake fibre optic intubation. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="810.48"><span class="t-timestamp">13:30</span></div>
-  <div class="t-body"><span class="segment" data-start="810.48" data-end="814.48" title="13:30">And what are the indications for awake fibre optic intubation? </span><span class="segment" data-start="816.28" data-end="819.92" title="13:36">A known or anticipated difficult airway problem, </span><span class="segment" data-start="819.92" data-end="822.56" title="13:39">an unstable cervical spine injury </span><span class="segment" data-start="822.56" data-end="824.04" title="13:42">or unstable neck, </span><span class="segment" data-start="824.04" data-end="826.24" title="13:44">for example rheumatoid arthritis </span><span class="segment" data-start="826.24" data-end="828.24" title="13:46">with a risk of aspiration. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="828.24"><span class="t-timestamp">13:48</span></div>
-  <div class="t-body"><span class="segment" data-start="828.24" data-end="832.64" title="13:48">Obesity and obstructive sleep apnea can also be considered. </span><span class="segment" data-start="832.64" data-end="834.64" title="13:52">Are there any contraindications? </span><span class="segment" data-start="836.64" data-end="839.2" title="13:56">Yes, patient refusal, </span><span class="segment" data-start="839.2" data-end="840.56" title="13:59">acoagulopathy, </span><span class="segment" data-start="840.56" data-end="843.24" title="14:00">particularly if the nasal root is to be used </span><span class="segment" data-start="843.24" data-end="846.4" title="14:03">and care must be taken with periglotic masses </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="846.4"><span class="t-timestamp">14:06</span></div>
-  <div class="t-body"><span class="segment" data-start="846.4" data-end="849.68" title="14:06">as there is a risk of developing complete airway obstruction </span><span class="segment" data-start="849.68" data-end="851.68" title="14:09">or luringus basm. </span><span class="segment" data-start="851.68" data-end="855.12" title="14:11">Basil's skull fracture or cerebral spinal fluid leak </span><span class="segment" data-start="855.12" data-end="859.04" title="14:15">are contraindications if the nasal root is to be used. </span><span class="segment" data-start="859.04" data-end="861.04" title="14:19">Is the nasal root best? </span><span class="segment" data-start="862.72" data-end="865.84" title="14:22">The nasal root is preferred in my experience </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="865.84"><span class="t-timestamp">14:25</span></div>
-  <div class="t-body"><span class="segment" data-start="865.84" data-end="868.72" title="14:25">as it is frequently easier in the group of patients </span><span class="segment" data-start="868.72" data-end="870.4" title="14:28">with limited mouth opening </span><span class="segment" data-start="870.4" data-end="874.72" title="14:30">and the oral root gives a poor angle to approach the larynx. </span><span class="segment" data-start="874.72" data-end="878.24" title="14:34">And how would you need to tie the airway for the procedure? </span><span class="segment" data-start="878.24" data-end="880.8" title="14:38">It is important to emphasise that there are many ways </span><span class="segment" data-start="880.8" data-end="882.56" title="14:40">to perform this procedure. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="882.56"><span class="t-timestamp">14:42</span></div>
-  <div class="t-body"><span class="segment" data-start="882.56" data-end="885.76" title="14:42">Explain that it can be done with or without sedation. </span><span class="segment" data-start="885.76" data-end="888.16" title="14:45">Sedation is very common though. </span><span class="segment" data-start="888.16" data-end="890.32" title="14:48">Explain a technique that you're familiar with. </span><span class="segment" data-start="892.48" data-end="896.48" title="14:52">I would give 0.3 milligrams of glycopyralate intravenously </span><span class="segment" data-start="896.48" data-end="898.48" title="14:56">to minimise secretions. </span><span class="segment" data-start="898.48" data-end="902.32" title="14:58">This ensures topical anesthesia is more effective. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="902.32"><span class="t-timestamp">15:02</span></div>
-  <div class="t-body"><span class="segment" data-start="902.32" data-end="905.44" title="15:02">I would position the patient at 45 degrees, </span><span class="segment" data-start="905.44" data-end="909.12" title="15:05">head up, apply full AAGBI monitoring </span><span class="segment" data-start="909.12" data-end="912.32" title="15:09">and give oxygen via a nasal catheter. </span><span class="segment" data-start="912.32" data-end="915.68" title="15:12">For this procedure, I prefer to use a low dose </span><span class="segment" data-start="915.68" data-end="918.32" title="15:15">target-controlled remyfentinal infusion </span><span class="segment" data-start="918.32" data-end="921.84" title="15:18">with a starting dose of 3 nanograms per mil. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="921.84"><span class="t-timestamp">15:21</span></div>
-  <div class="t-body"><span class="segment" data-start="921.84" data-end="925.76" title="15:21">The aim is to maintain verbal communication with the patient. </span><span class="segment" data-start="925.76" data-end="929.68" title="15:25">The benefit of the remyfentinal is its antitusive effects </span><span class="segment" data-start="929.68" data-end="932.4" title="15:29">and cardiovascular stability. </span><span class="segment" data-start="932.4" data-end="935.12" title="15:32">A target-controlled infusion of propifol </span><span class="segment" data-start="935.12" data-end="937.68" title="15:35">or bolus doses of benzodiazepines </span><span class="segment" data-start="937.68" data-end="940.88" title="15:37">are also well described in the literature. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="941.76"><span class="t-timestamp">15:41</span></div>
-  <div class="t-body"><span class="segment" data-start="941.76" data-end="944.24" title="15:41">If there are no contraindications, </span><span class="segment" data-start="944.24" data-end="948.32" title="15:44">I would spray the nostrils with two mills of 5% cocaine </span><span class="segment" data-start="948.32" data-end="950.24" title="15:48">or Moffit's solution. </span><span class="segment" data-start="950.24" data-end="954.96" title="15:50">The patient can gargle 1.5 mills of 4% lidocaine, </span><span class="segment" data-start="954.96" data-end="958.08" title="15:54">holding it in the aurofarynx as long as possible, </span><span class="segment" data-start="958.08" data-end="960.64" title="15:58">or this can be sprayed to the back of the pharynx </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="960.64"><span class="t-timestamp">16:00</span></div>
-  <div class="t-body"><span class="segment" data-start="960.64" data-end="962.4" title="16:00">using a nasal airway. </span><span class="segment" data-start="962.4" data-end="965.84" title="16:02">This should adequately enneithatise the aurofarynx </span><span class="segment" data-start="965.84" data-end="967.84" title="16:05">under the posterior third of the tongue. </span><span class="segment" data-start="968.56" data-end="972.56" title="16:08">The nostrils are then dilated with nasal airways </span><span class="segment" data-start="972.56" data-end="976.64" title="16:12">or gynecological dilators lubricated with lidocaine jelly. </span><span class="segment" data-start="976.64" data-end="979.36" title="16:16">How would you enneithatise the vocal cords? </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="979.36"><span class="t-timestamp">16:19</span></div>
-  <div class="t-body"><span class="segment" data-start="979.36" data-end="983.44" title="16:19">There are several techniques. </span><span class="segment" data-start="983.44" data-end="987.28" title="16:23">The simplest being three to four mills of 4% lidocaine </span><span class="segment" data-start="987.28" data-end="990.24" title="16:27">via a nebulizer with the patient sitting up. </span><span class="segment" data-start="990.24" data-end="994.24" title="16:30">Alternatively, two mills of 4% lidocaine </span><span class="segment" data-start="994.24" data-end="997.44" title="16:34">can be injected down the suction port of the fibroscope </span><span class="segment" data-start="997.6" data-end="999.68" title="16:37">with a further two mills being injected </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="999.68"><span class="t-timestamp">16:39</span></div>
-  <div class="t-body"><span class="segment" data-start="999.68" data-end="1002.16" title="16:39">once the tip of the scope is through the cords. </span><span class="segment" data-start="1002.96" data-end="1007.52" title="16:42">A more invasive method is the cryothyroid membrane puncture. </span><span class="segment" data-start="1007.52" data-end="1011.2" title="16:47">A 22 gauge cannula is used with the neck in extension. </span><span class="segment" data-start="1011.76" data-end="1014.96" title="16:51">Cracked placement is confirmed by the aspiration of air. </span><span class="segment" data-start="1015.84" data-end="1021.12" title="16:55">Two mills of 4% lidocaine is then injected at the end of exploration </span><span class="segment" data-start="1021.12" data-end="1023.12" title="17:01">so the patient will breathe in </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="1023.12"><span class="t-timestamp">17:03</span></div>
-  <div class="t-body"><span class="segment" data-start="1023.12" data-end="1025.76" title="17:03">and the resultant cough from the patient </span><span class="segment" data-start="1025.76" data-end="1030.24" title="17:05">gives appropriate spread to the local anesthetic above and below the cords. </span><span class="segment" data-start="1030.8" data-end="1035.36" title="17:10">It is important not to use a needle as this can snap when the patient coughs. </span><span class="segment" data-start="1036.24" data-end="1038.96" title="17:16">Are you aware of any specific nerve blocks that can be performed? </span><span class="segment" data-start="1040.4" data-end="1043.84" title="17:20">It is worth knowing a brief description of specific nerve blocks </span><span class="segment" data-start="1043.84" data-end="1045.68" title="17:23">as they are a favourite of the examiners. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="1048.16"><span class="t-timestamp">17:28</span></div>
-  <div class="t-body"><span class="segment" data-start="1048.16" data-end="1052.72" title="17:28">Superior laryngeal nerve blocks can be performed either by injecting local </span><span class="segment" data-start="1052.72" data-end="1056.56" title="17:32">anesthetic bilaterally just above the thyroid cartilage </span><span class="segment" data-start="1056.56" data-end="1061.36" title="17:36">at a 0.13 of the distance between the midline and the superior corno. </span><span class="segment" data-start="1062.16" data-end="1066.16" title="17:42">Alternatively, plegates soaked in local anesthetic </span><span class="segment" data-start="1066.16" data-end="1069.44" title="17:46">can be placed into each piriform fossa using forceps. </span><span class="segment" data-start="1070.0" data-end="1073.68" title="17:50">I have never witnessed the use of these blocks in myclinical practice. </span></div>
+<div class="preamble-block"><span class="segment a-seg" data-start="0.0" data-end="2.44" title="0:00">Anasthesia for bronchoscopy. </span><span class="segment a-seg" data-start="4.2" data-end="7.88" title="0:04">You have a 76-year-old man listed for Richard Bronchoscopy. </span><span class="segment a-seg" data-start="8.56" data-end="11.88" title="0:08">One information is important in the pre-operative assessment. </span><span class="segment a-seg" data-start="13.24" data-end="17.8" title="0:13">Patients listed for bronchoscopy fall into two categories. </span><span class="segment a-seg" data-start="17.96" data-end="21.36" title="0:17">Those having an isolated procedure, for example, </span><span class="segment a-seg" data-start="21.36" data-end="26.6" title="0:21">patients undergoing a thoracotomy will be bronchoscope to prior to surgery. </span><span class="segment a-seg" data-start="26.88" data-end="31.56" title="0:26">The second group is when bronchoscopy is combined with a therapeutic procedure, </span><span class="segment a-seg" data-start="31.56" data-end="35.36" title="0:31">such as tracheal dilatation or stent insertion. </span><span class="segment a-seg" data-start="35.36" data-end="39.2" title="0:35">It is therefore essential to evaluate the upper airway </span><span class="segment a-seg" data-start="39.2" data-end="42.64" title="0:39">and assess for signs and symptoms of obstruction, </span><span class="segment a-seg" data-start="42.64" data-end="46.28" title="0:42">for example, stride or and breathlessness at rest. </span><span class="segment a-seg" data-start="46.84" data-end="50.2" title="0:46">A cardiovascular history is also very important </span><span class="segment a-seg" data-start="50.2" data-end="54.28" title="0:50">as patients with lung cancer are often elderly smokers. </span></div>
+<div class="qa-pair">
+<div class="q-block" data-start="54.72">
+  <div class="q-label">Q1</div>
+  <div class="q-body"><span class="segment q-seg" data-start="54.72" data-end="57.04" title="0:54">What investigations would you request? </span></div>
 </div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="57.04" data-end="59.64" title="0:57">Make sure you can justify each investigation </span></li>
+<li><span class="segment a-seg" data-start="59.64" data-end="61.92" title="0:59">and that you are familiar with them. </span></li>
+<li><span class="segment a-seg" data-start="61.92" data-end="63.92" title="1:01">Expect to be shown a flow volume loop </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="63.92">
+  <div class="q-label">Q2</div>
+  <div class="q-body"><span class="segment q-seg" data-start="63.92" data-end="67.48" title="1:03">when discussing obstructive or restrictive primary deficits. </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="67.48" data-end="71.44" title="1:07">This is fundamental physiology, which all anacetaceous should know well. </span></li>
+<li><span class="segment a-seg" data-start="73.16" data-end="77.16" title="1:13">A chest x-ray is mandatory to assess pulmonary pathology </span></li>
+<li><span class="segment a-seg" data-start="77.16" data-end="80.44" title="1:17">and to determine if the trachea is deviated. </span></li>
+<li><span class="segment a-seg" data-start="80.72" data-end="83.88" title="1:20">CT and MRI scans may be indicated </span></li>
+<li><span class="segment a-seg" data-start="83.88" data-end="86.6" title="1:23">and should be reviewed preoperatively. </span></li>
+<li><span class="segment a-seg" data-start="86.6" data-end="91.4" title="1:26">Lung function tests are helpful in defining the degree of obstruction, </span></li>
+<li><span class="segment a-seg" data-start="91.4" data-end="94.32" title="1:31">particularly flow volume loops. </span></li>
+<li><span class="segment a-seg" data-start="94.32" data-end="98.44" title="1:34">Routine bloods and an ECG should be sought. </span></li>
+<li><span class="segment a-seg" data-start="98.44" data-end="103.0" title="1:38">Rigid bronchoscopy requires significant neck extension </span></li>
+<li><span class="segment a-seg" data-start="103.0" data-end="106.16" title="1:43">and so lateral neck x-ray should be sought </span></li>
+<li><span class="segment a-seg" data-start="106.16" data-end="108.84" title="1:46">in patients with a history of neck problems </span></li>
+<li><span class="segment a-seg" data-start="108.88" data-end="111.32" title="1:48">or rheumatoid arthritis. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="111.32">
+  <div class="q-label">Q3</div>
+  <div class="q-body"><span class="segment q-seg" data-start="111.32" data-end="114.56" title="1:51">Does bronchoscopy always require a general anaesthetic? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="116.08" data-end="119.8" title="1:56">No. Flexible bronchoscopy is usually carried out </span></li>
+<li><span class="segment a-seg" data-start="119.8" data-end="125.04" title="1:59">by respiratory physicians with topical, local anaesthesia and sedation. </span></li>
+<li><span class="segment a-seg" data-start="125.88" data-end="127.96" title="2:05">Make sure you have an appropriate management plan </span></li>
+<li><span class="segment a-seg" data-start="127.96" data-end="130.56" title="2:07">for topical anaesthesia of the airway, </span></li>
+<li><span class="segment a-seg" data-start="130.56" data-end="134.04" title="2:10">as this is important for a weak fibrooptic intubation. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="134.84">
+  <div class="q-label">Q4</div>
+  <div class="q-body"><span class="segment q-seg" data-start="134.84" data-end="138.4" title="2:14">What anaesthetic technique would you use for this patient? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="138.44" data-end="140.56" title="2:18">There is no one correct answer. </span></li>
+<li><span class="segment a-seg" data-start="140.56" data-end="142.96" title="2:20">Think about what conditions you are aiming to achieve </span></li>
+<li><span class="segment a-seg" data-start="142.96" data-end="145.8" title="2:22">and what equipment you may have available. </span></li>
+<li><span class="segment a-seg" data-start="145.8" data-end="150.28" title="2:25">Simplify your answer to induction, maintenance and post-operative management. </span></li>
+<li><span class="segment a-seg" data-start="152.12" data-end="155.76" title="2:32">The aims of bronchoscopy for an isolated procedure </span></li>
+<li><span class="segment a-seg" data-start="155.76" data-end="160.52" title="2:35">are to provide anaesthesia with abolished respiratory reflexes, </span></li>
+<li><span class="segment a-seg" data-start="160.52" data-end="166.16" title="2:40">muscular re-naxation, safe ventilation and rapid emergence. </span></li>
+<li><span class="segment a-seg" data-start="166.2" data-end="170.68" title="2:46">I would use intravenous glycopyralate as an anti-silogog. </span></li>
+<li><span class="segment a-seg" data-start="170.68" data-end="174.96" title="2:50">If the airway is patent, then intravenous propyl is appropriate </span></li>
+<li><span class="segment a-seg" data-start="174.96" data-end="177.0" title="2:54">with a short-acting muscle relaxant, </span></li>
+<li><span class="segment a-seg" data-start="177.0" data-end="180.28" title="2:57">such as succcemethonium or mivocurium. </span></li>
+<li><span class="segment a-seg" data-start="180.28" data-end="184.2" title="3:00">Bronchoscopy can cause a profound phaser presser response </span></li>
+<li><span class="segment a-seg" data-start="184.2" data-end="187.72" title="3:04">and this must be controlled with short-acting opioids </span></li>
+<li><span class="segment a-seg" data-start="187.72" data-end="190.32" title="3:07">and short-acting beta blockers. </span></li>
+<li><span class="segment a-seg" data-start="190.32" data-end="195.32" title="3:10">Remi fentanyl infusions in combination with propyl or sever fluorane </span></li>
+<li><span class="segment a-seg" data-start="195.36" data-end="200.16" title="3:15">can provide good cardiovascular stability with rapid recovery. </span></li>
+<li><span class="segment a-seg" data-start="200.16" data-end="205.08" title="3:20">The vocal cords can be sprayed with lidocaine, four mills of four percent </span></li>
+<li><span class="segment a-seg" data-start="205.08" data-end="208.32" title="3:25">to minimise post-operative luringus pasm. </span></li>
+<li><span class="segment a-seg" data-start="208.32" data-end="212.2" title="3:28">The patient should be positioned with their head on a single pillow, </span></li>
+<li><span class="segment a-seg" data-start="212.2" data-end="215.24" title="3:32">I would take care to protect the eyes and teeth </span></li>
+<li><span class="segment a-seg" data-start="215.24" data-end="218.28" title="3:35">and monitor the degree of neck extension required </span></li>
+<li><span class="segment a-seg" data-start="218.28" data-end="221.2" title="3:38">as the bronchoscope is advanced. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="221.2">
+  <div class="q-label">Q5</div>
+  <div class="q-body"><span class="segment q-seg" data-start="221.2" data-end="223.4" title="3:41">What ventilator strategies can you use? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="225.48" data-end="229.64" title="3:45">The most important thing to recognise is that the airway is shared </span></li>
+<li><span class="segment a-seg" data-start="229.64" data-end="231.08" title="3:49">in this procedure. </span></li>
+<li><span class="segment a-seg" data-start="231.08" data-end="235.84" title="3:51">I am aware that there are two ventilator strategies that can be employed. </span></li>
+<li><span class="segment a-seg" data-start="235.84" data-end="238.4" title="3:55">Intermittent positive pressure ventilation </span></li>
+<li><span class="segment a-seg" data-start="238.4" data-end="241.16" title="3:58">via the ventilating arm of the bronchoscope </span></li>
+<li><span class="segment a-seg" data-start="241.16" data-end="244.64" title="4:01">or using the Sanders or other injector devices </span></li>
+<li><span class="segment a-seg" data-start="244.64" data-end="248.08" title="4:04">such as the Maniaget Injector. </span></li>
+<li><span class="segment a-seg" data-start="248.08" data-end="250.64" title="4:08">The difference between the Sanders Injector </span></li>
+<li><span class="segment a-seg" data-start="250.64" data-end="255.28" title="4:10">and the Maniaget Injector is that the Sanders has no pressure control. </span></li>
+<li><span class="segment a-seg" data-start="255.56" data-end="257.4" title="4:15">So when the trigger is pressed, </span></li>
+<li><span class="segment a-seg" data-start="257.4" data-end="260.96" title="4:17">there is full pipeline pressure applied to the needle. </span></li>
+<li><span class="segment a-seg" data-start="260.96" data-end="264.0" title="4:20">Maniaget has a variable pressure output </span></li>
+<li><span class="segment a-seg" data-start="264.0" data-end="267.44" title="4:24">and can thus be used for smaller patients. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="267.44">
+  <div class="q-label">Q6</div>
+  <div class="q-body"><span class="segment q-seg" data-start="267.44" data-end="271.2" title="4:27">Can you go into more detail about these differing techniques? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="272.32" data-end="276.36" title="4:32">The Injector uses a high pressure oxygen supply </span></li>
+<li><span class="segment a-seg" data-start="276.36" data-end="279.16" title="4:36">to release a jet of oxygen from a needle </span></li>
+<li><span class="segment a-seg" data-start="279.16" data-end="282.12" title="4:39">at the operator end of the bronchoscope. </span></li>
+<li><span class="segment a-seg" data-start="282.12" data-end="284.48" title="4:42">This creates a Venturi effect </span></li>
+<li><span class="segment a-seg" data-start="284.48" data-end="286.8" title="4:44">in training atmospheric air </span></li>
+<li><span class="segment a-seg" data-start="286.8" data-end="291.4" title="4:46">and producing positive pressure at the distal end of the bronchoscope. </span></li>
+<li><span class="segment a-seg" data-start="291.4" data-end="294.52" title="4:51">Intermittent inflation and deflation </span></li>
+<li><span class="segment a-seg" data-start="294.52" data-end="300.4" title="4:54">provide satisfactory oxygenation and carbon dioxide clearance. </span></li>
+<li><span class="segment a-seg" data-start="300.4" data-end="304.8" title="5:00">It is essential that there is free passage of air from the upper airway </span></li>
+<li><span class="segment a-seg" data-start="304.8" data-end="308.72" title="5:04">to allow entrainment and also passive exploration </span></li>
+<li><span class="segment a-seg" data-start="308.72" data-end="311.28" title="5:08">thereby avoiding volume trauma. </span></li>
+<li><span class="segment a-seg" data-start="311.32" data-end="315.2" title="5:11">This method is usually preferred in adults. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="315.2">
+  <div class="q-label">Q7</div>
+  <div class="q-body"><span class="segment q-seg" data-start="315.2" data-end="318.96" title="5:15">When using an Injector, the needle size is important </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="318.96" data-end="323.2" title="5:18">as it affects the amount of air entrained via the Venturi. </span></li>
+<li><span class="segment a-seg" data-start="323.2" data-end="325.36" title="5:23">If too large a needle is used, </span></li>
+<li><span class="segment a-seg" data-start="325.36" data-end="328.76" title="5:25">it can cause dangerous bariturum. </span></li>
+<li><span class="segment a-seg" data-start="328.76" data-end="332.16" title="5:28">The ventilating bronchoscope has a glass window </span></li>
+<li><span class="segment a-seg" data-start="332.16" data-end="335.84" title="5:32">or a rubber diaphragm to enable passage of instruments </span></li>
+<li><span class="segment a-seg" data-start="335.84" data-end="340.16" title="5:35">and a sidearm that can be connected to the anesthetic circuit. </span></li>
+<li><span class="segment a-seg" data-start="340.2" data-end="344.48" title="5:40">This technique is most commonly used in infants and children </span></li>
+<li><span class="segment a-seg" data-start="344.48" data-end="347.52" title="5:44">using a T-piece and hand ventilation. </span></li>
+<li><span class="segment a-seg" data-start="347.52" data-end="350.28" title="5:47">There is minimal risk of bariturum. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="350.28">
+  <div class="q-label">Q8</div>
+  <div class="q-body"><span class="segment q-seg" data-start="350.28" data-end="352.88" title="5:50">How would you maintain anesthesia? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="352.88" data-end="357.48" title="5:52">Demonstrate your awareness of the complications of the different techniques. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="358.48">
+  <div class="q-label">Q9</div>
+  <div class="q-body"><span class="segment q-seg" data-start="358.48" data-end="361.08" title="5:58">When the ventilating bronchoscope is used, </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="361.08" data-end="363.64" title="6:01">a volatile agent can be used. </span></li>
+<li><span class="segment a-seg" data-start="363.64" data-end="365.92" title="6:03">Rapid emergence is desirable, </span></li>
+<li><span class="segment a-seg" data-start="365.92" data-end="368.76" title="6:05">therefore, seaver fluorane or des fluorane </span></li>
+<li><span class="segment a-seg" data-start="368.8" data-end="370.56" title="6:08">are the agents of choice, </span></li>
+<li><span class="segment a-seg" data-start="370.56" data-end="373.64" title="6:10">but I exercise caution with the latter agent </span></li>
+<li><span class="segment a-seg" data-start="373.64" data-end="376.24" title="6:13">as it can cause airway irritation. </span></li>
+<li><span class="segment a-seg" data-start="377.12" data-end="379.48" title="6:17">The use of the Sanders Injector </span></li>
+<li><span class="segment a-seg" data-start="379.48" data-end="382.96" title="6:19">means an intravenous technique must be employed. </span></li>
+<li><span class="segment a-seg" data-start="382.96" data-end="387.4" title="6:22">Prophefall is the ideal agent due to its rapid offset. </span></li>
+<li><span class="segment a-seg" data-start="387.4" data-end="390.52" title="6:27">This can be used as an intermittent bolus doses, </span></li>
+<li><span class="segment a-seg" data-start="390.52" data-end="393.76" title="6:30">but I prefer a target controlled infusion </span></li>
+<li><span class="segment a-seg" data-start="393.76" data-end="398.08" title="6:33">as awareness is a potential and not uncommon complication. </span></li>
+<li><span class="segment a-seg" data-start="398.08" data-end="400.16" title="6:38">If your answers are progressing well, </span></li>
+<li><span class="segment a-seg" data-start="400.16" data-end="403.8" title="6:40">proceed to post-operative management without prompting. </span></li>
+<li><span class="segment a-seg" data-start="404.88" data-end="408.4" title="6:44">Unless bronchoscopies to be followed by a procedure, </span></li>
+<li><span class="segment a-seg" data-start="408.4" data-end="411.12" title="6:48">muscular relaxation should be reversed </span></li>
+<li><span class="segment a-seg" data-start="411.12" data-end="413.88" title="6:51">and rapid emergence is desirable. </span></li>
+<li><span class="segment a-seg" data-start="413.88" data-end="417.36" title="6:53">The patient should be nursed with an oxygen face mask </span></li>
+<li><span class="segment a-seg" data-start="417.36" data-end="421.8" title="6:57">and in the lateral position with the diseased side down. </span></li>
+<li><span class="segment a-seg" data-start="421.8" data-end="425.88" title="7:01">Potential complications include damage to the teeth, </span></li>
+<li><span class="segment a-seg" data-start="425.88" data-end="428.72" title="7:05">aspiration of blood, awareness, </span></li>
+<li><span class="segment a-seg" data-start="428.72" data-end="431.8" title="7:08">pharyngeal rupture, airway rupture, </span></li>
+<li><span class="segment a-seg" data-start="431.8" data-end="433.4" title="7:11">cardiac arrhythmias, </span></li>
+<li><span class="segment a-seg" data-start="433.4" data-end="437.2" title="7:13">hyper-tension and myocardial ischemia. </span></li>
+<li><span class="segment a-seg" data-start="437.2" data-end="440.16" title="7:17">Be prepared to expand on the complications. </span></li>
+<li><span class="segment a-seg" data-start="440.16" data-end="442.8" title="7:20">For example, airway rupture may present </span></li>
+<li><span class="segment a-seg" data-start="442.8" data-end="445.48" title="7:22">as a pneumothorax which could be attention, </span></li>
+<li><span class="segment a-seg" data-start="445.48" data-end="448.76" title="7:25">tracusophageal fistula or surgical infosema. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="450.0">
+  <div class="q-label">Q10</div>
+  <div class="q-body"><span class="segment q-seg" data-start="450.0" data-end="452.8" title="7:30">How do patients with inhaled foreign bodies present? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="453.8" data-end="458.88" title="7:33">This problem occurs most frequently in children under the age of three, </span></li>
+<li><span class="segment a-seg" data-start="458.88" data-end="462.8" title="7:38">but can occur at any age, particularly in the abtunded. </span></li>
+<li><span class="segment a-seg" data-start="462.8" data-end="465.8" title="7:42">A specific history is often absent </span></li>
+<li><span class="segment a-seg" data-start="465.8" data-end="470.8" title="7:45">and presentation is variable from acute upper airway obstruction </span></li>
+<li><span class="segment a-seg" data-start="470.8" data-end="473.8" title="7:50">to a more insidious onset with a chronic cough, </span></li>
+<li><span class="segment a-seg" data-start="473.8" data-end="476.8" title="7:53">recurrent chest infection that fails to improve </span></li>
+<li><span class="segment a-seg" data-start="476.8" data-end="480.8" title="7:56">following antibiotic therapy and unilateral wheeze. </span></li>
+<li><span class="segment a-seg" data-start="481.64" data-end="484.48" title="8:01">Foreign bodies should always be removed </span></li>
+<li><span class="segment a-seg" data-start="484.48" data-end="487.36" title="8:04">as they can trigger an inflammatory response, </span></li>
+<li><span class="segment a-seg" data-start="487.36" data-end="490.28" title="8:07">causing distal collapse and infection. </span></li>
+<li><span class="segment a-seg" data-start="490.28" data-end="492.96" title="8:10">This is particularly a problem with peanuts </span></li>
+<li><span class="segment a-seg" data-start="492.96" data-end="495.84" title="8:12">as they liberate and irritant oil. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="495.84">
+  <div class="q-label">Q11</div>
+  <div class="q-body"><span class="segment q-seg" data-start="495.84" data-end="498.68" title="8:15">Is a chest x-ray indication this clinical scenario? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="500.52" data-end="505.6" title="8:20">If there is a good history and the patient has acute upper airway obstruction, </span></li>
+<li><span class="segment a-seg" data-start="505.6" data-end="508.48" title="8:25">there may not be time to perform a chest x-ray. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="508.48">
+  <div class="q-label">Q12</div>
+  <div class="q-body"><span class="segment q-seg" data-start="508.48" data-end="510.2" title="8:28">However, this is unusual. </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="510.24" data-end="512.32" title="8:30">The chest x-ray may be normal, </span></li>
+<li><span class="segment a-seg" data-start="512.32" data-end="515.2" title="8:32">it may show a radio opaque foreign body </span></li>
+<li><span class="segment a-seg" data-start="515.2" data-end="519.4" title="8:35">and in the chronic case often shows non-specific changes </span></li>
+<li><span class="segment a-seg" data-start="519.4" data-end="522.84" title="8:39">of atelectasis and consolidation. </span></li>
+<li><span class="segment a-seg" data-start="522.84" data-end="527.68" title="8:42">Inspiratory and expiratory films may reveal hyperinflation </span></li>
+<li><span class="segment a-seg" data-start="527.68" data-end="531.56" title="8:47">with the foreign body acting as a ball valve in the main broncus. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="532.44">
+  <div class="q-label">Q13</div>
+  <div class="q-body"><span class="segment q-seg" data-start="532.44" data-end="533.92" title="8:52">How would you necessitate a patient </span><span class="segment q-seg" data-start="533.92" data-end="536.16" title="8:53">when inhaled foreign body? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="536.16" data-end="537.84" title="8:56">This is a fairly open question </span></li>
+<li><span class="segment a-seg" data-start="537.84" data-end="540.84" title="8:57">and you must give a balanced account of the two schools of thought. </span></li>
+<li><span class="segment a-seg" data-start="543.0" data-end="547.2" title="9:03">Good vascular access and routine monitoring are required. </span></li>
+<li><span class="segment a-seg" data-start="547.2" data-end="550.44" title="9:07">The traditional approach is an inhalational induction. </span></li>
+<li><span class="segment a-seg" data-start="550.44" data-end="552.96" title="9:10">This is the most common approach in children, </span></li>
+<li><span class="segment a-seg" data-start="552.96" data-end="556.52" title="9:12">the main advantage being that the airway can be safely maintained </span></li>
+<li><span class="segment a-seg" data-start="556.52" data-end="559.28" title="9:16">until bronchoscopy is performed. </span></li>
+<li><span class="segment a-seg" data-start="559.28" data-end="563.12" title="9:19">Anesthesia can then be maintained with an inhalational agent </span></li>
+<li><span class="segment a-seg" data-start="563.12" data-end="566.04" title="9:23">under the patient spontaneously breathing. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="566.08">
+  <div class="q-label">Q14</div>
+  <div class="q-body"><span class="segment q-seg" data-start="566.08" data-end="569.08" title="9:26">However, to avoid the use of a muscle relaxant, </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="569.08" data-end="571.6" title="9:29">the depth of anesthesia has to be searched </span></li>
+<li><span class="segment a-seg" data-start="571.6" data-end="573.88" title="9:31">that with the current agents available, </span></li>
+<li><span class="segment a-seg" data-start="573.88" data-end="576.84" title="9:33">patients are usually rendered apneic. </span></li>
+<li><span class="segment a-seg" data-start="576.84" data-end="579.28" title="9:36">Hallothene allowed very deep plains of anesthesia </span></li>
+<li><span class="segment a-seg" data-start="579.28" data-end="581.6" title="9:39">and a spontaneous breathing patient. </span></li>
+<li><span class="segment a-seg" data-start="581.6" data-end="583.88" title="9:41">It also provided good relaxation. </span></li>
+<li><span class="segment a-seg" data-start="585.88" data-end="589.56" title="9:45">Therefore, a common approach is an inhalational induction </span></li>
+<li><span class="segment a-seg" data-start="589.56" data-end="592.72" title="9:49">with civa fluorane, followed by muscle relaxation </span></li>
+<li><span class="segment a-seg" data-start="592.72" data-end="594.68" title="9:52">with succcemethonium. </span></li>
+<li><span class="segment a-seg" data-start="594.72" data-end="597.6" title="9:54">Ventilation is then gently taken over </span></li>
+<li><span class="segment a-seg" data-start="597.6" data-end="600.52" title="9:57">using the T-piece attached to the side arm </span></li>
+<li><span class="segment a-seg" data-start="600.52" data-end="602.64" title="10:00">of the ventilating bronchoscope. </span></li>
+<li><span class="segment a-seg" data-start="602.64" data-end="606.96" title="10:02">It is important to maintain a high concentration of oxygen. </span></li>
+<li><span class="segment a-seg" data-start="606.96" data-end="610.52" title="10:06">Incremental small doses of succcemethonium can be given </span></li>
+<li><span class="segment a-seg" data-start="610.52" data-end="613.0" title="10:10">if the procedure is likely to be quick, </span></li>
+<li><span class="segment a-seg" data-start="613.0" data-end="616.12" title="10:13">but it is important to manage the possible bradicardia </span></li>
+<li><span class="segment a-seg" data-start="616.12" data-end="617.8" title="10:16">with intravenous atropine. </span></li>
+<li><span class="segment a-seg" data-start="618.84" data-end="621.44" title="10:18">Intermittent positive pressure ventilation </span></li>
+<li><span class="segment a-seg" data-start="621.44" data-end="623.24" title="10:21">was traditionally avoided </span></li>
+<li><span class="segment a-seg" data-start="623.28" data-end="625.28" title="10:23">as there is concern that the foreign body </span></li>
+<li><span class="segment a-seg" data-start="625.28" data-end="627.2" title="10:25">could get blown more distally </span></li>
+<li><span class="segment a-seg" data-start="627.2" data-end="629.12" title="10:27">or may cause a ball-like effect </span></li>
+<li><span class="segment a-seg" data-start="629.12" data-end="631.64" title="10:29">resulting in distal air trapping. </span></li>
+<li><span class="segment a-seg" data-start="631.64" data-end="633.92" title="10:31">This argument is counted by the belief </span></li>
+<li><span class="segment a-seg" data-start="633.92" data-end="636.56" title="10:33">that any foreign body requiring removal </span></li>
+<li><span class="segment a-seg" data-start="636.56" data-end="640.08" title="10:36">is already impacted and unlikely to be displaced. </span></li>
+<li><span class="segment a-seg" data-start="641.04" data-end="643.68" title="10:41">In adults, whether Venturi method of ventilation </span></li>
+<li><span class="segment a-seg" data-start="643.68" data-end="647.8" title="10:43">can be used safely, intravenous induction with propifol </span></li>
+<li><span class="segment a-seg" data-start="647.8" data-end="650.88" title="10:47">followed by succcemethonium provides a rapid </span></li>
+<li><span class="segment a-seg" data-start="650.88" data-end="653.08" title="10:50">and safe way to secure the airway. </span></li>
+<li><span class="segment a-seg" data-start="654.2" data-end="657.56" title="10:54">For maintenance, one could use incremental intravenous </span></li>
+<li><span class="segment a-seg" data-start="657.56" data-end="661.32" title="10:57">boluses of both an anesthetic and analgesic, </span></li>
+<li><span class="segment a-seg" data-start="661.32" data-end="664.44" title="11:01">for example, alfentinil and propifol, </span></li>
+<li><span class="segment a-seg" data-start="664.44" data-end="666.88" title="11:04">but more precise control can be obtained </span></li>
+<li><span class="segment a-seg" data-start="666.88" data-end="669.76" title="11:06">using a target controlled infusion. </span></li>
+<li><span class="segment a-seg" data-start="669.76" data-end="673.88" title="11:09">Propifol and remyventinil would be especially suitable. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="673.88">
+  <div class="q-label">Q15</div>
+  <div class="q-body"><span class="segment q-seg" data-start="673.88" data-end="676.16" title="11:13">What are the post-operative complications? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="678.48" data-end="681.56" title="11:18">The main concern following repeated instrumentation </span></li>
+<li><span class="segment a-seg" data-start="681.56" data-end="684.48" title="11:21">of the airway is laryngeal stride or. </span></li>
+<li><span class="segment a-seg" data-start="684.48" data-end="687.28" title="11:24">This can be managed with nebulized adrenaline, </span></li>
+<li><span class="segment a-seg" data-start="687.28" data-end="690.76" title="11:27">five mills of a one in 10,000 concentration </span></li>
+<li><span class="segment a-seg" data-start="690.76" data-end="693.2" title="11:30">repeated every two to four hours </span></li>
+<li><span class="segment a-seg" data-start="693.2" data-end="695.4" title="11:33">and intravenous texamethasone, </span></li>
+<li><span class="segment a-seg" data-start="695.4" data-end="700.4" title="11:35">600 micrograms per kilogram per day in four divided doses. </span></li>
+<li><span class="segment a-seg" data-start="700.64" data-end="703.76" title="11:40">Severe stride or may require re-intubation </span></li>
+<li><span class="segment a-seg" data-start="703.76" data-end="707.28" title="11:43">and a smaller endotracheal tube should be available. </span></li>
+<li><span class="segment a-seg" data-start="707.28" data-end="710.88" title="11:47">Prolonged ventilation is occasionally required. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="710.92">
+  <div class="q-label">Q16</div>
+  <div class="q-body"><span class="segment q-seg" data-start="710.92" data-end="713.76" title="11:50">What are the bronchoscopic interventions you are of? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="715.92" data-end="717.84" title="11:55">In critical stenosis, </span></li>
+<li><span class="segment a-seg" data-start="717.84" data-end="720.56" title="11:57">a diachyobronkyl stent can be cited, </span></li>
+<li><span class="segment a-seg" data-start="720.56" data-end="723.44" title="12:00">either as paliation or until definitive surgery </span></li>
+<li><span class="segment a-seg" data-start="723.44" data-end="725.12" title="12:03">can be undertaken. </span></li>
+<li><span class="segment a-seg" data-start="725.12" data-end="727.36" title="12:05">Diothermia resection of tumors </span></li>
+<li><span class="segment a-seg" data-start="727.36" data-end="729.8" title="12:07">and laser therapy to debulk tumors </span></li>
+<li><span class="segment a-seg" data-start="729.8" data-end="731.84" title="12:09">are relatively common procedures. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="732.76">
+  <div class="q-label">Q17</div>
+  <div class="q-body"><span class="segment q-seg" data-start="732.76" data-end="735.04" title="12:12">What are the important anesthetic considerations </span><span class="segment q-seg" data-start="735.04" data-end="736.28" title="12:15">for these procedures? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="737.2" data-end="738.28" title="12:17">If you get this far, </span></li>
+<li><span class="segment a-seg" data-start="738.28" data-end="740.16" title="12:18">you're doing very well in your fibre. </span></li>
+<li><span class="segment a-seg" data-start="741.88" data-end="744.44" title="12:21">Preoxygenation is essential </span></li>
+<li><span class="segment a-seg" data-start="744.44" data-end="746.92" title="12:24">with cautious induction of anesthesia </span></li>
+<li><span class="segment a-seg" data-start="746.92" data-end="749.6" title="12:26">as complete loss of the airway as possible. </span></li>
+<li><span class="segment a-seg" data-start="749.6" data-end="752.68" title="12:29">Intravenous and inhalational induction </span></li>
+<li><span class="segment a-seg" data-start="752.68" data-end="755.68" title="12:32">both have advantages and disadvantages. </span></li>
+<li><span class="segment a-seg" data-start="755.68" data-end="757.88" title="12:35">The most important aspect </span></li>
+<li><span class="segment a-seg" data-start="757.88" data-end="760.72" title="12:37">is to have a skilled bronchoscopist to hand </span></li>
+<li><span class="segment a-seg" data-start="760.72" data-end="764.08" title="12:40">as this may be the only way to relieve the obstruction. </span></li>
+<li><span class="segment a-seg" data-start="764.68" data-end="768.16" title="12:44">The routine precautions should always be adhered to </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="768.16">
+  <div class="q-label">Q18</div>
+  <div class="q-body"><span class="segment q-seg" data-start="768.16" data-end="769.64" title="12:48">when using lasers. </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="769.92" data-end="772.88" title="12:49">A low concentration of inspired oxygen, </span></li>
+<li><span class="segment a-seg" data-start="772.88" data-end="774.88" title="12:52">avoiding nitrous oxide </span></li>
+<li><span class="segment a-seg" data-start="774.88" data-end="778.92" title="12:54">and using short bursts of laser treatment are essential. </span></li>
+<li><span class="segment a-seg" data-start="778.92" data-end="780.92" title="12:58">Using a metal bronchoscope </span></li>
+<li><span class="segment a-seg" data-start="780.92" data-end="782.96" title="13:00">avoids the need for foil wrapped </span></li>
+<li><span class="segment a-seg" data-start="782.96" data-end="785.16" title="13:02">or metal endotracheal tubes </span></li>
+<li><span class="segment a-seg" data-start="785.16" data-end="787.4" title="13:05">for Dracheal and endotracheal tumor </span></li>
+<li><span class="segment a-seg" data-start="787.4" data-end="789.12" title="13:07">assection with a laser. </span></li>
+<li><span class="segment a-seg" data-start="790.12" data-end="792.84" title="13:10">It is essential that good communication </span></li>
+<li><span class="segment a-seg" data-start="792.84" data-end="795.04" title="13:12">is maintained with the surgeon. </span></li>
+<li><span class="segment a-seg" data-start="795.04" data-end="797.48" title="13:15">You mentioned earlier that flexible bronchoscopies </span></li>
+<li><span class="segment a-seg" data-start="797.48" data-end="800.56" title="13:17">performed under local anaesthetic incidation. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="800.56">
+  <div class="q-label">Q19</div>
+  <div class="q-body"><span class="segment q-seg" data-start="800.56" data-end="803.56" title="13:20">Do you ever come across this technique in your practice? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="805.24" data-end="807.68" title="13:25">Yes, this technique is performed </span></li>
+<li><span class="segment a-seg" data-start="807.68" data-end="810.48" title="13:27">for awake fibre optic intubation. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="810.48">
+  <div class="q-label">Q20</div>
+  <div class="q-body"><span class="segment q-seg" data-start="810.48" data-end="814.48" title="13:30">And what are the indications for awake fibre optic intubation? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="816.28" data-end="819.92" title="13:36">A known or anticipated difficult airway problem, </span></li>
+<li><span class="segment a-seg" data-start="819.92" data-end="822.56" title="13:39">an unstable cervical spine injury </span></li>
+<li><span class="segment a-seg" data-start="822.56" data-end="824.04" title="13:42">or unstable neck, </span></li>
+<li><span class="segment a-seg" data-start="824.04" data-end="826.24" title="13:44">for example rheumatoid arthritis </span></li>
+<li><span class="segment a-seg" data-start="826.24" data-end="828.24" title="13:46">with a risk of aspiration. </span></li>
+<li><span class="segment a-seg" data-start="828.24" data-end="832.64" title="13:48">Obesity and obstructive sleep apnea can also be considered. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="832.64">
+  <div class="q-label">Q21</div>
+  <div class="q-body"><span class="segment q-seg" data-start="832.64" data-end="834.64" title="13:52">Are there any contraindications? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="836.64" data-end="839.2" title="13:56">Yes, patient refusal, </span></li>
+<li><span class="segment a-seg" data-start="839.2" data-end="840.56" title="13:59">acoagulopathy, </span></li>
+<li><span class="segment a-seg" data-start="840.56" data-end="843.24" title="14:00">particularly if the nasal root is to be used </span></li>
+<li><span class="segment a-seg" data-start="843.24" data-end="846.4" title="14:03">and care must be taken with periglotic masses </span></li>
+<li><span class="segment a-seg" data-start="846.4" data-end="849.68" title="14:06">as there is a risk of developing complete airway obstruction </span></li>
+<li><span class="segment a-seg" data-start="849.68" data-end="851.68" title="14:09">or luringus basm. </span></li>
+<li><span class="segment a-seg" data-start="851.68" data-end="855.12" title="14:11">Basil's skull fracture or cerebral spinal fluid leak </span></li>
+<li><span class="segment a-seg" data-start="855.12" data-end="859.04" title="14:15">are contraindications if the nasal root is to be used. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="859.04">
+  <div class="q-label">Q22</div>
+  <div class="q-body"><span class="segment q-seg" data-start="859.04" data-end="861.04" title="14:19">Is the nasal root best? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="862.72" data-end="865.84" title="14:22">The nasal root is preferred in my experience </span></li>
+<li><span class="segment a-seg" data-start="865.84" data-end="868.72" title="14:25">as it is frequently easier in the group of patients </span></li>
+<li><span class="segment a-seg" data-start="868.72" data-end="870.4" title="14:28">with limited mouth opening </span></li>
+<li><span class="segment a-seg" data-start="870.4" data-end="874.72" title="14:30">and the oral root gives a poor angle to approach the larynx. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="874.72">
+  <div class="q-label">Q23</div>
+  <div class="q-body"><span class="segment q-seg" data-start="874.72" data-end="878.24" title="14:34">And how would you need to tie the airway for the procedure? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="878.24" data-end="880.8" title="14:38">It is important to emphasise that there are many ways </span></li>
+<li><span class="segment a-seg" data-start="880.8" data-end="882.56" title="14:40">to perform this procedure. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="882.56">
+  <div class="q-label">Q24</div>
+  <div class="q-body"><span class="segment q-seg" data-start="882.56" data-end="885.76" title="14:42">Explain that it can be done with or without sedation. </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="885.76" data-end="888.16" title="14:45">Sedation is very common though. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="888.16">
+  <div class="q-label">Q25</div>
+  <div class="q-body"><span class="segment q-seg" data-start="888.16" data-end="890.32" title="14:48">Explain a technique that you're familiar with. </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="892.48" data-end="896.48" title="14:52">I would give 0.3 milligrams of glycopyralate intravenously </span></li>
+<li><span class="segment a-seg" data-start="896.48" data-end="898.48" title="14:56">to minimise secretions. </span></li>
+<li><span class="segment a-seg" data-start="898.48" data-end="902.32" title="14:58">This ensures topical anesthesia is more effective. </span></li>
+<li><span class="segment a-seg" data-start="902.32" data-end="905.44" title="15:02">I would position the patient at 45 degrees, </span></li>
+<li><span class="segment a-seg" data-start="905.44" data-end="909.12" title="15:05">head up, apply full AAGBI monitoring </span></li>
+<li><span class="segment a-seg" data-start="909.12" data-end="912.32" title="15:09">and give oxygen via a nasal catheter. </span></li>
+<li><span class="segment a-seg" data-start="912.32" data-end="915.68" title="15:12">For this procedure, I prefer to use a low dose </span></li>
+<li><span class="segment a-seg" data-start="915.68" data-end="918.32" title="15:15">target-controlled remyfentinal infusion </span></li>
+<li><span class="segment a-seg" data-start="918.32" data-end="921.84" title="15:18">with a starting dose of 3 nanograms per mil. </span></li>
+<li><span class="segment a-seg" data-start="921.84" data-end="925.76" title="15:21">The aim is to maintain verbal communication with the patient. </span></li>
+<li><span class="segment a-seg" data-start="925.76" data-end="929.68" title="15:25">The benefit of the remyfentinal is its antitusive effects </span></li>
+<li><span class="segment a-seg" data-start="929.68" data-end="932.4" title="15:29">and cardiovascular stability. </span></li>
+<li><span class="segment a-seg" data-start="932.4" data-end="935.12" title="15:32">A target-controlled infusion of propifol </span></li>
+<li><span class="segment a-seg" data-start="935.12" data-end="937.68" title="15:35">or bolus doses of benzodiazepines </span></li>
+<li><span class="segment a-seg" data-start="937.68" data-end="940.88" title="15:37">are also well described in the literature. </span></li>
+<li><span class="segment a-seg" data-start="941.76" data-end="944.24" title="15:41">If there are no contraindications, </span></li>
+<li><span class="segment a-seg" data-start="944.24" data-end="948.32" title="15:44">I would spray the nostrils with two mills of 5% cocaine </span></li>
+<li><span class="segment a-seg" data-start="948.32" data-end="950.24" title="15:48">or Moffit's solution. </span></li>
+<li><span class="segment a-seg" data-start="950.24" data-end="954.96" title="15:50">The patient can gargle 1.5 mills of 4% lidocaine, </span></li>
+<li><span class="segment a-seg" data-start="954.96" data-end="958.08" title="15:54">holding it in the aurofarynx as long as possible, </span></li>
+<li><span class="segment a-seg" data-start="958.08" data-end="960.64" title="15:58">or this can be sprayed to the back of the pharynx </span></li>
+<li><span class="segment a-seg" data-start="960.64" data-end="962.4" title="16:00">using a nasal airway. </span></li>
+<li><span class="segment a-seg" data-start="962.4" data-end="965.84" title="16:02">This should adequately enneithatise the aurofarynx </span></li>
+<li><span class="segment a-seg" data-start="965.84" data-end="967.84" title="16:05">under the posterior third of the tongue. </span></li>
+<li><span class="segment a-seg" data-start="968.56" data-end="972.56" title="16:08">The nostrils are then dilated with nasal airways </span></li>
+<li><span class="segment a-seg" data-start="972.56" data-end="976.64" title="16:12">or gynecological dilators lubricated with lidocaine jelly. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="976.64">
+  <div class="q-label">Q26</div>
+  <div class="q-body"><span class="segment q-seg" data-start="976.64" data-end="979.36" title="16:16">How would you enneithatise the vocal cords? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="979.36" data-end="983.44" title="16:19">There are several techniques. </span></li>
+<li><span class="segment a-seg" data-start="983.44" data-end="987.28" title="16:23">The simplest being three to four mills of 4% lidocaine </span></li>
+<li><span class="segment a-seg" data-start="987.28" data-end="990.24" title="16:27">via a nebulizer with the patient sitting up. </span></li>
+<li><span class="segment a-seg" data-start="990.24" data-end="994.24" title="16:30">Alternatively, two mills of 4% lidocaine </span></li>
+<li><span class="segment a-seg" data-start="994.24" data-end="997.44" title="16:34">can be injected down the suction port of the fibroscope </span></li>
+<li><span class="segment a-seg" data-start="997.6" data-end="999.68" title="16:37">with a further two mills being injected </span></li>
+<li><span class="segment a-seg" data-start="999.68" data-end="1002.16" title="16:39">once the tip of the scope is through the cords. </span></li>
+<li><span class="segment a-seg" data-start="1002.96" data-end="1007.52" title="16:42">A more invasive method is the cryothyroid membrane puncture. </span></li>
+<li><span class="segment a-seg" data-start="1007.52" data-end="1011.2" title="16:47">A 22 gauge cannula is used with the neck in extension. </span></li>
+<li><span class="segment a-seg" data-start="1011.76" data-end="1014.96" title="16:51">Cracked placement is confirmed by the aspiration of air. </span></li>
+<li><span class="segment a-seg" data-start="1015.84" data-end="1021.12" title="16:55">Two mills of 4% lidocaine is then injected at the end of exploration </span></li>
+<li><span class="segment a-seg" data-start="1021.12" data-end="1023.12" title="17:01">so the patient will breathe in </span></li>
+<li><span class="segment a-seg" data-start="1023.12" data-end="1025.76" title="17:03">and the resultant cough from the patient </span></li>
+<li><span class="segment a-seg" data-start="1025.76" data-end="1030.24" title="17:05">gives appropriate spread to the local anesthetic above and below the cords. </span></li>
+<li><span class="segment a-seg" data-start="1030.8" data-end="1035.36" title="17:10">It is important not to use a needle as this can snap when the patient coughs. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="1036.24">
+  <div class="q-label">Q27</div>
+  <div class="q-body"><span class="segment q-seg" data-start="1036.24" data-end="1038.96" title="17:16">Are you aware of any specific nerve blocks that can be performed? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="1040.4" data-end="1043.84" title="17:20">It is worth knowing a brief description of specific nerve blocks </span></li>
+<li><span class="segment a-seg" data-start="1043.84" data-end="1045.68" title="17:23">as they are a favourite of the examiners. </span></li>
+<li><span class="segment a-seg" data-start="1048.16" data-end="1052.72" title="17:28">Superior laryngeal nerve blocks can be performed either by injecting local </span></li>
+<li><span class="segment a-seg" data-start="1052.72" data-end="1056.56" title="17:32">anesthetic bilaterally just above the thyroid cartilage </span></li>
+<li><span class="segment a-seg" data-start="1056.56" data-end="1061.36" title="17:36">at a 0.13 of the distance between the midline and the superior corno. </span></li>
+<li><span class="segment a-seg" data-start="1062.16" data-end="1066.16" title="17:42">Alternatively, plegates soaked in local anesthetic </span></li>
+<li><span class="segment a-seg" data-start="1066.16" data-end="1069.44" title="17:46">can be placed into each piriform fossa using forceps. </span></li>
+<li><span class="segment a-seg" data-start="1070.0" data-end="1073.68" title="17:50">I have never witnessed the use of these blocks in myclinical practice. </span></li>
+  </ul>
+</div>
+</div>
+
 </div>
 
 <div class="subtitle-bar">
-  <span class="subtitle-text empty" id="subtitle-text">Play audio to see live subtitles&#8230;</span>
+  <span id="subtitle-text" class="empty">Play audio to see live subtitles&#8230;</span>
 </div>
 
 <script>
-
-const audio    = document.getElementById('audio');
-const allSegs  = Array.from(document.querySelectorAll('.segment'));
-const allBlocks = Array.from(document.querySelectorAll('.t-block'));
+const audio      = document.getElementById('audio');
+const allSegs    = Array.from(document.querySelectorAll('.segment'));
 const subtitleEl = document.getElementById('subtitle-text');
-let activeSegEl   = null;
-let activeBlockEl = null;
-let searchMatches = [];
-let searchIdx     = 0;
+let activeSegEl  = null;
+let searchMatches = [], searchIdx = 0;
 
-// Duration display
 audio.addEventListener('loadedmetadata', () => {
   const m = Math.floor(audio.duration / 60);
   const s = Math.floor(audio.duration %% 60).toString().padStart(2,'0');
   document.getElementById('dur').textContent = m + ':' + s;
 });
 
-// Seek helper
-function seekTo(t) {
-  audio.currentTime = t;
-  audio.play();
-}
+function seekTo(t) { audio.currentTime = t; audio.play(); }
 
-// Block gutter click
-document.querySelectorAll('.t-gutter').forEach(g => {
-  g.addEventListener('click', () => seekTo(parseFloat(g.dataset.start)));
+// Q-block header click
+document.querySelectorAll('.q-block').forEach(q => {
+  q.addEventListener('click', e => {
+    if (!e.target.classList.contains('segment')) seekTo(parseFloat(q.dataset.start));
+  });
 });
 
-// Segment click
+// Individual segment click
 allSegs.forEach(s => {
-  s.addEventListener('click', e => {
-    e.stopPropagation();
-    seekTo(parseFloat(s.dataset.start));
-  });
+  s.addEventListener('click', e => { e.stopPropagation(); seekTo(parseFloat(s.dataset.start)); });
 });
 
 // Real-time tracking
 audio.addEventListener('timeupdate', () => {
   const t = audio.currentTime;
-
-  // Find active segment (last one whose start <= t)
   let found = null;
   for (let i = allSegs.length - 1; i >= 0; i--) {
     if (parseFloat(allSegs[i].dataset.start) <= t) { found = allSegs[i]; break; }
   }
-
   if (found && found !== activeSegEl) {
-    // Clear previous
-    if (activeSegEl) activeSegEl.classList.remove('active');
-    if (activeBlockEl) {
-      activeBlockEl.classList.remove('block-active');
-      const pg = activeBlockEl.querySelector('.t-gutter');
-      if (pg) pg.classList.remove('gutter-active');
+    if (activeSegEl) {
+      activeSegEl.classList.remove('active');
+      const pli = activeSegEl.closest('li');
+      if (pli) pli.classList.remove('li-active');
+      const pq = activeSegEl.closest('.q-block');
+      if (pq) pq.classList.remove('q-active');
     }
-    // Set new
     found.classList.add('active');
-    const block = found.closest('.t-block');
-    if (block) {
-      block.classList.add('block-active');
-      const g = block.querySelector('.t-gutter');
-      if (g) g.classList.add('gutter-active');
-      activeBlockEl = block;
-    }
+    const li = found.closest('li');
+    if (li) li.classList.add('li-active');
+    const qb = found.closest('.q-block');
+    if (qb) qb.classList.add('q-active');
     activeSegEl = found;
 
-    // Update subtitle
     subtitleEl.textContent = found.textContent.trim();
     subtitleEl.classList.remove('empty');
 
-    // Auto-scroll (only when not searching)
-    if (!document.getElementById('search').value) {
+    if (!document.getElementById('search').value)
       found.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }
   }
 });
 
@@ -449,17 +839,13 @@ searchInput.addEventListener('keydown', e => {
     el.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
 });
-
 function runSearch() {
   const q = searchInput.value.trim().toLowerCase();
   allSegs.forEach(s => s.classList.remove('search-match','search-current'));
   searchMatches = [];
   if (!q) return;
   allSegs.forEach(s => {
-    if (s.textContent.toLowerCase().includes(q)) {
-      s.classList.add('search-match');
-      searchMatches.push(s);
-    }
+    if (s.textContent.toLowerCase().includes(q)) { s.classList.add('search-match'); searchMatches.push(s); }
   });
   if (!searchMatches.length) return;
   searchIdx = 0;

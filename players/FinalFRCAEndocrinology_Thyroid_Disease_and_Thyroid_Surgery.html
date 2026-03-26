@@ -5,10 +5,19 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Endocrinology — Thyroid Disease and Thyroid Surgery</title>
 <style>
-
   :root {
-    --accent:    #8b5cf6;
-    --body-bg:   #f1f5f9;
+    --q-bg:       #1e3a5f;
+    --q-text:     #ffffff;
+    --q-label:    #60a5fa;
+    --a-bg:       #ffffff;
+    --a-border:   #e2e8f0;
+    --a-label:    #059669;
+    --active-q:   #8b5cf6;
+    --active-a:   #dbeafe;
+    --accent:     #8b5cf6;
+    --body-bg:    #f1f5f9;
+    --pre-bg:     #fef9c3;
+    --pre-border: #fcd34d;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
@@ -40,22 +49,9 @@
     margin-bottom: 4px;
     letter-spacing: 0.01em;
   }
-  .header-sub {
-    font-size: 0.72rem;
-    color: #94a3b8;
-    font-style: italic;
-  }
-  audio {
-    height: 36px;
-    accent-color: var(--accent);
-    flex-shrink: 0;
-  }
-  .back-link {
-    font-size: 0.8rem;
-    color: #94a3b8;
-    text-decoration: none;
-    white-space: nowrap;
-  }
+  .header-sub { font-size: 0.72rem; color: #94a3b8; font-style: italic; }
+  audio { height: 36px; accent-color: var(--accent); flex-shrink: 0; }
+  .back-link { font-size: 0.8rem; color: #94a3b8; text-decoration: none; white-space: nowrap; }
   .back-link:hover { color: #60a5fa; }
 
   /* ── Toolbar ── */
@@ -69,30 +65,17 @@
     border-bottom: 1px solid #334155;
   }
   .toolbar input {
-    flex: 1;
-    max-width: 380px;
+    flex: 1; max-width: 380px;
     padding: 5px 11px;
-    border: 1px solid #475569;
-    border-radius: 6px;
-    background: #0f172a;
-    color: #e2e8f0;
-    font-size: 0.83rem;
-    outline: none;
+    border: 1px solid #475569; border-radius: 6px;
+    background: #0f172a; color: #e2e8f0; font-size: 0.83rem; outline: none;
   }
   .toolbar input:focus { border-color: var(--accent); }
   .toolbar input::placeholder { color: #64748b; }
-  .stats {
-    font-size: 0.72rem;
-    color: #64748b;
-    white-space: nowrap;
-  }
+  .stats { font-size: 0.72rem; color: #64748b; white-space: nowrap; }
 
   /* ── Scroll area ── */
-  .scroll-area {
-    flex: 1;
-    overflow-y: auto;
-    padding: 20px;
-  }
+  .scroll-area { flex: 1; overflow-y: auto; padding: 20px; }
   .scroll-area::-webkit-scrollbar { width: 6px; }
   .scroll-area::-webkit-scrollbar-track { background: transparent; }
   .scroll-area::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
@@ -107,68 +90,77 @@
     display: flex;
     align-items: center;
   }
-  .subtitle-text {
-    font-size: 0.9rem;
-    color: #e2e8f0;
-    line-height: 1.5;
-    font-style: italic;
-  }
-  .subtitle-text.empty { color: #475569; }
+  #subtitle-text { font-size: 0.88rem; color: #e2e8f0; line-height: 1.5; font-style: italic; }
+  #subtitle-text.empty { color: #475569; }
 
-  /* ── Transcript blocks ── */
-  .t-block {
-    background: #ffffff;
-    border: 1px solid #e2e8f0;
-    border-radius: 10px;
-    margin-bottom: 14px;
-    overflow: hidden;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
-    display: flex;
-  }
-  .t-block.block-active {
-    border-color: var(--accent);
-    box-shadow: 0 0 0 2px rgba(37,99,235,0.15);
-  }
-  .t-gutter {
-    background: #0f172a;
-    width: 52px;
-    flex-shrink: 0;
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
-    padding-top: 14px;
-    cursor: pointer;
-  }
-  .t-gutter:hover { background: #1e293b; }
-  .t-timestamp {
-    font-size: 0.7rem;
-    color: #64748b;
-    font-family: monospace;
-    font-weight: 600;
-    letter-spacing: 0.02em;
-  }
-  .t-gutter.gutter-active .t-timestamp { color: var(--accent); }
-  .t-body {
-    flex: 1;
+  /* ── Preamble ── */
+  .preamble-block {
+    background: var(--pre-bg);
+    border-left: 4px solid var(--pre-border);
+    border-radius: 0 8px 8px 0;
     padding: 12px 16px;
-    line-height: 1.75;
-    font-size: 0.92rem;
-    color: #1e293b;
+    margin-bottom: 20px;
+    font-size: 0.88rem;
+    color: #78350f;
+    font-style: italic;
+    line-height: 1.7;
   }
 
-  /* ── Segments ── */
-  .segment {
+  /* ── Q&A pair ── */
+  .qa-pair { margin-bottom: 20px; border-radius: 10px; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+
+  /* Question block */
+  .q-block {
+    background: var(--q-bg);
+    padding: 14px 18px;
+    display: flex; gap: 14px; align-items: flex-start;
     cursor: pointer;
-    border-radius: 3px;
-    transition: background 0.1s;
+    transition: background 0.15s;
   }
-  .segment:hover { background: #eff6ff; }
-  .segment.active {
-    background: #bfdbfe;
-    outline: 2px solid #3b82f6;
-    outline-offset: 1px;
-    border-radius: 3px;
+  .q-block:hover { background: #1d4ed8; }
+  .q-block.q-active { background: var(--active-q); }
+  .q-label {
+    font-size: 0.7rem; font-weight: 700;
+    color: var(--q-label);
+    background: rgba(96,165,250,0.15);
+    border: 1px solid rgba(96,165,250,0.3);
+    border-radius: 5px; padding: 3px 7px;
+    white-space: nowrap; margin-top: 2px; letter-spacing: 0.05em;
+    flex-shrink: 0;
   }
+  .q-body { flex: 1; font-size: 0.97rem; font-weight: 600; color: var(--q-text); line-height: 1.55; }
+
+  /* Answer block */
+  .a-block {
+    background: var(--a-bg);
+    border: 1px solid var(--a-border); border-top: none;
+    padding: 14px 18px;
+    display: flex; gap: 14px; align-items: flex-start;
+  }
+  .a-label {
+    font-size: 0.7rem; font-weight: 700;
+    color: var(--a-label);
+    background: #d1fae5; border: 1px solid #6ee7b7;
+    border-radius: 5px; padding: 3px 9px;
+    white-space: nowrap; margin-top: 2px; letter-spacing: 0.05em;
+    flex-shrink: 0;
+  }
+  .a-body { flex: 1; list-style: none; padding: 0; }
+  .a-body li {
+    padding: 4px 0 4px 14px;
+    border-left: 3px solid transparent;
+    line-height: 1.7; font-size: 0.92rem; color: #1e293b;
+    border-radius: 0 4px 4px 0;
+    transition: background 0.15s;
+  }
+  .a-body li:not(:last-child) { border-bottom: 1px solid #f1f5f9; }
+
+  /* ── Segments (clickable) ── */
+  .segment { cursor: pointer; border-radius: 3px; }
+  .q-seg:hover { background: rgba(255,255,255,0.18); }
+  .a-seg:hover { background: #eff6ff; }
+  .segment.active { background: #bfdbfe; outline: 2px solid #3b82f6; outline-offset: 1px; }
+  .a-body li.li-active { background: var(--active-a); border-left-color: var(--accent); }
   .segment.search-match  { background: #fef9c3; }
   .segment.search-current { background: #fde047; outline: 2px solid #ca8a04; }
 
@@ -187,133 +179,206 @@
 
 <div class="toolbar">
   <input type="text" id="search" placeholder="Search transcript&#8230; (Enter = next match)">
-  <span class="stats" id="stats">83 segments &nbsp;|&nbsp; <span id="dur">loading&#8230;</span></span>
+  <span class="stats" id="stats">5 questions &nbsp;|&nbsp; 83 segments &nbsp;|&nbsp; <span id="dur">loading&#8230;</span></span>
 </div>
 
 <div class="scroll-area" id="scroll-area">
-<div class="t-block">
-  <div class="t-gutter" data-start="0.0"><span class="t-timestamp">0:00</span></div>
-  <div class="t-body"><span class="segment" data-start="0.0" data-end="2.4" title="0:00">thyroid disease and thyroid surgery. </span><span class="segment" data-start="4.4" data-end="8.56" title="0:04">You were asked to assess a 65-year-old woman for sub-total thyroidectomy. </span><span class="segment" data-start="9.2" data-end="11.6" title="0:09">Describe your preoperative assessment. </span><span class="segment" data-start="11.6" data-end="16.88" title="0:11">To answer this question, you should use the same approach as for the preoperative assessment of </span><span class="segment" data-start="16.88" data-end="22.88" title="0:16">any patients, namely by taking a full history, examining the patients and obtaining appropriate </span><span class="segment" data-start="22.88" data-end="29.12" title="0:22">investigations. Your specific priorities in this case are to elicit evidence of the patient's </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="29.12"><span class="t-timestamp">0:29</span></div>
-  <div class="t-body"><span class="segment" data-start="29.12" data-end="35.12" title="0:29">thyroid status and any evidence of airway compromise as a result of their thyroid disease. </span><span class="segment" data-start="37.36" data-end="43.76" title="0:37">I would begin by taking a history from the patient. In the history, I would try to elicit symptoms </span><span class="segment" data-start="43.76" data-end="53.12" title="0:43">of hypothyroidism such as lethargy and intolerance to cold, or hyperthyroidism such as agitation, </span><span class="segment" data-start="53.12" data-end="60.08" title="0:53">intolerance to heat and weight to loss. I would find out the reason for the surgery and any </span><span class="segment" data-start="60.08" data-end="67.44" title="1:00">medications prescribed for the thyroid problem. It is vitally important to establish any symptoms </span><span class="segment" data-start="67.44" data-end="74.64" title="1:07">of airway compromise resulting from the thyroid pathology. This includes asking about shortness </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="74.64"><span class="t-timestamp">1:14</span></div>
-  <div class="t-body"><span class="segment" data-start="74.64" data-end="78.56" title="1:14">of breath, swallowing difficulties and noisy breathing. </span><span class="segment" data-start="79.28" data-end="86.88" title="1:19">Exasperation of symptoms of dyspnea or stride or on lying flat is an important indicator of a </span><span class="segment" data-start="86.88" data-end="94.48" title="1:26">potentially difficult airway. In addition to these specific points, I would take a full anaesthetic, </span><span class="segment" data-start="94.48" data-end="104.16" title="1:34">medical and surgical history. My examination would focus on a listing sign suggestive of hypothyroidism. </span><span class="segment" data-start="105.04" data-end="112.96" title="1:45">These may include bradacardia, coarse skin and hair and non-pitting edema in hypothyroid patients, </span><span class="segment" data-start="113.6" data-end="121.44" title="1:53">and tetacardia, atrial fibrillation, tremor and eye involvement in patients with hyperthyroidism. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="122.4"><span class="t-timestamp">2:02</span></div>
-  <div class="t-body"><span class="segment" data-start="122.4" data-end="128.8" title="2:02">I would perform a careful examination of the airway and neck to assess the size of any thyroid </span><span class="segment" data-start="128.8" data-end="135.68" title="2:08">swelling, detect obvious deviation of the trachea and establish any retrasternal extension of the </span><span class="segment" data-start="135.68" data-end="143.44" title="2:15">mass. Appropriate investigations in this patient include blood tests, full blood count, </span><span class="segment" data-start="143.44" data-end="151.36" title="2:23">urea and electrolytes, thyroid function tests and corrected calcium. A chest x-ray may show </span><span class="segment" data-start="151.36" data-end="157.92" title="2:31">deviation of the trachea, and this can be further investigated with a thoracic inlet x-ray or </span><span class="segment" data-start="157.92" data-end="164.88" title="2:37">ideally a CT scan. The latter allows the precise localization of tracheal narrowing. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="166.16"><span class="t-timestamp">2:46</span></div>
-  <div class="t-body"><span class="segment" data-start="166.16" data-end="173.84" title="2:46">A preoperative nasal endoscopy is useful for two reasons. It gives some indication of the view </span><span class="segment" data-start="173.84" data-end="179.76" title="2:53">of the larynx likely to be obtained during direct larynxoscopy and allows assessment of </span><span class="segment" data-start="179.76" data-end="186.32" title="2:59">vocal cord function prior to surgery. This lady has a large goita with evidence of retrasternal </span><span class="segment" data-start="186.32" data-end="193.92" title="3:06">extension. She is uncomfortable to breath on lying flat. She is clinically and biochemically </span><span class="segment" data-start="193.92" data-end="201.28" title="3:13">euthyroid. A CT scan of her thorax shows a marked deviation and a narrowing of the trachea </span><span class="segment" data-start="201.28" data-end="207.28" title="3:21">at the level of the upper sternum. Describe your options for technique of induction of anacesia </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="207.28"><span class="t-timestamp">3:27</span></div>
-  <div class="t-body"><span class="segment" data-start="207.28" data-end="212.72" title="3:27">in this patient. There are no absolute right and wrong answers to a question like this, </span><span class="segment" data-start="212.72" data-end="218.08" title="3:32">but your answers should demonstrate that you are aware of the potential problems with the case </span><span class="segment" data-start="218.08" data-end="226.0" title="3:38">and have given thought to how to avoid or address them. This lady has clinical and radiological </span><span class="segment" data-start="226.0" data-end="233.6" title="3:46">evidence of airway compromise due to her thyroid swelling. I anticipate her airway may be difficult, </span><span class="segment" data-start="233.6" data-end="239.6" title="3:53">both in terms of a potentially difficult view at larynxoscopy, and also difficulty passing an </span><span class="segment" data-start="239.6" data-end="247.28" title="3:59">endotracheal tube past the narrowing. I would keep the patient in a semi-soupine position </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="247.28"><span class="t-timestamp">4:07</span></div>
-  <div class="t-body"><span class="segment" data-start="247.28" data-end="252.4" title="4:07">to minimize airway obstruction and ensure pre-oxygenation for three minutes. </span><span class="segment" data-start="253.68" data-end="259.76" title="4:13">Potentially suitable techniques include an inhalational induction or awake fiber optic </span><span class="segment" data-start="259.76" data-end="266.72" title="4:19">intubation. An awake tracheostomy, whilst attractive in terms of controlling the airway, </span><span class="segment" data-start="266.72" data-end="271.52" title="4:26">can be potentially hazardous with excessive bleeding from the vascular thyroid tissue. </span><span class="segment" data-start="273.44" data-end="278.72" title="4:33">In view of the fact that insertion of the fiber optic scope into the narrowed airway </span><span class="segment" data-start="278.72" data-end="284.48" title="4:38">may produce complete obstruction, I would use an inhalational technique and intubate </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="284.48"><span class="t-timestamp">4:44</span></div>
-  <div class="t-body"><span class="segment" data-start="284.48" data-end="291.52" title="4:44">under deep inhalational anacesia. Topical local anaesthetic applied to the airway helps to </span><span class="segment" data-start="291.52" data-end="298.72" title="4:51">reduce airway reflexes. A reinforced endotracheal tube is needed, ensuring that a range of </span><span class="segment" data-start="298.72" data-end="305.44" title="4:58">sizes are available to pass beyond the tracheal narrowing. In the event of a failure to secure the </span><span class="segment" data-start="305.44" data-end="311.36" title="5:05">airway after inhalational induction, ventilation may be possible via a rigid bronchoscope. </span><span class="segment" data-start="312.24" data-end="317.76" title="5:12">Aside from the airway, what are the other perioperative concerns with patients having thyroid surgery? </span><span class="segment" data-start="318.64" data-end="325.28" title="5:18">Careful eye protection should be used in patients with eye involvement, since it may not be </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="325.28"><span class="t-timestamp">5:25</span></div>
-  <div class="t-body"><span class="segment" data-start="325.28" data-end="331.68" title="5:25">possible to close their eyes fully. There is the potential for significant blood loss and limited </span><span class="segment" data-start="331.68" data-end="337.2" title="5:31">access to cannulas in the patient's forearms due to the extended position of the arms under </span><span class="segment" data-start="337.2" data-end="343.76" title="5:37">the surgical drapes. A large bore cannula with an extension should be available to allow the </span><span class="segment" data-start="343.76" data-end="346.64" title="5:43">rapid administration of fluid in the event of hemorrhage. </span><span class="segment" data-start="347.76" data-end="355.68" title="5:47">How would you extubate this patient? I would extubate the patient sitting up, fully awake, </span><span class="segment" data-start="355.68" data-end="361.6" title="5:55">having insured adequate reversal of neuromuscular blockade. You're called to the ward to see this </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="361.6"><span class="t-timestamp">6:01</span></div>
-  <div class="t-body"><span class="segment" data-start="361.6" data-end="368.16" title="6:01">patient three hours after her surgery. She's acutely distressed with oxygen saturation of 78%. </span><span class="segment" data-start="369.04" data-end="376.72" title="6:09">How would you proceed? I would approach this problem with an airway breathing and circulation </span><span class="segment" data-start="376.72" data-end="384.72" title="6:16">approach. Whilst making an initial rapid assessment of the situation, I would administer 100% oxygen </span><span class="segment" data-start="384.72" data-end="391.44" title="6:24">via a non-rebreathing mask. The potential problems I need to consider are bleeding, causing a </span><span class="segment" data-start="391.44" data-end="398.72" title="6:31">hematoma around the surgical site, laryngeal edema, and damage to the recurrent laryngeal nerves. </span><span class="segment" data-start="399.52" data-end="406.16" title="6:39">The most likely cause is a hematoma and an urgent transfer back to theatre should be organized. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="406.88"><span class="t-timestamp">6:46</span></div>
-  <div class="t-body"><span class="segment" data-start="406.88" data-end="412.0" title="6:46">The wound can be opened on the ward to relieve the pressure on the airway in severe cases. </span><span class="segment" data-start="413.12" data-end="418.56" title="6:53">A further rare cause of post-operative airway compromise in patients with a long-standing </span><span class="segment" data-start="418.56" data-end="426.16" title="6:58">goiter is tracheomalacia. These patients should be re-intubated quickly and are likely to require </span><span class="segment" data-start="426.16" data-end="431.84" title="7:06">further management with a tracheostomy. What's the consequences of damage to the recurrent laryngeal </span><span class="segment" data-start="431.84" data-end="440.72" title="7:11">nerves? The recurrent laryngeal nerves can be affected by compression, ischemia, or direct injury </span><span class="segment" data-start="440.72" data-end="447.44" title="7:20">at the time of surgery. The injury can be unilateral or bilateral and partial or complete. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="448.48"><span class="t-timestamp">7:28</span></div>
-  <div class="t-body"><span class="segment" data-start="448.48" data-end="454.4" title="7:28">The recurrent laryngeal nerve supplies all of the intrinsic muscles of the larynx except </span><span class="segment" data-start="454.48" data-end="461.84" title="7:34">cryothyroid. Complete transection of the nerve results in the vocal cord on the affected side, </span><span class="segment" data-start="461.84" data-end="465.68" title="7:41">adopting a partially abducted or cadavaric position. </span><span class="segment" data-start="466.72" data-end="471.68" title="7:46">Partial nerve injury is potentially more worrying as the muscles controlling </span><span class="segment" data-start="471.68" data-end="478.32" title="7:51">abduction of the cords are affected to a greater extent than the adductors and the cord lies in </span><span class="segment" data-start="478.32" data-end="485.76" title="7:58">the midline. Bilateral partial nerve injury can therefore result in the vocal cords overlapping </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="485.76"><span class="t-timestamp">8:05</span></div>
-  <div class="t-body"><span class="segment" data-start="485.76" data-end="492.32" title="8:05">in the midline, producing complete airway obstruction. Name another major post-operative complication </span><span class="segment" data-start="492.32" data-end="501.6" title="8:12">of thyroid surgery aside from airway complications. Inadvertent removal of parathyroid tissue at the time </span><span class="segment" data-start="501.6" data-end="508.32" title="8:21">of thyroidectomy can produce high muscle twitching, tingling around the mouth and tetanine </span><span class="segment" data-start="508.32" data-end="515.52" title="8:28">in extreme cases. Specific clinical signs can be elicited, such as trusose sign, whereby </span><span class="segment" data-start="515.52" data-end="522.96" title="8:35">carpapedal spasm is provoked by inflation of a cuff around the limb. Ochoestec sign, where tapping </span><span class="segment" data-start="522.96" data-end="527.36" title="8:42">over the course of the facial nerve produces twitching of the facial muscles. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="527.76"><span class="t-timestamp">8:47</span></div>
-  <div class="t-body"><span class="segment" data-start="527.76" data-end="534.4" title="8:47">Corrected calcium levels should be checked routinely 12 to 24 hours after surgery, </span><span class="segment" data-start="534.4" data-end="542.16" title="8:54">and earlier if there is clinical suspicion of hypocalcemia. Calcium supplementation can be </span><span class="segment" data-start="542.16" data-end="548.32" title="9:02">all in mild cases or intravenous if the corrected calcium is less than 2 millimoles per litre. </span><span class="segment" data-start="549.92" data-end="557.12" title="9:09">Appropriate intravenous calcium supplementation is 10 ml of 10% calcium gluconate given over </span><span class="segment" data-start="557.12" data-end="564.72" title="9:17">3 to 5 minutes. </span></div>
+<div class="preamble-block"><span class="segment a-seg" data-start="0.0" data-end="2.4" title="0:00">thyroid disease and thyroid surgery. </span><span class="segment a-seg" data-start="4.4" data-end="8.56" title="0:04">You were asked to assess a 65-year-old woman for sub-total thyroidectomy. </span></div>
+<div class="qa-pair">
+<div class="q-block" data-start="9.2">
+  <div class="q-label">Q1</div>
+  <div class="q-body"><span class="segment q-seg" data-start="9.2" data-end="11.6" title="0:09">Describe your preoperative assessment. </span></div>
 </div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="11.6" data-end="16.88" title="0:11">To answer this question, you should use the same approach as for the preoperative assessment of </span></li>
+<li><span class="segment a-seg" data-start="16.88" data-end="22.88" title="0:16">any patients, namely by taking a full history, examining the patients and obtaining appropriate </span></li>
+<li><span class="segment a-seg" data-start="22.88" data-end="29.12" title="0:22">investigations. Your specific priorities in this case are to elicit evidence of the patient's </span></li>
+<li><span class="segment a-seg" data-start="29.12" data-end="35.12" title="0:29">thyroid status and any evidence of airway compromise as a result of their thyroid disease. </span></li>
+<li><span class="segment a-seg" data-start="37.36" data-end="43.76" title="0:37">I would begin by taking a history from the patient. In the history, I would try to elicit symptoms </span></li>
+<li><span class="segment a-seg" data-start="43.76" data-end="53.12" title="0:43">of hypothyroidism such as lethargy and intolerance to cold, or hyperthyroidism such as agitation, </span></li>
+<li><span class="segment a-seg" data-start="53.12" data-end="60.08" title="0:53">intolerance to heat and weight to loss. I would find out the reason for the surgery and any </span></li>
+<li><span class="segment a-seg" data-start="60.08" data-end="67.44" title="1:00">medications prescribed for the thyroid problem. It is vitally important to establish any symptoms </span></li>
+<li><span class="segment a-seg" data-start="67.44" data-end="74.64" title="1:07">of airway compromise resulting from the thyroid pathology. This includes asking about shortness </span></li>
+<li><span class="segment a-seg" data-start="74.64" data-end="78.56" title="1:14">of breath, swallowing difficulties and noisy breathing. </span></li>
+<li><span class="segment a-seg" data-start="79.28" data-end="86.88" title="1:19">Exasperation of symptoms of dyspnea or stride or on lying flat is an important indicator of a </span></li>
+<li><span class="segment a-seg" data-start="86.88" data-end="94.48" title="1:26">potentially difficult airway. In addition to these specific points, I would take a full anaesthetic, </span></li>
+<li><span class="segment a-seg" data-start="94.48" data-end="104.16" title="1:34">medical and surgical history. My examination would focus on a listing sign suggestive of hypothyroidism. </span></li>
+<li><span class="segment a-seg" data-start="105.04" data-end="112.96" title="1:45">These may include bradacardia, coarse skin and hair and non-pitting edema in hypothyroid patients, </span></li>
+<li><span class="segment a-seg" data-start="113.6" data-end="121.44" title="1:53">and tetacardia, atrial fibrillation, tremor and eye involvement in patients with hyperthyroidism. </span></li>
+<li><span class="segment a-seg" data-start="122.4" data-end="128.8" title="2:02">I would perform a careful examination of the airway and neck to assess the size of any thyroid </span></li>
+<li><span class="segment a-seg" data-start="128.8" data-end="135.68" title="2:08">swelling, detect obvious deviation of the trachea and establish any retrasternal extension of the </span></li>
+<li><span class="segment a-seg" data-start="135.68" data-end="143.44" title="2:15">mass. Appropriate investigations in this patient include blood tests, full blood count, </span></li>
+<li><span class="segment a-seg" data-start="143.44" data-end="151.36" title="2:23">urea and electrolytes, thyroid function tests and corrected calcium. A chest x-ray may show </span></li>
+<li><span class="segment a-seg" data-start="151.36" data-end="157.92" title="2:31">deviation of the trachea, and this can be further investigated with a thoracic inlet x-ray or </span></li>
+<li><span class="segment a-seg" data-start="157.92" data-end="164.88" title="2:37">ideally a CT scan. The latter allows the precise localization of tracheal narrowing. </span></li>
+<li><span class="segment a-seg" data-start="166.16" data-end="173.84" title="2:46">A preoperative nasal endoscopy is useful for two reasons. It gives some indication of the view </span></li>
+<li><span class="segment a-seg" data-start="173.84" data-end="179.76" title="2:53">of the larynx likely to be obtained during direct larynxoscopy and allows assessment of </span></li>
+<li><span class="segment a-seg" data-start="179.76" data-end="186.32" title="2:59">vocal cord function prior to surgery. This lady has a large goita with evidence of retrasternal </span></li>
+<li><span class="segment a-seg" data-start="186.32" data-end="193.92" title="3:06">extension. She is uncomfortable to breath on lying flat. She is clinically and biochemically </span></li>
+<li><span class="segment a-seg" data-start="193.92" data-end="201.28" title="3:13">euthyroid. A CT scan of her thorax shows a marked deviation and a narrowing of the trachea </span></li>
+<li><span class="segment a-seg" data-start="201.28" data-end="207.28" title="3:21">at the level of the upper sternum. Describe your options for technique of induction of anacesia </span></li>
+<li><span class="segment a-seg" data-start="207.28" data-end="212.72" title="3:27">in this patient. There are no absolute right and wrong answers to a question like this, </span></li>
+<li><span class="segment a-seg" data-start="212.72" data-end="218.08" title="3:32">but your answers should demonstrate that you are aware of the potential problems with the case </span></li>
+<li><span class="segment a-seg" data-start="218.08" data-end="226.0" title="3:38">and have given thought to how to avoid or address them. This lady has clinical and radiological </span></li>
+<li><span class="segment a-seg" data-start="226.0" data-end="233.6" title="3:46">evidence of airway compromise due to her thyroid swelling. I anticipate her airway may be difficult, </span></li>
+<li><span class="segment a-seg" data-start="233.6" data-end="239.6" title="3:53">both in terms of a potentially difficult view at larynxoscopy, and also difficulty passing an </span></li>
+<li><span class="segment a-seg" data-start="239.6" data-end="247.28" title="3:59">endotracheal tube past the narrowing. I would keep the patient in a semi-soupine position </span></li>
+<li><span class="segment a-seg" data-start="247.28" data-end="252.4" title="4:07">to minimize airway obstruction and ensure pre-oxygenation for three minutes. </span></li>
+<li><span class="segment a-seg" data-start="253.68" data-end="259.76" title="4:13">Potentially suitable techniques include an inhalational induction or awake fiber optic </span></li>
+<li><span class="segment a-seg" data-start="259.76" data-end="266.72" title="4:19">intubation. An awake tracheostomy, whilst attractive in terms of controlling the airway, </span></li>
+<li><span class="segment a-seg" data-start="266.72" data-end="271.52" title="4:26">can be potentially hazardous with excessive bleeding from the vascular thyroid tissue. </span></li>
+<li><span class="segment a-seg" data-start="273.44" data-end="278.72" title="4:33">In view of the fact that insertion of the fiber optic scope into the narrowed airway </span></li>
+<li><span class="segment a-seg" data-start="278.72" data-end="284.48" title="4:38">may produce complete obstruction, I would use an inhalational technique and intubate </span></li>
+<li><span class="segment a-seg" data-start="284.48" data-end="291.52" title="4:44">under deep inhalational anacesia. Topical local anaesthetic applied to the airway helps to </span></li>
+<li><span class="segment a-seg" data-start="291.52" data-end="298.72" title="4:51">reduce airway reflexes. A reinforced endotracheal tube is needed, ensuring that a range of </span></li>
+<li><span class="segment a-seg" data-start="298.72" data-end="305.44" title="4:58">sizes are available to pass beyond the tracheal narrowing. In the event of a failure to secure the </span></li>
+<li><span class="segment a-seg" data-start="305.44" data-end="311.36" title="5:05">airway after inhalational induction, ventilation may be possible via a rigid bronchoscope. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="312.24">
+  <div class="q-label">Q2</div>
+  <div class="q-body"><span class="segment q-seg" data-start="312.24" data-end="317.76" title="5:12">Aside from the airway, what are the other perioperative concerns with patients having thyroid surgery? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="318.64" data-end="325.28" title="5:18">Careful eye protection should be used in patients with eye involvement, since it may not be </span></li>
+<li><span class="segment a-seg" data-start="325.28" data-end="331.68" title="5:25">possible to close their eyes fully. There is the potential for significant blood loss and limited </span></li>
+<li><span class="segment a-seg" data-start="331.68" data-end="337.2" title="5:31">access to cannulas in the patient's forearms due to the extended position of the arms under </span></li>
+<li><span class="segment a-seg" data-start="337.2" data-end="343.76" title="5:37">the surgical drapes. A large bore cannula with an extension should be available to allow the </span></li>
+<li><span class="segment a-seg" data-start="343.76" data-end="346.64" title="5:43">rapid administration of fluid in the event of hemorrhage. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="347.76">
+  <div class="q-label">Q3</div>
+  <div class="q-body"><span class="segment q-seg" data-start="347.76" data-end="350.928" title="5:47">How would you extubate this patient? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="350.928" data-end="355.68" title="5:50">I would extubate the patient sitting up, fully awake, </span></li>
+<li><span class="segment a-seg" data-start="355.68" data-end="361.6" title="5:55">having insured adequate reversal of neuromuscular blockade. You're called to the ward to see this </span></li>
+<li><span class="segment a-seg" data-start="361.6" data-end="368.16" title="6:01">patient three hours after her surgery. She's acutely distressed with oxygen saturation of 78%. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="369.04">
+  <div class="q-label">Q4</div>
+  <div class="q-body"><span class="segment q-seg" data-start="369.04" data-end="371.088" title="6:09">How would you proceed? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="371.088" data-end="376.72" title="6:11">I would approach this problem with an airway breathing and circulation </span></li>
+<li><span class="segment a-seg" data-start="376.72" data-end="384.72" title="6:16">approach. Whilst making an initial rapid assessment of the situation, I would administer 100% oxygen </span></li>
+<li><span class="segment a-seg" data-start="384.72" data-end="391.44" title="6:24">via a non-rebreathing mask. The potential problems I need to consider are bleeding, causing a </span></li>
+<li><span class="segment a-seg" data-start="391.44" data-end="398.72" title="6:31">hematoma around the surgical site, laryngeal edema, and damage to the recurrent laryngeal nerves. </span></li>
+<li><span class="segment a-seg" data-start="399.52" data-end="406.16" title="6:39">The most likely cause is a hematoma and an urgent transfer back to theatre should be organized. </span></li>
+<li><span class="segment a-seg" data-start="406.88" data-end="412.0" title="6:46">The wound can be opened on the ward to relieve the pressure on the airway in severe cases. </span></li>
+<li><span class="segment a-seg" data-start="413.12" data-end="418.56" title="6:53">A further rare cause of post-operative airway compromise in patients with a long-standing </span></li>
+<li><span class="segment a-seg" data-start="418.56" data-end="426.16" title="6:58">goiter is tracheomalacia. These patients should be re-intubated quickly and are likely to require </span></li>
+<li><span class="segment a-seg" data-start="426.16" data-end="431.84" title="7:06">further management with a tracheostomy. What's the consequences of damage to the recurrent laryngeal </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="431.84">
+  <div class="q-label">Q5</div>
+  <div class="q-body"><span class="segment q-seg" data-start="431.84" data-end="432.474" title="7:11">nerves? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="432.474" data-end="440.72" title="7:12">The recurrent laryngeal nerves can be affected by compression, ischemia, or direct injury </span></li>
+<li><span class="segment a-seg" data-start="440.72" data-end="447.44" title="7:20">at the time of surgery. The injury can be unilateral or bilateral and partial or complete. </span></li>
+<li><span class="segment a-seg" data-start="448.48" data-end="454.4" title="7:28">The recurrent laryngeal nerve supplies all of the intrinsic muscles of the larynx except </span></li>
+<li><span class="segment a-seg" data-start="454.48" data-end="461.84" title="7:34">cryothyroid. Complete transection of the nerve results in the vocal cord on the affected side, </span></li>
+<li><span class="segment a-seg" data-start="461.84" data-end="465.68" title="7:41">adopting a partially abducted or cadavaric position. </span></li>
+<li><span class="segment a-seg" data-start="466.72" data-end="471.68" title="7:46">Partial nerve injury is potentially more worrying as the muscles controlling </span></li>
+<li><span class="segment a-seg" data-start="471.68" data-end="478.32" title="7:51">abduction of the cords are affected to a greater extent than the adductors and the cord lies in </span></li>
+<li><span class="segment a-seg" data-start="478.32" data-end="485.76" title="7:58">the midline. Bilateral partial nerve injury can therefore result in the vocal cords overlapping </span></li>
+<li><span class="segment a-seg" data-start="485.76" data-end="492.32" title="8:05">in the midline, producing complete airway obstruction. Name another major post-operative complication </span></li>
+<li><span class="segment a-seg" data-start="492.32" data-end="501.6" title="8:12">of thyroid surgery aside from airway complications. Inadvertent removal of parathyroid tissue at the time </span></li>
+<li><span class="segment a-seg" data-start="501.6" data-end="508.32" title="8:21">of thyroidectomy can produce high muscle twitching, tingling around the mouth and tetanine </span></li>
+<li><span class="segment a-seg" data-start="508.32" data-end="515.52" title="8:28">in extreme cases. Specific clinical signs can be elicited, such as trusose sign, whereby </span></li>
+<li><span class="segment a-seg" data-start="515.52" data-end="522.96" title="8:35">carpapedal spasm is provoked by inflation of a cuff around the limb. Ochoestec sign, where tapping </span></li>
+<li><span class="segment a-seg" data-start="522.96" data-end="527.36" title="8:42">over the course of the facial nerve produces twitching of the facial muscles. </span></li>
+<li><span class="segment a-seg" data-start="527.76" data-end="534.4" title="8:47">Corrected calcium levels should be checked routinely 12 to 24 hours after surgery, </span></li>
+<li><span class="segment a-seg" data-start="534.4" data-end="542.16" title="8:54">and earlier if there is clinical suspicion of hypocalcemia. Calcium supplementation can be </span></li>
+<li><span class="segment a-seg" data-start="542.16" data-end="548.32" title="9:02">all in mild cases or intravenous if the corrected calcium is less than 2 millimoles per litre. </span></li>
+<li><span class="segment a-seg" data-start="549.92" data-end="557.12" title="9:09">Appropriate intravenous calcium supplementation is 10 ml of 10% calcium gluconate given over </span></li>
+<li><span class="segment a-seg" data-start="557.12" data-end="564.72" title="9:17">3 to 5 minutes. </span></li>
+  </ul>
+</div>
+</div>
+
 </div>
 
 <div class="subtitle-bar">
-  <span class="subtitle-text empty" id="subtitle-text">Play audio to see live subtitles&#8230;</span>
+  <span id="subtitle-text" class="empty">Play audio to see live subtitles&#8230;</span>
 </div>
 
 <script>
-
-const audio    = document.getElementById('audio');
-const allSegs  = Array.from(document.querySelectorAll('.segment'));
-const allBlocks = Array.from(document.querySelectorAll('.t-block'));
+const audio      = document.getElementById('audio');
+const allSegs    = Array.from(document.querySelectorAll('.segment'));
 const subtitleEl = document.getElementById('subtitle-text');
-let activeSegEl   = null;
-let activeBlockEl = null;
-let searchMatches = [];
-let searchIdx     = 0;
+let activeSegEl  = null;
+let searchMatches = [], searchIdx = 0;
 
-// Duration display
 audio.addEventListener('loadedmetadata', () => {
   const m = Math.floor(audio.duration / 60);
   const s = Math.floor(audio.duration %% 60).toString().padStart(2,'0');
   document.getElementById('dur').textContent = m + ':' + s;
 });
 
-// Seek helper
-function seekTo(t) {
-  audio.currentTime = t;
-  audio.play();
-}
+function seekTo(t) { audio.currentTime = t; audio.play(); }
 
-// Block gutter click
-document.querySelectorAll('.t-gutter').forEach(g => {
-  g.addEventListener('click', () => seekTo(parseFloat(g.dataset.start)));
+// Q-block header click
+document.querySelectorAll('.q-block').forEach(q => {
+  q.addEventListener('click', e => {
+    if (!e.target.classList.contains('segment')) seekTo(parseFloat(q.dataset.start));
+  });
 });
 
-// Segment click
+// Individual segment click
 allSegs.forEach(s => {
-  s.addEventListener('click', e => {
-    e.stopPropagation();
-    seekTo(parseFloat(s.dataset.start));
-  });
+  s.addEventListener('click', e => { e.stopPropagation(); seekTo(parseFloat(s.dataset.start)); });
 });
 
 // Real-time tracking
 audio.addEventListener('timeupdate', () => {
   const t = audio.currentTime;
-
-  // Find active segment (last one whose start <= t)
   let found = null;
   for (let i = allSegs.length - 1; i >= 0; i--) {
     if (parseFloat(allSegs[i].dataset.start) <= t) { found = allSegs[i]; break; }
   }
-
   if (found && found !== activeSegEl) {
-    // Clear previous
-    if (activeSegEl) activeSegEl.classList.remove('active');
-    if (activeBlockEl) {
-      activeBlockEl.classList.remove('block-active');
-      const pg = activeBlockEl.querySelector('.t-gutter');
-      if (pg) pg.classList.remove('gutter-active');
+    if (activeSegEl) {
+      activeSegEl.classList.remove('active');
+      const pli = activeSegEl.closest('li');
+      if (pli) pli.classList.remove('li-active');
+      const pq = activeSegEl.closest('.q-block');
+      if (pq) pq.classList.remove('q-active');
     }
-    // Set new
     found.classList.add('active');
-    const block = found.closest('.t-block');
-    if (block) {
-      block.classList.add('block-active');
-      const g = block.querySelector('.t-gutter');
-      if (g) g.classList.add('gutter-active');
-      activeBlockEl = block;
-    }
+    const li = found.closest('li');
+    if (li) li.classList.add('li-active');
+    const qb = found.closest('.q-block');
+    if (qb) qb.classList.add('q-active');
     activeSegEl = found;
 
-    // Update subtitle
     subtitleEl.textContent = found.textContent.trim();
     subtitleEl.classList.remove('empty');
 
-    // Auto-scroll (only when not searching)
-    if (!document.getElementById('search').value) {
+    if (!document.getElementById('search').value)
       found.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }
   }
 });
 
@@ -329,17 +394,13 @@ searchInput.addEventListener('keydown', e => {
     el.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
 });
-
 function runSearch() {
   const q = searchInput.value.trim().toLowerCase();
   allSegs.forEach(s => s.classList.remove('search-match','search-current'));
   searchMatches = [];
   if (!q) return;
   allSegs.forEach(s => {
-    if (s.textContent.toLowerCase().includes(q)) {
-      s.classList.add('search-match');
-      searchMatches.push(s);
-    }
+    if (s.textContent.toLowerCase().includes(q)) { s.classList.add('search-match'); searchMatches.push(s); }
   });
   if (!searchMatches.length) return;
   searchIdx = 0;

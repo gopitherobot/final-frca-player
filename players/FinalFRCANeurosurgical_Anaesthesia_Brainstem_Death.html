@@ -5,10 +5,19 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Neurosurgical Anaesthesia — Brainstem Death</title>
 <style>
-
   :root {
-    --accent:    #6366f1;
-    --body-bg:   #f1f5f9;
+    --q-bg:       #1e3a5f;
+    --q-text:     #ffffff;
+    --q-label:    #60a5fa;
+    --a-bg:       #ffffff;
+    --a-border:   #e2e8f0;
+    --a-label:    #059669;
+    --active-q:   #6366f1;
+    --active-a:   #dbeafe;
+    --accent:     #6366f1;
+    --body-bg:    #f1f5f9;
+    --pre-bg:     #fef9c3;
+    --pre-border: #fcd34d;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
@@ -40,22 +49,9 @@
     margin-bottom: 4px;
     letter-spacing: 0.01em;
   }
-  .header-sub {
-    font-size: 0.72rem;
-    color: #94a3b8;
-    font-style: italic;
-  }
-  audio {
-    height: 36px;
-    accent-color: var(--accent);
-    flex-shrink: 0;
-  }
-  .back-link {
-    font-size: 0.8rem;
-    color: #94a3b8;
-    text-decoration: none;
-    white-space: nowrap;
-  }
+  .header-sub { font-size: 0.72rem; color: #94a3b8; font-style: italic; }
+  audio { height: 36px; accent-color: var(--accent); flex-shrink: 0; }
+  .back-link { font-size: 0.8rem; color: #94a3b8; text-decoration: none; white-space: nowrap; }
   .back-link:hover { color: #60a5fa; }
 
   /* ── Toolbar ── */
@@ -69,30 +65,17 @@
     border-bottom: 1px solid #334155;
   }
   .toolbar input {
-    flex: 1;
-    max-width: 380px;
+    flex: 1; max-width: 380px;
     padding: 5px 11px;
-    border: 1px solid #475569;
-    border-radius: 6px;
-    background: #0f172a;
-    color: #e2e8f0;
-    font-size: 0.83rem;
-    outline: none;
+    border: 1px solid #475569; border-radius: 6px;
+    background: #0f172a; color: #e2e8f0; font-size: 0.83rem; outline: none;
   }
   .toolbar input:focus { border-color: var(--accent); }
   .toolbar input::placeholder { color: #64748b; }
-  .stats {
-    font-size: 0.72rem;
-    color: #64748b;
-    white-space: nowrap;
-  }
+  .stats { font-size: 0.72rem; color: #64748b; white-space: nowrap; }
 
   /* ── Scroll area ── */
-  .scroll-area {
-    flex: 1;
-    overflow-y: auto;
-    padding: 20px;
-  }
+  .scroll-area { flex: 1; overflow-y: auto; padding: 20px; }
   .scroll-area::-webkit-scrollbar { width: 6px; }
   .scroll-area::-webkit-scrollbar-track { background: transparent; }
   .scroll-area::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
@@ -107,68 +90,77 @@
     display: flex;
     align-items: center;
   }
-  .subtitle-text {
-    font-size: 0.9rem;
-    color: #e2e8f0;
-    line-height: 1.5;
-    font-style: italic;
-  }
-  .subtitle-text.empty { color: #475569; }
+  #subtitle-text { font-size: 0.88rem; color: #e2e8f0; line-height: 1.5; font-style: italic; }
+  #subtitle-text.empty { color: #475569; }
 
-  /* ── Transcript blocks ── */
-  .t-block {
-    background: #ffffff;
-    border: 1px solid #e2e8f0;
-    border-radius: 10px;
-    margin-bottom: 14px;
-    overflow: hidden;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
-    display: flex;
-  }
-  .t-block.block-active {
-    border-color: var(--accent);
-    box-shadow: 0 0 0 2px rgba(37,99,235,0.15);
-  }
-  .t-gutter {
-    background: #0f172a;
-    width: 52px;
-    flex-shrink: 0;
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
-    padding-top: 14px;
-    cursor: pointer;
-  }
-  .t-gutter:hover { background: #1e293b; }
-  .t-timestamp {
-    font-size: 0.7rem;
-    color: #64748b;
-    font-family: monospace;
-    font-weight: 600;
-    letter-spacing: 0.02em;
-  }
-  .t-gutter.gutter-active .t-timestamp { color: var(--accent); }
-  .t-body {
-    flex: 1;
+  /* ── Preamble ── */
+  .preamble-block {
+    background: var(--pre-bg);
+    border-left: 4px solid var(--pre-border);
+    border-radius: 0 8px 8px 0;
     padding: 12px 16px;
-    line-height: 1.75;
-    font-size: 0.92rem;
-    color: #1e293b;
+    margin-bottom: 20px;
+    font-size: 0.88rem;
+    color: #78350f;
+    font-style: italic;
+    line-height: 1.7;
   }
 
-  /* ── Segments ── */
-  .segment {
+  /* ── Q&A pair ── */
+  .qa-pair { margin-bottom: 20px; border-radius: 10px; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+
+  /* Question block */
+  .q-block {
+    background: var(--q-bg);
+    padding: 14px 18px;
+    display: flex; gap: 14px; align-items: flex-start;
     cursor: pointer;
-    border-radius: 3px;
-    transition: background 0.1s;
+    transition: background 0.15s;
   }
-  .segment:hover { background: #eff6ff; }
-  .segment.active {
-    background: #bfdbfe;
-    outline: 2px solid #3b82f6;
-    outline-offset: 1px;
-    border-radius: 3px;
+  .q-block:hover { background: #1d4ed8; }
+  .q-block.q-active { background: var(--active-q); }
+  .q-label {
+    font-size: 0.7rem; font-weight: 700;
+    color: var(--q-label);
+    background: rgba(96,165,250,0.15);
+    border: 1px solid rgba(96,165,250,0.3);
+    border-radius: 5px; padding: 3px 7px;
+    white-space: nowrap; margin-top: 2px; letter-spacing: 0.05em;
+    flex-shrink: 0;
   }
+  .q-body { flex: 1; font-size: 0.97rem; font-weight: 600; color: var(--q-text); line-height: 1.55; }
+
+  /* Answer block */
+  .a-block {
+    background: var(--a-bg);
+    border: 1px solid var(--a-border); border-top: none;
+    padding: 14px 18px;
+    display: flex; gap: 14px; align-items: flex-start;
+  }
+  .a-label {
+    font-size: 0.7rem; font-weight: 700;
+    color: var(--a-label);
+    background: #d1fae5; border: 1px solid #6ee7b7;
+    border-radius: 5px; padding: 3px 9px;
+    white-space: nowrap; margin-top: 2px; letter-spacing: 0.05em;
+    flex-shrink: 0;
+  }
+  .a-body { flex: 1; list-style: none; padding: 0; }
+  .a-body li {
+    padding: 4px 0 4px 14px;
+    border-left: 3px solid transparent;
+    line-height: 1.7; font-size: 0.92rem; color: #1e293b;
+    border-radius: 0 4px 4px 0;
+    transition: background 0.15s;
+  }
+  .a-body li:not(:last-child) { border-bottom: 1px solid #f1f5f9; }
+
+  /* ── Segments (clickable) ── */
+  .segment { cursor: pointer; border-radius: 3px; }
+  .q-seg:hover { background: rgba(255,255,255,0.18); }
+  .a-seg:hover { background: #eff6ff; }
+  .segment.active { background: #bfdbfe; outline: 2px solid #3b82f6; outline-offset: 1px; }
+  .a-body li.li-active { background: var(--active-a); border-left-color: var(--accent); }
   .segment.search-match  { background: #fef9c3; }
   .segment.search-current { background: #fde047; outline: 2px solid #ca8a04; }
 
@@ -187,184 +179,410 @@
 
 <div class="toolbar">
   <input type="text" id="search" placeholder="Search transcript&#8230; (Enter = next match)">
-  <span class="stats" id="stats">185 segments &nbsp;|&nbsp; <span id="dur">loading&#8230;</span></span>
+  <span class="stats" id="stats">16 questions &nbsp;|&nbsp; 185 segments &nbsp;|&nbsp; <span id="dur">loading&#8230;</span></span>
 </div>
 
 <div class="scroll-area" id="scroll-area">
-<div class="t-block">
-  <div class="t-gutter" data-start="0.0"><span class="t-timestamp">0:00</span></div>
-  <div class="t-body"><span class="segment" data-start="0.0" data-end="2.0" title="0:00">Brainstem Death Testing </span><span class="segment" data-start="2.0" data-end="7.0" title="0:02">This is a question that I was actually asked in my final F-R-C-A-Vi-Va. </span><span class="segment" data-start="7.0" data-end="10.0" title="0:07">It was asked as part of the anatomy vi-Va-Va. </span><span class="segment" data-start="10.0" data-end="15.0" title="0:10">I have tried to make this question as similar to the version I was asked as possible. </span><span class="segment" data-start="15.0" data-end="18.0" title="0:15">What is brainstem death? </span><span class="segment" data-start="19.0" data-end="25.0" title="0:19">Brainstem death was defined formally at the conference of the Royal Colleges in 1976. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="26.0"><span class="t-timestamp">0:26</span></div>
-  <div class="t-body"><span class="segment" data-start="26.0" data-end="31.0" title="0:26">And it is this definition that has since been used in the English law courts. </span><span class="segment" data-start="31.0" data-end="36.0" title="0:31">It is defined as irreversible loss of the capacity for consciousness, </span><span class="segment" data-start="36.0" data-end="40.0" title="0:36">combined with irreversible loss of the capacity to breathe. </span><span class="segment" data-start="40.0" data-end="44.0" title="0:40">Please keep talking me through the functions of all the cranial nerves </span><span class="segment" data-start="44.0" data-end="49.0" title="0:44">and tell me which ones are tested when we perform brainstem death testing. </span><span class="segment" data-start="49.0" data-end="53.0" title="0:49">The first cranial nerve is the old factory nerve. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="53.0"><span class="t-timestamp">0:53</span></div>
-  <div class="t-body"><span class="segment" data-start="53.0" data-end="59.0" title="0:53">This gives us the sense of smell, which is not tested during brainstem testing. </span><span class="segment" data-start="59.0" data-end="62.0" title="0:59">The second cranial nerve is the optic nerve. </span><span class="segment" data-start="62.0" data-end="66.0" title="1:02">This nerve innovates the eye and enables us to see. </span><span class="segment" data-start="66.0" data-end="70.0" title="1:06">It is involved as the affront limb of the pupillary light reflex. </span><span class="segment" data-start="70.0" data-end="77.0" title="1:10">This nerve is tested in brainstem testing by shining a bright light directly into the eye. </span><span class="segment" data-start="77.0" data-end="80.0" title="1:17">A normal response would lead to constriction of the pupil. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="80.0"><span class="t-timestamp">1:20</span></div>
-  <div class="t-body"><span class="segment" data-start="80.0" data-end="85.0" title="1:20">If someone were brainstem dead, there would be no response to light. </span><span class="segment" data-start="85.0" data-end="89.0" title="1:25">The third cranial nerve is the ocular motor nerve. </span><span class="segment" data-start="89.0" data-end="93.0" title="1:29">The nerve itself innovates some of the muscles of the eye </span><span class="segment" data-start="93.0" data-end="96.0" title="1:33">and is therefore involved in movement of the eye. </span><span class="segment" data-start="96.0" data-end="102.0" title="1:36">It innovates all the muscles except superior oblique and lateral rectus. </span><span class="segment" data-start="102.0" data-end="106.0" title="1:42">The movement of the eye itself is not tested in brainstem testing. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="106.0"><span class="t-timestamp">1:46</span></div>
-  <div class="t-body"><span class="segment" data-start="106.0" data-end="112.0" title="1:46">However, the third nerve is indirectly tested as parasympathetic efferent fibers, </span><span class="segment" data-start="112.0" data-end="117.0" title="1:52">which control pupillary constriction, which travel with the third nerve </span><span class="segment" data-start="117.0" data-end="124.0" title="1:57">and are therefore tested as the efferent limb of the pupillary light reflex. </span><span class="segment" data-start="124.0" data-end="127.0" title="2:04">The fourth cranial nerve is the trochlear nerve. </span><span class="segment" data-start="127.0" data-end="131.0" title="2:07">This innovates the superior oblique muscle of the eye, </span><span class="segment" data-start="131.0" data-end="134.0" title="2:11">enabling the eye to look medially and down. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="134.0"><span class="t-timestamp">2:14</span></div>
-  <div class="t-body"><span class="segment" data-start="134.0" data-end="139.0" title="2:14">This is not tested during brainstem testing. </span><span class="segment" data-start="139.0" data-end="143.0" title="2:19">The fifth cranial nerve is the trigeminal nerve. </span><span class="segment" data-start="143.0" data-end="147.0" title="2:23">This is a large nerve with sensory and motor components. </span><span class="segment" data-start="147.0" data-end="152.0" title="2:27">It supplies sensation to the face and scalp, including sensation to the cornea </span><span class="segment" data-start="152.0" data-end="156.0" title="2:32">and motor supply to the muscles of massdication. </span><span class="segment" data-start="156.0" data-end="161.0" title="2:36">This therefore supplies an efferent limb for the corneal blink reflex. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="161.0"><span class="t-timestamp">2:41</span></div>
-  <div class="t-body"><span class="segment" data-start="161.0" data-end="169.0" title="2:41">This is tested during brainstem testing by lightly touching a strand of cotton wool onto the cornea. </span><span class="segment" data-start="169.0" data-end="172.0" title="2:49">A normal response would be to blink. </span><span class="segment" data-start="172.0" data-end="176.0" title="2:52">This is absent if someone is brainstem dead. </span><span class="segment" data-start="176.0" data-end="180.0" title="2:56">The sixth cranial nerve is the abducens nerve. </span><span class="segment" data-start="180.0" data-end="186.0" title="3:00">This innovates the lateral rectus muscle of the eye, enabling lateral movement of the eye. </span><span class="segment" data-start="186.0" data-end="190.0" title="3:06">This is not tested during brainstem testing. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="190.0"><span class="t-timestamp">3:10</span></div>
-  <div class="t-body"><span class="segment" data-start="190.0" data-end="193.0" title="3:10">The seventh cranial nerve is the facial nerve. </span><span class="segment" data-start="193.0" data-end="198.0" title="3:13">This is predominantly a motor nerve supplying muscles of facial expression. </span><span class="segment" data-start="198.0" data-end="204.0" title="3:18">This is the nerve that results in blinking and is therefore the efferent limb of the blink reflex, </span><span class="segment" data-start="204.0" data-end="209.0" title="3:24">which is tested in conjunction with the fifth cranial nerve. </span><span class="segment" data-start="209.0" data-end="213.0" title="3:29">The eighth cranial nerve is the auditory nerve. </span><span class="segment" data-start="213.0" data-end="220.0" title="3:33">This has two main components, which are the cochlear and vestibular nerves, which lead to hearing and balance. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="220.0"><span class="t-timestamp">3:40</span></div>
-  <div class="t-body"><span class="segment" data-start="220.0" data-end="228.0" title="3:40">Damage to the vestibular nerve therefore causes problems with equilibrium and balance, and so causes vertigo. </span><span class="segment" data-start="228.0" data-end="233.0" title="3:48">Often the most obvious clinical sign of this is nistagmas of the eyes. </span><span class="segment" data-start="233.0" data-end="240.0" title="3:53">This nerve is tested in brainstem testing as part of the vestibuloocular or caloric reflex. </span><span class="segment" data-start="240.0" data-end="247.0" title="4:00">It is important to check the auditory canal for earwax prior to testing, as this would affect the results. </span><span class="segment" data-start="247.0" data-end="252.0" title="4:07">The test is performed by irrigating ice cold water into the ear canal. </span><span class="segment" data-start="252.0" data-end="262.0" title="4:12">Normally this would lead to eye deviation towards the side being tested, and an astagmas with the fast phase going away from the side being tested. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="262.0"><span class="t-timestamp">4:22</span></div>
-  <div class="t-body"><span class="segment" data-start="262.0" data-end="267.0" title="4:22">In a brainstem dead patient, there is no response. </span><span class="segment" data-start="267.0" data-end="279.0" title="4:27">The afferent nerve for this reflex is the vestibular nerve, and the efferent limb tested the third, fourth and sixth cranial nerves, eye movements. </span><span class="segment" data-start="279.0" data-end="290.0" title="4:39">The ninth cranial nerve is the glossopharyngeal nerve. This is predominantly a sensory nerve and supplies sensation to the posterior third of the tongue and the pharynx. </span><span class="segment" data-start="290.0" data-end="295.0" title="4:50">This is tested during brainstem testing by performing the gag test. </span><span class="segment" data-start="295.0" data-end="307.0" title="4:55">The patients who are brainstem dead have no afferent portion to the gag reflex, and therefore do not gag when a spatula is placed at the posterior pharyngeal wall. </span><span class="segment" data-start="307.0" data-end="324.0" title="5:07">The tenth cranial nerve is the vagus nerve. This is a large nerve supplying parasympathetic motor innovation to many organs in the body, and importantly motor innovation to most of the pharynx and larynx via the recurrent laryngeal and superior laryngeal nerves. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="324.0"><span class="t-timestamp">5:24</span></div>
-  <div class="t-body"><span class="segment" data-start="324.0" data-end="332.0" title="5:24">This is tested during brainstem testing by placing a suction catheter down the endotracheal tube. </span><span class="segment" data-start="332.0" data-end="339.0" title="5:32">The normal response would be to elicit coughing, but there is no response in a brainstem dead patient. </span><span class="segment" data-start="339.0" data-end="346.0" title="5:39">The vagus nerve is also involved in the gag test as the efferent limb of the gag reflex. </span><span class="segment" data-start="346.0" data-end="359.0" title="5:46">The eleventh cranial nerve is the accessory nerve. This leads to innovation of the sternoclide amastoid and trapezius muscles. This is not tested in brainstem testing. </span><span class="segment" data-start="359.0" data-end="369.0" title="5:59">The twelfth cranial nerve is the hyperglossal nerve. This is the motor supply to the tongue and is not tested during brainstem testing. </span><span class="segment" data-start="370.0" data-end="378.0" title="6:10">Cranial nerves, one, eleven and twelve, are not tested because they do not have reflex arcs. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="378.0"><span class="t-timestamp">6:18</span></div>
-  <div class="t-body"><span class="segment" data-start="378.0" data-end="383.0" title="6:18">What preconditions are required before performing brainstem death testing? </span><span class="segment" data-start="384.0" data-end="397.0" title="6:24">There are certain preconditions that should be met before brainstem testing is performed. Firstly, the patient should have an irrecoverable condition causing brain damage which can lead to brainstem death. </span><span class="segment" data-start="397.0" data-end="409.0" title="6:37">Conditions would include a severe head injury or a subarachnoid hemorrhage. The patient should also be in an apnea coma requiring ventilation. </span><span class="segment" data-start="409.0" data-end="416.0" title="6:49">Do you know of any factors that might exclude patients from brainstem death testing? </span><span class="segment" data-start="416.0" data-end="423.0" title="6:56">There are several factors that might mean that it is inappropriate to perform brainstem death testing. </span><span class="segment" data-start="423.0" data-end="440.0" title="7:03">These are all factors that could themselves lead to a change in cerebral function affecting the Glasgow coma score of a patient and therefore could potentially lead to inaccurate testing, suggesting a patient is brainstem dead when they are not. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="440.0"><span class="t-timestamp">7:20</span></div>
-  <div class="t-body"><span class="segment" data-start="440.0" data-end="450.0" title="7:20">To perform the tests, the patient should not be hypothermic. The core temperature should be greater than 35 degrees centigrade. </span><span class="segment" data-start="450.0" data-end="459.0" title="7:30">There should be no metabolic or endocrine disturbance such as hypoglycemia or hypothyroidism that could lead to a coma. </span><span class="segment" data-start="459.0" data-end="468.0" title="7:39">However, it is well known that brainstem death itself may lead to diabetes and sypidus causing hypernatremia. </span><span class="segment" data-start="468.0" data-end="472.0" title="7:48">There should be no evidence of drug intoxication. </span><span class="segment" data-start="472.0" data-end="485.0" title="7:52">Any sedation that may have been given on intensive care should have been switched off for an appropriate length of time to be certain that there is no chance of any residual effects of sedative medications. </span><span class="segment" data-start="485.0" data-end="495.0" title="8:05">If any neuromuscular blocking drugs have been used, then a nerve stimulator should be used to demonstrate that there is no residual effect of these drugs. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="495.0"><span class="t-timestamp">8:15</span></div>
-  <div class="t-body"><span class="segment" data-start="495.0" data-end="502.0" title="8:15">Testing cannot be performed on patients with a medical cause of paralysis such as Guillain-Barré syndrome. </span><span class="segment" data-start="502.0" data-end="507.0" title="8:22">How would you actually perform the tests? </span><span class="segment" data-start="507.0" data-end="514.0" title="8:27">When the relevant preconditions and exclusion criteria have been addressed, the tests can be performed. </span><span class="segment" data-start="514.0" data-end="522.0" title="8:34">They are performed by two doctors, both of whom should have been registered for more than five years and one of whom should be a consultant. </span><span class="segment" data-start="522.0" data-end="532.0" title="8:42">The tests should be performed twice and there is no stipulation about how far apart the two sets of tests are performed. </span><span class="segment" data-start="532.0" data-end="543.0" title="8:52">I have already described the nerve roots that are tested. However, in practice, the tests are performed by first testing for the papillary light reflex in both eyes. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="543.0"><span class="t-timestamp">9:03</span></div>
-  <div class="t-body"><span class="segment" data-start="543.0" data-end="547.0" title="9:03">Then test for the corneal reflex in both eyes. </span><span class="segment" data-start="547.0" data-end="555.0" title="9:07">Next, check that both ear canals are clear and check for vestibular ocular reflexes bilaterally. </span><span class="segment" data-start="555.0" data-end="561.0" title="9:15">Check that there is no facial movement in response to a central, painful stimulus. </span><span class="segment" data-start="561.0" data-end="568.0" title="9:21">It is important to note that spinal reflexes may persist, leading to movement of limbs. </span><span class="segment" data-start="568.0" data-end="575.0" title="9:28">This may be distressing for relatives to see, but does not affect the outcome of brainstem testing. </span><span class="segment" data-start="575.0" data-end="580.0" title="9:35">Then check there is no gag or cough reflex. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="580.0"><span class="t-timestamp">9:40</span></div>
-  <div class="t-body"><span class="segment" data-start="580.0" data-end="584.0" title="9:40">Finally, the apnea test is performed. </span><span class="segment" data-start="584.0" data-end="589.0" title="9:44">The patient should be preoxygenated with 100% oxygen for 10 minutes. </span><span class="segment" data-start="589.0" data-end="593.0" title="9:49">This is often done whilst the earlier tests are performed. </span><span class="segment" data-start="593.0" data-end="604.0" title="9:53">The ventilation rate should be reduced during this period to allow the PACO2 to rise to five kilopascals prior to disconnecting the ventilator. </span><span class="segment" data-start="604.0" data-end="610.0" title="10:04">An arterial blood gas sample should be performed at this stage to document this. </span><span class="segment" data-start="610.0" data-end="622.0" title="10:10">The ventilator is then disconnected, and the patient is oxygenated by insufflating oxygen into the lungs via a suction catheter placed down the endotracheal tube. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="622.0"><span class="t-timestamp">10:22</span></div>
-  <div class="t-body"><span class="segment" data-start="622.0" data-end="633.0" title="10:22">The PACO2 should be allowed to rise above 6.6 kilopascals, and the patient should show no signs of respiratory effort during this time. </span><span class="segment" data-start="633.0" data-end="639.0" title="10:33">The PACO2 rise should be confirmed by repeating a blood gas sample. </span><span class="segment" data-start="639.0" data-end="648.0" title="10:39">The PACO2 usually rises by 0.4 to 0.8 kilopascals per minute, depending on metabolic rate. </span><span class="segment" data-start="648.0" data-end="658.0" title="10:48">Patients with pre-existing lung disease may normally have a raised PACO2, therefore an appropriate rise for this patient should be determined. </span><span class="segment" data-start="658.0" data-end="664.0" title="10:58">The patient should not be allowed to become hypoxic whilst these tests are being performed. </span><span class="segment" data-start="664.0" data-end="672.0" title="11:04">Occasionally, apnea testing may have to be abandoned as a result of oxygen desaturation. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="672.0"><span class="t-timestamp">11:12</span></div>
-  <div class="t-body"><span class="segment" data-start="672.0" data-end="679.0" title="11:12">What are dolzai movements? Are these required as part of brainstem death testing? </span><span class="segment" data-start="679.0" data-end="684.0" title="11:19">Dolzai movements describe the ocular cifalic reflex. </span><span class="segment" data-start="684.0" data-end="699.0" title="11:24">In an unconscious patient, if their head is turned to the side, the eyes rotate in the opposite direction, therefore keeping the eyes pointing in the original direction in relation to the surroundings, as is seen in a child's doll. </span><span class="segment" data-start="699.0" data-end="710.0" title="11:39">This reflex requires an intact brainstem, and therefore in a brainstem dead patient, when the head is turned, the eyes move in the same direction as the head. </span><span class="segment" data-start="710.0" data-end="718.0" title="11:50">This is not a test that is required in brainstem testing in the United Kingdom, although may be tested in other countries. </span><span class="segment" data-start="718.0" data-end="724.0" title="11:58">What clinical features may be seen that are associated with brainstem death? </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="724.0"><span class="t-timestamp">12:04</span></div>
-  <div class="t-body"><span class="segment" data-start="724.0" data-end="738.0" title="12:04">An injury to the brain leads to swelling of the brain within the skull, raising intra-cranial pressure, which will lead to a reduction in cerebral perfusion, and therefore a reduction in oxygen supply to the brain. </span><span class="segment" data-start="738.0" data-end="743.0" title="12:18">All the subsequent clinical features are related to this brain swelling. </span><span class="segment" data-start="743.0" data-end="750.0" title="12:23">The final result of the swelling, if this continues, is for the brainstem to be forced through the forum and magnum. </span><span class="segment" data-start="750.0" data-end="754.0" title="12:30">This is known as coning, and leads to brainstem death. </span><span class="segment" data-start="754.0" data-end="761.0" title="12:34">There are various clinical signs that may be elicited at various stages as a result of the brain swelling. </span><span class="segment" data-start="761.0" data-end="766.0" title="12:41">A third nerve lesion may be seen as a result of herniation of the ancus. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="766.0"><span class="t-timestamp">12:46</span></div>
-  <div class="t-body"><span class="segment" data-start="766.0" data-end="771.0" title="12:46">A sixth nerve lesion may be seen as swelling stretches the nerve. </span><span class="segment" data-start="771.0" data-end="777.0" title="12:51">The cushing's reflex occurs as a desperate attempt to improve cerebral perfusion. </span><span class="segment" data-start="777.0" data-end="786.0" title="12:57">This leads to significant hypertension associated with the bradycardia, which is the result of the baro receptor reflex. </span><span class="segment" data-start="786.0" data-end="790.0" title="13:06">Various arrhythmias may then subsequently occur. </span><span class="segment" data-start="791.0" data-end="796.0" title="13:11">There are also several endocrine manifestations of brainstem swelling. </span><span class="segment" data-start="796.0" data-end="803.0" title="13:16">There is a failure of thyroid hormone synthesis as a result of hypothelamic and pituitary failures. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="803.0"><span class="t-timestamp">13:23</span></div>
-  <div class="t-body"><span class="segment" data-start="803.0" data-end="808.0" title="13:23">This further exacerbates cardiovascular changes and instability. </span><span class="segment" data-start="808.0" data-end="814.0" title="13:28">There is also a lack of anti-diuretic hormone, which results in neurogenic diabetes and sypidus, </span><span class="segment" data-start="814.0" data-end="818.0" title="13:34">leading to large quantities of very dilute urine. </span><span class="segment" data-start="819.0" data-end="825.0" title="13:39">Finally, there is a loss in thermo-regulation, which usually leads to hypothermia. </span><span class="segment" data-start="825.0" data-end="830.0" title="13:45">Do you know of any additional tests that may be required in other countries to confirm brainstem death? </span><span class="segment" data-start="830.0" data-end="836.0" title="13:50">If you're being asked these questions, you're doing great. Keep going. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="836.0"><span class="t-timestamp">13:56</span></div>
-  <div class="t-body"><span class="segment" data-start="836.0" data-end="844.0" title="13:56">In the United Kingdom, there is no legal requirement to perform any tests in addition to brainstem testing. </span><span class="segment" data-start="844.0" data-end="856.0" title="14:04">However, in certain situations these may be considered if, for example, pre-existing lung disease makes it impossible to complete the apnea test as a result of oxygen desaturation, </span><span class="segment" data-start="856.0" data-end="864.0" title="14:16">or if it is not possible to test some of the cranial nerves as a result of cranio-facial trauma. </span><span class="segment" data-start="864.0" data-end="871.0" title="14:24">However, in some countries such as the United States, extra tests are commonly performed. </span><span class="segment" data-start="871.0" data-end="879.0" title="14:31">The tests that may be performed aim to elicit a complete lack of electrical activity and blood flow to the brain. </span><span class="segment" data-start="879.0" data-end="886.0" title="14:39">The gold standard to demonstrate lack of blood supply to the brain is the four vessel and geography. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="886.0"><span class="t-timestamp">14:46</span></div>
-  <div class="t-body"><span class="segment" data-start="886.0" data-end="894.0" title="14:46">A radio-apake contrast medium can be injected into both internal corroded and both vertebral arteries. </span><span class="segment" data-start="894.0" data-end="899.0" title="14:54">In brainstem death flow is obstructed due to raised intracranial pressure. </span><span class="segment" data-start="899.0" data-end="909.0" title="14:59">More recent and less invasive techniques include CT angiogram and MR angiogram, both of which also demonstrate the lack of blood flow. </span><span class="segment" data-start="909.0" data-end="919.0" title="15:09">Transcranial Doppler ultrasonography is also mentioned where a characteristic change in the velocity waveform of the basal cerebral arteries is seen. </span><span class="segment" data-start="919.0" data-end="926.0" title="15:19">This is the least invasive test and could be performed at the bedside in intensive care. </span><span class="segment" data-start="926.0" data-end="931.0" title="15:26">The EEG may be performed to demonstrate a lack of electrical activity. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="931.0"><span class="t-timestamp">15:31</span></div>
-  <div class="t-body"><span class="segment" data-start="931.0" data-end="943.0" title="15:31">There are some controversies regarding the EEG, as it is technically very difficult to perform in the ITU setting due to the large amount of interference from surrounding equipment. </span><span class="segment" data-start="943.0" data-end="950.0" title="15:43">It is also possible to perform auditory evoked potentials to demonstrate a lack of brain activity. </span><span class="segment" data-start="950.0" data-end="954.0" title="15:50">What is the legal time of death? </span><span class="segment" data-start="954.0" data-end="960.0" title="15:54">The legal time of death is the time at which the first set of tests has been completed. </span><span class="segment" data-start="960.0" data-end="968.0" title="16:00">However, the patient isn't actually pronounced dead until after the second set of tests have been performed. </span><span class="segment" data-start="968.0" data-end="973.0" title="16:08">Why do we have a shortage of organ donors in the UK compared with the rest of Europe? </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="973.0"><span class="t-timestamp">16:13</span></div>
-  <div class="t-body"><span class="segment" data-start="973.0" data-end="978.0" title="16:13">This is quite a topical subject that has been in the news a lot over the past couple of years. </span><span class="segment" data-start="978.0" data-end="987.0" title="16:18">You should be able to say at least something about this as it is something I'm sure there will be many more debates about in the future. </span><span class="segment" data-start="987.0" data-end="1005.0" title="16:27">The United Kingdom donation rate is one of the lowest in Europe with a recent study from 2006 showing only 12 per million of the population coming forward to donate their organs for transplant compared with 33 per million for the population of Spain. </span><span class="segment" data-start="1005.0" data-end="1009.0" title="16:45">The rate of donation has actually fallen in the United Kingdom. </span><span class="segment" data-start="1009.0" data-end="1019.0" title="16:49">It is not known why this is, but it is thought that one of the main reasons is that relatives and family members are reluctant to allow transplantation procedures. </span><span class="segment" data-start="1019.0" data-end="1034.0" title="16:59">The actual rate of donations from death in hospitals during a two-year study by the UK transplant organisation was 23.2 donations per million of population per year. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="1034.0"><span class="t-timestamp">17:14</span></div>
-  <div class="t-body"><span class="segment" data-start="1034.0" data-end="1043.0" title="17:14">Of the 94% of patients whose families were approached for donation, 41% of the families denied consent. </span><span class="segment" data-start="1043.0" data-end="1054.0" title="17:23">The main reasons for refusal were that they did not want surgery on the body, they were not sure if the patient would have agreed or that the relatives were divided. </span><span class="segment" data-start="1054.0" data-end="1065.0" title="17:34">The refusal rates were highest amongst families from ethnic minorities, 70%, in comparison to those of white donors, 35%. </span><span class="segment" data-start="1065.0" data-end="1075.0" title="17:45">It should be noted that organ donation was only discussed in 94% of potential cases, meaning that 6% of cases were missed opportunities. </span><span class="segment" data-start="1075.0" data-end="1083.0" title="17:55">Therefore, in a small part, the lack of organs is a result of clinicians not discussing donation with the next of kin. </span><span class="segment" data-start="1083.0" data-end="1091.0" title="18:03">This is a difficult subject to broach and therefore there may be some delay or reluctance on the part of the clinician. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="1091.0"><span class="t-timestamp">18:11</span></div>
-  <div class="t-body"><span class="segment" data-start="1091.0" data-end="1097.0" title="18:11">To address this issue, there has been a drive to increase numbers of organ transplant coordinators. </span><span class="segment" data-start="1097.0" data-end="1112.0" title="18:17">They provide an important service within a hospital as they are specifically trained to broach this subject and are often based within the hospital and can therefore be called upon very quickly to talk to relatives and initiate the procedures required </span><span class="segment" data-start="1112.0" data-end="1115.0" title="18:32">leading to organ donation. </span><span class="segment" data-start="1115.0" data-end="1127.0" title="18:35">There is also the benefit that they can identify inappropriate patients quickly and therefore prevent an unnecessary discussion with the family which avoids causing further distress. </span><span class="segment" data-start="1127.0" data-end="1134.0" title="18:47">They also have an important role of increasing awareness of organ donation amongst the general population. </span><span class="segment" data-start="1135.0" data-end="1142.0" title="18:55">The shortage of organs can also be attributed to the state of brainstem death being uncommon in the United Kingdom. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="1142.0"><span class="t-timestamp">19:02</span></div>
-  <div class="t-body"><span class="segment" data-start="1142.0" data-end="1152.0" title="19:02">This is partly due to a decrease in deaths from road traffic accidents, improved trauma care and a decrease in cerebrovascular deaths. </span><span class="segment" data-start="1152.0" data-end="1157.0" title="19:12">How may the shortage in donor organs be addressed? </span><span class="segment" data-start="1157.0" data-end="1170.0" title="19:17">Currently in the United Kingdom we have an opt-in system whereby members of the general population can choose to carry an organ donor card or join the official organ donor register. </span><span class="segment" data-start="1170.0" data-end="1185.0" title="19:30">In 2006 the government set up a task force to identify barriers to organ donation and to make recommendations with the aim of increasing organ donation by 50% by 2013. </span><span class="segment" data-start="1186.0" data-end="1201.0" title="19:46">Recently a debate was held regarding the proposal to change the current opt-in donation scheme to a presumed consent opt-out scheme which has been so successful in other parts of Europe including Spain. </span><span class="segment" data-start="1201.0" data-end="1210.0" title="20:01">This has been rejected for the time being, however it seems inevitable that this is a debate that will continue for many years. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="1211.0"><span class="t-timestamp">20:11</span></div>
-  <div class="t-body"><span class="segment" data-start="1211.0" data-end="1220.0" title="20:11">It is thought that by having implemented a donor register that can be accessed by all hospitals the rate of organ donation will increase. </span><span class="segment" data-start="1220.0" data-end="1233.0" title="20:20">Members of the public can choose to join the donor register and therefore if the time comes that organ donation is appropriate this removes the burden of decision making from the legal next of kin. </span><span class="segment" data-start="1233.0" data-end="1239.0" title="20:33">Many relatives are comforted by the thought that this is what he or she would want. </span><span class="segment" data-start="1240.0" data-end="1252.0" title="20:40">There has been a suggestion of starting social incentive programs. In this situation an organ donor could opt to donate first to people on the transplant register in their social group. </span><span class="segment" data-start="1252.0" data-end="1257.0" title="20:52">This may make the concept of organ donation more acceptable to some people. </span><span class="segment" data-start="1257.0" data-end="1265.0" title="20:57">Finally some have suggested that there should be a financial incentive to induce people to join the transplant register. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="1265.0"><span class="t-timestamp">21:05</span></div>
-  <div class="t-body"><span class="segment" data-start="1265.0" data-end="1270.0" title="21:05">This however is not something that has been seriously considered yet in the United Kingdom. </span><span class="segment" data-start="1270.0" data-end="1277.0" title="21:10">What criteria would suggest to you a brainstem dead patient may be suitable as an organ donor? </span><span class="segment" data-start="1277.0" data-end="1292.0" title="21:17">The main criteria that can be applied to organ donation are firstly to prevent transmitting a transmittable disease such as infection or malignancy and secondly to ensure acceptable function of the donor organ. </span><span class="segment" data-start="1292.0" data-end="1299.0" title="21:32">Various absolute and relative contraindications to transplant have been suggested. </span><span class="segment" data-start="1299.0" data-end="1309.0" title="21:39">Absolute contraindications would include age over 80 years, active metastatic cancer, DIC and sickle cell anemia. </span><span class="segment" data-start="1310.0" data-end="1323.0" title="21:50">HIV infection is an absolute contraindication although in some states in America transplants between patients infected with HIV have been allowed in certain circumstances. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="1323.0"><span class="t-timestamp">22:03</span></div>
-  <div class="t-body"><span class="segment" data-start="1323.0" data-end="1338.0" title="22:03">Prelonged hypotension or hypothermia is also an absolute contraindication although a brief period of resuscitated cardiac arrest is considered acceptable when putting a patient forward for organ transplant. </span><span class="segment" data-start="1338.0" data-end="1346.0" title="22:18">Ultimately the transplant team makes the final decision often in theatre of suitability of organs. </span><span class="segment" data-start="1347.0" data-end="1364.0" title="22:27">Relative contraindications would include malignancy that has been in remission for over five years, hypertension, diabetes mellitus, physiological age greater than 70, hepatitis B or hepatitis C and a history of smoking. </span><span class="segment" data-start="1364.0" data-end="1373.0" title="22:44">Some heart, lung, liver and renal dysfunction may be acceptable if it was caused in the context of trauma leading to brainstem death. </span><span class="segment" data-start="1373.0" data-end="1385.0" title="22:53">Brain tumors are not an absolute contraindication although it must be certain that the brain tumor does not represent a metastasis from another primary source. </span></div>
+<div class="preamble-block"><span class="segment a-seg" data-start="0.0" data-end="2.0" title="0:00">Brainstem Death Testing </span><span class="segment a-seg" data-start="2.0" data-end="7.0" title="0:02">This is a question that I was actually asked in my final F-R-C-A-Vi-Va. </span><span class="segment a-seg" data-start="7.0" data-end="10.0" title="0:07">It was asked as part of the anatomy vi-Va-Va. </span><span class="segment a-seg" data-start="10.0" data-end="15.0" title="0:10">I have tried to make this question as similar to the version I was asked as possible. </span></div>
+<div class="qa-pair">
+<div class="q-block" data-start="15.0">
+  <div class="q-label">Q1</div>
+  <div class="q-body"><span class="segment q-seg" data-start="15.0" data-end="18.0" title="0:15">What is brainstem death? </span></div>
 </div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="19.0" data-end="25.0" title="0:19">Brainstem death was defined formally at the conference of the Royal Colleges in 1976. </span></li>
+<li><span class="segment a-seg" data-start="26.0" data-end="31.0" title="0:26">And it is this definition that has since been used in the English law courts. </span></li>
+<li><span class="segment a-seg" data-start="31.0" data-end="36.0" title="0:31">It is defined as irreversible loss of the capacity for consciousness, </span></li>
+<li><span class="segment a-seg" data-start="36.0" data-end="40.0" title="0:36">combined with irreversible loss of the capacity to breathe. </span></li>
+<li><span class="segment a-seg" data-start="40.0" data-end="44.0" title="0:40">Please keep talking me through the functions of all the cranial nerves </span></li>
+<li><span class="segment a-seg" data-start="44.0" data-end="49.0" title="0:44">and tell me which ones are tested when we perform brainstem death testing. </span></li>
+<li><span class="segment a-seg" data-start="49.0" data-end="53.0" title="0:49">The first cranial nerve is the old factory nerve. </span></li>
+<li><span class="segment a-seg" data-start="53.0" data-end="59.0" title="0:53">This gives us the sense of smell, which is not tested during brainstem testing. </span></li>
+<li><span class="segment a-seg" data-start="59.0" data-end="62.0" title="0:59">The second cranial nerve is the optic nerve. </span></li>
+<li><span class="segment a-seg" data-start="62.0" data-end="66.0" title="1:02">This nerve innovates the eye and enables us to see. </span></li>
+<li><span class="segment a-seg" data-start="66.0" data-end="70.0" title="1:06">It is involved as the affront limb of the pupillary light reflex. </span></li>
+<li><span class="segment a-seg" data-start="70.0" data-end="77.0" title="1:10">This nerve is tested in brainstem testing by shining a bright light directly into the eye. </span></li>
+<li><span class="segment a-seg" data-start="77.0" data-end="80.0" title="1:17">A normal response would lead to constriction of the pupil. </span></li>
+<li><span class="segment a-seg" data-start="80.0" data-end="85.0" title="1:20">If someone were brainstem dead, there would be no response to light. </span></li>
+<li><span class="segment a-seg" data-start="85.0" data-end="89.0" title="1:25">The third cranial nerve is the ocular motor nerve. </span></li>
+<li><span class="segment a-seg" data-start="89.0" data-end="93.0" title="1:29">The nerve itself innovates some of the muscles of the eye </span></li>
+<li><span class="segment a-seg" data-start="93.0" data-end="96.0" title="1:33">and is therefore involved in movement of the eye. </span></li>
+<li><span class="segment a-seg" data-start="96.0" data-end="102.0" title="1:36">It innovates all the muscles except superior oblique and lateral rectus. </span></li>
+<li><span class="segment a-seg" data-start="102.0" data-end="106.0" title="1:42">The movement of the eye itself is not tested in brainstem testing. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="106.0">
+  <div class="q-label">Q2</div>
+  <div class="q-body"><span class="segment q-seg" data-start="106.0" data-end="112.0" title="1:46">However, the third nerve is indirectly tested as parasympathetic efferent fibers, </span><span class="segment q-seg" data-start="112.0" data-end="117.0" title="1:52">which control pupillary constriction, which travel with the third nerve </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="117.0" data-end="124.0" title="1:57">and are therefore tested as the efferent limb of the pupillary light reflex. </span></li>
+<li><span class="segment a-seg" data-start="124.0" data-end="127.0" title="2:04">The fourth cranial nerve is the trochlear nerve. </span></li>
+<li><span class="segment a-seg" data-start="127.0" data-end="131.0" title="2:07">This innovates the superior oblique muscle of the eye, </span></li>
+<li><span class="segment a-seg" data-start="131.0" data-end="134.0" title="2:11">enabling the eye to look medially and down. </span></li>
+<li><span class="segment a-seg" data-start="134.0" data-end="139.0" title="2:14">This is not tested during brainstem testing. </span></li>
+<li><span class="segment a-seg" data-start="139.0" data-end="143.0" title="2:19">The fifth cranial nerve is the trigeminal nerve. </span></li>
+<li><span class="segment a-seg" data-start="143.0" data-end="147.0" title="2:23">This is a large nerve with sensory and motor components. </span></li>
+<li><span class="segment a-seg" data-start="147.0" data-end="152.0" title="2:27">It supplies sensation to the face and scalp, including sensation to the cornea </span></li>
+<li><span class="segment a-seg" data-start="152.0" data-end="156.0" title="2:32">and motor supply to the muscles of massdication. </span></li>
+<li><span class="segment a-seg" data-start="156.0" data-end="161.0" title="2:36">This therefore supplies an efferent limb for the corneal blink reflex. </span></li>
+<li><span class="segment a-seg" data-start="161.0" data-end="169.0" title="2:41">This is tested during brainstem testing by lightly touching a strand of cotton wool onto the cornea. </span></li>
+<li><span class="segment a-seg" data-start="169.0" data-end="172.0" title="2:49">A normal response would be to blink. </span></li>
+<li><span class="segment a-seg" data-start="172.0" data-end="176.0" title="2:52">This is absent if someone is brainstem dead. </span></li>
+<li><span class="segment a-seg" data-start="176.0" data-end="180.0" title="2:56">The sixth cranial nerve is the abducens nerve. </span></li>
+<li><span class="segment a-seg" data-start="180.0" data-end="186.0" title="3:00">This innovates the lateral rectus muscle of the eye, enabling lateral movement of the eye. </span></li>
+<li><span class="segment a-seg" data-start="186.0" data-end="190.0" title="3:06">This is not tested during brainstem testing. </span></li>
+<li><span class="segment a-seg" data-start="190.0" data-end="193.0" title="3:10">The seventh cranial nerve is the facial nerve. </span></li>
+<li><span class="segment a-seg" data-start="193.0" data-end="198.0" title="3:13">This is predominantly a motor nerve supplying muscles of facial expression. </span></li>
+<li><span class="segment a-seg" data-start="198.0" data-end="204.0" title="3:18">This is the nerve that results in blinking and is therefore the efferent limb of the blink reflex, </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="204.0">
+  <div class="q-label">Q3</div>
+  <div class="q-body"><span class="segment q-seg" data-start="204.0" data-end="209.0" title="3:24">which is tested in conjunction with the fifth cranial nerve. </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="209.0" data-end="213.0" title="3:29">The eighth cranial nerve is the auditory nerve. </span></li>
+<li><span class="segment a-seg" data-start="213.0" data-end="220.0" title="3:33">This has two main components, which are the cochlear and vestibular nerves, which lead to hearing and balance. </span></li>
+<li><span class="segment a-seg" data-start="220.0" data-end="228.0" title="3:40">Damage to the vestibular nerve therefore causes problems with equilibrium and balance, and so causes vertigo. </span></li>
+<li><span class="segment a-seg" data-start="228.0" data-end="233.0" title="3:48">Often the most obvious clinical sign of this is nistagmas of the eyes. </span></li>
+<li><span class="segment a-seg" data-start="233.0" data-end="240.0" title="3:53">This nerve is tested in brainstem testing as part of the vestibuloocular or caloric reflex. </span></li>
+<li><span class="segment a-seg" data-start="240.0" data-end="247.0" title="4:00">It is important to check the auditory canal for earwax prior to testing, as this would affect the results. </span></li>
+<li><span class="segment a-seg" data-start="247.0" data-end="252.0" title="4:07">The test is performed by irrigating ice cold water into the ear canal. </span></li>
+<li><span class="segment a-seg" data-start="252.0" data-end="262.0" title="4:12">Normally this would lead to eye deviation towards the side being tested, and an astagmas with the fast phase going away from the side being tested. </span></li>
+<li><span class="segment a-seg" data-start="262.0" data-end="267.0" title="4:22">In a brainstem dead patient, there is no response. </span></li>
+<li><span class="segment a-seg" data-start="267.0" data-end="279.0" title="4:27">The afferent nerve for this reflex is the vestibular nerve, and the efferent limb tested the third, fourth and sixth cranial nerves, eye movements. </span></li>
+<li><span class="segment a-seg" data-start="279.0" data-end="290.0" title="4:39">The ninth cranial nerve is the glossopharyngeal nerve. This is predominantly a sensory nerve and supplies sensation to the posterior third of the tongue and the pharynx. </span></li>
+<li><span class="segment a-seg" data-start="290.0" data-end="295.0" title="4:50">This is tested during brainstem testing by performing the gag test. </span></li>
+<li><span class="segment a-seg" data-start="295.0" data-end="307.0" title="4:55">The patients who are brainstem dead have no afferent portion to the gag reflex, and therefore do not gag when a spatula is placed at the posterior pharyngeal wall. </span></li>
+<li><span class="segment a-seg" data-start="307.0" data-end="324.0" title="5:07">The tenth cranial nerve is the vagus nerve. This is a large nerve supplying parasympathetic motor innovation to many organs in the body, and importantly motor innovation to most of the pharynx and larynx via the recurrent laryngeal and superior laryngeal nerves. </span></li>
+<li><span class="segment a-seg" data-start="324.0" data-end="332.0" title="5:24">This is tested during brainstem testing by placing a suction catheter down the endotracheal tube. </span></li>
+<li><span class="segment a-seg" data-start="332.0" data-end="339.0" title="5:32">The normal response would be to elicit coughing, but there is no response in a brainstem dead patient. </span></li>
+<li><span class="segment a-seg" data-start="339.0" data-end="346.0" title="5:39">The vagus nerve is also involved in the gag test as the efferent limb of the gag reflex. </span></li>
+<li><span class="segment a-seg" data-start="346.0" data-end="359.0" title="5:46">The eleventh cranial nerve is the accessory nerve. This leads to innovation of the sternoclide amastoid and trapezius muscles. This is not tested in brainstem testing. </span></li>
+<li><span class="segment a-seg" data-start="359.0" data-end="369.0" title="5:59">The twelfth cranial nerve is the hyperglossal nerve. This is the motor supply to the tongue and is not tested during brainstem testing. </span></li>
+<li><span class="segment a-seg" data-start="370.0" data-end="378.0" title="6:10">Cranial nerves, one, eleven and twelve, are not tested because they do not have reflex arcs. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="378.0">
+  <div class="q-label">Q4</div>
+  <div class="q-body"><span class="segment q-seg" data-start="378.0" data-end="383.0" title="6:18">What preconditions are required before performing brainstem death testing? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="384.0" data-end="397.0" title="6:24">There are certain preconditions that should be met before brainstem testing is performed. Firstly, the patient should have an irrecoverable condition causing brain damage which can lead to brainstem death. </span></li>
+<li><span class="segment a-seg" data-start="397.0" data-end="409.0" title="6:37">Conditions would include a severe head injury or a subarachnoid hemorrhage. The patient should also be in an apnea coma requiring ventilation. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="409.0">
+  <div class="q-label">Q5</div>
+  <div class="q-body"><span class="segment q-seg" data-start="409.0" data-end="416.0" title="6:49">Do you know of any factors that might exclude patients from brainstem death testing? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="416.0" data-end="423.0" title="6:56">There are several factors that might mean that it is inappropriate to perform brainstem death testing. </span></li>
+<li><span class="segment a-seg" data-start="423.0" data-end="440.0" title="7:03">These are all factors that could themselves lead to a change in cerebral function affecting the Glasgow coma score of a patient and therefore could potentially lead to inaccurate testing, suggesting a patient is brainstem dead when they are not. </span></li>
+<li><span class="segment a-seg" data-start="440.0" data-end="450.0" title="7:20">To perform the tests, the patient should not be hypothermic. The core temperature should be greater than 35 degrees centigrade. </span></li>
+<li><span class="segment a-seg" data-start="450.0" data-end="459.0" title="7:30">There should be no metabolic or endocrine disturbance such as hypoglycemia or hypothyroidism that could lead to a coma. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="459.0">
+  <div class="q-label">Q6</div>
+  <div class="q-body"><span class="segment q-seg" data-start="459.0" data-end="468.0" title="7:39">However, it is well known that brainstem death itself may lead to diabetes and sypidus causing hypernatremia. </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="468.0" data-end="472.0" title="7:48">There should be no evidence of drug intoxication. </span></li>
+<li><span class="segment a-seg" data-start="472.0" data-end="485.0" title="7:52">Any sedation that may have been given on intensive care should have been switched off for an appropriate length of time to be certain that there is no chance of any residual effects of sedative medications. </span></li>
+<li><span class="segment a-seg" data-start="485.0" data-end="495.0" title="8:05">If any neuromuscular blocking drugs have been used, then a nerve stimulator should be used to demonstrate that there is no residual effect of these drugs. </span></li>
+<li><span class="segment a-seg" data-start="495.0" data-end="502.0" title="8:15">Testing cannot be performed on patients with a medical cause of paralysis such as Guillain-Barré syndrome. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="502.0">
+  <div class="q-label">Q7</div>
+  <div class="q-body"><span class="segment q-seg" data-start="502.0" data-end="507.0" title="8:22">How would you actually perform the tests? </span><span class="segment q-seg" data-start="507.0" data-end="514.0" title="8:27">When the relevant preconditions and exclusion criteria have been addressed, the tests can be performed. </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="514.0" data-end="522.0" title="8:34">They are performed by two doctors, both of whom should have been registered for more than five years and one of whom should be a consultant. </span></li>
+<li><span class="segment a-seg" data-start="522.0" data-end="532.0" title="8:42">The tests should be performed twice and there is no stipulation about how far apart the two sets of tests are performed. </span></li>
+<li><span class="segment a-seg" data-start="532.0" data-end="543.0" title="8:52">I have already described the nerve roots that are tested. However, in practice, the tests are performed by first testing for the papillary light reflex in both eyes. </span></li>
+<li><span class="segment a-seg" data-start="543.0" data-end="547.0" title="9:03">Then test for the corneal reflex in both eyes. </span></li>
+<li><span class="segment a-seg" data-start="547.0" data-end="555.0" title="9:07">Next, check that both ear canals are clear and check for vestibular ocular reflexes bilaterally. </span></li>
+<li><span class="segment a-seg" data-start="555.0" data-end="561.0" title="9:15">Check that there is no facial movement in response to a central, painful stimulus. </span></li>
+<li><span class="segment a-seg" data-start="561.0" data-end="568.0" title="9:21">It is important to note that spinal reflexes may persist, leading to movement of limbs. </span></li>
+<li><span class="segment a-seg" data-start="568.0" data-end="575.0" title="9:28">This may be distressing for relatives to see, but does not affect the outcome of brainstem testing. </span></li>
+<li><span class="segment a-seg" data-start="575.0" data-end="580.0" title="9:35">Then check there is no gag or cough reflex. </span></li>
+<li><span class="segment a-seg" data-start="580.0" data-end="584.0" title="9:40">Finally, the apnea test is performed. </span></li>
+<li><span class="segment a-seg" data-start="584.0" data-end="589.0" title="9:44">The patient should be preoxygenated with 100% oxygen for 10 minutes. </span></li>
+<li><span class="segment a-seg" data-start="589.0" data-end="593.0" title="9:49">This is often done whilst the earlier tests are performed. </span></li>
+<li><span class="segment a-seg" data-start="593.0" data-end="604.0" title="9:53">The ventilation rate should be reduced during this period to allow the PACO2 to rise to five kilopascals prior to disconnecting the ventilator. </span></li>
+<li><span class="segment a-seg" data-start="604.0" data-end="610.0" title="10:04">An arterial blood gas sample should be performed at this stage to document this. </span></li>
+<li><span class="segment a-seg" data-start="610.0" data-end="622.0" title="10:10">The ventilator is then disconnected, and the patient is oxygenated by insufflating oxygen into the lungs via a suction catheter placed down the endotracheal tube. </span></li>
+<li><span class="segment a-seg" data-start="622.0" data-end="633.0" title="10:22">The PACO2 should be allowed to rise above 6.6 kilopascals, and the patient should show no signs of respiratory effort during this time. </span></li>
+<li><span class="segment a-seg" data-start="633.0" data-end="639.0" title="10:33">The PACO2 rise should be confirmed by repeating a blood gas sample. </span></li>
+<li><span class="segment a-seg" data-start="639.0" data-end="648.0" title="10:39">The PACO2 usually rises by 0.4 to 0.8 kilopascals per minute, depending on metabolic rate. </span></li>
+<li><span class="segment a-seg" data-start="648.0" data-end="658.0" title="10:48">Patients with pre-existing lung disease may normally have a raised PACO2, therefore an appropriate rise for this patient should be determined. </span></li>
+<li><span class="segment a-seg" data-start="658.0" data-end="664.0" title="10:58">The patient should not be allowed to become hypoxic whilst these tests are being performed. </span></li>
+<li><span class="segment a-seg" data-start="664.0" data-end="672.0" title="11:04">Occasionally, apnea testing may have to be abandoned as a result of oxygen desaturation. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="672.0">
+  <div class="q-label">Q8</div>
+  <div class="q-body"><span class="segment q-seg" data-start="672.0" data-end="674.154" title="11:12">What are dolzai movements? </span><span class="segment q-seg" data-start="674.154" data-end="679.0" title="11:14">Are these required as part of brainstem death testing? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="679.0" data-end="684.0" title="11:19">Dolzai movements describe the ocular cifalic reflex. </span></li>
+<li><span class="segment a-seg" data-start="684.0" data-end="699.0" title="11:24">In an unconscious patient, if their head is turned to the side, the eyes rotate in the opposite direction, therefore keeping the eyes pointing in the original direction in relation to the surroundings, as is seen in a child's doll. </span></li>
+<li><span class="segment a-seg" data-start="699.0" data-end="710.0" title="11:39">This reflex requires an intact brainstem, and therefore in a brainstem dead patient, when the head is turned, the eyes move in the same direction as the head. </span></li>
+<li><span class="segment a-seg" data-start="710.0" data-end="718.0" title="11:50">This is not a test that is required in brainstem testing in the United Kingdom, although may be tested in other countries. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="718.0">
+  <div class="q-label">Q9</div>
+  <div class="q-body"><span class="segment q-seg" data-start="718.0" data-end="724.0" title="11:58">What clinical features may be seen that are associated with brainstem death? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="724.0" data-end="738.0" title="12:04">An injury to the brain leads to swelling of the brain within the skull, raising intra-cranial pressure, which will lead to a reduction in cerebral perfusion, and therefore a reduction in oxygen supply to the brain. </span></li>
+<li><span class="segment a-seg" data-start="738.0" data-end="743.0" title="12:18">All the subsequent clinical features are related to this brain swelling. </span></li>
+<li><span class="segment a-seg" data-start="743.0" data-end="750.0" title="12:23">The final result of the swelling, if this continues, is for the brainstem to be forced through the forum and magnum. </span></li>
+<li><span class="segment a-seg" data-start="750.0" data-end="754.0" title="12:30">This is known as coning, and leads to brainstem death. </span></li>
+<li><span class="segment a-seg" data-start="754.0" data-end="761.0" title="12:34">There are various clinical signs that may be elicited at various stages as a result of the brain swelling. </span></li>
+<li><span class="segment a-seg" data-start="761.0" data-end="766.0" title="12:41">A third nerve lesion may be seen as a result of herniation of the ancus. </span></li>
+<li><span class="segment a-seg" data-start="766.0" data-end="771.0" title="12:46">A sixth nerve lesion may be seen as swelling stretches the nerve. </span></li>
+<li><span class="segment a-seg" data-start="771.0" data-end="777.0" title="12:51">The cushing's reflex occurs as a desperate attempt to improve cerebral perfusion. </span></li>
+<li><span class="segment a-seg" data-start="777.0" data-end="786.0" title="12:57">This leads to significant hypertension associated with the bradycardia, which is the result of the baro receptor reflex. </span></li>
+<li><span class="segment a-seg" data-start="786.0" data-end="790.0" title="13:06">Various arrhythmias may then subsequently occur. </span></li>
+<li><span class="segment a-seg" data-start="791.0" data-end="796.0" title="13:11">There are also several endocrine manifestations of brainstem swelling. </span></li>
+<li><span class="segment a-seg" data-start="796.0" data-end="803.0" title="13:16">There is a failure of thyroid hormone synthesis as a result of hypothelamic and pituitary failures. </span></li>
+<li><span class="segment a-seg" data-start="803.0" data-end="808.0" title="13:23">This further exacerbates cardiovascular changes and instability. </span></li>
+<li><span class="segment a-seg" data-start="808.0" data-end="814.0" title="13:28">There is also a lack of anti-diuretic hormone, which results in neurogenic diabetes and sypidus, </span></li>
+<li><span class="segment a-seg" data-start="814.0" data-end="818.0" title="13:34">leading to large quantities of very dilute urine. </span></li>
+<li><span class="segment a-seg" data-start="819.0" data-end="825.0" title="13:39">Finally, there is a loss in thermo-regulation, which usually leads to hypothermia. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="825.0">
+  <div class="q-label">Q10</div>
+  <div class="q-body"><span class="segment q-seg" data-start="825.0" data-end="830.0" title="13:45">Do you know of any additional tests that may be required in other countries to confirm brainstem death? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="830.0" data-end="836.0" title="13:50">If you're being asked these questions, you're doing great. Keep going. </span></li>
+<li><span class="segment a-seg" data-start="836.0" data-end="844.0" title="13:56">In the United Kingdom, there is no legal requirement to perform any tests in addition to brainstem testing. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="844.0">
+  <div class="q-label">Q11</div>
+  <div class="q-body"><span class="segment q-seg" data-start="844.0" data-end="856.0" title="14:04">However, in certain situations these may be considered if, for example, pre-existing lung disease makes it impossible to complete the apnea test as a result of oxygen desaturation, </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="856.0" data-end="864.0" title="14:16">or if it is not possible to test some of the cranial nerves as a result of cranio-facial trauma. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="864.0">
+  <div class="q-label">Q12</div>
+  <div class="q-body"><span class="segment q-seg" data-start="864.0" data-end="871.0" title="14:24">However, in some countries such as the United States, extra tests are commonly performed. </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="871.0" data-end="879.0" title="14:31">The tests that may be performed aim to elicit a complete lack of electrical activity and blood flow to the brain. </span></li>
+<li><span class="segment a-seg" data-start="879.0" data-end="886.0" title="14:39">The gold standard to demonstrate lack of blood supply to the brain is the four vessel and geography. </span></li>
+<li><span class="segment a-seg" data-start="886.0" data-end="894.0" title="14:46">A radio-apake contrast medium can be injected into both internal corroded and both vertebral arteries. </span></li>
+<li><span class="segment a-seg" data-start="894.0" data-end="899.0" title="14:54">In brainstem death flow is obstructed due to raised intracranial pressure. </span></li>
+<li><span class="segment a-seg" data-start="899.0" data-end="909.0" title="14:59">More recent and less invasive techniques include CT angiogram and MR angiogram, both of which also demonstrate the lack of blood flow. </span></li>
+<li><span class="segment a-seg" data-start="909.0" data-end="919.0" title="15:09">Transcranial Doppler ultrasonography is also mentioned where a characteristic change in the velocity waveform of the basal cerebral arteries is seen. </span></li>
+<li><span class="segment a-seg" data-start="919.0" data-end="926.0" title="15:19">This is the least invasive test and could be performed at the bedside in intensive care. </span></li>
+<li><span class="segment a-seg" data-start="926.0" data-end="931.0" title="15:26">The EEG may be performed to demonstrate a lack of electrical activity. </span></li>
+<li><span class="segment a-seg" data-start="931.0" data-end="943.0" title="15:31">There are some controversies regarding the EEG, as it is technically very difficult to perform in the ITU setting due to the large amount of interference from surrounding equipment. </span></li>
+<li><span class="segment a-seg" data-start="943.0" data-end="950.0" title="15:43">It is also possible to perform auditory evoked potentials to demonstrate a lack of brain activity. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="950.0">
+  <div class="q-label">Q13</div>
+  <div class="q-body"><span class="segment q-seg" data-start="950.0" data-end="954.0" title="15:50">What is the legal time of death? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="954.0" data-end="960.0" title="15:54">The legal time of death is the time at which the first set of tests has been completed. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="960.0">
+  <div class="q-label">Q14</div>
+  <div class="q-body"><span class="segment q-seg" data-start="960.0" data-end="968.0" title="16:00">However, the patient isn't actually pronounced dead until after the second set of tests have been performed. </span><span class="segment q-seg" data-start="968.0" data-end="973.0" title="16:08">Why do we have a shortage of organ donors in the UK compared with the rest of Europe? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="973.0" data-end="978.0" title="16:13">This is quite a topical subject that has been in the news a lot over the past couple of years. </span></li>
+<li><span class="segment a-seg" data-start="978.0" data-end="987.0" title="16:18">You should be able to say at least something about this as it is something I'm sure there will be many more debates about in the future. </span></li>
+<li><span class="segment a-seg" data-start="987.0" data-end="1005.0" title="16:27">The United Kingdom donation rate is one of the lowest in Europe with a recent study from 2006 showing only 12 per million of the population coming forward to donate their organs for transplant compared with 33 per million for the population of Spain. </span></li>
+<li><span class="segment a-seg" data-start="1005.0" data-end="1009.0" title="16:45">The rate of donation has actually fallen in the United Kingdom. </span></li>
+<li><span class="segment a-seg" data-start="1009.0" data-end="1019.0" title="16:49">It is not known why this is, but it is thought that one of the main reasons is that relatives and family members are reluctant to allow transplantation procedures. </span></li>
+<li><span class="segment a-seg" data-start="1019.0" data-end="1034.0" title="16:59">The actual rate of donations from death in hospitals during a two-year study by the UK transplant organisation was 23.2 donations per million of population per year. </span></li>
+<li><span class="segment a-seg" data-start="1034.0" data-end="1043.0" title="17:14">Of the 94% of patients whose families were approached for donation, 41% of the families denied consent. </span></li>
+<li><span class="segment a-seg" data-start="1043.0" data-end="1054.0" title="17:23">The main reasons for refusal were that they did not want surgery on the body, they were not sure if the patient would have agreed or that the relatives were divided. </span></li>
+<li><span class="segment a-seg" data-start="1054.0" data-end="1065.0" title="17:34">The refusal rates were highest amongst families from ethnic minorities, 70%, in comparison to those of white donors, 35%. </span></li>
+<li><span class="segment a-seg" data-start="1065.0" data-end="1075.0" title="17:45">It should be noted that organ donation was only discussed in 94% of potential cases, meaning that 6% of cases were missed opportunities. </span></li>
+<li><span class="segment a-seg" data-start="1075.0" data-end="1083.0" title="17:55">Therefore, in a small part, the lack of organs is a result of clinicians not discussing donation with the next of kin. </span></li>
+<li><span class="segment a-seg" data-start="1083.0" data-end="1091.0" title="18:03">This is a difficult subject to broach and therefore there may be some delay or reluctance on the part of the clinician. </span></li>
+<li><span class="segment a-seg" data-start="1091.0" data-end="1097.0" title="18:11">To address this issue, there has been a drive to increase numbers of organ transplant coordinators. </span></li>
+<li><span class="segment a-seg" data-start="1097.0" data-end="1112.0" title="18:17">They provide an important service within a hospital as they are specifically trained to broach this subject and are often based within the hospital and can therefore be called upon very quickly to talk to relatives and initiate the procedures required </span></li>
+<li><span class="segment a-seg" data-start="1112.0" data-end="1115.0" title="18:32">leading to organ donation. </span></li>
+<li><span class="segment a-seg" data-start="1115.0" data-end="1127.0" title="18:35">There is also the benefit that they can identify inappropriate patients quickly and therefore prevent an unnecessary discussion with the family which avoids causing further distress. </span></li>
+<li><span class="segment a-seg" data-start="1127.0" data-end="1134.0" title="18:47">They also have an important role of increasing awareness of organ donation amongst the general population. </span></li>
+<li><span class="segment a-seg" data-start="1135.0" data-end="1142.0" title="18:55">The shortage of organs can also be attributed to the state of brainstem death being uncommon in the United Kingdom. </span></li>
+<li><span class="segment a-seg" data-start="1142.0" data-end="1152.0" title="19:02">This is partly due to a decrease in deaths from road traffic accidents, improved trauma care and a decrease in cerebrovascular deaths. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="1152.0">
+  <div class="q-label">Q15</div>
+  <div class="q-body"><span class="segment q-seg" data-start="1152.0" data-end="1157.0" title="19:12">How may the shortage in donor organs be addressed? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="1157.0" data-end="1170.0" title="19:17">Currently in the United Kingdom we have an opt-in system whereby members of the general population can choose to carry an organ donor card or join the official organ donor register. </span></li>
+<li><span class="segment a-seg" data-start="1170.0" data-end="1185.0" title="19:30">In 2006 the government set up a task force to identify barriers to organ donation and to make recommendations with the aim of increasing organ donation by 50% by 2013. </span></li>
+<li><span class="segment a-seg" data-start="1186.0" data-end="1201.0" title="19:46">Recently a debate was held regarding the proposal to change the current opt-in donation scheme to a presumed consent opt-out scheme which has been so successful in other parts of Europe including Spain. </span></li>
+<li><span class="segment a-seg" data-start="1201.0" data-end="1210.0" title="20:01">This has been rejected for the time being, however it seems inevitable that this is a debate that will continue for many years. </span></li>
+<li><span class="segment a-seg" data-start="1211.0" data-end="1220.0" title="20:11">It is thought that by having implemented a donor register that can be accessed by all hospitals the rate of organ donation will increase. </span></li>
+<li><span class="segment a-seg" data-start="1220.0" data-end="1233.0" title="20:20">Members of the public can choose to join the donor register and therefore if the time comes that organ donation is appropriate this removes the burden of decision making from the legal next of kin. </span></li>
+<li><span class="segment a-seg" data-start="1233.0" data-end="1239.0" title="20:33">Many relatives are comforted by the thought that this is what he or she would want. </span></li>
+<li><span class="segment a-seg" data-start="1240.0" data-end="1252.0" title="20:40">There has been a suggestion of starting social incentive programs. In this situation an organ donor could opt to donate first to people on the transplant register in their social group. </span></li>
+<li><span class="segment a-seg" data-start="1252.0" data-end="1257.0" title="20:52">This may make the concept of organ donation more acceptable to some people. </span></li>
+<li><span class="segment a-seg" data-start="1257.0" data-end="1265.0" title="20:57">Finally some have suggested that there should be a financial incentive to induce people to join the transplant register. </span></li>
+<li><span class="segment a-seg" data-start="1265.0" data-end="1270.0" title="21:05">This however is not something that has been seriously considered yet in the United Kingdom. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="1270.0">
+  <div class="q-label">Q16</div>
+  <div class="q-body"><span class="segment q-seg" data-start="1270.0" data-end="1277.0" title="21:10">What criteria would suggest to you a brainstem dead patient may be suitable as an organ donor? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="1277.0" data-end="1292.0" title="21:17">The main criteria that can be applied to organ donation are firstly to prevent transmitting a transmittable disease such as infection or malignancy and secondly to ensure acceptable function of the donor organ. </span></li>
+<li><span class="segment a-seg" data-start="1292.0" data-end="1299.0" title="21:32">Various absolute and relative contraindications to transplant have been suggested. </span></li>
+<li><span class="segment a-seg" data-start="1299.0" data-end="1309.0" title="21:39">Absolute contraindications would include age over 80 years, active metastatic cancer, DIC and sickle cell anemia. </span></li>
+<li><span class="segment a-seg" data-start="1310.0" data-end="1323.0" title="21:50">HIV infection is an absolute contraindication although in some states in America transplants between patients infected with HIV have been allowed in certain circumstances. </span></li>
+<li><span class="segment a-seg" data-start="1323.0" data-end="1338.0" title="22:03">Prelonged hypotension or hypothermia is also an absolute contraindication although a brief period of resuscitated cardiac arrest is considered acceptable when putting a patient forward for organ transplant. </span></li>
+<li><span class="segment a-seg" data-start="1338.0" data-end="1346.0" title="22:18">Ultimately the transplant team makes the final decision often in theatre of suitability of organs. </span></li>
+<li><span class="segment a-seg" data-start="1347.0" data-end="1364.0" title="22:27">Relative contraindications would include malignancy that has been in remission for over five years, hypertension, diabetes mellitus, physiological age greater than 70, hepatitis B or hepatitis C and a history of smoking. </span></li>
+<li><span class="segment a-seg" data-start="1364.0" data-end="1373.0" title="22:44">Some heart, lung, liver and renal dysfunction may be acceptable if it was caused in the context of trauma leading to brainstem death. </span></li>
+<li><span class="segment a-seg" data-start="1373.0" data-end="1385.0" title="22:53">Brain tumors are not an absolute contraindication although it must be certain that the brain tumor does not represent a metastasis from another primary source. </span></li>
+  </ul>
+</div>
+</div>
+
 </div>
 
 <div class="subtitle-bar">
-  <span class="subtitle-text empty" id="subtitle-text">Play audio to see live subtitles&#8230;</span>
+  <span id="subtitle-text" class="empty">Play audio to see live subtitles&#8230;</span>
 </div>
 
 <script>
-
-const audio    = document.getElementById('audio');
-const allSegs  = Array.from(document.querySelectorAll('.segment'));
-const allBlocks = Array.from(document.querySelectorAll('.t-block'));
+const audio      = document.getElementById('audio');
+const allSegs    = Array.from(document.querySelectorAll('.segment'));
 const subtitleEl = document.getElementById('subtitle-text');
-let activeSegEl   = null;
-let activeBlockEl = null;
-let searchMatches = [];
-let searchIdx     = 0;
+let activeSegEl  = null;
+let searchMatches = [], searchIdx = 0;
 
-// Duration display
 audio.addEventListener('loadedmetadata', () => {
   const m = Math.floor(audio.duration / 60);
   const s = Math.floor(audio.duration %% 60).toString().padStart(2,'0');
   document.getElementById('dur').textContent = m + ':' + s;
 });
 
-// Seek helper
-function seekTo(t) {
-  audio.currentTime = t;
-  audio.play();
-}
+function seekTo(t) { audio.currentTime = t; audio.play(); }
 
-// Block gutter click
-document.querySelectorAll('.t-gutter').forEach(g => {
-  g.addEventListener('click', () => seekTo(parseFloat(g.dataset.start)));
+// Q-block header click
+document.querySelectorAll('.q-block').forEach(q => {
+  q.addEventListener('click', e => {
+    if (!e.target.classList.contains('segment')) seekTo(parseFloat(q.dataset.start));
+  });
 });
 
-// Segment click
+// Individual segment click
 allSegs.forEach(s => {
-  s.addEventListener('click', e => {
-    e.stopPropagation();
-    seekTo(parseFloat(s.dataset.start));
-  });
+  s.addEventListener('click', e => { e.stopPropagation(); seekTo(parseFloat(s.dataset.start)); });
 });
 
 // Real-time tracking
 audio.addEventListener('timeupdate', () => {
   const t = audio.currentTime;
-
-  // Find active segment (last one whose start <= t)
   let found = null;
   for (let i = allSegs.length - 1; i >= 0; i--) {
     if (parseFloat(allSegs[i].dataset.start) <= t) { found = allSegs[i]; break; }
   }
-
   if (found && found !== activeSegEl) {
-    // Clear previous
-    if (activeSegEl) activeSegEl.classList.remove('active');
-    if (activeBlockEl) {
-      activeBlockEl.classList.remove('block-active');
-      const pg = activeBlockEl.querySelector('.t-gutter');
-      if (pg) pg.classList.remove('gutter-active');
+    if (activeSegEl) {
+      activeSegEl.classList.remove('active');
+      const pli = activeSegEl.closest('li');
+      if (pli) pli.classList.remove('li-active');
+      const pq = activeSegEl.closest('.q-block');
+      if (pq) pq.classList.remove('q-active');
     }
-    // Set new
     found.classList.add('active');
-    const block = found.closest('.t-block');
-    if (block) {
-      block.classList.add('block-active');
-      const g = block.querySelector('.t-gutter');
-      if (g) g.classList.add('gutter-active');
-      activeBlockEl = block;
-    }
+    const li = found.closest('li');
+    if (li) li.classList.add('li-active');
+    const qb = found.closest('.q-block');
+    if (qb) qb.classList.add('q-active');
     activeSegEl = found;
 
-    // Update subtitle
     subtitleEl.textContent = found.textContent.trim();
     subtitleEl.classList.remove('empty');
 
-    // Auto-scroll (only when not searching)
-    if (!document.getElementById('search').value) {
+    if (!document.getElementById('search').value)
       found.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }
   }
 });
 
@@ -380,17 +598,13 @@ searchInput.addEventListener('keydown', e => {
     el.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
 });
-
 function runSearch() {
   const q = searchInput.value.trim().toLowerCase();
   allSegs.forEach(s => s.classList.remove('search-match','search-current'));
   searchMatches = [];
   if (!q) return;
   allSegs.forEach(s => {
-    if (s.textContent.toLowerCase().includes(q)) {
-      s.classList.add('search-match');
-      searchMatches.push(s);
-    }
+    if (s.textContent.toLowerCase().includes(q)) { s.classList.add('search-match'); searchMatches.push(s); }
   });
   if (!searchMatches.length) return;
   searchIdx = 0;

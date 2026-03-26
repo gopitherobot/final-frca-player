@@ -5,10 +5,19 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Orthopaedics — Embolic Disease</title>
 <style>
-
   :root {
-    --accent:    #64748b;
-    --body-bg:   #f1f5f9;
+    --q-bg:       #1e3a5f;
+    --q-text:     #ffffff;
+    --q-label:    #60a5fa;
+    --a-bg:       #ffffff;
+    --a-border:   #e2e8f0;
+    --a-label:    #059669;
+    --active-q:   #64748b;
+    --active-a:   #dbeafe;
+    --accent:     #64748b;
+    --body-bg:    #f1f5f9;
+    --pre-bg:     #fef9c3;
+    --pre-border: #fcd34d;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
@@ -40,22 +49,9 @@
     margin-bottom: 4px;
     letter-spacing: 0.01em;
   }
-  .header-sub {
-    font-size: 0.72rem;
-    color: #94a3b8;
-    font-style: italic;
-  }
-  audio {
-    height: 36px;
-    accent-color: var(--accent);
-    flex-shrink: 0;
-  }
-  .back-link {
-    font-size: 0.8rem;
-    color: #94a3b8;
-    text-decoration: none;
-    white-space: nowrap;
-  }
+  .header-sub { font-size: 0.72rem; color: #94a3b8; font-style: italic; }
+  audio { height: 36px; accent-color: var(--accent); flex-shrink: 0; }
+  .back-link { font-size: 0.8rem; color: #94a3b8; text-decoration: none; white-space: nowrap; }
   .back-link:hover { color: #60a5fa; }
 
   /* ── Toolbar ── */
@@ -69,30 +65,17 @@
     border-bottom: 1px solid #334155;
   }
   .toolbar input {
-    flex: 1;
-    max-width: 380px;
+    flex: 1; max-width: 380px;
     padding: 5px 11px;
-    border: 1px solid #475569;
-    border-radius: 6px;
-    background: #0f172a;
-    color: #e2e8f0;
-    font-size: 0.83rem;
-    outline: none;
+    border: 1px solid #475569; border-radius: 6px;
+    background: #0f172a; color: #e2e8f0; font-size: 0.83rem; outline: none;
   }
   .toolbar input:focus { border-color: var(--accent); }
   .toolbar input::placeholder { color: #64748b; }
-  .stats {
-    font-size: 0.72rem;
-    color: #64748b;
-    white-space: nowrap;
-  }
+  .stats { font-size: 0.72rem; color: #64748b; white-space: nowrap; }
 
   /* ── Scroll area ── */
-  .scroll-area {
-    flex: 1;
-    overflow-y: auto;
-    padding: 20px;
-  }
+  .scroll-area { flex: 1; overflow-y: auto; padding: 20px; }
   .scroll-area::-webkit-scrollbar { width: 6px; }
   .scroll-area::-webkit-scrollbar-track { background: transparent; }
   .scroll-area::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
@@ -107,68 +90,77 @@
     display: flex;
     align-items: center;
   }
-  .subtitle-text {
-    font-size: 0.9rem;
-    color: #e2e8f0;
-    line-height: 1.5;
-    font-style: italic;
-  }
-  .subtitle-text.empty { color: #475569; }
+  #subtitle-text { font-size: 0.88rem; color: #e2e8f0; line-height: 1.5; font-style: italic; }
+  #subtitle-text.empty { color: #475569; }
 
-  /* ── Transcript blocks ── */
-  .t-block {
-    background: #ffffff;
-    border: 1px solid #e2e8f0;
-    border-radius: 10px;
-    margin-bottom: 14px;
-    overflow: hidden;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
-    display: flex;
-  }
-  .t-block.block-active {
-    border-color: var(--accent);
-    box-shadow: 0 0 0 2px rgba(37,99,235,0.15);
-  }
-  .t-gutter {
-    background: #0f172a;
-    width: 52px;
-    flex-shrink: 0;
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
-    padding-top: 14px;
-    cursor: pointer;
-  }
-  .t-gutter:hover { background: #1e293b; }
-  .t-timestamp {
-    font-size: 0.7rem;
-    color: #64748b;
-    font-family: monospace;
-    font-weight: 600;
-    letter-spacing: 0.02em;
-  }
-  .t-gutter.gutter-active .t-timestamp { color: var(--accent); }
-  .t-body {
-    flex: 1;
+  /* ── Preamble ── */
+  .preamble-block {
+    background: var(--pre-bg);
+    border-left: 4px solid var(--pre-border);
+    border-radius: 0 8px 8px 0;
     padding: 12px 16px;
-    line-height: 1.75;
-    font-size: 0.92rem;
-    color: #1e293b;
+    margin-bottom: 20px;
+    font-size: 0.88rem;
+    color: #78350f;
+    font-style: italic;
+    line-height: 1.7;
   }
 
-  /* ── Segments ── */
-  .segment {
+  /* ── Q&A pair ── */
+  .qa-pair { margin-bottom: 20px; border-radius: 10px; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+
+  /* Question block */
+  .q-block {
+    background: var(--q-bg);
+    padding: 14px 18px;
+    display: flex; gap: 14px; align-items: flex-start;
     cursor: pointer;
-    border-radius: 3px;
-    transition: background 0.1s;
+    transition: background 0.15s;
   }
-  .segment:hover { background: #eff6ff; }
-  .segment.active {
-    background: #bfdbfe;
-    outline: 2px solid #3b82f6;
-    outline-offset: 1px;
-    border-radius: 3px;
+  .q-block:hover { background: #1d4ed8; }
+  .q-block.q-active { background: var(--active-q); }
+  .q-label {
+    font-size: 0.7rem; font-weight: 700;
+    color: var(--q-label);
+    background: rgba(96,165,250,0.15);
+    border: 1px solid rgba(96,165,250,0.3);
+    border-radius: 5px; padding: 3px 7px;
+    white-space: nowrap; margin-top: 2px; letter-spacing: 0.05em;
+    flex-shrink: 0;
   }
+  .q-body { flex: 1; font-size: 0.97rem; font-weight: 600; color: var(--q-text); line-height: 1.55; }
+
+  /* Answer block */
+  .a-block {
+    background: var(--a-bg);
+    border: 1px solid var(--a-border); border-top: none;
+    padding: 14px 18px;
+    display: flex; gap: 14px; align-items: flex-start;
+  }
+  .a-label {
+    font-size: 0.7rem; font-weight: 700;
+    color: var(--a-label);
+    background: #d1fae5; border: 1px solid #6ee7b7;
+    border-radius: 5px; padding: 3px 9px;
+    white-space: nowrap; margin-top: 2px; letter-spacing: 0.05em;
+    flex-shrink: 0;
+  }
+  .a-body { flex: 1; list-style: none; padding: 0; }
+  .a-body li {
+    padding: 4px 0 4px 14px;
+    border-left: 3px solid transparent;
+    line-height: 1.7; font-size: 0.92rem; color: #1e293b;
+    border-radius: 0 4px 4px 0;
+    transition: background 0.15s;
+  }
+  .a-body li:not(:last-child) { border-bottom: 1px solid #f1f5f9; }
+
+  /* ── Segments (clickable) ── */
+  .segment { cursor: pointer; border-radius: 3px; }
+  .q-seg:hover { background: rgba(255,255,255,0.18); }
+  .a-seg:hover { background: #eff6ff; }
+  .segment.active { background: #bfdbfe; outline: 2px solid #3b82f6; outline-offset: 1px; }
+  .a-body li.li-active { background: var(--active-a); border-left-color: var(--accent); }
   .segment.search-match  { background: #fef9c3; }
   .segment.search-current { background: #fde047; outline: 2px solid #ca8a04; }
 
@@ -187,187 +179,426 @@
 
 <div class="toolbar">
   <input type="text" id="search" placeholder="Search transcript&#8230; (Enter = next match)">
-  <span class="stats" id="stats">188 segments &nbsp;|&nbsp; <span id="dur">loading&#8230;</span></span>
+  <span class="stats" id="stats">18 questions &nbsp;|&nbsp; 188 segments &nbsp;|&nbsp; <span id="dur">loading&#8230;</span></span>
 </div>
 
 <div class="scroll-area" id="scroll-area">
-<div class="t-block">
-  <div class="t-gutter" data-start="0.0"><span class="t-timestamp">0:00</span></div>
-  <div class="t-body"><span class="segment" data-start="0.0" data-end="5.82" title="0:00">Prevention, diagnosis and management of fat embolism, deep vein thrombosis and pulmonary </span><span class="segment" data-start="5.82" data-end="12.84" title="0:05">embolive. An orthopedic SHO asks you what factors increase the risk of a patient suffering </span><span class="segment" data-start="12.84" data-end="17.56" title="0:12">from a venous thromboembolism, as is unsure whether or not he should prescribe prophylaxis </span><span class="segment" data-start="17.56" data-end="24.32" title="0:17">for one of his patients. Remember, patient factors and operation factors. There is a nice </span><span class="segment" data-start="24.32" data-end="32.24" title="0:24">guideline on this so you should know it. Patient-related factors include age of greater </span><span class="segment" data-start="32.24" data-end="39.48" title="0:32">than 60 years, immobility, history of continuous travel of more than three hours, four weeks </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="39.48"><span class="t-timestamp">0:39</span></div>
-  <div class="t-body"><span class="segment" data-start="39.48" data-end="47.4" title="0:39">before or after surgery, a central venous catheter in situ, obesity, personal or family </span><span class="segment" data-start="47.4" data-end="56.12" title="0:47">history of venous thromboembolism, pregnancy or puapirium and use of oral contraceptives. </span><span class="segment" data-start="56.12" data-end="63.12" title="0:56">Disease-related factors include active cancer or cancer treatment, acute heart or respiratory </span><span class="segment" data-start="63.12" data-end="71.32" title="1:03">failure, and acute medical illness, severe infection, inflammatory disease, myeloproliftive </span><span class="segment" data-start="71.32" data-end="78.4" title="1:11">disease, recent myocardial infarction or stroke, and inherited thrombofilias such as Factor </span><span class="segment" data-start="78.4" data-end="85.24" title="1:18">5 Lyden. What can be done to reduce a patient's risk of suffering from a venous thromboembolism? </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="85.24"><span class="t-timestamp">1:25</span></div>
-  <div class="t-body"><span class="segment" data-start="85.24" data-end="91.16" title="1:25">You might want to divide the answer into physical or mechanical methods or pre, intra and </span><span class="segment" data-start="91.16" data-end="99.44" title="1:31">post-op. Preoperatively, all patients should be risk-stratified for venous thromboembolism </span><span class="segment" data-start="99.44" data-end="105.64" title="1:39">and then fitted with well-fitting, thigh or knee length, graduated compression stockings </span><span class="segment" data-start="105.64" data-end="111.5" title="1:45">and those with increased risk should receive low molecular weight heparin. The risks and </span><span class="segment" data-start="111.5" data-end="119.24" title="1:51">benefits of stopping pre-existing established anti-collegation should be considered. Interoperatively, </span><span class="segment" data-start="119.24" data-end="125.88" title="1:59">it is important to keep the patient well hydrated and pay careful attention to positioning. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="125.88"><span class="t-timestamp">2:05</span></div>
-  <div class="t-body"><span class="segment" data-start="125.88" data-end="130.8" title="2:05">Whilst on the operating table, intermittent pneumatic compression devices can be applied </span><span class="segment" data-start="130.8" data-end="137.16" title="2:10">to the calves for the duration of the operation. Regional anesthetic techniques have also been </span><span class="segment" data-start="137.16" data-end="143.12" title="2:17">proven to reduce the risk of venous thromboembolism. Post-operatively, keeping the patient well </span><span class="segment" data-start="143.12" data-end="150.12" title="2:23">hydrated and encouraging early mobility reduces the risk of venous thromboembolism. </span><span class="segment" data-start="150.12" data-end="155.28" title="2:30">How would you classify the risk of venous thromboembolism in a 58-year-old obese female </span><span class="segment" data-start="155.28" data-end="162.16" title="2:35">with a history of breast cancer five years previously who is undergoing total knee replacement? </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="162.16"><span class="t-timestamp">2:42</span></div>
-  <div class="t-body"><span class="segment" data-start="162.16" data-end="168.52" title="2:42">This patient has risk factors, given that she is obese and is undergoing low-alim arthroplasty. </span><span class="segment" data-start="168.52" data-end="173.84" title="2:48">As she is undergoing knee arthroplasty, tornocane juice to venous stagnation may also be an </span><span class="segment" data-start="173.84" data-end="180.0" title="2:53">issue. What prophylaxis might you provide her with? </span><span class="segment" data-start="180.0" data-end="185.32" title="3:00">She should receive both mechanical prophylaxis with compression stockings and receive low </span><span class="segment" data-start="185.32" data-end="192.0" title="3:05">molecular weight heparin at a time suitable to allow for safe regional anesthesia. </span><span class="segment" data-start="192.0" data-end="196.52" title="3:12">What prophylaxis might you prescribe for a 23-year-old female who is fit and well of </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="196.52"><span class="t-timestamp">3:16</span></div>
-  <div class="t-body"><span class="segment" data-start="196.52" data-end="202.76" title="3:16">a normal BMI undergoing an elective excision of an ovarian cyst? </span><span class="segment" data-start="202.76" data-end="209.52" title="3:22">The patient is low risk and is undergoing a low risk procedure, therefore good hydration, </span><span class="segment" data-start="209.52" data-end="215.12" title="3:29">knee mobilisation and thromboembolic deterrent stockings. </span><span class="segment" data-start="215.12" data-end="220.16" title="3:35">You were asked to assess a 35-year-old man in the emergency department who had a DVT confirmed </span><span class="segment" data-start="220.16" data-end="225.92" title="3:40">two days ago. His complaining of chest pain and shortness of breath and had sats of 92% </span><span class="segment" data-start="225.92" data-end="231.8" title="3:45">on remeer. The emergency medicine registrar is concerned that he is suffering from a PE. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="231.8"><span class="t-timestamp">3:51</span></div>
-  <div class="t-body"><span class="segment" data-start="231.8" data-end="237.08" title="3:51">What clinical features may support this diagnosis? </span><span class="segment" data-start="237.08" data-end="245.0" title="3:57">Clinical symptoms such as dysnir, cyanosis, pleuritic chest pain, cough and hemoptosis </span><span class="segment" data-start="245.0" data-end="253.68" title="4:05">and clinical signs such as raised jugular venous pressure, tachycardia, tachythnia, hypoxemia, </span><span class="segment" data-start="253.68" data-end="261.0" title="4:13">fever and accentuated pulmonary second heart sound, third heart sound and right ventricular </span><span class="segment" data-start="261.0" data-end="265.6" title="4:21">heath support the diagnosis of pulmonary embolism. </span><span class="segment" data-start="265.6" data-end="270.44" title="4:25">A battery of baseline blood tests have been sent. What results would support a diagnosis </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="270.44"><span class="t-timestamp">4:30</span></div>
-  <div class="t-body"><span class="segment" data-start="270.44" data-end="273.12" title="4:30">of PE? </span><span class="segment" data-start="273.12" data-end="280.56" title="4:33">Arraised white cell count, increased arrhythrocyte sedimentation rate, increased transaminases </span><span class="segment" data-start="280.56" data-end="287.56" title="4:40">with a normal bilirubin and a raised troponin are in keeping with a diagnosis of PE. A positive </span><span class="segment" data-start="287.56" data-end="293.24" title="4:47">de dimer has good sensitivity but poor specificity. </span><span class="segment" data-start="293.24" data-end="298.08" title="4:53">What might as ECG and chest x ratio? </span><span class="segment" data-start="298.08" data-end="306.12" title="4:58">ECG changes include right axis deviation, right bundle branch block, atrial fibrillation, </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="306.12"><span class="t-timestamp">5:06</span></div>
-  <div class="t-body"><span class="segment" data-start="306.12" data-end="314.4" title="5:06">t-wave inversion anteriorly, st abnormalities and right ventricular strain pattern of S1 </span><span class="segment" data-start="314.4" data-end="321.76" title="5:14">T3 T3. Chest x-ray changes include cardiac amygaly, pleural effusions, </span><span class="segment" data-start="321.76" data-end="327.52" title="5:21">hyalodilitation and pulmonary oligemia if the PE is massive. </span><span class="segment" data-start="327.52" data-end="332.52" title="5:27">What test could be arranged to confirm the diagnosis? </span><span class="segment" data-start="332.52" data-end="339.12" title="5:32">There are a number of tests which aid diagnosis of pulmonary embolism. Spiral computerised </span><span class="segment" data-start="339.12" data-end="345.76" title="5:39">tomographic pulmonary angiography is the most accessible and effective form of imaging. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="345.76"><span class="t-timestamp">5:45</span></div>
-  <div class="t-body"><span class="segment" data-start="345.76" data-end="350.44" title="5:45">Ventilation perfusion scans are another form of diagnostic imaging which can be employed </span><span class="segment" data-start="350.44" data-end="355.96" title="5:50">with reasonable accuracy but this tends to be used in patients in whom a CT scan is not </span><span class="segment" data-start="355.96" data-end="359.48" title="5:55">ideal, for example pregnant women. </span><span class="segment" data-start="359.48" data-end="366.44" title="5:59">The gold standard test is pulmonary angiography but this is more invasive and difficult to organize </span><span class="segment" data-start="366.44" data-end="371.92" title="6:06">and is usually reserved for patients in whom CTPA is inconclusive. </span><span class="segment" data-start="371.92" data-end="378.32" title="6:11">Echo cardiography can also be used to rapidly evaluate a patient who is shocked to evaluate </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="378.32"><span class="t-timestamp">6:18</span></div>
-  <div class="t-body"><span class="segment" data-start="378.32" data-end="380.64" title="6:18">the likelihood of PE. </span><span class="segment" data-start="380.64" data-end="385.84" title="6:20">What might an echo show in a patient with a massive PE? </span><span class="segment" data-start="385.84" data-end="394.04" title="6:25">An echo cardiogram classically shows a dilated hypochynetic right ventricle, a dilated pulmonary </span><span class="segment" data-start="394.04" data-end="402.32" title="6:34">artery, paradoxical septal shift or so-called kissing ventricles, tricuspid regurgitation </span><span class="segment" data-start="402.32" data-end="406.52" title="6:42">and right-sided pressure and volume overload. </span><span class="segment" data-start="406.52" data-end="411.32" title="6:46">What would be appropriate treatment for this patient? </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="411.32"><span class="t-timestamp">6:51</span></div>
-  <div class="t-body"><span class="segment" data-start="411.32" data-end="417.84" title="6:51">Any patient with suspected venous thromboembolism should receive immediate therapeutic anti-calagulation </span><span class="segment" data-start="417.84" data-end="423.96" title="6:57">therapy which will prevent the propagation of clot and reduce the risk of recurrent pulmonary </span><span class="segment" data-start="423.96" data-end="425.92" title="7:03">embolism. </span><span class="segment" data-start="425.92" data-end="432.24" title="7:05">Massive pulmonary embolism requires immediate treatment with intravenous thrombolysis. </span><span class="segment" data-start="432.24" data-end="437.84" title="7:12">Patients with intermediate or high probability of PE should receive intravenous heparin prior </span><span class="segment" data-start="437.84" data-end="439.36" title="7:17">to imaging. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="439.36"><span class="t-timestamp">7:19</span></div>
-  <div class="t-body"><span class="segment" data-start="439.36" data-end="445.8" title="7:19">Unfractionated heparin should also be given where rapid reversal of effect may be needed. </span><span class="segment" data-start="445.8" data-end="451.72" title="7:25">Otherwise low molecular weight heparin should be used as they are equally efficacious, </span><span class="segment" data-start="451.72" data-end="455.32" title="7:31">easier to use and require less monitoring. </span><span class="segment" data-start="455.32" data-end="459.72" title="7:35">As you're on the phone to your consultant, the nursing staff call you over urgently, </span><span class="segment" data-start="459.72" data-end="463.6" title="7:39">as the patient has become unresponsive and looks deeply cyanosed. </span><span class="segment" data-start="463.6" data-end="467.56" title="7:43">Describe your initial actions. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="467.56"><span class="t-timestamp">7:47</span></div>
-  <div class="t-body"><span class="segment" data-start="467.56" data-end="474.28" title="7:47">I would open his airway and give 100% oxygen for a non-rebrea than mask, and if he was </span><span class="segment" data-start="474.28" data-end="479.04" title="7:54">making no respiratory effort, I would commence manual ventilation. </span><span class="segment" data-start="479.04" data-end="484.32" title="7:59">If no pulse was palpable, I would commence external cardiac compressions as per the </span><span class="segment" data-start="484.32" data-end="492.08" title="8:04">current ALS guidelines, gain intravenous access and obtain a 3-lead ECG reading. </span><span class="segment" data-start="492.08" data-end="498.0" title="8:12">I would administer boluses of intravenous phase active drugs and deliver direct current </span><span class="segment" data-start="498.0" data-end="502.84" title="8:18">external shocks as indicated by the patient's heart rhythm. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="502.84"><span class="t-timestamp">8:22</span></div>
-  <div class="t-body"><span class="segment" data-start="502.84" data-end="506.72" title="8:22">What is the rest all to how you would treat his PE? </span><span class="segment" data-start="506.72" data-end="513.72" title="8:26">He now fulfills the criteria of massive PE and requires immediate intravenous thrombolysis </span><span class="segment" data-start="513.72" data-end="520.92" title="8:33">with a 50-mg bonus of outer plays, providing he has no contraindications to thrombolysis. </span><span class="segment" data-start="520.92" data-end="527.52" title="8:40">He will also require endotracheal intubation, ventilation, fluid resuscitation and insertion </span><span class="segment" data-start="527.52" data-end="533.84" title="8:47">of invasive monitoring and may require administration of vasoactive drugs, providing he regains </span><span class="segment" data-start="533.84" data-end="535.84" title="8:53">an output. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="535.84"><span class="t-timestamp">8:55</span></div>
-  <div class="t-body"><span class="segment" data-start="535.84" data-end="538.76" title="8:55">The patient does well and makes a full recovery. </span><span class="segment" data-start="538.76" data-end="544.12" title="8:58">What test might he need to undergo following his discharge from hospital? </span><span class="segment" data-start="544.12" data-end="550.0" title="9:04">He needs investigation of potential inherited thrombophilic disorders such as factor 5 </span><span class="segment" data-start="550.0" data-end="556.48" title="9:10">liden, protein C and S deficiency and antithrombin deficiency. </span><span class="segment" data-start="556.48" data-end="561.32" title="9:16">You were asked to review a 24-year-old man in recovery who was just undergone intermodullary </span><span class="segment" data-start="561.32" data-end="564.4" title="9:21">nailing of a fractured femur. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="564.4"><span class="t-timestamp">9:24</span></div>
-  <div class="t-body"><span class="segment" data-start="564.4" data-end="568.04" title="9:24">The nursing staff are concerned because he is de-saturating to 88% when he takes a </span><span class="segment" data-start="568.04" data-end="572.64" title="9:28">oxygen off and is quite confused, even though it has been almost an hour since he worked </span><span class="segment" data-start="572.64" data-end="575.64" title="9:32">from his journal anesthetic. </span><span class="segment" data-start="575.64" data-end="578.16" title="9:35">Outline your initial assessment of this patient. </span><span class="segment" data-start="578.16" data-end="582.68" title="9:38">Remember there is a very similar layout to the assessment of any patient in the recovery </span><span class="segment" data-start="582.68" data-end="585.16" title="9:42">room. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="585.16"><span class="t-timestamp">9:45</span></div>
-  <div class="t-body"><span class="segment" data-start="585.16" data-end="591.24" title="9:45">I would ensure that the patient's airway, breathing and circulatory status were adequate, </span><span class="segment" data-start="591.24" data-end="596.08" title="9:51">that he was receiving supplementary oxygen and had IV access. </span><span class="segment" data-start="596.08" data-end="601.52" title="9:56">I would then make an assessment of his conscious level using the Glasgow coma scale and ask </span><span class="segment" data-start="601.52" data-end="604.32" title="10:01">to check the patient's blood sugar. </span><span class="segment" data-start="604.32" data-end="609.28" title="10:04">Once I was sure that his vital signs were sufficient, I would move on to review the anesthetic </span><span class="segment" data-start="609.28" data-end="615.48" title="10:09">chart, making particular note of any pre-morbid conditions or physiological abnormalities </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="615.48"><span class="t-timestamp">10:15</span></div>
-  <div class="t-body"><span class="segment" data-start="615.48" data-end="617.92" title="10:15">that were present preoperatively. </span><span class="segment" data-start="617.92" data-end="622.84" title="10:17">I would ascertain what type of anesthetic the patient underwent, whether any regional </span><span class="segment" data-start="622.84" data-end="629.04" title="10:22">techniques were employed, what drugs and fluids were administered to him, and to set how stable </span><span class="segment" data-start="629.04" data-end="635.04" title="10:29">the patient had been intraoperatively, as well as making a note of any untoward incidents. </span><span class="segment" data-start="635.04" data-end="640.84" title="10:35">With the anesthetic being fully reviewed, possible causes of the patient's clinical condition </span><span class="segment" data-start="640.84" data-end="643.24" title="10:40">may become more apparent. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="643.24"><span class="t-timestamp">10:43</span></div>
-  <div class="t-body"><span class="segment" data-start="643.24" data-end="648.4" title="10:43">For example, that a high spinal block or incomplete reversal of neuromuscular blockade </span><span class="segment" data-start="648.4" data-end="649.96" title="10:48">had occurred. </span><span class="segment" data-start="649.96" data-end="655.24" title="10:49">As this patient has sustained a long bone fracture, I would examine the admission notes </span><span class="segment" data-start="655.24" data-end="659.92" title="10:55">to see if there were any other significant injuries sustained, which may be of relevance </span><span class="segment" data-start="659.92" data-end="662.44" title="10:59">to his current condition. </span><span class="segment" data-start="662.44" data-end="668.8" title="11:02">The patient has sat of 97% on 8 liters of oxygen and his airway is patent. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="668.8"><span class="t-timestamp">11:08</span></div>
-  <div class="t-body"><span class="segment" data-start="668.8" data-end="671.76" title="11:08">His respiratory rate is 30 breaths per minute. </span><span class="segment" data-start="671.76" data-end="677.8" title="11:11">His pulse rate is 120 beats per minute, and his blood pressure is 130 over 80. </span><span class="segment" data-start="677.8" data-end="683.0" title="11:17">His GCS is 13 as he is confused, and his opening is eyes to voice and moving all four limbs </span><span class="segment" data-start="683.0" data-end="684.56" title="11:23">appropriately. </span><span class="segment" data-start="684.56" data-end="688.96" title="11:24">His previously fit and well and broke his femur playing football, with no other injuries </span><span class="segment" data-start="688.96" data-end="690.28" title="11:28">sustained. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="690.28"><span class="t-timestamp">11:30</span></div>
-  <div class="t-body"><span class="segment" data-start="690.28" data-end="694.64" title="11:30">He received general anesthetic alone, along with 2 liters of crystal-loid and 50 milligrams </span><span class="segment" data-start="694.64" data-end="699.32" title="11:34">of morphine paracetamol and a non-steroidal anti-inflammatory. </span><span class="segment" data-start="699.32" data-end="704.92" title="11:39">The anesthetic proceeded uneventfully, the procedure taking 70 minutes in total. </span><span class="segment" data-start="704.92" data-end="709.32" title="11:44">You note that his saturation is 95% pre-operatively unromar. </span><span class="segment" data-start="709.32" data-end="711.52" title="11:49">What is a differential diagnosis? </span><span class="segment" data-start="711.52" data-end="715.4" title="11:51">Remember folks, be systematic. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="715.4"><span class="t-timestamp">11:55</span></div>
-  <div class="t-body"><span class="segment" data-start="715.4" data-end="722.88" title="11:55">The patient is tachycardic, tachypneic, has a moderate oxygen requirement and is confused. </span><span class="segment" data-start="722.88" data-end="726.84" title="12:02">He may have been slightly hypoxic prior to surgery. </span><span class="segment" data-start="726.84" data-end="733.32" title="12:06">Looking through systems, his respiratory compromise could be due to basalate lectasis or retained </span><span class="segment" data-start="733.32" data-end="734.32" title="12:13">secretions. </span><span class="segment" data-start="734.32" data-end="741.88" title="12:14">A pneumonia, a fat embolus, an aspiration numinitis, a pulmonary embolus, although this </span><span class="segment" data-start="741.88" data-end="746.4" title="12:21">would not be so high on my differential list if he had only recently been admitted to </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="746.4"><span class="t-timestamp">12:26</span></div>
-  <div class="t-body"><span class="segment" data-start="746.4" data-end="747.4" title="12:26">hospital. </span><span class="segment" data-start="747.4" data-end="753.84" title="12:27">A drug or transfusion reaction, or cardiac decompensation, although this would be rare </span><span class="segment" data-start="753.84" data-end="757.76" title="12:33">in a previously fit and well young person. </span><span class="segment" data-start="757.76" data-end="764.0" title="12:37">His deranged conscious level could be due to the effects of a general anaesthetic, hypoxia, </span><span class="segment" data-start="764.0" data-end="773.08" title="12:44">hypercappnia, a coexisting undiagnosed head injury, fatembolism, excessive opiates, sepsis, </span><span class="segment" data-start="773.08" data-end="780.32" title="12:53">meningitis, an undiagnosed ketoacidosis, or a hypoglycemic episode. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="780.32"><span class="t-timestamp">13:00</span></div>
-  <div class="t-body"><span class="segment" data-start="780.32" data-end="786.64" title="13:00">Referentials such as stroke, intracerebral bleed, or space-occupying lesion, would be </span><span class="segment" data-start="786.64" data-end="791.48" title="13:06">much further down on my list, given his age and pre-morbid function. </span><span class="segment" data-start="791.48" data-end="797.52" title="13:11">A pre-existing chest infection, exacerbated by a general anaesthetic, or a fatembolism </span><span class="segment" data-start="797.52" data-end="801.68" title="13:17">could account for both of these physiological abnormalities. </span><span class="segment" data-start="801.68" data-end="805.56" title="13:21">What do you think is a likely cause, and what other tests or examinations would you want </span><span class="segment" data-start="805.56" data-end="809.24" title="13:25">to perform to confirm this? </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="809.24"><span class="t-timestamp">13:29</span></div>
-  <div class="t-body"><span class="segment" data-start="809.24" data-end="814.8" title="13:29">Given the history of a long bone fracture and subsequent fixation, and the combination </span><span class="segment" data-start="814.8" data-end="821.36" title="13:34">of respiratory difficulties and neurological impairment, I think that the most likely diagnosis </span><span class="segment" data-start="821.36" data-end="824.08" title="13:41">would be fatembolism syndrome. </span><span class="segment" data-start="824.08" data-end="831.0" title="13:44">The triad of pulmonary neurological and cutaneous signs is a common presentation, and I would </span><span class="segment" data-start="831.0" data-end="835.72" title="13:51">examine the patient for a particular rash on the truncot upper limbs. </span><span class="segment" data-start="835.72" data-end="841.04" title="13:55">I would also perform a full respiratory and neurological examination on the patient to </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="841.04"><span class="t-timestamp">14:01</span></div>
-  <div class="t-body"><span class="segment" data-start="841.04" data-end="844.04" title="14:01">rule out other focal abnormalities. </span><span class="segment" data-start="844.04" data-end="849.56" title="14:04">I would take blood for arterial blood gas analysis, as well as a full blood count, </span><span class="segment" data-start="849.56" data-end="856.92" title="14:09">urea and electrolytes, a CRP, liver function tests, and a coagulation profile, as at this </span><span class="segment" data-start="856.92" data-end="861.0" title="14:16">time I am still not entirely sure of the diagnosis. </span><span class="segment" data-start="861.0" data-end="865.8" title="14:21">I would also discuss with my hospital laboratory whether they were able to perform analysis of </span><span class="segment" data-start="865.8" data-end="872.24" title="14:25">blood, sputum, and urine for fat globules, as these are classically said to be present, </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="872.24"><span class="t-timestamp">14:32</span></div>
-  <div class="t-body"><span class="segment" data-start="872.24" data-end="877.2" title="14:32">although there is no evidence that they are truly diagnostic, and most labs are unable </span><span class="segment" data-start="877.2" data-end="879.44" title="14:37">to perform these tests. </span><span class="segment" data-start="879.44" data-end="885.6" title="14:39">I would also order a chest x-ray and an ECG, as fatembolism can result in bilateral </span><span class="segment" data-start="885.6" data-end="887.8" title="14:45">hazy consolidation. </span><span class="segment" data-start="887.8" data-end="893.84" title="14:47">I would also consider imaging the patient's brain to rule out other causes of acute confusion, </span><span class="segment" data-start="893.84" data-end="898.76" title="14:53">although I would discuss with the radiologists as to the best method to do this. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="898.76"><span class="t-timestamp">14:58</span></div>
-  <div class="t-body"><span class="segment" data-start="898.76" data-end="904.96" title="14:58">If possible, fundoscopy in this patient may also show retinal hemorrhages. </span><span class="segment" data-start="904.96" data-end="912.84" title="15:04">If all tests point the diagnosis of fatembolism been correct, how would you manage this patient? </span><span class="segment" data-start="912.84" data-end="917.64" title="15:12">Prevention is better than cure, so consider early fracture fixation. </span><span class="segment" data-start="917.64" data-end="923.44" title="15:17">Treatment of established fatembolism is mainly supportive, and is usually in the form of </span><span class="segment" data-start="923.44" data-end="927.0" title="15:23">respiratory and hemodynamic support. </span><span class="segment" data-start="927.0" data-end="932.32" title="15:27">Early fixation of the fracture is thought to avoid recurrent embolisation, but surgery </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="932.32"><span class="t-timestamp">15:32</span></div>
-  <div class="t-body"><span class="segment" data-start="932.32" data-end="936.36" title="15:32">is usually postponed until the patient is more stable. </span><span class="segment" data-start="936.36" data-end="941.12" title="15:36">There is a small amount of evidence to suggest that steroids may reduce the incidence and </span><span class="segment" data-start="941.12" data-end="947.0" title="15:41">severity of hypoxia, but this is not a well recognised practice. </span><span class="segment" data-start="947.04" data-end="953.04" title="15:47">The main aspects of managing such a patient depend on having a high index of suspicion, </span><span class="segment" data-start="953.04" data-end="961.04" title="15:53">making the correct diagnosis and rolling out other important differentials, such as a traumatic brain injury. </span><span class="segment" data-start="961.04" data-end="966.56" title="16:01">What is the physiological mober which fatembolism syndrome occurs? </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="966.56"><span class="t-timestamp">16:06</span></div>
-  <div class="t-body"><span class="segment" data-start="966.56" data-end="968.76" title="16:06">There are two main theories. </span><span class="segment" data-start="968.76" data-end="974.96" title="16:08">The first is the mechanical theory, which suggests that fat droplets from the bone marrow enter </span><span class="segment" data-start="974.96" data-end="980.88" title="16:14">into medullary vessels and move through the pulmonary into the systemic circulation via </span><span class="segment" data-start="980.88" data-end="984.72" title="16:20">arteriovenous or intracardiach shunts. </span><span class="segment" data-start="984.72" data-end="990.24" title="16:24">Once in the arterial system, they become embaly, which results in particular hemorrhages </span><span class="segment" data-start="990.24" data-end="992.76" title="16:30">and cerebral symptoms. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="992.76"><span class="t-timestamp">16:32</span></div>
-  <div class="t-body"><span class="segment" data-start="992.76" data-end="998.76" title="16:32">The second theory is the biochemical theory, which suggests that free fatty acids from </span><span class="segment" data-start="998.76" data-end="1004.84" title="16:38">the endothelial layer cause endothelial disruption, resulting in perivascular hemorrhage and </span></div>
+<div class="preamble-block"><span class="segment a-seg" data-start="0.0" data-end="5.82" title="0:00">Prevention, diagnosis and management of fat embolism, deep vein thrombosis and pulmonary </span><span class="segment a-seg" data-start="5.82" data-end="12.84" title="0:05">embolive. An orthopedic SHO asks you what factors increase the risk of a patient suffering </span><span class="segment a-seg" data-start="12.84" data-end="17.56" title="0:12">from a venous thromboembolism, as is unsure whether or not he should prescribe prophylaxis </span><span class="segment a-seg" data-start="17.56" data-end="24.32" title="0:17">for one of his patients. Remember, patient factors and operation factors. There is a nice </span><span class="segment a-seg" data-start="24.32" data-end="32.24" title="0:24">guideline on this so you should know it. Patient-related factors include age of greater </span><span class="segment a-seg" data-start="32.24" data-end="39.48" title="0:32">than 60 years, immobility, history of continuous travel of more than three hours, four weeks </span><span class="segment a-seg" data-start="39.48" data-end="47.4" title="0:39">before or after surgery, a central venous catheter in situ, obesity, personal or family </span><span class="segment a-seg" data-start="47.4" data-end="56.12" title="0:47">history of venous thromboembolism, pregnancy or puapirium and use of oral contraceptives. </span><span class="segment a-seg" data-start="56.12" data-end="63.12" title="0:56">Disease-related factors include active cancer or cancer treatment, acute heart or respiratory </span><span class="segment a-seg" data-start="63.12" data-end="71.32" title="1:03">failure, and acute medical illness, severe infection, inflammatory disease, myeloproliftive </span><span class="segment a-seg" data-start="71.32" data-end="78.4" title="1:11">disease, recent myocardial infarction or stroke, and inherited thrombofilias such as Factor </span></div>
+<div class="qa-pair">
+<div class="q-block" data-start="78.4">
+  <div class="q-label">Q1</div>
+  <div class="q-body"><span class="segment q-seg" data-start="78.4" data-end="85.24" title="1:18">5 Lyden. What can be done to reduce a patient's risk of suffering from a venous thromboembolism? </span></div>
 </div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="85.24" data-end="91.16" title="1:25">You might want to divide the answer into physical or mechanical methods or pre, intra and </span></li>
+<li><span class="segment a-seg" data-start="91.16" data-end="99.44" title="1:31">post-op. Preoperatively, all patients should be risk-stratified for venous thromboembolism </span></li>
+<li><span class="segment a-seg" data-start="99.44" data-end="105.64" title="1:39">and then fitted with well-fitting, thigh or knee length, graduated compression stockings </span></li>
+<li><span class="segment a-seg" data-start="105.64" data-end="111.5" title="1:45">and those with increased risk should receive low molecular weight heparin. The risks and </span></li>
+<li><span class="segment a-seg" data-start="111.5" data-end="119.24" title="1:51">benefits of stopping pre-existing established anti-collegation should be considered. Interoperatively, </span></li>
+<li><span class="segment a-seg" data-start="119.24" data-end="125.88" title="1:59">it is important to keep the patient well hydrated and pay careful attention to positioning. </span></li>
+<li><span class="segment a-seg" data-start="125.88" data-end="130.8" title="2:05">Whilst on the operating table, intermittent pneumatic compression devices can be applied </span></li>
+<li><span class="segment a-seg" data-start="130.8" data-end="137.16" title="2:10">to the calves for the duration of the operation. Regional anesthetic techniques have also been </span></li>
+<li><span class="segment a-seg" data-start="137.16" data-end="143.12" title="2:17">proven to reduce the risk of venous thromboembolism. Post-operatively, keeping the patient well </span></li>
+<li><span class="segment a-seg" data-start="143.12" data-end="150.12" title="2:23">hydrated and encouraging early mobility reduces the risk of venous thromboembolism. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="150.12">
+  <div class="q-label">Q2</div>
+  <div class="q-body"><span class="segment q-seg" data-start="150.12" data-end="155.28" title="2:30">How would you classify the risk of venous thromboembolism in a 58-year-old obese female </span><span class="segment q-seg" data-start="155.28" data-end="162.16" title="2:35">with a history of breast cancer five years previously who is undergoing total knee replacement? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="162.16" data-end="168.52" title="2:42">This patient has risk factors, given that she is obese and is undergoing low-alim arthroplasty. </span></li>
+<li><span class="segment a-seg" data-start="168.52" data-end="173.84" title="2:48">As she is undergoing knee arthroplasty, tornocane juice to venous stagnation may also be an </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="173.84">
+  <div class="q-label">Q3</div>
+  <div class="q-body"><span class="segment q-seg" data-start="173.84" data-end="180.0" title="2:53">issue. What prophylaxis might you provide her with? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="180.0" data-end="185.32" title="3:00">She should receive both mechanical prophylaxis with compression stockings and receive low </span></li>
+<li><span class="segment a-seg" data-start="185.32" data-end="192.0" title="3:05">molecular weight heparin at a time suitable to allow for safe regional anesthesia. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="192.0">
+  <div class="q-label">Q4</div>
+  <div class="q-body"><span class="segment q-seg" data-start="192.0" data-end="196.52" title="3:12">What prophylaxis might you prescribe for a 23-year-old female who is fit and well of </span><span class="segment q-seg" data-start="196.52" data-end="202.76" title="3:16">a normal BMI undergoing an elective excision of an ovarian cyst? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="202.76" data-end="209.52" title="3:22">The patient is low risk and is undergoing a low risk procedure, therefore good hydration, </span></li>
+<li><span class="segment a-seg" data-start="209.52" data-end="215.12" title="3:29">knee mobilisation and thromboembolic deterrent stockings. </span></li>
+<li><span class="segment a-seg" data-start="215.12" data-end="220.16" title="3:35">You were asked to assess a 35-year-old man in the emergency department who had a DVT confirmed </span></li>
+<li><span class="segment a-seg" data-start="220.16" data-end="225.92" title="3:40">two days ago. His complaining of chest pain and shortness of breath and had sats of 92% </span></li>
+<li><span class="segment a-seg" data-start="225.92" data-end="231.8" title="3:45">on remeer. The emergency medicine registrar is concerned that he is suffering from a PE. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="231.8">
+  <div class="q-label">Q5</div>
+  <div class="q-body"><span class="segment q-seg" data-start="231.8" data-end="237.08" title="3:51">What clinical features may support this diagnosis? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="237.08" data-end="245.0" title="3:57">Clinical symptoms such as dysnir, cyanosis, pleuritic chest pain, cough and hemoptosis </span></li>
+<li><span class="segment a-seg" data-start="245.0" data-end="253.68" title="4:05">and clinical signs such as raised jugular venous pressure, tachycardia, tachythnia, hypoxemia, </span></li>
+<li><span class="segment a-seg" data-start="253.68" data-end="261.0" title="4:13">fever and accentuated pulmonary second heart sound, third heart sound and right ventricular </span></li>
+<li><span class="segment a-seg" data-start="261.0" data-end="265.6" title="4:21">heath support the diagnosis of pulmonary embolism. </span></li>
+<li><span class="segment a-seg" data-start="265.6" data-end="270.44" title="4:25">A battery of baseline blood tests have been sent. What results would support a diagnosis </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="270.44">
+  <div class="q-label">Q6</div>
+  <div class="q-body"><span class="segment q-seg" data-start="270.44" data-end="273.12" title="4:30">of PE? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="273.12" data-end="280.56" title="4:33">Arraised white cell count, increased arrhythrocyte sedimentation rate, increased transaminases </span></li>
+<li><span class="segment a-seg" data-start="280.56" data-end="287.56" title="4:40">with a normal bilirubin and a raised troponin are in keeping with a diagnosis of PE. A positive </span></li>
+<li><span class="segment a-seg" data-start="287.56" data-end="293.24" title="4:47">de dimer has good sensitivity but poor specificity. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="293.24">
+  <div class="q-label">Q7</div>
+  <div class="q-body"><span class="segment q-seg" data-start="293.24" data-end="298.08" title="4:53">What might as ECG and chest x ratio? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="298.08" data-end="306.12" title="4:58">ECG changes include right axis deviation, right bundle branch block, atrial fibrillation, </span></li>
+<li><span class="segment a-seg" data-start="306.12" data-end="314.4" title="5:06">t-wave inversion anteriorly, st abnormalities and right ventricular strain pattern of S1 </span></li>
+<li><span class="segment a-seg" data-start="314.4" data-end="321.76" title="5:14">T3 T3. Chest x-ray changes include cardiac amygaly, pleural effusions, </span></li>
+<li><span class="segment a-seg" data-start="321.76" data-end="327.52" title="5:21">hyalodilitation and pulmonary oligemia if the PE is massive. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="327.52">
+  <div class="q-label">Q8</div>
+  <div class="q-body"><span class="segment q-seg" data-start="327.52" data-end="332.52" title="5:27">What test could be arranged to confirm the diagnosis? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="332.52" data-end="339.12" title="5:32">There are a number of tests which aid diagnosis of pulmonary embolism. Spiral computerised </span></li>
+<li><span class="segment a-seg" data-start="339.12" data-end="345.76" title="5:39">tomographic pulmonary angiography is the most accessible and effective form of imaging. </span></li>
+<li><span class="segment a-seg" data-start="345.76" data-end="350.44" title="5:45">Ventilation perfusion scans are another form of diagnostic imaging which can be employed </span></li>
+<li><span class="segment a-seg" data-start="350.44" data-end="355.96" title="5:50">with reasonable accuracy but this tends to be used in patients in whom a CT scan is not </span></li>
+<li><span class="segment a-seg" data-start="355.96" data-end="359.48" title="5:55">ideal, for example pregnant women. </span></li>
+<li><span class="segment a-seg" data-start="359.48" data-end="366.44" title="5:59">The gold standard test is pulmonary angiography but this is more invasive and difficult to organize </span></li>
+<li><span class="segment a-seg" data-start="366.44" data-end="371.92" title="6:06">and is usually reserved for patients in whom CTPA is inconclusive. </span></li>
+<li><span class="segment a-seg" data-start="371.92" data-end="378.32" title="6:11">Echo cardiography can also be used to rapidly evaluate a patient who is shocked to evaluate </span></li>
+<li><span class="segment a-seg" data-start="378.32" data-end="380.64" title="6:18">the likelihood of PE. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="380.64">
+  <div class="q-label">Q9</div>
+  <div class="q-body"><span class="segment q-seg" data-start="380.64" data-end="385.84" title="6:20">What might an echo show in a patient with a massive PE? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="385.84" data-end="394.04" title="6:25">An echo cardiogram classically shows a dilated hypochynetic right ventricle, a dilated pulmonary </span></li>
+<li><span class="segment a-seg" data-start="394.04" data-end="402.32" title="6:34">artery, paradoxical septal shift or so-called kissing ventricles, tricuspid regurgitation </span></li>
+<li><span class="segment a-seg" data-start="402.32" data-end="406.52" title="6:42">and right-sided pressure and volume overload. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="406.52">
+  <div class="q-label">Q10</div>
+  <div class="q-body"><span class="segment q-seg" data-start="406.52" data-end="411.32" title="6:46">What would be appropriate treatment for this patient? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="411.32" data-end="417.84" title="6:51">Any patient with suspected venous thromboembolism should receive immediate therapeutic anti-calagulation </span></li>
+<li><span class="segment a-seg" data-start="417.84" data-end="423.96" title="6:57">therapy which will prevent the propagation of clot and reduce the risk of recurrent pulmonary </span></li>
+<li><span class="segment a-seg" data-start="423.96" data-end="425.92" title="7:03">embolism. </span></li>
+<li><span class="segment a-seg" data-start="425.92" data-end="432.24" title="7:05">Massive pulmonary embolism requires immediate treatment with intravenous thrombolysis. </span></li>
+<li><span class="segment a-seg" data-start="432.24" data-end="437.84" title="7:12">Patients with intermediate or high probability of PE should receive intravenous heparin prior </span></li>
+<li><span class="segment a-seg" data-start="437.84" data-end="439.36" title="7:17">to imaging. </span></li>
+<li><span class="segment a-seg" data-start="439.36" data-end="445.8" title="7:19">Unfractionated heparin should also be given where rapid reversal of effect may be needed. </span></li>
+<li><span class="segment a-seg" data-start="445.8" data-end="451.72" title="7:25">Otherwise low molecular weight heparin should be used as they are equally efficacious, </span></li>
+<li><span class="segment a-seg" data-start="451.72" data-end="455.32" title="7:31">easier to use and require less monitoring. </span></li>
+<li><span class="segment a-seg" data-start="455.32" data-end="459.72" title="7:35">As you're on the phone to your consultant, the nursing staff call you over urgently, </span></li>
+<li><span class="segment a-seg" data-start="459.72" data-end="463.6" title="7:39">as the patient has become unresponsive and looks deeply cyanosed. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="463.6">
+  <div class="q-label">Q11</div>
+  <div class="q-body"><span class="segment q-seg" data-start="463.6" data-end="467.56" title="7:43">Describe your initial actions. </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="467.56" data-end="474.28" title="7:47">I would open his airway and give 100% oxygen for a non-rebrea than mask, and if he was </span></li>
+<li><span class="segment a-seg" data-start="474.28" data-end="479.04" title="7:54">making no respiratory effort, I would commence manual ventilation. </span></li>
+<li><span class="segment a-seg" data-start="479.04" data-end="484.32" title="7:59">If no pulse was palpable, I would commence external cardiac compressions as per the </span></li>
+<li><span class="segment a-seg" data-start="484.32" data-end="492.08" title="8:04">current ALS guidelines, gain intravenous access and obtain a 3-lead ECG reading. </span></li>
+<li><span class="segment a-seg" data-start="492.08" data-end="498.0" title="8:12">I would administer boluses of intravenous phase active drugs and deliver direct current </span></li>
+<li><span class="segment a-seg" data-start="498.0" data-end="502.84" title="8:18">external shocks as indicated by the patient's heart rhythm. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="502.84">
+  <div class="q-label">Q12</div>
+  <div class="q-body"><span class="segment q-seg" data-start="502.84" data-end="506.72" title="8:22">What is the rest all to how you would treat his PE? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="506.72" data-end="513.72" title="8:26">He now fulfills the criteria of massive PE and requires immediate intravenous thrombolysis </span></li>
+<li><span class="segment a-seg" data-start="513.72" data-end="520.92" title="8:33">with a 50-mg bonus of outer plays, providing he has no contraindications to thrombolysis. </span></li>
+<li><span class="segment a-seg" data-start="520.92" data-end="527.52" title="8:40">He will also require endotracheal intubation, ventilation, fluid resuscitation and insertion </span></li>
+<li><span class="segment a-seg" data-start="527.52" data-end="533.84" title="8:47">of invasive monitoring and may require administration of vasoactive drugs, providing he regains </span></li>
+<li><span class="segment a-seg" data-start="533.84" data-end="535.84" title="8:53">an output. </span></li>
+<li><span class="segment a-seg" data-start="535.84" data-end="538.76" title="8:55">The patient does well and makes a full recovery. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="538.76">
+  <div class="q-label">Q13</div>
+  <div class="q-body"><span class="segment q-seg" data-start="538.76" data-end="544.12" title="8:58">What test might he need to undergo following his discharge from hospital? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="544.12" data-end="550.0" title="9:04">He needs investigation of potential inherited thrombophilic disorders such as factor 5 </span></li>
+<li><span class="segment a-seg" data-start="550.0" data-end="556.48" title="9:10">liden, protein C and S deficiency and antithrombin deficiency. </span></li>
+<li><span class="segment a-seg" data-start="556.48" data-end="561.32" title="9:16">You were asked to review a 24-year-old man in recovery who was just undergone intermodullary </span></li>
+<li><span class="segment a-seg" data-start="561.32" data-end="564.4" title="9:21">nailing of a fractured femur. </span></li>
+<li><span class="segment a-seg" data-start="564.4" data-end="568.04" title="9:24">The nursing staff are concerned because he is de-saturating to 88% when he takes a </span></li>
+<li><span class="segment a-seg" data-start="568.04" data-end="572.64" title="9:28">oxygen off and is quite confused, even though it has been almost an hour since he worked </span></li>
+<li><span class="segment a-seg" data-start="572.64" data-end="575.64" title="9:32">from his journal anesthetic. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="575.64">
+  <div class="q-label">Q14</div>
+  <div class="q-body"><span class="segment q-seg" data-start="575.64" data-end="578.16" title="9:35">Outline your initial assessment of this patient. </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="578.16" data-end="582.68" title="9:38">Remember there is a very similar layout to the assessment of any patient in the recovery </span></li>
+<li><span class="segment a-seg" data-start="582.68" data-end="585.16" title="9:42">room. </span></li>
+<li><span class="segment a-seg" data-start="585.16" data-end="591.24" title="9:45">I would ensure that the patient's airway, breathing and circulatory status were adequate, </span></li>
+<li><span class="segment a-seg" data-start="591.24" data-end="596.08" title="9:51">that he was receiving supplementary oxygen and had IV access. </span></li>
+<li><span class="segment a-seg" data-start="596.08" data-end="601.52" title="9:56">I would then make an assessment of his conscious level using the Glasgow coma scale and ask </span></li>
+<li><span class="segment a-seg" data-start="601.52" data-end="604.32" title="10:01">to check the patient's blood sugar. </span></li>
+<li><span class="segment a-seg" data-start="604.32" data-end="609.28" title="10:04">Once I was sure that his vital signs were sufficient, I would move on to review the anesthetic </span></li>
+<li><span class="segment a-seg" data-start="609.28" data-end="615.48" title="10:09">chart, making particular note of any pre-morbid conditions or physiological abnormalities </span></li>
+<li><span class="segment a-seg" data-start="615.48" data-end="617.92" title="10:15">that were present preoperatively. </span></li>
+<li><span class="segment a-seg" data-start="617.92" data-end="622.84" title="10:17">I would ascertain what type of anesthetic the patient underwent, whether any regional </span></li>
+<li><span class="segment a-seg" data-start="622.84" data-end="629.04" title="10:22">techniques were employed, what drugs and fluids were administered to him, and to set how stable </span></li>
+<li><span class="segment a-seg" data-start="629.04" data-end="635.04" title="10:29">the patient had been intraoperatively, as well as making a note of any untoward incidents. </span></li>
+<li><span class="segment a-seg" data-start="635.04" data-end="640.84" title="10:35">With the anesthetic being fully reviewed, possible causes of the patient's clinical condition </span></li>
+<li><span class="segment a-seg" data-start="640.84" data-end="643.24" title="10:40">may become more apparent. </span></li>
+<li><span class="segment a-seg" data-start="643.24" data-end="648.4" title="10:43">For example, that a high spinal block or incomplete reversal of neuromuscular blockade </span></li>
+<li><span class="segment a-seg" data-start="648.4" data-end="649.96" title="10:48">had occurred. </span></li>
+<li><span class="segment a-seg" data-start="649.96" data-end="655.24" title="10:49">As this patient has sustained a long bone fracture, I would examine the admission notes </span></li>
+<li><span class="segment a-seg" data-start="655.24" data-end="659.92" title="10:55">to see if there were any other significant injuries sustained, which may be of relevance </span></li>
+<li><span class="segment a-seg" data-start="659.92" data-end="662.44" title="10:59">to his current condition. </span></li>
+<li><span class="segment a-seg" data-start="662.44" data-end="668.8" title="11:02">The patient has sat of 97% on 8 liters of oxygen and his airway is patent. </span></li>
+<li><span class="segment a-seg" data-start="668.8" data-end="671.76" title="11:08">His respiratory rate is 30 breaths per minute. </span></li>
+<li><span class="segment a-seg" data-start="671.76" data-end="677.8" title="11:11">His pulse rate is 120 beats per minute, and his blood pressure is 130 over 80. </span></li>
+<li><span class="segment a-seg" data-start="677.8" data-end="683.0" title="11:17">His GCS is 13 as he is confused, and his opening is eyes to voice and moving all four limbs </span></li>
+<li><span class="segment a-seg" data-start="683.0" data-end="684.56" title="11:23">appropriately. </span></li>
+<li><span class="segment a-seg" data-start="684.56" data-end="688.96" title="11:24">His previously fit and well and broke his femur playing football, with no other injuries </span></li>
+<li><span class="segment a-seg" data-start="688.96" data-end="690.28" title="11:28">sustained. </span></li>
+<li><span class="segment a-seg" data-start="690.28" data-end="694.64" title="11:30">He received general anesthetic alone, along with 2 liters of crystal-loid and 50 milligrams </span></li>
+<li><span class="segment a-seg" data-start="694.64" data-end="699.32" title="11:34">of morphine paracetamol and a non-steroidal anti-inflammatory. </span></li>
+<li><span class="segment a-seg" data-start="699.32" data-end="704.92" title="11:39">The anesthetic proceeded uneventfully, the procedure taking 70 minutes in total. </span></li>
+<li><span class="segment a-seg" data-start="704.92" data-end="709.32" title="11:44">You note that his saturation is 95% pre-operatively unromar. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="709.32">
+  <div class="q-label">Q15</div>
+  <div class="q-body"><span class="segment q-seg" data-start="709.32" data-end="711.52" title="11:49">What is a differential diagnosis? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="711.52" data-end="715.4" title="11:51">Remember folks, be systematic. </span></li>
+<li><span class="segment a-seg" data-start="715.4" data-end="722.88" title="11:55">The patient is tachycardic, tachypneic, has a moderate oxygen requirement and is confused. </span></li>
+<li><span class="segment a-seg" data-start="722.88" data-end="726.84" title="12:02">He may have been slightly hypoxic prior to surgery. </span></li>
+<li><span class="segment a-seg" data-start="726.84" data-end="733.32" title="12:06">Looking through systems, his respiratory compromise could be due to basalate lectasis or retained </span></li>
+<li><span class="segment a-seg" data-start="733.32" data-end="734.32" title="12:13">secretions. </span></li>
+<li><span class="segment a-seg" data-start="734.32" data-end="741.88" title="12:14">A pneumonia, a fat embolus, an aspiration numinitis, a pulmonary embolus, although this </span></li>
+<li><span class="segment a-seg" data-start="741.88" data-end="746.4" title="12:21">would not be so high on my differential list if he had only recently been admitted to </span></li>
+<li><span class="segment a-seg" data-start="746.4" data-end="747.4" title="12:26">hospital. </span></li>
+<li><span class="segment a-seg" data-start="747.4" data-end="753.84" title="12:27">A drug or transfusion reaction, or cardiac decompensation, although this would be rare </span></li>
+<li><span class="segment a-seg" data-start="753.84" data-end="757.76" title="12:33">in a previously fit and well young person. </span></li>
+<li><span class="segment a-seg" data-start="757.76" data-end="764.0" title="12:37">His deranged conscious level could be due to the effects of a general anaesthetic, hypoxia, </span></li>
+<li><span class="segment a-seg" data-start="764.0" data-end="773.08" title="12:44">hypercappnia, a coexisting undiagnosed head injury, fatembolism, excessive opiates, sepsis, </span></li>
+<li><span class="segment a-seg" data-start="773.08" data-end="780.32" title="12:53">meningitis, an undiagnosed ketoacidosis, or a hypoglycemic episode. </span></li>
+<li><span class="segment a-seg" data-start="780.32" data-end="786.64" title="13:00">Referentials such as stroke, intracerebral bleed, or space-occupying lesion, would be </span></li>
+<li><span class="segment a-seg" data-start="786.64" data-end="791.48" title="13:06">much further down on my list, given his age and pre-morbid function. </span></li>
+<li><span class="segment a-seg" data-start="791.48" data-end="797.52" title="13:11">A pre-existing chest infection, exacerbated by a general anaesthetic, or a fatembolism </span></li>
+<li><span class="segment a-seg" data-start="797.52" data-end="801.68" title="13:17">could account for both of these physiological abnormalities. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="801.68">
+  <div class="q-label">Q16</div>
+  <div class="q-body"><span class="segment q-seg" data-start="801.68" data-end="805.56" title="13:21">What do you think is a likely cause, and what other tests or examinations would you want </span><span class="segment q-seg" data-start="805.56" data-end="809.24" title="13:25">to perform to confirm this? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="809.24" data-end="814.8" title="13:29">Given the history of a long bone fracture and subsequent fixation, and the combination </span></li>
+<li><span class="segment a-seg" data-start="814.8" data-end="821.36" title="13:34">of respiratory difficulties and neurological impairment, I think that the most likely diagnosis </span></li>
+<li><span class="segment a-seg" data-start="821.36" data-end="824.08" title="13:41">would be fatembolism syndrome. </span></li>
+<li><span class="segment a-seg" data-start="824.08" data-end="831.0" title="13:44">The triad of pulmonary neurological and cutaneous signs is a common presentation, and I would </span></li>
+<li><span class="segment a-seg" data-start="831.0" data-end="835.72" title="13:51">examine the patient for a particular rash on the truncot upper limbs. </span></li>
+<li><span class="segment a-seg" data-start="835.72" data-end="841.04" title="13:55">I would also perform a full respiratory and neurological examination on the patient to </span></li>
+<li><span class="segment a-seg" data-start="841.04" data-end="844.04" title="14:01">rule out other focal abnormalities. </span></li>
+<li><span class="segment a-seg" data-start="844.04" data-end="849.56" title="14:04">I would take blood for arterial blood gas analysis, as well as a full blood count, </span></li>
+<li><span class="segment a-seg" data-start="849.56" data-end="856.92" title="14:09">urea and electrolytes, a CRP, liver function tests, and a coagulation profile, as at this </span></li>
+<li><span class="segment a-seg" data-start="856.92" data-end="861.0" title="14:16">time I am still not entirely sure of the diagnosis. </span></li>
+<li><span class="segment a-seg" data-start="861.0" data-end="865.8" title="14:21">I would also discuss with my hospital laboratory whether they were able to perform analysis of </span></li>
+<li><span class="segment a-seg" data-start="865.8" data-end="872.24" title="14:25">blood, sputum, and urine for fat globules, as these are classically said to be present, </span></li>
+<li><span class="segment a-seg" data-start="872.24" data-end="877.2" title="14:32">although there is no evidence that they are truly diagnostic, and most labs are unable </span></li>
+<li><span class="segment a-seg" data-start="877.2" data-end="879.44" title="14:37">to perform these tests. </span></li>
+<li><span class="segment a-seg" data-start="879.44" data-end="885.6" title="14:39">I would also order a chest x-ray and an ECG, as fatembolism can result in bilateral </span></li>
+<li><span class="segment a-seg" data-start="885.6" data-end="887.8" title="14:45">hazy consolidation. </span></li>
+<li><span class="segment a-seg" data-start="887.8" data-end="893.84" title="14:47">I would also consider imaging the patient's brain to rule out other causes of acute confusion, </span></li>
+<li><span class="segment a-seg" data-start="893.84" data-end="898.76" title="14:53">although I would discuss with the radiologists as to the best method to do this. </span></li>
+<li><span class="segment a-seg" data-start="898.76" data-end="904.96" title="14:58">If possible, fundoscopy in this patient may also show retinal hemorrhages. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="904.96">
+  <div class="q-label">Q17</div>
+  <div class="q-body"><span class="segment q-seg" data-start="904.96" data-end="912.84" title="15:04">If all tests point the diagnosis of fatembolism been correct, how would you manage this patient? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="912.84" data-end="917.64" title="15:12">Prevention is better than cure, so consider early fracture fixation. </span></li>
+<li><span class="segment a-seg" data-start="917.64" data-end="923.44" title="15:17">Treatment of established fatembolism is mainly supportive, and is usually in the form of </span></li>
+<li><span class="segment a-seg" data-start="923.44" data-end="927.0" title="15:23">respiratory and hemodynamic support. </span></li>
+<li><span class="segment a-seg" data-start="927.0" data-end="932.32" title="15:27">Early fixation of the fracture is thought to avoid recurrent embolisation, but surgery </span></li>
+<li><span class="segment a-seg" data-start="932.32" data-end="936.36" title="15:32">is usually postponed until the patient is more stable. </span></li>
+<li><span class="segment a-seg" data-start="936.36" data-end="941.12" title="15:36">There is a small amount of evidence to suggest that steroids may reduce the incidence and </span></li>
+<li><span class="segment a-seg" data-start="941.12" data-end="947.0" title="15:41">severity of hypoxia, but this is not a well recognised practice. </span></li>
+<li><span class="segment a-seg" data-start="947.04" data-end="953.04" title="15:47">The main aspects of managing such a patient depend on having a high index of suspicion, </span></li>
+<li><span class="segment a-seg" data-start="953.04" data-end="961.04" title="15:53">making the correct diagnosis and rolling out other important differentials, such as a traumatic brain injury. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="961.04">
+  <div class="q-label">Q18</div>
+  <div class="q-body"><span class="segment q-seg" data-start="961.04" data-end="966.56" title="16:01">What is the physiological mober which fatembolism syndrome occurs? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="966.56" data-end="968.76" title="16:06">There are two main theories. </span></li>
+<li><span class="segment a-seg" data-start="968.76" data-end="974.96" title="16:08">The first is the mechanical theory, which suggests that fat droplets from the bone marrow enter </span></li>
+<li><span class="segment a-seg" data-start="974.96" data-end="980.88" title="16:14">into medullary vessels and move through the pulmonary into the systemic circulation via </span></li>
+<li><span class="segment a-seg" data-start="980.88" data-end="984.72" title="16:20">arteriovenous or intracardiach shunts. </span></li>
+<li><span class="segment a-seg" data-start="984.72" data-end="990.24" title="16:24">Once in the arterial system, they become embaly, which results in particular hemorrhages </span></li>
+<li><span class="segment a-seg" data-start="990.24" data-end="992.76" title="16:30">and cerebral symptoms. </span></li>
+<li><span class="segment a-seg" data-start="992.76" data-end="998.76" title="16:32">The second theory is the biochemical theory, which suggests that free fatty acids from </span></li>
+<li><span class="segment a-seg" data-start="998.76" data-end="1004.84" title="16:38">the endothelial layer cause endothelial disruption, resulting in perivascular hemorrhage and </span></li>
+  </ul>
+</div>
+</div>
+
 </div>
 
 <div class="subtitle-bar">
-  <span class="subtitle-text empty" id="subtitle-text">Play audio to see live subtitles&#8230;</span>
+  <span id="subtitle-text" class="empty">Play audio to see live subtitles&#8230;</span>
 </div>
 
 <script>
-
-const audio    = document.getElementById('audio');
-const allSegs  = Array.from(document.querySelectorAll('.segment'));
-const allBlocks = Array.from(document.querySelectorAll('.t-block'));
+const audio      = document.getElementById('audio');
+const allSegs    = Array.from(document.querySelectorAll('.segment'));
 const subtitleEl = document.getElementById('subtitle-text');
-let activeSegEl   = null;
-let activeBlockEl = null;
-let searchMatches = [];
-let searchIdx     = 0;
+let activeSegEl  = null;
+let searchMatches = [], searchIdx = 0;
 
-// Duration display
 audio.addEventListener('loadedmetadata', () => {
   const m = Math.floor(audio.duration / 60);
   const s = Math.floor(audio.duration %% 60).toString().padStart(2,'0');
   document.getElementById('dur').textContent = m + ':' + s;
 });
 
-// Seek helper
-function seekTo(t) {
-  audio.currentTime = t;
-  audio.play();
-}
+function seekTo(t) { audio.currentTime = t; audio.play(); }
 
-// Block gutter click
-document.querySelectorAll('.t-gutter').forEach(g => {
-  g.addEventListener('click', () => seekTo(parseFloat(g.dataset.start)));
+// Q-block header click
+document.querySelectorAll('.q-block').forEach(q => {
+  q.addEventListener('click', e => {
+    if (!e.target.classList.contains('segment')) seekTo(parseFloat(q.dataset.start));
+  });
 });
 
-// Segment click
+// Individual segment click
 allSegs.forEach(s => {
-  s.addEventListener('click', e => {
-    e.stopPropagation();
-    seekTo(parseFloat(s.dataset.start));
-  });
+  s.addEventListener('click', e => { e.stopPropagation(); seekTo(parseFloat(s.dataset.start)); });
 });
 
 // Real-time tracking
 audio.addEventListener('timeupdate', () => {
   const t = audio.currentTime;
-
-  // Find active segment (last one whose start <= t)
   let found = null;
   for (let i = allSegs.length - 1; i >= 0; i--) {
     if (parseFloat(allSegs[i].dataset.start) <= t) { found = allSegs[i]; break; }
   }
-
   if (found && found !== activeSegEl) {
-    // Clear previous
-    if (activeSegEl) activeSegEl.classList.remove('active');
-    if (activeBlockEl) {
-      activeBlockEl.classList.remove('block-active');
-      const pg = activeBlockEl.querySelector('.t-gutter');
-      if (pg) pg.classList.remove('gutter-active');
+    if (activeSegEl) {
+      activeSegEl.classList.remove('active');
+      const pli = activeSegEl.closest('li');
+      if (pli) pli.classList.remove('li-active');
+      const pq = activeSegEl.closest('.q-block');
+      if (pq) pq.classList.remove('q-active');
     }
-    // Set new
     found.classList.add('active');
-    const block = found.closest('.t-block');
-    if (block) {
-      block.classList.add('block-active');
-      const g = block.querySelector('.t-gutter');
-      if (g) g.classList.add('gutter-active');
-      activeBlockEl = block;
-    }
+    const li = found.closest('li');
+    if (li) li.classList.add('li-active');
+    const qb = found.closest('.q-block');
+    if (qb) qb.classList.add('q-active');
     activeSegEl = found;
 
-    // Update subtitle
     subtitleEl.textContent = found.textContent.trim();
     subtitleEl.classList.remove('empty');
 
-    // Auto-scroll (only when not searching)
-    if (!document.getElementById('search').value) {
+    if (!document.getElementById('search').value)
       found.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }
   }
 });
 
@@ -383,17 +614,13 @@ searchInput.addEventListener('keydown', e => {
     el.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
 });
-
 function runSearch() {
   const q = searchInput.value.trim().toLowerCase();
   allSegs.forEach(s => s.classList.remove('search-match','search-current'));
   searchMatches = [];
   if (!q) return;
   allSegs.forEach(s => {
-    if (s.textContent.toLowerCase().includes(q)) {
-      s.classList.add('search-match');
-      searchMatches.push(s);
-    }
+    if (s.textContent.toLowerCase().includes(q)) { s.classList.add('search-match'); searchMatches.push(s); }
   });
   if (!searchMatches.length) return;
   searchIdx = 0;

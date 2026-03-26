@@ -5,10 +5,19 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Thoracics — One Lung Ventilation</title>
 <style>
-
   :root {
-    --accent:    #7c3aed;
-    --body-bg:   #f1f5f9;
+    --q-bg:       #1e3a5f;
+    --q-text:     #ffffff;
+    --q-label:    #60a5fa;
+    --a-bg:       #ffffff;
+    --a-border:   #e2e8f0;
+    --a-label:    #059669;
+    --active-q:   #7c3aed;
+    --active-a:   #dbeafe;
+    --accent:     #7c3aed;
+    --body-bg:    #f1f5f9;
+    --pre-bg:     #fef9c3;
+    --pre-border: #fcd34d;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
@@ -40,22 +49,9 @@
     margin-bottom: 4px;
     letter-spacing: 0.01em;
   }
-  .header-sub {
-    font-size: 0.72rem;
-    color: #94a3b8;
-    font-style: italic;
-  }
-  audio {
-    height: 36px;
-    accent-color: var(--accent);
-    flex-shrink: 0;
-  }
-  .back-link {
-    font-size: 0.8rem;
-    color: #94a3b8;
-    text-decoration: none;
-    white-space: nowrap;
-  }
+  .header-sub { font-size: 0.72rem; color: #94a3b8; font-style: italic; }
+  audio { height: 36px; accent-color: var(--accent); flex-shrink: 0; }
+  .back-link { font-size: 0.8rem; color: #94a3b8; text-decoration: none; white-space: nowrap; }
   .back-link:hover { color: #60a5fa; }
 
   /* ── Toolbar ── */
@@ -69,30 +65,17 @@
     border-bottom: 1px solid #334155;
   }
   .toolbar input {
-    flex: 1;
-    max-width: 380px;
+    flex: 1; max-width: 380px;
     padding: 5px 11px;
-    border: 1px solid #475569;
-    border-radius: 6px;
-    background: #0f172a;
-    color: #e2e8f0;
-    font-size: 0.83rem;
-    outline: none;
+    border: 1px solid #475569; border-radius: 6px;
+    background: #0f172a; color: #e2e8f0; font-size: 0.83rem; outline: none;
   }
   .toolbar input:focus { border-color: var(--accent); }
   .toolbar input::placeholder { color: #64748b; }
-  .stats {
-    font-size: 0.72rem;
-    color: #64748b;
-    white-space: nowrap;
-  }
+  .stats { font-size: 0.72rem; color: #64748b; white-space: nowrap; }
 
   /* ── Scroll area ── */
-  .scroll-area {
-    flex: 1;
-    overflow-y: auto;
-    padding: 20px;
-  }
+  .scroll-area { flex: 1; overflow-y: auto; padding: 20px; }
   .scroll-area::-webkit-scrollbar { width: 6px; }
   .scroll-area::-webkit-scrollbar-track { background: transparent; }
   .scroll-area::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
@@ -107,68 +90,77 @@
     display: flex;
     align-items: center;
   }
-  .subtitle-text {
-    font-size: 0.9rem;
-    color: #e2e8f0;
-    line-height: 1.5;
-    font-style: italic;
-  }
-  .subtitle-text.empty { color: #475569; }
+  #subtitle-text { font-size: 0.88rem; color: #e2e8f0; line-height: 1.5; font-style: italic; }
+  #subtitle-text.empty { color: #475569; }
 
-  /* ── Transcript blocks ── */
-  .t-block {
-    background: #ffffff;
-    border: 1px solid #e2e8f0;
-    border-radius: 10px;
-    margin-bottom: 14px;
-    overflow: hidden;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
-    display: flex;
-  }
-  .t-block.block-active {
-    border-color: var(--accent);
-    box-shadow: 0 0 0 2px rgba(37,99,235,0.15);
-  }
-  .t-gutter {
-    background: #0f172a;
-    width: 52px;
-    flex-shrink: 0;
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
-    padding-top: 14px;
-    cursor: pointer;
-  }
-  .t-gutter:hover { background: #1e293b; }
-  .t-timestamp {
-    font-size: 0.7rem;
-    color: #64748b;
-    font-family: monospace;
-    font-weight: 600;
-    letter-spacing: 0.02em;
-  }
-  .t-gutter.gutter-active .t-timestamp { color: var(--accent); }
-  .t-body {
-    flex: 1;
+  /* ── Preamble ── */
+  .preamble-block {
+    background: var(--pre-bg);
+    border-left: 4px solid var(--pre-border);
+    border-radius: 0 8px 8px 0;
     padding: 12px 16px;
-    line-height: 1.75;
-    font-size: 0.92rem;
-    color: #1e293b;
+    margin-bottom: 20px;
+    font-size: 0.88rem;
+    color: #78350f;
+    font-style: italic;
+    line-height: 1.7;
   }
 
-  /* ── Segments ── */
-  .segment {
+  /* ── Q&A pair ── */
+  .qa-pair { margin-bottom: 20px; border-radius: 10px; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+
+  /* Question block */
+  .q-block {
+    background: var(--q-bg);
+    padding: 14px 18px;
+    display: flex; gap: 14px; align-items: flex-start;
     cursor: pointer;
-    border-radius: 3px;
-    transition: background 0.1s;
+    transition: background 0.15s;
   }
-  .segment:hover { background: #eff6ff; }
-  .segment.active {
-    background: #bfdbfe;
-    outline: 2px solid #3b82f6;
-    outline-offset: 1px;
-    border-radius: 3px;
+  .q-block:hover { background: #1d4ed8; }
+  .q-block.q-active { background: var(--active-q); }
+  .q-label {
+    font-size: 0.7rem; font-weight: 700;
+    color: var(--q-label);
+    background: rgba(96,165,250,0.15);
+    border: 1px solid rgba(96,165,250,0.3);
+    border-radius: 5px; padding: 3px 7px;
+    white-space: nowrap; margin-top: 2px; letter-spacing: 0.05em;
+    flex-shrink: 0;
   }
+  .q-body { flex: 1; font-size: 0.97rem; font-weight: 600; color: var(--q-text); line-height: 1.55; }
+
+  /* Answer block */
+  .a-block {
+    background: var(--a-bg);
+    border: 1px solid var(--a-border); border-top: none;
+    padding: 14px 18px;
+    display: flex; gap: 14px; align-items: flex-start;
+  }
+  .a-label {
+    font-size: 0.7rem; font-weight: 700;
+    color: var(--a-label);
+    background: #d1fae5; border: 1px solid #6ee7b7;
+    border-radius: 5px; padding: 3px 9px;
+    white-space: nowrap; margin-top: 2px; letter-spacing: 0.05em;
+    flex-shrink: 0;
+  }
+  .a-body { flex: 1; list-style: none; padding: 0; }
+  .a-body li {
+    padding: 4px 0 4px 14px;
+    border-left: 3px solid transparent;
+    line-height: 1.7; font-size: 0.92rem; color: #1e293b;
+    border-radius: 0 4px 4px 0;
+    transition: background 0.15s;
+  }
+  .a-body li:not(:last-child) { border-bottom: 1px solid #f1f5f9; }
+
+  /* ── Segments (clickable) ── */
+  .segment { cursor: pointer; border-radius: 3px; }
+  .q-seg:hover { background: rgba(255,255,255,0.18); }
+  .a-seg:hover { background: #eff6ff; }
+  .segment.active { background: #bfdbfe; outline: 2px solid #3b82f6; outline-offset: 1px; }
+  .a-body li.li-active { background: var(--active-a); border-left-color: var(--accent); }
   .segment.search-match  { background: #fef9c3; }
   .segment.search-current { background: #fde047; outline: 2px solid #ca8a04; }
 
@@ -187,166 +179,385 @@
 
 <div class="toolbar">
   <input type="text" id="search" placeholder="Search transcript&#8230; (Enter = next match)">
-  <span class="stats" id="stats">146 segments &nbsp;|&nbsp; <span id="dur">loading&#8230;</span></span>
+  <span class="stats" id="stats">17 questions &nbsp;|&nbsp; 146 segments &nbsp;|&nbsp; <span id="dur">loading&#8230;</span></span>
 </div>
 
 <div class="scroll-area" id="scroll-area">
-<div class="t-block">
-  <div class="t-gutter" data-start="0.0"><span class="t-timestamp">0:00</span></div>
-  <div class="t-body"><span class="segment" data-start="0.0" data-end="2.0" title="0:00">One lung ventilation. </span><span class="segment" data-start="2.0" data-end="7.44" title="0:02">This topic could come up in either the clinical anesthesia or clinical sciences' </span><span class="segment" data-start="7.44" data-end="8.44" title="0:07">viber. </span><span class="segment" data-start="8.44" data-end="11.52" title="0:08">What are the indications for one lung anesthesia? </span><span class="segment" data-start="11.52" data-end="17.8" title="0:11">You must have a structure to any question of this nature. </span><span class="segment" data-start="17.8" data-end="23.0" title="0:17">These can be divided into absolute and relative indications. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="23.0"><span class="t-timestamp">0:23</span></div>
-  <div class="t-body"><span class="segment" data-start="23.0" data-end="29.12" title="0:23">The absolute indications can be further classified into protection of the healthy lung from </span><span class="segment" data-start="29.12" data-end="35.56" title="0:29">pathology in the contralateral lung, including massive hemorrhage, infection or other fluid </span><span class="segment" data-start="35.56" data-end="42.96" title="0:35">such as lung lavage, or preventing ventilation to one lung, for example with a large bronchopluor </span><span class="segment" data-start="42.96" data-end="48.56" title="0:42">or fistula, or if there is a risk of rupture such as with a large bullet. </span><span class="segment" data-start="48.56" data-end="54.36" title="0:48">As well as these clinical indications, some surgical procedures such as video assisted </span><span class="segment" data-start="54.36" data-end="60.12" title="0:54">thoracoscopy are essentially impossible without one lung ventilation. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="60.12"><span class="t-timestamp">1:00</span></div>
-  <div class="t-body"><span class="segment" data-start="60.12" data-end="66.52" title="1:00">The relative indications are to improve surgical access, as opposed to lung retraction by the </span><span class="segment" data-start="66.52" data-end="68.4" title="1:06">surgeon. </span><span class="segment" data-start="68.4" data-end="75.2" title="1:08">These are indicated by the surgical approach and include nomenectomy, low-bectomy, thoracic </span><span class="segment" data-start="75.2" data-end="80.32" title="1:15">aneurysm repair, issoffagectomy and spinal surgery. </span><span class="segment" data-start="80.32" data-end="83.08" title="1:20">How would you achieve one lung ventilation? </span><span class="segment" data-start="83.08" data-end="88.16" title="1:23">If you have seen bronchial blockers being used, you can mention this, even if you would </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="88.16"><span class="t-timestamp">1:28</span></div>
-  <div class="t-body"><span class="segment" data-start="88.16" data-end="90.24" title="1:28">not use them yourself. </span><span class="segment" data-start="90.24" data-end="98.16" title="1:30">The examiners want a sense of clinical experience, as well as sound theoretical knowledge. </span><span class="segment" data-start="98.16" data-end="103.16" title="1:38">The most common method, and the one that I am familiar with, is the use of a double </span><span class="segment" data-start="103.16" data-end="106.04" title="1:43">lumen endobronchial tube. </span><span class="segment" data-start="106.04" data-end="111.96" title="1:46">There are also techniques where single lumen tubes are combined with bronchial blockers, </span><span class="segment" data-start="111.96" data-end="118.32" title="1:51">and in an emergency, deliberate endobronchial incubation, with a long single lumen tube </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="118.32"><span class="t-timestamp">1:58</span></div>
-  <div class="t-body"><span class="segment" data-start="118.32" data-end="120.4" title="1:58">has been used. </span><span class="segment" data-start="120.4" data-end="124.72" title="2:00">Can you think of advantages and disadvantages to the use of bronchial blockers? </span><span class="segment" data-start="124.72" data-end="129.36" title="2:04">Hopefully this type of question means the virus going well, and they are exploring your </span><span class="segment" data-start="129.36" data-end="134.24" title="2:09">knowledge a little further. </span><span class="segment" data-start="134.24" data-end="139.88" title="2:14">Bronchial blockers are helpful when there is abnormal airway anatomy, and it becomes difficult </span><span class="segment" data-start="139.88" data-end="143.36" title="2:19">or impossible to pass a double lumen tube. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="143.36"><span class="t-timestamp">2:23</span></div>
-  <div class="t-body"><span class="segment" data-start="143.36" data-end="146.56" title="2:23">They can be used for lower isolation. </span><span class="segment" data-start="146.56" data-end="152.24" title="2:26">In patients already intubated with a single lumen tube, the use of a bronchial blocker </span><span class="segment" data-start="152.24" data-end="157.48" title="2:32">avoids the need to change the tube at the beginning or the end of the case. </span><span class="segment" data-start="157.48" data-end="164.08" title="2:37">The disadvantages are that they give less reliable isolation, are more likely to become dislodged </span><span class="segment" data-start="164.08" data-end="170.12" title="2:44">intraoperatively, and they don't give easy access to the deflated lung, for example, </span><span class="segment" data-start="170.12" data-end="171.12" title="2:50">for suctioning. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="171.12"><span class="t-timestamp">2:51</span></div>
-  <div class="t-body"><span class="segment" data-start="171.12" data-end="175.24" title="2:51">Would you have a preference between a left or a right-sided double lumen tube? </span><span class="segment" data-start="175.24" data-end="179.52" title="2:55">This is hopefully straightforward. </span><span class="segment" data-start="179.52" data-end="185.8" title="2:59">Unless a right-sided tube was essential, for example, surgery on the left main bronchus, </span><span class="segment" data-start="185.8" data-end="190.28" title="3:05">I would always prefer to use a left-sided tube. </span><span class="segment" data-start="190.28" data-end="195.36" title="3:10">This is because the adult distance from the carina to the left upper lobe bronchus is </span><span class="segment" data-start="195.36" data-end="201.68" title="3:15">about 5cm, versus 2.5cm on the right. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="201.68"><span class="t-timestamp">3:21</span></div>
-  <div class="t-body"><span class="segment" data-start="201.68" data-end="207.48" title="3:21">So a left-side tube is much less likely to cause upper lobe obstruction. </span><span class="segment" data-start="207.48" data-end="213.24" title="3:27">What type of double lumen end a bronchial tube would you choose? </span><span class="segment" data-start="213.24" data-end="217.36" title="3:33">I have used the Malencroft Bronco cath type. </span><span class="segment" data-start="217.36" data-end="221.96" title="3:37">If you know lots of others, feel free to list, but don't waste time. </span><span class="segment" data-start="221.96" data-end="224.88" title="3:41">And the size? </span><span class="segment" data-start="224.88" data-end="231.76" title="3:44">This would range from a 32-french gauge for a small woman to a 41 for a large man. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="231.76"><span class="t-timestamp">3:51</span></div>
-  <div class="t-body"><span class="segment" data-start="231.76" data-end="237.76" title="3:51">How would you insert a double lumen endopronchial tube? </span><span class="segment" data-start="237.76" data-end="243.04" title="3:57">Preparations would include assessing the patient and in particular reviewing the notes and </span><span class="segment" data-start="243.04" data-end="246.48" title="4:03">any imaging for potential difficulties. </span><span class="segment" data-start="246.48" data-end="253.76" title="4:06">Underd preoperative checks of drugs and equipment, in this case also making sure that the Y connector </span><span class="segment" data-start="253.76" data-end="260.52" title="4:13">and 15mm connectors are connected the cracked way up, and that my trained assistant is </span><span class="segment" data-start="260.52" data-end="263.28" title="4:20">familiar with the equipment also. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="263.28"><span class="t-timestamp">4:23</span></div>
-  <div class="t-body"><span class="segment" data-start="263.28" data-end="268.48" title="4:23">I would insert the stillette to curve the tube, making sure the tip is not protruding </span><span class="segment" data-start="268.48" data-end="270.28" title="4:28">from the distal end. </span><span class="segment" data-start="270.28" data-end="275.72" title="4:30">Finally, I would make sure we had a working bronchuscope to check position, or assist with </span><span class="segment" data-start="275.72" data-end="278.04" title="4:35">a difficult insertion. </span><span class="segment" data-start="278.04" data-end="283.64" title="4:38">After induction of anesthesia and administration of neuromuscular blockade, I would insert </span><span class="segment" data-start="283.64" data-end="290.6" title="4:43">the tube with the endopronchial section facing anteriorly to pass through the cords, withdraw </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="290.6"><span class="t-timestamp">4:50</span></div>
-  <div class="t-body"><span class="segment" data-start="290.6" data-end="297.16" title="4:50">the stillette, and rotate the tube 90 degrees to the left and advance slowly until I felt </span><span class="segment" data-start="297.16" data-end="299.32" title="4:57">resistance. </span><span class="segment" data-start="299.32" data-end="304.76" title="4:59">Then I would inflate the tracheal cuff, and attempt to ventilate the patient's lungs </span><span class="segment" data-start="304.84" data-end="309.64" title="5:04">and check for a satisfactory end-to-tie's or carbon dioxide trace. </span><span class="segment" data-start="309.64" data-end="315.0" title="5:09">Do you know what depth to insert a double-lumen tube? </span><span class="segment" data-start="315.0" data-end="324.4" title="5:15">For adults 1.7 to 1.8 meters tall, the depth is usually 29cm to the incisors. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="324.4"><span class="t-timestamp">5:24</span></div>
-  <div class="t-body"><span class="segment" data-start="324.4" data-end="332.32" title="5:24">The depth is meant to increase or decrease by 1cm for every 10cm in height difference. </span><span class="segment" data-start="332.32" data-end="336.8" title="5:32">And how would you confirm correct position? </span><span class="segment" data-start="336.8" data-end="343.04" title="5:36">I would always use a bronchuscope for direct confirmation of tube position, and I would also </span><span class="segment" data-start="343.04" data-end="346.64" title="5:43">check after any change in the patient's position. </span><span class="segment" data-start="346.64" data-end="352.04" title="5:46">I would look first through the tracheal lumen to make sure I could visualize the carina, </span><span class="segment" data-start="352.04" data-end="357.4" title="5:52">and check that the end-to-bronchial lumen is in the correct bronchus, with the blue cuff </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="357.4"><span class="t-timestamp">5:57</span></div>
-  <div class="t-body"><span class="segment" data-start="357.4" data-end="360.12" title="5:57">just visible below the carina. </span><span class="segment" data-start="360.12" data-end="365.08" title="6:00">Write a picture of what you would actually do, assuming you have actually done this. </span><span class="segment" data-start="365.08" data-end="371.6" title="6:05">I would also then check within the bronchial lumen that the upper-lobe bronchus was patent. </span><span class="segment" data-start="371.6" data-end="376.44" title="6:11">With a right-sided tube, this would include checking the alignment of the tube's lateral </span><span class="segment" data-start="376.44" data-end="379.56" title="6:16">slit with the upper-lobe bronchus. </span><span class="segment" data-start="379.56" data-end="383.04" title="6:19">Why use a bronchuscope? </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="383.04"><span class="t-timestamp">6:23</span></div>
-  <div class="t-body"><span class="segment" data-start="383.04" data-end="389.8" title="6:23">In various studies, critical malpositioning has occurred in 25% of cases, and in one </span><span class="segment" data-start="389.8" data-end="396.36" title="6:29">NC pod report, malpositioning of the double-loom in tube was associated with 30% of its </span><span class="segment" data-start="396.36" data-end="398.4" title="6:36">off-ejectomy deaths. </span><span class="segment" data-start="398.4" data-end="401.44" title="6:38">And briefly, could you talk me through the clinical checks? </span><span class="segment" data-start="401.44" data-end="406.32" title="6:41">Hopefully, asking this question after you've gone for the bronchuscope option means that </span><span class="segment" data-start="406.32" data-end="410.04" title="6:46">things are going well, and you have plenty of time. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="410.04"><span class="t-timestamp">6:50</span></div>
-  <div class="t-body"><span class="segment" data-start="410.04" data-end="415.08" title="6:50">Use whatever technique you've been told, but don't get bogged down. </span><span class="segment" data-start="416.08" data-end="423.08" title="6:56">First, I would check the tracheal cuff as with any intubation to confirm correct placement </span><span class="segment" data-start="423.08" data-end="430.08" title="7:03">of our osculation and capnography, inflating the cuff until the leak at the mouth disappeared. </span><span class="segment" data-start="430.08" data-end="437.08" title="7:10">Next, I would clamp the tracheal lumen at the catheter mount and open the tracheal port. </span><span class="segment" data-start="437.08" data-end="443.08" title="7:17">Then, I would ventilate through the bronchial lumen with visual inspection and osculation </span><span class="segment" data-start="443.08" data-end="446.44" title="7:23">to confirm left-side ventilation. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="446.44"><span class="t-timestamp">7:26</span></div>
-  <div class="t-body"><span class="segment" data-start="446.44" data-end="452.16" title="7:26">I would then carefully inflate the bronchial cuff to a maximum of three mills of air while </span><span class="segment" data-start="452.16" data-end="455.68" title="7:32">listening for loss of the leak at the tracheal port. </span><span class="segment" data-start="455.68" data-end="462.28" title="7:35">Finally, I would also confirm with visual inspection and osculation that I could ventilate </span><span class="segment" data-start="462.28" data-end="468.56" title="7:42">both lungs with both cuffs inflated, and after clamping the bronchial lumen that I could </span><span class="segment" data-start="468.56" data-end="471.88" title="7:48">also isolate the contralateral lung. </span><span class="segment" data-start="471.88" data-end="478.12" title="7:51">What are the physiological consequences of one lung ventilation? </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="478.12"><span class="t-timestamp">7:58</span></div>
-  <div class="t-body"><span class="segment" data-start="478.12" data-end="482.48" title="7:58">This usually takes place in the lateral de-cubitus position. </span><span class="segment" data-start="482.48" data-end="486.36" title="8:02">The lower dependent lung is ventilated. </span><span class="segment" data-start="486.36" data-end="491.6" title="8:06">Gravity will aid perfusion, but may also lead to compression and pooling of secretions </span><span class="segment" data-start="491.6" data-end="494.44" title="8:11">causing hypoxemia. </span><span class="segment" data-start="494.44" data-end="500.64" title="8:14">The upper non-dependent lung, which is either the surgical site or facilitating surgical </span><span class="segment" data-start="500.64" data-end="504.12" title="8:20">access, is not ventilated. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="504.12"><span class="t-timestamp">8:24</span></div>
-  <div class="t-body"><span class="segment" data-start="504.12" data-end="509.64" title="8:24">Any blood flow to this lung or to areas of alveolar collapse in the ventilated lung leads </span><span class="segment" data-start="509.64" data-end="511.2" title="8:29">to a shunt. </span><span class="segment" data-start="511.2" data-end="516.96" title="8:31">The shunt fraction is estimated to be between 20-40%. </span><span class="segment" data-start="516.96" data-end="523.2" title="8:36">Surgical retraction should help reduce any shunt by direct compression of vessels. </span><span class="segment" data-start="523.2" data-end="528.48" title="8:43">Hypoxic vasoconstriction should also reduce shunt, but only by 50%. </span><span class="segment" data-start="528.48" data-end="530.92" title="8:48">How would you deflate the non-dependent lung? </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="530.92"><span class="t-timestamp">8:50</span></div>
-  <div class="t-body"><span class="segment" data-start="530.92" data-end="536.36" title="8:50">A surprisingly tricky question in the heat of aviver, if you've A there A, not done it </span><span class="segment" data-start="536.36" data-end="545.24" title="8:56">before, or B, not thought about it, and sometimes even if you have thought about it. </span><span class="segment" data-start="545.24" data-end="550.52" title="9:05">In communication with the surgical team, I would clamp the catheter mount to the non-dependent </span><span class="segment" data-start="550.52" data-end="554.24" title="9:10">lung and open the port to the same lung. </span><span class="segment" data-start="554.24" data-end="558.32" title="9:14">I would of course check with the surgeon that the lung was actually deflating. </span><span class="segment" data-start="558.36" data-end="565.04" title="9:18">How would you adjust ventilation when the non-dependent lung is deflated? </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="565.04"><span class="t-timestamp">9:25</span></div>
-  <div class="t-body"><span class="segment" data-start="565.04" data-end="572.2" title="9:25">I would maintain an inspired oxygen fraction of at least 0.5, increasing this if necessary. </span><span class="segment" data-start="572.2" data-end="577.28" title="9:32">Though the effects of the shunt mean that increasing this is unlikely to have a major impact, </span><span class="segment" data-start="577.28" data-end="582.44" title="9:37">I would keep the tidal volumes the same as for too long ventilation, up to a maximum </span><span class="segment" data-start="582.44" data-end="588.48" title="9:42">of about 10 mils per kilo, while trying to maintain peak airway pressures below 30 centimetres </span><span class="segment" data-start="588.48" data-end="590.2" title="9:48">of water. </span><span class="segment" data-start="590.2" data-end="594.92" title="9:50">And I would adjust the rate to try to maintain normal catnia. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="594.92"><span class="t-timestamp">9:54</span></div>
-  <div class="t-body"><span class="segment" data-start="594.92" data-end="599.56" title="9:54">How would you deal with hypoxemia? </span><span class="segment" data-start="599.56" data-end="604.64" title="9:59">Depending on the severity, there are a variety of strategies which can be grouped into those </span><span class="segment" data-start="604.64" data-end="609.88" title="10:04">addressing the dependent or non-dependent lung. </span><span class="segment" data-start="609.88" data-end="616.6" title="10:09">Increasing the dependent lung can be increased while avoiding excessive pressures and volumes. </span><span class="segment" data-start="616.6" data-end="621.12" title="10:16">Increasing the inspired oxygen concentration may be of use. </span><span class="segment" data-start="621.12" data-end="623.92" title="10:21">Succiting may help remove poor secretions. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="623.92"><span class="t-timestamp">10:23</span></div>
-  <div class="t-body"><span class="segment" data-start="623.92" data-end="628.76" title="10:23">If there is time, it may be possible to recheck the tube position with a broncuscope. </span><span class="segment" data-start="628.76" data-end="632.72" title="10:28">In particular, to check the upper-low broncus is not occluded. </span><span class="segment" data-start="632.72" data-end="638.76" title="10:32">Cautious application of positive end-expiratory pressure may improve oxygenation if a </span><span class="segment" data-start="638.76" data-end="644.56" title="10:38">telectasis is the main problem, though it may cause a worsening of any shunt by increasing </span><span class="segment" data-start="644.56" data-end="648.2" title="10:44">blood flow through the non-ventilated lung. </span><span class="segment" data-start="648.2" data-end="653.28" title="10:48">If ventilation appears adequate, there might be a problem with perfusion that is treatable </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="653.28"><span class="t-timestamp">10:53</span></div>
-  <div class="t-body"><span class="segment" data-start="653.28" data-end="656.88" title="10:53">with fluids and or vasopressors. </span><span class="segment" data-start="656.88" data-end="662.36" title="10:56">With the non-dependent lung, the strategy is to try to decrease the shunt. </span><span class="segment" data-start="662.36" data-end="667.92" title="11:02">This could be via insufflation of oxygen, for example through a suction catheter. </span><span class="segment" data-start="667.92" data-end="671.92" title="11:07">In the discussion with the surgeon, CPAP could be applied. </span><span class="segment" data-start="671.92" data-end="677.52" title="11:11">If the operation is a new monectomy, the surgeon can clamp the pulmonary artery. </span><span class="segment" data-start="677.52" data-end="682.88" title="11:17">Failing these measures, it may become necessary to ventilate the non-dependent lung. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="682.88"><span class="t-timestamp">11:22</span></div>
-  <div class="t-body"><span class="segment" data-start="682.88" data-end="688.0" title="11:22">What would you do if the patient became extremely hypoxic? </span><span class="segment" data-start="688.0" data-end="692.32" title="11:28">If senior support were not immediately available, I would send for them. </span><span class="segment" data-start="692.32" data-end="698.48" title="11:32">At the same time, I would hand ventilate the patient with 100% oxygen. </span><span class="segment" data-start="698.48" data-end="703.52" title="11:38">This would enable me to simultaneously treat them while assessing the adequacy of the </span><span class="segment" data-start="703.52" data-end="704.52" title="11:43">circuit. </span><span class="segment" data-start="704.52" data-end="709.76" title="11:44">Assuming that I found no major disconnection or obstruction to the oxygen supply, I would </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="709.76"><span class="t-timestamp">11:49</span></div>
-  <div class="t-body"><span class="segment" data-start="709.76" data-end="714.36" title="11:49">also be able to assess the patient's lung compliance before instituting the measures </span><span class="segment" data-start="714.36" data-end="715.68" title="11:54">I've already discussed. </span></div>
+<div class="preamble-block"><span class="segment a-seg" data-start="0.0" data-end="2.0" title="0:00">One lung ventilation. </span><span class="segment a-seg" data-start="2.0" data-end="7.44" title="0:02">This topic could come up in either the clinical anesthesia or clinical sciences' </span><span class="segment a-seg" data-start="7.44" data-end="8.44" title="0:07">viber. </span></div>
+<div class="qa-pair">
+<div class="q-block" data-start="8.44">
+  <div class="q-label">Q1</div>
+  <div class="q-body"><span class="segment q-seg" data-start="8.44" data-end="11.52" title="0:08">What are the indications for one lung anesthesia? </span></div>
 </div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="11.52" data-end="17.8" title="0:11">You must have a structure to any question of this nature. </span></li>
+<li><span class="segment a-seg" data-start="17.8" data-end="23.0" title="0:17">These can be divided into absolute and relative indications. </span></li>
+<li><span class="segment a-seg" data-start="23.0" data-end="29.12" title="0:23">The absolute indications can be further classified into protection of the healthy lung from </span></li>
+<li><span class="segment a-seg" data-start="29.12" data-end="35.56" title="0:29">pathology in the contralateral lung, including massive hemorrhage, infection or other fluid </span></li>
+<li><span class="segment a-seg" data-start="35.56" data-end="42.96" title="0:35">such as lung lavage, or preventing ventilation to one lung, for example with a large bronchopluor </span></li>
+<li><span class="segment a-seg" data-start="42.96" data-end="48.56" title="0:42">or fistula, or if there is a risk of rupture such as with a large bullet. </span></li>
+<li><span class="segment a-seg" data-start="48.56" data-end="54.36" title="0:48">As well as these clinical indications, some surgical procedures such as video assisted </span></li>
+<li><span class="segment a-seg" data-start="54.36" data-end="60.12" title="0:54">thoracoscopy are essentially impossible without one lung ventilation. </span></li>
+<li><span class="segment a-seg" data-start="60.12" data-end="66.52" title="1:00">The relative indications are to improve surgical access, as opposed to lung retraction by the </span></li>
+<li><span class="segment a-seg" data-start="66.52" data-end="68.4" title="1:06">surgeon. </span></li>
+<li><span class="segment a-seg" data-start="68.4" data-end="75.2" title="1:08">These are indicated by the surgical approach and include nomenectomy, low-bectomy, thoracic </span></li>
+<li><span class="segment a-seg" data-start="75.2" data-end="80.32" title="1:15">aneurysm repair, issoffagectomy and spinal surgery. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="80.32">
+  <div class="q-label">Q2</div>
+  <div class="q-body"><span class="segment q-seg" data-start="80.32" data-end="83.08" title="1:20">How would you achieve one lung ventilation? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="83.08" data-end="88.16" title="1:23">If you have seen bronchial blockers being used, you can mention this, even if you would </span></li>
+<li><span class="segment a-seg" data-start="88.16" data-end="90.24" title="1:28">not use them yourself. </span></li>
+<li><span class="segment a-seg" data-start="90.24" data-end="98.16" title="1:30">The examiners want a sense of clinical experience, as well as sound theoretical knowledge. </span></li>
+<li><span class="segment a-seg" data-start="98.16" data-end="103.16" title="1:38">The most common method, and the one that I am familiar with, is the use of a double </span></li>
+<li><span class="segment a-seg" data-start="103.16" data-end="106.04" title="1:43">lumen endobronchial tube. </span></li>
+<li><span class="segment a-seg" data-start="106.04" data-end="111.96" title="1:46">There are also techniques where single lumen tubes are combined with bronchial blockers, </span></li>
+<li><span class="segment a-seg" data-start="111.96" data-end="118.32" title="1:51">and in an emergency, deliberate endobronchial incubation, with a long single lumen tube </span></li>
+<li><span class="segment a-seg" data-start="118.32" data-end="120.4" title="1:58">has been used. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="120.4">
+  <div class="q-label">Q3</div>
+  <div class="q-body"><span class="segment q-seg" data-start="120.4" data-end="124.72" title="2:00">Can you think of advantages and disadvantages to the use of bronchial blockers? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="124.72" data-end="129.36" title="2:04">Hopefully this type of question means the virus going well, and they are exploring your </span></li>
+<li><span class="segment a-seg" data-start="129.36" data-end="134.24" title="2:09">knowledge a little further. </span></li>
+<li><span class="segment a-seg" data-start="134.24" data-end="139.88" title="2:14">Bronchial blockers are helpful when there is abnormal airway anatomy, and it becomes difficult </span></li>
+<li><span class="segment a-seg" data-start="139.88" data-end="143.36" title="2:19">or impossible to pass a double lumen tube. </span></li>
+<li><span class="segment a-seg" data-start="143.36" data-end="146.56" title="2:23">They can be used for lower isolation. </span></li>
+<li><span class="segment a-seg" data-start="146.56" data-end="152.24" title="2:26">In patients already intubated with a single lumen tube, the use of a bronchial blocker </span></li>
+<li><span class="segment a-seg" data-start="152.24" data-end="157.48" title="2:32">avoids the need to change the tube at the beginning or the end of the case. </span></li>
+<li><span class="segment a-seg" data-start="157.48" data-end="164.08" title="2:37">The disadvantages are that they give less reliable isolation, are more likely to become dislodged </span></li>
+<li><span class="segment a-seg" data-start="164.08" data-end="170.12" title="2:44">intraoperatively, and they don't give easy access to the deflated lung, for example, </span></li>
+<li><span class="segment a-seg" data-start="170.12" data-end="171.12" title="2:50">for suctioning. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="171.12">
+  <div class="q-label">Q4</div>
+  <div class="q-body"><span class="segment q-seg" data-start="171.12" data-end="175.24" title="2:51">Would you have a preference between a left or a right-sided double lumen tube? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="175.24" data-end="179.52" title="2:55">This is hopefully straightforward. </span></li>
+<li><span class="segment a-seg" data-start="179.52" data-end="185.8" title="2:59">Unless a right-sided tube was essential, for example, surgery on the left main bronchus, </span></li>
+<li><span class="segment a-seg" data-start="185.8" data-end="190.28" title="3:05">I would always prefer to use a left-sided tube. </span></li>
+<li><span class="segment a-seg" data-start="190.28" data-end="195.36" title="3:10">This is because the adult distance from the carina to the left upper lobe bronchus is </span></li>
+<li><span class="segment a-seg" data-start="195.36" data-end="201.68" title="3:15">about 5cm, versus 2.5cm on the right. </span></li>
+<li><span class="segment a-seg" data-start="201.68" data-end="207.48" title="3:21">So a left-side tube is much less likely to cause upper lobe obstruction. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="207.48">
+  <div class="q-label">Q5</div>
+  <div class="q-body"><span class="segment q-seg" data-start="207.48" data-end="213.24" title="3:27">What type of double lumen end a bronchial tube would you choose? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="213.24" data-end="217.36" title="3:33">I have used the Malencroft Bronco cath type. </span></li>
+<li><span class="segment a-seg" data-start="217.36" data-end="221.96" title="3:37">If you know lots of others, feel free to list, but don't waste time. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="221.96">
+  <div class="q-label">Q6</div>
+  <div class="q-body"><span class="segment q-seg" data-start="221.96" data-end="224.88" title="3:41">And the size? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="224.88" data-end="231.76" title="3:44">This would range from a 32-french gauge for a small woman to a 41 for a large man. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="231.76">
+  <div class="q-label">Q7</div>
+  <div class="q-body"><span class="segment q-seg" data-start="231.76" data-end="237.76" title="3:51">How would you insert a double lumen endopronchial tube? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="237.76" data-end="243.04" title="3:57">Preparations would include assessing the patient and in particular reviewing the notes and </span></li>
+<li><span class="segment a-seg" data-start="243.04" data-end="246.48" title="4:03">any imaging for potential difficulties. </span></li>
+<li><span class="segment a-seg" data-start="246.48" data-end="253.76" title="4:06">Underd preoperative checks of drugs and equipment, in this case also making sure that the Y connector </span></li>
+<li><span class="segment a-seg" data-start="253.76" data-end="260.52" title="4:13">and 15mm connectors are connected the cracked way up, and that my trained assistant is </span></li>
+<li><span class="segment a-seg" data-start="260.52" data-end="263.28" title="4:20">familiar with the equipment also. </span></li>
+<li><span class="segment a-seg" data-start="263.28" data-end="268.48" title="4:23">I would insert the stillette to curve the tube, making sure the tip is not protruding </span></li>
+<li><span class="segment a-seg" data-start="268.48" data-end="270.28" title="4:28">from the distal end. </span></li>
+<li><span class="segment a-seg" data-start="270.28" data-end="275.72" title="4:30">Finally, I would make sure we had a working bronchuscope to check position, or assist with </span></li>
+<li><span class="segment a-seg" data-start="275.72" data-end="278.04" title="4:35">a difficult insertion. </span></li>
+<li><span class="segment a-seg" data-start="278.04" data-end="283.64" title="4:38">After induction of anesthesia and administration of neuromuscular blockade, I would insert </span></li>
+<li><span class="segment a-seg" data-start="283.64" data-end="290.6" title="4:43">the tube with the endopronchial section facing anteriorly to pass through the cords, withdraw </span></li>
+<li><span class="segment a-seg" data-start="290.6" data-end="297.16" title="4:50">the stillette, and rotate the tube 90 degrees to the left and advance slowly until I felt </span></li>
+<li><span class="segment a-seg" data-start="297.16" data-end="299.32" title="4:57">resistance. </span></li>
+<li><span class="segment a-seg" data-start="299.32" data-end="304.76" title="4:59">Then I would inflate the tracheal cuff, and attempt to ventilate the patient's lungs </span></li>
+<li><span class="segment a-seg" data-start="304.84" data-end="309.64" title="5:04">and check for a satisfactory end-to-tie's or carbon dioxide trace. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="309.64">
+  <div class="q-label">Q8</div>
+  <div class="q-body"><span class="segment q-seg" data-start="309.64" data-end="315.0" title="5:09">Do you know what depth to insert a double-lumen tube? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="315.0" data-end="324.4" title="5:15">For adults 1.7 to 1.8 meters tall, the depth is usually 29cm to the incisors. </span></li>
+<li><span class="segment a-seg" data-start="324.4" data-end="332.32" title="5:24">The depth is meant to increase or decrease by 1cm for every 10cm in height difference. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="332.32">
+  <div class="q-label">Q9</div>
+  <div class="q-body"><span class="segment q-seg" data-start="332.32" data-end="336.8" title="5:32">And how would you confirm correct position? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="336.8" data-end="343.04" title="5:36">I would always use a bronchuscope for direct confirmation of tube position, and I would also </span></li>
+<li><span class="segment a-seg" data-start="343.04" data-end="346.64" title="5:43">check after any change in the patient's position. </span></li>
+<li><span class="segment a-seg" data-start="346.64" data-end="352.04" title="5:46">I would look first through the tracheal lumen to make sure I could visualize the carina, </span></li>
+<li><span class="segment a-seg" data-start="352.04" data-end="357.4" title="5:52">and check that the end-to-bronchial lumen is in the correct bronchus, with the blue cuff </span></li>
+<li><span class="segment a-seg" data-start="357.4" data-end="360.12" title="5:57">just visible below the carina. </span></li>
+<li><span class="segment a-seg" data-start="360.12" data-end="365.08" title="6:00">Write a picture of what you would actually do, assuming you have actually done this. </span></li>
+<li><span class="segment a-seg" data-start="365.08" data-end="371.6" title="6:05">I would also then check within the bronchial lumen that the upper-lobe bronchus was patent. </span></li>
+<li><span class="segment a-seg" data-start="371.6" data-end="376.44" title="6:11">With a right-sided tube, this would include checking the alignment of the tube's lateral </span></li>
+<li><span class="segment a-seg" data-start="376.44" data-end="379.56" title="6:16">slit with the upper-lobe bronchus. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="379.56">
+  <div class="q-label">Q10</div>
+  <div class="q-body"><span class="segment q-seg" data-start="379.56" data-end="383.04" title="6:19">Why use a bronchuscope? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="383.04" data-end="389.8" title="6:23">In various studies, critical malpositioning has occurred in 25% of cases, and in one </span></li>
+<li><span class="segment a-seg" data-start="389.8" data-end="396.36" title="6:29">NC pod report, malpositioning of the double-loom in tube was associated with 30% of its </span></li>
+<li><span class="segment a-seg" data-start="396.36" data-end="398.4" title="6:36">off-ejectomy deaths. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="398.4">
+  <div class="q-label">Q11</div>
+  <div class="q-body"><span class="segment q-seg" data-start="398.4" data-end="401.44" title="6:38">And briefly, could you talk me through the clinical checks? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="401.44" data-end="406.32" title="6:41">Hopefully, asking this question after you've gone for the bronchuscope option means that </span></li>
+<li><span class="segment a-seg" data-start="406.32" data-end="410.04" title="6:46">things are going well, and you have plenty of time. </span></li>
+<li><span class="segment a-seg" data-start="410.04" data-end="415.08" title="6:50">Use whatever technique you've been told, but don't get bogged down. </span></li>
+<li><span class="segment a-seg" data-start="416.08" data-end="423.08" title="6:56">First, I would check the tracheal cuff as with any intubation to confirm correct placement </span></li>
+<li><span class="segment a-seg" data-start="423.08" data-end="430.08" title="7:03">of our osculation and capnography, inflating the cuff until the leak at the mouth disappeared. </span></li>
+<li><span class="segment a-seg" data-start="430.08" data-end="437.08" title="7:10">Next, I would clamp the tracheal lumen at the catheter mount and open the tracheal port. </span></li>
+<li><span class="segment a-seg" data-start="437.08" data-end="443.08" title="7:17">Then, I would ventilate through the bronchial lumen with visual inspection and osculation </span></li>
+<li><span class="segment a-seg" data-start="443.08" data-end="446.44" title="7:23">to confirm left-side ventilation. </span></li>
+<li><span class="segment a-seg" data-start="446.44" data-end="452.16" title="7:26">I would then carefully inflate the bronchial cuff to a maximum of three mills of air while </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="452.16">
+  <div class="q-label">Q12</div>
+  <div class="q-body"><span class="segment q-seg" data-start="452.16" data-end="455.68" title="7:32">listening for loss of the leak at the tracheal port. </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="455.68" data-end="462.28" title="7:35">Finally, I would also confirm with visual inspection and osculation that I could ventilate </span></li>
+<li><span class="segment a-seg" data-start="462.28" data-end="468.56" title="7:42">both lungs with both cuffs inflated, and after clamping the bronchial lumen that I could </span></li>
+<li><span class="segment a-seg" data-start="468.56" data-end="471.88" title="7:48">also isolate the contralateral lung. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="471.88">
+  <div class="q-label">Q13</div>
+  <div class="q-body"><span class="segment q-seg" data-start="471.88" data-end="478.12" title="7:51">What are the physiological consequences of one lung ventilation? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="478.12" data-end="482.48" title="7:58">This usually takes place in the lateral de-cubitus position. </span></li>
+<li><span class="segment a-seg" data-start="482.48" data-end="486.36" title="8:02">The lower dependent lung is ventilated. </span></li>
+<li><span class="segment a-seg" data-start="486.36" data-end="491.6" title="8:06">Gravity will aid perfusion, but may also lead to compression and pooling of secretions </span></li>
+<li><span class="segment a-seg" data-start="491.6" data-end="494.44" title="8:11">causing hypoxemia. </span></li>
+<li><span class="segment a-seg" data-start="494.44" data-end="500.64" title="8:14">The upper non-dependent lung, which is either the surgical site or facilitating surgical </span></li>
+<li><span class="segment a-seg" data-start="500.64" data-end="504.12" title="8:20">access, is not ventilated. </span></li>
+<li><span class="segment a-seg" data-start="504.12" data-end="509.64" title="8:24">Any blood flow to this lung or to areas of alveolar collapse in the ventilated lung leads </span></li>
+<li><span class="segment a-seg" data-start="509.64" data-end="511.2" title="8:29">to a shunt. </span></li>
+<li><span class="segment a-seg" data-start="511.2" data-end="516.96" title="8:31">The shunt fraction is estimated to be between 20-40%. </span></li>
+<li><span class="segment a-seg" data-start="516.96" data-end="523.2" title="8:36">Surgical retraction should help reduce any shunt by direct compression of vessels. </span></li>
+<li><span class="segment a-seg" data-start="523.2" data-end="528.48" title="8:43">Hypoxic vasoconstriction should also reduce shunt, but only by 50%. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="528.48">
+  <div class="q-label">Q14</div>
+  <div class="q-body"><span class="segment q-seg" data-start="528.48" data-end="530.92" title="8:48">How would you deflate the non-dependent lung? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="530.92" data-end="536.36" title="8:50">A surprisingly tricky question in the heat of aviver, if you've A there A, not done it </span></li>
+<li><span class="segment a-seg" data-start="536.36" data-end="545.24" title="8:56">before, or B, not thought about it, and sometimes even if you have thought about it. </span></li>
+<li><span class="segment a-seg" data-start="545.24" data-end="550.52" title="9:05">In communication with the surgical team, I would clamp the catheter mount to the non-dependent </span></li>
+<li><span class="segment a-seg" data-start="550.52" data-end="554.24" title="9:10">lung and open the port to the same lung. </span></li>
+<li><span class="segment a-seg" data-start="554.24" data-end="558.32" title="9:14">I would of course check with the surgeon that the lung was actually deflating. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="558.36">
+  <div class="q-label">Q15</div>
+  <div class="q-body"><span class="segment q-seg" data-start="558.36" data-end="565.04" title="9:18">How would you adjust ventilation when the non-dependent lung is deflated? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="565.04" data-end="572.2" title="9:25">I would maintain an inspired oxygen fraction of at least 0.5, increasing this if necessary. </span></li>
+<li><span class="segment a-seg" data-start="572.2" data-end="577.28" title="9:32">Though the effects of the shunt mean that increasing this is unlikely to have a major impact, </span></li>
+<li><span class="segment a-seg" data-start="577.28" data-end="582.44" title="9:37">I would keep the tidal volumes the same as for too long ventilation, up to a maximum </span></li>
+<li><span class="segment a-seg" data-start="582.44" data-end="588.48" title="9:42">of about 10 mils per kilo, while trying to maintain peak airway pressures below 30 centimetres </span></li>
+<li><span class="segment a-seg" data-start="588.48" data-end="590.2" title="9:48">of water. </span></li>
+<li><span class="segment a-seg" data-start="590.2" data-end="594.92" title="9:50">And I would adjust the rate to try to maintain normal catnia. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="594.92">
+  <div class="q-label">Q16</div>
+  <div class="q-body"><span class="segment q-seg" data-start="594.92" data-end="599.56" title="9:54">How would you deal with hypoxemia? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="599.56" data-end="604.64" title="9:59">Depending on the severity, there are a variety of strategies which can be grouped into those </span></li>
+<li><span class="segment a-seg" data-start="604.64" data-end="609.88" title="10:04">addressing the dependent or non-dependent lung. </span></li>
+<li><span class="segment a-seg" data-start="609.88" data-end="616.6" title="10:09">Increasing the dependent lung can be increased while avoiding excessive pressures and volumes. </span></li>
+<li><span class="segment a-seg" data-start="616.6" data-end="621.12" title="10:16">Increasing the inspired oxygen concentration may be of use. </span></li>
+<li><span class="segment a-seg" data-start="621.12" data-end="623.92" title="10:21">Succiting may help remove poor secretions. </span></li>
+<li><span class="segment a-seg" data-start="623.92" data-end="628.76" title="10:23">If there is time, it may be possible to recheck the tube position with a broncuscope. </span></li>
+<li><span class="segment a-seg" data-start="628.76" data-end="632.72" title="10:28">In particular, to check the upper-low broncus is not occluded. </span></li>
+<li><span class="segment a-seg" data-start="632.72" data-end="638.76" title="10:32">Cautious application of positive end-expiratory pressure may improve oxygenation if a </span></li>
+<li><span class="segment a-seg" data-start="638.76" data-end="644.56" title="10:38">telectasis is the main problem, though it may cause a worsening of any shunt by increasing </span></li>
+<li><span class="segment a-seg" data-start="644.56" data-end="648.2" title="10:44">blood flow through the non-ventilated lung. </span></li>
+<li><span class="segment a-seg" data-start="648.2" data-end="653.28" title="10:48">If ventilation appears adequate, there might be a problem with perfusion that is treatable </span></li>
+<li><span class="segment a-seg" data-start="653.28" data-end="656.88" title="10:53">with fluids and or vasopressors. </span></li>
+<li><span class="segment a-seg" data-start="656.88" data-end="662.36" title="10:56">With the non-dependent lung, the strategy is to try to decrease the shunt. </span></li>
+<li><span class="segment a-seg" data-start="662.36" data-end="667.92" title="11:02">This could be via insufflation of oxygen, for example through a suction catheter. </span></li>
+<li><span class="segment a-seg" data-start="667.92" data-end="671.92" title="11:07">In the discussion with the surgeon, CPAP could be applied. </span></li>
+<li><span class="segment a-seg" data-start="671.92" data-end="677.52" title="11:11">If the operation is a new monectomy, the surgeon can clamp the pulmonary artery. </span></li>
+<li><span class="segment a-seg" data-start="677.52" data-end="682.88" title="11:17">Failing these measures, it may become necessary to ventilate the non-dependent lung. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="682.88">
+  <div class="q-label">Q17</div>
+  <div class="q-body"><span class="segment q-seg" data-start="682.88" data-end="688.0" title="11:22">What would you do if the patient became extremely hypoxic? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="688.0" data-end="692.32" title="11:28">If senior support were not immediately available, I would send for them. </span></li>
+<li><span class="segment a-seg" data-start="692.32" data-end="698.48" title="11:32">At the same time, I would hand ventilate the patient with 100% oxygen. </span></li>
+<li><span class="segment a-seg" data-start="698.48" data-end="703.52" title="11:38">This would enable me to simultaneously treat them while assessing the adequacy of the </span></li>
+<li><span class="segment a-seg" data-start="703.52" data-end="704.52" title="11:43">circuit. </span></li>
+<li><span class="segment a-seg" data-start="704.52" data-end="709.76" title="11:44">Assuming that I found no major disconnection or obstruction to the oxygen supply, I would </span></li>
+<li><span class="segment a-seg" data-start="709.76" data-end="714.36" title="11:49">also be able to assess the patient's lung compliance before instituting the measures </span></li>
+<li><span class="segment a-seg" data-start="714.36" data-end="715.68" title="11:54">I've already discussed. </span></li>
+  </ul>
+</div>
+</div>
+
 </div>
 
 <div class="subtitle-bar">
-  <span class="subtitle-text empty" id="subtitle-text">Play audio to see live subtitles&#8230;</span>
+  <span id="subtitle-text" class="empty">Play audio to see live subtitles&#8230;</span>
 </div>
 
 <script>
-
-const audio    = document.getElementById('audio');
-const allSegs  = Array.from(document.querySelectorAll('.segment'));
-const allBlocks = Array.from(document.querySelectorAll('.t-block'));
+const audio      = document.getElementById('audio');
+const allSegs    = Array.from(document.querySelectorAll('.segment'));
 const subtitleEl = document.getElementById('subtitle-text');
-let activeSegEl   = null;
-let activeBlockEl = null;
-let searchMatches = [];
-let searchIdx     = 0;
+let activeSegEl  = null;
+let searchMatches = [], searchIdx = 0;
 
-// Duration display
 audio.addEventListener('loadedmetadata', () => {
   const m = Math.floor(audio.duration / 60);
   const s = Math.floor(audio.duration %% 60).toString().padStart(2,'0');
   document.getElementById('dur').textContent = m + ':' + s;
 });
 
-// Seek helper
-function seekTo(t) {
-  audio.currentTime = t;
-  audio.play();
-}
+function seekTo(t) { audio.currentTime = t; audio.play(); }
 
-// Block gutter click
-document.querySelectorAll('.t-gutter').forEach(g => {
-  g.addEventListener('click', () => seekTo(parseFloat(g.dataset.start)));
+// Q-block header click
+document.querySelectorAll('.q-block').forEach(q => {
+  q.addEventListener('click', e => {
+    if (!e.target.classList.contains('segment')) seekTo(parseFloat(q.dataset.start));
+  });
 });
 
-// Segment click
+// Individual segment click
 allSegs.forEach(s => {
-  s.addEventListener('click', e => {
-    e.stopPropagation();
-    seekTo(parseFloat(s.dataset.start));
-  });
+  s.addEventListener('click', e => { e.stopPropagation(); seekTo(parseFloat(s.dataset.start)); });
 });
 
 // Real-time tracking
 audio.addEventListener('timeupdate', () => {
   const t = audio.currentTime;
-
-  // Find active segment (last one whose start <= t)
   let found = null;
   for (let i = allSegs.length - 1; i >= 0; i--) {
     if (parseFloat(allSegs[i].dataset.start) <= t) { found = allSegs[i]; break; }
   }
-
   if (found && found !== activeSegEl) {
-    // Clear previous
-    if (activeSegEl) activeSegEl.classList.remove('active');
-    if (activeBlockEl) {
-      activeBlockEl.classList.remove('block-active');
-      const pg = activeBlockEl.querySelector('.t-gutter');
-      if (pg) pg.classList.remove('gutter-active');
+    if (activeSegEl) {
+      activeSegEl.classList.remove('active');
+      const pli = activeSegEl.closest('li');
+      if (pli) pli.classList.remove('li-active');
+      const pq = activeSegEl.closest('.q-block');
+      if (pq) pq.classList.remove('q-active');
     }
-    // Set new
     found.classList.add('active');
-    const block = found.closest('.t-block');
-    if (block) {
-      block.classList.add('block-active');
-      const g = block.querySelector('.t-gutter');
-      if (g) g.classList.add('gutter-active');
-      activeBlockEl = block;
-    }
+    const li = found.closest('li');
+    if (li) li.classList.add('li-active');
+    const qb = found.closest('.q-block');
+    if (qb) qb.classList.add('q-active');
     activeSegEl = found;
 
-    // Update subtitle
     subtitleEl.textContent = found.textContent.trim();
     subtitleEl.classList.remove('empty');
 
-    // Auto-scroll (only when not searching)
-    if (!document.getElementById('search').value) {
+    if (!document.getElementById('search').value)
       found.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }
   }
 });
 
@@ -362,17 +573,13 @@ searchInput.addEventListener('keydown', e => {
     el.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
 });
-
 function runSearch() {
   const q = searchInput.value.trim().toLowerCase();
   allSegs.forEach(s => s.classList.remove('search-match','search-current'));
   searchMatches = [];
   if (!q) return;
   allSegs.forEach(s => {
-    if (s.textContent.toLowerCase().includes(q)) {
-      s.classList.add('search-match');
-      searchMatches.push(s);
-    }
+    if (s.textContent.toLowerCase().includes(q)) { s.classList.add('search-match'); searchMatches.push(s); }
   });
   if (!searchMatches.length) return;
   searchIdx = 0;

@@ -5,10 +5,19 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ENT — Obstructive Sleep Apnoea</title>
 <style>
-
   :root {
-    --accent:    #f59e0b;
-    --body-bg:   #f1f5f9;
+    --q-bg:       #1e3a5f;
+    --q-text:     #ffffff;
+    --q-label:    #60a5fa;
+    --a-bg:       #ffffff;
+    --a-border:   #e2e8f0;
+    --a-label:    #059669;
+    --active-q:   #f59e0b;
+    --active-a:   #dbeafe;
+    --accent:     #f59e0b;
+    --body-bg:    #f1f5f9;
+    --pre-bg:     #fef9c3;
+    --pre-border: #fcd34d;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
@@ -40,22 +49,9 @@
     margin-bottom: 4px;
     letter-spacing: 0.01em;
   }
-  .header-sub {
-    font-size: 0.72rem;
-    color: #94a3b8;
-    font-style: italic;
-  }
-  audio {
-    height: 36px;
-    accent-color: var(--accent);
-    flex-shrink: 0;
-  }
-  .back-link {
-    font-size: 0.8rem;
-    color: #94a3b8;
-    text-decoration: none;
-    white-space: nowrap;
-  }
+  .header-sub { font-size: 0.72rem; color: #94a3b8; font-style: italic; }
+  audio { height: 36px; accent-color: var(--accent); flex-shrink: 0; }
+  .back-link { font-size: 0.8rem; color: #94a3b8; text-decoration: none; white-space: nowrap; }
   .back-link:hover { color: #60a5fa; }
 
   /* ── Toolbar ── */
@@ -69,30 +65,17 @@
     border-bottom: 1px solid #334155;
   }
   .toolbar input {
-    flex: 1;
-    max-width: 380px;
+    flex: 1; max-width: 380px;
     padding: 5px 11px;
-    border: 1px solid #475569;
-    border-radius: 6px;
-    background: #0f172a;
-    color: #e2e8f0;
-    font-size: 0.83rem;
-    outline: none;
+    border: 1px solid #475569; border-radius: 6px;
+    background: #0f172a; color: #e2e8f0; font-size: 0.83rem; outline: none;
   }
   .toolbar input:focus { border-color: var(--accent); }
   .toolbar input::placeholder { color: #64748b; }
-  .stats {
-    font-size: 0.72rem;
-    color: #64748b;
-    white-space: nowrap;
-  }
+  .stats { font-size: 0.72rem; color: #64748b; white-space: nowrap; }
 
   /* ── Scroll area ── */
-  .scroll-area {
-    flex: 1;
-    overflow-y: auto;
-    padding: 20px;
-  }
+  .scroll-area { flex: 1; overflow-y: auto; padding: 20px; }
   .scroll-area::-webkit-scrollbar { width: 6px; }
   .scroll-area::-webkit-scrollbar-track { background: transparent; }
   .scroll-area::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
@@ -107,68 +90,77 @@
     display: flex;
     align-items: center;
   }
-  .subtitle-text {
-    font-size: 0.9rem;
-    color: #e2e8f0;
-    line-height: 1.5;
-    font-style: italic;
-  }
-  .subtitle-text.empty { color: #475569; }
+  #subtitle-text { font-size: 0.88rem; color: #e2e8f0; line-height: 1.5; font-style: italic; }
+  #subtitle-text.empty { color: #475569; }
 
-  /* ── Transcript blocks ── */
-  .t-block {
-    background: #ffffff;
-    border: 1px solid #e2e8f0;
-    border-radius: 10px;
-    margin-bottom: 14px;
-    overflow: hidden;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
-    display: flex;
-  }
-  .t-block.block-active {
-    border-color: var(--accent);
-    box-shadow: 0 0 0 2px rgba(37,99,235,0.15);
-  }
-  .t-gutter {
-    background: #0f172a;
-    width: 52px;
-    flex-shrink: 0;
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
-    padding-top: 14px;
-    cursor: pointer;
-  }
-  .t-gutter:hover { background: #1e293b; }
-  .t-timestamp {
-    font-size: 0.7rem;
-    color: #64748b;
-    font-family: monospace;
-    font-weight: 600;
-    letter-spacing: 0.02em;
-  }
-  .t-gutter.gutter-active .t-timestamp { color: var(--accent); }
-  .t-body {
-    flex: 1;
+  /* ── Preamble ── */
+  .preamble-block {
+    background: var(--pre-bg);
+    border-left: 4px solid var(--pre-border);
+    border-radius: 0 8px 8px 0;
     padding: 12px 16px;
-    line-height: 1.75;
-    font-size: 0.92rem;
-    color: #1e293b;
+    margin-bottom: 20px;
+    font-size: 0.88rem;
+    color: #78350f;
+    font-style: italic;
+    line-height: 1.7;
   }
 
-  /* ── Segments ── */
-  .segment {
+  /* ── Q&A pair ── */
+  .qa-pair { margin-bottom: 20px; border-radius: 10px; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+
+  /* Question block */
+  .q-block {
+    background: var(--q-bg);
+    padding: 14px 18px;
+    display: flex; gap: 14px; align-items: flex-start;
     cursor: pointer;
-    border-radius: 3px;
-    transition: background 0.1s;
+    transition: background 0.15s;
   }
-  .segment:hover { background: #eff6ff; }
-  .segment.active {
-    background: #bfdbfe;
-    outline: 2px solid #3b82f6;
-    outline-offset: 1px;
-    border-radius: 3px;
+  .q-block:hover { background: #1d4ed8; }
+  .q-block.q-active { background: var(--active-q); }
+  .q-label {
+    font-size: 0.7rem; font-weight: 700;
+    color: var(--q-label);
+    background: rgba(96,165,250,0.15);
+    border: 1px solid rgba(96,165,250,0.3);
+    border-radius: 5px; padding: 3px 7px;
+    white-space: nowrap; margin-top: 2px; letter-spacing: 0.05em;
+    flex-shrink: 0;
   }
+  .q-body { flex: 1; font-size: 0.97rem; font-weight: 600; color: var(--q-text); line-height: 1.55; }
+
+  /* Answer block */
+  .a-block {
+    background: var(--a-bg);
+    border: 1px solid var(--a-border); border-top: none;
+    padding: 14px 18px;
+    display: flex; gap: 14px; align-items: flex-start;
+  }
+  .a-label {
+    font-size: 0.7rem; font-weight: 700;
+    color: var(--a-label);
+    background: #d1fae5; border: 1px solid #6ee7b7;
+    border-radius: 5px; padding: 3px 9px;
+    white-space: nowrap; margin-top: 2px; letter-spacing: 0.05em;
+    flex-shrink: 0;
+  }
+  .a-body { flex: 1; list-style: none; padding: 0; }
+  .a-body li {
+    padding: 4px 0 4px 14px;
+    border-left: 3px solid transparent;
+    line-height: 1.7; font-size: 0.92rem; color: #1e293b;
+    border-radius: 0 4px 4px 0;
+    transition: background 0.15s;
+  }
+  .a-body li:not(:last-child) { border-bottom: 1px solid #f1f5f9; }
+
+  /* ── Segments (clickable) ── */
+  .segment { cursor: pointer; border-radius: 3px; }
+  .q-seg:hover { background: rgba(255,255,255,0.18); }
+  .a-seg:hover { background: #eff6ff; }
+  .segment.active { background: #bfdbfe; outline: 2px solid #3b82f6; outline-offset: 1px; }
+  .a-body li.li-active { background: var(--active-a); border-left-color: var(--accent); }
   .segment.search-match  { background: #fef9c3; }
   .segment.search-current { background: #fde047; outline: 2px solid #ca8a04; }
 
@@ -187,136 +179,285 @@
 
 <div class="toolbar">
   <input type="text" id="search" placeholder="Search transcript&#8230; (Enter = next match)">
-  <span class="stats" id="stats">89 segments &nbsp;|&nbsp; <span id="dur">loading&#8230;</span></span>
+  <span class="stats" id="stats">13 questions &nbsp;|&nbsp; 89 segments &nbsp;|&nbsp; <span id="dur">loading&#8230;</span></span>
 </div>
 
 <div class="scroll-area" id="scroll-area">
-<div class="t-block">
-  <div class="t-gutter" data-start="0.0"><span class="t-timestamp">0:00</span></div>
-  <div class="t-body"><span class="segment" data-start="0.0" data-end="2.0" title="0:00">Sleep apnea. </span><span class="segment" data-start="2.0" data-end="7.0" title="0:02">Sleep apnea is a topic that comes up frequently in the clinical viber. </span><span class="segment" data-start="7.0" data-end="14.0" title="0:07">You need to be confident with the definition, the clinical presentation and anesthetic management of the disease. </span><span class="segment" data-start="14.0" data-end="19.0" title="0:14">You are presented with a 56 year old obese smoker for an elective large inguinal hernia repair. </span><span class="segment" data-start="19.0" data-end="25.0" title="0:19">He also says to yourself as an obstructive sleep apnea, which was diagnosed two years ago. </span><span class="segment" data-start="25.0" data-end="29.0" title="0:25">He currently used the CPA machine overnight. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="30.0"><span class="t-timestamp">0:30</span></div>
-  <div class="t-body"><span class="segment" data-start="30.0" data-end="34.0" title="0:30">How common is sleep apnea? </span><span class="segment" data-start="34.0" data-end="44.0" title="0:34">About 3% of middle aged adults have clinically significant sleep apnea, with the male to female ratio of 2 to 1. </span><span class="segment" data-start="44.0" data-end="46.0" title="0:44">What are the causes of sleep apnea? </span><span class="segment" data-start="46.0" data-end="55.0" title="0:46">Try and classify your answer since the examiner has not yet said obstructive sleep apnea. </span><span class="segment" data-start="55.0" data-end="60.0" title="0:55">Sleep apnea can be caused by either central or obstructive factors. </span><span class="segment" data-start="60.0" data-end="71.0" title="1:00">Obstructive sleep apnea is characterized by persistent effort without airflow whilst in central apnea effort is absent. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="71.0"><span class="t-timestamp">1:11</span></div>
-  <div class="t-body"><span class="segment" data-start="71.0" data-end="83.0" title="1:11">Central sleep apnea is due to inadequate breathing because of reduced or absent respiratory effort due to disorders of ventilatory control or neuromuscular function. </span><span class="segment" data-start="83.0" data-end="96.0" title="1:23">Patients have reduced ventilatory capacity that is sufficient when awake, but insufficient when asleep, as the ventilatory drive decreases and compensatory mechanisms fail. </span><span class="segment" data-start="96.0" data-end="109.0" title="1:36">Causes of central sleep apnea include neuromuscular diseases such as polio or muscular dystrophy, central nervous system problems such as stroke, surgery and head injury, </span><span class="segment" data-start="109.0" data-end="115.0" title="1:49">and excessive respiratory load such as chyphoscaliosis. </span><span class="segment" data-start="115.0" data-end="122.0" title="1:55">Obstructive sleep apnea is due to pharyngeal collapse that occurs during sleep. </span><span class="segment" data-start="122.0" data-end="131.0" title="2:02">Vibration of the flaccid structures causes snoring which persists until sleep is interrupted and muscle tone restored. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="131.0"><span class="t-timestamp">2:11</span></div>
-  <div class="t-body"><span class="segment" data-start="131.0" data-end="141.0" title="2:11">Obstructive sleep apnea is associated with obesity, pharyngeal abnormalities and conditions such as hypothyroidism. </span><span class="segment" data-start="141.0" data-end="145.0" title="2:21">Sedative drugs and alcohol can precipitate the condition. </span><span class="segment" data-start="145.0" data-end="148.0" title="2:25">What are the symptoms of sleep apnea? </span><span class="segment" data-start="148.0" data-end="154.0" title="2:28">Try not to focus your answers solely on the respiratory symptoms. </span><span class="segment" data-start="154.0" data-end="162.0" title="2:34">The symptoms of sleep apnea are heavy snoring with occasional waking and excessive daytime somnolence. </span><span class="segment" data-start="162.0" data-end="167.0" title="2:42">Poor memory, mood changes and headaches may be described. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="167.0"><span class="t-timestamp">2:47</span></div>
-  <div class="t-body"><span class="segment" data-start="167.0" data-end="176.0" title="2:47">Gastroosophageal reflux disease, impotence and nocturnal epilepsy are also associated with sleep apnea. </span><span class="segment" data-start="176.0" data-end="182.0" title="2:56">The patient's partner may describe witnessing apneas and sudden awakenings with choking. </span><span class="segment" data-start="182.0" data-end="189.0" title="3:02">Children with sleep apnea may have behavioral problems and frequent colds. </span><span class="segment" data-start="189.0" data-end="193.0" title="3:09">What are the signs of sleep apnea? </span><span class="segment" data-start="193.0" data-end="202.0" title="3:13">The clinical signs of sleep apnea may be divided into airway, respiratory, cardiac and other systems. </span><span class="segment" data-start="202.0" data-end="214.0" title="3:22">The airway signs include maxillary hypoplasia, retronatia, nasal obstruction, increased nexocumference greater than 44 cm, </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="214.0"><span class="t-timestamp">3:34</span></div>
-  <div class="t-body"><span class="segment" data-start="214.0" data-end="222.0" title="3:34">changes to the soft tissues of the palate and decreased oropharangial dimensions. </span><span class="segment" data-start="222.0" data-end="234.0" title="3:42">The respiratory signs include cyanosis, hypoxia, CO2 tremor, bony and muscular chest wall abnormalities. </span><span class="segment" data-start="234.0" data-end="247.0" title="3:54">The cardiac signs include hypertension, arrhythmias and right-sided heart failure, raised JVP, pulsatile liver and peripheral edema. </span><span class="segment" data-start="247.0" data-end="262.0" title="4:07">Other systems that might indicate diseases associated with sleep apnea are the neurological and endocrine systems with diseases such as stroke, hypothyroidism or acromegally possibly being present. </span><span class="segment" data-start="262.0" data-end="265.0" title="4:22">And what are the potential consequences of sleep apnea? </span><span class="segment" data-start="265.0" data-end="271.0" title="4:25">As usual, folks, try and classify your answer here. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="271.0"><span class="t-timestamp">4:31</span></div>
-  <div class="t-body"><span class="segment" data-start="271.0" data-end="283.0" title="4:31">The sequelia of sleep apnea can be divided into neurological, cardiovascular, pulmonary, hematological, endocrine and gastrointestinal. </span><span class="segment" data-start="283.0" data-end="294.0" title="4:43">Neurological consequences include reduced memory and cognition, headaches, anxiety and depression and intracranial hypertension. </span><span class="segment" data-start="294.0" data-end="304.0" title="4:54">Cardiovascular include hypertension, ischemic heart disease, cerebral vascular disease and right heart failure. </span><span class="segment" data-start="304.0" data-end="312.0" title="5:04">Respiratory problems include hypoxemia, hypercapnia and pulmonary hypertension. </span><span class="segment" data-start="313.0" data-end="324.0" title="5:13">Long-term sleep apnea leads to desensitization of respiratory centers with increased reliance on hypoxic drive and eventually type 2 respiratory failure. </span><span class="segment" data-start="324.0" data-end="329.0" title="5:24">The hematological changes include polycythemia. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="329.0"><span class="t-timestamp">5:29</span></div>
-  <div class="t-body"><span class="segment" data-start="329.0" data-end="338.0" title="5:29">The endocrine changes include reductions in growth hormone and testosterone levels and predisposition to diabetes. </span><span class="segment" data-start="338.0" data-end="346.0" title="5:38">With regards to the gastrointestinal tract, the patient is at risk of developing gastroesophageal reflux disease. </span><span class="segment" data-start="346.0" data-end="351.0" title="5:46">Finally, sleep apnea is associated with poor wound healing. </span><span class="segment" data-start="351.0" data-end="356.0" title="5:51">How is obstructive sleep apnea diagnosed? </span><span class="segment" data-start="356.0" data-end="364.0" title="5:56">The diagnosis of obstructive sleep apnea is made after taking a full history and examining the patient. </span><span class="segment" data-start="364.0" data-end="369.0" title="6:04">The gold standard of investigation is overnight polysomnography. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="369.0"><span class="t-timestamp">6:09</span></div>
-  <div class="t-body"><span class="segment" data-start="369.0" data-end="388.0" title="6:09">This involves videoing a patient sleeping and recording measurements such as the EEG to stage the sleep cycle, ECG, pulse oximetry, mouth and nasal airflow, chest and abdominal movement, snoring level and apneas. </span><span class="segment" data-start="389.0" data-end="401.0" title="6:29">Apnea capposodes are described as 10 seconds or more of total cessation of airflow despite continuation of respiratory effort against a closed glottis. </span><span class="segment" data-start="401.0" data-end="408.0" title="6:41">More than five of these in an hour or 30 during a night are considered clinically significant. </span><span class="segment" data-start="408.0" data-end="412.0" title="6:48">It's possible that you might be sharing a set of sleep studies. </span><span class="segment" data-start="412.0" data-end="421.0" title="6:52">Stick to the basics, describe what you see. There may be a number of different variables as described above, so try and link them together. </span><span class="segment" data-start="421.0" data-end="426.0" title="7:01">What are the treatment options for obstructive sleep apnea? </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="426.0"><span class="t-timestamp">7:06</span></div>
-  <div class="t-body"><span class="segment" data-start="426.0" data-end="433.0" title="7:06">Treatment options are dependent on the severity of the condition and the preference of the patient. </span><span class="segment" data-start="433.0" data-end="441.0" title="7:13">Initial measures include weight loss, reduction of alcohol or sedative consumption and cessation of smoking. </span><span class="segment" data-start="441.0" data-end="447.0" title="7:21">CPAP is the treatment of choice for patients with moderate to severe sleep apnea. </span><span class="segment" data-start="447.0" data-end="455.0" title="7:27">It acts by splinting open the upper airway, reduces secondary complications and improves mortality rates. </span><span class="segment" data-start="455.0" data-end="460.0" title="7:35">More severe cases may require by-pap devices. </span><span class="segment" data-start="460.0" data-end="469.0" title="7:40">Some cases of obstructive sleep apnea may require upper airway imaging to guide whether surgical intervention will be of benefit. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="469.0"><span class="t-timestamp">7:49</span></div>
-  <div class="t-body"><span class="segment" data-start="469.0" data-end="478.0" title="7:49">Correction of nasal obstruction, tonselectomy and even tracheostomy has all been performed for sleep apnea patients. </span><span class="segment" data-start="478.0" data-end="483.0" title="7:58">What would be the general anesthetic considerations for this man? </span><span class="segment" data-start="483.0" data-end="488.0" title="8:03">Sleep apnea poses a number of challenges to the anesthetist. </span><span class="segment" data-start="488.0" data-end="496.0" title="8:08">Firstly, the altered respiratory drive, secondly, the potential difficult ventilation and intubation, </span><span class="segment" data-start="496.0" data-end="500.0" title="8:16">and thirdly, the multi-system effect of the sleep apnea. </span><span class="segment" data-start="500.0" data-end="504.0" title="8:20">How would you assess the patient? </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="504.0"><span class="t-timestamp">8:24</span></div>
-  <div class="t-body"><span class="segment" data-start="504.0" data-end="515.0" title="8:24">I would take a full history from the patient and his partner, paying particular attention to the sleep apnea and any systemic effects that may have occurred. </span><span class="segment" data-start="515.0" data-end="521.0" title="8:35">I would also want to discuss the inguinal hernia and the indications for the operation. </span><span class="segment" data-start="521.0" data-end="528.0" title="8:41">My examination would focus on assessing the patient's airway, respiratory and cardiovascular systems. </span><span class="segment" data-start="528.0" data-end="540.0" title="8:48">I would also want to see a recent full blood count and use an ease to assess for polycythemia and possible effects of anti-hypertensive treatment on renal function. </span><span class="segment" data-start="540.0" data-end="547.0" title="9:00">I would require an ECG looking for evidence of right heart failure and ischemic heart disease. </span><span class="segment" data-start="547.0" data-end="554.0" title="9:07">An echocardiogram and sleep studies might be indicated depending upon the severity of the patient's condition. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="554.0"><span class="t-timestamp">9:14</span></div>
-  <div class="t-body"><span class="segment" data-start="554.0" data-end="557.0" title="9:14">How would you need to test this man? </span><span class="segment" data-start="557.0" data-end="564.0" title="9:17">Try and picture yourself actually seeing and anesthetizing this patient. </span><span class="segment" data-start="564.0" data-end="569.0" title="9:24">I would avoid sedative premedication but would use an antacid. </span><span class="segment" data-start="569.0" data-end="583.0" title="9:29">If the inguinal hernia is large, it is likely that the surgeons will require muscle relaxation and given the increased risk of gastroesophageal reflux disease, I would plan to intubate the patient. </span><span class="segment" data-start="583.0" data-end="588.0" title="9:43">How I induced anesthesia would depend on my findings at the preoperative visit. </span><span class="segment" data-start="588.0" data-end="595.0" title="9:48">If the airway appeared difficult, I would consent the patient for an awake fiber optic intubation. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="595.0"><span class="t-timestamp">9:55</span></div>
-  <div class="t-body"><span class="segment" data-start="595.0" data-end="603.0" title="9:55">Otherwise, I would consider performing a rapid sequence induction due to the risks of gastroesophageal reflux disease. </span><span class="segment" data-start="603.0" data-end="610.0" title="10:03">Patients with sleep apnea can become harder to mask ventilate once the muscle relaxant has been administered. </span><span class="segment" data-start="610.0" data-end="616.0" title="10:10">Have a higher incidence of difficult intubation and airway complications such as luringus basm. </span><span class="segment" data-start="616.0" data-end="622.0" title="10:16">I would therefore request senior anaesthetic assistance for this case. </span><span class="segment" data-start="623.0" data-end="634.0" title="10:23">Considerations during maintenance of anesthesia would include judicious use of opiates and any sedative medication since this might lead to post-operative respiratory failure. </span><span class="segment" data-start="634.0" data-end="649.0" title="10:34">Wherever possible, I would use a regional or local anaesthetic technique to provide analgesia, and so either an epidural performed when the patient was awake or an ilio-inguinal nerve block would be options for this case. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="649.0"><span class="t-timestamp">10:49</span></div>
-  <div class="t-body"><span class="segment" data-start="649.0" data-end="658.0" title="10:49">I would aim to maintain normothermia, normocatnea, adequate oxygenation and hydration throughout the procedure. </span><span class="segment" data-start="658.0" data-end="663.0" title="10:58">What are your concerns for this patient in the post-operative period? </span><span class="segment" data-start="663.0" data-end="671.0" title="11:03">The patient will require his CPAP in the post-operative period. A high dependency bed should be available. </span><span class="segment" data-start="671.0" data-end="682.0" title="11:11">The patient should be nursed sitting and not in the supine position, and care should be taken to monitors oxygen saturation, respiratory rate and conscious level. </span><span class="segment" data-start="682.0" data-end="695.0" title="11:22">Patients with sleep apnea are at higher risk of developing deep vein thrombosis, and so I would consider starting clexane early with dead stockings and pneumatic foot pumps. </span></div>
+<div class="preamble-block"><span class="segment a-seg" data-start="0.0" data-end="2.0" title="0:00">Sleep apnea. </span><span class="segment a-seg" data-start="2.0" data-end="7.0" title="0:02">Sleep apnea is a topic that comes up frequently in the clinical viber. </span><span class="segment a-seg" data-start="7.0" data-end="14.0" title="0:07">You need to be confident with the definition, the clinical presentation and anesthetic management of the disease. </span><span class="segment a-seg" data-start="14.0" data-end="19.0" title="0:14">You are presented with a 56 year old obese smoker for an elective large inguinal hernia repair. </span><span class="segment a-seg" data-start="19.0" data-end="25.0" title="0:19">He also says to yourself as an obstructive sleep apnea, which was diagnosed two years ago. </span><span class="segment a-seg" data-start="25.0" data-end="29.0" title="0:25">He currently used the CPA machine overnight. </span></div>
+<div class="qa-pair">
+<div class="q-block" data-start="30.0">
+  <div class="q-label">Q1</div>
+  <div class="q-body"><span class="segment q-seg" data-start="30.0" data-end="34.0" title="0:30">How common is sleep apnea? </span></div>
 </div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="34.0" data-end="44.0" title="0:34">About 3% of middle aged adults have clinically significant sleep apnea, with the male to female ratio of 2 to 1. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="44.0">
+  <div class="q-label">Q2</div>
+  <div class="q-body"><span class="segment q-seg" data-start="44.0" data-end="46.0" title="0:44">What are the causes of sleep apnea? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="46.0" data-end="55.0" title="0:46">Try and classify your answer since the examiner has not yet said obstructive sleep apnea. </span></li>
+<li><span class="segment a-seg" data-start="55.0" data-end="60.0" title="0:55">Sleep apnea can be caused by either central or obstructive factors. </span></li>
+<li><span class="segment a-seg" data-start="60.0" data-end="71.0" title="1:00">Obstructive sleep apnea is characterized by persistent effort without airflow whilst in central apnea effort is absent. </span></li>
+<li><span class="segment a-seg" data-start="71.0" data-end="83.0" title="1:11">Central sleep apnea is due to inadequate breathing because of reduced or absent respiratory effort due to disorders of ventilatory control or neuromuscular function. </span></li>
+<li><span class="segment a-seg" data-start="83.0" data-end="96.0" title="1:23">Patients have reduced ventilatory capacity that is sufficient when awake, but insufficient when asleep, as the ventilatory drive decreases and compensatory mechanisms fail. </span></li>
+<li><span class="segment a-seg" data-start="96.0" data-end="109.0" title="1:36">Causes of central sleep apnea include neuromuscular diseases such as polio or muscular dystrophy, central nervous system problems such as stroke, surgery and head injury, </span></li>
+<li><span class="segment a-seg" data-start="109.0" data-end="115.0" title="1:49">and excessive respiratory load such as chyphoscaliosis. </span></li>
+<li><span class="segment a-seg" data-start="115.0" data-end="122.0" title="1:55">Obstructive sleep apnea is due to pharyngeal collapse that occurs during sleep. </span></li>
+<li><span class="segment a-seg" data-start="122.0" data-end="131.0" title="2:02">Vibration of the flaccid structures causes snoring which persists until sleep is interrupted and muscle tone restored. </span></li>
+<li><span class="segment a-seg" data-start="131.0" data-end="141.0" title="2:11">Obstructive sleep apnea is associated with obesity, pharyngeal abnormalities and conditions such as hypothyroidism. </span></li>
+<li><span class="segment a-seg" data-start="141.0" data-end="145.0" title="2:21">Sedative drugs and alcohol can precipitate the condition. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="145.0">
+  <div class="q-label">Q3</div>
+  <div class="q-body"><span class="segment q-seg" data-start="145.0" data-end="148.0" title="2:25">What are the symptoms of sleep apnea? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="148.0" data-end="154.0" title="2:28">Try not to focus your answers solely on the respiratory symptoms. </span></li>
+<li><span class="segment a-seg" data-start="154.0" data-end="162.0" title="2:34">The symptoms of sleep apnea are heavy snoring with occasional waking and excessive daytime somnolence. </span></li>
+<li><span class="segment a-seg" data-start="162.0" data-end="167.0" title="2:42">Poor memory, mood changes and headaches may be described. </span></li>
+<li><span class="segment a-seg" data-start="167.0" data-end="176.0" title="2:47">Gastroosophageal reflux disease, impotence and nocturnal epilepsy are also associated with sleep apnea. </span></li>
+<li><span class="segment a-seg" data-start="176.0" data-end="182.0" title="2:56">The patient's partner may describe witnessing apneas and sudden awakenings with choking. </span></li>
+<li><span class="segment a-seg" data-start="182.0" data-end="189.0" title="3:02">Children with sleep apnea may have behavioral problems and frequent colds. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="189.0">
+  <div class="q-label">Q4</div>
+  <div class="q-body"><span class="segment q-seg" data-start="189.0" data-end="193.0" title="3:09">What are the signs of sleep apnea? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="193.0" data-end="202.0" title="3:13">The clinical signs of sleep apnea may be divided into airway, respiratory, cardiac and other systems. </span></li>
+<li><span class="segment a-seg" data-start="202.0" data-end="214.0" title="3:22">The airway signs include maxillary hypoplasia, retronatia, nasal obstruction, increased nexocumference greater than 44 cm, </span></li>
+<li><span class="segment a-seg" data-start="214.0" data-end="222.0" title="3:34">changes to the soft tissues of the palate and decreased oropharangial dimensions. </span></li>
+<li><span class="segment a-seg" data-start="222.0" data-end="234.0" title="3:42">The respiratory signs include cyanosis, hypoxia, CO2 tremor, bony and muscular chest wall abnormalities. </span></li>
+<li><span class="segment a-seg" data-start="234.0" data-end="247.0" title="3:54">The cardiac signs include hypertension, arrhythmias and right-sided heart failure, raised JVP, pulsatile liver and peripheral edema. </span></li>
+<li><span class="segment a-seg" data-start="247.0" data-end="262.0" title="4:07">Other systems that might indicate diseases associated with sleep apnea are the neurological and endocrine systems with diseases such as stroke, hypothyroidism or acromegally possibly being present. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="262.0">
+  <div class="q-label">Q5</div>
+  <div class="q-body"><span class="segment q-seg" data-start="262.0" data-end="265.0" title="4:22">And what are the potential consequences of sleep apnea? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="265.0" data-end="271.0" title="4:25">As usual, folks, try and classify your answer here. </span></li>
+<li><span class="segment a-seg" data-start="271.0" data-end="283.0" title="4:31">The sequelia of sleep apnea can be divided into neurological, cardiovascular, pulmonary, hematological, endocrine and gastrointestinal. </span></li>
+<li><span class="segment a-seg" data-start="283.0" data-end="294.0" title="4:43">Neurological consequences include reduced memory and cognition, headaches, anxiety and depression and intracranial hypertension. </span></li>
+<li><span class="segment a-seg" data-start="294.0" data-end="304.0" title="4:54">Cardiovascular include hypertension, ischemic heart disease, cerebral vascular disease and right heart failure. </span></li>
+<li><span class="segment a-seg" data-start="304.0" data-end="312.0" title="5:04">Respiratory problems include hypoxemia, hypercapnia and pulmonary hypertension. </span></li>
+<li><span class="segment a-seg" data-start="313.0" data-end="324.0" title="5:13">Long-term sleep apnea leads to desensitization of respiratory centers with increased reliance on hypoxic drive and eventually type 2 respiratory failure. </span></li>
+<li><span class="segment a-seg" data-start="324.0" data-end="329.0" title="5:24">The hematological changes include polycythemia. </span></li>
+<li><span class="segment a-seg" data-start="329.0" data-end="338.0" title="5:29">The endocrine changes include reductions in growth hormone and testosterone levels and predisposition to diabetes. </span></li>
+<li><span class="segment a-seg" data-start="338.0" data-end="346.0" title="5:38">With regards to the gastrointestinal tract, the patient is at risk of developing gastroesophageal reflux disease. </span></li>
+<li><span class="segment a-seg" data-start="346.0" data-end="351.0" title="5:46">Finally, sleep apnea is associated with poor wound healing. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="351.0">
+  <div class="q-label">Q6</div>
+  <div class="q-body"><span class="segment q-seg" data-start="351.0" data-end="356.0" title="5:51">How is obstructive sleep apnea diagnosed? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="356.0" data-end="364.0" title="5:56">The diagnosis of obstructive sleep apnea is made after taking a full history and examining the patient. </span></li>
+<li><span class="segment a-seg" data-start="364.0" data-end="369.0" title="6:04">The gold standard of investigation is overnight polysomnography. </span></li>
+<li><span class="segment a-seg" data-start="369.0" data-end="388.0" title="6:09">This involves videoing a patient sleeping and recording measurements such as the EEG to stage the sleep cycle, ECG, pulse oximetry, mouth and nasal airflow, chest and abdominal movement, snoring level and apneas. </span></li>
+<li><span class="segment a-seg" data-start="389.0" data-end="401.0" title="6:29">Apnea capposodes are described as 10 seconds or more of total cessation of airflow despite continuation of respiratory effort against a closed glottis. </span></li>
+<li><span class="segment a-seg" data-start="401.0" data-end="408.0" title="6:41">More than five of these in an hour or 30 during a night are considered clinically significant. </span></li>
+<li><span class="segment a-seg" data-start="408.0" data-end="412.0" title="6:48">It's possible that you might be sharing a set of sleep studies. </span></li>
+<li><span class="segment a-seg" data-start="412.0" data-end="421.0" title="6:52">Stick to the basics, describe what you see. There may be a number of different variables as described above, so try and link them together. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="421.0">
+  <div class="q-label">Q7</div>
+  <div class="q-body"><span class="segment q-seg" data-start="421.0" data-end="426.0" title="7:01">What are the treatment options for obstructive sleep apnea? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="426.0" data-end="433.0" title="7:06">Treatment options are dependent on the severity of the condition and the preference of the patient. </span></li>
+<li><span class="segment a-seg" data-start="433.0" data-end="441.0" title="7:13">Initial measures include weight loss, reduction of alcohol or sedative consumption and cessation of smoking. </span></li>
+<li><span class="segment a-seg" data-start="441.0" data-end="447.0" title="7:21">CPAP is the treatment of choice for patients with moderate to severe sleep apnea. </span></li>
+<li><span class="segment a-seg" data-start="447.0" data-end="455.0" title="7:27">It acts by splinting open the upper airway, reduces secondary complications and improves mortality rates. </span></li>
+<li><span class="segment a-seg" data-start="455.0" data-end="460.0" title="7:35">More severe cases may require by-pap devices. </span></li>
+<li><span class="segment a-seg" data-start="460.0" data-end="469.0" title="7:40">Some cases of obstructive sleep apnea may require upper airway imaging to guide whether surgical intervention will be of benefit. </span></li>
+<li><span class="segment a-seg" data-start="469.0" data-end="478.0" title="7:49">Correction of nasal obstruction, tonselectomy and even tracheostomy has all been performed for sleep apnea patients. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="478.0">
+  <div class="q-label">Q8</div>
+  <div class="q-body"><span class="segment q-seg" data-start="478.0" data-end="483.0" title="7:58">What would be the general anesthetic considerations for this man? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="483.0" data-end="488.0" title="8:03">Sleep apnea poses a number of challenges to the anesthetist. </span></li>
+<li><span class="segment a-seg" data-start="488.0" data-end="496.0" title="8:08">Firstly, the altered respiratory drive, secondly, the potential difficult ventilation and intubation, </span></li>
+<li><span class="segment a-seg" data-start="496.0" data-end="500.0" title="8:16">and thirdly, the multi-system effect of the sleep apnea. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="500.0">
+  <div class="q-label">Q9</div>
+  <div class="q-body"><span class="segment q-seg" data-start="500.0" data-end="504.0" title="8:20">How would you assess the patient? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="504.0" data-end="515.0" title="8:24">I would take a full history from the patient and his partner, paying particular attention to the sleep apnea and any systemic effects that may have occurred. </span></li>
+<li><span class="segment a-seg" data-start="515.0" data-end="521.0" title="8:35">I would also want to discuss the inguinal hernia and the indications for the operation. </span></li>
+<li><span class="segment a-seg" data-start="521.0" data-end="528.0" title="8:41">My examination would focus on assessing the patient's airway, respiratory and cardiovascular systems. </span></li>
+<li><span class="segment a-seg" data-start="528.0" data-end="540.0" title="8:48">I would also want to see a recent full blood count and use an ease to assess for polycythemia and possible effects of anti-hypertensive treatment on renal function. </span></li>
+<li><span class="segment a-seg" data-start="540.0" data-end="547.0" title="9:00">I would require an ECG looking for evidence of right heart failure and ischemic heart disease. </span></li>
+<li><span class="segment a-seg" data-start="547.0" data-end="554.0" title="9:07">An echocardiogram and sleep studies might be indicated depending upon the severity of the patient's condition. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="554.0">
+  <div class="q-label">Q10</div>
+  <div class="q-body"><span class="segment q-seg" data-start="554.0" data-end="557.0" title="9:14">How would you need to test this man? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="557.0" data-end="564.0" title="9:17">Try and picture yourself actually seeing and anesthetizing this patient. </span></li>
+<li><span class="segment a-seg" data-start="564.0" data-end="569.0" title="9:24">I would avoid sedative premedication but would use an antacid. </span></li>
+<li><span class="segment a-seg" data-start="569.0" data-end="583.0" title="9:29">If the inguinal hernia is large, it is likely that the surgeons will require muscle relaxation and given the increased risk of gastroesophageal reflux disease, I would plan to intubate the patient. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="583.0">
+  <div class="q-label">Q11</div>
+  <div class="q-body"><span class="segment q-seg" data-start="583.0" data-end="588.0" title="9:43">How I induced anesthesia would depend on my findings at the preoperative visit. </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="588.0" data-end="595.0" title="9:48">If the airway appeared difficult, I would consent the patient for an awake fiber optic intubation. </span></li>
+<li><span class="segment a-seg" data-start="595.0" data-end="603.0" title="9:55">Otherwise, I would consider performing a rapid sequence induction due to the risks of gastroesophageal reflux disease. </span></li>
+<li><span class="segment a-seg" data-start="603.0" data-end="610.0" title="10:03">Patients with sleep apnea can become harder to mask ventilate once the muscle relaxant has been administered. </span></li>
+<li><span class="segment a-seg" data-start="610.0" data-end="616.0" title="10:10">Have a higher incidence of difficult intubation and airway complications such as luringus basm. </span></li>
+<li><span class="segment a-seg" data-start="616.0" data-end="622.0" title="10:16">I would therefore request senior anaesthetic assistance for this case. </span></li>
+<li><span class="segment a-seg" data-start="623.0" data-end="634.0" title="10:23">Considerations during maintenance of anesthesia would include judicious use of opiates and any sedative medication since this might lead to post-operative respiratory failure. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="634.0">
+  <div class="q-label">Q12</div>
+  <div class="q-body"><span class="segment q-seg" data-start="634.0" data-end="649.0" title="10:34">Wherever possible, I would use a regional or local anaesthetic technique to provide analgesia, and so either an epidural performed when the patient was awake or an ilio-inguinal nerve block would be options for this case. </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="649.0" data-end="658.0" title="10:49">I would aim to maintain normothermia, normocatnea, adequate oxygenation and hydration throughout the procedure. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="658.0">
+  <div class="q-label">Q13</div>
+  <div class="q-body"><span class="segment q-seg" data-start="658.0" data-end="663.0" title="10:58">What are your concerns for this patient in the post-operative period? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="663.0" data-end="671.0" title="11:03">The patient will require his CPAP in the post-operative period. A high dependency bed should be available. </span></li>
+<li><span class="segment a-seg" data-start="671.0" data-end="682.0" title="11:11">The patient should be nursed sitting and not in the supine position, and care should be taken to monitors oxygen saturation, respiratory rate and conscious level. </span></li>
+<li><span class="segment a-seg" data-start="682.0" data-end="695.0" title="11:22">Patients with sleep apnea are at higher risk of developing deep vein thrombosis, and so I would consider starting clexane early with dead stockings and pneumatic foot pumps. </span></li>
+  </ul>
+</div>
+</div>
+
 </div>
 
 <div class="subtitle-bar">
-  <span class="subtitle-text empty" id="subtitle-text">Play audio to see live subtitles&#8230;</span>
+  <span id="subtitle-text" class="empty">Play audio to see live subtitles&#8230;</span>
 </div>
 
 <script>
-
-const audio    = document.getElementById('audio');
-const allSegs  = Array.from(document.querySelectorAll('.segment'));
-const allBlocks = Array.from(document.querySelectorAll('.t-block'));
+const audio      = document.getElementById('audio');
+const allSegs    = Array.from(document.querySelectorAll('.segment'));
 const subtitleEl = document.getElementById('subtitle-text');
-let activeSegEl   = null;
-let activeBlockEl = null;
-let searchMatches = [];
-let searchIdx     = 0;
+let activeSegEl  = null;
+let searchMatches = [], searchIdx = 0;
 
-// Duration display
 audio.addEventListener('loadedmetadata', () => {
   const m = Math.floor(audio.duration / 60);
   const s = Math.floor(audio.duration %% 60).toString().padStart(2,'0');
   document.getElementById('dur').textContent = m + ':' + s;
 });
 
-// Seek helper
-function seekTo(t) {
-  audio.currentTime = t;
-  audio.play();
-}
+function seekTo(t) { audio.currentTime = t; audio.play(); }
 
-// Block gutter click
-document.querySelectorAll('.t-gutter').forEach(g => {
-  g.addEventListener('click', () => seekTo(parseFloat(g.dataset.start)));
+// Q-block header click
+document.querySelectorAll('.q-block').forEach(q => {
+  q.addEventListener('click', e => {
+    if (!e.target.classList.contains('segment')) seekTo(parseFloat(q.dataset.start));
+  });
 });
 
-// Segment click
+// Individual segment click
 allSegs.forEach(s => {
-  s.addEventListener('click', e => {
-    e.stopPropagation();
-    seekTo(parseFloat(s.dataset.start));
-  });
+  s.addEventListener('click', e => { e.stopPropagation(); seekTo(parseFloat(s.dataset.start)); });
 });
 
 // Real-time tracking
 audio.addEventListener('timeupdate', () => {
   const t = audio.currentTime;
-
-  // Find active segment (last one whose start <= t)
   let found = null;
   for (let i = allSegs.length - 1; i >= 0; i--) {
     if (parseFloat(allSegs[i].dataset.start) <= t) { found = allSegs[i]; break; }
   }
-
   if (found && found !== activeSegEl) {
-    // Clear previous
-    if (activeSegEl) activeSegEl.classList.remove('active');
-    if (activeBlockEl) {
-      activeBlockEl.classList.remove('block-active');
-      const pg = activeBlockEl.querySelector('.t-gutter');
-      if (pg) pg.classList.remove('gutter-active');
+    if (activeSegEl) {
+      activeSegEl.classList.remove('active');
+      const pli = activeSegEl.closest('li');
+      if (pli) pli.classList.remove('li-active');
+      const pq = activeSegEl.closest('.q-block');
+      if (pq) pq.classList.remove('q-active');
     }
-    // Set new
     found.classList.add('active');
-    const block = found.closest('.t-block');
-    if (block) {
-      block.classList.add('block-active');
-      const g = block.querySelector('.t-gutter');
-      if (g) g.classList.add('gutter-active');
-      activeBlockEl = block;
-    }
+    const li = found.closest('li');
+    if (li) li.classList.add('li-active');
+    const qb = found.closest('.q-block');
+    if (qb) qb.classList.add('q-active');
     activeSegEl = found;
 
-    // Update subtitle
     subtitleEl.textContent = found.textContent.trim();
     subtitleEl.classList.remove('empty');
 
-    // Auto-scroll (only when not searching)
-    if (!document.getElementById('search').value) {
+    if (!document.getElementById('search').value)
       found.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }
   }
 });
 
@@ -332,17 +473,13 @@ searchInput.addEventListener('keydown', e => {
     el.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
 });
-
 function runSearch() {
   const q = searchInput.value.trim().toLowerCase();
   allSegs.forEach(s => s.classList.remove('search-match','search-current'));
   searchMatches = [];
   if (!q) return;
   allSegs.forEach(s => {
-    if (s.textContent.toLowerCase().includes(q)) {
-      s.classList.add('search-match');
-      searchMatches.push(s);
-    }
+    if (s.textContent.toLowerCase().includes(q)) { s.classList.add('search-match'); searchMatches.push(s); }
   });
   if (!searchMatches.length) return;
   searchIdx = 0;

@@ -5,10 +5,19 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Neurosurgical Anaesthesia — Late Management of Spinal Cord Injury</title>
 <style>
-
   :root {
-    --accent:    #6366f1;
-    --body-bg:   #f1f5f9;
+    --q-bg:       #1e3a5f;
+    --q-text:     #ffffff;
+    --q-label:    #60a5fa;
+    --a-bg:       #ffffff;
+    --a-border:   #e2e8f0;
+    --a-label:    #059669;
+    --active-q:   #6366f1;
+    --active-a:   #dbeafe;
+    --accent:     #6366f1;
+    --body-bg:    #f1f5f9;
+    --pre-bg:     #fef9c3;
+    --pre-border: #fcd34d;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
@@ -40,22 +49,9 @@
     margin-bottom: 4px;
     letter-spacing: 0.01em;
   }
-  .header-sub {
-    font-size: 0.72rem;
-    color: #94a3b8;
-    font-style: italic;
-  }
-  audio {
-    height: 36px;
-    accent-color: var(--accent);
-    flex-shrink: 0;
-  }
-  .back-link {
-    font-size: 0.8rem;
-    color: #94a3b8;
-    text-decoration: none;
-    white-space: nowrap;
-  }
+  .header-sub { font-size: 0.72rem; color: #94a3b8; font-style: italic; }
+  audio { height: 36px; accent-color: var(--accent); flex-shrink: 0; }
+  .back-link { font-size: 0.8rem; color: #94a3b8; text-decoration: none; white-space: nowrap; }
   .back-link:hover { color: #60a5fa; }
 
   /* ── Toolbar ── */
@@ -69,30 +65,17 @@
     border-bottom: 1px solid #334155;
   }
   .toolbar input {
-    flex: 1;
-    max-width: 380px;
+    flex: 1; max-width: 380px;
     padding: 5px 11px;
-    border: 1px solid #475569;
-    border-radius: 6px;
-    background: #0f172a;
-    color: #e2e8f0;
-    font-size: 0.83rem;
-    outline: none;
+    border: 1px solid #475569; border-radius: 6px;
+    background: #0f172a; color: #e2e8f0; font-size: 0.83rem; outline: none;
   }
   .toolbar input:focus { border-color: var(--accent); }
   .toolbar input::placeholder { color: #64748b; }
-  .stats {
-    font-size: 0.72rem;
-    color: #64748b;
-    white-space: nowrap;
-  }
+  .stats { font-size: 0.72rem; color: #64748b; white-space: nowrap; }
 
   /* ── Scroll area ── */
-  .scroll-area {
-    flex: 1;
-    overflow-y: auto;
-    padding: 20px;
-  }
+  .scroll-area { flex: 1; overflow-y: auto; padding: 20px; }
   .scroll-area::-webkit-scrollbar { width: 6px; }
   .scroll-area::-webkit-scrollbar-track { background: transparent; }
   .scroll-area::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
@@ -107,68 +90,77 @@
     display: flex;
     align-items: center;
   }
-  .subtitle-text {
-    font-size: 0.9rem;
-    color: #e2e8f0;
-    line-height: 1.5;
-    font-style: italic;
-  }
-  .subtitle-text.empty { color: #475569; }
+  #subtitle-text { font-size: 0.88rem; color: #e2e8f0; line-height: 1.5; font-style: italic; }
+  #subtitle-text.empty { color: #475569; }
 
-  /* ── Transcript blocks ── */
-  .t-block {
-    background: #ffffff;
-    border: 1px solid #e2e8f0;
-    border-radius: 10px;
-    margin-bottom: 14px;
-    overflow: hidden;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
-    display: flex;
-  }
-  .t-block.block-active {
-    border-color: var(--accent);
-    box-shadow: 0 0 0 2px rgba(37,99,235,0.15);
-  }
-  .t-gutter {
-    background: #0f172a;
-    width: 52px;
-    flex-shrink: 0;
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
-    padding-top: 14px;
-    cursor: pointer;
-  }
-  .t-gutter:hover { background: #1e293b; }
-  .t-timestamp {
-    font-size: 0.7rem;
-    color: #64748b;
-    font-family: monospace;
-    font-weight: 600;
-    letter-spacing: 0.02em;
-  }
-  .t-gutter.gutter-active .t-timestamp { color: var(--accent); }
-  .t-body {
-    flex: 1;
+  /* ── Preamble ── */
+  .preamble-block {
+    background: var(--pre-bg);
+    border-left: 4px solid var(--pre-border);
+    border-radius: 0 8px 8px 0;
     padding: 12px 16px;
-    line-height: 1.75;
-    font-size: 0.92rem;
-    color: #1e293b;
+    margin-bottom: 20px;
+    font-size: 0.88rem;
+    color: #78350f;
+    font-style: italic;
+    line-height: 1.7;
   }
 
-  /* ── Segments ── */
-  .segment {
+  /* ── Q&A pair ── */
+  .qa-pair { margin-bottom: 20px; border-radius: 10px; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+
+  /* Question block */
+  .q-block {
+    background: var(--q-bg);
+    padding: 14px 18px;
+    display: flex; gap: 14px; align-items: flex-start;
     cursor: pointer;
-    border-radius: 3px;
-    transition: background 0.1s;
+    transition: background 0.15s;
   }
-  .segment:hover { background: #eff6ff; }
-  .segment.active {
-    background: #bfdbfe;
-    outline: 2px solid #3b82f6;
-    outline-offset: 1px;
-    border-radius: 3px;
+  .q-block:hover { background: #1d4ed8; }
+  .q-block.q-active { background: var(--active-q); }
+  .q-label {
+    font-size: 0.7rem; font-weight: 700;
+    color: var(--q-label);
+    background: rgba(96,165,250,0.15);
+    border: 1px solid rgba(96,165,250,0.3);
+    border-radius: 5px; padding: 3px 7px;
+    white-space: nowrap; margin-top: 2px; letter-spacing: 0.05em;
+    flex-shrink: 0;
   }
+  .q-body { flex: 1; font-size: 0.97rem; font-weight: 600; color: var(--q-text); line-height: 1.55; }
+
+  /* Answer block */
+  .a-block {
+    background: var(--a-bg);
+    border: 1px solid var(--a-border); border-top: none;
+    padding: 14px 18px;
+    display: flex; gap: 14px; align-items: flex-start;
+  }
+  .a-label {
+    font-size: 0.7rem; font-weight: 700;
+    color: var(--a-label);
+    background: #d1fae5; border: 1px solid #6ee7b7;
+    border-radius: 5px; padding: 3px 9px;
+    white-space: nowrap; margin-top: 2px; letter-spacing: 0.05em;
+    flex-shrink: 0;
+  }
+  .a-body { flex: 1; list-style: none; padding: 0; }
+  .a-body li {
+    padding: 4px 0 4px 14px;
+    border-left: 3px solid transparent;
+    line-height: 1.7; font-size: 0.92rem; color: #1e293b;
+    border-radius: 0 4px 4px 0;
+    transition: background 0.15s;
+  }
+  .a-body li:not(:last-child) { border-bottom: 1px solid #f1f5f9; }
+
+  /* ── Segments (clickable) ── */
+  .segment { cursor: pointer; border-radius: 3px; }
+  .q-seg:hover { background: rgba(255,255,255,0.18); }
+  .a-seg:hover { background: #eff6ff; }
+  .segment.active { background: #bfdbfe; outline: 2px solid #3b82f6; outline-offset: 1px; }
+  .a-body li.li-active { background: var(--active-a); border-left-color: var(--accent); }
   .segment.search-match  { background: #fef9c3; }
   .segment.search-current { background: #fde047; outline: 2px solid #ca8a04; }
 
@@ -187,148 +179,281 @@
 
 <div class="toolbar">
   <input type="text" id="search" placeholder="Search transcript&#8230; (Enter = next match)">
-  <span class="stats" id="stats">112 segments &nbsp;|&nbsp; <span id="dur">loading&#8230;</span></span>
+  <span class="stats" id="stats">11 questions &nbsp;|&nbsp; 112 segments &nbsp;|&nbsp; <span id="dur">loading&#8230;</span></span>
 </div>
 
 <div class="scroll-area" id="scroll-area">
-<div class="t-block">
-  <div class="t-gutter" data-start="0.0"><span class="t-timestamp">0:00</span></div>
-  <div class="t-body"><span class="segment" data-start="0.0" data-end="4.0" title="0:00">Late management of patients with spinal cord injury. </span><span class="segment" data-start="4.0" data-end="9.0" title="0:04">You were asked to anesthetize a patient seven months after complete transection of the cord </span><span class="segment" data-start="9.0" data-end="13.0" title="0:09">for the bridesmaid of an ischial tuberosity pressure saw. </span><span class="segment" data-start="13.0" data-end="16.0" title="0:13">He gives a history of significant reflux. </span><span class="segment" data-start="16.0" data-end="20.0" title="0:16">Please describe your anaesthetic management of the case. </span><span class="segment" data-start="20.0" data-end="26.0" title="0:20">I will divide this into pre, peri and post-operative phases. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="27.0"><span class="t-timestamp">0:27</span></div>
-  <div class="t-body"><span class="segment" data-start="27.0" data-end="33.0" title="0:27">The main anaesthetic issues specific to his spinal injury are the risk of hyperkalemia </span><span class="segment" data-start="33.0" data-end="38.0" title="0:33">with succcemethonium secondary to proliferation of astyle-coiline receptors </span><span class="segment" data-start="38.0" data-end="42.0" title="0:38">and also the risks of sympathetic dysreflexia. </span><span class="segment" data-start="42.0" data-end="46.0" title="0:42">Most anaesthetists will not have direct experience of these patients. </span><span class="segment" data-start="46.0" data-end="51.0" title="0:46">Therefore an awareness of the key issues should be sufficient for your answer. </span><span class="segment" data-start="51.0" data-end="55.0" title="0:51">By structuring your answer and flagging up the key points at the beginning, </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="55.0"><span class="t-timestamp">0:55</span></div>
-  <div class="t-body"><span class="segment" data-start="55.0" data-end="60.0" title="0:55">your examiner is able to relax, already confident in your approach. </span><span class="segment" data-start="60.0" data-end="65.0" title="1:00">Also, if time is short, you have already gained crucial marks. </span><span class="segment" data-start="65.0" data-end="70.0" title="1:05">What do you mean by the term dys or hyperreflexia? </span><span class="segment" data-start="70.0" data-end="77.0" title="1:10">This refers to a massive disordered autonomic response to stimuli below the level of the lesion. </span><span class="segment" data-start="77.0" data-end="83.0" title="1:17">In the awake patient, there can be headache, sweating and other sympathetic signs </span><span class="segment" data-start="83.0" data-end="85.0" title="1:23">such as hornas syndrome. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="85.0"><span class="t-timestamp">1:25</span></div>
-  <div class="t-body"><span class="segment" data-start="85.0" data-end="94.0" title="1:25">The most dangerous effect is hypertension, which may be severe and could lead to intra cranial hemorrhage. </span><span class="segment" data-start="94.0" data-end="100.0" title="1:34">It is more common with high spinal lesions and seems to be caused by both loss of descending inhibition </span><span class="segment" data-start="100.0" data-end="105.0" title="1:40">and altered neuronal connections within the distal spinal cord. </span><span class="segment" data-start="106.0" data-end="112.0" title="1:46">The most common triggers are from cordal root levels in particular bladder distension. </span><span class="segment" data-start="112.0" data-end="117.0" title="1:52">The patient may already be receiving prophylactic agents such as clonidine </span><span class="segment" data-start="117.0" data-end="121.0" title="1:57">to try and minimize cardiovascular instability. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="121.0"><span class="t-timestamp">2:01</span></div>
-  <div class="t-body"><span class="segment" data-start="121.0" data-end="123.0" title="2:01">This is a difficult one. </span><span class="segment" data-start="123.0" data-end="126.0" title="2:03">The pathophysiology of dysreflexia is tricky. </span><span class="segment" data-start="126.0" data-end="129.0" title="2:06">It should be enough that you are aware of it. </span><span class="segment" data-start="129.0" data-end="133.0" title="2:09">Please go on with your anaesthetic management. </span><span class="segment" data-start="133.0" data-end="141.0" title="2:13">Preoperatively, as well as the usual equipment and drug checks, I would clarify patient positioning with a surgeon. </span><span class="segment" data-start="141.0" data-end="146.0" title="2:21">Surgery may be conducted in the lateral or prone position. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="146.0"><span class="t-timestamp">2:26</span></div>
-  <div class="t-body"><span class="segment" data-start="146.0" data-end="150.0" title="2:26">I would review the notes looking for any operation since the injury, </span><span class="segment" data-start="150.0" data-end="153.0" title="2:30">in particular focusing on any airway difficulties, </span><span class="segment" data-start="153.0" data-end="157.0" title="2:33">whether the patient required a tracheostomy at the time of his injury, </span><span class="segment" data-start="157.0" data-end="163.0" title="2:37">ventilation difficulties, including the need for post-operative non-invasive or invasive ventilation, </span><span class="segment" data-start="163.0" data-end="166.0" title="2:43">and problems with dysreflexia. </span><span class="segment" data-start="166.0" data-end="174.0" title="2:46">I would take a full anaesthetic history and examine the patient, again focusing on these areas. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="174.0"><span class="t-timestamp">2:54</span></div>
-  <div class="t-body"><span class="segment" data-start="174.0" data-end="178.0" title="2:54">If he had spinal fixation, he may have limited neck movement. </span><span class="segment" data-start="178.0" data-end="186.0" title="2:58">Contractures may lead to difficulties with positioning, vascular access or surgical access. </span><span class="segment" data-start="186.0" data-end="192.0" title="3:06">In addition, I would ask him about muscular spasm, which could interfere with surgery. </span><span class="segment" data-start="192.0" data-end="196.0" title="3:12">You have mentioned he had a complete transection of the cord, </span><span class="segment" data-start="196.0" data-end="201.0" title="3:16">so I would expect him to have no sensation or motor power below that level. </span><span class="segment" data-start="201.0" data-end="206.0" title="3:21">I would clarify this with him and assess any requirement for analgesia. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="206.0"><span class="t-timestamp">3:26</span></div>
-  <div class="t-body"><span class="segment" data-start="206.0" data-end="211.0" title="3:26">I would also ask him about the symptoms of gastroesophageal reflux. </span><span class="segment" data-start="211.0" data-end="216.0" title="3:31">Most spinal cord injured patients have delayed gastric emptying, </span><span class="segment" data-start="216.0" data-end="219.0" title="3:36">but this does not usually lead to reflux. </span><span class="segment" data-start="219.0" data-end="224.0" title="3:39">I would prescribe antacid and pro-kinetic therapy. </span><span class="segment" data-start="224.0" data-end="231.0" title="3:44">With regards to the anaesthetic plan, after clarifying positioning and estimate of duration with a surgeon, </span><span class="segment" data-start="231.0" data-end="235.0" title="3:51">I would discuss with the patient the anaesthetic options. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="235.0"><span class="t-timestamp">3:55</span></div>
-  <div class="t-body"><span class="segment" data-start="235.0" data-end="246.0" title="3:55">These include sedation, width and without analgesia, central neural axial blockade and general anaesthesia. </span><span class="segment" data-start="246.0" data-end="252.0" title="4:06">If there were no symptoms and signs of autonomic dysreflexia and he had no sensation, </span><span class="segment" data-start="252.0" data-end="257.0" title="4:12">then the simplest approach would be for him to remain awake for the procedure. </span><span class="segment" data-start="257.0" data-end="262.0" title="4:17">And what if there was a history of dysreflexia? </span><span class="segment" data-start="262.0" data-end="272.0" title="4:22">If there was a history, or if the risk was unknown, I would suggest central neural axial blockade with a spinal anaesthetic to abolish the risk. </span><span class="segment" data-start="272.0" data-end="279.0" title="4:32">Your patient declined central neural axial blockade and asks to have a general. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="279.0"><span class="t-timestamp">4:39</span></div>
-  <div class="t-body"><span class="segment" data-start="279.0" data-end="287.0" title="4:39">In that case, I would first seek to clarify his concerns and any misconceptions about spinal anaesthesia, </span><span class="segment" data-start="287.0" data-end="290.0" title="4:47">for example if he fears worsening of his lesion. </span><span class="segment" data-start="290.0" data-end="296.0" title="4:50">Or whether he simply wishes to be asleep and light sedation might be sufficient. </span><span class="segment" data-start="296.0" data-end="307.0" title="4:56">If he still insisted on general anaesthesia, I would seek senior anaesthetic advice and explain the increased risk of aspiration with all of its consequences. </span><span class="segment" data-start="307.0" data-end="314.0" title="5:07">If consensus was that a general anaesthetic was reasonable, I would go ahead and prepare for that. </span><span class="segment" data-start="314.0" data-end="328.0" title="5:14">Given his C5 lesion, unless there was good evidence of previous and eventful operations without any respiratory complications, I would request a high dependency bed for his post-operative care. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="328.0"><span class="t-timestamp">5:28</span></div>
-  <div class="t-body"><span class="segment" data-start="328.0" data-end="331.0" title="5:28">And how would you ennecetize? </span><span class="segment" data-start="331.0" data-end="337.0" title="5:31">I will consider induction, maintenance, and then monitoring into position. </span><span class="segment" data-start="337.0" data-end="339.0" title="5:37">Induction first. </span><span class="segment" data-start="339.0" data-end="350.0" title="5:39">With trained assistance and all my usual checks, I would establish large bore intravenous access, which may be difficult with atrophic skin and poor blood flow. </span><span class="segment" data-start="350.0" data-end="361.0" title="5:50">I would connect a giving set with crystalloid, the patient may have a reduced blood volume depending on pre-optimization, so I would consider a fluid preload. </span><span class="segment" data-start="361.0" data-end="370.0" title="6:01">I would also have prepared an alpha agonist, such as metramanol, anticipating exaggerated hypotension on induction of anaesthesia. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="370.0"><span class="t-timestamp">6:10</span></div>
-  <div class="t-body"><span class="segment" data-start="370.0" data-end="376.0" title="6:10">As with any induction, I would have atropine in a pre-drawn syringe. </span><span class="segment" data-start="376.0" data-end="382.0" title="6:16">If there were any concerns regarding his airway, I would consider an awake fibre optic incubation. </span><span class="segment" data-start="382.0" data-end="394.0" title="6:22">Otherwise, I would carry out a modified rapid sequence induction with thio pentone and rockuronium as a rapid onset non-depolarizing alternative to succimethonium. </span><span class="segment" data-start="394.0" data-end="397.0" title="6:34">Why avoid succimethonium? </span><span class="segment" data-start="397.0" data-end="411.0" title="6:37">As I have mentioned, in spinal cord injury there is a proliferation of astyle-coline receptors throughout muscle, away from the motor end plate, presumably as a response to the sudden loss of efferent transmission. </span><span class="segment" data-start="412.0" data-end="423.0" title="6:52">The use of succimethonium can therefore lead to a massive depolarization with subsequent hyperkalemia and potentially arrhythmias and cardiac arrest. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="423.0"><span class="t-timestamp">7:03</span></div>
-  <div class="t-body"><span class="segment" data-start="423.0" data-end="426.0" title="7:03">Do you know how long the risk lasts? </span><span class="segment" data-start="426.0" data-end="438.0" title="7:06">I have read various estimates of the time period. Taking a cautious approach, I would avoid succimethonium from 48 hours after the initial event until 9 months later. </span><span class="segment" data-start="439.0" data-end="442.0" title="7:19">In all circumstances? </span><span class="segment" data-start="442.0" data-end="447.0" title="7:22">Every case would have to be assessed on a benefit-harm basis. </span><span class="segment" data-start="447.0" data-end="458.0" title="7:27">The potential for a hyperkalemic crisis within that time period is unquantifiable and is also treatable with calcium, insulin and so on. </span><span class="segment" data-start="458.0" data-end="466.0" title="7:38">It is possible to imagine a situation where an airway crisis leads to the need to use succimethonium despite the risk. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="466.0"><span class="t-timestamp">7:46</span></div>
-  <div class="t-body"><span class="segment" data-start="466.0" data-end="470.0" title="7:46">In an elective case such as this, it should be avoidable. </span><span class="segment" data-start="470.0" data-end="478.0" title="7:50">These types of questions are more about awareness of the issues and a safety-first approach than any one technique. </span><span class="segment" data-start="478.0" data-end="488.0" title="7:58">You successfully intubate the patient and after a period of initial hypertension the patient remains stable. You've described induction, please continue. </span><span class="segment" data-start="489.0" data-end="495.0" title="8:09">So on to maintenance. I would ensure adequate depth of anesthesia with sever fluorane. </span><span class="segment" data-start="495.0" data-end="501.0" title="8:15">I would use remyfentinal to aid in minimizing the risk of muscular spasm or dysreflexia. </span><span class="segment" data-start="501.0" data-end="514.0" title="8:21">I would use intermittent positive pressure ventilation to avoid the increased risk of hypoxia or hyperkalemia with his high-cord lesion while being alert for the exaggerated hypotension that may ensue. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="515.0"><span class="t-timestamp">8:35</span></div>
-  <div class="t-body"><span class="segment" data-start="515.0" data-end="523.0" title="8:35">The original question was, how would you enistatise? You don't have to go through all the possible methods, just what you would do. </span><span class="segment" data-start="523.0" data-end="532.0" title="8:43">Not everyone would use remyfentinal for example. Alternatively, a total intravenous anesthetic is equally appropriate. </span><span class="segment" data-start="532.0" data-end="542.0" title="8:52">I would actively warm the patient using forced air blankets and fluid warming as he is likely to have altered thermoregulation. </span><span class="segment" data-start="542.0" data-end="556.0" title="9:02">Though not anticipating major blood loss, I would frequently monitor the surgical site and replace any losses immediately as the patient will not have the normal cardiovascular compensatory mechanisms. </span><span class="segment" data-start="556.0" data-end="567.0" title="9:16">I would also have a rapid acting anti-hypertensive such as glycerine trinitrate immediately available for any episodes of dysreflexia. </span><span class="segment" data-start="568.0" data-end="583.0" title="9:28">As with any patient, I would take care with positioning using padding to protect sites vulnerable to pressure damage. In his case, there is a greater risk as I have already mentioned the skin is likely to be thin and relatively avascular. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="583.0"><span class="t-timestamp">9:43</span></div>
-  <div class="t-body"><span class="segment" data-start="583.0" data-end="592.0" title="9:43">As well as standard monitoring as per the association of anesthetist guidelines, I would consider using intra arterial blood pressure monitoring. </span><span class="segment" data-start="592.0" data-end="595.0" title="9:52">Would you use it or not? </span><span class="segment" data-start="596.0" data-end="605.0" title="9:56">As I do not have experience with these patients and given the concerns with both hypo and hyper-attensive crises, I would use it. </span><span class="segment" data-start="605.0" data-end="613.0" title="10:05">In fact, some centres with a large volume of surgery for these patients don't routinely employ intra arterial monitoring. </span><span class="segment" data-start="613.0" data-end="621.0" title="10:13">Given you have already explained the risks of cardiovascular instability, it's easier to justify using it. </span><span class="segment" data-start="621.0" data-end="631.0" title="10:21">Despite all your preventative measures, during surgery his blood pressure rapidly rises to 210 over 140mm of mercury. What would you do? </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="631.0"><span class="t-timestamp">10:31</span></div>
-  <div class="t-body"><span class="segment" data-start="631.0" data-end="644.0" title="10:31">This is almost certainly spinal dysreflexia. I would send for senior assistants, ensure the patient is adequately anesthetised, inform the surgeon and ask them to stop. </span><span class="segment" data-start="645.0" data-end="652.0" title="10:45">If withdrawing surgical stimulus did not reduce blood pressure, I would increase the depth of anesthesia. </span><span class="segment" data-start="652.0" data-end="663.0" title="10:52">If that failed to obviate the hypotensive crisis, I would administer intravenous glycerine trinitrativ available or via metadose or osprey. </span><span class="segment" data-start="663.0" data-end="668.0" title="11:03">I would also consider bladder distension and check for a blocked urinary catheter. </span><span class="segment" data-start="668.0" data-end="682.0" title="11:08">Intravenous GTN is faster acting and can be titrated to response. In high volume centres where central neural axial block aid is routinely used to obviate dysreflexia, hypotensive crises are rarely encountered. </span><span class="segment" data-start="682.0" data-end="687.0" title="11:22">A metadose spray may be kept immediately available in theatre. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="687.0"><span class="t-timestamp">11:27</span></div>
-  <div class="t-body"><span class="segment" data-start="687.0" data-end="691.0" title="11:27">Why use glycerine trinitrate? </span><span class="segment" data-start="692.0" data-end="705.0" title="11:32">For hypertension is likely to be paroxysmal and therefore any agent must be rapid acting and have a short duration of action. Another alternative is the alpha blocking agent phentolamine. </span><span class="segment" data-start="705.0" data-end="720.0" title="11:45">There is a large list of drugs in the literature that have been used to prevent or treat including recipe, doxasicin, niphetamine and clonidine, which treats spasm as well as hypertension, knowing one of these should be enough. </span><span class="segment" data-start="720.0" data-end="734.0" title="12:00">Having treated that crisis the patient once again stabilises. You are nearing the end of the case and the surgeon informs you he plans to infiltrate with some hupypivocane and adrenaline. What do you think about this? </span><span class="segment" data-start="734.0" data-end="743.0" title="12:14">I would suggest he doesn't use it. I would explain that the patient has a complete delusion and therefore will not require the analgesia. </span><span class="segment" data-start="743.0" data-end="757.0" title="12:23">If there was some concern about sensation then I would insist that he use plain local anaesthetic. The patient has already had one hypotensive crisis and is likely to have increased sensitivity to cataclyclic amines. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="757.0"><span class="t-timestamp">12:37</span></div>
-  <div class="t-body"><span class="segment" data-start="757.0" data-end="774.0" title="12:37">Cataclyclic amines levels nor adrenaline especially increased during dysreflexic episodes. However they remain lower than levels in normal non-ingered patients so the implication is an increased sensitivity is at least in part responsible for the crises. </span><span class="segment" data-start="774.0" data-end="785.0" title="12:54">Most anaesthetists should be able to answer the questions about acute management of the patient with a spinal cord injury so you would be expected to be confident and decisive in your answers here. </span><span class="segment" data-start="785.0" data-end="800.0" title="13:05">In contrast the second part of this viability deals with a specific patient group that many anaesthetists will never encounter. Don't worry if you don't know all the details especially the pathophysiology of autonomic dysreflexia. </span><span class="segment" data-start="800.0" data-end="814.0" title="13:20">Most of the issues you can work out for example the risk of respiratory compromise. An awareness of the issues surrounding succumbethanium and hypotensive crises should be sufficient. </span></div>
+<div class="preamble-block"><span class="segment a-seg" data-start="0.0" data-end="4.0" title="0:00">Late management of patients with spinal cord injury. </span><span class="segment a-seg" data-start="4.0" data-end="9.0" title="0:04">You were asked to anesthetize a patient seven months after complete transection of the cord </span><span class="segment a-seg" data-start="9.0" data-end="13.0" title="0:09">for the bridesmaid of an ischial tuberosity pressure saw. </span><span class="segment a-seg" data-start="13.0" data-end="16.0" title="0:13">He gives a history of significant reflux. </span><span class="segment a-seg" data-start="16.0" data-end="20.0" title="0:16">Please describe your anaesthetic management of the case. </span><span class="segment a-seg" data-start="20.0" data-end="26.0" title="0:20">I will divide this into pre, peri and post-operative phases. </span><span class="segment a-seg" data-start="27.0" data-end="33.0" title="0:27">The main anaesthetic issues specific to his spinal injury are the risk of hyperkalemia </span><span class="segment a-seg" data-start="33.0" data-end="38.0" title="0:33">with succcemethonium secondary to proliferation of astyle-coiline receptors </span><span class="segment a-seg" data-start="38.0" data-end="42.0" title="0:38">and also the risks of sympathetic dysreflexia. </span><span class="segment a-seg" data-start="42.0" data-end="46.0" title="0:42">Most anaesthetists will not have direct experience of these patients. </span><span class="segment a-seg" data-start="46.0" data-end="51.0" title="0:46">Therefore an awareness of the key issues should be sufficient for your answer. </span><span class="segment a-seg" data-start="51.0" data-end="55.0" title="0:51">By structuring your answer and flagging up the key points at the beginning, </span><span class="segment a-seg" data-start="55.0" data-end="60.0" title="0:55">your examiner is able to relax, already confident in your approach. </span><span class="segment a-seg" data-start="60.0" data-end="65.0" title="1:00">Also, if time is short, you have already gained crucial marks. </span></div>
+<div class="qa-pair">
+<div class="q-block" data-start="65.0">
+  <div class="q-label">Q1</div>
+  <div class="q-body"><span class="segment q-seg" data-start="65.0" data-end="70.0" title="1:05">What do you mean by the term dys or hyperreflexia? </span></div>
 </div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="70.0" data-end="77.0" title="1:10">This refers to a massive disordered autonomic response to stimuli below the level of the lesion. </span></li>
+<li><span class="segment a-seg" data-start="77.0" data-end="83.0" title="1:17">In the awake patient, there can be headache, sweating and other sympathetic signs </span></li>
+<li><span class="segment a-seg" data-start="83.0" data-end="85.0" title="1:23">such as hornas syndrome. </span></li>
+<li><span class="segment a-seg" data-start="85.0" data-end="94.0" title="1:25">The most dangerous effect is hypertension, which may be severe and could lead to intra cranial hemorrhage. </span></li>
+<li><span class="segment a-seg" data-start="94.0" data-end="100.0" title="1:34">It is more common with high spinal lesions and seems to be caused by both loss of descending inhibition </span></li>
+<li><span class="segment a-seg" data-start="100.0" data-end="105.0" title="1:40">and altered neuronal connections within the distal spinal cord. </span></li>
+<li><span class="segment a-seg" data-start="106.0" data-end="112.0" title="1:46">The most common triggers are from cordal root levels in particular bladder distension. </span></li>
+<li><span class="segment a-seg" data-start="112.0" data-end="117.0" title="1:52">The patient may already be receiving prophylactic agents such as clonidine </span></li>
+<li><span class="segment a-seg" data-start="117.0" data-end="121.0" title="1:57">to try and minimize cardiovascular instability. </span></li>
+<li><span class="segment a-seg" data-start="121.0" data-end="123.0" title="2:01">This is a difficult one. </span></li>
+<li><span class="segment a-seg" data-start="123.0" data-end="126.0" title="2:03">The pathophysiology of dysreflexia is tricky. </span></li>
+<li><span class="segment a-seg" data-start="126.0" data-end="129.0" title="2:06">It should be enough that you are aware of it. </span></li>
+<li><span class="segment a-seg" data-start="129.0" data-end="133.0" title="2:09">Please go on with your anaesthetic management. </span></li>
+<li><span class="segment a-seg" data-start="133.0" data-end="141.0" title="2:13">Preoperatively, as well as the usual equipment and drug checks, I would clarify patient positioning with a surgeon. </span></li>
+<li><span class="segment a-seg" data-start="141.0" data-end="146.0" title="2:21">Surgery may be conducted in the lateral or prone position. </span></li>
+<li><span class="segment a-seg" data-start="146.0" data-end="150.0" title="2:26">I would review the notes looking for any operation since the injury, </span></li>
+<li><span class="segment a-seg" data-start="150.0" data-end="153.0" title="2:30">in particular focusing on any airway difficulties, </span></li>
+<li><span class="segment a-seg" data-start="153.0" data-end="157.0" title="2:33">whether the patient required a tracheostomy at the time of his injury, </span></li>
+<li><span class="segment a-seg" data-start="157.0" data-end="163.0" title="2:37">ventilation difficulties, including the need for post-operative non-invasive or invasive ventilation, </span></li>
+<li><span class="segment a-seg" data-start="163.0" data-end="166.0" title="2:43">and problems with dysreflexia. </span></li>
+<li><span class="segment a-seg" data-start="166.0" data-end="174.0" title="2:46">I would take a full anaesthetic history and examine the patient, again focusing on these areas. </span></li>
+<li><span class="segment a-seg" data-start="174.0" data-end="178.0" title="2:54">If he had spinal fixation, he may have limited neck movement. </span></li>
+<li><span class="segment a-seg" data-start="178.0" data-end="186.0" title="2:58">Contractures may lead to difficulties with positioning, vascular access or surgical access. </span></li>
+<li><span class="segment a-seg" data-start="186.0" data-end="192.0" title="3:06">In addition, I would ask him about muscular spasm, which could interfere with surgery. </span></li>
+<li><span class="segment a-seg" data-start="192.0" data-end="196.0" title="3:12">You have mentioned he had a complete transection of the cord, </span></li>
+<li><span class="segment a-seg" data-start="196.0" data-end="201.0" title="3:16">so I would expect him to have no sensation or motor power below that level. </span></li>
+<li><span class="segment a-seg" data-start="201.0" data-end="206.0" title="3:21">I would clarify this with him and assess any requirement for analgesia. </span></li>
+<li><span class="segment a-seg" data-start="206.0" data-end="211.0" title="3:26">I would also ask him about the symptoms of gastroesophageal reflux. </span></li>
+<li><span class="segment a-seg" data-start="211.0" data-end="216.0" title="3:31">Most spinal cord injured patients have delayed gastric emptying, </span></li>
+<li><span class="segment a-seg" data-start="216.0" data-end="219.0" title="3:36">but this does not usually lead to reflux. </span></li>
+<li><span class="segment a-seg" data-start="219.0" data-end="224.0" title="3:39">I would prescribe antacid and pro-kinetic therapy. </span></li>
+<li><span class="segment a-seg" data-start="224.0" data-end="231.0" title="3:44">With regards to the anaesthetic plan, after clarifying positioning and estimate of duration with a surgeon, </span></li>
+<li><span class="segment a-seg" data-start="231.0" data-end="235.0" title="3:51">I would discuss with the patient the anaesthetic options. </span></li>
+<li><span class="segment a-seg" data-start="235.0" data-end="246.0" title="3:55">These include sedation, width and without analgesia, central neural axial blockade and general anaesthesia. </span></li>
+<li><span class="segment a-seg" data-start="246.0" data-end="252.0" title="4:06">If there were no symptoms and signs of autonomic dysreflexia and he had no sensation, </span></li>
+<li><span class="segment a-seg" data-start="252.0" data-end="257.0" title="4:12">then the simplest approach would be for him to remain awake for the procedure. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="257.0">
+  <div class="q-label">Q2</div>
+  <div class="q-body"><span class="segment q-seg" data-start="257.0" data-end="262.0" title="4:17">And what if there was a history of dysreflexia? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="262.0" data-end="272.0" title="4:22">If there was a history, or if the risk was unknown, I would suggest central neural axial blockade with a spinal anaesthetic to abolish the risk. </span></li>
+<li><span class="segment a-seg" data-start="272.0" data-end="279.0" title="4:32">Your patient declined central neural axial blockade and asks to have a general. </span></li>
+<li><span class="segment a-seg" data-start="279.0" data-end="287.0" title="4:39">In that case, I would first seek to clarify his concerns and any misconceptions about spinal anaesthesia, </span></li>
+<li><span class="segment a-seg" data-start="287.0" data-end="290.0" title="4:47">for example if he fears worsening of his lesion. </span></li>
+<li><span class="segment a-seg" data-start="290.0" data-end="296.0" title="4:50">Or whether he simply wishes to be asleep and light sedation might be sufficient. </span></li>
+<li><span class="segment a-seg" data-start="296.0" data-end="307.0" title="4:56">If he still insisted on general anaesthesia, I would seek senior anaesthetic advice and explain the increased risk of aspiration with all of its consequences. </span></li>
+<li><span class="segment a-seg" data-start="307.0" data-end="314.0" title="5:07">If consensus was that a general anaesthetic was reasonable, I would go ahead and prepare for that. </span></li>
+<li><span class="segment a-seg" data-start="314.0" data-end="328.0" title="5:14">Given his C5 lesion, unless there was good evidence of previous and eventful operations without any respiratory complications, I would request a high dependency bed for his post-operative care. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="328.0">
+  <div class="q-label">Q3</div>
+  <div class="q-body"><span class="segment q-seg" data-start="328.0" data-end="331.0" title="5:28">And how would you ennecetize? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="331.0" data-end="337.0" title="5:31">I will consider induction, maintenance, and then monitoring into position. </span></li>
+<li><span class="segment a-seg" data-start="337.0" data-end="339.0" title="5:37">Induction first. </span></li>
+<li><span class="segment a-seg" data-start="339.0" data-end="350.0" title="5:39">With trained assistance and all my usual checks, I would establish large bore intravenous access, which may be difficult with atrophic skin and poor blood flow. </span></li>
+<li><span class="segment a-seg" data-start="350.0" data-end="361.0" title="5:50">I would connect a giving set with crystalloid, the patient may have a reduced blood volume depending on pre-optimization, so I would consider a fluid preload. </span></li>
+<li><span class="segment a-seg" data-start="361.0" data-end="370.0" title="6:01">I would also have prepared an alpha agonist, such as metramanol, anticipating exaggerated hypotension on induction of anaesthesia. </span></li>
+<li><span class="segment a-seg" data-start="370.0" data-end="376.0" title="6:10">As with any induction, I would have atropine in a pre-drawn syringe. </span></li>
+<li><span class="segment a-seg" data-start="376.0" data-end="382.0" title="6:16">If there were any concerns regarding his airway, I would consider an awake fibre optic incubation. </span></li>
+<li><span class="segment a-seg" data-start="382.0" data-end="394.0" title="6:22">Otherwise, I would carry out a modified rapid sequence induction with thio pentone and rockuronium as a rapid onset non-depolarizing alternative to succimethonium. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="394.0">
+  <div class="q-label">Q4</div>
+  <div class="q-body"><span class="segment q-seg" data-start="394.0" data-end="397.0" title="6:34">Why avoid succimethonium? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="397.0" data-end="411.0" title="6:37">As I have mentioned, in spinal cord injury there is a proliferation of astyle-coline receptors throughout muscle, away from the motor end plate, presumably as a response to the sudden loss of efferent transmission. </span></li>
+<li><span class="segment a-seg" data-start="412.0" data-end="423.0" title="6:52">The use of succimethonium can therefore lead to a massive depolarization with subsequent hyperkalemia and potentially arrhythmias and cardiac arrest. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="423.0">
+  <div class="q-label">Q5</div>
+  <div class="q-body"><span class="segment q-seg" data-start="423.0" data-end="426.0" title="7:03">Do you know how long the risk lasts? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="426.0" data-end="438.0" title="7:06">I have read various estimates of the time period. Taking a cautious approach, I would avoid succimethonium from 48 hours after the initial event until 9 months later. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="439.0">
+  <div class="q-label">Q6</div>
+  <div class="q-body"><span class="segment q-seg" data-start="439.0" data-end="442.0" title="7:19">In all circumstances? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="442.0" data-end="447.0" title="7:22">Every case would have to be assessed on a benefit-harm basis. </span></li>
+<li><span class="segment a-seg" data-start="447.0" data-end="458.0" title="7:27">The potential for a hyperkalemic crisis within that time period is unquantifiable and is also treatable with calcium, insulin and so on. </span></li>
+<li><span class="segment a-seg" data-start="458.0" data-end="466.0" title="7:38">It is possible to imagine a situation where an airway crisis leads to the need to use succimethonium despite the risk. </span></li>
+<li><span class="segment a-seg" data-start="466.0" data-end="470.0" title="7:46">In an elective case such as this, it should be avoidable. </span></li>
+<li><span class="segment a-seg" data-start="470.0" data-end="478.0" title="7:50">These types of questions are more about awareness of the issues and a safety-first approach than any one technique. </span></li>
+<li><span class="segment a-seg" data-start="478.0" data-end="488.0" title="7:58">You successfully intubate the patient and after a period of initial hypertension the patient remains stable. You've described induction, please continue. </span></li>
+<li><span class="segment a-seg" data-start="489.0" data-end="495.0" title="8:09">So on to maintenance. I would ensure adequate depth of anesthesia with sever fluorane. </span></li>
+<li><span class="segment a-seg" data-start="495.0" data-end="501.0" title="8:15">I would use remyfentinal to aid in minimizing the risk of muscular spasm or dysreflexia. </span></li>
+<li><span class="segment a-seg" data-start="501.0" data-end="514.0" title="8:21">I would use intermittent positive pressure ventilation to avoid the increased risk of hypoxia or hyperkalemia with his high-cord lesion while being alert for the exaggerated hypotension that may ensue. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="515.0">
+  <div class="q-label">Q7</div>
+  <div class="q-body"><span class="segment q-seg" data-start="515.0" data-end="517.783" title="8:35">The original question was, how would you enistatise? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="517.783" data-end="523.0" title="8:37">You don't have to go through all the possible methods, just what you would do. </span></li>
+<li><span class="segment a-seg" data-start="523.0" data-end="532.0" title="8:43">Not everyone would use remyfentinal for example. Alternatively, a total intravenous anesthetic is equally appropriate. </span></li>
+<li><span class="segment a-seg" data-start="532.0" data-end="542.0" title="8:52">I would actively warm the patient using forced air blankets and fluid warming as he is likely to have altered thermoregulation. </span></li>
+<li><span class="segment a-seg" data-start="542.0" data-end="556.0" title="9:02">Though not anticipating major blood loss, I would frequently monitor the surgical site and replace any losses immediately as the patient will not have the normal cardiovascular compensatory mechanisms. </span></li>
+<li><span class="segment a-seg" data-start="556.0" data-end="567.0" title="9:16">I would also have a rapid acting anti-hypertensive such as glycerine trinitrate immediately available for any episodes of dysreflexia. </span></li>
+<li><span class="segment a-seg" data-start="568.0" data-end="583.0" title="9:28">As with any patient, I would take care with positioning using padding to protect sites vulnerable to pressure damage. In his case, there is a greater risk as I have already mentioned the skin is likely to be thin and relatively avascular. </span></li>
+<li><span class="segment a-seg" data-start="583.0" data-end="592.0" title="9:43">As well as standard monitoring as per the association of anesthetist guidelines, I would consider using intra arterial blood pressure monitoring. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="592.0">
+  <div class="q-label">Q8</div>
+  <div class="q-body"><span class="segment q-seg" data-start="592.0" data-end="595.0" title="9:52">Would you use it or not? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="596.0" data-end="605.0" title="9:56">As I do not have experience with these patients and given the concerns with both hypo and hyper-attensive crises, I would use it. </span></li>
+<li><span class="segment a-seg" data-start="605.0" data-end="613.0" title="10:05">In fact, some centres with a large volume of surgery for these patients don't routinely employ intra arterial monitoring. </span></li>
+<li><span class="segment a-seg" data-start="613.0" data-end="621.0" title="10:13">Given you have already explained the risks of cardiovascular instability, it's easier to justify using it. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="621.0">
+  <div class="q-label">Q9</div>
+  <div class="q-body"><span class="segment q-seg" data-start="621.0" data-end="631.0" title="10:21">Despite all your preventative measures, during surgery his blood pressure rapidly rises to 210 over 140mm of mercury. What would you do? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="631.0" data-end="644.0" title="10:31">This is almost certainly spinal dysreflexia. I would send for senior assistants, ensure the patient is adequately anesthetised, inform the surgeon and ask them to stop. </span></li>
+<li><span class="segment a-seg" data-start="645.0" data-end="652.0" title="10:45">If withdrawing surgical stimulus did not reduce blood pressure, I would increase the depth of anesthesia. </span></li>
+<li><span class="segment a-seg" data-start="652.0" data-end="663.0" title="10:52">If that failed to obviate the hypotensive crisis, I would administer intravenous glycerine trinitrativ available or via metadose or osprey. </span></li>
+<li><span class="segment a-seg" data-start="663.0" data-end="668.0" title="11:03">I would also consider bladder distension and check for a blocked urinary catheter. </span></li>
+<li><span class="segment a-seg" data-start="668.0" data-end="682.0" title="11:08">Intravenous GTN is faster acting and can be titrated to response. In high volume centres where central neural axial block aid is routinely used to obviate dysreflexia, hypotensive crises are rarely encountered. </span></li>
+<li><span class="segment a-seg" data-start="682.0" data-end="687.0" title="11:22">A metadose spray may be kept immediately available in theatre. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="687.0">
+  <div class="q-label">Q10</div>
+  <div class="q-body"><span class="segment q-seg" data-start="687.0" data-end="691.0" title="11:27">Why use glycerine trinitrate? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="692.0" data-end="705.0" title="11:32">For hypertension is likely to be paroxysmal and therefore any agent must be rapid acting and have a short duration of action. Another alternative is the alpha blocking agent phentolamine. </span></li>
+<li><span class="segment a-seg" data-start="705.0" data-end="720.0" title="11:45">There is a large list of drugs in the literature that have been used to prevent or treat including recipe, doxasicin, niphetamine and clonidine, which treats spasm as well as hypertension, knowing one of these should be enough. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="720.0">
+  <div class="q-label">Q11</div>
+  <div class="q-body"><span class="segment q-seg" data-start="720.0" data-end="734.0" title="12:00">Having treated that crisis the patient once again stabilises. You are nearing the end of the case and the surgeon informs you he plans to infiltrate with some hupypivocane and adrenaline. What do you think about this? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="734.0" data-end="743.0" title="12:14">I would suggest he doesn't use it. I would explain that the patient has a complete delusion and therefore will not require the analgesia. </span></li>
+<li><span class="segment a-seg" data-start="743.0" data-end="757.0" title="12:23">If there was some concern about sensation then I would insist that he use plain local anaesthetic. The patient has already had one hypotensive crisis and is likely to have increased sensitivity to cataclyclic amines. </span></li>
+<li><span class="segment a-seg" data-start="757.0" data-end="774.0" title="12:37">Cataclyclic amines levels nor adrenaline especially increased during dysreflexic episodes. However they remain lower than levels in normal non-ingered patients so the implication is an increased sensitivity is at least in part responsible for the crises. </span></li>
+<li><span class="segment a-seg" data-start="774.0" data-end="785.0" title="12:54">Most anaesthetists should be able to answer the questions about acute management of the patient with a spinal cord injury so you would be expected to be confident and decisive in your answers here. </span></li>
+<li><span class="segment a-seg" data-start="785.0" data-end="800.0" title="13:05">In contrast the second part of this viability deals with a specific patient group that many anaesthetists will never encounter. Don't worry if you don't know all the details especially the pathophysiology of autonomic dysreflexia. </span></li>
+<li><span class="segment a-seg" data-start="800.0" data-end="814.0" title="13:20">Most of the issues you can work out for example the risk of respiratory compromise. An awareness of the issues surrounding succumbethanium and hypotensive crises should be sufficient. </span></li>
+  </ul>
+</div>
+</div>
+
 </div>
 
 <div class="subtitle-bar">
-  <span class="subtitle-text empty" id="subtitle-text">Play audio to see live subtitles&#8230;</span>
+  <span id="subtitle-text" class="empty">Play audio to see live subtitles&#8230;</span>
 </div>
 
 <script>
-
-const audio    = document.getElementById('audio');
-const allSegs  = Array.from(document.querySelectorAll('.segment'));
-const allBlocks = Array.from(document.querySelectorAll('.t-block'));
+const audio      = document.getElementById('audio');
+const allSegs    = Array.from(document.querySelectorAll('.segment'));
 const subtitleEl = document.getElementById('subtitle-text');
-let activeSegEl   = null;
-let activeBlockEl = null;
-let searchMatches = [];
-let searchIdx     = 0;
+let activeSegEl  = null;
+let searchMatches = [], searchIdx = 0;
 
-// Duration display
 audio.addEventListener('loadedmetadata', () => {
   const m = Math.floor(audio.duration / 60);
   const s = Math.floor(audio.duration %% 60).toString().padStart(2,'0');
   document.getElementById('dur').textContent = m + ':' + s;
 });
 
-// Seek helper
-function seekTo(t) {
-  audio.currentTime = t;
-  audio.play();
-}
+function seekTo(t) { audio.currentTime = t; audio.play(); }
 
-// Block gutter click
-document.querySelectorAll('.t-gutter').forEach(g => {
-  g.addEventListener('click', () => seekTo(parseFloat(g.dataset.start)));
+// Q-block header click
+document.querySelectorAll('.q-block').forEach(q => {
+  q.addEventListener('click', e => {
+    if (!e.target.classList.contains('segment')) seekTo(parseFloat(q.dataset.start));
+  });
 });
 
-// Segment click
+// Individual segment click
 allSegs.forEach(s => {
-  s.addEventListener('click', e => {
-    e.stopPropagation();
-    seekTo(parseFloat(s.dataset.start));
-  });
+  s.addEventListener('click', e => { e.stopPropagation(); seekTo(parseFloat(s.dataset.start)); });
 });
 
 // Real-time tracking
 audio.addEventListener('timeupdate', () => {
   const t = audio.currentTime;
-
-  // Find active segment (last one whose start <= t)
   let found = null;
   for (let i = allSegs.length - 1; i >= 0; i--) {
     if (parseFloat(allSegs[i].dataset.start) <= t) { found = allSegs[i]; break; }
   }
-
   if (found && found !== activeSegEl) {
-    // Clear previous
-    if (activeSegEl) activeSegEl.classList.remove('active');
-    if (activeBlockEl) {
-      activeBlockEl.classList.remove('block-active');
-      const pg = activeBlockEl.querySelector('.t-gutter');
-      if (pg) pg.classList.remove('gutter-active');
+    if (activeSegEl) {
+      activeSegEl.classList.remove('active');
+      const pli = activeSegEl.closest('li');
+      if (pli) pli.classList.remove('li-active');
+      const pq = activeSegEl.closest('.q-block');
+      if (pq) pq.classList.remove('q-active');
     }
-    // Set new
     found.classList.add('active');
-    const block = found.closest('.t-block');
-    if (block) {
-      block.classList.add('block-active');
-      const g = block.querySelector('.t-gutter');
-      if (g) g.classList.add('gutter-active');
-      activeBlockEl = block;
-    }
+    const li = found.closest('li');
+    if (li) li.classList.add('li-active');
+    const qb = found.closest('.q-block');
+    if (qb) qb.classList.add('q-active');
     activeSegEl = found;
 
-    // Update subtitle
     subtitleEl.textContent = found.textContent.trim();
     subtitleEl.classList.remove('empty');
 
-    // Auto-scroll (only when not searching)
-    if (!document.getElementById('search').value) {
+    if (!document.getElementById('search').value)
       found.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }
   }
 });
 
@@ -344,17 +469,13 @@ searchInput.addEventListener('keydown', e => {
     el.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
 });
-
 function runSearch() {
   const q = searchInput.value.trim().toLowerCase();
   allSegs.forEach(s => s.classList.remove('search-match','search-current'));
   searchMatches = [];
   if (!q) return;
   allSegs.forEach(s => {
-    if (s.textContent.toLowerCase().includes(q)) {
-      s.classList.add('search-match');
-      searchMatches.push(s);
-    }
+    if (s.textContent.toLowerCase().includes(q)) { s.classList.add('search-match'); searchMatches.push(s); }
   });
   if (!searchMatches.length) return;
   searchIdx = 0;

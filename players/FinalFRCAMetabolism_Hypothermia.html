@@ -5,10 +5,19 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Metabolism — Hypothermia</title>
 <style>
-
   :root {
-    --accent:    #10b981;
-    --body-bg:   #f1f5f9;
+    --q-bg:       #1e3a5f;
+    --q-text:     #ffffff;
+    --q-label:    #60a5fa;
+    --a-bg:       #ffffff;
+    --a-border:   #e2e8f0;
+    --a-label:    #059669;
+    --active-q:   #10b981;
+    --active-a:   #dbeafe;
+    --accent:     #10b981;
+    --body-bg:    #f1f5f9;
+    --pre-bg:     #fef9c3;
+    --pre-border: #fcd34d;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
@@ -40,22 +49,9 @@
     margin-bottom: 4px;
     letter-spacing: 0.01em;
   }
-  .header-sub {
-    font-size: 0.72rem;
-    color: #94a3b8;
-    font-style: italic;
-  }
-  audio {
-    height: 36px;
-    accent-color: var(--accent);
-    flex-shrink: 0;
-  }
-  .back-link {
-    font-size: 0.8rem;
-    color: #94a3b8;
-    text-decoration: none;
-    white-space: nowrap;
-  }
+  .header-sub { font-size: 0.72rem; color: #94a3b8; font-style: italic; }
+  audio { height: 36px; accent-color: var(--accent); flex-shrink: 0; }
+  .back-link { font-size: 0.8rem; color: #94a3b8; text-decoration: none; white-space: nowrap; }
   .back-link:hover { color: #60a5fa; }
 
   /* ── Toolbar ── */
@@ -69,30 +65,17 @@
     border-bottom: 1px solid #334155;
   }
   .toolbar input {
-    flex: 1;
-    max-width: 380px;
+    flex: 1; max-width: 380px;
     padding: 5px 11px;
-    border: 1px solid #475569;
-    border-radius: 6px;
-    background: #0f172a;
-    color: #e2e8f0;
-    font-size: 0.83rem;
-    outline: none;
+    border: 1px solid #475569; border-radius: 6px;
+    background: #0f172a; color: #e2e8f0; font-size: 0.83rem; outline: none;
   }
   .toolbar input:focus { border-color: var(--accent); }
   .toolbar input::placeholder { color: #64748b; }
-  .stats {
-    font-size: 0.72rem;
-    color: #64748b;
-    white-space: nowrap;
-  }
+  .stats { font-size: 0.72rem; color: #64748b; white-space: nowrap; }
 
   /* ── Scroll area ── */
-  .scroll-area {
-    flex: 1;
-    overflow-y: auto;
-    padding: 20px;
-  }
+  .scroll-area { flex: 1; overflow-y: auto; padding: 20px; }
   .scroll-area::-webkit-scrollbar { width: 6px; }
   .scroll-area::-webkit-scrollbar-track { background: transparent; }
   .scroll-area::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
@@ -107,68 +90,77 @@
     display: flex;
     align-items: center;
   }
-  .subtitle-text {
-    font-size: 0.9rem;
-    color: #e2e8f0;
-    line-height: 1.5;
-    font-style: italic;
-  }
-  .subtitle-text.empty { color: #475569; }
+  #subtitle-text { font-size: 0.88rem; color: #e2e8f0; line-height: 1.5; font-style: italic; }
+  #subtitle-text.empty { color: #475569; }
 
-  /* ── Transcript blocks ── */
-  .t-block {
-    background: #ffffff;
-    border: 1px solid #e2e8f0;
-    border-radius: 10px;
-    margin-bottom: 14px;
-    overflow: hidden;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
-    display: flex;
-  }
-  .t-block.block-active {
-    border-color: var(--accent);
-    box-shadow: 0 0 0 2px rgba(37,99,235,0.15);
-  }
-  .t-gutter {
-    background: #0f172a;
-    width: 52px;
-    flex-shrink: 0;
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
-    padding-top: 14px;
-    cursor: pointer;
-  }
-  .t-gutter:hover { background: #1e293b; }
-  .t-timestamp {
-    font-size: 0.7rem;
-    color: #64748b;
-    font-family: monospace;
-    font-weight: 600;
-    letter-spacing: 0.02em;
-  }
-  .t-gutter.gutter-active .t-timestamp { color: var(--accent); }
-  .t-body {
-    flex: 1;
+  /* ── Preamble ── */
+  .preamble-block {
+    background: var(--pre-bg);
+    border-left: 4px solid var(--pre-border);
+    border-radius: 0 8px 8px 0;
     padding: 12px 16px;
-    line-height: 1.75;
-    font-size: 0.92rem;
-    color: #1e293b;
+    margin-bottom: 20px;
+    font-size: 0.88rem;
+    color: #78350f;
+    font-style: italic;
+    line-height: 1.7;
   }
 
-  /* ── Segments ── */
-  .segment {
+  /* ── Q&A pair ── */
+  .qa-pair { margin-bottom: 20px; border-radius: 10px; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+
+  /* Question block */
+  .q-block {
+    background: var(--q-bg);
+    padding: 14px 18px;
+    display: flex; gap: 14px; align-items: flex-start;
     cursor: pointer;
-    border-radius: 3px;
-    transition: background 0.1s;
+    transition: background 0.15s;
   }
-  .segment:hover { background: #eff6ff; }
-  .segment.active {
-    background: #bfdbfe;
-    outline: 2px solid #3b82f6;
-    outline-offset: 1px;
-    border-radius: 3px;
+  .q-block:hover { background: #1d4ed8; }
+  .q-block.q-active { background: var(--active-q); }
+  .q-label {
+    font-size: 0.7rem; font-weight: 700;
+    color: var(--q-label);
+    background: rgba(96,165,250,0.15);
+    border: 1px solid rgba(96,165,250,0.3);
+    border-radius: 5px; padding: 3px 7px;
+    white-space: nowrap; margin-top: 2px; letter-spacing: 0.05em;
+    flex-shrink: 0;
   }
+  .q-body { flex: 1; font-size: 0.97rem; font-weight: 600; color: var(--q-text); line-height: 1.55; }
+
+  /* Answer block */
+  .a-block {
+    background: var(--a-bg);
+    border: 1px solid var(--a-border); border-top: none;
+    padding: 14px 18px;
+    display: flex; gap: 14px; align-items: flex-start;
+  }
+  .a-label {
+    font-size: 0.7rem; font-weight: 700;
+    color: var(--a-label);
+    background: #d1fae5; border: 1px solid #6ee7b7;
+    border-radius: 5px; padding: 3px 9px;
+    white-space: nowrap; margin-top: 2px; letter-spacing: 0.05em;
+    flex-shrink: 0;
+  }
+  .a-body { flex: 1; list-style: none; padding: 0; }
+  .a-body li {
+    padding: 4px 0 4px 14px;
+    border-left: 3px solid transparent;
+    line-height: 1.7; font-size: 0.92rem; color: #1e293b;
+    border-radius: 0 4px 4px 0;
+    transition: background 0.15s;
+  }
+  .a-body li:not(:last-child) { border-bottom: 1px solid #f1f5f9; }
+
+  /* ── Segments (clickable) ── */
+  .segment { cursor: pointer; border-radius: 3px; }
+  .q-seg:hover { background: rgba(255,255,255,0.18); }
+  .a-seg:hover { background: #eff6ff; }
+  .segment.active { background: #bfdbfe; outline: 2px solid #3b82f6; outline-offset: 1px; }
+  .a-body li.li-active { background: var(--active-a); border-left-color: var(--accent); }
   .segment.search-match  { background: #fef9c3; }
   .segment.search-current { background: #fde047; outline: 2px solid #ca8a04; }
 
@@ -187,130 +179,263 @@
 
 <div class="toolbar">
   <input type="text" id="search" placeholder="Search transcript&#8230; (Enter = next match)">
-  <span class="stats" id="stats">75 segments &nbsp;|&nbsp; <span id="dur">loading&#8230;</span></span>
+  <span class="stats" id="stats">12 questions &nbsp;|&nbsp; 75 segments &nbsp;|&nbsp; <span id="dur">loading&#8230;</span></span>
 </div>
 
 <div class="scroll-area" id="scroll-area">
-<div class="t-block">
-  <div class="t-gutter" data-start="0.0"><span class="t-timestamp">0:00</span></div>
-  <div class="t-body"><span class="segment" data-start="0.0" data-end="6.0" title="0:00">Hyperthermia. You're asked to assess a patient in recovery who has just had a right shoulder replacement. </span><span class="segment" data-start="6.0" data-end="10.0" title="0:06">Their core temperature is 33 degrees centigrade. </span><span class="segment" data-start="10.0" data-end="14.0" title="0:10">What mechanisms are you aware of by which heat loss may have occurred? </span><span class="segment" data-start="14.0" data-end="20.0" title="0:14">This question is testing your knowledge of basic science as well as its clinical application. </span><span class="segment" data-start="20.0" data-end="29.0" title="0:20">Heat loss may occur through radiation, convection, evaporation and conduction. </span><span class="segment" data-start="29.0" data-end="35.0" title="0:29">Through respiration and through the influence of anesthesia. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="35.0"><span class="t-timestamp">0:35</span></div>
-  <div class="t-body"><span class="segment" data-start="35.0" data-end="39.0" title="0:35">Can I describe radiation? </span><span class="segment" data-start="39.0" data-end="47.0" title="0:39">Radiation is the transfer of energy between two objects that are not necessarily touching. </span><span class="segment" data-start="47.0" data-end="53.0" title="0:47">A hot object emits radiation with wavelengths in the infrared region. </span><span class="segment" data-start="53.0" data-end="59.0" title="0:53">The radiation carries energy from the hot object, thus cooling it down. </span><span class="segment" data-start="59.0" data-end="68.0" title="0:59">The degree of heat loss depends on the difference in temperature between the two objects and the surface area exposed. </span><span class="segment" data-start="68.0" data-end="75.0" title="1:08">Radiation accounts for 40 to 50% of heat loss during anesthesia. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="75.0"><span class="t-timestamp">1:15</span></div>
-  <div class="t-body"><span class="segment" data-start="75.0" data-end="79.0" title="1:15">Can you describe convection? </span><span class="segment" data-start="79.0" data-end="84.0" title="1:19">The air layer closest to the body is warmed up by conduction. </span><span class="segment" data-start="84.0" data-end="91.0" title="1:24">As the air temperature increases, the air rises and is carried away by convection currents. </span><span class="segment" data-start="91.0" data-end="103.0" title="1:31">This accounts for about 30% of heat loss, but can be accelerated if the body is exposed to high air flow, for example with laminar flow systems. </span><span class="segment" data-start="103.0" data-end="107.0" title="1:43">Can you describe evaporation? </span><span class="segment" data-start="107.0" data-end="117.0" title="1:47">As the moisture on the body's surface evaporates, it gains the latent heat of vaporization from the body and the body cools down. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="117.0"><span class="t-timestamp">1:57</span></div>
-  <div class="t-body"><span class="segment" data-start="117.0" data-end="122.0" title="1:57">This accounts for 20 to 25% of heat loss. </span><span class="segment" data-start="122.0" data-end="134.0" title="2:02">The process is accelerated if there is a large moisture area exposed during surgery, for example major abdominal surgery or major orthopedic surgery. </span><span class="segment" data-start="134.0" data-end="138.0" title="2:14">Can you describe conduction? </span><span class="segment" data-start="138.0" data-end="146.0" title="2:18">Conduction is where heat is passed between a hot object, which is in direct contact with a cooler object. </span><span class="segment" data-start="146.0" data-end="158.0" title="2:26">During anesthesia, this accounts for only 3 to 5% of heat loss, unless the body is touching an efficient heat conductor such as a metal table. </span><span class="segment" data-start="158.0" data-end="163.0" title="2:38">Can you describe how heat is lost through respiration? </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="163.0"><span class="t-timestamp">2:43</span></div>
-  <div class="t-body"><span class="segment" data-start="163.0" data-end="170.0" title="2:43">During respiration, heat is lost through evaporation and through warming of inspired air. </span><span class="segment" data-start="170.0" data-end="178.0" title="2:50">This can account for up to 10% of heat loss, but will be minimized by the use of heat and moisture exchanges. </span><span class="segment" data-start="178.0" data-end="183.0" title="2:58">Can you describe how general anesthesia affects heat loss? </span><span class="segment" data-start="183.0" data-end="194.0" title="3:03">During anesthesia, peripheral vasodilitation means that heat is initially redistributed from the warmer core to the cooler peripheries. </span><span class="segment" data-start="194.0" data-end="201.0" title="3:14">Anesthetic agents can also affect hypotherlamic central heat regulation. </span><span class="segment" data-start="201.0" data-end="215.0" title="3:21">The hypotherlamic threshold is related to minimum alveolar concentration, so thermoregulate re-responses and not triggered until the temperature has dropped much further than normal. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="215.0"><span class="t-timestamp">3:35</span></div>
-  <div class="t-body"><span class="segment" data-start="215.0" data-end="225.0" title="3:35">During anesthesia, the patient has reduced metabolic heat production as muscle activity and brain metabolism are both decreased. </span><span class="segment" data-start="225.0" data-end="232.0" title="3:45">There is an additional cooling effect from the use of anesthetic gases and intravenous fluids. </span><span class="segment" data-start="232.0" data-end="240.0" title="3:52">It is also worth remembering that patients often arrive into the anesthetic room cold from the ward. </span><span class="segment" data-start="240.0" data-end="244.0" title="4:00">What are the clinical consequences of hypothermia? </span><span class="segment" data-start="244.0" data-end="247.0" title="4:04">Try and classify your answer here. </span><span class="segment" data-start="247.0" data-end="256.0" title="4:07">The clinical effects are cardio-respiratory, metabolic and the effects on surgical outcome. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="256.0"><span class="t-timestamp">4:16</span></div>
-  <div class="t-body"><span class="segment" data-start="256.0" data-end="264.0" title="4:16">The cardio-respiratory effects are an increase in oxygen consumption and a decrease in cardiac output. </span><span class="segment" data-start="264.0" data-end="269.0" title="4:24">Hypothermia also increases the risk of arrhythmias. </span><span class="segment" data-start="269.0" data-end="278.0" title="4:29">The Oxygen Hema-Globin Disassociation Curve is shifted to the left, meaning that oxygen delivery is decreased. </span><span class="segment" data-start="278.0" data-end="285.0" title="4:38">Blood viscosity is increased and therefore the risk of intravascular stasis is higher. </span><span class="segment" data-start="285.0" data-end="294.0" title="4:45">The metabolic effects are a decrease in metabolic rate of about 6% for every degree fall in core temperature. </span><span class="segment" data-start="294.0" data-end="303.0" title="4:54">Enzyme reactions and intramedri metabolism are also affected if core temperature is less than 34 degrees C. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="303.0"><span class="t-timestamp">5:03</span></div>
-  <div class="t-body"><span class="segment" data-start="303.0" data-end="307.0" title="5:03">This has an effect on drug actions which may be prolonged. </span><span class="segment" data-start="307.0" data-end="312.0" title="5:07">This particularly applies to neuromuscular blocking agents. </span><span class="segment" data-start="312.0" data-end="315.0" title="5:12">Renal and hepatic functions are depressed. </span><span class="segment" data-start="315.0" data-end="323.0" title="5:15">The patient may have a diuresis due to the failure of active reabsorption of sodium and water. </span><span class="segment" data-start="323.0" data-end="330.0" title="5:23">As glucose utilization falls, the patient may develop hyperglycemia. </span><span class="segment" data-start="330.0" data-end="336.0" title="5:30">Hypothermia can also have negative effects on the clotting cascade. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="336.0"><span class="t-timestamp">5:36</span></div>
-  <div class="t-body"><span class="segment" data-start="336.0" data-end="345.0" title="5:36">Hypothermia may affect surgical outcome as immune function is depressed so wound infection rates are increased. </span><span class="segment" data-start="345.0" data-end="352.0" title="5:45">Wound healing is also compromised and therefore hospital stay may be prolonged. </span><span class="segment" data-start="352.0" data-end="355.0" title="5:52">How would you manage the patient in recovery? </span><span class="segment" data-start="355.0" data-end="360.0" title="5:55">Concentrate here on the management of severe hypothermia. </span><span class="segment" data-start="360.0" data-end="369.0" title="6:00">Hypothermia of gradual onset is best managed with gradual rewarming at about 1 degrees centigrade per hour. </span><span class="segment" data-start="369.0" data-end="373.0" title="6:09">Rewarming can be external or internal. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="373.0"><span class="t-timestamp">6:13</span></div>
-  <div class="t-body"><span class="segment" data-start="373.0" data-end="381.0" title="6:13">External rewarming is using forced warm air heating blankets or radiant heaters. </span><span class="segment" data-start="381.0" data-end="394.0" title="6:21">Internal rewarming can be via the use of warm intravenous, intra gastric or intraperator needle fluids or by bladder irrigation via a urinary catheter. </span><span class="segment" data-start="394.0" data-end="403.0" title="6:34">The most efficient way of rewarming but by far the most invasive is to put the patient on cardiac bypass. </span><span class="segment" data-start="403.0" data-end="406.0" title="6:43">Where have you seen hypothermia being used in a theatre setting? </span><span class="segment" data-start="406.0" data-end="413.0" title="6:46">The examiner is looking to see that you have had exposure to a wide range of anesthetic specialties. </span><span class="segment" data-start="413.0" data-end="420.0" title="6:53">Hypothermia is used in cardiac surgery when the patient is put on to cardiac pulmonary bypass. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="420.0"><span class="t-timestamp">7:00</span></div>
-  <div class="t-body"><span class="segment" data-start="420.0" data-end="429.0" title="7:00">If hypothermia is used, the patient is typically called to a temperature of 28 to 32 degrees. </span><span class="segment" data-start="429.0" data-end="437.0" title="7:09">In more complex cardiac surgery, for example surgery on the aortic root, deep hypothermia is induced, </span><span class="segment" data-start="437.0" data-end="447.0" title="7:17">where the patient is called to a temperature of 15 to 22 degrees, which allows periods of low blood flow or circulatory arrest. </span><span class="segment" data-start="447.0" data-end="451.0" title="7:27">Do you know of any clinical applications of induced hypothermia? </span><span class="segment" data-start="451.0" data-end="457.0" title="7:31">This is asking for any trials you may be aware of in the recent literature. </span><span class="segment" data-start="457.0" data-end="465.0" title="7:37">Induced hypothermia has been proven to be beneficial for out-of-hospital cardiac arrest survivors. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="465.0"><span class="t-timestamp">7:45</span></div>
-  <div class="t-body"><span class="segment" data-start="465.0" data-end="479.0" title="7:45">In patients with a return of spontaneous circulation, induced hypothermia has been shown to result in a remarkably more favourable neurological outcome than in patients given standard treatment. </span><span class="segment" data-start="480.0" data-end="494.0" title="8:00">As a result, the International Liaison Committee on Resuscitation has recommended that all patients with a return of spontaneous circulation following an out-of-hospital cardiac arrest, </span><span class="segment" data-start="494.0" data-end="506.0" title="8:14">where the initial rhythm was ventricular fibrillation, should be treated with induced hypothermia of 32 to 34 degrees centigrade for 12 to 24 hours. </span><span class="segment" data-start="507.0" data-end="511.0" title="8:27">Are you aware of any other therapeutic use of hypothermia? </span><span class="segment" data-start="511.0" data-end="525.0" title="8:31">There have been trials looking at therapeutic hypothermia in traumatic head injury, and although hypothermia is effective in reducing interest or re-broad pressures, there has been no outcome benefits shown. </span><span class="segment" data-start="525.0" data-end="531.0" title="8:45">This is thought to be due to the increased incidence of infectious complications. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="532.0"><span class="t-timestamp">8:52</span></div>
-  <div class="t-body"><span class="segment" data-start="532.0" data-end="553.0" title="8:52">Hypothermia has also been used in newborn hypoxic ischemic encephalopathy, and although there was no benefit seen in those patients with the most abnormal EEGs, there did seem to be some protective effect in patients with intermediate EEG with no increase in complication rate. </span><span class="segment" data-start="553.0" data-end="564.0" title="9:13">Other areas where hypothermia has been trialed are in neurosurgery, in-eschemic stroke, and in aortic surgery for spinal protection. </span><span class="segment" data-start="564.0" data-end="572.0" title="9:24">Although preliminary studies have suggested some positive effects, no conclusive results have been achieved. </span></div>
+<div class="preamble-block"><span class="segment a-seg" data-start="0.0" data-end="6.0" title="0:00">Hyperthermia. You're asked to assess a patient in recovery who has just had a right shoulder replacement. </span><span class="segment a-seg" data-start="6.0" data-end="10.0" title="0:06">Their core temperature is 33 degrees centigrade. </span></div>
+<div class="qa-pair">
+<div class="q-block" data-start="10.0">
+  <div class="q-label">Q1</div>
+  <div class="q-body"><span class="segment q-seg" data-start="10.0" data-end="14.0" title="0:10">What mechanisms are you aware of by which heat loss may have occurred? </span></div>
 </div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="14.0" data-end="20.0" title="0:14">This question is testing your knowledge of basic science as well as its clinical application. </span></li>
+<li><span class="segment a-seg" data-start="20.0" data-end="29.0" title="0:20">Heat loss may occur through radiation, convection, evaporation and conduction. </span></li>
+<li><span class="segment a-seg" data-start="29.0" data-end="35.0" title="0:29">Through respiration and through the influence of anesthesia. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="35.0">
+  <div class="q-label">Q2</div>
+  <div class="q-body"><span class="segment q-seg" data-start="35.0" data-end="39.0" title="0:35">Can I describe radiation? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="39.0" data-end="47.0" title="0:39">Radiation is the transfer of energy between two objects that are not necessarily touching. </span></li>
+<li><span class="segment a-seg" data-start="47.0" data-end="53.0" title="0:47">A hot object emits radiation with wavelengths in the infrared region. </span></li>
+<li><span class="segment a-seg" data-start="53.0" data-end="59.0" title="0:53">The radiation carries energy from the hot object, thus cooling it down. </span></li>
+<li><span class="segment a-seg" data-start="59.0" data-end="68.0" title="0:59">The degree of heat loss depends on the difference in temperature between the two objects and the surface area exposed. </span></li>
+<li><span class="segment a-seg" data-start="68.0" data-end="75.0" title="1:08">Radiation accounts for 40 to 50% of heat loss during anesthesia. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="75.0">
+  <div class="q-label">Q3</div>
+  <div class="q-body"><span class="segment q-seg" data-start="75.0" data-end="79.0" title="1:15">Can you describe convection? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="79.0" data-end="84.0" title="1:19">The air layer closest to the body is warmed up by conduction. </span></li>
+<li><span class="segment a-seg" data-start="84.0" data-end="91.0" title="1:24">As the air temperature increases, the air rises and is carried away by convection currents. </span></li>
+<li><span class="segment a-seg" data-start="91.0" data-end="103.0" title="1:31">This accounts for about 30% of heat loss, but can be accelerated if the body is exposed to high air flow, for example with laminar flow systems. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="103.0">
+  <div class="q-label">Q4</div>
+  <div class="q-body"><span class="segment q-seg" data-start="103.0" data-end="107.0" title="1:43">Can you describe evaporation? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="107.0" data-end="117.0" title="1:47">As the moisture on the body's surface evaporates, it gains the latent heat of vaporization from the body and the body cools down. </span></li>
+<li><span class="segment a-seg" data-start="117.0" data-end="122.0" title="1:57">This accounts for 20 to 25% of heat loss. </span></li>
+<li><span class="segment a-seg" data-start="122.0" data-end="134.0" title="2:02">The process is accelerated if there is a large moisture area exposed during surgery, for example major abdominal surgery or major orthopedic surgery. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="134.0">
+  <div class="q-label">Q5</div>
+  <div class="q-body"><span class="segment q-seg" data-start="134.0" data-end="138.0" title="2:14">Can you describe conduction? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="138.0" data-end="146.0" title="2:18">Conduction is where heat is passed between a hot object, which is in direct contact with a cooler object. </span></li>
+<li><span class="segment a-seg" data-start="146.0" data-end="158.0" title="2:26">During anesthesia, this accounts for only 3 to 5% of heat loss, unless the body is touching an efficient heat conductor such as a metal table. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="158.0">
+  <div class="q-label">Q6</div>
+  <div class="q-body"><span class="segment q-seg" data-start="158.0" data-end="163.0" title="2:38">Can you describe how heat is lost through respiration? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="163.0" data-end="170.0" title="2:43">During respiration, heat is lost through evaporation and through warming of inspired air. </span></li>
+<li><span class="segment a-seg" data-start="170.0" data-end="178.0" title="2:50">This can account for up to 10% of heat loss, but will be minimized by the use of heat and moisture exchanges. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="178.0">
+  <div class="q-label">Q7</div>
+  <div class="q-body"><span class="segment q-seg" data-start="178.0" data-end="183.0" title="2:58">Can you describe how general anesthesia affects heat loss? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="183.0" data-end="194.0" title="3:03">During anesthesia, peripheral vasodilitation means that heat is initially redistributed from the warmer core to the cooler peripheries. </span></li>
+<li><span class="segment a-seg" data-start="194.0" data-end="201.0" title="3:14">Anesthetic agents can also affect hypotherlamic central heat regulation. </span></li>
+<li><span class="segment a-seg" data-start="201.0" data-end="215.0" title="3:21">The hypotherlamic threshold is related to minimum alveolar concentration, so thermoregulate re-responses and not triggered until the temperature has dropped much further than normal. </span></li>
+<li><span class="segment a-seg" data-start="215.0" data-end="225.0" title="3:35">During anesthesia, the patient has reduced metabolic heat production as muscle activity and brain metabolism are both decreased. </span></li>
+<li><span class="segment a-seg" data-start="225.0" data-end="232.0" title="3:45">There is an additional cooling effect from the use of anesthetic gases and intravenous fluids. </span></li>
+<li><span class="segment a-seg" data-start="232.0" data-end="240.0" title="3:52">It is also worth remembering that patients often arrive into the anesthetic room cold from the ward. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="240.0">
+  <div class="q-label">Q8</div>
+  <div class="q-body"><span class="segment q-seg" data-start="240.0" data-end="244.0" title="4:00">What are the clinical consequences of hypothermia? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="244.0" data-end="247.0" title="4:04">Try and classify your answer here. </span></li>
+<li><span class="segment a-seg" data-start="247.0" data-end="256.0" title="4:07">The clinical effects are cardio-respiratory, metabolic and the effects on surgical outcome. </span></li>
+<li><span class="segment a-seg" data-start="256.0" data-end="264.0" title="4:16">The cardio-respiratory effects are an increase in oxygen consumption and a decrease in cardiac output. </span></li>
+<li><span class="segment a-seg" data-start="264.0" data-end="269.0" title="4:24">Hypothermia also increases the risk of arrhythmias. </span></li>
+<li><span class="segment a-seg" data-start="269.0" data-end="278.0" title="4:29">The Oxygen Hema-Globin Disassociation Curve is shifted to the left, meaning that oxygen delivery is decreased. </span></li>
+<li><span class="segment a-seg" data-start="278.0" data-end="285.0" title="4:38">Blood viscosity is increased and therefore the risk of intravascular stasis is higher. </span></li>
+<li><span class="segment a-seg" data-start="285.0" data-end="294.0" title="4:45">The metabolic effects are a decrease in metabolic rate of about 6% for every degree fall in core temperature. </span></li>
+<li><span class="segment a-seg" data-start="294.0" data-end="303.0" title="4:54">Enzyme reactions and intramedri metabolism are also affected if core temperature is less than 34 degrees C. </span></li>
+<li><span class="segment a-seg" data-start="303.0" data-end="307.0" title="5:03">This has an effect on drug actions which may be prolonged. </span></li>
+<li><span class="segment a-seg" data-start="307.0" data-end="312.0" title="5:07">This particularly applies to neuromuscular blocking agents. </span></li>
+<li><span class="segment a-seg" data-start="312.0" data-end="315.0" title="5:12">Renal and hepatic functions are depressed. </span></li>
+<li><span class="segment a-seg" data-start="315.0" data-end="323.0" title="5:15">The patient may have a diuresis due to the failure of active reabsorption of sodium and water. </span></li>
+<li><span class="segment a-seg" data-start="323.0" data-end="330.0" title="5:23">As glucose utilization falls, the patient may develop hyperglycemia. </span></li>
+<li><span class="segment a-seg" data-start="330.0" data-end="336.0" title="5:30">Hypothermia can also have negative effects on the clotting cascade. </span></li>
+<li><span class="segment a-seg" data-start="336.0" data-end="345.0" title="5:36">Hypothermia may affect surgical outcome as immune function is depressed so wound infection rates are increased. </span></li>
+<li><span class="segment a-seg" data-start="345.0" data-end="352.0" title="5:45">Wound healing is also compromised and therefore hospital stay may be prolonged. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="352.0">
+  <div class="q-label">Q9</div>
+  <div class="q-body"><span class="segment q-seg" data-start="352.0" data-end="355.0" title="5:52">How would you manage the patient in recovery? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="355.0" data-end="360.0" title="5:55">Concentrate here on the management of severe hypothermia. </span></li>
+<li><span class="segment a-seg" data-start="360.0" data-end="369.0" title="6:00">Hypothermia of gradual onset is best managed with gradual rewarming at about 1 degrees centigrade per hour. </span></li>
+<li><span class="segment a-seg" data-start="369.0" data-end="373.0" title="6:09">Rewarming can be external or internal. </span></li>
+<li><span class="segment a-seg" data-start="373.0" data-end="381.0" title="6:13">External rewarming is using forced warm air heating blankets or radiant heaters. </span></li>
+<li><span class="segment a-seg" data-start="381.0" data-end="394.0" title="6:21">Internal rewarming can be via the use of warm intravenous, intra gastric or intraperator needle fluids or by bladder irrigation via a urinary catheter. </span></li>
+<li><span class="segment a-seg" data-start="394.0" data-end="403.0" title="6:34">The most efficient way of rewarming but by far the most invasive is to put the patient on cardiac bypass. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="403.0">
+  <div class="q-label">Q10</div>
+  <div class="q-body"><span class="segment q-seg" data-start="403.0" data-end="406.0" title="6:43">Where have you seen hypothermia being used in a theatre setting? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="406.0" data-end="413.0" title="6:46">The examiner is looking to see that you have had exposure to a wide range of anesthetic specialties. </span></li>
+<li><span class="segment a-seg" data-start="413.0" data-end="420.0" title="6:53">Hypothermia is used in cardiac surgery when the patient is put on to cardiac pulmonary bypass. </span></li>
+<li><span class="segment a-seg" data-start="420.0" data-end="429.0" title="7:00">If hypothermia is used, the patient is typically called to a temperature of 28 to 32 degrees. </span></li>
+<li><span class="segment a-seg" data-start="429.0" data-end="437.0" title="7:09">In more complex cardiac surgery, for example surgery on the aortic root, deep hypothermia is induced, </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="437.0">
+  <div class="q-label">Q11</div>
+  <div class="q-body"><span class="segment q-seg" data-start="437.0" data-end="447.0" title="7:17">where the patient is called to a temperature of 15 to 22 degrees, which allows periods of low blood flow or circulatory arrest. </span><span class="segment q-seg" data-start="447.0" data-end="451.0" title="7:27">Do you know of any clinical applications of induced hypothermia? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="451.0" data-end="457.0" title="7:31">This is asking for any trials you may be aware of in the recent literature. </span></li>
+<li><span class="segment a-seg" data-start="457.0" data-end="465.0" title="7:37">Induced hypothermia has been proven to be beneficial for out-of-hospital cardiac arrest survivors. </span></li>
+<li><span class="segment a-seg" data-start="465.0" data-end="479.0" title="7:45">In patients with a return of spontaneous circulation, induced hypothermia has been shown to result in a remarkably more favourable neurological outcome than in patients given standard treatment. </span></li>
+<li><span class="segment a-seg" data-start="480.0" data-end="494.0" title="8:00">As a result, the International Liaison Committee on Resuscitation has recommended that all patients with a return of spontaneous circulation following an out-of-hospital cardiac arrest, </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="494.0">
+  <div class="q-label">Q12</div>
+  <div class="q-body"><span class="segment q-seg" data-start="494.0" data-end="506.0" title="8:14">where the initial rhythm was ventricular fibrillation, should be treated with induced hypothermia of 32 to 34 degrees centigrade for 12 to 24 hours. </span><span class="segment q-seg" data-start="507.0" data-end="511.0" title="8:27">Are you aware of any other therapeutic use of hypothermia? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="511.0" data-end="525.0" title="8:31">There have been trials looking at therapeutic hypothermia in traumatic head injury, and although hypothermia is effective in reducing interest or re-broad pressures, there has been no outcome benefits shown. </span></li>
+<li><span class="segment a-seg" data-start="525.0" data-end="531.0" title="8:45">This is thought to be due to the increased incidence of infectious complications. </span></li>
+<li><span class="segment a-seg" data-start="532.0" data-end="553.0" title="8:52">Hypothermia has also been used in newborn hypoxic ischemic encephalopathy, and although there was no benefit seen in those patients with the most abnormal EEGs, there did seem to be some protective effect in patients with intermediate EEG with no increase in complication rate. </span></li>
+<li><span class="segment a-seg" data-start="553.0" data-end="564.0" title="9:13">Other areas where hypothermia has been trialed are in neurosurgery, in-eschemic stroke, and in aortic surgery for spinal protection. </span></li>
+<li><span class="segment a-seg" data-start="564.0" data-end="572.0" title="9:24">Although preliminary studies have suggested some positive effects, no conclusive results have been achieved. </span></li>
+  </ul>
+</div>
+</div>
+
 </div>
 
 <div class="subtitle-bar">
-  <span class="subtitle-text empty" id="subtitle-text">Play audio to see live subtitles&#8230;</span>
+  <span id="subtitle-text" class="empty">Play audio to see live subtitles&#8230;</span>
 </div>
 
 <script>
-
-const audio    = document.getElementById('audio');
-const allSegs  = Array.from(document.querySelectorAll('.segment'));
-const allBlocks = Array.from(document.querySelectorAll('.t-block'));
+const audio      = document.getElementById('audio');
+const allSegs    = Array.from(document.querySelectorAll('.segment'));
 const subtitleEl = document.getElementById('subtitle-text');
-let activeSegEl   = null;
-let activeBlockEl = null;
-let searchMatches = [];
-let searchIdx     = 0;
+let activeSegEl  = null;
+let searchMatches = [], searchIdx = 0;
 
-// Duration display
 audio.addEventListener('loadedmetadata', () => {
   const m = Math.floor(audio.duration / 60);
   const s = Math.floor(audio.duration %% 60).toString().padStart(2,'0');
   document.getElementById('dur').textContent = m + ':' + s;
 });
 
-// Seek helper
-function seekTo(t) {
-  audio.currentTime = t;
-  audio.play();
-}
+function seekTo(t) { audio.currentTime = t; audio.play(); }
 
-// Block gutter click
-document.querySelectorAll('.t-gutter').forEach(g => {
-  g.addEventListener('click', () => seekTo(parseFloat(g.dataset.start)));
+// Q-block header click
+document.querySelectorAll('.q-block').forEach(q => {
+  q.addEventListener('click', e => {
+    if (!e.target.classList.contains('segment')) seekTo(parseFloat(q.dataset.start));
+  });
 });
 
-// Segment click
+// Individual segment click
 allSegs.forEach(s => {
-  s.addEventListener('click', e => {
-    e.stopPropagation();
-    seekTo(parseFloat(s.dataset.start));
-  });
+  s.addEventListener('click', e => { e.stopPropagation(); seekTo(parseFloat(s.dataset.start)); });
 });
 
 // Real-time tracking
 audio.addEventListener('timeupdate', () => {
   const t = audio.currentTime;
-
-  // Find active segment (last one whose start <= t)
   let found = null;
   for (let i = allSegs.length - 1; i >= 0; i--) {
     if (parseFloat(allSegs[i].dataset.start) <= t) { found = allSegs[i]; break; }
   }
-
   if (found && found !== activeSegEl) {
-    // Clear previous
-    if (activeSegEl) activeSegEl.classList.remove('active');
-    if (activeBlockEl) {
-      activeBlockEl.classList.remove('block-active');
-      const pg = activeBlockEl.querySelector('.t-gutter');
-      if (pg) pg.classList.remove('gutter-active');
+    if (activeSegEl) {
+      activeSegEl.classList.remove('active');
+      const pli = activeSegEl.closest('li');
+      if (pli) pli.classList.remove('li-active');
+      const pq = activeSegEl.closest('.q-block');
+      if (pq) pq.classList.remove('q-active');
     }
-    // Set new
     found.classList.add('active');
-    const block = found.closest('.t-block');
-    if (block) {
-      block.classList.add('block-active');
-      const g = block.querySelector('.t-gutter');
-      if (g) g.classList.add('gutter-active');
-      activeBlockEl = block;
-    }
+    const li = found.closest('li');
+    if (li) li.classList.add('li-active');
+    const qb = found.closest('.q-block');
+    if (qb) qb.classList.add('q-active');
     activeSegEl = found;
 
-    // Update subtitle
     subtitleEl.textContent = found.textContent.trim();
     subtitleEl.classList.remove('empty');
 
-    // Auto-scroll (only when not searching)
-    if (!document.getElementById('search').value) {
+    if (!document.getElementById('search').value)
       found.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }
   }
 });
 
@@ -326,17 +451,13 @@ searchInput.addEventListener('keydown', e => {
     el.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
 });
-
 function runSearch() {
   const q = searchInput.value.trim().toLowerCase();
   allSegs.forEach(s => s.classList.remove('search-match','search-current'));
   searchMatches = [];
   if (!q) return;
   allSegs.forEach(s => {
-    if (s.textContent.toLowerCase().includes(q)) {
-      s.classList.add('search-match');
-      searchMatches.push(s);
-    }
+    if (s.textContent.toLowerCase().includes(q)) { s.classList.add('search-match'); searchMatches.push(s); }
   });
   if (!searchMatches.length) return;
   searchIdx = 0;

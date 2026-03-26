@@ -5,10 +5,19 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Ophthalmic — Strabismum</title>
 <style>
-
   :root {
-    --accent:    #059669;
-    --body-bg:   #f1f5f9;
+    --q-bg:       #1e3a5f;
+    --q-text:     #ffffff;
+    --q-label:    #60a5fa;
+    --a-bg:       #ffffff;
+    --a-border:   #e2e8f0;
+    --a-label:    #059669;
+    --active-q:   #059669;
+    --active-a:   #dbeafe;
+    --accent:     #059669;
+    --body-bg:    #f1f5f9;
+    --pre-bg:     #fef9c3;
+    --pre-border: #fcd34d;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
@@ -40,22 +49,9 @@
     margin-bottom: 4px;
     letter-spacing: 0.01em;
   }
-  .header-sub {
-    font-size: 0.72rem;
-    color: #94a3b8;
-    font-style: italic;
-  }
-  audio {
-    height: 36px;
-    accent-color: var(--accent);
-    flex-shrink: 0;
-  }
-  .back-link {
-    font-size: 0.8rem;
-    color: #94a3b8;
-    text-decoration: none;
-    white-space: nowrap;
-  }
+  .header-sub { font-size: 0.72rem; color: #94a3b8; font-style: italic; }
+  audio { height: 36px; accent-color: var(--accent); flex-shrink: 0; }
+  .back-link { font-size: 0.8rem; color: #94a3b8; text-decoration: none; white-space: nowrap; }
   .back-link:hover { color: #60a5fa; }
 
   /* ── Toolbar ── */
@@ -69,30 +65,17 @@
     border-bottom: 1px solid #334155;
   }
   .toolbar input {
-    flex: 1;
-    max-width: 380px;
+    flex: 1; max-width: 380px;
     padding: 5px 11px;
-    border: 1px solid #475569;
-    border-radius: 6px;
-    background: #0f172a;
-    color: #e2e8f0;
-    font-size: 0.83rem;
-    outline: none;
+    border: 1px solid #475569; border-radius: 6px;
+    background: #0f172a; color: #e2e8f0; font-size: 0.83rem; outline: none;
   }
   .toolbar input:focus { border-color: var(--accent); }
   .toolbar input::placeholder { color: #64748b; }
-  .stats {
-    font-size: 0.72rem;
-    color: #64748b;
-    white-space: nowrap;
-  }
+  .stats { font-size: 0.72rem; color: #64748b; white-space: nowrap; }
 
   /* ── Scroll area ── */
-  .scroll-area {
-    flex: 1;
-    overflow-y: auto;
-    padding: 20px;
-  }
+  .scroll-area { flex: 1; overflow-y: auto; padding: 20px; }
   .scroll-area::-webkit-scrollbar { width: 6px; }
   .scroll-area::-webkit-scrollbar-track { background: transparent; }
   .scroll-area::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
@@ -107,68 +90,77 @@
     display: flex;
     align-items: center;
   }
-  .subtitle-text {
-    font-size: 0.9rem;
-    color: #e2e8f0;
-    line-height: 1.5;
-    font-style: italic;
-  }
-  .subtitle-text.empty { color: #475569; }
+  #subtitle-text { font-size: 0.88rem; color: #e2e8f0; line-height: 1.5; font-style: italic; }
+  #subtitle-text.empty { color: #475569; }
 
-  /* ── Transcript blocks ── */
-  .t-block {
-    background: #ffffff;
-    border: 1px solid #e2e8f0;
-    border-radius: 10px;
-    margin-bottom: 14px;
-    overflow: hidden;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
-    display: flex;
-  }
-  .t-block.block-active {
-    border-color: var(--accent);
-    box-shadow: 0 0 0 2px rgba(37,99,235,0.15);
-  }
-  .t-gutter {
-    background: #0f172a;
-    width: 52px;
-    flex-shrink: 0;
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
-    padding-top: 14px;
-    cursor: pointer;
-  }
-  .t-gutter:hover { background: #1e293b; }
-  .t-timestamp {
-    font-size: 0.7rem;
-    color: #64748b;
-    font-family: monospace;
-    font-weight: 600;
-    letter-spacing: 0.02em;
-  }
-  .t-gutter.gutter-active .t-timestamp { color: var(--accent); }
-  .t-body {
-    flex: 1;
+  /* ── Preamble ── */
+  .preamble-block {
+    background: var(--pre-bg);
+    border-left: 4px solid var(--pre-border);
+    border-radius: 0 8px 8px 0;
     padding: 12px 16px;
-    line-height: 1.75;
-    font-size: 0.92rem;
-    color: #1e293b;
+    margin-bottom: 20px;
+    font-size: 0.88rem;
+    color: #78350f;
+    font-style: italic;
+    line-height: 1.7;
   }
 
-  /* ── Segments ── */
-  .segment {
+  /* ── Q&A pair ── */
+  .qa-pair { margin-bottom: 20px; border-radius: 10px; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+
+  /* Question block */
+  .q-block {
+    background: var(--q-bg);
+    padding: 14px 18px;
+    display: flex; gap: 14px; align-items: flex-start;
     cursor: pointer;
-    border-radius: 3px;
-    transition: background 0.1s;
+    transition: background 0.15s;
   }
-  .segment:hover { background: #eff6ff; }
-  .segment.active {
-    background: #bfdbfe;
-    outline: 2px solid #3b82f6;
-    outline-offset: 1px;
-    border-radius: 3px;
+  .q-block:hover { background: #1d4ed8; }
+  .q-block.q-active { background: var(--active-q); }
+  .q-label {
+    font-size: 0.7rem; font-weight: 700;
+    color: var(--q-label);
+    background: rgba(96,165,250,0.15);
+    border: 1px solid rgba(96,165,250,0.3);
+    border-radius: 5px; padding: 3px 7px;
+    white-space: nowrap; margin-top: 2px; letter-spacing: 0.05em;
+    flex-shrink: 0;
   }
+  .q-body { flex: 1; font-size: 0.97rem; font-weight: 600; color: var(--q-text); line-height: 1.55; }
+
+  /* Answer block */
+  .a-block {
+    background: var(--a-bg);
+    border: 1px solid var(--a-border); border-top: none;
+    padding: 14px 18px;
+    display: flex; gap: 14px; align-items: flex-start;
+  }
+  .a-label {
+    font-size: 0.7rem; font-weight: 700;
+    color: var(--a-label);
+    background: #d1fae5; border: 1px solid #6ee7b7;
+    border-radius: 5px; padding: 3px 9px;
+    white-space: nowrap; margin-top: 2px; letter-spacing: 0.05em;
+    flex-shrink: 0;
+  }
+  .a-body { flex: 1; list-style: none; padding: 0; }
+  .a-body li {
+    padding: 4px 0 4px 14px;
+    border-left: 3px solid transparent;
+    line-height: 1.7; font-size: 0.92rem; color: #1e293b;
+    border-radius: 0 4px 4px 0;
+    transition: background 0.15s;
+  }
+  .a-body li:not(:last-child) { border-bottom: 1px solid #f1f5f9; }
+
+  /* ── Segments (clickable) ── */
+  .segment { cursor: pointer; border-radius: 3px; }
+  .q-seg:hover { background: rgba(255,255,255,0.18); }
+  .a-seg:hover { background: #eff6ff; }
+  .segment.active { background: #bfdbfe; outline: 2px solid #3b82f6; outline-offset: 1px; }
+  .a-body li.li-active { background: var(--active-a); border-left-color: var(--accent); }
   .segment.search-match  { background: #fef9c3; }
   .segment.search-current { background: #fde047; outline: 2px solid #ca8a04; }
 
@@ -187,142 +179,252 @@
 
 <div class="toolbar">
   <input type="text" id="search" placeholder="Search transcript&#8230; (Enter = next match)">
-  <span class="stats" id="stats">100 segments &nbsp;|&nbsp; <span id="dur">loading&#8230;</span></span>
+  <span class="stats" id="stats">8 questions &nbsp;|&nbsp; 100 segments &nbsp;|&nbsp; <span id="dur">loading&#8230;</span></span>
 </div>
 
 <div class="scroll-area" id="scroll-area">
-<div class="t-block">
-  <div class="t-gutter" data-start="0.0"><span class="t-timestamp">0:00</span></div>
-  <div class="t-body"><span class="segment" data-start="0.0" data-end="7.28" title="0:00">Strabismus. You've been asked to anesthize a four-year-old child for correction of a squint. </span><span class="segment" data-start="7.28" data-end="12.12" title="0:07">What factors should be considered in the pre-operative assessment? </span><span class="segment" data-start="12.12" data-end="17.08" title="0:12">In addition to the general assessment of the child, it is important to consider whether </span><span class="segment" data-start="17.08" data-end="23.56" title="0:17">this is an isolated strabismus or whether it is secondary to a muscular disorder. Squints </span><span class="segment" data-start="23.56" data-end="30.24" title="0:23">are associated with rare conditions such as cruisons and apert syndrome and also with </span><span class="segment" data-start="30.24" data-end="36.0" title="0:30">malignant hyperthermia, so it is important to elicit whether there is a family history </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="36.0"><span class="t-timestamp">0:36</span></div>
-  <div class="t-body"><span class="segment" data-start="36.0" data-end="38.28" title="0:36">of this condition. </span><span class="segment" data-start="38.28" data-end="44.84" title="0:38">Muscle disorders associated with malignant hyperthermia include central core disease, </span><span class="segment" data-start="44.84" data-end="52.12" title="0:44">myotonia congenitor, and douchens muscular dystrophy. It is also important to establish </span><span class="segment" data-start="52.12" data-end="59.48" title="0:52">whether there are any other congenital abnormalities or whether the child has learning difficulties. </span><span class="segment" data-start="59.48" data-end="65.24" title="0:59">General considerations for pediatric anesthesia include a history of medical conditions such </span><span class="segment" data-start="65.24" data-end="73.56" title="1:05">as asthma, recent respiratory tract infections, epilepsy, or a history of prematurity. Other </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="73.56"><span class="t-timestamp">1:13</span></div>
-  <div class="t-body"><span class="segment" data-start="73.56" data-end="81.08" title="1:13">factors to consider include previous anesthetic history, family history of anesthetic problems, </span><span class="segment" data-start="81.08" data-end="87.04" title="1:21">medications, allergies, and period of starvation. </span><span class="segment" data-start="87.04" data-end="92.8" title="1:27">The child and parents must be prepared for the conduct of anesthesia involving the child </span><span class="segment" data-start="92.8" data-end="99.08" title="1:32">where appropriate. The presence of a parent in the anesthetic room and afterwards in recovery </span><span class="segment" data-start="99.08" data-end="106.44" title="1:39">should be discussed. Consent should be taken for suppositories and a topical local anesthetics </span><span class="segment" data-start="106.44" data-end="114.48" title="1:46">such as amatop should be applied. Pharmacological premedication such as oral medazolam should </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="114.48"><span class="t-timestamp">1:54</span></div>
-  <div class="t-body"><span class="segment" data-start="114.48" data-end="120.08" title="1:54">be considered if difficulties with induction are anticipated. The parents should be warned </span><span class="segment" data-start="120.08" data-end="125.8" title="2:00">of the risk of postoperative vomiting, which is high in strabismus surgery, but it should </span><span class="segment" data-start="125.8" data-end="130.92" title="2:05">be explained that measures will be taken to attempt to reduce this risk, although it </span><span class="segment" data-start="130.92" data-end="137.08" title="2:10">cannot be entirely eliminated. So how would you enneast ties this child? </span><span class="segment" data-start="137.08" data-end="141.96" title="2:17">If this is a short case scenario, it is unlikely that the examiners will expect you to go into </span><span class="segment" data-start="141.96" data-end="147.96" title="2:21">any great detail regarding drug doses and equipment type incisors, but it is worth mentioning </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="147.96"><span class="t-timestamp">2:27</span></div>
-  <div class="t-body"><span class="segment" data-start="147.96" data-end="153.44" title="2:27">that you would ascertain the child's weight and calculate drug doses accordingly. Be prepared </span><span class="segment" data-start="153.44" data-end="157.56" title="2:33">to provide this information if asked. </span><span class="segment" data-start="157.56" data-end="164.36" title="2:37">All monitoring to minimum standards and preparation of all drugs and equipment is essential based </span><span class="segment" data-start="164.36" data-end="170.68" title="2:44">on the child's age and weight. I would have 20 micrograms per kilogram of atropine drawn </span><span class="segment" data-start="170.68" data-end="177.36" title="2:50">up and immediately available due to the high incidence of the ocular cardiac reflex. </span><span class="segment" data-start="177.36" data-end="184.78" title="2:57">A prophylactic dose of glycopyrolate, 5 micrograms per kilogram, can be given to children </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="184.78"><span class="t-timestamp">3:04</span></div>
-  <div class="t-body"><span class="segment" data-start="184.78" data-end="191.42" title="3:04">under two years of age, however routine prophylaxis is not now recommended. </span><span class="segment" data-start="191.42" data-end="198.22" title="3:11">Induction may be inhalational or intravenous depending on the cooperation of the child. The </span><span class="segment" data-start="198.22" data-end="204.78" title="3:18">choice of whether to use an armoured LMA or to intubate the patient with a ray tube depends </span><span class="segment" data-start="204.78" data-end="212.02" title="3:24">on several factors and there are disadvantages and advantages of each. It may be advisable </span><span class="segment" data-start="212.02" data-end="218.42" title="3:32">to intubate children under one year, however using laryngeal masks in older children is </span><span class="segment" data-start="218.42" data-end="225.94" title="3:38">perfectly acceptable. The pressure response to intubation and coughing on extubation are </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="225.94"><span class="t-timestamp">3:45</span></div>
-  <div class="t-body"><span class="segment" data-start="225.94" data-end="233.94" title="3:45">not usually a problem in squint surgery as it is not an intraocular procedure. If an LMA is used, </span><span class="segment" data-start="233.94" data-end="240.5" title="3:53">it is essential that it is correctly seated as access to the airway during surgery will be restricted. </span><span class="segment" data-start="240.82" data-end="248.42" title="4:00">It is acceptable to use spontaneous or controlled ventilation but my preference would be to use </span><span class="segment" data-start="248.42" data-end="254.98" title="4:08">controlled ventilation because avoiding hypercapnea is thought to decrease the incidence of the </span><span class="segment" data-start="254.98" data-end="263.06" title="4:14">ocular cardiac reflex. In addition, many squint surgeons request complete muscle relaxation </span><span class="segment" data-start="263.06" data-end="269.78" title="4:23">because of the requirement for a forcedduction test whereby the eye is moved to assess any </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="269.78"><span class="t-timestamp">4:29</span></div>
-  <div class="t-body"><span class="segment" data-start="269.78" data-end="275.54" title="4:29">mechanical restriction in movement as distinct from that attributable to muscle tone. </span><span class="segment" data-start="276.26" data-end="281.62" title="4:36">For this reason, it is preferable to give a muscle relaxant at least to cover the period of </span><span class="segment" data-start="281.62" data-end="288.66" title="4:41">the forcedduction test. If bilateral surgery is planned, both eyes should be assessed at the same </span><span class="segment" data-start="288.66" data-end="295.06" title="4:48">time. If the surgeon is repairing the squint with an adjustable suture, it is important that the </span><span class="segment" data-start="295.06" data-end="302.74" title="4:55">effects of the muscle relaxant have worn off before the suture is adjusted. I would avoid succumbethonium </span><span class="segment" data-start="302.74" data-end="309.46" title="5:02">due to its tonic contraction effects on extroocular muscles and its potential trigger for malignant </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="309.46"><span class="t-timestamp">5:09</span></div>
-  <div class="t-body"><span class="segment" data-start="309.46" data-end="317.3" title="5:09">hyperthermia. I would use a mixture of oxygen and air or nitrous oxide with a volatile agent for </span><span class="segment" data-start="317.3" data-end="324.42" title="5:17">maintenance. The depth of anesthesia with volatile agents should be sufficient to ensure neutral </span><span class="segment" data-start="325.38" data-end="331.3" title="5:25">gaze. This can sometimes be difficult to achieve with modern agents, especially see the flurrain </span><span class="segment" data-start="331.3" data-end="337.78" title="5:31">unlike halethane. The eyes may remain rolled up in the head, which is known as bell sign. </span><span class="segment" data-start="339.06" data-end="345.22" title="5:39">Botulinium toxin is occasionally used in the treatment of strabismus and blepharospasm. </span><span class="segment" data-start="345.86" data-end="352.1" title="5:45">ketamine is a useful anesthetic agent in this instance, as it does not reduce muscle tone, </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="352.1"><span class="t-timestamp">5:52</span></div>
-  <div class="t-body"><span class="segment" data-start="352.1" data-end="358.9" title="5:52">which the surgeon tests intraoperatively. However, ketamine has well-known side effects, </span><span class="segment" data-start="358.9" data-end="366.58" title="5:58">which may deter its use. Proper foll infusion is being increasingly used for older children </span><span class="segment" data-start="366.58" data-end="371.94" title="6:06">over six years of age, where vomiting starts to become troublesome due to its less </span><span class="segment" data-start="371.94" data-end="378.98" title="6:11">emetogenic potential compared with the volatile agents. Target controlled infusion, using </span><span class="segment" data-start="378.98" data-end="386.18" title="6:18">catarias formula, at four to five micrograms per mil, is appropriate. You mentioned the </span><span class="segment" data-start="386.18" data-end="392.02" title="6:26">ocular cardiac reflex. Can I tell me more about this reflex, in particular the afferent and efferent </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="392.02"><span class="t-timestamp">6:32</span></div>
-  <div class="t-body"><span class="segment" data-start="392.02" data-end="401.22" title="6:32">pathways? This reflex occurs frequently during strabismus surgery in as many as 60% of cases. </span><span class="segment" data-start="401.94" data-end="408.26" title="6:41">It is caused by traction on the extroocular muscles, particularly the medial rectus muscle, </span><span class="segment" data-start="408.26" data-end="413.62" title="6:48">or pressure on the globe, and reverts almost immediately when the stimulus is removed. </span><span class="segment" data-start="414.34" data-end="421.94" title="6:54">It usually manifests as brady-dysridmiers with ectopics, although very occasionally sinus arrest </span><span class="segment" data-start="421.94" data-end="429.38" title="7:01">or major dysridmiers may occur. Afferent pathways run from the long and short </span><span class="segment" data-start="429.38" data-end="435.7" title="7:09">ciliary nerves via the ciliary ganglion to the ophthalmic division of the trigeminal nerve. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="436.42"><span class="t-timestamp">7:16</span></div>
-  <div class="t-body"><span class="segment" data-start="436.42" data-end="442.34" title="7:16">They are then transmitted to the gasserion ganglion, and finally to the main sensory nucleus of </span><span class="segment" data-start="442.34" data-end="449.38" title="7:22">the trigeminal nerve in the floor of the fourth ventricle. The efferent pathway starts in the </span><span class="segment" data-start="449.38" data-end="456.42" title="7:29">nucleus of the vagus cardiac depressor nerve in the medulla and runs to the heart via the vagus nerve. </span><span class="segment" data-start="457.94" data-end="462.02" title="7:37">Okay, so let's say that half of through the operation you notice the heart rate has dropped to </span><span class="segment" data-start="462.02" data-end="470.42" title="7:42">50 beats per minute. What would you do? Having quickly confirmed the rate, I would promptly </span><span class="segment" data-start="470.42" data-end="477.54" title="7:50">inform the surgeons and ask them to remove the stimulus. This is usually all that is required, </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="477.54"><span class="t-timestamp">7:57</span></div>
-  <div class="t-body"><span class="segment" data-start="477.54" data-end="483.54" title="7:57">but if the heart rate does not improve, I would call for senior help and administer 10 </span><span class="segment" data-start="483.54" data-end="490.74" title="8:03">micrograms per kilogram of atropine. This dose of atropine can be repeated if it has little effect. </span><span class="segment" data-start="491.38" data-end="496.42" title="8:11">If cardiac output is lost, I would commence cardiopulmonary resuscitation. </span><span class="segment" data-start="497.54" data-end="503.22" title="8:17">Fine. What would you use for intraoperative and postoperative analgesia for squint surgery? </span><span class="segment" data-start="505.3" data-end="511.7" title="8:25">This type of surgery is not particularly painful, and opioids should be avoided to decrease the risk </span><span class="segment" data-start="511.7" data-end="518.42" title="8:31">of postoperative nausea and vomiting. A combination of fentanyl or alphentanyl with a </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="518.42"><span class="t-timestamp">8:38</span></div>
-  <div class="t-body"><span class="segment" data-start="518.42" data-end="525.3" title="8:38">Volterol suppository at a dose of 1 milligram per kilogram and intravenous paracetamol at a dose </span><span class="segment" data-start="525.3" data-end="533.22" title="8:45">of 15 milligrams per kilogram is usually adequate. Supplemental local anesthesia should also be used, </span><span class="segment" data-start="533.22" data-end="539.22" title="8:53">and subconjunctival local anesthetic has a longer lasting effect than topical eye drops. </span><span class="segment" data-start="540.1" data-end="548.1" title="9:00">Some surgeons also apply 0.5% dichylophanec eye drops on the muscle insurgents before closing the </span><span class="segment" data-start="548.18" data-end="556.66" title="9:08">conjunctival. Peribolba blocks, whilst producing effective analgesia and reducing the incidence of the </span><span class="segment" data-start="556.66" data-end="564.66" title="9:16">ocular cardiac reflex, are inadvisable in children due to the risk of globe perforation and retrobolba </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="564.66"><span class="t-timestamp">9:24</span></div>
-  <div class="t-body"><span class="segment" data-start="564.66" data-end="572.18" title="9:24">hemorrhage. The patients should be given regular ibuprofen at a dose of 5 milligrams per kilogram </span><span class="segment" data-start="572.18" data-end="578.66" title="9:32">and paracetamol at a dose of 15 milligrams per kilogram to be taken four times a day for three </span><span class="segment" data-start="578.66" data-end="585.22" title="9:38">days postoperatively. You mentioned postoperative nausea and vomiting. Is this usually a problem? </span><span class="segment" data-start="587.3" data-end="595.06" title="9:47">Yes, it can be. Untreated, the incidence of postoperative vomiting in squint surgery is very high </span><span class="segment" data-start="595.14" data-end="602.82" title="9:55">and can be greater than 50%. Actually, it is not as high as that with resection and recession </span><span class="segment" data-start="602.82" data-end="610.74" title="10:02">and is closer to 25 to 30%. It is much higher with the fade-in operation, which involves the placement </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="610.74"><span class="t-timestamp">10:10</span></div>
-  <div class="t-body"><span class="segment" data-start="610.74" data-end="616.5" title="10:10">of a posterior fixation suture, however this is no longer performed in the United Kingdom. </span><span class="segment" data-start="617.54" data-end="622.66" title="10:17">Postoperative nausea and vomiting is also worse with bilateral operations. </span><span class="segment" data-start="622.98" data-end="630.74" title="10:22">Its precise mechanism is unknown, but may be due to an ocular emetic reflex involving the </span><span class="segment" data-start="630.74" data-end="637.06" title="10:30">ophthalmic division of the trigeminal nerve under the vomiting centre in the medulla. It can be </span><span class="segment" data-start="637.06" data-end="644.42" title="10:37">prevented by prophylaxis with intravenous endanceratron and dexamethasone, a combination of which is </span><span class="segment" data-start="644.42" data-end="652.58" title="10:44">recommended by a recent association of pediatric anesthesiokide line in 2008 on the prevention of postoperative </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="652.66"><span class="t-timestamp">10:52</span></div>
-  <div class="t-body"><span class="segment" data-start="652.66" data-end="660.02" title="10:52">vomiting in high-risk children. Maintaining adequate hydration is also important, and all children </span><span class="segment" data-start="660.02" data-end="666.58" title="11:00">should receive 20 mils per kilo of intravenous fluids. It is possible to reduce the incidence of </span><span class="segment" data-start="666.58" data-end="674.98" title="11:06">vomiting to less than 10% when a multimodal approach is used. Also, if not, is that the predisposition </span><span class="segment" data-start="674.98" data-end="682.58" title="11:14">to postoperative nausea and vomiting persists for 48 hours postoperatively. </span></div>
+<div class="preamble-block"><span class="segment a-seg" data-start="0.0" data-end="7.28" title="0:00">Strabismus. You've been asked to anesthize a four-year-old child for correction of a squint. </span></div>
+<div class="qa-pair">
+<div class="q-block" data-start="7.28">
+  <div class="q-label">Q1</div>
+  <div class="q-body"><span class="segment q-seg" data-start="7.28" data-end="12.12" title="0:07">What factors should be considered in the pre-operative assessment? </span></div>
 </div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="12.12" data-end="17.08" title="0:12">In addition to the general assessment of the child, it is important to consider whether </span></li>
+<li><span class="segment a-seg" data-start="17.08" data-end="23.56" title="0:17">this is an isolated strabismus or whether it is secondary to a muscular disorder. Squints </span></li>
+<li><span class="segment a-seg" data-start="23.56" data-end="30.24" title="0:23">are associated with rare conditions such as cruisons and apert syndrome and also with </span></li>
+<li><span class="segment a-seg" data-start="30.24" data-end="36.0" title="0:30">malignant hyperthermia, so it is important to elicit whether there is a family history </span></li>
+<li><span class="segment a-seg" data-start="36.0" data-end="38.28" title="0:36">of this condition. </span></li>
+<li><span class="segment a-seg" data-start="38.28" data-end="44.84" title="0:38">Muscle disorders associated with malignant hyperthermia include central core disease, </span></li>
+<li><span class="segment a-seg" data-start="44.84" data-end="52.12" title="0:44">myotonia congenitor, and douchens muscular dystrophy. It is also important to establish </span></li>
+<li><span class="segment a-seg" data-start="52.12" data-end="59.48" title="0:52">whether there are any other congenital abnormalities or whether the child has learning difficulties. </span></li>
+<li><span class="segment a-seg" data-start="59.48" data-end="65.24" title="0:59">General considerations for pediatric anesthesia include a history of medical conditions such </span></li>
+<li><span class="segment a-seg" data-start="65.24" data-end="73.56" title="1:05">as asthma, recent respiratory tract infections, epilepsy, or a history of prematurity. Other </span></li>
+<li><span class="segment a-seg" data-start="73.56" data-end="81.08" title="1:13">factors to consider include previous anesthetic history, family history of anesthetic problems, </span></li>
+<li><span class="segment a-seg" data-start="81.08" data-end="87.04" title="1:21">medications, allergies, and period of starvation. </span></li>
+<li><span class="segment a-seg" data-start="87.04" data-end="92.8" title="1:27">The child and parents must be prepared for the conduct of anesthesia involving the child </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="92.8">
+  <div class="q-label">Q2</div>
+  <div class="q-body"><span class="segment q-seg" data-start="92.8" data-end="99.08" title="1:32">where appropriate. The presence of a parent in the anesthetic room and afterwards in recovery </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="99.08" data-end="106.44" title="1:39">should be discussed. Consent should be taken for suppositories and a topical local anesthetics </span></li>
+<li><span class="segment a-seg" data-start="106.44" data-end="114.48" title="1:46">such as amatop should be applied. Pharmacological premedication such as oral medazolam should </span></li>
+<li><span class="segment a-seg" data-start="114.48" data-end="120.08" title="1:54">be considered if difficulties with induction are anticipated. The parents should be warned </span></li>
+<li><span class="segment a-seg" data-start="120.08" data-end="125.8" title="2:00">of the risk of postoperative vomiting, which is high in strabismus surgery, but it should </span></li>
+<li><span class="segment a-seg" data-start="125.8" data-end="130.92" title="2:05">be explained that measures will be taken to attempt to reduce this risk, although it </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="130.92">
+  <div class="q-label">Q3</div>
+  <div class="q-body"><span class="segment q-seg" data-start="130.92" data-end="137.08" title="2:10">cannot be entirely eliminated. So how would you enneast ties this child? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="137.08" data-end="141.96" title="2:17">If this is a short case scenario, it is unlikely that the examiners will expect you to go into </span></li>
+<li><span class="segment a-seg" data-start="141.96" data-end="147.96" title="2:21">any great detail regarding drug doses and equipment type incisors, but it is worth mentioning </span></li>
+<li><span class="segment a-seg" data-start="147.96" data-end="153.44" title="2:27">that you would ascertain the child's weight and calculate drug doses accordingly. Be prepared </span></li>
+<li><span class="segment a-seg" data-start="153.44" data-end="157.56" title="2:33">to provide this information if asked. </span></li>
+<li><span class="segment a-seg" data-start="157.56" data-end="164.36" title="2:37">All monitoring to minimum standards and preparation of all drugs and equipment is essential based </span></li>
+<li><span class="segment a-seg" data-start="164.36" data-end="170.68" title="2:44">on the child's age and weight. I would have 20 micrograms per kilogram of atropine drawn </span></li>
+<li><span class="segment a-seg" data-start="170.68" data-end="177.36" title="2:50">up and immediately available due to the high incidence of the ocular cardiac reflex. </span></li>
+<li><span class="segment a-seg" data-start="177.36" data-end="184.78" title="2:57">A prophylactic dose of glycopyrolate, 5 micrograms per kilogram, can be given to children </span></li>
+<li><span class="segment a-seg" data-start="184.78" data-end="191.42" title="3:04">under two years of age, however routine prophylaxis is not now recommended. </span></li>
+<li><span class="segment a-seg" data-start="191.42" data-end="198.22" title="3:11">Induction may be inhalational or intravenous depending on the cooperation of the child. The </span></li>
+<li><span class="segment a-seg" data-start="198.22" data-end="204.78" title="3:18">choice of whether to use an armoured LMA or to intubate the patient with a ray tube depends </span></li>
+<li><span class="segment a-seg" data-start="204.78" data-end="212.02" title="3:24">on several factors and there are disadvantages and advantages of each. It may be advisable </span></li>
+<li><span class="segment a-seg" data-start="212.02" data-end="218.42" title="3:32">to intubate children under one year, however using laryngeal masks in older children is </span></li>
+<li><span class="segment a-seg" data-start="218.42" data-end="225.94" title="3:38">perfectly acceptable. The pressure response to intubation and coughing on extubation are </span></li>
+<li><span class="segment a-seg" data-start="225.94" data-end="233.94" title="3:45">not usually a problem in squint surgery as it is not an intraocular procedure. If an LMA is used, </span></li>
+<li><span class="segment a-seg" data-start="233.94" data-end="240.5" title="3:53">it is essential that it is correctly seated as access to the airway during surgery will be restricted. </span></li>
+<li><span class="segment a-seg" data-start="240.82" data-end="248.42" title="4:00">It is acceptable to use spontaneous or controlled ventilation but my preference would be to use </span></li>
+<li><span class="segment a-seg" data-start="248.42" data-end="254.98" title="4:08">controlled ventilation because avoiding hypercapnea is thought to decrease the incidence of the </span></li>
+<li><span class="segment a-seg" data-start="254.98" data-end="263.06" title="4:14">ocular cardiac reflex. In addition, many squint surgeons request complete muscle relaxation </span></li>
+<li><span class="segment a-seg" data-start="263.06" data-end="269.78" title="4:23">because of the requirement for a forcedduction test whereby the eye is moved to assess any </span></li>
+<li><span class="segment a-seg" data-start="269.78" data-end="275.54" title="4:29">mechanical restriction in movement as distinct from that attributable to muscle tone. </span></li>
+<li><span class="segment a-seg" data-start="276.26" data-end="281.62" title="4:36">For this reason, it is preferable to give a muscle relaxant at least to cover the period of </span></li>
+<li><span class="segment a-seg" data-start="281.62" data-end="288.66" title="4:41">the forcedduction test. If bilateral surgery is planned, both eyes should be assessed at the same </span></li>
+<li><span class="segment a-seg" data-start="288.66" data-end="295.06" title="4:48">time. If the surgeon is repairing the squint with an adjustable suture, it is important that the </span></li>
+<li><span class="segment a-seg" data-start="295.06" data-end="302.74" title="4:55">effects of the muscle relaxant have worn off before the suture is adjusted. I would avoid succumbethonium </span></li>
+<li><span class="segment a-seg" data-start="302.74" data-end="309.46" title="5:02">due to its tonic contraction effects on extroocular muscles and its potential trigger for malignant </span></li>
+<li><span class="segment a-seg" data-start="309.46" data-end="317.3" title="5:09">hyperthermia. I would use a mixture of oxygen and air or nitrous oxide with a volatile agent for </span></li>
+<li><span class="segment a-seg" data-start="317.3" data-end="324.42" title="5:17">maintenance. The depth of anesthesia with volatile agents should be sufficient to ensure neutral </span></li>
+<li><span class="segment a-seg" data-start="325.38" data-end="331.3" title="5:25">gaze. This can sometimes be difficult to achieve with modern agents, especially see the flurrain </span></li>
+<li><span class="segment a-seg" data-start="331.3" data-end="337.78" title="5:31">unlike halethane. The eyes may remain rolled up in the head, which is known as bell sign. </span></li>
+<li><span class="segment a-seg" data-start="339.06" data-end="345.22" title="5:39">Botulinium toxin is occasionally used in the treatment of strabismus and blepharospasm. </span></li>
+<li><span class="segment a-seg" data-start="345.86" data-end="352.1" title="5:45">ketamine is a useful anesthetic agent in this instance, as it does not reduce muscle tone, </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="352.1">
+  <div class="q-label">Q4</div>
+  <div class="q-body"><span class="segment q-seg" data-start="352.1" data-end="358.9" title="5:52">which the surgeon tests intraoperatively. However, ketamine has well-known side effects, </span><span class="segment q-seg" data-start="358.9" data-end="366.58" title="5:58">which may deter its use. Proper foll infusion is being increasingly used for older children </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="366.58" data-end="371.94" title="6:06">over six years of age, where vomiting starts to become troublesome due to its less </span></li>
+<li><span class="segment a-seg" data-start="371.94" data-end="378.98" title="6:11">emetogenic potential compared with the volatile agents. Target controlled infusion, using </span></li>
+<li><span class="segment a-seg" data-start="378.98" data-end="386.18" title="6:18">catarias formula, at four to five micrograms per mil, is appropriate. You mentioned the </span></li>
+<li><span class="segment a-seg" data-start="386.18" data-end="392.02" title="6:26">ocular cardiac reflex. Can I tell me more about this reflex, in particular the afferent and efferent </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="392.02">
+  <div class="q-label">Q5</div>
+  <div class="q-body"><span class="segment q-seg" data-start="392.02" data-end="392.633" title="6:32">pathways? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="392.633" data-end="401.22" title="6:32">This reflex occurs frequently during strabismus surgery in as many as 60% of cases. </span></li>
+<li><span class="segment a-seg" data-start="401.94" data-end="408.26" title="6:41">It is caused by traction on the extroocular muscles, particularly the medial rectus muscle, </span></li>
+<li><span class="segment a-seg" data-start="408.26" data-end="413.62" title="6:48">or pressure on the globe, and reverts almost immediately when the stimulus is removed. </span></li>
+<li><span class="segment a-seg" data-start="414.34" data-end="421.94" title="6:54">It usually manifests as brady-dysridmiers with ectopics, although very occasionally sinus arrest </span></li>
+<li><span class="segment a-seg" data-start="421.94" data-end="429.38" title="7:01">or major dysridmiers may occur. Afferent pathways run from the long and short </span></li>
+<li><span class="segment a-seg" data-start="429.38" data-end="435.7" title="7:09">ciliary nerves via the ciliary ganglion to the ophthalmic division of the trigeminal nerve. </span></li>
+<li><span class="segment a-seg" data-start="436.42" data-end="442.34" title="7:16">They are then transmitted to the gasserion ganglion, and finally to the main sensory nucleus of </span></li>
+<li><span class="segment a-seg" data-start="442.34" data-end="449.38" title="7:22">the trigeminal nerve in the floor of the fourth ventricle. The efferent pathway starts in the </span></li>
+<li><span class="segment a-seg" data-start="449.38" data-end="456.42" title="7:29">nucleus of the vagus cardiac depressor nerve in the medulla and runs to the heart via the vagus nerve. </span></li>
+<li><span class="segment a-seg" data-start="457.94" data-end="462.02" title="7:37">Okay, so let's say that half of through the operation you notice the heart rate has dropped to </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="462.02">
+  <div class="q-label">Q6</div>
+  <div class="q-body"><span class="segment q-seg" data-start="462.02" data-end="466.22" title="7:42">50 beats per minute. What would you do? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="466.22" data-end="470.42" title="7:46">Having quickly confirmed the rate, I would promptly </span></li>
+<li><span class="segment a-seg" data-start="470.42" data-end="477.54" title="7:50">inform the surgeons and ask them to remove the stimulus. This is usually all that is required, </span></li>
+<li><span class="segment a-seg" data-start="477.54" data-end="483.54" title="7:57">but if the heart rate does not improve, I would call for senior help and administer 10 </span></li>
+<li><span class="segment a-seg" data-start="483.54" data-end="490.74" title="8:03">micrograms per kilogram of atropine. This dose of atropine can be repeated if it has little effect. </span></li>
+<li><span class="segment a-seg" data-start="491.38" data-end="496.42" title="8:11">If cardiac output is lost, I would commence cardiopulmonary resuscitation. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="497.54">
+  <div class="q-label">Q7</div>
+  <div class="q-body"><span class="segment q-seg" data-start="497.54" data-end="503.22" title="8:17">Fine. What would you use for intraoperative and postoperative analgesia for squint surgery? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="505.3" data-end="511.7" title="8:25">This type of surgery is not particularly painful, and opioids should be avoided to decrease the risk </span></li>
+<li><span class="segment a-seg" data-start="511.7" data-end="518.42" title="8:31">of postoperative nausea and vomiting. A combination of fentanyl or alphentanyl with a </span></li>
+<li><span class="segment a-seg" data-start="518.42" data-end="525.3" title="8:38">Volterol suppository at a dose of 1 milligram per kilogram and intravenous paracetamol at a dose </span></li>
+<li><span class="segment a-seg" data-start="525.3" data-end="533.22" title="8:45">of 15 milligrams per kilogram is usually adequate. Supplemental local anesthesia should also be used, </span></li>
+<li><span class="segment a-seg" data-start="533.22" data-end="539.22" title="8:53">and subconjunctival local anesthetic has a longer lasting effect than topical eye drops. </span></li>
+<li><span class="segment a-seg" data-start="540.1" data-end="548.1" title="9:00">Some surgeons also apply 0.5% dichylophanec eye drops on the muscle insurgents before closing the </span></li>
+<li><span class="segment a-seg" data-start="548.18" data-end="556.66" title="9:08">conjunctival. Peribolba blocks, whilst producing effective analgesia and reducing the incidence of the </span></li>
+<li><span class="segment a-seg" data-start="556.66" data-end="564.66" title="9:16">ocular cardiac reflex, are inadvisable in children due to the risk of globe perforation and retrobolba </span></li>
+<li><span class="segment a-seg" data-start="564.66" data-end="572.18" title="9:24">hemorrhage. The patients should be given regular ibuprofen at a dose of 5 milligrams per kilogram </span></li>
+<li><span class="segment a-seg" data-start="572.18" data-end="578.66" title="9:32">and paracetamol at a dose of 15 milligrams per kilogram to be taken four times a day for three </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="578.66">
+  <div class="q-label">Q8</div>
+  <div class="q-body"><span class="segment q-seg" data-start="578.66" data-end="585.22" title="9:38">days postoperatively. You mentioned postoperative nausea and vomiting. Is this usually a problem? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="587.3" data-end="595.06" title="9:47">Yes, it can be. Untreated, the incidence of postoperative vomiting in squint surgery is very high </span></li>
+<li><span class="segment a-seg" data-start="595.14" data-end="602.82" title="9:55">and can be greater than 50%. Actually, it is not as high as that with resection and recession </span></li>
+<li><span class="segment a-seg" data-start="602.82" data-end="610.74" title="10:02">and is closer to 25 to 30%. It is much higher with the fade-in operation, which involves the placement </span></li>
+<li><span class="segment a-seg" data-start="610.74" data-end="616.5" title="10:10">of a posterior fixation suture, however this is no longer performed in the United Kingdom. </span></li>
+<li><span class="segment a-seg" data-start="617.54" data-end="622.66" title="10:17">Postoperative nausea and vomiting is also worse with bilateral operations. </span></li>
+<li><span class="segment a-seg" data-start="622.98" data-end="630.74" title="10:22">Its precise mechanism is unknown, but may be due to an ocular emetic reflex involving the </span></li>
+<li><span class="segment a-seg" data-start="630.74" data-end="637.06" title="10:30">ophthalmic division of the trigeminal nerve under the vomiting centre in the medulla. It can be </span></li>
+<li><span class="segment a-seg" data-start="637.06" data-end="644.42" title="10:37">prevented by prophylaxis with intravenous endanceratron and dexamethasone, a combination of which is </span></li>
+<li><span class="segment a-seg" data-start="644.42" data-end="652.58" title="10:44">recommended by a recent association of pediatric anesthesiokide line in 2008 on the prevention of postoperative </span></li>
+<li><span class="segment a-seg" data-start="652.66" data-end="660.02" title="10:52">vomiting in high-risk children. Maintaining adequate hydration is also important, and all children </span></li>
+<li><span class="segment a-seg" data-start="660.02" data-end="666.58" title="11:00">should receive 20 mils per kilo of intravenous fluids. It is possible to reduce the incidence of </span></li>
+<li><span class="segment a-seg" data-start="666.58" data-end="674.98" title="11:06">vomiting to less than 10% when a multimodal approach is used. Also, if not, is that the predisposition </span></li>
+<li><span class="segment a-seg" data-start="674.98" data-end="682.58" title="11:14">to postoperative nausea and vomiting persists for 48 hours postoperatively. </span></li>
+  </ul>
+</div>
+</div>
+
 </div>
 
 <div class="subtitle-bar">
-  <span class="subtitle-text empty" id="subtitle-text">Play audio to see live subtitles&#8230;</span>
+  <span id="subtitle-text" class="empty">Play audio to see live subtitles&#8230;</span>
 </div>
 
 <script>
-
-const audio    = document.getElementById('audio');
-const allSegs  = Array.from(document.querySelectorAll('.segment'));
-const allBlocks = Array.from(document.querySelectorAll('.t-block'));
+const audio      = document.getElementById('audio');
+const allSegs    = Array.from(document.querySelectorAll('.segment'));
 const subtitleEl = document.getElementById('subtitle-text');
-let activeSegEl   = null;
-let activeBlockEl = null;
-let searchMatches = [];
-let searchIdx     = 0;
+let activeSegEl  = null;
+let searchMatches = [], searchIdx = 0;
 
-// Duration display
 audio.addEventListener('loadedmetadata', () => {
   const m = Math.floor(audio.duration / 60);
   const s = Math.floor(audio.duration %% 60).toString().padStart(2,'0');
   document.getElementById('dur').textContent = m + ':' + s;
 });
 
-// Seek helper
-function seekTo(t) {
-  audio.currentTime = t;
-  audio.play();
-}
+function seekTo(t) { audio.currentTime = t; audio.play(); }
 
-// Block gutter click
-document.querySelectorAll('.t-gutter').forEach(g => {
-  g.addEventListener('click', () => seekTo(parseFloat(g.dataset.start)));
+// Q-block header click
+document.querySelectorAll('.q-block').forEach(q => {
+  q.addEventListener('click', e => {
+    if (!e.target.classList.contains('segment')) seekTo(parseFloat(q.dataset.start));
+  });
 });
 
-// Segment click
+// Individual segment click
 allSegs.forEach(s => {
-  s.addEventListener('click', e => {
-    e.stopPropagation();
-    seekTo(parseFloat(s.dataset.start));
-  });
+  s.addEventListener('click', e => { e.stopPropagation(); seekTo(parseFloat(s.dataset.start)); });
 });
 
 // Real-time tracking
 audio.addEventListener('timeupdate', () => {
   const t = audio.currentTime;
-
-  // Find active segment (last one whose start <= t)
   let found = null;
   for (let i = allSegs.length - 1; i >= 0; i--) {
     if (parseFloat(allSegs[i].dataset.start) <= t) { found = allSegs[i]; break; }
   }
-
   if (found && found !== activeSegEl) {
-    // Clear previous
-    if (activeSegEl) activeSegEl.classList.remove('active');
-    if (activeBlockEl) {
-      activeBlockEl.classList.remove('block-active');
-      const pg = activeBlockEl.querySelector('.t-gutter');
-      if (pg) pg.classList.remove('gutter-active');
+    if (activeSegEl) {
+      activeSegEl.classList.remove('active');
+      const pli = activeSegEl.closest('li');
+      if (pli) pli.classList.remove('li-active');
+      const pq = activeSegEl.closest('.q-block');
+      if (pq) pq.classList.remove('q-active');
     }
-    // Set new
     found.classList.add('active');
-    const block = found.closest('.t-block');
-    if (block) {
-      block.classList.add('block-active');
-      const g = block.querySelector('.t-gutter');
-      if (g) g.classList.add('gutter-active');
-      activeBlockEl = block;
-    }
+    const li = found.closest('li');
+    if (li) li.classList.add('li-active');
+    const qb = found.closest('.q-block');
+    if (qb) qb.classList.add('q-active');
     activeSegEl = found;
 
-    // Update subtitle
     subtitleEl.textContent = found.textContent.trim();
     subtitleEl.classList.remove('empty');
 
-    // Auto-scroll (only when not searching)
-    if (!document.getElementById('search').value) {
+    if (!document.getElementById('search').value)
       found.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }
   }
 });
 
@@ -338,17 +440,13 @@ searchInput.addEventListener('keydown', e => {
     el.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
 });
-
 function runSearch() {
   const q = searchInput.value.trim().toLowerCase();
   allSegs.forEach(s => s.classList.remove('search-match','search-current'));
   searchMatches = [];
   if (!q) return;
   allSegs.forEach(s => {
-    if (s.textContent.toLowerCase().includes(q)) {
-      s.classList.add('search-match');
-      searchMatches.push(s);
-    }
+    if (s.textContent.toLowerCase().includes(q)) { s.classList.add('search-match'); searchMatches.push(s); }
   });
   if (!searchMatches.length) return;
   searchIdx = 0;

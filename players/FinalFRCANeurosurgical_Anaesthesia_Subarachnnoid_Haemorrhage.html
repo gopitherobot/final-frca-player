@@ -5,10 +5,19 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Neurosurgical Anaesthesia — Subarachnnoid Haemorrhage</title>
 <style>
-
   :root {
-    --accent:    #6366f1;
-    --body-bg:   #f1f5f9;
+    --q-bg:       #1e3a5f;
+    --q-text:     #ffffff;
+    --q-label:    #60a5fa;
+    --a-bg:       #ffffff;
+    --a-border:   #e2e8f0;
+    --a-label:    #059669;
+    --active-q:   #6366f1;
+    --active-a:   #dbeafe;
+    --accent:     #6366f1;
+    --body-bg:    #f1f5f9;
+    --pre-bg:     #fef9c3;
+    --pre-border: #fcd34d;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
@@ -40,22 +49,9 @@
     margin-bottom: 4px;
     letter-spacing: 0.01em;
   }
-  .header-sub {
-    font-size: 0.72rem;
-    color: #94a3b8;
-    font-style: italic;
-  }
-  audio {
-    height: 36px;
-    accent-color: var(--accent);
-    flex-shrink: 0;
-  }
-  .back-link {
-    font-size: 0.8rem;
-    color: #94a3b8;
-    text-decoration: none;
-    white-space: nowrap;
-  }
+  .header-sub { font-size: 0.72rem; color: #94a3b8; font-style: italic; }
+  audio { height: 36px; accent-color: var(--accent); flex-shrink: 0; }
+  .back-link { font-size: 0.8rem; color: #94a3b8; text-decoration: none; white-space: nowrap; }
   .back-link:hover { color: #60a5fa; }
 
   /* ── Toolbar ── */
@@ -69,30 +65,17 @@
     border-bottom: 1px solid #334155;
   }
   .toolbar input {
-    flex: 1;
-    max-width: 380px;
+    flex: 1; max-width: 380px;
     padding: 5px 11px;
-    border: 1px solid #475569;
-    border-radius: 6px;
-    background: #0f172a;
-    color: #e2e8f0;
-    font-size: 0.83rem;
-    outline: none;
+    border: 1px solid #475569; border-radius: 6px;
+    background: #0f172a; color: #e2e8f0; font-size: 0.83rem; outline: none;
   }
   .toolbar input:focus { border-color: var(--accent); }
   .toolbar input::placeholder { color: #64748b; }
-  .stats {
-    font-size: 0.72rem;
-    color: #64748b;
-    white-space: nowrap;
-  }
+  .stats { font-size: 0.72rem; color: #64748b; white-space: nowrap; }
 
   /* ── Scroll area ── */
-  .scroll-area {
-    flex: 1;
-    overflow-y: auto;
-    padding: 20px;
-  }
+  .scroll-area { flex: 1; overflow-y: auto; padding: 20px; }
   .scroll-area::-webkit-scrollbar { width: 6px; }
   .scroll-area::-webkit-scrollbar-track { background: transparent; }
   .scroll-area::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
@@ -107,68 +90,77 @@
     display: flex;
     align-items: center;
   }
-  .subtitle-text {
-    font-size: 0.9rem;
-    color: #e2e8f0;
-    line-height: 1.5;
-    font-style: italic;
-  }
-  .subtitle-text.empty { color: #475569; }
+  #subtitle-text { font-size: 0.88rem; color: #e2e8f0; line-height: 1.5; font-style: italic; }
+  #subtitle-text.empty { color: #475569; }
 
-  /* ── Transcript blocks ── */
-  .t-block {
-    background: #ffffff;
-    border: 1px solid #e2e8f0;
-    border-radius: 10px;
-    margin-bottom: 14px;
-    overflow: hidden;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
-    display: flex;
-  }
-  .t-block.block-active {
-    border-color: var(--accent);
-    box-shadow: 0 0 0 2px rgba(37,99,235,0.15);
-  }
-  .t-gutter {
-    background: #0f172a;
-    width: 52px;
-    flex-shrink: 0;
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
-    padding-top: 14px;
-    cursor: pointer;
-  }
-  .t-gutter:hover { background: #1e293b; }
-  .t-timestamp {
-    font-size: 0.7rem;
-    color: #64748b;
-    font-family: monospace;
-    font-weight: 600;
-    letter-spacing: 0.02em;
-  }
-  .t-gutter.gutter-active .t-timestamp { color: var(--accent); }
-  .t-body {
-    flex: 1;
+  /* ── Preamble ── */
+  .preamble-block {
+    background: var(--pre-bg);
+    border-left: 4px solid var(--pre-border);
+    border-radius: 0 8px 8px 0;
     padding: 12px 16px;
-    line-height: 1.75;
-    font-size: 0.92rem;
-    color: #1e293b;
+    margin-bottom: 20px;
+    font-size: 0.88rem;
+    color: #78350f;
+    font-style: italic;
+    line-height: 1.7;
   }
 
-  /* ── Segments ── */
-  .segment {
+  /* ── Q&A pair ── */
+  .qa-pair { margin-bottom: 20px; border-radius: 10px; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+
+  /* Question block */
+  .q-block {
+    background: var(--q-bg);
+    padding: 14px 18px;
+    display: flex; gap: 14px; align-items: flex-start;
     cursor: pointer;
-    border-radius: 3px;
-    transition: background 0.1s;
+    transition: background 0.15s;
   }
-  .segment:hover { background: #eff6ff; }
-  .segment.active {
-    background: #bfdbfe;
-    outline: 2px solid #3b82f6;
-    outline-offset: 1px;
-    border-radius: 3px;
+  .q-block:hover { background: #1d4ed8; }
+  .q-block.q-active { background: var(--active-q); }
+  .q-label {
+    font-size: 0.7rem; font-weight: 700;
+    color: var(--q-label);
+    background: rgba(96,165,250,0.15);
+    border: 1px solid rgba(96,165,250,0.3);
+    border-radius: 5px; padding: 3px 7px;
+    white-space: nowrap; margin-top: 2px; letter-spacing: 0.05em;
+    flex-shrink: 0;
   }
+  .q-body { flex: 1; font-size: 0.97rem; font-weight: 600; color: var(--q-text); line-height: 1.55; }
+
+  /* Answer block */
+  .a-block {
+    background: var(--a-bg);
+    border: 1px solid var(--a-border); border-top: none;
+    padding: 14px 18px;
+    display: flex; gap: 14px; align-items: flex-start;
+  }
+  .a-label {
+    font-size: 0.7rem; font-weight: 700;
+    color: var(--a-label);
+    background: #d1fae5; border: 1px solid #6ee7b7;
+    border-radius: 5px; padding: 3px 9px;
+    white-space: nowrap; margin-top: 2px; letter-spacing: 0.05em;
+    flex-shrink: 0;
+  }
+  .a-body { flex: 1; list-style: none; padding: 0; }
+  .a-body li {
+    padding: 4px 0 4px 14px;
+    border-left: 3px solid transparent;
+    line-height: 1.7; font-size: 0.92rem; color: #1e293b;
+    border-radius: 0 4px 4px 0;
+    transition: background 0.15s;
+  }
+  .a-body li:not(:last-child) { border-bottom: 1px solid #f1f5f9; }
+
+  /* ── Segments (clickable) ── */
+  .segment { cursor: pointer; border-radius: 3px; }
+  .q-seg:hover { background: rgba(255,255,255,0.18); }
+  .a-seg:hover { background: #eff6ff; }
+  .segment.active { background: #bfdbfe; outline: 2px solid #3b82f6; outline-offset: 1px; }
+  .a-body li.li-active { background: var(--active-a); border-left-color: var(--accent); }
   .segment.search-match  { background: #fef9c3; }
   .segment.search-current { background: #fde047; outline: 2px solid #ca8a04; }
 
@@ -187,145 +179,273 @@
 
 <div class="toolbar">
   <input type="text" id="search" placeholder="Search transcript&#8230; (Enter = next match)">
-  <span class="stats" id="stats">107 segments &nbsp;|&nbsp; <span id="dur">loading&#8230;</span></span>
+  <span class="stats" id="stats">10 questions &nbsp;|&nbsp; 107 segments &nbsp;|&nbsp; <span id="dur">loading&#8230;</span></span>
 </div>
 
 <div class="scroll-area" id="scroll-area">
-<div class="t-block">
-  <div class="t-gutter" data-start="0.0"><span class="t-timestamp">0:00</span></div>
-  <div class="t-body"><span class="segment" data-start="0.0" data-end="6.2" title="0:00">Subarachnoid hemorrhage. A 55-year-old woman presents with sudden onset headache in his </span><span class="segment" data-start="6.2" data-end="12.4" title="0:06">drowsy and confused in the emergency department. CT reveals a subarachnoid hemorrhage likely </span><span class="segment" data-start="12.4" data-end="18.44" title="0:12">to be from the left anterior cerebral artery aneurysm. You are asked to necessitate the patient </span><span class="segment" data-start="18.44" data-end="21.56" title="0:18">for angiographic coiling three days after this presentation. </span><span class="segment" data-start="21.56" data-end="28.24" title="0:21">What are the important features of the pre-operative assessment for this patient? </span><span class="segment" data-start="28.24" data-end="35.24" title="0:28">Essentially normal neuronousisia with potential for catastrophic problems. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="35.24"><span class="t-timestamp">0:35</span></div>
-  <div class="t-body"><span class="segment" data-start="35.24" data-end="41.58" title="0:35">This is a procedure generally done in a physiologically stable patient to prevent a more catastrophic </span><span class="segment" data-start="41.58" data-end="48.2" title="0:41">second bleed. In contrast to the open approach to an aneurysm or bleed, the cranium remains </span><span class="segment" data-start="48.2" data-end="53.72" title="0:48">closed so that hemorrhage during the procedure is more dangerous. </span><span class="segment" data-start="53.72" data-end="59.04" title="0:53">At the pre-operative visit, I would ensure that the patient is not hypotherlemic and </span><span class="segment" data-start="59.04" data-end="67.6" title="0:59">that the systolic blood pressure is controlled and is between 120 and 150mm of mercury. </span><span class="segment" data-start="67.6" data-end="73.32" title="1:07">I would check for evidence of cardiac ischemia by requesting an electrocardiogram and I'd </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="73.32"><span class="t-timestamp">1:13</span></div>
-  <div class="t-body"><span class="segment" data-start="73.32" data-end="79.04" title="1:13">examine the patient for signs of pulmonary edema. Nymodopene should have been started </span><span class="segment" data-start="79.04" data-end="85.44" title="1:19">as prophylaxis against cerebral vasospasm so I'd check that this had been done. </span><span class="segment" data-start="85.44" data-end="90.36" title="1:25">I'd also do a brief neurological assessment to both make sure that the clinical grade </span><span class="segment" data-start="90.36" data-end="97.6" title="1:30">of the hemorrhage had not deteriorated and that there were no signs of active vasospasm. </span><span class="segment" data-start="97.6" data-end="103.76" title="1:37">I would also check for concurrent medical problems that may complicate the anaesthetic, </span><span class="segment" data-start="103.76" data-end="110.36" title="1:43">particularly pre-existing hypertension, which is common in those with subarachnoid hemorrhage. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="110.36"><span class="t-timestamp">1:50</span></div>
-  <div class="t-body"><span class="segment" data-start="110.36" data-end="117.36" title="1:50">In what ways do you think giving this particular anaesthetic differs from most neuroanesthesia? </span><span class="segment" data-start="117.36" data-end="122.56" title="1:57">Because the cranium is not open, a further bleed may cause a sudden rise in intra cranial </span><span class="segment" data-start="122.56" data-end="129.0" title="2:02">pressure that the operator cannot deal with directly. Most angiosweets are in a separate </span><span class="segment" data-start="129.0" data-end="135.28" title="2:09">part of the hospital from main theatres, resulting in remote cytanesthesia and may produce </span><span class="segment" data-start="135.28" data-end="142.04" title="2:15">problems with staffing and equipment. It should be supervised by a senior anesthetist familiar </span><span class="segment" data-start="142.04" data-end="148.44" title="2:22">with the surroundings and the procedure. In addition, the procedure is not stimulating </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="148.44"><span class="t-timestamp">2:28</span></div>
-  <div class="t-body"><span class="segment" data-start="148.44" data-end="154.6" title="2:28">which can cause problems with swings in blood pressure and in particular hypotension. </span><span class="segment" data-start="154.6" data-end="158.96" title="2:34">How would you manage the induction and maintenance of anaesthesia in this case? </span><span class="segment" data-start="158.96" data-end="164.16" title="2:38">Talk about the way you would do it and give reasons for your choices. </span><span class="segment" data-start="164.16" data-end="170.68" title="2:44">I would make sure routine AAGBI monitoring was in place as well as invasive arterial blood </span><span class="segment" data-start="170.68" data-end="176.2" title="2:50">pressure monitoring. In addition, some units would routinely measure central venous </span><span class="segment" data-start="176.2" data-end="183.48" title="2:56">pressure. My choice would be total intravenous anesthesia as it's well suited for induction </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="183.48"><span class="t-timestamp">3:03</span></div>
-  <div class="t-body"><span class="segment" data-start="183.48" data-end="189.4" title="3:03">and maintenance of anaesthesia. Blood pressure control at larynxoscopy is particularly </span><span class="segment" data-start="189.4" data-end="195.2" title="3:09">important and in addition to the induction agent, I would consider using lyrcane at a </span><span class="segment" data-start="195.2" data-end="203.36" title="3:15">dose of 1 to 1.5 mg per kilogram. I would use rock eronium for muscle relaxation and </span><span class="segment" data-start="203.36" data-end="210.68" title="3:23">ensure adequate muscle relaxation throughout by using a nerve stimulator. I avoid nitrosoxide </span><span class="segment" data-start="210.68" data-end="216.52" title="3:30">in these cases, both because it may cause cerebral vasodilitation and because it may </span><span class="segment" data-start="216.52" data-end="222.88" title="3:36">enlarge any bubbles that might be inadvertently introduced into the cerebral circulation and </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="222.88"><span class="t-timestamp">3:42</span></div>
-  <div class="t-body"><span class="segment" data-start="222.88" data-end="230.88" title="3:42">it worsens excitotoxicity. I would have ventilator settings that minimize airway pressures </span><span class="segment" data-start="230.88" data-end="239.28" title="3:50">and maintain an end tidal carbon dioxide of between 4 and 4.5 kilopascals. </span><span class="segment" data-start="239.28" data-end="245.0" title="3:59">Laseractive drugs to enable control of blood pressure should be readily available. This </span><span class="segment" data-start="245.0" data-end="250.44" title="4:05">is important throughout the operation as I may be requested to raise or lower the blood </span><span class="segment" data-start="250.44" data-end="255.88" title="4:10">pressure by the operator. I would make sure that the patient is positioned so that there </span><span class="segment" data-start="255.88" data-end="260.4" title="4:15">is no obstruction to flow of jugular venous blood. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="260.4"><span class="t-timestamp">4:20</span></div>
-  <div class="t-body"><span class="segment" data-start="260.4" data-end="266.6" title="4:20">An laser pharyngeal or a pharyngeal temperature probe should be used and a urinary catheter </span><span class="segment" data-start="266.6" data-end="271.8" title="4:26">should be inserted as the procedure can take several hours. </span><span class="segment" data-start="271.8" data-end="278.32" title="4:31">Anti-coagulation is often used so heparin and protamine should be readily available. </span><span class="segment" data-start="278.32" data-end="284.28" title="4:38">How would you manage this patient postoperatively? How and where? </span><span class="segment" data-start="284.28" data-end="290.28" title="4:44">The important points in postoperative management are maintenance of a systolic blood pressure </span><span class="segment" data-start="290.28" data-end="298.4" title="4:50">between 140 and 160 millimetres of mercury and regular neurological assessment looking </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="298.4"><span class="t-timestamp">4:58</span></div>
-  <div class="t-body"><span class="segment" data-start="298.4" data-end="305.28" title="4:58">in particular for the occurrence of vasospasm. Some centres will monitor all patients on a </span><span class="segment" data-start="305.28" data-end="311.28" title="5:05">neurosurgical high dependency unit during the immediate postoperative period. In any </span><span class="segment" data-start="311.28" data-end="317.4" title="5:11">case I would watch out for the complications of subarachnoid hemorrhage. </span><span class="segment" data-start="317.4" data-end="321.0" title="5:17">Which complications would you be mindful of during the procedure? </span><span class="segment" data-start="321.0" data-end="325.24" title="5:21">And how might it affect your anesthetic? </span><span class="segment" data-start="325.24" data-end="331.32" title="5:25">Intracranial hemorrhage is a possibility during the procedure and may be seen radiologically </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="331.32"><span class="t-timestamp">5:31</span></div>
-  <div class="t-body"><span class="segment" data-start="331.32" data-end="337.12" title="5:31">or may only be noticed when its physiological consequences are seen such as cushing sign </span><span class="segment" data-start="337.12" data-end="343.0" title="5:37">or cardiac arrhythmias. If it does occur a decision needs to be made as to whether the </span><span class="segment" data-start="343.0" data-end="348.08" title="5:43">procedure should be continued or whether the patient should be moved to the neurosurgical </span><span class="segment" data-start="348.08" data-end="355.12" title="5:48">intensive care or whether they need an urgent craniotomy. Ischemia and thrombomboembolic </span><span class="segment" data-start="355.12" data-end="360.96" title="5:55">phenomena can occur due to vessel obstruction by the catheter or an injectate, though there </span><span class="segment" data-start="360.96" data-end="366.28" title="6:00">is unlikely to be any obvious sign of this until the patient is woken. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="366.28"><span class="t-timestamp">6:06</span></div>
-  <div class="t-body"><span class="segment" data-start="366.28" data-end="371.0" title="6:06">And what complications may occur after the procedure? </span><span class="segment" data-start="371.0" data-end="377.24" title="6:11">Re-bleeding after subarachnoid hemorrhage occurs in about 20% of patients within two </span><span class="segment" data-start="377.24" data-end="384.8" title="6:17">weeks of presentation and 50% within six months, though if the aneurysm has been secured </span><span class="segment" data-start="384.8" data-end="392.2" title="6:24">this is dramatically reduced. Raised intracranial pressure can occur in the absence of a further </span><span class="segment" data-start="392.2" data-end="398.24" title="6:32">bleed and may be due to impairment of CSF flow or a deem in the tissue surrounding </span><span class="segment" data-start="398.24" data-end="404.76" title="6:38">a hematoma. Seasures are also a potential problem both at the time of the bleed and </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="404.76"><span class="t-timestamp">6:44</span></div>
-  <div class="t-body"><span class="segment" data-start="404.76" data-end="410.96" title="6:44">in the ensuing weeks and anti-epileptic medication may be needed lifelong. </span><span class="segment" data-start="410.96" data-end="417.28" title="6:50">Groin hematoma can also occur and can be worsened by the use of anticoagulants and it may </span><span class="segment" data-start="417.28" data-end="421.44" title="6:57">need surgical repair of the vessel defect. </span><span class="segment" data-start="421.44" data-end="425.84" title="7:01">Can you tell me about any scouring systems for subarachnoid hemorrhage? </span><span class="segment" data-start="425.84" data-end="429.0" title="7:05">Clinical and radiological </span><span class="segment" data-start="429.0" data-end="434.96" title="7:09">There are a number of scouring systems, both clinical including the hunt and her score </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="434.96"><span class="t-timestamp">7:14</span></div>
-  <div class="t-body"><span class="segment" data-start="434.96" data-end="441.68" title="7:14">and the world federation of neurosurgeon score and radiological such as the Fischer score. </span><span class="segment" data-start="441.68" data-end="445.36" title="7:21">Pick one of them and outline it for me. </span><span class="segment" data-start="445.36" data-end="451.2" title="7:25">The world federation of neurosurgeon score uses the Glasgow Coma score and the present </span><span class="segment" data-start="451.2" data-end="458.6" title="7:31">saw absence of a focal neurological deficit. So GCS-15 is grade 1. </span><span class="segment" data-start="458.6" data-end="469.2" title="7:38">GCS-13 to 14 with no deficit is grade 2. GCS-13 to 14 with neurological deficit is grade </span><span class="segment" data-start="469.2" data-end="481.12" title="7:49">3. GCS-7 to 12 is grade 4 and GCS less than 7 is grade 5. The score relates to mortality </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="481.12"><span class="t-timestamp">8:01</span></div>
-  <div class="t-body"><span class="segment" data-start="481.12" data-end="486.72" title="8:01">so that grade 1 patients have only a few percent mortality rate whereas those with grade </span><span class="segment" data-start="486.72" data-end="490.96" title="8:06">5 have nearly 100 percent mortality. </span><span class="segment" data-start="490.96" data-end="494.96" title="8:10">What can you tell me about thesis bazaam? </span><span class="segment" data-start="494.96" data-end="501.16" title="8:14">That's a potential consequence of subarachnoid hemorrhage in which arterial vasoconstriction </span><span class="segment" data-start="501.16" data-end="507.56" title="8:21">occurs as a result of irritation by subarachnoid blood and is generally more likely to happen </span><span class="segment" data-start="507.56" data-end="513.72" title="8:27">in those with higher grade hemorrhage and thus more blood in the subarachnoid space. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="513.72"><span class="t-timestamp">8:33</span></div>
-  <div class="t-body"><span class="segment" data-start="513.72" data-end="520.12" title="8:33">If it happens it usually doesn't start until three days after the bleed and rarely starts </span><span class="segment" data-start="520.12" data-end="522.6" title="8:40">more than two weeks afterwards. </span><span class="segment" data-start="522.6" data-end="529.08" title="8:42">The consequences of vasocasm for the patient can include focal neurological deficit or a more </span><span class="segment" data-start="529.08" data-end="533.32" title="8:49">generalized picture with reduced level of consciousness. </span><span class="segment" data-start="533.32" data-end="536.4" title="8:53">How do you prevent it? </span><span class="segment" data-start="536.4" data-end="541.6" title="8:56">Any hypoverlemia should be corrected and hydration maintained. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="541.6"><span class="t-timestamp">9:01</span></div>
-  <div class="t-body"><span class="segment" data-start="541.6" data-end="549.0" title="9:01">Nymodopene, 60 mg, should be started for hourly orally or intravenous nymodopene started </span><span class="segment" data-start="549.0" data-end="553.72" title="9:09">slowly and titrated against effect and blood pressure. </span><span class="segment" data-start="553.72" data-end="556.84" title="9:13">It should be continued for three weeks. </span><span class="segment" data-start="556.84" data-end="562.76" title="9:16">The patient should be regularly checked for focal neurological deficits and imaging considered </span><span class="segment" data-start="562.76" data-end="564.76" title="9:22">urgently. </span><span class="segment" data-start="564.76" data-end="566.52" title="9:24">How do you treat it? </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="566.52"><span class="t-timestamp">9:26</span></div>
-  <div class="t-body"><span class="segment" data-start="566.52" data-end="571.32" title="9:26">Again, you and the surgeons. </span><span class="segment" data-start="571.32" data-end="577.04" title="9:31">A decision should be made quickly as to whether it is amenable to angiographic treatment </span><span class="segment" data-start="577.04" data-end="581.08" title="9:37">or whether medical management should be used first. </span><span class="segment" data-start="581.08" data-end="587.44" title="9:41">On the neurosurgical intensive care unit, most centers advocate triple H therapy as part </span><span class="segment" data-start="587.44" data-end="589.6" title="9:47">of the medical management. </span><span class="segment" data-start="589.6" data-end="597.64" title="9:49">This involves induced hypertension of 160 to 200 mm of mercury systolic blood pressure </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="597.64"><span class="t-timestamp">9:57</span></div>
-  <div class="t-body"><span class="segment" data-start="597.64" data-end="606.64" title="9:57">if the aneurysm has been secured or 120 to 150 mm of mercury if unsecured. </span><span class="segment" data-start="606.64" data-end="614.84" title="10:06">Chemo dilution and hypervelemia involve giving fluid to achieve a hematocrit of 30%, a central </span><span class="segment" data-start="614.84" data-end="621.04" title="10:14">venous pressure of 10 to 12 mm of mercury or a pulmonary capillary wedge pressure of </span><span class="segment" data-start="621.04" data-end="624.64" title="10:21">15 to 18 mm of mercury. </span><span class="segment" data-start="624.64" data-end="629.64" title="10:24">Nymodopene should be continued for one to two weeks once phase of bazaam has occurred. </span></div>
+<div class="preamble-block"><span class="segment a-seg" data-start="0.0" data-end="6.2" title="0:00">Subarachnoid hemorrhage. A 55-year-old woman presents with sudden onset headache in his </span><span class="segment a-seg" data-start="6.2" data-end="12.4" title="0:06">drowsy and confused in the emergency department. CT reveals a subarachnoid hemorrhage likely </span><span class="segment a-seg" data-start="12.4" data-end="18.44" title="0:12">to be from the left anterior cerebral artery aneurysm. You are asked to necessitate the patient </span><span class="segment a-seg" data-start="18.44" data-end="21.56" title="0:18">for angiographic coiling three days after this presentation. </span></div>
+<div class="qa-pair">
+<div class="q-block" data-start="21.56">
+  <div class="q-label">Q1</div>
+  <div class="q-body"><span class="segment q-seg" data-start="21.56" data-end="28.24" title="0:21">What are the important features of the pre-operative assessment for this patient? </span></div>
 </div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="28.24" data-end="35.24" title="0:28">Essentially normal neuronousisia with potential for catastrophic problems. </span></li>
+<li><span class="segment a-seg" data-start="35.24" data-end="41.58" title="0:35">This is a procedure generally done in a physiologically stable patient to prevent a more catastrophic </span></li>
+<li><span class="segment a-seg" data-start="41.58" data-end="48.2" title="0:41">second bleed. In contrast to the open approach to an aneurysm or bleed, the cranium remains </span></li>
+<li><span class="segment a-seg" data-start="48.2" data-end="53.72" title="0:48">closed so that hemorrhage during the procedure is more dangerous. </span></li>
+<li><span class="segment a-seg" data-start="53.72" data-end="59.04" title="0:53">At the pre-operative visit, I would ensure that the patient is not hypotherlemic and </span></li>
+<li><span class="segment a-seg" data-start="59.04" data-end="67.6" title="0:59">that the systolic blood pressure is controlled and is between 120 and 150mm of mercury. </span></li>
+<li><span class="segment a-seg" data-start="67.6" data-end="73.32" title="1:07">I would check for evidence of cardiac ischemia by requesting an electrocardiogram and I'd </span></li>
+<li><span class="segment a-seg" data-start="73.32" data-end="79.04" title="1:13">examine the patient for signs of pulmonary edema. Nymodopene should have been started </span></li>
+<li><span class="segment a-seg" data-start="79.04" data-end="85.44" title="1:19">as prophylaxis against cerebral vasospasm so I'd check that this had been done. </span></li>
+<li><span class="segment a-seg" data-start="85.44" data-end="90.36" title="1:25">I'd also do a brief neurological assessment to both make sure that the clinical grade </span></li>
+<li><span class="segment a-seg" data-start="90.36" data-end="97.6" title="1:30">of the hemorrhage had not deteriorated and that there were no signs of active vasospasm. </span></li>
+<li><span class="segment a-seg" data-start="97.6" data-end="103.76" title="1:37">I would also check for concurrent medical problems that may complicate the anaesthetic, </span></li>
+<li><span class="segment a-seg" data-start="103.76" data-end="110.36" title="1:43">particularly pre-existing hypertension, which is common in those with subarachnoid hemorrhage. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="110.36">
+  <div class="q-label">Q2</div>
+  <div class="q-body"><span class="segment q-seg" data-start="110.36" data-end="117.36" title="1:50">In what ways do you think giving this particular anaesthetic differs from most neuroanesthesia? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="117.36" data-end="122.56" title="1:57">Because the cranium is not open, a further bleed may cause a sudden rise in intra cranial </span></li>
+<li><span class="segment a-seg" data-start="122.56" data-end="129.0" title="2:02">pressure that the operator cannot deal with directly. Most angiosweets are in a separate </span></li>
+<li><span class="segment a-seg" data-start="129.0" data-end="135.28" title="2:09">part of the hospital from main theatres, resulting in remote cytanesthesia and may produce </span></li>
+<li><span class="segment a-seg" data-start="135.28" data-end="142.04" title="2:15">problems with staffing and equipment. It should be supervised by a senior anesthetist familiar </span></li>
+<li><span class="segment a-seg" data-start="142.04" data-end="148.44" title="2:22">with the surroundings and the procedure. In addition, the procedure is not stimulating </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="148.44">
+  <div class="q-label">Q3</div>
+  <div class="q-body"><span class="segment q-seg" data-start="148.44" data-end="154.6" title="2:28">which can cause problems with swings in blood pressure and in particular hypotension. </span><span class="segment q-seg" data-start="154.6" data-end="158.96" title="2:34">How would you manage the induction and maintenance of anaesthesia in this case? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="158.96" data-end="164.16" title="2:38">Talk about the way you would do it and give reasons for your choices. </span></li>
+<li><span class="segment a-seg" data-start="164.16" data-end="170.68" title="2:44">I would make sure routine AAGBI monitoring was in place as well as invasive arterial blood </span></li>
+<li><span class="segment a-seg" data-start="170.68" data-end="176.2" title="2:50">pressure monitoring. In addition, some units would routinely measure central venous </span></li>
+<li><span class="segment a-seg" data-start="176.2" data-end="183.48" title="2:56">pressure. My choice would be total intravenous anesthesia as it's well suited for induction </span></li>
+<li><span class="segment a-seg" data-start="183.48" data-end="189.4" title="3:03">and maintenance of anaesthesia. Blood pressure control at larynxoscopy is particularly </span></li>
+<li><span class="segment a-seg" data-start="189.4" data-end="195.2" title="3:09">important and in addition to the induction agent, I would consider using lyrcane at a </span></li>
+<li><span class="segment a-seg" data-start="195.2" data-end="203.36" title="3:15">dose of 1 to 1.5 mg per kilogram. I would use rock eronium for muscle relaxation and </span></li>
+<li><span class="segment a-seg" data-start="203.36" data-end="210.68" title="3:23">ensure adequate muscle relaxation throughout by using a nerve stimulator. I avoid nitrosoxide </span></li>
+<li><span class="segment a-seg" data-start="210.68" data-end="216.52" title="3:30">in these cases, both because it may cause cerebral vasodilitation and because it may </span></li>
+<li><span class="segment a-seg" data-start="216.52" data-end="222.88" title="3:36">enlarge any bubbles that might be inadvertently introduced into the cerebral circulation and </span></li>
+<li><span class="segment a-seg" data-start="222.88" data-end="230.88" title="3:42">it worsens excitotoxicity. I would have ventilator settings that minimize airway pressures </span></li>
+<li><span class="segment a-seg" data-start="230.88" data-end="239.28" title="3:50">and maintain an end tidal carbon dioxide of between 4 and 4.5 kilopascals. </span></li>
+<li><span class="segment a-seg" data-start="239.28" data-end="245.0" title="3:59">Laseractive drugs to enable control of blood pressure should be readily available. This </span></li>
+<li><span class="segment a-seg" data-start="245.0" data-end="250.44" title="4:05">is important throughout the operation as I may be requested to raise or lower the blood </span></li>
+<li><span class="segment a-seg" data-start="250.44" data-end="255.88" title="4:10">pressure by the operator. I would make sure that the patient is positioned so that there </span></li>
+<li><span class="segment a-seg" data-start="255.88" data-end="260.4" title="4:15">is no obstruction to flow of jugular venous blood. </span></li>
+<li><span class="segment a-seg" data-start="260.4" data-end="266.6" title="4:20">An laser pharyngeal or a pharyngeal temperature probe should be used and a urinary catheter </span></li>
+<li><span class="segment a-seg" data-start="266.6" data-end="271.8" title="4:26">should be inserted as the procedure can take several hours. </span></li>
+<li><span class="segment a-seg" data-start="271.8" data-end="278.32" title="4:31">Anti-coagulation is often used so heparin and protamine should be readily available. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="278.32">
+  <div class="q-label">Q4</div>
+  <div class="q-body"><span class="segment q-seg" data-start="278.32" data-end="282.492" title="4:38">How would you manage this patient postoperatively? </span><span class="segment q-seg" data-start="282.492" data-end="284.28" title="4:42">How and where? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="284.28" data-end="290.28" title="4:44">The important points in postoperative management are maintenance of a systolic blood pressure </span></li>
+<li><span class="segment a-seg" data-start="290.28" data-end="298.4" title="4:50">between 140 and 160 millimetres of mercury and regular neurological assessment looking </span></li>
+<li><span class="segment a-seg" data-start="298.4" data-end="305.28" title="4:58">in particular for the occurrence of vasospasm. Some centres will monitor all patients on a </span></li>
+<li><span class="segment a-seg" data-start="305.28" data-end="311.28" title="5:05">neurosurgical high dependency unit during the immediate postoperative period. In any </span></li>
+<li><span class="segment a-seg" data-start="311.28" data-end="317.4" title="5:11">case I would watch out for the complications of subarachnoid hemorrhage. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="317.4">
+  <div class="q-label">Q5</div>
+  <div class="q-body"><span class="segment q-seg" data-start="317.4" data-end="321.0" title="5:17">Which complications would you be mindful of during the procedure? </span><span class="segment q-seg" data-start="321.0" data-end="325.24" title="5:21">And how might it affect your anesthetic? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="325.24" data-end="331.32" title="5:25">Intracranial hemorrhage is a possibility during the procedure and may be seen radiologically </span></li>
+<li><span class="segment a-seg" data-start="331.32" data-end="337.12" title="5:31">or may only be noticed when its physiological consequences are seen such as cushing sign </span></li>
+<li><span class="segment a-seg" data-start="337.12" data-end="343.0" title="5:37">or cardiac arrhythmias. If it does occur a decision needs to be made as to whether the </span></li>
+<li><span class="segment a-seg" data-start="343.0" data-end="348.08" title="5:43">procedure should be continued or whether the patient should be moved to the neurosurgical </span></li>
+<li><span class="segment a-seg" data-start="348.08" data-end="355.12" title="5:48">intensive care or whether they need an urgent craniotomy. Ischemia and thrombomboembolic </span></li>
+<li><span class="segment a-seg" data-start="355.12" data-end="360.96" title="5:55">phenomena can occur due to vessel obstruction by the catheter or an injectate, though there </span></li>
+<li><span class="segment a-seg" data-start="360.96" data-end="366.28" title="6:00">is unlikely to be any obvious sign of this until the patient is woken. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="366.28">
+  <div class="q-label">Q6</div>
+  <div class="q-body"><span class="segment q-seg" data-start="366.28" data-end="371.0" title="6:06">And what complications may occur after the procedure? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="371.0" data-end="377.24" title="6:11">Re-bleeding after subarachnoid hemorrhage occurs in about 20% of patients within two </span></li>
+<li><span class="segment a-seg" data-start="377.24" data-end="384.8" title="6:17">weeks of presentation and 50% within six months, though if the aneurysm has been secured </span></li>
+<li><span class="segment a-seg" data-start="384.8" data-end="392.2" title="6:24">this is dramatically reduced. Raised intracranial pressure can occur in the absence of a further </span></li>
+<li><span class="segment a-seg" data-start="392.2" data-end="398.24" title="6:32">bleed and may be due to impairment of CSF flow or a deem in the tissue surrounding </span></li>
+<li><span class="segment a-seg" data-start="398.24" data-end="404.76" title="6:38">a hematoma. Seasures are also a potential problem both at the time of the bleed and </span></li>
+<li><span class="segment a-seg" data-start="404.76" data-end="410.96" title="6:44">in the ensuing weeks and anti-epileptic medication may be needed lifelong. </span></li>
+<li><span class="segment a-seg" data-start="410.96" data-end="417.28" title="6:50">Groin hematoma can also occur and can be worsened by the use of anticoagulants and it may </span></li>
+<li><span class="segment a-seg" data-start="417.28" data-end="421.44" title="6:57">need surgical repair of the vessel defect. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="421.44">
+  <div class="q-label">Q7</div>
+  <div class="q-body"><span class="segment q-seg" data-start="421.44" data-end="425.84" title="7:01">Can you tell me about any scouring systems for subarachnoid hemorrhage? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="425.84" data-end="429.0" title="7:05">Clinical and radiological </span></li>
+<li><span class="segment a-seg" data-start="429.0" data-end="434.96" title="7:09">There are a number of scouring systems, both clinical including the hunt and her score </span></li>
+<li><span class="segment a-seg" data-start="434.96" data-end="441.68" title="7:14">and the world federation of neurosurgeon score and radiological such as the Fischer score. </span></li>
+<li><span class="segment a-seg" data-start="441.68" data-end="445.36" title="7:21">Pick one of them and outline it for me. </span></li>
+<li><span class="segment a-seg" data-start="445.36" data-end="451.2" title="7:25">The world federation of neurosurgeon score uses the Glasgow Coma score and the present </span></li>
+<li><span class="segment a-seg" data-start="451.2" data-end="458.6" title="7:31">saw absence of a focal neurological deficit. So GCS-15 is grade 1. </span></li>
+<li><span class="segment a-seg" data-start="458.6" data-end="469.2" title="7:38">GCS-13 to 14 with no deficit is grade 2. GCS-13 to 14 with neurological deficit is grade </span></li>
+<li><span class="segment a-seg" data-start="469.2" data-end="481.12" title="7:49">3. GCS-7 to 12 is grade 4 and GCS less than 7 is grade 5. The score relates to mortality </span></li>
+<li><span class="segment a-seg" data-start="481.12" data-end="486.72" title="8:01">so that grade 1 patients have only a few percent mortality rate whereas those with grade </span></li>
+<li><span class="segment a-seg" data-start="486.72" data-end="490.96" title="8:06">5 have nearly 100 percent mortality. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="490.96">
+  <div class="q-label">Q8</div>
+  <div class="q-body"><span class="segment q-seg" data-start="490.96" data-end="494.96" title="8:10">What can you tell me about thesis bazaam? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="494.96" data-end="501.16" title="8:14">That's a potential consequence of subarachnoid hemorrhage in which arterial vasoconstriction </span></li>
+<li><span class="segment a-seg" data-start="501.16" data-end="507.56" title="8:21">occurs as a result of irritation by subarachnoid blood and is generally more likely to happen </span></li>
+<li><span class="segment a-seg" data-start="507.56" data-end="513.72" title="8:27">in those with higher grade hemorrhage and thus more blood in the subarachnoid space. </span></li>
+<li><span class="segment a-seg" data-start="513.72" data-end="520.12" title="8:33">If it happens it usually doesn't start until three days after the bleed and rarely starts </span></li>
+<li><span class="segment a-seg" data-start="520.12" data-end="522.6" title="8:40">more than two weeks afterwards. </span></li>
+<li><span class="segment a-seg" data-start="522.6" data-end="529.08" title="8:42">The consequences of vasocasm for the patient can include focal neurological deficit or a more </span></li>
+<li><span class="segment a-seg" data-start="529.08" data-end="533.32" title="8:49">generalized picture with reduced level of consciousness. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="533.32">
+  <div class="q-label">Q9</div>
+  <div class="q-body"><span class="segment q-seg" data-start="533.32" data-end="536.4" title="8:53">How do you prevent it? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="536.4" data-end="541.6" title="8:56">Any hypoverlemia should be corrected and hydration maintained. </span></li>
+<li><span class="segment a-seg" data-start="541.6" data-end="549.0" title="9:01">Nymodopene, 60 mg, should be started for hourly orally or intravenous nymodopene started </span></li>
+<li><span class="segment a-seg" data-start="549.0" data-end="553.72" title="9:09">slowly and titrated against effect and blood pressure. </span></li>
+<li><span class="segment a-seg" data-start="553.72" data-end="556.84" title="9:13">It should be continued for three weeks. </span></li>
+<li><span class="segment a-seg" data-start="556.84" data-end="562.76" title="9:16">The patient should be regularly checked for focal neurological deficits and imaging considered </span></li>
+<li><span class="segment a-seg" data-start="562.76" data-end="564.76" title="9:22">urgently. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="564.76">
+  <div class="q-label">Q10</div>
+  <div class="q-body"><span class="segment q-seg" data-start="564.76" data-end="566.52" title="9:24">How do you treat it? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="566.52" data-end="571.32" title="9:26">Again, you and the surgeons. </span></li>
+<li><span class="segment a-seg" data-start="571.32" data-end="577.04" title="9:31">A decision should be made quickly as to whether it is amenable to angiographic treatment </span></li>
+<li><span class="segment a-seg" data-start="577.04" data-end="581.08" title="9:37">or whether medical management should be used first. </span></li>
+<li><span class="segment a-seg" data-start="581.08" data-end="587.44" title="9:41">On the neurosurgical intensive care unit, most centers advocate triple H therapy as part </span></li>
+<li><span class="segment a-seg" data-start="587.44" data-end="589.6" title="9:47">of the medical management. </span></li>
+<li><span class="segment a-seg" data-start="589.6" data-end="597.64" title="9:49">This involves induced hypertension of 160 to 200 mm of mercury systolic blood pressure </span></li>
+<li><span class="segment a-seg" data-start="597.64" data-end="606.64" title="9:57">if the aneurysm has been secured or 120 to 150 mm of mercury if unsecured. </span></li>
+<li><span class="segment a-seg" data-start="606.64" data-end="614.84" title="10:06">Chemo dilution and hypervelemia involve giving fluid to achieve a hematocrit of 30%, a central </span></li>
+<li><span class="segment a-seg" data-start="614.84" data-end="621.04" title="10:14">venous pressure of 10 to 12 mm of mercury or a pulmonary capillary wedge pressure of </span></li>
+<li><span class="segment a-seg" data-start="621.04" data-end="624.64" title="10:21">15 to 18 mm of mercury. </span></li>
+<li><span class="segment a-seg" data-start="624.64" data-end="629.64" title="10:24">Nymodopene should be continued for one to two weeks once phase of bazaam has occurred. </span></li>
+  </ul>
+</div>
+</div>
+
 </div>
 
 <div class="subtitle-bar">
-  <span class="subtitle-text empty" id="subtitle-text">Play audio to see live subtitles&#8230;</span>
+  <span id="subtitle-text" class="empty">Play audio to see live subtitles&#8230;</span>
 </div>
 
 <script>
-
-const audio    = document.getElementById('audio');
-const allSegs  = Array.from(document.querySelectorAll('.segment'));
-const allBlocks = Array.from(document.querySelectorAll('.t-block'));
+const audio      = document.getElementById('audio');
+const allSegs    = Array.from(document.querySelectorAll('.segment'));
 const subtitleEl = document.getElementById('subtitle-text');
-let activeSegEl   = null;
-let activeBlockEl = null;
-let searchMatches = [];
-let searchIdx     = 0;
+let activeSegEl  = null;
+let searchMatches = [], searchIdx = 0;
 
-// Duration display
 audio.addEventListener('loadedmetadata', () => {
   const m = Math.floor(audio.duration / 60);
   const s = Math.floor(audio.duration %% 60).toString().padStart(2,'0');
   document.getElementById('dur').textContent = m + ':' + s;
 });
 
-// Seek helper
-function seekTo(t) {
-  audio.currentTime = t;
-  audio.play();
-}
+function seekTo(t) { audio.currentTime = t; audio.play(); }
 
-// Block gutter click
-document.querySelectorAll('.t-gutter').forEach(g => {
-  g.addEventListener('click', () => seekTo(parseFloat(g.dataset.start)));
+// Q-block header click
+document.querySelectorAll('.q-block').forEach(q => {
+  q.addEventListener('click', e => {
+    if (!e.target.classList.contains('segment')) seekTo(parseFloat(q.dataset.start));
+  });
 });
 
-// Segment click
+// Individual segment click
 allSegs.forEach(s => {
-  s.addEventListener('click', e => {
-    e.stopPropagation();
-    seekTo(parseFloat(s.dataset.start));
-  });
+  s.addEventListener('click', e => { e.stopPropagation(); seekTo(parseFloat(s.dataset.start)); });
 });
 
 // Real-time tracking
 audio.addEventListener('timeupdate', () => {
   const t = audio.currentTime;
-
-  // Find active segment (last one whose start <= t)
   let found = null;
   for (let i = allSegs.length - 1; i >= 0; i--) {
     if (parseFloat(allSegs[i].dataset.start) <= t) { found = allSegs[i]; break; }
   }
-
   if (found && found !== activeSegEl) {
-    // Clear previous
-    if (activeSegEl) activeSegEl.classList.remove('active');
-    if (activeBlockEl) {
-      activeBlockEl.classList.remove('block-active');
-      const pg = activeBlockEl.querySelector('.t-gutter');
-      if (pg) pg.classList.remove('gutter-active');
+    if (activeSegEl) {
+      activeSegEl.classList.remove('active');
+      const pli = activeSegEl.closest('li');
+      if (pli) pli.classList.remove('li-active');
+      const pq = activeSegEl.closest('.q-block');
+      if (pq) pq.classList.remove('q-active');
     }
-    // Set new
     found.classList.add('active');
-    const block = found.closest('.t-block');
-    if (block) {
-      block.classList.add('block-active');
-      const g = block.querySelector('.t-gutter');
-      if (g) g.classList.add('gutter-active');
-      activeBlockEl = block;
-    }
+    const li = found.closest('li');
+    if (li) li.classList.add('li-active');
+    const qb = found.closest('.q-block');
+    if (qb) qb.classList.add('q-active');
     activeSegEl = found;
 
-    // Update subtitle
     subtitleEl.textContent = found.textContent.trim();
     subtitleEl.classList.remove('empty');
 
-    // Auto-scroll (only when not searching)
-    if (!document.getElementById('search').value) {
+    if (!document.getElementById('search').value)
       found.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }
   }
 });
 
@@ -341,17 +461,13 @@ searchInput.addEventListener('keydown', e => {
     el.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
 });
-
 function runSearch() {
   const q = searchInput.value.trim().toLowerCase();
   allSegs.forEach(s => s.classList.remove('search-match','search-current'));
   searchMatches = [];
   if (!q) return;
   allSegs.forEach(s => {
-    if (s.textContent.toLowerCase().includes(q)) {
-      s.classList.add('search-match');
-      searchMatches.push(s);
-    }
+    if (s.textContent.toLowerCase().includes(q)) { s.classList.add('search-match'); searchMatches.push(s); }
   });
   if (!searchMatches.length) return;
   searchIdx = 0;

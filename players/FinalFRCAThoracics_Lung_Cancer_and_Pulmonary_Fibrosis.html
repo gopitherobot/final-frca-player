@@ -5,10 +5,19 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Thoracics — Lung Cancer and Pulmonary Fibrosis</title>
 <style>
-
   :root {
-    --accent:    #7c3aed;
-    --body-bg:   #f1f5f9;
+    --q-bg:       #1e3a5f;
+    --q-text:     #ffffff;
+    --q-label:    #60a5fa;
+    --a-bg:       #ffffff;
+    --a-border:   #e2e8f0;
+    --a-label:    #059669;
+    --active-q:   #7c3aed;
+    --active-a:   #dbeafe;
+    --accent:     #7c3aed;
+    --body-bg:    #f1f5f9;
+    --pre-bg:     #fef9c3;
+    --pre-border: #fcd34d;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
@@ -40,22 +49,9 @@
     margin-bottom: 4px;
     letter-spacing: 0.01em;
   }
-  .header-sub {
-    font-size: 0.72rem;
-    color: #94a3b8;
-    font-style: italic;
-  }
-  audio {
-    height: 36px;
-    accent-color: var(--accent);
-    flex-shrink: 0;
-  }
-  .back-link {
-    font-size: 0.8rem;
-    color: #94a3b8;
-    text-decoration: none;
-    white-space: nowrap;
-  }
+  .header-sub { font-size: 0.72rem; color: #94a3b8; font-style: italic; }
+  audio { height: 36px; accent-color: var(--accent); flex-shrink: 0; }
+  .back-link { font-size: 0.8rem; color: #94a3b8; text-decoration: none; white-space: nowrap; }
   .back-link:hover { color: #60a5fa; }
 
   /* ── Toolbar ── */
@@ -69,30 +65,17 @@
     border-bottom: 1px solid #334155;
   }
   .toolbar input {
-    flex: 1;
-    max-width: 380px;
+    flex: 1; max-width: 380px;
     padding: 5px 11px;
-    border: 1px solid #475569;
-    border-radius: 6px;
-    background: #0f172a;
-    color: #e2e8f0;
-    font-size: 0.83rem;
-    outline: none;
+    border: 1px solid #475569; border-radius: 6px;
+    background: #0f172a; color: #e2e8f0; font-size: 0.83rem; outline: none;
   }
   .toolbar input:focus { border-color: var(--accent); }
   .toolbar input::placeholder { color: #64748b; }
-  .stats {
-    font-size: 0.72rem;
-    color: #64748b;
-    white-space: nowrap;
-  }
+  .stats { font-size: 0.72rem; color: #64748b; white-space: nowrap; }
 
   /* ── Scroll area ── */
-  .scroll-area {
-    flex: 1;
-    overflow-y: auto;
-    padding: 20px;
-  }
+  .scroll-area { flex: 1; overflow-y: auto; padding: 20px; }
   .scroll-area::-webkit-scrollbar { width: 6px; }
   .scroll-area::-webkit-scrollbar-track { background: transparent; }
   .scroll-area::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
@@ -107,68 +90,77 @@
     display: flex;
     align-items: center;
   }
-  .subtitle-text {
-    font-size: 0.9rem;
-    color: #e2e8f0;
-    line-height: 1.5;
-    font-style: italic;
-  }
-  .subtitle-text.empty { color: #475569; }
+  #subtitle-text { font-size: 0.88rem; color: #e2e8f0; line-height: 1.5; font-style: italic; }
+  #subtitle-text.empty { color: #475569; }
 
-  /* ── Transcript blocks ── */
-  .t-block {
-    background: #ffffff;
-    border: 1px solid #e2e8f0;
-    border-radius: 10px;
-    margin-bottom: 14px;
-    overflow: hidden;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
-    display: flex;
-  }
-  .t-block.block-active {
-    border-color: var(--accent);
-    box-shadow: 0 0 0 2px rgba(37,99,235,0.15);
-  }
-  .t-gutter {
-    background: #0f172a;
-    width: 52px;
-    flex-shrink: 0;
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
-    padding-top: 14px;
-    cursor: pointer;
-  }
-  .t-gutter:hover { background: #1e293b; }
-  .t-timestamp {
-    font-size: 0.7rem;
-    color: #64748b;
-    font-family: monospace;
-    font-weight: 600;
-    letter-spacing: 0.02em;
-  }
-  .t-gutter.gutter-active .t-timestamp { color: var(--accent); }
-  .t-body {
-    flex: 1;
+  /* ── Preamble ── */
+  .preamble-block {
+    background: var(--pre-bg);
+    border-left: 4px solid var(--pre-border);
+    border-radius: 0 8px 8px 0;
     padding: 12px 16px;
-    line-height: 1.75;
-    font-size: 0.92rem;
-    color: #1e293b;
+    margin-bottom: 20px;
+    font-size: 0.88rem;
+    color: #78350f;
+    font-style: italic;
+    line-height: 1.7;
   }
 
-  /* ── Segments ── */
-  .segment {
+  /* ── Q&A pair ── */
+  .qa-pair { margin-bottom: 20px; border-radius: 10px; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+
+  /* Question block */
+  .q-block {
+    background: var(--q-bg);
+    padding: 14px 18px;
+    display: flex; gap: 14px; align-items: flex-start;
     cursor: pointer;
-    border-radius: 3px;
-    transition: background 0.1s;
+    transition: background 0.15s;
   }
-  .segment:hover { background: #eff6ff; }
-  .segment.active {
-    background: #bfdbfe;
-    outline: 2px solid #3b82f6;
-    outline-offset: 1px;
-    border-radius: 3px;
+  .q-block:hover { background: #1d4ed8; }
+  .q-block.q-active { background: var(--active-q); }
+  .q-label {
+    font-size: 0.7rem; font-weight: 700;
+    color: var(--q-label);
+    background: rgba(96,165,250,0.15);
+    border: 1px solid rgba(96,165,250,0.3);
+    border-radius: 5px; padding: 3px 7px;
+    white-space: nowrap; margin-top: 2px; letter-spacing: 0.05em;
+    flex-shrink: 0;
   }
+  .q-body { flex: 1; font-size: 0.97rem; font-weight: 600; color: var(--q-text); line-height: 1.55; }
+
+  /* Answer block */
+  .a-block {
+    background: var(--a-bg);
+    border: 1px solid var(--a-border); border-top: none;
+    padding: 14px 18px;
+    display: flex; gap: 14px; align-items: flex-start;
+  }
+  .a-label {
+    font-size: 0.7rem; font-weight: 700;
+    color: var(--a-label);
+    background: #d1fae5; border: 1px solid #6ee7b7;
+    border-radius: 5px; padding: 3px 9px;
+    white-space: nowrap; margin-top: 2px; letter-spacing: 0.05em;
+    flex-shrink: 0;
+  }
+  .a-body { flex: 1; list-style: none; padding: 0; }
+  .a-body li {
+    padding: 4px 0 4px 14px;
+    border-left: 3px solid transparent;
+    line-height: 1.7; font-size: 0.92rem; color: #1e293b;
+    border-radius: 0 4px 4px 0;
+    transition: background 0.15s;
+  }
+  .a-body li:not(:last-child) { border-bottom: 1px solid #f1f5f9; }
+
+  /* ── Segments (clickable) ── */
+  .segment { cursor: pointer; border-radius: 3px; }
+  .q-seg:hover { background: rgba(255,255,255,0.18); }
+  .a-seg:hover { background: #eff6ff; }
+  .segment.active { background: #bfdbfe; outline: 2px solid #3b82f6; outline-offset: 1px; }
+  .a-body li.li-active { background: var(--active-a); border-left-color: var(--accent); }
   .segment.search-match  { background: #fef9c3; }
   .segment.search-current { background: #fde047; outline: 2px solid #ca8a04; }
 
@@ -187,160 +179,299 @@
 
 <div class="toolbar">
   <input type="text" id="search" placeholder="Search transcript&#8230; (Enter = next match)">
-  <span class="stats" id="stats">136 segments &nbsp;|&nbsp; <span id="dur">loading&#8230;</span></span>
+  <span class="stats" id="stats">10 questions &nbsp;|&nbsp; 136 segments &nbsp;|&nbsp; <span id="dur">loading&#8230;</span></span>
 </div>
 
 <div class="scroll-area" id="scroll-area">
-<div class="t-block">
-  <div class="t-gutter" data-start="0.0"><span class="t-timestamp">0:00</span></div>
-  <div class="t-body"><span class="segment" data-start="0.0" data-end="2.0" title="0:00">lung cancer and fibrosis. </span><span class="segment" data-start="2.0" data-end="5.44" title="0:02">This topic would be well suited to the clinical sciences' </span><span class="segment" data-start="5.44" data-end="9.0" title="0:05">viber, but may feature in the physiological viber. </span><span class="segment" data-start="9.0" data-end="12.8" title="0:09">Although it is a topic you may not have studied since medical school, </span><span class="segment" data-start="12.8" data-end="16.0" title="0:12">it does have important implications for anesthetists, </span><span class="segment" data-start="16.0" data-end="18.8" title="0:16">not only from a respiratory mechanics perspective, </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="18.8"><span class="t-timestamp">0:18</span></div>
-  <div class="t-body"><span class="segment" data-start="18.8" data-end="22.0" title="0:18">but also from an endocrinology point of view. </span><span class="segment" data-start="22.0" data-end="24.6" title="0:22">What are the different types of lung cancer? </span><span class="segment" data-start="24.6" data-end="28.0" title="0:24">Although not a topic that you may be very familiar with, </span><span class="segment" data-start="28.0" data-end="32.8" title="0:28">the final examiners will often find topics that lay on the boundary of knowledge </span><span class="segment" data-start="32.8" data-end="36.0" title="0:32">and apply them to the practice of anesthesia. </span><span class="segment" data-start="37.0" data-end="43.0" title="0:37">Lung cancer can be divided into small cell and non-small cell types. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="43.0"><span class="t-timestamp">0:43</span></div>
-  <div class="t-body"><span class="segment" data-start="43.0" data-end="48.0" title="0:43">Small cell lung cancer is most closely associated with smoking </span><span class="segment" data-start="48.0" data-end="52.0" title="0:48">and is often metastasized on presentation. </span><span class="segment" data-start="52.0" data-end="55.0" title="0:52">Although termed small cell cancer, </span><span class="segment" data-start="55.0" data-end="60.0" title="0:55">these tumors can grow very large and obstruct early generations of bronchi, </span><span class="segment" data-start="60.0" data-end="66.0" title="1:00">resulting in functional unit collapse, VQ mismatch and secondary infection. </span><span class="segment" data-start="66.0" data-end="71.0" title="1:06">It is the cells that are small, not necessarily the tumors. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="71.0"><span class="t-timestamp">1:11</span></div>
-  <div class="t-body"><span class="segment" data-start="71.0" data-end="76.0" title="1:11">Although more sensitive to chemotherapy than non-small cell cancer, </span><span class="segment" data-start="76.0" data-end="81.0" title="1:16">overall their prognosis is worse and is associated with different types </span><span class="segment" data-start="81.0" data-end="84.0" title="1:21">of para-neoplastics syndromes. </span><span class="segment" data-start="84.0" data-end="87.0" title="1:24">Non-small cell cancers, on the other hand, </span><span class="segment" data-start="87.0" data-end="93.0" title="1:27">are further subdivided into squamous cell cancer and adenocasinoma. </span><span class="segment" data-start="93.0" data-end="98.0" title="1:33">Adenocasinoma is sometimes seen in patients with no history of smoking, </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="98.0"><span class="t-timestamp">1:38</span></div>
-  <div class="t-body"><span class="segment" data-start="98.0" data-end="102.0" title="1:38">whilst squamous cell cancers often cavitate. </span><span class="segment" data-start="102.0" data-end="107.0" title="1:42">How do you decide whether a patient would be suitable for tumour resection? </span><span class="segment" data-start="107.0" data-end="112.0" title="1:47">The two main considerations here are those related to the tumour </span><span class="segment" data-start="112.0" data-end="115.0" title="1:52">and those related to the patient. </span><span class="segment" data-start="115.0" data-end="118.0" title="1:55">The tumour should be a non-small cell cancer type </span><span class="segment" data-start="118.0" data-end="124.0" title="1:58">with an absence of significant mediusdinal spread or distant metastases. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="124.0"><span class="t-timestamp">2:04</span></div>
-  <div class="t-body"><span class="segment" data-start="124.0" data-end="129.0" title="2:04">This is because a landmark paper by the Medical Research Council </span><span class="segment" data-start="129.0" data-end="133.0" title="2:09">showed that patient outcome after surgery was significantly worse </span><span class="segment" data-start="133.0" data-end="137.0" title="2:13">than after radiotherapy for small cell tumor types. </span><span class="segment" data-start="137.0" data-end="140.0" title="2:17">Depending upon the location of the tumour, </span><span class="segment" data-start="140.0" data-end="145.0" title="2:20">surgical resection may not be possible if central airways are involved. </span><span class="segment" data-start="145.0" data-end="149.0" title="2:25">Although these factors are important, as an East the Tists, </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="149.0"><span class="t-timestamp">2:29</span></div>
-  <div class="t-body"><span class="segment" data-start="149.0" data-end="153.0" title="2:29">we tend to focus on those considerations related to the patient </span><span class="segment" data-start="153.0" data-end="157.0" title="2:33">and their fitness to undergo surgery. </span><span class="segment" data-start="157.0" data-end="162.0" title="2:37">In this instance, the British Thoracic Society has published clear guidelines </span><span class="segment" data-start="162.0" data-end="166.0" title="2:42">outlining the main strategy for patient's assessment. </span><span class="segment" data-start="166.0" data-end="171.0" title="2:46">These guidelines include assessing a patient's nutritional and performance status, </span><span class="segment" data-start="171.0" data-end="176.0" title="2:51">their cardiovascular function and their respiratory function. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="176.0"><span class="t-timestamp">2:56</span></div>
-  <div class="t-body"><span class="segment" data-start="176.0" data-end="180.0" title="2:56">Weight loss is often used as a surrogate for nutritional status </span><span class="segment" data-start="180.0" data-end="185.0" title="3:00">and the American Heart Association classification of cardiovascular disease </span><span class="segment" data-start="185.0" data-end="189.0" title="3:05">used to assess cardiovascular status. </span><span class="segment" data-start="189.0" data-end="193.0" title="3:09">If we concentrate on assessment of respiratory function, </span><span class="segment" data-start="193.0" data-end="198.0" title="3:13">the main important factors include interpretation of arterial blood gases, </span><span class="segment" data-start="198.0" data-end="203.0" title="3:18">spirometry values and exercise capacity indices, </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="203.0"><span class="t-timestamp">3:23</span></div>
-  <div class="t-body"><span class="segment" data-start="203.0" data-end="207.0" title="3:23">such as those gained from CEPX testing. </span><span class="segment" data-start="207.0" data-end="211.0" title="3:27">Generally, patients can safely undergo a humanectomy </span><span class="segment" data-start="211.0" data-end="216.0" title="3:31">if they are shown to have an FEV1 greater than two liters. </span><span class="segment" data-start="216.0" data-end="221.0" title="3:36">Patients with values less than this should proceed to have predicted </span><span class="segment" data-start="221.0" data-end="228.0" title="3:41">post-operative values quantified and in some centres, CEPX testing. </span><span class="segment" data-start="228.0" data-end="234.0" title="3:48">In this case, a VO2 max of above 15 mils per kilogram per minute </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="234.0"><span class="t-timestamp">3:54</span></div>
-  <div class="t-body"><span class="segment" data-start="234.0" data-end="240.0" title="3:54">would suggest that surgery can be performed all be it with caution. </span><span class="segment" data-start="240.0" data-end="244.0" title="4:00">What are the systemic effects of lung malignancy? </span><span class="segment" data-start="244.0" data-end="250.0" title="4:04">The most notable effects of systemic malignancy include weight loss and cakexia. </span><span class="segment" data-start="250.0" data-end="254.0" title="4:10">Although the mechanism for these problems is poorly understood, </span><span class="segment" data-start="254.0" data-end="259.0" title="4:14">it most likely results from a combination of poor nutritional intake </span><span class="segment" data-start="259.0" data-end="265.0" title="4:19">and increased energy expenditure as a result of pro-inflammatory cytokines, </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="265.0"><span class="t-timestamp">4:25</span></div>
-  <div class="t-body"><span class="segment" data-start="265.0" data-end="270.0" title="4:25">including TNF, alpha and interleukin-6. </span><span class="segment" data-start="270.0" data-end="277.0" title="4:30">Small cell lung cancer is also notable in producing a range of paronyoplastic syndromes. </span><span class="segment" data-start="277.0" data-end="284.0" title="4:37">These include hypercalcemia resulting from parathyroid-related peptide release, </span><span class="segment" data-start="284.0" data-end="292.0" title="4:44">Cushing syndrome from ectopic ACTH release, muscle weakness from Lambert Eaton syndrome, </span><span class="segment" data-start="292.0" data-end="297.0" title="4:52">and hyponatremia from SIADH. </span><span class="segment" data-start="297.0" data-end="304.0" title="4:57">Finally, localized metastases and compression can result in superior venocaver compression, </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="304.0"><span class="t-timestamp">5:04</span></div>
-  <div class="t-body"><span class="segment" data-start="304.0" data-end="309.0" title="5:04">leading to headache, facial swelling and shortness of breath. </span><span class="segment" data-start="309.0" data-end="312.0" title="5:09">What is the pathophysiology of Lambert Eaton syndrome? </span><span class="segment" data-start="312.0" data-end="316.0" title="5:12">And how does it differ from other disease of the neuromuscular junction? </span><span class="segment" data-start="316.0" data-end="320.0" title="5:16">This demonstrates that one should not mention topics in the answers to questions </span><span class="segment" data-start="320.0" data-end="323.0" title="5:20">unless you can subsequently discuss them. </span><span class="segment" data-start="323.0" data-end="328.0" title="5:23">In this case, the mention of Lambert Eaton syndrome in the previous answer </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="328.0"><span class="t-timestamp">5:28</span></div>
-  <div class="t-body"><span class="segment" data-start="328.0" data-end="333.0" title="5:28">had prompted the examiner to ask for further clarification. </span><span class="segment" data-start="333.0" data-end="339.0" title="5:33">Lambert Eaton syndrome is an example of a paronyoplastic syndrome most commonly seen </span><span class="segment" data-start="339.0" data-end="341.0" title="5:39">with small cell lung cancer. </span><span class="segment" data-start="341.0" data-end="347.0" title="5:41">It is an autoimmune disease affecting the presynaptic voltage-gate calcium channels </span><span class="segment" data-start="347.0" data-end="352.0" title="5:47">at both the neuromuscular junctions and autonomic ganglia. </span><span class="segment" data-start="352.0" data-end="357.0" title="5:52">Preventing opening of these channels results in reduced acetylcholine release </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="357.0"><span class="t-timestamp">5:57</span></div>
-  <div class="t-body"><span class="segment" data-start="357.0" data-end="360.0" title="5:57">and ultimately muscle weakness. </span><span class="segment" data-start="360.0" data-end="365.0" title="6:00">Unlike myasthenia gravis, weakness in Lambert Eaton syndrome </span><span class="segment" data-start="365.0" data-end="369.0" title="6:05">tends not to affect the face or respiratory muscles </span><span class="segment" data-start="369.0" data-end="374.0" title="6:09">but rather proximal muscle groups such as the hip extensors. </span><span class="segment" data-start="374.0" data-end="381.0" title="6:14">In contrast to myasthenia gravis, improved muscle strength after repeated effort is characteristic </span><span class="segment" data-start="381.0" data-end="385.0" title="6:21">and therefore fade is not a feature. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="385.0"><span class="t-timestamp">6:25</span></div>
-  <div class="t-body"><span class="segment" data-start="385.0" data-end="389.0" title="6:25">Although treatment should initially focus on treating the underlying malignancy </span><span class="segment" data-start="389.0" data-end="397.0" title="6:29">other management strategies include the use of steroids, immunoglobulins or plasma exchange. </span><span class="segment" data-start="397.0" data-end="405.0" title="6:37">How would you approach pain management in patients with advanced lung cancer, local erosion and bone metastases? </span><span class="segment" data-start="405.0" data-end="413.0" title="6:45">I would start by assessing the patient's pain, concentrating especially on whether there were any neuropathic features. </span><span class="segment" data-start="414.0" data-end="420.0" title="6:54">By pharmacological management would follow a stepwise progression through the analgesic ladder, </span><span class="segment" data-start="420.0" data-end="428.0" title="7:00">starting with simple analgesics such as paracetamol and adjuncts including non-steroidal anti-inflammatory drugs. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="428.0"><span class="t-timestamp">7:08</span></div>
-  <div class="t-body"><span class="segment" data-start="428.0" data-end="435.0" title="7:08">Most patients in this scenario will need strong opioids as part of their analgesic regime. </span><span class="segment" data-start="435.0" data-end="442.0" title="7:15">Here we have a choice of using slow release oral opioids such as morphine sulfate modified release </span><span class="segment" data-start="442.0" data-end="452.0" title="7:22">such as MST or oxycodone modified with short acting oral opioids such as oramorph to control breakthrough pain. </span><span class="segment" data-start="452.0" data-end="461.0" title="7:32">Alternatively, lipophilic opioid patches such as fentanyl can now be used to provide consistent background analgesia. </span><span class="segment" data-start="461.0" data-end="470.0" title="7:41">If there are elements of neuropathic pain, drugs such as the end-type voltage gated calcium channel antagonist GABA PENTIN </span><span class="segment" data-start="470.0" data-end="476.0" title="7:50">and the anti-epileptic carbamazepine have been shown to help. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="476.0"><span class="t-timestamp">7:56</span></div>
-  <div class="t-body"><span class="segment" data-start="476.0" data-end="488.0" title="7:56">Furthermore, evidence is now emerging that steroid such as DEXA methasone and BISFOSFANATES can be of benefit in treating patients with symptomatic bone metastases. </span><span class="segment" data-start="488.0" data-end="497.0" title="8:08">Finally, if pain from local erosion is not adequately controlled, regional techniques can be used for short or longer term therapy. </span><span class="segment" data-start="498.0" data-end="511.0" title="8:18">Here, both thoracic epidural and paraverterable blocks may help alleviate distressing levels of pain and whilst such interventions would carry risks higher than those seen in the elective situation, </span><span class="segment" data-start="511.0" data-end="516.0" title="8:31">these risks may be outweighed by the benefits from a palliative perspective. </span><span class="segment" data-start="516.0" data-end="524.0" title="8:36">What patterns of abnormality would be seen on lung function testing in a patient with amiodironin-duce lung disease? </span><span class="segment" data-start="525.0" data-end="533.0" title="8:45">Amiodiron is a class III anti-arithmic and prolongs phase III of the cardiac action potential. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="533.0"><span class="t-timestamp">8:53</span></div>
-  <div class="t-body"><span class="segment" data-start="533.0" data-end="539.0" title="8:53">Although a very useful drug, it has a range of common and occasionally serious side effects. </span><span class="segment" data-start="539.0" data-end="544.0" title="8:59">Amiodiron initially can cause a mild pneumonitis after starting treatment. </span><span class="segment" data-start="544.0" data-end="551.0" title="9:04">However, in those patients with coexisting lung disease, the elderly and people who are undergo prolonged treatment, </span><span class="segment" data-start="551.0" data-end="555.0" title="9:11">interstitial fibiotic lung disease can develop. </span><span class="segment" data-start="555.0" data-end="565.0" title="9:15">Fibiotic lung disease, in general, shows a pattern of abnormalities on pulmonary function testing quite different from obstructive processes. </span><span class="segment" data-start="565.0" data-end="578.0" title="9:25">Although the ratio of FEV1 to FVC may be normal or even increased due to changes in lung architecture and compliance, the absolute volumes will be reduced. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="579.0"><span class="t-timestamp">9:39</span></div>
-  <div class="t-body"><span class="segment" data-start="579.0" data-end="589.0" title="9:39">In addition, if fibrosis occurs at the alveolar capillary membrane, as is the case in amiodiron-induced pulmonary fibrosis, </span><span class="segment" data-start="589.0" data-end="599.0" title="9:49">this will result in a decrease in both the carbon monoxide diffusing capacity and the volume corrected carbon monoxide diffusion capacity. </span><span class="segment" data-start="599.0" data-end="609.0" title="9:59">If we look at flow volume loops for these patients, due to the low lung volumes in fibiotic disease, flow appears to be decreased if measured alone. </span><span class="segment" data-start="609.0" data-end="620.0" title="10:09">However, when measured against lung volumes, flow is actually higher than normal because of the increased elastic recoil characteristic of fibiotic lungs. </span><span class="segment" data-start="620.0" data-end="625.0" title="10:20">What are the other causes of fibiotic lung disease? </span><span class="segment" data-start="626.0" data-end="633.0" title="10:26">We can divide these causes into three main groups, Iatrogenic, Occupational and Medical. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="633.0"><span class="t-timestamp">10:33</span></div>
-  <div class="t-body"><span class="segment" data-start="633.0" data-end="642.0" title="10:33">Patients will often have a degree of Iatrogenic restrictive lung disease following long courses of radiotherapy, focusing on lung tissue. </span><span class="segment" data-start="642.0" data-end="654.0" title="10:42">This may impact not only on their lung function and lung mechanics, but also on the external tissues of the head and neck, and hence make positioning and intubation difficult. </span><span class="segment" data-start="654.0" data-end="666.0" title="10:54">Occupational causes are concerned primarily with the so-called dust diseases, including pneumoconiosis, silicosis and berylosis. </span><span class="segment" data-start="666.0" data-end="680.0" title="11:06">A careful occupational history will reveal those patients most at risk and examination of the chest radiograph in cases of pneumoconiosis may show evidence of plural plaques and plural thickening, </span><span class="segment" data-start="680.0" data-end="688.0" title="11:20">as well as the characteristic appearance of interstitial honeycombing common to fibiotic lung disease. </span><span class="segment" data-start="688.0" data-end="700.0" title="11:28">Finally, medical causes include extrinsic fibrosing alveolitis, which is an autoimmune disease process and idiopathic fibrosying alveolitis. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="700.0"><span class="t-timestamp">11:40</span></div>
-  <div class="t-body"><span class="segment" data-start="700.0" data-end="709.0" title="11:40">In addition, fibrosis can develop as part of a generalized autoimmune process seen in patients with rheumatoid arthritis. </span><span class="segment" data-start="709.0" data-end="722.0" title="11:49">As discussed previously, certain drug groups, including methotrexate, amyodrone and gold, can also produce a drug-induced restrictive lung pattern of abnormality. </span><span class="segment" data-start="722.0" data-end="729.0" title="12:02">What are the physiological implications of fibiotic lung disease and how should you necessitate these patients? </span><span class="segment" data-start="729.0" data-end="738.0" title="12:09">Most of these patients will be hypoxic at rest due to a combination of poor diffusion capacity and VQ mismatch. </span><span class="segment" data-start="738.0" data-end="743.0" title="12:18">This is worsened by an increase in physiological dead space. </span><span class="segment" data-start="743.0" data-end="750.0" title="12:23">The changes in compliance will result in a downwards and right-woods shift in the pressure volume curve. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="751.0"><span class="t-timestamp">12:31</span></div>
-  <div class="t-body"><span class="segment" data-start="751.0" data-end="760.0" title="12:31">Although respiratory failure is commonly a feature, many patients will decompensate and ultimately die from right heart failure. </span><span class="segment" data-start="760.0" data-end="765.0" title="12:40">Therefore, this should be actively searched for and treated appropriately. </span><span class="segment" data-start="765.0" data-end="779.0" title="12:45">Before embarking on a general anaesthetic, lung function tests, resting arterial blood gases, a plain chest radiograph and ideally a trans-theraic echocardiogram should be available. </span><span class="segment" data-start="780.0" data-end="787.0" title="13:00">When conducting anaesthesia, one should consider steroid cover if long-term steroids are being used. </span><span class="segment" data-start="787.0" data-end="802.0" title="13:07">Due to the VQ mismatch and diffusion capacity changes, a high-inspired oxygen concentration should be used and an arterial line placed so that regular blood gas analysis can be undertaken. </span><span class="segment" data-start="803.0" data-end="808.0" title="13:23">There has been controversy over whether high FIO2 worsens fibrosis. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="808.0"><span class="t-timestamp">13:28</span></div>
-  <div class="t-body"><span class="segment" data-start="808.0" data-end="825.0" title="13:28">Therefore, it is best to treat inspired oxygen to PAO2 with frequent blood gas samples, thus avoiding 100% oxygen which can cause absorption atelectasis and a fall in the FRC. </span><span class="segment" data-start="826.0" data-end="835.0" title="13:46">To match their respiratory mechanics, small tidal volumes with a rapid respiratory rate is often used with minimum peak pressures. </span><span class="segment" data-start="835.0" data-end="848.0" title="13:55">The use of pressure-controlled ventilation may also improve the distribution of ventilation by directing it to lung units with differing time constants, as well as decreasing the peak pressures used. </span><span class="segment" data-start="848.0" data-end="860.0" title="14:08">In the presence of right heart failure, measures including minimizing peak and avoiding alpha agonists will help prevent large rises in pulmonary vascular resistance. </span></div>
+<div class="preamble-block"><span class="segment a-seg" data-start="0.0" data-end="2.0" title="0:00">lung cancer and fibrosis. </span><span class="segment a-seg" data-start="2.0" data-end="5.44" title="0:02">This topic would be well suited to the clinical sciences' </span><span class="segment a-seg" data-start="5.44" data-end="9.0" title="0:05">viber, but may feature in the physiological viber. </span><span class="segment a-seg" data-start="9.0" data-end="12.8" title="0:09">Although it is a topic you may not have studied since medical school, </span><span class="segment a-seg" data-start="12.8" data-end="16.0" title="0:12">it does have important implications for anesthetists, </span><span class="segment a-seg" data-start="16.0" data-end="18.8" title="0:16">not only from a respiratory mechanics perspective, </span><span class="segment a-seg" data-start="18.8" data-end="22.0" title="0:18">but also from an endocrinology point of view. </span></div>
+<div class="qa-pair">
+<div class="q-block" data-start="22.0">
+  <div class="q-label">Q1</div>
+  <div class="q-body"><span class="segment q-seg" data-start="22.0" data-end="24.6" title="0:22">What are the different types of lung cancer? </span></div>
 </div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="24.6" data-end="28.0" title="0:24">Although not a topic that you may be very familiar with, </span></li>
+<li><span class="segment a-seg" data-start="28.0" data-end="32.8" title="0:28">the final examiners will often find topics that lay on the boundary of knowledge </span></li>
+<li><span class="segment a-seg" data-start="32.8" data-end="36.0" title="0:32">and apply them to the practice of anesthesia. </span></li>
+<li><span class="segment a-seg" data-start="37.0" data-end="43.0" title="0:37">Lung cancer can be divided into small cell and non-small cell types. </span></li>
+<li><span class="segment a-seg" data-start="43.0" data-end="48.0" title="0:43">Small cell lung cancer is most closely associated with smoking </span></li>
+<li><span class="segment a-seg" data-start="48.0" data-end="52.0" title="0:48">and is often metastasized on presentation. </span></li>
+<li><span class="segment a-seg" data-start="52.0" data-end="55.0" title="0:52">Although termed small cell cancer, </span></li>
+<li><span class="segment a-seg" data-start="55.0" data-end="60.0" title="0:55">these tumors can grow very large and obstruct early generations of bronchi, </span></li>
+<li><span class="segment a-seg" data-start="60.0" data-end="66.0" title="1:00">resulting in functional unit collapse, VQ mismatch and secondary infection. </span></li>
+<li><span class="segment a-seg" data-start="66.0" data-end="71.0" title="1:06">It is the cells that are small, not necessarily the tumors. </span></li>
+<li><span class="segment a-seg" data-start="71.0" data-end="76.0" title="1:11">Although more sensitive to chemotherapy than non-small cell cancer, </span></li>
+<li><span class="segment a-seg" data-start="76.0" data-end="81.0" title="1:16">overall their prognosis is worse and is associated with different types </span></li>
+<li><span class="segment a-seg" data-start="81.0" data-end="84.0" title="1:21">of para-neoplastics syndromes. </span></li>
+<li><span class="segment a-seg" data-start="84.0" data-end="87.0" title="1:24">Non-small cell cancers, on the other hand, </span></li>
+<li><span class="segment a-seg" data-start="87.0" data-end="93.0" title="1:27">are further subdivided into squamous cell cancer and adenocasinoma. </span></li>
+<li><span class="segment a-seg" data-start="93.0" data-end="98.0" title="1:33">Adenocasinoma is sometimes seen in patients with no history of smoking, </span></li>
+<li><span class="segment a-seg" data-start="98.0" data-end="102.0" title="1:38">whilst squamous cell cancers often cavitate. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="102.0">
+  <div class="q-label">Q2</div>
+  <div class="q-body"><span class="segment q-seg" data-start="102.0" data-end="107.0" title="1:42">How do you decide whether a patient would be suitable for tumour resection? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="107.0" data-end="112.0" title="1:47">The two main considerations here are those related to the tumour </span></li>
+<li><span class="segment a-seg" data-start="112.0" data-end="115.0" title="1:52">and those related to the patient. </span></li>
+<li><span class="segment a-seg" data-start="115.0" data-end="118.0" title="1:55">The tumour should be a non-small cell cancer type </span></li>
+<li><span class="segment a-seg" data-start="118.0" data-end="124.0" title="1:58">with an absence of significant mediusdinal spread or distant metastases. </span></li>
+<li><span class="segment a-seg" data-start="124.0" data-end="129.0" title="2:04">This is because a landmark paper by the Medical Research Council </span></li>
+<li><span class="segment a-seg" data-start="129.0" data-end="133.0" title="2:09">showed that patient outcome after surgery was significantly worse </span></li>
+<li><span class="segment a-seg" data-start="133.0" data-end="137.0" title="2:13">than after radiotherapy for small cell tumor types. </span></li>
+<li><span class="segment a-seg" data-start="137.0" data-end="140.0" title="2:17">Depending upon the location of the tumour, </span></li>
+<li><span class="segment a-seg" data-start="140.0" data-end="145.0" title="2:20">surgical resection may not be possible if central airways are involved. </span></li>
+<li><span class="segment a-seg" data-start="145.0" data-end="149.0" title="2:25">Although these factors are important, as an East the Tists, </span></li>
+<li><span class="segment a-seg" data-start="149.0" data-end="153.0" title="2:29">we tend to focus on those considerations related to the patient </span></li>
+<li><span class="segment a-seg" data-start="153.0" data-end="157.0" title="2:33">and their fitness to undergo surgery. </span></li>
+<li><span class="segment a-seg" data-start="157.0" data-end="162.0" title="2:37">In this instance, the British Thoracic Society has published clear guidelines </span></li>
+<li><span class="segment a-seg" data-start="162.0" data-end="166.0" title="2:42">outlining the main strategy for patient's assessment. </span></li>
+<li><span class="segment a-seg" data-start="166.0" data-end="171.0" title="2:46">These guidelines include assessing a patient's nutritional and performance status, </span></li>
+<li><span class="segment a-seg" data-start="171.0" data-end="176.0" title="2:51">their cardiovascular function and their respiratory function. </span></li>
+<li><span class="segment a-seg" data-start="176.0" data-end="180.0" title="2:56">Weight loss is often used as a surrogate for nutritional status </span></li>
+<li><span class="segment a-seg" data-start="180.0" data-end="185.0" title="3:00">and the American Heart Association classification of cardiovascular disease </span></li>
+<li><span class="segment a-seg" data-start="185.0" data-end="189.0" title="3:05">used to assess cardiovascular status. </span></li>
+<li><span class="segment a-seg" data-start="189.0" data-end="193.0" title="3:09">If we concentrate on assessment of respiratory function, </span></li>
+<li><span class="segment a-seg" data-start="193.0" data-end="198.0" title="3:13">the main important factors include interpretation of arterial blood gases, </span></li>
+<li><span class="segment a-seg" data-start="198.0" data-end="203.0" title="3:18">spirometry values and exercise capacity indices, </span></li>
+<li><span class="segment a-seg" data-start="203.0" data-end="207.0" title="3:23">such as those gained from CEPX testing. </span></li>
+<li><span class="segment a-seg" data-start="207.0" data-end="211.0" title="3:27">Generally, patients can safely undergo a humanectomy </span></li>
+<li><span class="segment a-seg" data-start="211.0" data-end="216.0" title="3:31">if they are shown to have an FEV1 greater than two liters. </span></li>
+<li><span class="segment a-seg" data-start="216.0" data-end="221.0" title="3:36">Patients with values less than this should proceed to have predicted </span></li>
+<li><span class="segment a-seg" data-start="221.0" data-end="228.0" title="3:41">post-operative values quantified and in some centres, CEPX testing. </span></li>
+<li><span class="segment a-seg" data-start="228.0" data-end="234.0" title="3:48">In this case, a VO2 max of above 15 mils per kilogram per minute </span></li>
+<li><span class="segment a-seg" data-start="234.0" data-end="240.0" title="3:54">would suggest that surgery can be performed all be it with caution. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="240.0">
+  <div class="q-label">Q3</div>
+  <div class="q-body"><span class="segment q-seg" data-start="240.0" data-end="244.0" title="4:00">What are the systemic effects of lung malignancy? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="244.0" data-end="250.0" title="4:04">The most notable effects of systemic malignancy include weight loss and cakexia. </span></li>
+<li><span class="segment a-seg" data-start="250.0" data-end="254.0" title="4:10">Although the mechanism for these problems is poorly understood, </span></li>
+<li><span class="segment a-seg" data-start="254.0" data-end="259.0" title="4:14">it most likely results from a combination of poor nutritional intake </span></li>
+<li><span class="segment a-seg" data-start="259.0" data-end="265.0" title="4:19">and increased energy expenditure as a result of pro-inflammatory cytokines, </span></li>
+<li><span class="segment a-seg" data-start="265.0" data-end="270.0" title="4:25">including TNF, alpha and interleukin-6. </span></li>
+<li><span class="segment a-seg" data-start="270.0" data-end="277.0" title="4:30">Small cell lung cancer is also notable in producing a range of paronyoplastic syndromes. </span></li>
+<li><span class="segment a-seg" data-start="277.0" data-end="284.0" title="4:37">These include hypercalcemia resulting from parathyroid-related peptide release, </span></li>
+<li><span class="segment a-seg" data-start="284.0" data-end="292.0" title="4:44">Cushing syndrome from ectopic ACTH release, muscle weakness from Lambert Eaton syndrome, </span></li>
+<li><span class="segment a-seg" data-start="292.0" data-end="297.0" title="4:52">and hyponatremia from SIADH. </span></li>
+<li><span class="segment a-seg" data-start="297.0" data-end="304.0" title="4:57">Finally, localized metastases and compression can result in superior venocaver compression, </span></li>
+<li><span class="segment a-seg" data-start="304.0" data-end="309.0" title="5:04">leading to headache, facial swelling and shortness of breath. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="309.0">
+  <div class="q-label">Q4</div>
+  <div class="q-body"><span class="segment q-seg" data-start="309.0" data-end="312.0" title="5:09">What is the pathophysiology of Lambert Eaton syndrome? </span><span class="segment q-seg" data-start="312.0" data-end="316.0" title="5:12">And how does it differ from other disease of the neuromuscular junction? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="316.0" data-end="320.0" title="5:16">This demonstrates that one should not mention topics in the answers to questions </span></li>
+<li><span class="segment a-seg" data-start="320.0" data-end="323.0" title="5:20">unless you can subsequently discuss them. </span></li>
+<li><span class="segment a-seg" data-start="323.0" data-end="328.0" title="5:23">In this case, the mention of Lambert Eaton syndrome in the previous answer </span></li>
+<li><span class="segment a-seg" data-start="328.0" data-end="333.0" title="5:28">had prompted the examiner to ask for further clarification. </span></li>
+<li><span class="segment a-seg" data-start="333.0" data-end="339.0" title="5:33">Lambert Eaton syndrome is an example of a paronyoplastic syndrome most commonly seen </span></li>
+<li><span class="segment a-seg" data-start="339.0" data-end="341.0" title="5:39">with small cell lung cancer. </span></li>
+<li><span class="segment a-seg" data-start="341.0" data-end="347.0" title="5:41">It is an autoimmune disease affecting the presynaptic voltage-gate calcium channels </span></li>
+<li><span class="segment a-seg" data-start="347.0" data-end="352.0" title="5:47">at both the neuromuscular junctions and autonomic ganglia. </span></li>
+<li><span class="segment a-seg" data-start="352.0" data-end="357.0" title="5:52">Preventing opening of these channels results in reduced acetylcholine release </span></li>
+<li><span class="segment a-seg" data-start="357.0" data-end="360.0" title="5:57">and ultimately muscle weakness. </span></li>
+<li><span class="segment a-seg" data-start="360.0" data-end="365.0" title="6:00">Unlike myasthenia gravis, weakness in Lambert Eaton syndrome </span></li>
+<li><span class="segment a-seg" data-start="365.0" data-end="369.0" title="6:05">tends not to affect the face or respiratory muscles </span></li>
+<li><span class="segment a-seg" data-start="369.0" data-end="374.0" title="6:09">but rather proximal muscle groups such as the hip extensors. </span></li>
+<li><span class="segment a-seg" data-start="374.0" data-end="381.0" title="6:14">In contrast to myasthenia gravis, improved muscle strength after repeated effort is characteristic </span></li>
+<li><span class="segment a-seg" data-start="381.0" data-end="385.0" title="6:21">and therefore fade is not a feature. </span></li>
+<li><span class="segment a-seg" data-start="385.0" data-end="389.0" title="6:25">Although treatment should initially focus on treating the underlying malignancy </span></li>
+<li><span class="segment a-seg" data-start="389.0" data-end="397.0" title="6:29">other management strategies include the use of steroids, immunoglobulins or plasma exchange. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="397.0">
+  <div class="q-label">Q5</div>
+  <div class="q-body"><span class="segment q-seg" data-start="397.0" data-end="405.0" title="6:37">How would you approach pain management in patients with advanced lung cancer, local erosion and bone metastases? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="405.0" data-end="413.0" title="6:45">I would start by assessing the patient's pain, concentrating especially on whether there were any neuropathic features. </span></li>
+<li><span class="segment a-seg" data-start="414.0" data-end="420.0" title="6:54">By pharmacological management would follow a stepwise progression through the analgesic ladder, </span></li>
+<li><span class="segment a-seg" data-start="420.0" data-end="428.0" title="7:00">starting with simple analgesics such as paracetamol and adjuncts including non-steroidal anti-inflammatory drugs. </span></li>
+<li><span class="segment a-seg" data-start="428.0" data-end="435.0" title="7:08">Most patients in this scenario will need strong opioids as part of their analgesic regime. </span></li>
+<li><span class="segment a-seg" data-start="435.0" data-end="442.0" title="7:15">Here we have a choice of using slow release oral opioids such as morphine sulfate modified release </span></li>
+<li><span class="segment a-seg" data-start="442.0" data-end="452.0" title="7:22">such as MST or oxycodone modified with short acting oral opioids such as oramorph to control breakthrough pain. </span></li>
+<li><span class="segment a-seg" data-start="452.0" data-end="461.0" title="7:32">Alternatively, lipophilic opioid patches such as fentanyl can now be used to provide consistent background analgesia. </span></li>
+<li><span class="segment a-seg" data-start="461.0" data-end="470.0" title="7:41">If there are elements of neuropathic pain, drugs such as the end-type voltage gated calcium channel antagonist GABA PENTIN </span></li>
+<li><span class="segment a-seg" data-start="470.0" data-end="476.0" title="7:50">and the anti-epileptic carbamazepine have been shown to help. </span></li>
+<li><span class="segment a-seg" data-start="476.0" data-end="488.0" title="7:56">Furthermore, evidence is now emerging that steroid such as DEXA methasone and BISFOSFANATES can be of benefit in treating patients with symptomatic bone metastases. </span></li>
+<li><span class="segment a-seg" data-start="488.0" data-end="497.0" title="8:08">Finally, if pain from local erosion is not adequately controlled, regional techniques can be used for short or longer term therapy. </span></li>
+<li><span class="segment a-seg" data-start="498.0" data-end="511.0" title="8:18">Here, both thoracic epidural and paraverterable blocks may help alleviate distressing levels of pain and whilst such interventions would carry risks higher than those seen in the elective situation, </span></li>
+<li><span class="segment a-seg" data-start="511.0" data-end="516.0" title="8:31">these risks may be outweighed by the benefits from a palliative perspective. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="516.0">
+  <div class="q-label">Q6</div>
+  <div class="q-body"><span class="segment q-seg" data-start="516.0" data-end="524.0" title="8:36">What patterns of abnormality would be seen on lung function testing in a patient with amiodironin-duce lung disease? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="525.0" data-end="533.0" title="8:45">Amiodiron is a class III anti-arithmic and prolongs phase III of the cardiac action potential. </span></li>
+<li><span class="segment a-seg" data-start="533.0" data-end="539.0" title="8:53">Although a very useful drug, it has a range of common and occasionally serious side effects. </span></li>
+<li><span class="segment a-seg" data-start="539.0" data-end="544.0" title="8:59">Amiodiron initially can cause a mild pneumonitis after starting treatment. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="544.0">
+  <div class="q-label">Q7</div>
+  <div class="q-body"><span class="segment q-seg" data-start="544.0" data-end="551.0" title="9:04">However, in those patients with coexisting lung disease, the elderly and people who are undergo prolonged treatment, </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="551.0" data-end="555.0" title="9:11">interstitial fibiotic lung disease can develop. </span></li>
+<li><span class="segment a-seg" data-start="555.0" data-end="565.0" title="9:15">Fibiotic lung disease, in general, shows a pattern of abnormalities on pulmonary function testing quite different from obstructive processes. </span></li>
+<li><span class="segment a-seg" data-start="565.0" data-end="578.0" title="9:25">Although the ratio of FEV1 to FVC may be normal or even increased due to changes in lung architecture and compliance, the absolute volumes will be reduced. </span></li>
+<li><span class="segment a-seg" data-start="579.0" data-end="589.0" title="9:39">In addition, if fibrosis occurs at the alveolar capillary membrane, as is the case in amiodiron-induced pulmonary fibrosis, </span></li>
+<li><span class="segment a-seg" data-start="589.0" data-end="599.0" title="9:49">this will result in a decrease in both the carbon monoxide diffusing capacity and the volume corrected carbon monoxide diffusion capacity. </span></li>
+<li><span class="segment a-seg" data-start="599.0" data-end="609.0" title="9:59">If we look at flow volume loops for these patients, due to the low lung volumes in fibiotic disease, flow appears to be decreased if measured alone. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="609.0">
+  <div class="q-label">Q8</div>
+  <div class="q-body"><span class="segment q-seg" data-start="609.0" data-end="620.0" title="10:09">However, when measured against lung volumes, flow is actually higher than normal because of the increased elastic recoil characteristic of fibiotic lungs. </span><span class="segment q-seg" data-start="620.0" data-end="625.0" title="10:20">What are the other causes of fibiotic lung disease? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="626.0" data-end="633.0" title="10:26">We can divide these causes into three main groups, Iatrogenic, Occupational and Medical. </span></li>
+<li><span class="segment a-seg" data-start="633.0" data-end="642.0" title="10:33">Patients will often have a degree of Iatrogenic restrictive lung disease following long courses of radiotherapy, focusing on lung tissue. </span></li>
+<li><span class="segment a-seg" data-start="642.0" data-end="654.0" title="10:42">This may impact not only on their lung function and lung mechanics, but also on the external tissues of the head and neck, and hence make positioning and intubation difficult. </span></li>
+<li><span class="segment a-seg" data-start="654.0" data-end="666.0" title="10:54">Occupational causes are concerned primarily with the so-called dust diseases, including pneumoconiosis, silicosis and berylosis. </span></li>
+<li><span class="segment a-seg" data-start="666.0" data-end="680.0" title="11:06">A careful occupational history will reveal those patients most at risk and examination of the chest radiograph in cases of pneumoconiosis may show evidence of plural plaques and plural thickening, </span></li>
+<li><span class="segment a-seg" data-start="680.0" data-end="688.0" title="11:20">as well as the characteristic appearance of interstitial honeycombing common to fibiotic lung disease. </span></li>
+<li><span class="segment a-seg" data-start="688.0" data-end="700.0" title="11:28">Finally, medical causes include extrinsic fibrosing alveolitis, which is an autoimmune disease process and idiopathic fibrosying alveolitis. </span></li>
+<li><span class="segment a-seg" data-start="700.0" data-end="709.0" title="11:40">In addition, fibrosis can develop as part of a generalized autoimmune process seen in patients with rheumatoid arthritis. </span></li>
+<li><span class="segment a-seg" data-start="709.0" data-end="722.0" title="11:49">As discussed previously, certain drug groups, including methotrexate, amyodrone and gold, can also produce a drug-induced restrictive lung pattern of abnormality. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="722.0">
+  <div class="q-label">Q9</div>
+  <div class="q-body"><span class="segment q-seg" data-start="722.0" data-end="729.0" title="12:02">What are the physiological implications of fibiotic lung disease and how should you necessitate these patients? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="729.0" data-end="738.0" title="12:09">Most of these patients will be hypoxic at rest due to a combination of poor diffusion capacity and VQ mismatch. </span></li>
+<li><span class="segment a-seg" data-start="738.0" data-end="743.0" title="12:18">This is worsened by an increase in physiological dead space. </span></li>
+<li><span class="segment a-seg" data-start="743.0" data-end="750.0" title="12:23">The changes in compliance will result in a downwards and right-woods shift in the pressure volume curve. </span></li>
+<li><span class="segment a-seg" data-start="751.0" data-end="760.0" title="12:31">Although respiratory failure is commonly a feature, many patients will decompensate and ultimately die from right heart failure. </span></li>
+<li><span class="segment a-seg" data-start="760.0" data-end="765.0" title="12:40">Therefore, this should be actively searched for and treated appropriately. </span></li>
+<li><span class="segment a-seg" data-start="765.0" data-end="779.0" title="12:45">Before embarking on a general anaesthetic, lung function tests, resting arterial blood gases, a plain chest radiograph and ideally a trans-theraic echocardiogram should be available. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="780.0">
+  <div class="q-label">Q10</div>
+  <div class="q-body"><span class="segment q-seg" data-start="780.0" data-end="787.0" title="13:00">When conducting anaesthesia, one should consider steroid cover if long-term steroids are being used. </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="787.0" data-end="802.0" title="13:07">Due to the VQ mismatch and diffusion capacity changes, a high-inspired oxygen concentration should be used and an arterial line placed so that regular blood gas analysis can be undertaken. </span></li>
+<li><span class="segment a-seg" data-start="803.0" data-end="808.0" title="13:23">There has been controversy over whether high FIO2 worsens fibrosis. </span></li>
+<li><span class="segment a-seg" data-start="808.0" data-end="825.0" title="13:28">Therefore, it is best to treat inspired oxygen to PAO2 with frequent blood gas samples, thus avoiding 100% oxygen which can cause absorption atelectasis and a fall in the FRC. </span></li>
+<li><span class="segment a-seg" data-start="826.0" data-end="835.0" title="13:46">To match their respiratory mechanics, small tidal volumes with a rapid respiratory rate is often used with minimum peak pressures. </span></li>
+<li><span class="segment a-seg" data-start="835.0" data-end="848.0" title="13:55">The use of pressure-controlled ventilation may also improve the distribution of ventilation by directing it to lung units with differing time constants, as well as decreasing the peak pressures used. </span></li>
+<li><span class="segment a-seg" data-start="848.0" data-end="860.0" title="14:08">In the presence of right heart failure, measures including minimizing peak and avoiding alpha agonists will help prevent large rises in pulmonary vascular resistance. </span></li>
+  </ul>
+</div>
+</div>
+
 </div>
 
 <div class="subtitle-bar">
-  <span class="subtitle-text empty" id="subtitle-text">Play audio to see live subtitles&#8230;</span>
+  <span id="subtitle-text" class="empty">Play audio to see live subtitles&#8230;</span>
 </div>
 
 <script>
-
-const audio    = document.getElementById('audio');
-const allSegs  = Array.from(document.querySelectorAll('.segment'));
-const allBlocks = Array.from(document.querySelectorAll('.t-block'));
+const audio      = document.getElementById('audio');
+const allSegs    = Array.from(document.querySelectorAll('.segment'));
 const subtitleEl = document.getElementById('subtitle-text');
-let activeSegEl   = null;
-let activeBlockEl = null;
-let searchMatches = [];
-let searchIdx     = 0;
+let activeSegEl  = null;
+let searchMatches = [], searchIdx = 0;
 
-// Duration display
 audio.addEventListener('loadedmetadata', () => {
   const m = Math.floor(audio.duration / 60);
   const s = Math.floor(audio.duration %% 60).toString().padStart(2,'0');
   document.getElementById('dur').textContent = m + ':' + s;
 });
 
-// Seek helper
-function seekTo(t) {
-  audio.currentTime = t;
-  audio.play();
-}
+function seekTo(t) { audio.currentTime = t; audio.play(); }
 
-// Block gutter click
-document.querySelectorAll('.t-gutter').forEach(g => {
-  g.addEventListener('click', () => seekTo(parseFloat(g.dataset.start)));
+// Q-block header click
+document.querySelectorAll('.q-block').forEach(q => {
+  q.addEventListener('click', e => {
+    if (!e.target.classList.contains('segment')) seekTo(parseFloat(q.dataset.start));
+  });
 });
 
-// Segment click
+// Individual segment click
 allSegs.forEach(s => {
-  s.addEventListener('click', e => {
-    e.stopPropagation();
-    seekTo(parseFloat(s.dataset.start));
-  });
+  s.addEventListener('click', e => { e.stopPropagation(); seekTo(parseFloat(s.dataset.start)); });
 });
 
 // Real-time tracking
 audio.addEventListener('timeupdate', () => {
   const t = audio.currentTime;
-
-  // Find active segment (last one whose start <= t)
   let found = null;
   for (let i = allSegs.length - 1; i >= 0; i--) {
     if (parseFloat(allSegs[i].dataset.start) <= t) { found = allSegs[i]; break; }
   }
-
   if (found && found !== activeSegEl) {
-    // Clear previous
-    if (activeSegEl) activeSegEl.classList.remove('active');
-    if (activeBlockEl) {
-      activeBlockEl.classList.remove('block-active');
-      const pg = activeBlockEl.querySelector('.t-gutter');
-      if (pg) pg.classList.remove('gutter-active');
+    if (activeSegEl) {
+      activeSegEl.classList.remove('active');
+      const pli = activeSegEl.closest('li');
+      if (pli) pli.classList.remove('li-active');
+      const pq = activeSegEl.closest('.q-block');
+      if (pq) pq.classList.remove('q-active');
     }
-    // Set new
     found.classList.add('active');
-    const block = found.closest('.t-block');
-    if (block) {
-      block.classList.add('block-active');
-      const g = block.querySelector('.t-gutter');
-      if (g) g.classList.add('gutter-active');
-      activeBlockEl = block;
-    }
+    const li = found.closest('li');
+    if (li) li.classList.add('li-active');
+    const qb = found.closest('.q-block');
+    if (qb) qb.classList.add('q-active');
     activeSegEl = found;
 
-    // Update subtitle
     subtitleEl.textContent = found.textContent.trim();
     subtitleEl.classList.remove('empty');
 
-    // Auto-scroll (only when not searching)
-    if (!document.getElementById('search').value) {
+    if (!document.getElementById('search').value)
       found.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }
   }
 });
 
@@ -356,17 +487,13 @@ searchInput.addEventListener('keydown', e => {
     el.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
 });
-
 function runSearch() {
   const q = searchInput.value.trim().toLowerCase();
   allSegs.forEach(s => s.classList.remove('search-match','search-current'));
   searchMatches = [];
   if (!q) return;
   allSegs.forEach(s => {
-    if (s.textContent.toLowerCase().includes(q)) {
-      s.classList.add('search-match');
-      searchMatches.push(s);
-    }
+    if (s.textContent.toLowerCase().includes(q)) { s.classList.add('search-match'); searchMatches.push(s); }
   });
   if (!searchMatches.length) return;
   searchIdx = 0;

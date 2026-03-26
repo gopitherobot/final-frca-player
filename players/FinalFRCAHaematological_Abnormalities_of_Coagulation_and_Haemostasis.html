@@ -5,10 +5,19 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Haematological — Abnormalities of Coagulation and Haemostasis</title>
 <style>
-
   :root {
-    --accent:    #ec4899;
-    --body-bg:   #f1f5f9;
+    --q-bg:       #1e3a5f;
+    --q-text:     #ffffff;
+    --q-label:    #60a5fa;
+    --a-bg:       #ffffff;
+    --a-border:   #e2e8f0;
+    --a-label:    #059669;
+    --active-q:   #ec4899;
+    --active-a:   #dbeafe;
+    --accent:     #ec4899;
+    --body-bg:    #f1f5f9;
+    --pre-bg:     #fef9c3;
+    --pre-border: #fcd34d;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
@@ -40,22 +49,9 @@
     margin-bottom: 4px;
     letter-spacing: 0.01em;
   }
-  .header-sub {
-    font-size: 0.72rem;
-    color: #94a3b8;
-    font-style: italic;
-  }
-  audio {
-    height: 36px;
-    accent-color: var(--accent);
-    flex-shrink: 0;
-  }
-  .back-link {
-    font-size: 0.8rem;
-    color: #94a3b8;
-    text-decoration: none;
-    white-space: nowrap;
-  }
+  .header-sub { font-size: 0.72rem; color: #94a3b8; font-style: italic; }
+  audio { height: 36px; accent-color: var(--accent); flex-shrink: 0; }
+  .back-link { font-size: 0.8rem; color: #94a3b8; text-decoration: none; white-space: nowrap; }
   .back-link:hover { color: #60a5fa; }
 
   /* ── Toolbar ── */
@@ -69,30 +65,17 @@
     border-bottom: 1px solid #334155;
   }
   .toolbar input {
-    flex: 1;
-    max-width: 380px;
+    flex: 1; max-width: 380px;
     padding: 5px 11px;
-    border: 1px solid #475569;
-    border-radius: 6px;
-    background: #0f172a;
-    color: #e2e8f0;
-    font-size: 0.83rem;
-    outline: none;
+    border: 1px solid #475569; border-radius: 6px;
+    background: #0f172a; color: #e2e8f0; font-size: 0.83rem; outline: none;
   }
   .toolbar input:focus { border-color: var(--accent); }
   .toolbar input::placeholder { color: #64748b; }
-  .stats {
-    font-size: 0.72rem;
-    color: #64748b;
-    white-space: nowrap;
-  }
+  .stats { font-size: 0.72rem; color: #64748b; white-space: nowrap; }
 
   /* ── Scroll area ── */
-  .scroll-area {
-    flex: 1;
-    overflow-y: auto;
-    padding: 20px;
-  }
+  .scroll-area { flex: 1; overflow-y: auto; padding: 20px; }
   .scroll-area::-webkit-scrollbar { width: 6px; }
   .scroll-area::-webkit-scrollbar-track { background: transparent; }
   .scroll-area::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
@@ -107,68 +90,77 @@
     display: flex;
     align-items: center;
   }
-  .subtitle-text {
-    font-size: 0.9rem;
-    color: #e2e8f0;
-    line-height: 1.5;
-    font-style: italic;
-  }
-  .subtitle-text.empty { color: #475569; }
+  #subtitle-text { font-size: 0.88rem; color: #e2e8f0; line-height: 1.5; font-style: italic; }
+  #subtitle-text.empty { color: #475569; }
 
-  /* ── Transcript blocks ── */
-  .t-block {
-    background: #ffffff;
-    border: 1px solid #e2e8f0;
-    border-radius: 10px;
-    margin-bottom: 14px;
-    overflow: hidden;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
-    display: flex;
-  }
-  .t-block.block-active {
-    border-color: var(--accent);
-    box-shadow: 0 0 0 2px rgba(37,99,235,0.15);
-  }
-  .t-gutter {
-    background: #0f172a;
-    width: 52px;
-    flex-shrink: 0;
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
-    padding-top: 14px;
-    cursor: pointer;
-  }
-  .t-gutter:hover { background: #1e293b; }
-  .t-timestamp {
-    font-size: 0.7rem;
-    color: #64748b;
-    font-family: monospace;
-    font-weight: 600;
-    letter-spacing: 0.02em;
-  }
-  .t-gutter.gutter-active .t-timestamp { color: var(--accent); }
-  .t-body {
-    flex: 1;
+  /* ── Preamble ── */
+  .preamble-block {
+    background: var(--pre-bg);
+    border-left: 4px solid var(--pre-border);
+    border-radius: 0 8px 8px 0;
     padding: 12px 16px;
-    line-height: 1.75;
-    font-size: 0.92rem;
-    color: #1e293b;
+    margin-bottom: 20px;
+    font-size: 0.88rem;
+    color: #78350f;
+    font-style: italic;
+    line-height: 1.7;
   }
 
-  /* ── Segments ── */
-  .segment {
+  /* ── Q&A pair ── */
+  .qa-pair { margin-bottom: 20px; border-radius: 10px; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+
+  /* Question block */
+  .q-block {
+    background: var(--q-bg);
+    padding: 14px 18px;
+    display: flex; gap: 14px; align-items: flex-start;
     cursor: pointer;
-    border-radius: 3px;
-    transition: background 0.1s;
+    transition: background 0.15s;
   }
-  .segment:hover { background: #eff6ff; }
-  .segment.active {
-    background: #bfdbfe;
-    outline: 2px solid #3b82f6;
-    outline-offset: 1px;
-    border-radius: 3px;
+  .q-block:hover { background: #1d4ed8; }
+  .q-block.q-active { background: var(--active-q); }
+  .q-label {
+    font-size: 0.7rem; font-weight: 700;
+    color: var(--q-label);
+    background: rgba(96,165,250,0.15);
+    border: 1px solid rgba(96,165,250,0.3);
+    border-radius: 5px; padding: 3px 7px;
+    white-space: nowrap; margin-top: 2px; letter-spacing: 0.05em;
+    flex-shrink: 0;
   }
+  .q-body { flex: 1; font-size: 0.97rem; font-weight: 600; color: var(--q-text); line-height: 1.55; }
+
+  /* Answer block */
+  .a-block {
+    background: var(--a-bg);
+    border: 1px solid var(--a-border); border-top: none;
+    padding: 14px 18px;
+    display: flex; gap: 14px; align-items: flex-start;
+  }
+  .a-label {
+    font-size: 0.7rem; font-weight: 700;
+    color: var(--a-label);
+    background: #d1fae5; border: 1px solid #6ee7b7;
+    border-radius: 5px; padding: 3px 9px;
+    white-space: nowrap; margin-top: 2px; letter-spacing: 0.05em;
+    flex-shrink: 0;
+  }
+  .a-body { flex: 1; list-style: none; padding: 0; }
+  .a-body li {
+    padding: 4px 0 4px 14px;
+    border-left: 3px solid transparent;
+    line-height: 1.7; font-size: 0.92rem; color: #1e293b;
+    border-radius: 0 4px 4px 0;
+    transition: background 0.15s;
+  }
+  .a-body li:not(:last-child) { border-bottom: 1px solid #f1f5f9; }
+
+  /* ── Segments (clickable) ── */
+  .segment { cursor: pointer; border-radius: 3px; }
+  .q-seg:hover { background: rgba(255,255,255,0.18); }
+  .a-seg:hover { background: #eff6ff; }
+  .segment.active { background: #bfdbfe; outline: 2px solid #3b82f6; outline-offset: 1px; }
+  .a-body li.li-active { background: var(--active-a); border-left-color: var(--accent); }
   .segment.search-match  { background: #fef9c3; }
   .segment.search-current { background: #fde047; outline: 2px solid #ca8a04; }
 
@@ -187,151 +179,338 @@
 
 <div class="toolbar">
   <input type="text" id="search" placeholder="Search transcript&#8230; (Enter = next match)">
-  <span class="stats" id="stats">119 segments &nbsp;|&nbsp; <span id="dur">loading&#8230;</span></span>
+  <span class="stats" id="stats">15 questions &nbsp;|&nbsp; 119 segments &nbsp;|&nbsp; <span id="dur">loading&#8230;</span></span>
 </div>
 
 <div class="scroll-area" id="scroll-area">
-<div class="t-block">
-  <div class="t-gutter" data-start="0.0"><span class="t-timestamp">0:00</span></div>
-  <div class="t-body"><span class="segment" data-start="0.0" data-end="3.52" title="0:00">Abnormalities and coagulation and hemostasis </span><span class="segment" data-start="3.52" data-end="12.0" title="0:03">Of course, disorders of coagulation include those at risk of excessive bleeding and those at risk of excessive thombosis. </span><span class="segment" data-start="12.0" data-end="18.0" title="0:12">However, there's considerably more fuel for questions amongst those causing a hemorrhagic tendency. </span><span class="segment" data-start="18.0" data-end="20.0" title="0:18">Case scenario </span><span class="segment" data-start="20.0" data-end="28.0" title="0:20">A 23-year-old man needs an urgent laparotomy for a ruptured spleen, sustained having fallen down some stairs. </span><span class="segment" data-start="29.0" data-end="35.0" title="0:29">The team are happy that there are no other concerning injuries, but he has mentioned that he has mild hemophilia. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="35.0"><span class="t-timestamp">0:35</span></div>
-  <div class="t-body"><span class="segment" data-start="35.0" data-end="43.0" title="0:35">The patient is tachycardic but is otherwise stable and has large bore intravenous access and a bag of colloid being infused. </span><span class="segment" data-start="45.0" data-end="47.0" title="0:45">You have time to take a brief history. </span><span class="segment" data-start="47.0" data-end="51.0" title="0:47">What questions might you ask him about his hemophilia? </span><span class="segment" data-start="52.0" data-end="64.0" title="0:52">I would ask about his hemophilia, particularly about previous episodes of bleeding, previous surgical procedures, any regular treatment he receives and any recent blood tests he might have had. </span><span class="segment" data-start="64.0" data-end="77.0" title="1:04">I'd also like to be sure which hemophilia he has in terms of which factor he is deficient in, i.e. factor 8 in hemophilia A and factor 9 in hemophilia B. </span><span class="segment" data-start="77.0" data-end="85.0" title="1:17">If it is for example hemophilia A, it would be useful to know a recent factor 8 level if he has had one checked. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="85.0"><span class="t-timestamp">1:25</span></div>
-  <div class="t-body"><span class="segment" data-start="85.0" data-end="93.0" title="1:25">A level of 50% or more would be reassuring but may still require replacement in active hemorrhage. </span><span class="segment" data-start="93.0" data-end="103.0" title="1:33">I would also ask about previous blood transfusions, as this may impact upon the time taken to perform blood cross-match. </span><span class="segment" data-start="103.0" data-end="109.0" title="1:43">What might a full blood count and calculations that he's showing this patient at this point? </span><span class="segment" data-start="109.0" data-end="123.0" title="1:49">As the blood loss is acute and there may not have been much fluid given yet, it is possible that there will be little fall in the hemoglobin or hematocrit, though the plate that's may fall through consumption. </span><span class="segment" data-start="123.0" data-end="133.0" title="2:03">In hemophilia A, the activated partial thromboblastim time is likely to be raised but the bleeding time and the pro thrombin time would be normal. </span><span class="segment" data-start="133.0" data-end="139.0" title="2:13">The surgeons are keen to start straight away. Would you be happy to do that? </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="139.0"><span class="t-timestamp">2:19</span></div>
-  <div class="t-body"><span class="segment" data-start="139.0" data-end="143.0" title="2:19">How would you quickly optimize this patient? </span><span class="segment" data-start="143.0" data-end="148.0" title="2:23">Although the patient at the moment has a normal blood pressure, they are tachycardic. </span><span class="segment" data-start="148.0" data-end="158.0" title="2:28">A fall in blood pressure is often a late sign of hypoverlimia in a young person and the tachycardia suggests at least a 15% acute blood loss. </span><span class="segment" data-start="158.0" data-end="169.0" title="2:38">So, I'd like to assess the patient myself regarding their volume status, as induction of anesthesia in the hypoverlimic patient can be disastrous. </span><span class="segment" data-start="169.0" data-end="178.0" title="2:49">I would ask for senior support with this case and I'd also like to contact a hematologist urgently to discuss the need for specific blood products. </span><span class="segment" data-start="178.0" data-end="184.0" title="2:58">I would request that six units of blood be cross-matched immediately ready to give in theatre. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="184.0"><span class="t-timestamp">3:04</span></div>
-  <div class="t-body"><span class="segment" data-start="184.0" data-end="196.0" title="3:04">Also, if time permits, I'd have invasive arterial blood pressure monitoring started before induction and ideally I'd have central venous access available. </span><span class="segment" data-start="196.0" data-end="200.0" title="3:16">Can you tell me about the blood products you mentioned that might be of use in the perioperative period? </span><span class="segment" data-start="200.0" data-end="208.0" title="3:20">Consider those specific to the hematological problem and those you might use in any major hemorrhage. </span><span class="segment" data-start="208.0" data-end="213.0" title="3:28">I would have packed red cells available to give in theatre or before. </span><span class="segment" data-start="213.0" data-end="219.0" title="3:33">If there were signs or evidence that blood loss was in excess of around two litres. </span><span class="segment" data-start="219.0" data-end="226.0" title="3:39">In an elective case, fact-to-eight levels should be normalised for at least a week before major surgery. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="226.0"><span class="t-timestamp">3:46</span></div>
-  <div class="t-body"><span class="segment" data-start="226.0" data-end="229.0" title="3:46">But clearly we don't have time for that here. </span><span class="segment" data-start="229.0" data-end="233.0" title="3:49">So, fact-to-eight concentrate should be given as soon as possible in this case. </span><span class="segment" data-start="233.0" data-end="241.0" title="3:53">I would keep the hematologist updated with progress as a proportion of hemophiliax have been found to have antibodies to fact-to-eight. </span><span class="segment" data-start="241.0" data-end="247.0" title="4:01">Both fresh frozen plasma and cryoprecipitate will contain some fact-to-eight. </span><span class="segment" data-start="247.0" data-end="256.0" title="4:07">So that if there was to be any delay in the arrival of the factor-eight, I would consider using one or both of these. </span><span class="segment" data-start="256.0" data-end="263.0" title="4:16">If blood loss was enough to require more than four units of blood, I'd send an intraoperative sample for full blood count, </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="263.0"><span class="t-timestamp">4:23</span></div>
-  <div class="t-body"><span class="segment" data-start="263.0" data-end="266.0" title="4:23">coagulation studies and fibrinogen. </span><span class="segment" data-start="266.0" data-end="270.0" title="4:26">And if blood loss was continuing, I'd request fresh frozen plasma. </span><span class="segment" data-start="270.0" data-end="276.0" title="4:30">If the fibrinogen was low, I would correct it using cryoprecipitate. </span><span class="segment" data-start="276.0" data-end="283.0" title="4:36">I would also discuss with the hematologist about requesting platelets, as these can sometimes take several hours to arrive, </span><span class="segment" data-start="283.0" data-end="288.0" title="4:43">and many centres now suggest their early use in massive transfusion. </span><span class="segment" data-start="288.0" data-end="296.0" title="4:48">If he mustasis was a persisting problem post-opulotivative, I would be careful to avoid dilutional anemia, </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="296.0"><span class="t-timestamp">4:56</span></div>
-  <div class="t-body"><span class="segment" data-start="296.0" data-end="305.0" title="4:56">as this is known to impair coagulation, and some centres advocate the maintenance of a hemoglobin level of 10 grams per desiliter. </span><span class="segment" data-start="305.0" data-end="311.0" title="5:05">If there was thromboelastography available, I might ask to use this at this point. </span><span class="segment" data-start="311.0" data-end="317.0" title="5:11">And do you know of any drugs that may be useful in the management of this patient? </span><span class="segment" data-start="317.0" data-end="328.0" title="5:17">Drugs particularly useful in this patient with hemophilia include Desmopressin, which works by stimulation of six A receptors to both improve platelet function, </span><span class="segment" data-start="328.0" data-end="334.0" title="5:28">and to induce endogenous Von Willibrand factor and factor-eight production. </span><span class="segment" data-start="334.0" data-end="342.0" title="5:34">Anti-fibranilitics may be of use, and some hemophiliax will already be taking oral, tranacxamic acid. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="342.0"><span class="t-timestamp">5:42</span></div>
-  <div class="t-body"><span class="segment" data-start="342.0" data-end="348.0" title="5:42">I'd also avoid non-steroidal anti-inflammatory drugs, as they have an anti-platelet effect. </span><span class="segment" data-start="348.0" data-end="358.0" title="5:48">More recently, recombinant factor-7A is being used in cases of massive, periopative hemorrhage, to regenerate the thrombin burst, </span><span class="segment" data-start="358.0" data-end="364.0" title="5:58">although present is generally used as a last resort, and this may change in the future. </span><span class="segment" data-start="364.0" data-end="372.0" title="6:04">I would therefore consult local protocols, or the local hematologist, if it looked as though factor-7A might be appropriate. </span><span class="segment" data-start="372.0" data-end="382.0" title="6:12">It will also be important to avoid the intramuscular root for any drugs given to this patient to avoid intramuscular hematoma. </span><span class="segment" data-start="382.0" data-end="387.0" title="6:22">What else could you do or not do to avoid the need for excessive transfusion in this patient? </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="387.0"><span class="t-timestamp">6:27</span></div>
-  <div class="t-body"><span class="segment" data-start="387.0" data-end="392.0" title="6:27">Pre-up, intra-up, and post-up measures. </span><span class="segment" data-start="392.0" data-end="398.0" title="6:32">Pre-operatively, I would avoid excessive use of blood for volume replacement. </span><span class="segment" data-start="398.0" data-end="404.0" title="6:38">As a young and otherwise fit man is likely to be able to tolerate considerable hemodilution. </span><span class="segment" data-start="404.0" data-end="412.0" title="6:44">As far as possible, I'd try to reserve transfusion until the surgeon has achieved hermostasis. </span><span class="segment" data-start="412.0" data-end="421.0" title="6:52">I would also try to make sure that coagulation studies had been normalized as much as possible, before theatre if there were time. </span><span class="segment" data-start="421.0" data-end="429.0" title="7:01">I would check whether a cell saver or equivalent autologous transfusion device was available and have it set up and ready. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="429.0"><span class="t-timestamp">7:09</span></div>
-  <div class="t-body"><span class="segment" data-start="429.0" data-end="436.0" title="7:09">At induction, I would take specific care with intubation, so as not to traumatise the airway. </span><span class="segment" data-start="436.0" data-end="443.0" title="7:16">If a nasogastric tube was necessary, I would consider the use of a topical vasoconstrictor to reduce nasal bleeding. </span><span class="segment" data-start="443.0" data-end="452.0" title="7:23">If I felt central access was necessary, I would perform it under direct ultrasound guidance and avoid the subclavian root. </span><span class="segment" data-start="452.0" data-end="456.0" title="7:32">What is your definition of massive transfusion? </span><span class="segment" data-start="456.0" data-end="459.0" title="7:36">There are many, so pick one you know. </span><span class="segment" data-start="460.0" data-end="467.0" title="7:40">There are various definitions, but one is the requirement of an equivalent of one blood volume within 24 hours. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="467.0"><span class="t-timestamp">7:47</span></div>
-  <div class="t-body"><span class="segment" data-start="467.0" data-end="469.0" title="7:47">And what complications are there? </span><span class="segment" data-start="469.0" data-end="471.0" title="7:49">Categorised in some way. </span><span class="segment" data-start="471.0" data-end="482.0" title="7:51">Broadly speaking, there are predictable and idiosyncratic complications, or there are complications that may occur in any transfusion and those specific to massive transfusions. </span><span class="segment" data-start="483.0" data-end="501.0" title="8:03">Complications of massive transfusion include problems common to any blood transfusion, namely errors in giving the right blood to the right patient, acute hemolytic reactions, anaphylaxis, delayed reactions, fluid overload and transmission of infective agents. </span><span class="segment" data-start="501.0" data-end="508.0" title="8:21">More specific complications include those relating to chemical components of the blood. </span><span class="segment" data-start="508.0" data-end="515.0" title="8:28">So citrate-related hypocalcemia, hyperkalemia and acidosis. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="515.0"><span class="t-timestamp">8:35</span></div>
-  <div class="t-body"><span class="segment" data-start="515.0" data-end="528.0" title="8:35">Also, other problems are a dilutional coagulopathy, impaired oxygen delivery, transfusion-related acute lung injury, disseminated in javasqueer coagulation and hypothermia. </span><span class="segment" data-start="528.0" data-end="533.0" title="8:48">Earlier you mentioned thromboelastography. Can you tell me about that briefly? </span><span class="segment" data-start="533.0" data-end="541.0" title="8:53">This is a technique that is gaining more popularity and isn't just the domain of cardiac anesthetists any longer. </span><span class="segment" data-start="541.0" data-end="555.0" title="9:01">Thromboelastometry uses the change in torque over time of a pin being rotated in whole blood to analyse the process of coagulation and represent it as a graph. </span><span class="segment" data-start="555.0" data-end="563.0" title="9:15">It looks both at the time taken for the thrombus to form, the tensile strength and the elastic properties of the clot. </span><span class="segment" data-start="563.0" data-end="582.0" title="9:23">Measurements of the time taken to start the clot formation, the rate of formation, the maximum strength of the clot and the time taken for the fibrenolysis to start can all be used to assess the requirement for clotting factors, platelets or fibrenogen replacement. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="582.0"><span class="t-timestamp">9:42</span></div>
-  <div class="t-body"><span class="segment" data-start="582.0" data-end="586.0" title="9:42">Can you outline another important inherited disorder of coagulation? </span><span class="segment" data-start="586.0" data-end="592.0" title="9:46">There are a number you could mention but by far the most common is Von Willerbrand. </span><span class="segment" data-start="592.0" data-end="602.0" title="9:52">Von Willerbrand disease is a relatively common disorder of coagulation which is due to either insufficient or ineffective Von Willerbrand factor. </span><span class="segment" data-start="602.0" data-end="609.0" title="10:02">Type 1 patients have only around 75% of normal Von Willerbrand factor levels. </span><span class="segment" data-start="609.0" data-end="620.0" title="10:09">Type 2 patients are divided into 3 subtypes and all have qualitative defects in the factor but they may have normal levels. </span><span class="segment" data-start="620.0" data-end="629.0" title="10:20">Type 3 patients have an autosomal recessive absence of the factor and therefore very severe disease. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="629.0"><span class="t-timestamp">10:29</span></div>
-  <div class="t-body"><span class="segment" data-start="629.0" data-end="640.0" title="10:29">Patients are at risk of bleeding from mucosal services which is different from hemophilia in which bleeding is usually into joints or peritoneal cavities. </span><span class="segment" data-start="640.0" data-end="647.0" title="10:40">If this patient had had Von Willerbrand disease instead, how much your management have differed? </span><span class="segment" data-start="647.0" data-end="657.0" title="10:47">My pre-operative assessment would involve trying to ascertain which type of Von Willerbrand disease the patient had and whether he had had the his level checked recently. </span><span class="segment" data-start="657.0" data-end="665.0" title="10:57">Again I would be in closely Azon with a hematologist and seek their advice about timing of administration of drugs. </span><span class="segment" data-start="665.0" data-end="680.0" title="11:05">If they were in agreement I'd give 0.3 micrograms per kilogram of DDAVP as soon as possible as this can help restore clotting function within an hour and has an action lasting about 6 hours. </span><span class="segment" data-start="680.0" data-end="689.0" title="11:20">Ideally the coagulation would be checked an hour after giving this to assess its effect as it may help little in some subtypes of the disease. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="689.0"><span class="t-timestamp">11:29</span></div>
-  <div class="t-body"><span class="segment" data-start="689.0" data-end="698.0" title="11:29">It's important to remember that a normal bleeding time and A-P-T-T do not necessarily mean normal levels of the factor. </span><span class="segment" data-start="698.0" data-end="705.0" title="11:38">Interoperatively I would not use factor 8 concentrate as this contains no Von Willerbrand factor. </span><span class="segment" data-start="705.0" data-end="721.0" title="11:45">I would use either one unit per 5 kilograms of cryoprecipitate or 20 milliliters per kilogram of fresh frozen plasma as both of these measures have been shown to raise factor levels by 15% or more. </span><span class="segment" data-start="721.0" data-end="732.0" title="12:01">Postoperatively DDAVP and blood products should be used to maintain Von Willerbrand factor levels until the risk of hemorrhage has resolved. </span><span class="segment" data-start="732.0" data-end="736.0" title="12:12">Can you give an example of disease state that result in bleeding tendencies? </span><span class="segment" data-start="736.0" data-end="747.0" title="12:16">A good way to divide what is essentially a list answer would be to mention disease as causing impairment in coagulation factors, platelets and vascular endothelium. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="747.0"><span class="t-timestamp">12:27</span></div>
-  <div class="t-body"><span class="segment" data-start="747.0" data-end="756.0" title="12:27">Disorders that result in clotting factor deficiencies include advanced liver disease and disseminated intravascular coagulation. </span><span class="segment" data-start="756.0" data-end="770.0" title="12:36">Those resulting in platelet dysfunction or reduced numbers include disseminated intravascular coagulation, hematological malignancy, autoimmune platelet diseases, splenomegly, uremia and liver disease. </span><span class="segment" data-start="770.0" data-end="778.0" title="12:50">Also there are diseases involving the vascular endothelium, for example amelodosis or sepsis. </span><span class="segment" data-start="778.0" data-end="784.0" title="12:58">What in terms of a coagulation disorder would prevent you from performing regional anesthesia? </span><span class="segment" data-start="784.0" data-end="790.0" title="13:04">Mention any guidelines you might know about EGASRA. </span><span class="segment" data-start="790.0" data-end="801.0" title="13:10">I would avoid regional anesthesia in any patient with an abnormal APTT, INR or bleeding time unless the benefits of using it clearly outweighed the risk. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="801.0"><span class="t-timestamp">13:21</span></div>
-  <div class="t-body"><span class="segment" data-start="801.0" data-end="813.0" title="13:21">I would also avoid it in patients with platelet levels of 80 or below, and also in patients who were taking anti-platelet drugs or who had stopped taking them less than a week previously. </span><span class="segment" data-start="813.0" data-end="817.0" title="13:33">Though non-steroidal anti-inflammatory agents are generally considered safe. </span><span class="segment" data-start="817.0" data-end="823.0" title="13:37">It is possible to have a normal coagulation screen, but abnormal coagulation. </span><span class="segment" data-start="823.0" data-end="832.0" title="13:43">So I would also avoid regional anesthesia in a patient with a known coagulation disorder, whether or not the laboratory results were normal. </span><span class="segment" data-start="832.0" data-end="847.0" title="13:52">Most guidelines, including the American Society of Regional Anesthesia, recommend that in patients receiving low-weight molecular heprin, thrombo-propalaxis-neuraxial blocks should not be performed before 12 hours after the last dose. </span><span class="segment" data-start="847.0" data-end="854.0" title="14:07">The first post-operative dose shouldn't be given until 6 hours after the block has been done. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="854.0"><span class="t-timestamp">14:14</span></div>
-  <div class="t-body"><span class="segment" data-start="854.0" data-end="865.0" title="14:14">Any catheter used shouldn't be removed until 12 hours after the dose, and any subsequent dose shouldn't be given until 2 hours after catheter removal. </span><span class="segment" data-start="865.0" data-end="880.0" title="14:25">Oral anticoagulants, mainly warfarin in this country, shouldn't be given perioptivly where regional anesthesia is used, and anyone on warfarin pre-operatively should stop it long enough in advance for the INR to normalize. </span><span class="segment" data-start="880.0" data-end="893.0" title="14:40">It's important to remember that INR mainly assesses factor 7 activity and not factors 2 and 10, so that a normal INR doesn't necessarily mean normal coagulation. </span><span class="segment" data-start="893.0" data-end="898.0" title="14:53">Are there any patients in whom you'd be particularly concerned about perioptiv venous thrombosis? </span><span class="segment" data-start="898.0" data-end="905.0" title="14:58">Broadly, there are patients with risk factors and patients with specific thombophilius. </span><span class="segment" data-start="905.0" data-end="913.0" title="15:05">I would be concerned about any patient with a previous history of thrombosis, whether or not they had a proven thrombophilia. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="913.0"><span class="t-timestamp">15:13</span></div>
-  <div class="t-body"><span class="segment" data-start="913.0" data-end="926.0" title="15:13">Patients with diabetes, obesity, malignancy, hyperviscosity syndromes, and patients who are pregnant all have an increased instant, a venous thrombosis and thromboembolism. </span><span class="segment" data-start="926.0" data-end="950.0" title="15:26">Particular thrombophilius that raise alarm because of high thrombotic risk would include activated protein C resistance, for example, factor 5 Leiden, protein C deficiency, protein S deficiency, antithrombin 3 deficiency, antifospholipid syndrome, and other circulating inhibitors. </span><span class="segment" data-start="950.0" data-end="955.0" title="15:50">I would consult a hematologist about the management of these patient groups. </span><span class="segment" data-start="955.0" data-end="968.0" title="15:55">Those with a high risk of thrombosis should be managed with measures to reduce venous stasis, such as a graduated or pneumatic compression stockings, leg elevation, early mobility and leg exercises. </span><span class="segment" data-start="968.0" data-end="979.0" title="16:08">Also, intravascular coagulation can be prevented by using drugs such as unfractionated or low molecular weight heparins, or antiplatelet agents. </span></div>
+<div class="preamble-block"><span class="segment a-seg" data-start="0.0" data-end="3.52" title="0:00">Abnormalities and coagulation and hemostasis </span><span class="segment a-seg" data-start="3.52" data-end="12.0" title="0:03">Of course, disorders of coagulation include those at risk of excessive bleeding and those at risk of excessive thombosis. </span></div>
+<div class="qa-pair">
+<div class="q-block" data-start="12.0">
+  <div class="q-label">Q1</div>
+  <div class="q-body"><span class="segment q-seg" data-start="12.0" data-end="18.0" title="0:12">However, there's considerably more fuel for questions amongst those causing a hemorrhagic tendency. </span></div>
 </div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="18.0" data-end="20.0" title="0:18">Case scenario </span></li>
+<li><span class="segment a-seg" data-start="20.0" data-end="28.0" title="0:20">A 23-year-old man needs an urgent laparotomy for a ruptured spleen, sustained having fallen down some stairs. </span></li>
+<li><span class="segment a-seg" data-start="29.0" data-end="35.0" title="0:29">The team are happy that there are no other concerning injuries, but he has mentioned that he has mild hemophilia. </span></li>
+<li><span class="segment a-seg" data-start="35.0" data-end="43.0" title="0:35">The patient is tachycardic but is otherwise stable and has large bore intravenous access and a bag of colloid being infused. </span></li>
+<li><span class="segment a-seg" data-start="45.0" data-end="47.0" title="0:45">You have time to take a brief history. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="47.0">
+  <div class="q-label">Q2</div>
+  <div class="q-body"><span class="segment q-seg" data-start="47.0" data-end="51.0" title="0:47">What questions might you ask him about his hemophilia? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="52.0" data-end="64.0" title="0:52">I would ask about his hemophilia, particularly about previous episodes of bleeding, previous surgical procedures, any regular treatment he receives and any recent blood tests he might have had. </span></li>
+<li><span class="segment a-seg" data-start="64.0" data-end="77.0" title="1:04">I'd also like to be sure which hemophilia he has in terms of which factor he is deficient in, i.e. factor 8 in hemophilia A and factor 9 in hemophilia B. </span></li>
+<li><span class="segment a-seg" data-start="77.0" data-end="85.0" title="1:17">If it is for example hemophilia A, it would be useful to know a recent factor 8 level if he has had one checked. </span></li>
+<li><span class="segment a-seg" data-start="85.0" data-end="93.0" title="1:25">A level of 50% or more would be reassuring but may still require replacement in active hemorrhage. </span></li>
+<li><span class="segment a-seg" data-start="93.0" data-end="103.0" title="1:33">I would also ask about previous blood transfusions, as this may impact upon the time taken to perform blood cross-match. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="103.0">
+  <div class="q-label">Q3</div>
+  <div class="q-body"><span class="segment q-seg" data-start="103.0" data-end="109.0" title="1:43">What might a full blood count and calculations that he's showing this patient at this point? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="109.0" data-end="123.0" title="1:49">As the blood loss is acute and there may not have been much fluid given yet, it is possible that there will be little fall in the hemoglobin or hematocrit, though the plate that's may fall through consumption. </span></li>
+<li><span class="segment a-seg" data-start="123.0" data-end="133.0" title="2:03">In hemophilia A, the activated partial thromboblastim time is likely to be raised but the bleeding time and the pro thrombin time would be normal. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="133.0">
+  <div class="q-label">Q4</div>
+  <div class="q-body"><span class="segment q-seg" data-start="133.0" data-end="139.0" title="2:13">The surgeons are keen to start straight away. Would you be happy to do that? </span><span class="segment q-seg" data-start="139.0" data-end="143.0" title="2:19">How would you quickly optimize this patient? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="143.0" data-end="148.0" title="2:23">Although the patient at the moment has a normal blood pressure, they are tachycardic. </span></li>
+<li><span class="segment a-seg" data-start="148.0" data-end="158.0" title="2:28">A fall in blood pressure is often a late sign of hypoverlimia in a young person and the tachycardia suggests at least a 15% acute blood loss. </span></li>
+<li><span class="segment a-seg" data-start="158.0" data-end="169.0" title="2:38">So, I'd like to assess the patient myself regarding their volume status, as induction of anesthesia in the hypoverlimic patient can be disastrous. </span></li>
+<li><span class="segment a-seg" data-start="169.0" data-end="178.0" title="2:49">I would ask for senior support with this case and I'd also like to contact a hematologist urgently to discuss the need for specific blood products. </span></li>
+<li><span class="segment a-seg" data-start="178.0" data-end="184.0" title="2:58">I would request that six units of blood be cross-matched immediately ready to give in theatre. </span></li>
+<li><span class="segment a-seg" data-start="184.0" data-end="196.0" title="3:04">Also, if time permits, I'd have invasive arterial blood pressure monitoring started before induction and ideally I'd have central venous access available. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="196.0">
+  <div class="q-label">Q5</div>
+  <div class="q-body"><span class="segment q-seg" data-start="196.0" data-end="200.0" title="3:16">Can you tell me about the blood products you mentioned that might be of use in the perioperative period? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="200.0" data-end="208.0" title="3:20">Consider those specific to the hematological problem and those you might use in any major hemorrhage. </span></li>
+<li><span class="segment a-seg" data-start="208.0" data-end="213.0" title="3:28">I would have packed red cells available to give in theatre or before. </span></li>
+<li><span class="segment a-seg" data-start="213.0" data-end="219.0" title="3:33">If there were signs or evidence that blood loss was in excess of around two litres. </span></li>
+<li><span class="segment a-seg" data-start="219.0" data-end="226.0" title="3:39">In an elective case, fact-to-eight levels should be normalised for at least a week before major surgery. </span></li>
+<li><span class="segment a-seg" data-start="226.0" data-end="229.0" title="3:46">But clearly we don't have time for that here. </span></li>
+<li><span class="segment a-seg" data-start="229.0" data-end="233.0" title="3:49">So, fact-to-eight concentrate should be given as soon as possible in this case. </span></li>
+<li><span class="segment a-seg" data-start="233.0" data-end="241.0" title="3:53">I would keep the hematologist updated with progress as a proportion of hemophiliax have been found to have antibodies to fact-to-eight. </span></li>
+<li><span class="segment a-seg" data-start="241.0" data-end="247.0" title="4:01">Both fresh frozen plasma and cryoprecipitate will contain some fact-to-eight. </span></li>
+<li><span class="segment a-seg" data-start="247.0" data-end="256.0" title="4:07">So that if there was to be any delay in the arrival of the factor-eight, I would consider using one or both of these. </span></li>
+<li><span class="segment a-seg" data-start="256.0" data-end="263.0" title="4:16">If blood loss was enough to require more than four units of blood, I'd send an intraoperative sample for full blood count, </span></li>
+<li><span class="segment a-seg" data-start="263.0" data-end="266.0" title="4:23">coagulation studies and fibrinogen. </span></li>
+<li><span class="segment a-seg" data-start="266.0" data-end="270.0" title="4:26">And if blood loss was continuing, I'd request fresh frozen plasma. </span></li>
+<li><span class="segment a-seg" data-start="270.0" data-end="276.0" title="4:30">If the fibrinogen was low, I would correct it using cryoprecipitate. </span></li>
+<li><span class="segment a-seg" data-start="276.0" data-end="283.0" title="4:36">I would also discuss with the hematologist about requesting platelets, as these can sometimes take several hours to arrive, </span></li>
+<li><span class="segment a-seg" data-start="283.0" data-end="288.0" title="4:43">and many centres now suggest their early use in massive transfusion. </span></li>
+<li><span class="segment a-seg" data-start="288.0" data-end="296.0" title="4:48">If he mustasis was a persisting problem post-opulotivative, I would be careful to avoid dilutional anemia, </span></li>
+<li><span class="segment a-seg" data-start="296.0" data-end="305.0" title="4:56">as this is known to impair coagulation, and some centres advocate the maintenance of a hemoglobin level of 10 grams per desiliter. </span></li>
+<li><span class="segment a-seg" data-start="305.0" data-end="311.0" title="5:05">If there was thromboelastography available, I might ask to use this at this point. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="311.0">
+  <div class="q-label">Q6</div>
+  <div class="q-body"><span class="segment q-seg" data-start="311.0" data-end="317.0" title="5:11">And do you know of any drugs that may be useful in the management of this patient? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="317.0" data-end="328.0" title="5:17">Drugs particularly useful in this patient with hemophilia include Desmopressin, which works by stimulation of six A receptors to both improve platelet function, </span></li>
+<li><span class="segment a-seg" data-start="328.0" data-end="334.0" title="5:28">and to induce endogenous Von Willibrand factor and factor-eight production. </span></li>
+<li><span class="segment a-seg" data-start="334.0" data-end="342.0" title="5:34">Anti-fibranilitics may be of use, and some hemophiliax will already be taking oral, tranacxamic acid. </span></li>
+<li><span class="segment a-seg" data-start="342.0" data-end="348.0" title="5:42">I'd also avoid non-steroidal anti-inflammatory drugs, as they have an anti-platelet effect. </span></li>
+<li><span class="segment a-seg" data-start="348.0" data-end="358.0" title="5:48">More recently, recombinant factor-7A is being used in cases of massive, periopative hemorrhage, to regenerate the thrombin burst, </span></li>
+<li><span class="segment a-seg" data-start="358.0" data-end="364.0" title="5:58">although present is generally used as a last resort, and this may change in the future. </span></li>
+<li><span class="segment a-seg" data-start="364.0" data-end="372.0" title="6:04">I would therefore consult local protocols, or the local hematologist, if it looked as though factor-7A might be appropriate. </span></li>
+<li><span class="segment a-seg" data-start="372.0" data-end="382.0" title="6:12">It will also be important to avoid the intramuscular root for any drugs given to this patient to avoid intramuscular hematoma. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="382.0">
+  <div class="q-label">Q7</div>
+  <div class="q-body"><span class="segment q-seg" data-start="382.0" data-end="387.0" title="6:22">What else could you do or not do to avoid the need for excessive transfusion in this patient? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="387.0" data-end="392.0" title="6:27">Pre-up, intra-up, and post-up measures. </span></li>
+<li><span class="segment a-seg" data-start="392.0" data-end="398.0" title="6:32">Pre-operatively, I would avoid excessive use of blood for volume replacement. </span></li>
+<li><span class="segment a-seg" data-start="398.0" data-end="404.0" title="6:38">As a young and otherwise fit man is likely to be able to tolerate considerable hemodilution. </span></li>
+<li><span class="segment a-seg" data-start="404.0" data-end="412.0" title="6:44">As far as possible, I'd try to reserve transfusion until the surgeon has achieved hermostasis. </span></li>
+<li><span class="segment a-seg" data-start="412.0" data-end="421.0" title="6:52">I would also try to make sure that coagulation studies had been normalized as much as possible, before theatre if there were time. </span></li>
+<li><span class="segment a-seg" data-start="421.0" data-end="429.0" title="7:01">I would check whether a cell saver or equivalent autologous transfusion device was available and have it set up and ready. </span></li>
+<li><span class="segment a-seg" data-start="429.0" data-end="436.0" title="7:09">At induction, I would take specific care with intubation, so as not to traumatise the airway. </span></li>
+<li><span class="segment a-seg" data-start="436.0" data-end="443.0" title="7:16">If a nasogastric tube was necessary, I would consider the use of a topical vasoconstrictor to reduce nasal bleeding. </span></li>
+<li><span class="segment a-seg" data-start="443.0" data-end="452.0" title="7:23">If I felt central access was necessary, I would perform it under direct ultrasound guidance and avoid the subclavian root. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="452.0">
+  <div class="q-label">Q8</div>
+  <div class="q-body"><span class="segment q-seg" data-start="452.0" data-end="456.0" title="7:32">What is your definition of massive transfusion? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="456.0" data-end="459.0" title="7:36">There are many, so pick one you know. </span></li>
+<li><span class="segment a-seg" data-start="460.0" data-end="467.0" title="7:40">There are various definitions, but one is the requirement of an equivalent of one blood volume within 24 hours. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="467.0">
+  <div class="q-label">Q9</div>
+  <div class="q-body"><span class="segment q-seg" data-start="467.0" data-end="469.0" title="7:47">And what complications are there? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="469.0" data-end="471.0" title="7:49">Categorised in some way. </span></li>
+<li><span class="segment a-seg" data-start="471.0" data-end="482.0" title="7:51">Broadly speaking, there are predictable and idiosyncratic complications, or there are complications that may occur in any transfusion and those specific to massive transfusions. </span></li>
+<li><span class="segment a-seg" data-start="483.0" data-end="501.0" title="8:03">Complications of massive transfusion include problems common to any blood transfusion, namely errors in giving the right blood to the right patient, acute hemolytic reactions, anaphylaxis, delayed reactions, fluid overload and transmission of infective agents. </span></li>
+<li><span class="segment a-seg" data-start="501.0" data-end="508.0" title="8:21">More specific complications include those relating to chemical components of the blood. </span></li>
+<li><span class="segment a-seg" data-start="508.0" data-end="515.0" title="8:28">So citrate-related hypocalcemia, hyperkalemia and acidosis. </span></li>
+<li><span class="segment a-seg" data-start="515.0" data-end="528.0" title="8:35">Also, other problems are a dilutional coagulopathy, impaired oxygen delivery, transfusion-related acute lung injury, disseminated in javasqueer coagulation and hypothermia. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="528.0">
+  <div class="q-label">Q10</div>
+  <div class="q-body"><span class="segment q-seg" data-start="528.0" data-end="533.0" title="8:48">Earlier you mentioned thromboelastography. Can you tell me about that briefly? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="533.0" data-end="541.0" title="8:53">This is a technique that is gaining more popularity and isn't just the domain of cardiac anesthetists any longer. </span></li>
+<li><span class="segment a-seg" data-start="541.0" data-end="555.0" title="9:01">Thromboelastometry uses the change in torque over time of a pin being rotated in whole blood to analyse the process of coagulation and represent it as a graph. </span></li>
+<li><span class="segment a-seg" data-start="555.0" data-end="563.0" title="9:15">It looks both at the time taken for the thrombus to form, the tensile strength and the elastic properties of the clot. </span></li>
+<li><span class="segment a-seg" data-start="563.0" data-end="582.0" title="9:23">Measurements of the time taken to start the clot formation, the rate of formation, the maximum strength of the clot and the time taken for the fibrenolysis to start can all be used to assess the requirement for clotting factors, platelets or fibrenogen replacement. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="582.0">
+  <div class="q-label">Q11</div>
+  <div class="q-body"><span class="segment q-seg" data-start="582.0" data-end="586.0" title="9:42">Can you outline another important inherited disorder of coagulation? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="586.0" data-end="592.0" title="9:46">There are a number you could mention but by far the most common is Von Willerbrand. </span></li>
+<li><span class="segment a-seg" data-start="592.0" data-end="602.0" title="9:52">Von Willerbrand disease is a relatively common disorder of coagulation which is due to either insufficient or ineffective Von Willerbrand factor. </span></li>
+<li><span class="segment a-seg" data-start="602.0" data-end="609.0" title="10:02">Type 1 patients have only around 75% of normal Von Willerbrand factor levels. </span></li>
+<li><span class="segment a-seg" data-start="609.0" data-end="620.0" title="10:09">Type 2 patients are divided into 3 subtypes and all have qualitative defects in the factor but they may have normal levels. </span></li>
+<li><span class="segment a-seg" data-start="620.0" data-end="629.0" title="10:20">Type 3 patients have an autosomal recessive absence of the factor and therefore very severe disease. </span></li>
+<li><span class="segment a-seg" data-start="629.0" data-end="640.0" title="10:29">Patients are at risk of bleeding from mucosal services which is different from hemophilia in which bleeding is usually into joints or peritoneal cavities. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="640.0">
+  <div class="q-label">Q12</div>
+  <div class="q-body"><span class="segment q-seg" data-start="640.0" data-end="647.0" title="10:40">If this patient had had Von Willerbrand disease instead, how much your management have differed? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="647.0" data-end="657.0" title="10:47">My pre-operative assessment would involve trying to ascertain which type of Von Willerbrand disease the patient had and whether he had had the his level checked recently. </span></li>
+<li><span class="segment a-seg" data-start="657.0" data-end="665.0" title="10:57">Again I would be in closely Azon with a hematologist and seek their advice about timing of administration of drugs. </span></li>
+<li><span class="segment a-seg" data-start="665.0" data-end="680.0" title="11:05">If they were in agreement I'd give 0.3 micrograms per kilogram of DDAVP as soon as possible as this can help restore clotting function within an hour and has an action lasting about 6 hours. </span></li>
+<li><span class="segment a-seg" data-start="680.0" data-end="689.0" title="11:20">Ideally the coagulation would be checked an hour after giving this to assess its effect as it may help little in some subtypes of the disease. </span></li>
+<li><span class="segment a-seg" data-start="689.0" data-end="698.0" title="11:29">It's important to remember that a normal bleeding time and A-P-T-T do not necessarily mean normal levels of the factor. </span></li>
+<li><span class="segment a-seg" data-start="698.0" data-end="705.0" title="11:38">Interoperatively I would not use factor 8 concentrate as this contains no Von Willerbrand factor. </span></li>
+<li><span class="segment a-seg" data-start="705.0" data-end="721.0" title="11:45">I would use either one unit per 5 kilograms of cryoprecipitate or 20 milliliters per kilogram of fresh frozen plasma as both of these measures have been shown to raise factor levels by 15% or more. </span></li>
+<li><span class="segment a-seg" data-start="721.0" data-end="732.0" title="12:01">Postoperatively DDAVP and blood products should be used to maintain Von Willerbrand factor levels until the risk of hemorrhage has resolved. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="732.0">
+  <div class="q-label">Q13</div>
+  <div class="q-body"><span class="segment q-seg" data-start="732.0" data-end="736.0" title="12:12">Can you give an example of disease state that result in bleeding tendencies? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="736.0" data-end="747.0" title="12:16">A good way to divide what is essentially a list answer would be to mention disease as causing impairment in coagulation factors, platelets and vascular endothelium. </span></li>
+<li><span class="segment a-seg" data-start="747.0" data-end="756.0" title="12:27">Disorders that result in clotting factor deficiencies include advanced liver disease and disseminated intravascular coagulation. </span></li>
+<li><span class="segment a-seg" data-start="756.0" data-end="770.0" title="12:36">Those resulting in platelet dysfunction or reduced numbers include disseminated intravascular coagulation, hematological malignancy, autoimmune platelet diseases, splenomegly, uremia and liver disease. </span></li>
+<li><span class="segment a-seg" data-start="770.0" data-end="778.0" title="12:50">Also there are diseases involving the vascular endothelium, for example amelodosis or sepsis. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="778.0">
+  <div class="q-label">Q14</div>
+  <div class="q-body"><span class="segment q-seg" data-start="778.0" data-end="784.0" title="12:58">What in terms of a coagulation disorder would prevent you from performing regional anesthesia? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="784.0" data-end="790.0" title="13:04">Mention any guidelines you might know about EGASRA. </span></li>
+<li><span class="segment a-seg" data-start="790.0" data-end="801.0" title="13:10">I would avoid regional anesthesia in any patient with an abnormal APTT, INR or bleeding time unless the benefits of using it clearly outweighed the risk. </span></li>
+<li><span class="segment a-seg" data-start="801.0" data-end="813.0" title="13:21">I would also avoid it in patients with platelet levels of 80 or below, and also in patients who were taking anti-platelet drugs or who had stopped taking them less than a week previously. </span></li>
+<li><span class="segment a-seg" data-start="813.0" data-end="817.0" title="13:33">Though non-steroidal anti-inflammatory agents are generally considered safe. </span></li>
+<li><span class="segment a-seg" data-start="817.0" data-end="823.0" title="13:37">It is possible to have a normal coagulation screen, but abnormal coagulation. </span></li>
+<li><span class="segment a-seg" data-start="823.0" data-end="832.0" title="13:43">So I would also avoid regional anesthesia in a patient with a known coagulation disorder, whether or not the laboratory results were normal. </span></li>
+<li><span class="segment a-seg" data-start="832.0" data-end="847.0" title="13:52">Most guidelines, including the American Society of Regional Anesthesia, recommend that in patients receiving low-weight molecular heprin, thrombo-propalaxis-neuraxial blocks should not be performed before 12 hours after the last dose. </span></li>
+<li><span class="segment a-seg" data-start="847.0" data-end="854.0" title="14:07">The first post-operative dose shouldn't be given until 6 hours after the block has been done. </span></li>
+<li><span class="segment a-seg" data-start="854.0" data-end="865.0" title="14:14">Any catheter used shouldn't be removed until 12 hours after the dose, and any subsequent dose shouldn't be given until 2 hours after catheter removal. </span></li>
+<li><span class="segment a-seg" data-start="865.0" data-end="880.0" title="14:25">Oral anticoagulants, mainly warfarin in this country, shouldn't be given perioptivly where regional anesthesia is used, and anyone on warfarin pre-operatively should stop it long enough in advance for the INR to normalize. </span></li>
+<li><span class="segment a-seg" data-start="880.0" data-end="893.0" title="14:40">It's important to remember that INR mainly assesses factor 7 activity and not factors 2 and 10, so that a normal INR doesn't necessarily mean normal coagulation. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="893.0">
+  <div class="q-label">Q15</div>
+  <div class="q-body"><span class="segment q-seg" data-start="893.0" data-end="898.0" title="14:53">Are there any patients in whom you'd be particularly concerned about perioptiv venous thrombosis? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="898.0" data-end="905.0" title="14:58">Broadly, there are patients with risk factors and patients with specific thombophilius. </span></li>
+<li><span class="segment a-seg" data-start="905.0" data-end="913.0" title="15:05">I would be concerned about any patient with a previous history of thrombosis, whether or not they had a proven thrombophilia. </span></li>
+<li><span class="segment a-seg" data-start="913.0" data-end="926.0" title="15:13">Patients with diabetes, obesity, malignancy, hyperviscosity syndromes, and patients who are pregnant all have an increased instant, a venous thrombosis and thromboembolism. </span></li>
+<li><span class="segment a-seg" data-start="926.0" data-end="950.0" title="15:26">Particular thrombophilius that raise alarm because of high thrombotic risk would include activated protein C resistance, for example, factor 5 Leiden, protein C deficiency, protein S deficiency, antithrombin 3 deficiency, antifospholipid syndrome, and other circulating inhibitors. </span></li>
+<li><span class="segment a-seg" data-start="950.0" data-end="955.0" title="15:50">I would consult a hematologist about the management of these patient groups. </span></li>
+<li><span class="segment a-seg" data-start="955.0" data-end="968.0" title="15:55">Those with a high risk of thrombosis should be managed with measures to reduce venous stasis, such as a graduated or pneumatic compression stockings, leg elevation, early mobility and leg exercises. </span></li>
+<li><span class="segment a-seg" data-start="968.0" data-end="979.0" title="16:08">Also, intravascular coagulation can be prevented by using drugs such as unfractionated or low molecular weight heparins, or antiplatelet agents. </span></li>
+  </ul>
+</div>
+</div>
+
 </div>
 
 <div class="subtitle-bar">
-  <span class="subtitle-text empty" id="subtitle-text">Play audio to see live subtitles&#8230;</span>
+  <span id="subtitle-text" class="empty">Play audio to see live subtitles&#8230;</span>
 </div>
 
 <script>
-
-const audio    = document.getElementById('audio');
-const allSegs  = Array.from(document.querySelectorAll('.segment'));
-const allBlocks = Array.from(document.querySelectorAll('.t-block'));
+const audio      = document.getElementById('audio');
+const allSegs    = Array.from(document.querySelectorAll('.segment'));
 const subtitleEl = document.getElementById('subtitle-text');
-let activeSegEl   = null;
-let activeBlockEl = null;
-let searchMatches = [];
-let searchIdx     = 0;
+let activeSegEl  = null;
+let searchMatches = [], searchIdx = 0;
 
-// Duration display
 audio.addEventListener('loadedmetadata', () => {
   const m = Math.floor(audio.duration / 60);
   const s = Math.floor(audio.duration %% 60).toString().padStart(2,'0');
   document.getElementById('dur').textContent = m + ':' + s;
 });
 
-// Seek helper
-function seekTo(t) {
-  audio.currentTime = t;
-  audio.play();
-}
+function seekTo(t) { audio.currentTime = t; audio.play(); }
 
-// Block gutter click
-document.querySelectorAll('.t-gutter').forEach(g => {
-  g.addEventListener('click', () => seekTo(parseFloat(g.dataset.start)));
+// Q-block header click
+document.querySelectorAll('.q-block').forEach(q => {
+  q.addEventListener('click', e => {
+    if (!e.target.classList.contains('segment')) seekTo(parseFloat(q.dataset.start));
+  });
 });
 
-// Segment click
+// Individual segment click
 allSegs.forEach(s => {
-  s.addEventListener('click', e => {
-    e.stopPropagation();
-    seekTo(parseFloat(s.dataset.start));
-  });
+  s.addEventListener('click', e => { e.stopPropagation(); seekTo(parseFloat(s.dataset.start)); });
 });
 
 // Real-time tracking
 audio.addEventListener('timeupdate', () => {
   const t = audio.currentTime;
-
-  // Find active segment (last one whose start <= t)
   let found = null;
   for (let i = allSegs.length - 1; i >= 0; i--) {
     if (parseFloat(allSegs[i].dataset.start) <= t) { found = allSegs[i]; break; }
   }
-
   if (found && found !== activeSegEl) {
-    // Clear previous
-    if (activeSegEl) activeSegEl.classList.remove('active');
-    if (activeBlockEl) {
-      activeBlockEl.classList.remove('block-active');
-      const pg = activeBlockEl.querySelector('.t-gutter');
-      if (pg) pg.classList.remove('gutter-active');
+    if (activeSegEl) {
+      activeSegEl.classList.remove('active');
+      const pli = activeSegEl.closest('li');
+      if (pli) pli.classList.remove('li-active');
+      const pq = activeSegEl.closest('.q-block');
+      if (pq) pq.classList.remove('q-active');
     }
-    // Set new
     found.classList.add('active');
-    const block = found.closest('.t-block');
-    if (block) {
-      block.classList.add('block-active');
-      const g = block.querySelector('.t-gutter');
-      if (g) g.classList.add('gutter-active');
-      activeBlockEl = block;
-    }
+    const li = found.closest('li');
+    if (li) li.classList.add('li-active');
+    const qb = found.closest('.q-block');
+    if (qb) qb.classList.add('q-active');
     activeSegEl = found;
 
-    // Update subtitle
     subtitleEl.textContent = found.textContent.trim();
     subtitleEl.classList.remove('empty');
 
-    // Auto-scroll (only when not searching)
-    if (!document.getElementById('search').value) {
+    if (!document.getElementById('search').value)
       found.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }
   }
 });
 
@@ -347,17 +526,13 @@ searchInput.addEventListener('keydown', e => {
     el.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
 });
-
 function runSearch() {
   const q = searchInput.value.trim().toLowerCase();
   allSegs.forEach(s => s.classList.remove('search-match','search-current'));
   searchMatches = [];
   if (!q) return;
   allSegs.forEach(s => {
-    if (s.textContent.toLowerCase().includes(q)) {
-      s.classList.add('search-match');
-      searchMatches.push(s);
-    }
+    if (s.textContent.toLowerCase().includes(q)) { s.classList.add('search-match'); searchMatches.push(s); }
   });
   if (!searchMatches.length) return;
   searchIdx = 0;

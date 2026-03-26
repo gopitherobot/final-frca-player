@@ -5,10 +5,19 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Ophthalmic — Orbital Anatomy</title>
 <style>
-
   :root {
-    --accent:    #059669;
-    --body-bg:   #f1f5f9;
+    --q-bg:       #1e3a5f;
+    --q-text:     #ffffff;
+    --q-label:    #60a5fa;
+    --a-bg:       #ffffff;
+    --a-border:   #e2e8f0;
+    --a-label:    #059669;
+    --active-q:   #059669;
+    --active-a:   #dbeafe;
+    --accent:     #059669;
+    --body-bg:    #f1f5f9;
+    --pre-bg:     #fef9c3;
+    --pre-border: #fcd34d;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
@@ -40,22 +49,9 @@
     margin-bottom: 4px;
     letter-spacing: 0.01em;
   }
-  .header-sub {
-    font-size: 0.72rem;
-    color: #94a3b8;
-    font-style: italic;
-  }
-  audio {
-    height: 36px;
-    accent-color: var(--accent);
-    flex-shrink: 0;
-  }
-  .back-link {
-    font-size: 0.8rem;
-    color: #94a3b8;
-    text-decoration: none;
-    white-space: nowrap;
-  }
+  .header-sub { font-size: 0.72rem; color: #94a3b8; font-style: italic; }
+  audio { height: 36px; accent-color: var(--accent); flex-shrink: 0; }
+  .back-link { font-size: 0.8rem; color: #94a3b8; text-decoration: none; white-space: nowrap; }
   .back-link:hover { color: #60a5fa; }
 
   /* ── Toolbar ── */
@@ -69,30 +65,17 @@
     border-bottom: 1px solid #334155;
   }
   .toolbar input {
-    flex: 1;
-    max-width: 380px;
+    flex: 1; max-width: 380px;
     padding: 5px 11px;
-    border: 1px solid #475569;
-    border-radius: 6px;
-    background: #0f172a;
-    color: #e2e8f0;
-    font-size: 0.83rem;
-    outline: none;
+    border: 1px solid #475569; border-radius: 6px;
+    background: #0f172a; color: #e2e8f0; font-size: 0.83rem; outline: none;
   }
   .toolbar input:focus { border-color: var(--accent); }
   .toolbar input::placeholder { color: #64748b; }
-  .stats {
-    font-size: 0.72rem;
-    color: #64748b;
-    white-space: nowrap;
-  }
+  .stats { font-size: 0.72rem; color: #64748b; white-space: nowrap; }
 
   /* ── Scroll area ── */
-  .scroll-area {
-    flex: 1;
-    overflow-y: auto;
-    padding: 20px;
-  }
+  .scroll-area { flex: 1; overflow-y: auto; padding: 20px; }
   .scroll-area::-webkit-scrollbar { width: 6px; }
   .scroll-area::-webkit-scrollbar-track { background: transparent; }
   .scroll-area::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
@@ -107,68 +90,77 @@
     display: flex;
     align-items: center;
   }
-  .subtitle-text {
-    font-size: 0.9rem;
-    color: #e2e8f0;
-    line-height: 1.5;
-    font-style: italic;
-  }
-  .subtitle-text.empty { color: #475569; }
+  #subtitle-text { font-size: 0.88rem; color: #e2e8f0; line-height: 1.5; font-style: italic; }
+  #subtitle-text.empty { color: #475569; }
 
-  /* ── Transcript blocks ── */
-  .t-block {
-    background: #ffffff;
-    border: 1px solid #e2e8f0;
-    border-radius: 10px;
-    margin-bottom: 14px;
-    overflow: hidden;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
-    display: flex;
-  }
-  .t-block.block-active {
-    border-color: var(--accent);
-    box-shadow: 0 0 0 2px rgba(37,99,235,0.15);
-  }
-  .t-gutter {
-    background: #0f172a;
-    width: 52px;
-    flex-shrink: 0;
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
-    padding-top: 14px;
-    cursor: pointer;
-  }
-  .t-gutter:hover { background: #1e293b; }
-  .t-timestamp {
-    font-size: 0.7rem;
-    color: #64748b;
-    font-family: monospace;
-    font-weight: 600;
-    letter-spacing: 0.02em;
-  }
-  .t-gutter.gutter-active .t-timestamp { color: var(--accent); }
-  .t-body {
-    flex: 1;
+  /* ── Preamble ── */
+  .preamble-block {
+    background: var(--pre-bg);
+    border-left: 4px solid var(--pre-border);
+    border-radius: 0 8px 8px 0;
     padding: 12px 16px;
-    line-height: 1.75;
-    font-size: 0.92rem;
-    color: #1e293b;
+    margin-bottom: 20px;
+    font-size: 0.88rem;
+    color: #78350f;
+    font-style: italic;
+    line-height: 1.7;
   }
 
-  /* ── Segments ── */
-  .segment {
+  /* ── Q&A pair ── */
+  .qa-pair { margin-bottom: 20px; border-radius: 10px; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+
+  /* Question block */
+  .q-block {
+    background: var(--q-bg);
+    padding: 14px 18px;
+    display: flex; gap: 14px; align-items: flex-start;
     cursor: pointer;
-    border-radius: 3px;
-    transition: background 0.1s;
+    transition: background 0.15s;
   }
-  .segment:hover { background: #eff6ff; }
-  .segment.active {
-    background: #bfdbfe;
-    outline: 2px solid #3b82f6;
-    outline-offset: 1px;
-    border-radius: 3px;
+  .q-block:hover { background: #1d4ed8; }
+  .q-block.q-active { background: var(--active-q); }
+  .q-label {
+    font-size: 0.7rem; font-weight: 700;
+    color: var(--q-label);
+    background: rgba(96,165,250,0.15);
+    border: 1px solid rgba(96,165,250,0.3);
+    border-radius: 5px; padding: 3px 7px;
+    white-space: nowrap; margin-top: 2px; letter-spacing: 0.05em;
+    flex-shrink: 0;
   }
+  .q-body { flex: 1; font-size: 0.97rem; font-weight: 600; color: var(--q-text); line-height: 1.55; }
+
+  /* Answer block */
+  .a-block {
+    background: var(--a-bg);
+    border: 1px solid var(--a-border); border-top: none;
+    padding: 14px 18px;
+    display: flex; gap: 14px; align-items: flex-start;
+  }
+  .a-label {
+    font-size: 0.7rem; font-weight: 700;
+    color: var(--a-label);
+    background: #d1fae5; border: 1px solid #6ee7b7;
+    border-radius: 5px; padding: 3px 9px;
+    white-space: nowrap; margin-top: 2px; letter-spacing: 0.05em;
+    flex-shrink: 0;
+  }
+  .a-body { flex: 1; list-style: none; padding: 0; }
+  .a-body li {
+    padding: 4px 0 4px 14px;
+    border-left: 3px solid transparent;
+    line-height: 1.7; font-size: 0.92rem; color: #1e293b;
+    border-radius: 0 4px 4px 0;
+    transition: background 0.15s;
+  }
+  .a-body li:not(:last-child) { border-bottom: 1px solid #f1f5f9; }
+
+  /* ── Segments (clickable) ── */
+  .segment { cursor: pointer; border-radius: 3px; }
+  .q-seg:hover { background: rgba(255,255,255,0.18); }
+  .a-seg:hover { background: #eff6ff; }
+  .segment.active { background: #bfdbfe; outline: 2px solid #3b82f6; outline-offset: 1px; }
+  .a-body li.li-active { background: var(--active-a); border-left-color: var(--accent); }
   .segment.search-match  { background: #fef9c3; }
   .segment.search-current { background: #fde047; outline: 2px solid #ca8a04; }
 
@@ -187,145 +179,265 @@
 
 <div class="toolbar">
   <input type="text" id="search" placeholder="Search transcript&#8230; (Enter = next match)">
-  <span class="stats" id="stats">104 segments &nbsp;|&nbsp; <span id="dur">loading&#8230;</span></span>
+  <span class="stats" id="stats">9 questions &nbsp;|&nbsp; 104 segments &nbsp;|&nbsp; <span id="dur">loading&#8230;</span></span>
 </div>
 
 <div class="scroll-area" id="scroll-area">
-<div class="t-block">
-  <div class="t-gutter" data-start="0.0"><span class="t-timestamp">0:00</span></div>
-  <div class="t-body"><span class="segment" data-start="0.0" data-end="2.0" title="0:00">Orbital anatomy. </span><span class="segment" data-start="2.0" data-end="4.0" title="0:02">Describe the anatomy of the orbit. </span><span class="segment" data-start="4.0" data-end="9.0" title="0:04">This is a complicated subject, but don't get put off by the details. </span><span class="segment" data-start="9.0" data-end="14.0" title="0:09">A description relevant to the blocks we do should see you through comfortably. </span><span class="segment" data-start="16.0" data-end="23.0" title="0:16">The orbit is a bony cavity containing the eyeball, nerves, muscles and blood vessels </span><span class="segment" data-start="23.0" data-end="26.0" title="0:23">which are necessary for the functioning of the eye. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="27.0"><span class="t-timestamp">0:27</span></div>
-  <div class="t-body"><span class="segment" data-start="27.0" data-end="35.0" title="0:27">The orbit can be thought of as a pyramid, the base of which is situated on the anterior part of the face. </span><span class="segment" data-start="35.0" data-end="41.0" title="0:35">The roof is formed by the frontal bone and to the greater wing of the sphenoid. </span><span class="segment" data-start="41.0" data-end="45.0" title="0:41">The floor is formed by the maxilla and the zygoma. </span><span class="segment" data-start="45.0" data-end="53.0" title="0:45">The medial wall is formed by the maxilla, lacrimal bone, sphenoid and the ethmoid bone. </span><span class="segment" data-start="53.0" data-end="60.0" title="0:53">The lateral wall is formed by the continuation of the greater wing of the sphenoid and the zygoma. </span><span class="segment" data-start="60.0" data-end="67.0" title="1:00">The superior, inferior, medial and lateral recti muscles form a cone. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="67.0"><span class="t-timestamp">1:07</span></div>
-  <div class="t-body"><span class="segment" data-start="67.0" data-end="77.0" title="1:07">The apex of which is a fibrotendinous ring surrounding the optic canal and the medial part of the superior orbital fissure. </span><span class="segment" data-start="77.0" data-end="82.0" title="1:17">Anteriorly, the muscles are inserted onto the scleror. </span><span class="segment" data-start="82.0" data-end="95.0" title="1:22">The extra-conal muscles are superior oblique, inferior oblique, levator palpabri superioris and orbicularis ocule. </span><span class="segment" data-start="95.0" data-end="106.0" title="1:35">The nerves and blood vessels reach the globe via the superior orbital fissure, inferior orbital fissure and the optic canal. </span><span class="segment" data-start="106.0" data-end="121.0" title="1:46">The superior orbital fissure transmits the superior ophthalmic vein, ocular motor, abducins, troclier, lacrimal, frontal and nasosylary nerves. </span><span class="segment" data-start="121.0" data-end="130.0" title="2:01">The inferior orbital fissure transmits the inferior ophthalmic vein and in-for-orbital artery and nerve. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="130.0"><span class="t-timestamp">2:10</span></div>
-  <div class="t-body"><span class="segment" data-start="130.0" data-end="137.0" title="2:10">The optic canal contains the ophthalmic artery and optic nerve. </span><span class="segment" data-start="137.0" data-end="141.0" title="2:17">Describe the nerve supply to the orbit. </span><span class="segment" data-start="141.0" data-end="156.0" title="2:21">The ocular motor nerve supplies all of the extra-ocular muscles except the superior oblique and lateral rectus, which are supplied by the troclier and abducins nerve respectively. </span><span class="segment" data-start="156.0" data-end="167.0" title="2:36">The orbicularis ocule is innovated by the facial nerve and the levator palpabri superioris has a sympathetic innovation. </span><span class="segment" data-start="167.0" data-end="181.0" title="2:47">The sensory nerve supply to the periorbital skin is via the superorbital super-troclier, infraorbital and lacrimal nerves, which are branches of the trigeminal nerve. </span><span class="segment" data-start="181.0" data-end="192.0" title="3:01">As well as the skin, these nerves also supply the conjunctiver along with the long ciliary nerves, lacrimal and infraorbital nerves. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="192.0"><span class="t-timestamp">3:12</span></div>
-  <div class="t-body"><span class="segment" data-start="192.0" data-end="205.0" title="3:12">The cornea and scleror are mainly supplied by the long and short ciliary nerves, which are branches of the nasosylary branch of the ophthalmic division of the trigeminal nerve. </span><span class="segment" data-start="205.0" data-end="216.0" title="3:25">The sympathetic fibers from the first thoracic ganglion signapse in the superior cervical ganglion before joining the long and short ciliary nerves. </span><span class="segment" data-start="216.0" data-end="228.0" title="3:36">The parasympathetic supply is from the eddinger vestfal nucleus accompanying the third nerve to signapse with the short ciliary nerves in the ciliary ganglion. </span><span class="segment" data-start="228.0" data-end="232.0" title="3:48">Describe the anatomy of the globe. </span><span class="segment" data-start="232.0" data-end="245.0" title="3:52">The globe is a spherical structure, which is asymmetrical and has an axial length between 20 to 25mm in an adult, with a volume of 6 to 6.5mm. </span><span class="segment" data-start="245.0" data-end="248.0" title="4:05">It consists of three layers. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="248.0"><span class="t-timestamp">4:08</span></div>
-  <div class="t-body"><span class="segment" data-start="248.0" data-end="265.0" title="4:08">The external layer, formed by the scleror and cornea, followed by the middle layer, divided into an anterior part consisting of the iris and ciliary body, and posterior part, namely the coroid layer. </span><span class="segment" data-start="265.0" data-end="270.0" title="4:25">The inner layer, or sensory part of the eye, is the retina. </span><span class="segment" data-start="270.0" data-end="284.0" title="4:30">The iris is a coloured disc situated between the cornea and the crystalline lens, and it divides the anterior part of the eye into the anterior and posterior chambers. </span><span class="segment" data-start="284.0" data-end="294.0" title="4:44">In the centre of the normal iris is the pupil, which behaves like a camera shutter and helps focus the beam of light onto the retina. </span><span class="segment" data-start="294.0" data-end="304.0" title="4:54">The aqueous humour fills the anterior and posterior chambers, and is responsible for maintaining normal intracular pressure. </span><span class="segment" data-start="304.0" data-end="313.0" title="5:04">It is secreted by the ciliary body, and is reabsorbed through a network of trabeculi into the canal of Schlem. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="313.0"><span class="t-timestamp">5:13</span></div>
-  <div class="t-body"><span class="segment" data-start="313.0" data-end="320.0" title="5:13">The posterior compartment contains the vitrious humour, which is a gel-like substance. </span><span class="segment" data-start="320.0" data-end="327.0" title="5:20">The retina is made up of neural tissue, the axons of which eventually form the optic nerve. </span><span class="segment" data-start="327.0" data-end="334.0" title="5:27">The macular is a small portion of the retina, which is responsible for distinct vision. </span><span class="segment" data-start="334.0" data-end="341.0" title="5:34">Describe the pre-operative assessment of a patient presenting for ophthalmic regional annesisia. </span><span class="segment" data-start="341.0" data-end="349.0" title="5:41">The majority of patients presenting for eye surgery are over 70 years of age, with pre-existing medical problems. </span><span class="segment" data-start="349.0" data-end="356.0" title="5:49">A significant number of patients are pre-assessed in clinics by trained nurses. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="356.0"><span class="t-timestamp">5:56</span></div>
-  <div class="t-body"><span class="segment" data-start="356.0" data-end="364.0" title="5:56">Patients with cardiac respiratory disease are likely to suffer from orthopneia and paroxysmal nocturnal dyspnea. </span><span class="segment" data-start="364.0" data-end="368.0" title="6:04">They may be unable to lie flat for the duration of the procedure. </span><span class="segment" data-start="368.0" data-end="377.0" title="6:08">Patients with pre-existing untreated hypertension and ischemic heart disease may have angina and ECG changes </span><span class="segment" data-start="377.0" data-end="381.0" title="6:17">due to the stress of having a regional technique. </span><span class="segment" data-start="381.0" data-end="387.0" title="6:21">Patients with epilepsy and tremor should have their condition treated appropriately. </span><span class="segment" data-start="387.0" data-end="393.0" title="6:27">Diabetics are at risk of hypoglycemia, pre-intra and postoperatively. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="393.0"><span class="t-timestamp">6:33</span></div>
-  <div class="t-body"><span class="segment" data-start="393.0" data-end="397.0" title="6:33">Check for a history of allergy to local anaesthetic drugs. </span><span class="segment" data-start="397.0" data-end="402.0" title="6:37">Patients might be on warfarin or anti-platelot drugs. </span><span class="segment" data-start="402.0" data-end="412.0" title="6:42">Depending on the pre-existing medical conditions and drugs they are on, relevant blood tests and an ECG must be performed and reviewed prior to surgery. </span><span class="segment" data-start="412.0" data-end="417.0" title="6:52">Patients should be instructed to continue with all of their regular medications. </span><span class="segment" data-start="417.0" data-end="425.0" title="6:57">Some patients may be tempted to miss their diuretics as they are anxious about the location of toilets at the hospital. </span><span class="segment" data-start="425.0" data-end="428.0" title="7:05">Reassure them that this is not necessary. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="428.0"><span class="t-timestamp">7:08</span></div>
-  <div class="t-body"><span class="segment" data-start="428.0" data-end="438.0" title="7:08">The INR should be checked within 10 days of surgery and must be in the therapeutic range for the clinical condition for which they are on warfarin. </span><span class="segment" data-start="438.0" data-end="445.0" title="7:18">It is always necessary to consider a general anaesthetic in patients with previous problems with a regional technique. </span><span class="segment" data-start="445.0" data-end="455.0" title="7:25">Patients with uncontrolled movement disorders, patients who are deaf or have learning difficulties, suffer from dementia and in children. </span><span class="segment" data-start="455.0" data-end="462.0" title="7:35">Ophthalmic history and examination is mandatory to assess the suitability for a regional technique. </span><span class="segment" data-start="462.0" data-end="470.0" title="7:42">Confirm the patient details, the site of operation and rule out any contraindications. </span><span class="segment" data-start="470.0" data-end="475.0" title="7:50">Check the axial length of the globe, normally around 23mm. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="475.0"><span class="t-timestamp">7:55</span></div>
-  <div class="t-body"><span class="segment" data-start="475.0" data-end="486.0" title="7:55">If the axial length is greater than 26mm or patients have been long-standing myopics, they might have a pathological thinning of the scleror, </span><span class="segment" data-start="486.0" data-end="494.0" title="8:06">coroids and retina causing an outpouching of the globe more commonly in the inferior posterior pole. </span><span class="segment" data-start="494.0" data-end="502.0" title="8:14">Such eyes are susceptible to damage from the needle, especially if an infertemporal approach is used. </span><span class="segment" data-start="502.0" data-end="513.0" title="8:22">Patients having trabeculectomy, vitrectomy, limbal relaxation procedures, difficult lenses are likely to have long and difficult surgery. </span><span class="segment" data-start="513.0" data-end="522.0" title="8:33">This will have implications for the type of regional block used and the ability of the patient to lie supine for a long time. </span><span class="segment" data-start="522.0" data-end="529.0" title="8:42">Exam in the eye, looking for any variations that might make regional techniques more difficult. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="529.0"><span class="t-timestamp">8:49</span></div>
-  <div class="t-body"><span class="segment" data-start="529.0" data-end="536.0" title="8:49">These include narrow palpable fissure, niestagmas and evidence of previous eye surgery. </span><span class="segment" data-start="536.0" data-end="543.0" title="8:56">It is important to be very cautious in patients with only one eye and avoid globe injury. </span><span class="segment" data-start="543.0" data-end="552.0" title="9:03">If there is an ophthalmos, there is an increased risk of needle damage to the globe via the inferior temporal approach. </span><span class="segment" data-start="552.0" data-end="556.0" title="9:12">Please can you describe how you perform a subteen on block? </span><span class="segment" data-start="556.0" data-end="563.0" title="9:16">As for all regional techniques, it is a good idea to have a general introduction which covers preoperative assessment, </span><span class="segment" data-start="563.0" data-end="573.0" title="9:23">ruling out any contraindications, obtaining verbal consent and preparing the anesthetic room with equipment and emergency drugs. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="573.0"><span class="t-timestamp">9:33</span></div>
-  <div class="t-body"><span class="segment" data-start="573.0" data-end="586.0" title="9:33">Obtain intravenous access and establish routine monitoring. However, the cycle time on the blood pressure cuff should be decreased if necessary to provide patient comfort. </span><span class="segment" data-start="586.0" data-end="599.0" title="9:46">With the patient in the supine position, a few drops of topical local anesthetic, usually 0.4% oxybutyl procane, are applied to the conjunctiver. </span><span class="segment" data-start="599.0" data-end="606.0" title="9:59">A drenlin, 1 in 100,000 can be added to minimise subconjunctiver bleeding. </span><span class="segment" data-start="606.0" data-end="612.0" title="10:06">This is followed by a few drops of iodine to clean the conjunctiver. </span><span class="segment" data-start="612.0" data-end="620.0" title="10:12">Apply a lid speculum to keep the eyes open and ask the patient to look upwards and outwards. </span><span class="segment" data-start="620.0" data-end="631.0" title="10:20">Using a more field's forceps, take a smaller bite of the conjunctiver and teen on's capsule as possible in the inferior nasal quadrant of the eye. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="631.0"><span class="t-timestamp">10:31</span></div>
-  <div class="t-body"><span class="segment" data-start="631.0" data-end="641.0" title="10:31">Using a westercott's scissors, a small opening is made about 2mm wide, halfway between the forceps and the globe. </span><span class="segment" data-start="641.0" data-end="656.0" title="10:41">A 19 gauge, 25mm subteen on's cannula with a syringe containing local anesthetic is passed into the opening and advanced gently keeping the tip very close to the scleror. </span><span class="segment" data-start="656.0" data-end="665.0" title="10:56">The syringe should be vertical and at a depth of 15-20mm before injection is delivered. </span><span class="segment" data-start="665.0" data-end="671.0" title="11:05">Asperate before the injection to avoid intravenous injection of local anesthetic. </span><span class="segment" data-start="671.0" data-end="677.0" title="11:11">Close the eye and gently massage to facilitate the spread of local anesthetic. </span><span class="segment" data-start="677.0" data-end="684.0" title="11:17">2% lignacane or 0.5% levobube pivocane can be used. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="684.0"><span class="t-timestamp">11:24</span></div>
-  <div class="t-body"><span class="segment" data-start="684.0" data-end="688.0" title="11:24">High-low urena days can be used as an additive. </span><span class="segment" data-start="688.0" data-end="692.0" title="11:28">Please can you describe the parry bulb technique? </span><span class="segment" data-start="693.0" data-end="697.0" title="11:33">Follow the initial introduction as per the subteen on block. </span><span class="segment" data-start="697.0" data-end="704.0" title="11:37">Topical local anesthetic is inserted into the eye. The patient should be looking straight ahead. </span><span class="segment" data-start="704.0" data-end="714.0" title="11:44">An injection is made in fearotemporally lateral to the lateral limbus either through the conjunctiver or percutaneously. </span><span class="segment" data-start="714.0" data-end="721.0" title="11:54">The needle should be directed parallel to the floor of the orbit and vertically backwards. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="721.0"><span class="t-timestamp">12:01</span></div>
-  <div class="t-body"><span class="segment" data-start="721.0" data-end="725.0" title="12:01">The aim is to keep the tip of the needle extra-conal. </span><span class="segment" data-start="725.0" data-end="731.0" title="12:05">Inject 5-10mm of local anesthetic after negative aspiration. </span><span class="segment" data-start="731.0" data-end="741.0" title="12:11">This block may be supplemented by super-ownasal or medial canthus injections if required after checking muscle movements. </span><span class="segment" data-start="741.0" data-end="746.0" title="12:21">What are the complications of regional anesthesia in the eye? </span><span class="segment" data-start="746.0" data-end="758.0" title="12:26">Globe penetration is more likely in patients with longer axial length and will lead to pain on injection, deviation of the globe and retinal detachment. </span><span class="segment" data-start="758.0" data-end="761.0" title="12:38">Retrobulber hemorrhage can occur. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="761.0"><span class="t-timestamp">12:41</span></div>
-  <div class="t-body"><span class="segment" data-start="761.0" data-end="767.0" title="12:41">This increases the intracular pressure and compromises retinal blood flow. </span><span class="segment" data-start="767.0" data-end="775.0" title="12:47">Optic nerve damage, local anesthetic toxicity, muscle paulses and corneal abrasion can occur but are relatively rare. </span><span class="segment" data-start="775.0" data-end="782.0" title="12:55">Chemosis can occur and is quite common and subsides over 24-48 hours. </span><span class="segment" data-start="782.0" data-end="787.0" title="13:02">What are the contraindications to eye blocks? </span><span class="segment" data-start="787.0" data-end="793.0" title="13:07">These can be divided into absolute and relative contraindications. </span><span class="segment" data-start="793.0" data-end="802.0" title="13:13">Absolute contraindications are patient refusal, local anesthetic allergies and localized infection of the globe. </span></div>
-</div><div class="t-block">
-  <div class="t-gutter" data-start="803.0"><span class="t-timestamp">13:23</span></div>
-  <div class="t-body"><span class="segment" data-start="803.0" data-end="814.0" title="13:23">Relative contraindications are patients who are unable to lie flat either due to cardiac respiratory disease or due to learning difficulties and in children. </span><span class="segment" data-start="814.0" data-end="823.0" title="13:34">Patients with movement disorders, bleeding diathesis and to those with previous eye surgery for example sclerobuckling. </span></div>
+<div class="preamble-block"><span class="segment a-seg" data-start="0.0" data-end="2.0" title="0:00">Orbital anatomy. </span></div>
+<div class="qa-pair">
+<div class="q-block" data-start="2.0">
+  <div class="q-label">Q1</div>
+  <div class="q-body"><span class="segment q-seg" data-start="2.0" data-end="4.0" title="0:02">Describe the anatomy of the orbit. </span></div>
 </div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="4.0" data-end="9.0" title="0:04">This is a complicated subject, but don't get put off by the details. </span></li>
+<li><span class="segment a-seg" data-start="9.0" data-end="14.0" title="0:09">A description relevant to the blocks we do should see you through comfortably. </span></li>
+<li><span class="segment a-seg" data-start="16.0" data-end="23.0" title="0:16">The orbit is a bony cavity containing the eyeball, nerves, muscles and blood vessels </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="23.0">
+  <div class="q-label">Q2</div>
+  <div class="q-body"><span class="segment q-seg" data-start="23.0" data-end="26.0" title="0:23">which are necessary for the functioning of the eye. </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="27.0" data-end="35.0" title="0:27">The orbit can be thought of as a pyramid, the base of which is situated on the anterior part of the face. </span></li>
+<li><span class="segment a-seg" data-start="35.0" data-end="41.0" title="0:35">The roof is formed by the frontal bone and to the greater wing of the sphenoid. </span></li>
+<li><span class="segment a-seg" data-start="41.0" data-end="45.0" title="0:41">The floor is formed by the maxilla and the zygoma. </span></li>
+<li><span class="segment a-seg" data-start="45.0" data-end="53.0" title="0:45">The medial wall is formed by the maxilla, lacrimal bone, sphenoid and the ethmoid bone. </span></li>
+<li><span class="segment a-seg" data-start="53.0" data-end="60.0" title="0:53">The lateral wall is formed by the continuation of the greater wing of the sphenoid and the zygoma. </span></li>
+<li><span class="segment a-seg" data-start="60.0" data-end="67.0" title="1:00">The superior, inferior, medial and lateral recti muscles form a cone. </span></li>
+<li><span class="segment a-seg" data-start="67.0" data-end="77.0" title="1:07">The apex of which is a fibrotendinous ring surrounding the optic canal and the medial part of the superior orbital fissure. </span></li>
+<li><span class="segment a-seg" data-start="77.0" data-end="82.0" title="1:17">Anteriorly, the muscles are inserted onto the scleror. </span></li>
+<li><span class="segment a-seg" data-start="82.0" data-end="95.0" title="1:22">The extra-conal muscles are superior oblique, inferior oblique, levator palpabri superioris and orbicularis ocule. </span></li>
+<li><span class="segment a-seg" data-start="95.0" data-end="106.0" title="1:35">The nerves and blood vessels reach the globe via the superior orbital fissure, inferior orbital fissure and the optic canal. </span></li>
+<li><span class="segment a-seg" data-start="106.0" data-end="121.0" title="1:46">The superior orbital fissure transmits the superior ophthalmic vein, ocular motor, abducins, troclier, lacrimal, frontal and nasosylary nerves. </span></li>
+<li><span class="segment a-seg" data-start="121.0" data-end="130.0" title="2:01">The inferior orbital fissure transmits the inferior ophthalmic vein and in-for-orbital artery and nerve. </span></li>
+<li><span class="segment a-seg" data-start="130.0" data-end="137.0" title="2:10">The optic canal contains the ophthalmic artery and optic nerve. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="137.0">
+  <div class="q-label">Q3</div>
+  <div class="q-body"><span class="segment q-seg" data-start="137.0" data-end="141.0" title="2:17">Describe the nerve supply to the orbit. </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="141.0" data-end="156.0" title="2:21">The ocular motor nerve supplies all of the extra-ocular muscles except the superior oblique and lateral rectus, which are supplied by the troclier and abducins nerve respectively. </span></li>
+<li><span class="segment a-seg" data-start="156.0" data-end="167.0" title="2:36">The orbicularis ocule is innovated by the facial nerve and the levator palpabri superioris has a sympathetic innovation. </span></li>
+<li><span class="segment a-seg" data-start="167.0" data-end="181.0" title="2:47">The sensory nerve supply to the periorbital skin is via the superorbital super-troclier, infraorbital and lacrimal nerves, which are branches of the trigeminal nerve. </span></li>
+<li><span class="segment a-seg" data-start="181.0" data-end="192.0" title="3:01">As well as the skin, these nerves also supply the conjunctiver along with the long ciliary nerves, lacrimal and infraorbital nerves. </span></li>
+<li><span class="segment a-seg" data-start="192.0" data-end="205.0" title="3:12">The cornea and scleror are mainly supplied by the long and short ciliary nerves, which are branches of the nasosylary branch of the ophthalmic division of the trigeminal nerve. </span></li>
+<li><span class="segment a-seg" data-start="205.0" data-end="216.0" title="3:25">The sympathetic fibers from the first thoracic ganglion signapse in the superior cervical ganglion before joining the long and short ciliary nerves. </span></li>
+<li><span class="segment a-seg" data-start="216.0" data-end="228.0" title="3:36">The parasympathetic supply is from the eddinger vestfal nucleus accompanying the third nerve to signapse with the short ciliary nerves in the ciliary ganglion. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="228.0">
+  <div class="q-label">Q4</div>
+  <div class="q-body"><span class="segment q-seg" data-start="228.0" data-end="232.0" title="3:48">Describe the anatomy of the globe. </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="232.0" data-end="245.0" title="3:52">The globe is a spherical structure, which is asymmetrical and has an axial length between 20 to 25mm in an adult, with a volume of 6 to 6.5mm. </span></li>
+<li><span class="segment a-seg" data-start="245.0" data-end="248.0" title="4:05">It consists of three layers. </span></li>
+<li><span class="segment a-seg" data-start="248.0" data-end="265.0" title="4:08">The external layer, formed by the scleror and cornea, followed by the middle layer, divided into an anterior part consisting of the iris and ciliary body, and posterior part, namely the coroid layer. </span></li>
+<li><span class="segment a-seg" data-start="265.0" data-end="270.0" title="4:25">The inner layer, or sensory part of the eye, is the retina. </span></li>
+<li><span class="segment a-seg" data-start="270.0" data-end="284.0" title="4:30">The iris is a coloured disc situated between the cornea and the crystalline lens, and it divides the anterior part of the eye into the anterior and posterior chambers. </span></li>
+<li><span class="segment a-seg" data-start="284.0" data-end="294.0" title="4:44">In the centre of the normal iris is the pupil, which behaves like a camera shutter and helps focus the beam of light onto the retina. </span></li>
+<li><span class="segment a-seg" data-start="294.0" data-end="304.0" title="4:54">The aqueous humour fills the anterior and posterior chambers, and is responsible for maintaining normal intracular pressure. </span></li>
+<li><span class="segment a-seg" data-start="304.0" data-end="313.0" title="5:04">It is secreted by the ciliary body, and is reabsorbed through a network of trabeculi into the canal of Schlem. </span></li>
+<li><span class="segment a-seg" data-start="313.0" data-end="320.0" title="5:13">The posterior compartment contains the vitrious humour, which is a gel-like substance. </span></li>
+<li><span class="segment a-seg" data-start="320.0" data-end="327.0" title="5:20">The retina is made up of neural tissue, the axons of which eventually form the optic nerve. </span></li>
+<li><span class="segment a-seg" data-start="327.0" data-end="334.0" title="5:27">The macular is a small portion of the retina, which is responsible for distinct vision. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="334.0">
+  <div class="q-label">Q5</div>
+  <div class="q-body"><span class="segment q-seg" data-start="334.0" data-end="341.0" title="5:34">Describe the pre-operative assessment of a patient presenting for ophthalmic regional annesisia. </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="341.0" data-end="349.0" title="5:41">The majority of patients presenting for eye surgery are over 70 years of age, with pre-existing medical problems. </span></li>
+<li><span class="segment a-seg" data-start="349.0" data-end="356.0" title="5:49">A significant number of patients are pre-assessed in clinics by trained nurses. </span></li>
+<li><span class="segment a-seg" data-start="356.0" data-end="364.0" title="5:56">Patients with cardiac respiratory disease are likely to suffer from orthopneia and paroxysmal nocturnal dyspnea. </span></li>
+<li><span class="segment a-seg" data-start="364.0" data-end="368.0" title="6:04">They may be unable to lie flat for the duration of the procedure. </span></li>
+<li><span class="segment a-seg" data-start="368.0" data-end="377.0" title="6:08">Patients with pre-existing untreated hypertension and ischemic heart disease may have angina and ECG changes </span></li>
+<li><span class="segment a-seg" data-start="377.0" data-end="381.0" title="6:17">due to the stress of having a regional technique. </span></li>
+<li><span class="segment a-seg" data-start="381.0" data-end="387.0" title="6:21">Patients with epilepsy and tremor should have their condition treated appropriately. </span></li>
+<li><span class="segment a-seg" data-start="387.0" data-end="393.0" title="6:27">Diabetics are at risk of hypoglycemia, pre-intra and postoperatively. </span></li>
+<li><span class="segment a-seg" data-start="393.0" data-end="397.0" title="6:33">Check for a history of allergy to local anaesthetic drugs. </span></li>
+<li><span class="segment a-seg" data-start="397.0" data-end="402.0" title="6:37">Patients might be on warfarin or anti-platelot drugs. </span></li>
+<li><span class="segment a-seg" data-start="402.0" data-end="412.0" title="6:42">Depending on the pre-existing medical conditions and drugs they are on, relevant blood tests and an ECG must be performed and reviewed prior to surgery. </span></li>
+<li><span class="segment a-seg" data-start="412.0" data-end="417.0" title="6:52">Patients should be instructed to continue with all of their regular medications. </span></li>
+<li><span class="segment a-seg" data-start="417.0" data-end="425.0" title="6:57">Some patients may be tempted to miss their diuretics as they are anxious about the location of toilets at the hospital. </span></li>
+<li><span class="segment a-seg" data-start="425.0" data-end="428.0" title="7:05">Reassure them that this is not necessary. </span></li>
+<li><span class="segment a-seg" data-start="428.0" data-end="438.0" title="7:08">The INR should be checked within 10 days of surgery and must be in the therapeutic range for the clinical condition for which they are on warfarin. </span></li>
+<li><span class="segment a-seg" data-start="438.0" data-end="445.0" title="7:18">It is always necessary to consider a general anaesthetic in patients with previous problems with a regional technique. </span></li>
+<li><span class="segment a-seg" data-start="445.0" data-end="455.0" title="7:25">Patients with uncontrolled movement disorders, patients who are deaf or have learning difficulties, suffer from dementia and in children. </span></li>
+<li><span class="segment a-seg" data-start="455.0" data-end="462.0" title="7:35">Ophthalmic history and examination is mandatory to assess the suitability for a regional technique. </span></li>
+<li><span class="segment a-seg" data-start="462.0" data-end="470.0" title="7:42">Confirm the patient details, the site of operation and rule out any contraindications. </span></li>
+<li><span class="segment a-seg" data-start="470.0" data-end="475.0" title="7:50">Check the axial length of the globe, normally around 23mm. </span></li>
+<li><span class="segment a-seg" data-start="475.0" data-end="486.0" title="7:55">If the axial length is greater than 26mm or patients have been long-standing myopics, they might have a pathological thinning of the scleror, </span></li>
+<li><span class="segment a-seg" data-start="486.0" data-end="494.0" title="8:06">coroids and retina causing an outpouching of the globe more commonly in the inferior posterior pole. </span></li>
+<li><span class="segment a-seg" data-start="494.0" data-end="502.0" title="8:14">Such eyes are susceptible to damage from the needle, especially if an infertemporal approach is used. </span></li>
+<li><span class="segment a-seg" data-start="502.0" data-end="513.0" title="8:22">Patients having trabeculectomy, vitrectomy, limbal relaxation procedures, difficult lenses are likely to have long and difficult surgery. </span></li>
+<li><span class="segment a-seg" data-start="513.0" data-end="522.0" title="8:33">This will have implications for the type of regional block used and the ability of the patient to lie supine for a long time. </span></li>
+<li><span class="segment a-seg" data-start="522.0" data-end="529.0" title="8:42">Exam in the eye, looking for any variations that might make regional techniques more difficult. </span></li>
+<li><span class="segment a-seg" data-start="529.0" data-end="536.0" title="8:49">These include narrow palpable fissure, niestagmas and evidence of previous eye surgery. </span></li>
+<li><span class="segment a-seg" data-start="536.0" data-end="543.0" title="8:56">It is important to be very cautious in patients with only one eye and avoid globe injury. </span></li>
+<li><span class="segment a-seg" data-start="543.0" data-end="552.0" title="9:03">If there is an ophthalmos, there is an increased risk of needle damage to the globe via the inferior temporal approach. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="552.0">
+  <div class="q-label">Q6</div>
+  <div class="q-body"><span class="segment q-seg" data-start="552.0" data-end="556.0" title="9:12">Please can you describe how you perform a subteen on block? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="556.0" data-end="563.0" title="9:16">As for all regional techniques, it is a good idea to have a general introduction which covers preoperative assessment, </span></li>
+<li><span class="segment a-seg" data-start="563.0" data-end="573.0" title="9:23">ruling out any contraindications, obtaining verbal consent and preparing the anesthetic room with equipment and emergency drugs. </span></li>
+<li><span class="segment a-seg" data-start="573.0" data-end="586.0" title="9:33">Obtain intravenous access and establish routine monitoring. However, the cycle time on the blood pressure cuff should be decreased if necessary to provide patient comfort. </span></li>
+<li><span class="segment a-seg" data-start="586.0" data-end="599.0" title="9:46">With the patient in the supine position, a few drops of topical local anesthetic, usually 0.4% oxybutyl procane, are applied to the conjunctiver. </span></li>
+<li><span class="segment a-seg" data-start="599.0" data-end="606.0" title="9:59">A drenlin, 1 in 100,000 can be added to minimise subconjunctiver bleeding. </span></li>
+<li><span class="segment a-seg" data-start="606.0" data-end="612.0" title="10:06">This is followed by a few drops of iodine to clean the conjunctiver. </span></li>
+<li><span class="segment a-seg" data-start="612.0" data-end="620.0" title="10:12">Apply a lid speculum to keep the eyes open and ask the patient to look upwards and outwards. </span></li>
+<li><span class="segment a-seg" data-start="620.0" data-end="631.0" title="10:20">Using a more field's forceps, take a smaller bite of the conjunctiver and teen on's capsule as possible in the inferior nasal quadrant of the eye. </span></li>
+<li><span class="segment a-seg" data-start="631.0" data-end="641.0" title="10:31">Using a westercott's scissors, a small opening is made about 2mm wide, halfway between the forceps and the globe. </span></li>
+<li><span class="segment a-seg" data-start="641.0" data-end="656.0" title="10:41">A 19 gauge, 25mm subteen on's cannula with a syringe containing local anesthetic is passed into the opening and advanced gently keeping the tip very close to the scleror. </span></li>
+<li><span class="segment a-seg" data-start="656.0" data-end="665.0" title="10:56">The syringe should be vertical and at a depth of 15-20mm before injection is delivered. </span></li>
+<li><span class="segment a-seg" data-start="665.0" data-end="671.0" title="11:05">Asperate before the injection to avoid intravenous injection of local anesthetic. </span></li>
+<li><span class="segment a-seg" data-start="671.0" data-end="677.0" title="11:11">Close the eye and gently massage to facilitate the spread of local anesthetic. </span></li>
+<li><span class="segment a-seg" data-start="677.0" data-end="684.0" title="11:17">2% lignacane or 0.5% levobube pivocane can be used. </span></li>
+<li><span class="segment a-seg" data-start="684.0" data-end="688.0" title="11:24">High-low urena days can be used as an additive. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="688.0">
+  <div class="q-label">Q7</div>
+  <div class="q-body"><span class="segment q-seg" data-start="688.0" data-end="692.0" title="11:28">Please can you describe the parry bulb technique? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="693.0" data-end="697.0" title="11:33">Follow the initial introduction as per the subteen on block. </span></li>
+<li><span class="segment a-seg" data-start="697.0" data-end="704.0" title="11:37">Topical local anesthetic is inserted into the eye. The patient should be looking straight ahead. </span></li>
+<li><span class="segment a-seg" data-start="704.0" data-end="714.0" title="11:44">An injection is made in fearotemporally lateral to the lateral limbus either through the conjunctiver or percutaneously. </span></li>
+<li><span class="segment a-seg" data-start="714.0" data-end="721.0" title="11:54">The needle should be directed parallel to the floor of the orbit and vertically backwards. </span></li>
+<li><span class="segment a-seg" data-start="721.0" data-end="725.0" title="12:01">The aim is to keep the tip of the needle extra-conal. </span></li>
+<li><span class="segment a-seg" data-start="725.0" data-end="731.0" title="12:05">Inject 5-10mm of local anesthetic after negative aspiration. </span></li>
+<li><span class="segment a-seg" data-start="731.0" data-end="741.0" title="12:11">This block may be supplemented by super-ownasal or medial canthus injections if required after checking muscle movements. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="741.0">
+  <div class="q-label">Q8</div>
+  <div class="q-body"><span class="segment q-seg" data-start="741.0" data-end="746.0" title="12:21">What are the complications of regional anesthesia in the eye? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="746.0" data-end="758.0" title="12:26">Globe penetration is more likely in patients with longer axial length and will lead to pain on injection, deviation of the globe and retinal detachment. </span></li>
+<li><span class="segment a-seg" data-start="758.0" data-end="761.0" title="12:38">Retrobulber hemorrhage can occur. </span></li>
+<li><span class="segment a-seg" data-start="761.0" data-end="767.0" title="12:41">This increases the intracular pressure and compromises retinal blood flow. </span></li>
+<li><span class="segment a-seg" data-start="767.0" data-end="775.0" title="12:47">Optic nerve damage, local anesthetic toxicity, muscle paulses and corneal abrasion can occur but are relatively rare. </span></li>
+<li><span class="segment a-seg" data-start="775.0" data-end="782.0" title="12:55">Chemosis can occur and is quite common and subsides over 24-48 hours. </span></li>
+  </ul>
+</div>
+</div>
+<div class="qa-pair">
+<div class="q-block" data-start="782.0">
+  <div class="q-label">Q9</div>
+  <div class="q-body"><span class="segment q-seg" data-start="782.0" data-end="787.0" title="13:02">What are the contraindications to eye blocks? </span></div>
+</div>
+<div class="a-block">
+  <div class="a-label">A</div>
+  <ul class="a-body">
+<li><span class="segment a-seg" data-start="787.0" data-end="793.0" title="13:07">These can be divided into absolute and relative contraindications. </span></li>
+<li><span class="segment a-seg" data-start="793.0" data-end="802.0" title="13:13">Absolute contraindications are patient refusal, local anesthetic allergies and localized infection of the globe. </span></li>
+<li><span class="segment a-seg" data-start="803.0" data-end="814.0" title="13:23">Relative contraindications are patients who are unable to lie flat either due to cardiac respiratory disease or due to learning difficulties and in children. </span></li>
+<li><span class="segment a-seg" data-start="814.0" data-end="823.0" title="13:34">Patients with movement disorders, bleeding diathesis and to those with previous eye surgery for example sclerobuckling. </span></li>
+  </ul>
+</div>
+</div>
+
 </div>
 
 <div class="subtitle-bar">
-  <span class="subtitle-text empty" id="subtitle-text">Play audio to see live subtitles&#8230;</span>
+  <span id="subtitle-text" class="empty">Play audio to see live subtitles&#8230;</span>
 </div>
 
 <script>
-
-const audio    = document.getElementById('audio');
-const allSegs  = Array.from(document.querySelectorAll('.segment'));
-const allBlocks = Array.from(document.querySelectorAll('.t-block'));
+const audio      = document.getElementById('audio');
+const allSegs    = Array.from(document.querySelectorAll('.segment'));
 const subtitleEl = document.getElementById('subtitle-text');
-let activeSegEl   = null;
-let activeBlockEl = null;
-let searchMatches = [];
-let searchIdx     = 0;
+let activeSegEl  = null;
+let searchMatches = [], searchIdx = 0;
 
-// Duration display
 audio.addEventListener('loadedmetadata', () => {
   const m = Math.floor(audio.duration / 60);
   const s = Math.floor(audio.duration %% 60).toString().padStart(2,'0');
   document.getElementById('dur').textContent = m + ':' + s;
 });
 
-// Seek helper
-function seekTo(t) {
-  audio.currentTime = t;
-  audio.play();
-}
+function seekTo(t) { audio.currentTime = t; audio.play(); }
 
-// Block gutter click
-document.querySelectorAll('.t-gutter').forEach(g => {
-  g.addEventListener('click', () => seekTo(parseFloat(g.dataset.start)));
+// Q-block header click
+document.querySelectorAll('.q-block').forEach(q => {
+  q.addEventListener('click', e => {
+    if (!e.target.classList.contains('segment')) seekTo(parseFloat(q.dataset.start));
+  });
 });
 
-// Segment click
+// Individual segment click
 allSegs.forEach(s => {
-  s.addEventListener('click', e => {
-    e.stopPropagation();
-    seekTo(parseFloat(s.dataset.start));
-  });
+  s.addEventListener('click', e => { e.stopPropagation(); seekTo(parseFloat(s.dataset.start)); });
 });
 
 // Real-time tracking
 audio.addEventListener('timeupdate', () => {
   const t = audio.currentTime;
-
-  // Find active segment (last one whose start <= t)
   let found = null;
   for (let i = allSegs.length - 1; i >= 0; i--) {
     if (parseFloat(allSegs[i].dataset.start) <= t) { found = allSegs[i]; break; }
   }
-
   if (found && found !== activeSegEl) {
-    // Clear previous
-    if (activeSegEl) activeSegEl.classList.remove('active');
-    if (activeBlockEl) {
-      activeBlockEl.classList.remove('block-active');
-      const pg = activeBlockEl.querySelector('.t-gutter');
-      if (pg) pg.classList.remove('gutter-active');
+    if (activeSegEl) {
+      activeSegEl.classList.remove('active');
+      const pli = activeSegEl.closest('li');
+      if (pli) pli.classList.remove('li-active');
+      const pq = activeSegEl.closest('.q-block');
+      if (pq) pq.classList.remove('q-active');
     }
-    // Set new
     found.classList.add('active');
-    const block = found.closest('.t-block');
-    if (block) {
-      block.classList.add('block-active');
-      const g = block.querySelector('.t-gutter');
-      if (g) g.classList.add('gutter-active');
-      activeBlockEl = block;
-    }
+    const li = found.closest('li');
+    if (li) li.classList.add('li-active');
+    const qb = found.closest('.q-block');
+    if (qb) qb.classList.add('q-active');
     activeSegEl = found;
 
-    // Update subtitle
     subtitleEl.textContent = found.textContent.trim();
     subtitleEl.classList.remove('empty');
 
-    // Auto-scroll (only when not searching)
-    if (!document.getElementById('search').value) {
+    if (!document.getElementById('search').value)
       found.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }
   }
 });
 
@@ -341,17 +453,13 @@ searchInput.addEventListener('keydown', e => {
     el.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
 });
-
 function runSearch() {
   const q = searchInput.value.trim().toLowerCase();
   allSegs.forEach(s => s.classList.remove('search-match','search-current'));
   searchMatches = [];
   if (!q) return;
   allSegs.forEach(s => {
-    if (s.textContent.toLowerCase().includes(q)) {
-      s.classList.add('search-match');
-      searchMatches.push(s);
-    }
+    if (s.textContent.toLowerCase().includes(q)) { s.classList.add('search-match'); searchMatches.push(s); }
   });
   if (!searchMatches.length) return;
   searchIdx = 0;
