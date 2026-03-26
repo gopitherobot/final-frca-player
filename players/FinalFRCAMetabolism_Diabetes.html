@@ -404,7 +404,7 @@ let searchMatches = [], searchIdx = 0;
 
 audio.addEventListener('loadedmetadata', () => {
   const m = Math.floor(audio.duration / 60);
-  const s = Math.floor(audio.duration %% 60).toString().padStart(2,'0');
+  const s = Math.floor(audio.duration % 60).toString().padStart(2,'0');
   document.getElementById('dur').textContent = m + ':' + s;
 });
 
@@ -474,7 +474,7 @@ searchInput.addEventListener('input', runSearch);
 searchInput.addEventListener('keydown', e => {
   if (e.key === 'Enter' && searchMatches.length) {
     searchMatches[searchIdx].classList.remove('search-current');
-    searchIdx = (searchIdx + 1) %% searchMatches.length;
+    searchIdx = (searchIdx + 1) % searchMatches.length;
     const el = searchMatches[searchIdx];
     el.classList.add('search-current');
     el.scrollIntoView({ behavior: 'smooth', block: 'center' });
