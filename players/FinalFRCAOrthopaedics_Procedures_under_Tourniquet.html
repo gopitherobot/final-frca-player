@@ -442,35 +442,51 @@ allSegs.forEach(s => {
   s.addEventListener('click', e => { e.stopPropagation(); seekTo(parseFloat(s.dataset.start)); });
 });
 
-// Real-time tracking
-audio.addEventListener('timeupdate', () => {
-  const t = audio.currentTime;
+// ── Core highlight function ──────────────────────────────────────────────────
+// forceUpdate=true clears stale highlight even if the segment hasn't changed
+// (needed after scrubber drag / seek)
+function syncToTime(t, forceUpdate) {
   let found = null;
   for (let i = allSegs.length - 1; i >= 0; i--) {
     if (parseFloat(allSegs[i].dataset.start) <= t) { found = allSegs[i]; break; }
   }
-  if (found && found !== activeSegEl) {
-    if (activeSegEl) {
-      activeSegEl.classList.remove('active');
-      const pli = activeSegEl.closest('li');
-      if (pli) pli.classList.remove('li-active');
-      const pq = activeSegEl.closest('.q-block');
-      if (pq) pq.classList.remove('q-active');
-    }
-    found.classList.add('active');
-    const li = found.closest('li');
-    if (li) li.classList.add('li-active');
-    const qb = found.closest('.q-block');
-    if (qb) qb.classList.add('q-active');
-    activeSegEl = found;
 
-    subtitleEl.textContent = found.textContent.trim();
-    subtitleEl.classList.remove('empty');
+  if (!found) return;
+  if (found === activeSegEl && !forceUpdate) return;
 
-    if (!document.getElementById('search').value)
-      found.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  // Clear previous
+  if (activeSegEl) {
+    activeSegEl.classList.remove('active');
+    const pli = activeSegEl.closest('li');
+    if (pli) pli.classList.remove('li-active');
+    const pq = activeSegEl.closest('.q-block');
+    if (pq) pq.classList.remove('q-active');
   }
-});
+
+  // Highlight new
+  found.classList.add('active');
+  const li = found.closest('li');
+  if (li) li.classList.add('li-active');
+  const qb = found.closest('.q-block');
+  if (qb) qb.classList.add('q-active');
+  activeSegEl = found;
+
+  subtitleEl.textContent = found.textContent.trim();
+  subtitleEl.classList.remove('empty');
+
+  if (!document.getElementById('search').value)
+    found.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+// Normal playback — update as audio plays
+audio.addEventListener('timeupdate', () => syncToTime(audio.currentTime, false));
+
+// Scrubber drag / programmatic seek — force highlight update on completion
+audio.addEventListener('seeked',   () => syncToTime(audio.currentTime, true));
+
+// Also update immediately when seeking begins so the transcript follows the
+// scrubber in real-time while the user is still dragging
+audio.addEventListener('seeking',  () => syncToTime(audio.currentTime, true));
 
 // Search
 const searchInput = document.getElementById('search');
