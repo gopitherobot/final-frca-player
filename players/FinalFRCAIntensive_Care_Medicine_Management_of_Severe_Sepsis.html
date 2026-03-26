@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Intensive Care Medicine — Management of Severe Sepsis</title>
+<style>
+
+  :root {
+    --accent:    #0ea5e9;
+    --body-bg:   #f1f5f9;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: var(--body-bg);
+    color: #1e293b;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  /* ── Header ── */
+  .header {
+    background: #0f172a;
+    border-bottom: 3px solid var(--accent);
+    padding: 12px 20px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .header-left { flex: 1; min-width: 200px; }
+  .header h1 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #f1f5f9;
+    margin-bottom: 4px;
+    letter-spacing: 0.01em;
+  }
+  .header-sub {
+    font-size: 0.72rem;
+    color: #94a3b8;
+    font-style: italic;
+  }
+  audio {
+    height: 36px;
+    accent-color: var(--accent);
+    flex-shrink: 0;
+  }
+  .back-link {
+    font-size: 0.8rem;
+    color: #94a3b8;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .back-link:hover { color: #60a5fa; }
+
+  /* ── Toolbar ── */
+  .toolbar {
+    background: #1e293b;
+    padding: 7px 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-shrink: 0;
+    border-bottom: 1px solid #334155;
+  }
+  .toolbar input {
+    flex: 1;
+    max-width: 380px;
+    padding: 5px 11px;
+    border: 1px solid #475569;
+    border-radius: 6px;
+    background: #0f172a;
+    color: #e2e8f0;
+    font-size: 0.83rem;
+    outline: none;
+  }
+  .toolbar input:focus { border-color: var(--accent); }
+  .toolbar input::placeholder { color: #64748b; }
+  .stats {
+    font-size: 0.72rem;
+    color: #64748b;
+    white-space: nowrap;
+  }
+
+  /* ── Scroll area ── */
+  .scroll-area {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+  }
+  .scroll-area::-webkit-scrollbar { width: 6px; }
+  .scroll-area::-webkit-scrollbar-track { background: transparent; }
+  .scroll-area::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+
+  /* ── Subtitle bar ── */
+  .subtitle-bar {
+    background: #0f172a;
+    border-top: 2px solid var(--accent);
+    padding: 8px 20px;
+    flex-shrink: 0;
+    min-height: 42px;
+    display: flex;
+    align-items: center;
+  }
+  .subtitle-text {
+    font-size: 0.9rem;
+    color: #e2e8f0;
+    line-height: 1.5;
+    font-style: italic;
+  }
+  .subtitle-text.empty { color: #475569; }
+
+  /* ── Transcript blocks ── */
+  .t-block {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    margin-bottom: 14px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    display: flex;
+  }
+  .t-block.block-active {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px rgba(37,99,235,0.15);
+  }
+  .t-gutter {
+    background: #0f172a;
+    width: 52px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: 14px;
+    cursor: pointer;
+  }
+  .t-gutter:hover { background: #1e293b; }
+  .t-timestamp {
+    font-size: 0.7rem;
+    color: #64748b;
+    font-family: monospace;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+  .t-gutter.gutter-active .t-timestamp { color: var(--accent); }
+  .t-body {
+    flex: 1;
+    padding: 12px 16px;
+    line-height: 1.75;
+    font-size: 0.92rem;
+    color: #1e293b;
+  }
+
+  /* ── Segments ── */
+  .segment {
+    cursor: pointer;
+    border-radius: 3px;
+    transition: background 0.1s;
+  }
+  .segment:hover { background: #eff6ff; }
+  .segment.active {
+    background: #bfdbfe;
+    outline: 2px solid #3b82f6;
+    outline-offset: 1px;
+    border-radius: 3px;
+  }
+  .segment.search-match  { background: #fef9c3; }
+  .segment.search-current { background: #fde047; outline: 2px solid #ca8a04; }
+
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <h1>Intensive Care Medicine — Management of Severe Sepsis</h1>
+    <div class="header-sub">Final FRCA &mdash; Exam Viva Simulation &mdash; Click any phrase to seek</div>
+  </div>
+  <audio id="audio" src="../FinalFRCAIntensive_Care_Medicine_Management_of_Severe_Sepsis.mp3" controls preload="metadata"></audio>
+  <a class="back-link" href="index.html">&#8592; All Topics</a>
+</div>
+
+<div class="toolbar">
+  <input type="text" id="search" placeholder="Search transcript&#8230; (Enter = next match)">
+  <span class="stats" id="stats">272 segments &nbsp;|&nbsp; <span id="dur">loading&#8230;</span></span>
+</div>
+
+<div class="scroll-area" id="scroll-area">
+<div class="t-block">
+  <div class="t-gutter" data-start="0.0"><span class="t-timestamp">0:00</span></div>
+  <div class="t-body"><span class="segment" data-start="0.0" data-end="2.72" title="0:00">The management of severe sepsis. </span><span class="segment" data-start="2.72" data-end="8.4" title="0:02">You are most likely to have to confront this topic as part of a case-based discussion. </span><span class="segment" data-start="8.4" data-end="14.36" title="0:08">You were asked to urgent your review of 47-year-old man who was in respiratory distress and hypertensive. </span><span class="segment" data-start="14.36" data-end="16.36" title="0:14">How would you approach this patient? </span><span class="segment" data-start="16.36" data-end="22.4" title="0:16">The examiner is looking for a safe, systematic approach to managing a sick patient. </span><span class="segment" data-start="22.4" data-end="26.8" title="0:22">It is sensible to have a generic answer to start every similar question. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="26.8"><span class="t-timestamp">0:26</span></div>
+  <div class="t-body"><span class="segment" data-start="26.8" data-end="33.04" title="0:26">This gives you time to think and make sure you don't miss out on any easy marks. </span><span class="segment" data-start="33.04" data-end="38.16" title="0:33">I would approach this patient as I would every potential medical emergency. </span><span class="segment" data-start="38.16" data-end="42.44" title="0:38">I would assess the airway, breathing and circulation, </span><span class="segment" data-start="42.44" data-end="46.6" title="0:42">apply high-flow oxygen through a non-read breathing mask, </span><span class="segment" data-start="46.6" data-end="52.6" title="0:46">and if concerned, I would call for help sooner rather than later. </span><span class="segment" data-start="52.64" data-end="56.56" title="0:52">I would ensure large bore intravenous access is secured, </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="56.56"><span class="t-timestamp">0:56</span></div>
+  <div class="t-body"><span class="segment" data-start="56.56" data-end="63.4" title="0:56">and providing there is no obvious contraindication, I would start intravenous fluids. </span><span class="segment" data-start="63.4" data-end="70.88" title="1:03">I'd set up basic monitoring, a pulse-oxymeter, frequent non-invasive blood pressure measurements, </span><span class="segment" data-start="70.88" data-end="75.64" title="1:10">and if available, ECG telemetry. </span><span class="segment" data-start="75.64" data-end="82.0" title="1:15">When safe to do so, I would attempt to make a diagnosis through a history examination </span><span class="segment" data-start="82.04" data-end="86.08" title="1:22">and by requesting relevant investigations. </span><span class="segment" data-start="86.08" data-end="93.16" title="1:26">These would include a 12 lead ECG, a chest x-ray and blood investigations, </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="93.16"><span class="t-timestamp">1:33</span></div>
+  <div class="t-body"><span class="segment" data-start="93.16" data-end="97.4" title="1:33">a full blood count, urea and electrolytes, clotting, </span><span class="segment" data-start="97.4" data-end="103.56" title="1:37">two sets of blood cultures, and an arterial blood gas, including a lactate level. </span><span class="segment" data-start="103.56" data-end="105.84" title="1:43">What would you like to know about him? </span><span class="segment" data-start="105.84" data-end="109.08" title="1:45">It is always sensible to start from the beginning. </span><span class="segment" data-start="109.08" data-end="111.8" title="1:49">It gives you time to formulate your thoughts. </span><span class="segment" data-start="111.8" data-end="117.2" title="1:51">It may also help to imagine yourself in that situation. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="117.2"><span class="t-timestamp">1:57</span></div>
+  <div class="t-body"><span class="segment" data-start="117.2" data-end="122.12" title="1:57">My first concern is his airway. Is he able to talk to me? </span><span class="segment" data-start="122.12" data-end="127.72" title="2:02">Yes. He is however struggling to complete sentences. </span><span class="segment" data-start="127.72" data-end="131.76" title="2:07">What is his respiratory rate and his oxygen saturation? </span><span class="segment" data-start="131.76" data-end="138.44" title="2:11">In this situation, I would always start high-flow oxygen via a non-read breathing mask. </span><span class="segment" data-start="138.48" data-end="142.24" title="2:18">His oxygen saturation is 93% on the mask you've put on </span><span class="segment" data-start="142.24" data-end="146.52" title="2:22">and his respiration rate is 40 breaths per minute. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="146.52"><span class="t-timestamp">2:26</span></div>
+  <div class="t-body"><span class="segment" data-start="146.52" data-end="150.12" title="2:26">That's not good. I would like to know his blood pressure </span><span class="segment" data-start="150.12" data-end="155.24" title="2:30">to look at an electrocardiogram and check an arterial blood gas. </span><span class="segment" data-start="155.24" data-end="159.4" title="2:35">Are there any blood results? Is he able to tell me a history? </span><span class="segment" data-start="159.4" data-end="163.76" title="2:39">Does he feel hot to touch? Has he got a temperature? </span><span class="segment" data-start="163.76" data-end="167.2" title="2:43">His blood pressure is 74 over 45. </span><span class="segment" data-start="167.24" data-end="170.4" title="2:47">This is his ECG. These are his blood gases. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="170.4"><span class="t-timestamp">2:50</span></div>
+  <div class="t-body"><span class="segment" data-start="170.4" data-end="173.8" title="2:50">And here is a copy of his chest x-ray. </span><span class="segment" data-start="173.8" data-end="178.92" title="2:53">He has a temperature of 39 degrees centigrade and feels very flushed. </span><span class="segment" data-start="178.92" data-end="182.28" title="2:58">He's able to tell you that he's been on well for the past 48 hours </span><span class="segment" data-start="182.28" data-end="185.92" title="3:02">with a worsening cough, fevers and breathlessness. </span><span class="segment" data-start="185.92" data-end="189.16" title="3:05">He has no other significant medical history. </span><span class="segment" data-start="189.16" data-end="190.84" title="3:09">What are your thoughts? </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="190.84"><span class="t-timestamp">3:10</span></div>
+  <div class="t-body"><span class="segment" data-start="190.84" data-end="195.32" title="3:10">Remember, you might also be asked to describe any of the investigations </span><span class="segment" data-start="195.32" data-end="200.32" title="3:15">the examiner has given you, ensure you have a systematic way of doing this. </span><span class="segment" data-start="200.32" data-end="207.04" title="3:20">Usually, you will see the relevant investigations before the viber for the long case. </span><span class="segment" data-start="207.04" data-end="212.88" title="3:27">This is a sick young man with right low-low airspace shadowing on his chest x-ray </span><span class="segment" data-start="212.88" data-end="217.4" title="3:32">and my initial feeling is that this all ties in with severe sepsis </span><span class="segment" data-start="217.4" data-end="220.8" title="3:37">from a right low-low pneumonia. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="220.8"><span class="t-timestamp">3:40</span></div>
+  <div class="t-body"><span class="segment" data-start="220.8" data-end="225.88" title="3:40">There is a broader differential, but the history and chest x-ray changes </span><span class="segment" data-start="225.88" data-end="229.16" title="3:45">don't really tie in with a pulmonary embolism </span><span class="segment" data-start="229.16" data-end="232.28" title="3:49">and the lack of any ischemic ECG changes </span><span class="segment" data-start="232.28" data-end="237.36" title="3:52">infers that a primary cardiac problem is unlikely. </span><span class="segment" data-start="237.36" data-end="241.24" title="3:57">I see his hematocrit on the blood gas is 0.4 </span><span class="segment" data-start="241.24" data-end="244.84" title="4:01">and there is no history of acute blood loss. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="244.84"><span class="t-timestamp">4:04</span></div>
+  <div class="t-body"><span class="segment" data-start="244.84" data-end="250.32" title="4:04">Correct. Are you able to classify how you diagnose severe sepsis and septic shock? </span><span class="segment" data-start="250.36" data-end="255.28" title="4:10">A good examiner will always steer you to where points might be scored. </span><span class="segment" data-start="255.28" data-end="258.24" title="4:15">Diagnosing sepsis has recently been changed </span><span class="segment" data-start="258.24" data-end="263.88" title="4:18">from the CERS criteria documented in the 2004 surviving sepsis campaign. </span><span class="segment" data-start="263.88" data-end="266.28" title="4:23">CERS was not specific enough </span><span class="segment" data-start="266.28" data-end="270.4" title="4:26">and so an even more sensitive definition of sepsis has been adopted. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="270.4"><span class="t-timestamp">4:30</span></div>
+  <div class="t-body"><span class="segment" data-start="270.4" data-end="276.88" title="4:30">The guidelines are now more directed at severe sepsis and septic shock. </span><span class="segment" data-start="276.92" data-end="280.76" title="4:36">Yes, sepsis is defined as infection </span><span class="segment" data-start="280.76" data-end="284.64" title="4:40">with the systemic manifestations of infection. </span><span class="segment" data-start="284.64" data-end="290.72" title="4:44">These can be general variables including temperature, heart rate, mental state </span><span class="segment" data-start="290.72" data-end="294.08" title="4:50">or inflammatory variables beyond normal ranges </span><span class="segment" data-start="294.08" data-end="297.84" title="4:54">such as white cell counts and CRPs. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="297.84"><span class="t-timestamp">4:57</span></div>
+  <div class="t-body"><span class="segment" data-start="297.84" data-end="302.4" title="4:57">More critically in severe sepsis, there is organ dysfunction </span><span class="segment" data-start="302.44" data-end="308.88" title="5:02">including hypoxemia, oliguria, a significant increase in creatinine, </span><span class="segment" data-start="308.88" data-end="312.32" title="5:08">a coagulopathy, thrombocytopenia, </span><span class="segment" data-start="312.32" data-end="317.68" title="5:12">iliasaur hyperbilarubinemia or hyperlactatemia. </span><span class="segment" data-start="317.68" data-end="321.92" title="5:17">Septic shock is sepsis-induced hypotension </span><span class="segment" data-start="321.92" data-end="326.16" title="5:21">persisting despite adequate fluid resuscitation. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="326.16"><span class="t-timestamp">5:26</span></div>
+  <div class="t-body"><span class="segment" data-start="326.16" data-end="329.8" title="5:26">How would you manage this patient? </span><span class="segment" data-start="329.84" data-end="334.28" title="5:29">Having commenced fluid resuscitation and administered oxygen, </span><span class="segment" data-start="334.28" data-end="337.6" title="5:34">I would ensure two sets of blood cultures were taken </span><span class="segment" data-start="337.6" data-end="343.36" title="5:37">and broad spectrum antibiotics were administered as soon as possible. </span><span class="segment" data-start="343.36" data-end="347.04" title="5:43">This is most likely to be a community acquired pneumonia </span><span class="segment" data-start="347.04" data-end="350.92" title="5:47">and so you would need to cover pneumococcus, hemophilus </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="350.92"><span class="t-timestamp">5:50</span></div>
+  <div class="t-body"><span class="segment" data-start="350.92" data-end="353.32" title="5:50">and atypical organisms. </span><span class="segment" data-start="353.32" data-end="359.76" title="5:53">In my hospital, we would administer intravenous augmentin and clarithromycin. </span><span class="segment" data-start="359.84" data-end="363.76" title="5:59">This man is sick and probably in septic shock. </span><span class="segment" data-start="363.76" data-end="367.36" title="6:03">His lactate is 4.4 millimoles per litre. </span><span class="segment" data-start="367.36" data-end="371.2" title="6:07">This is a marker of significant tissue hypopuffusion </span><span class="segment" data-start="371.2" data-end="373.88" title="6:11">and puts him in a high-risk group. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="373.88"><span class="t-timestamp">6:13</span></div>
+  <div class="t-body"><span class="segment" data-start="373.88" data-end="377.8" title="6:13">He will require level 2 care at the very least. </span><span class="segment" data-start="377.8" data-end="381.68" title="6:17">I would arrange for safe transfer from his current location </span><span class="segment" data-start="381.68" data-end="385.8" title="6:21">to a critical care unit with resuscitation ongoing. </span><span class="segment" data-start="385.8" data-end="389.36" title="6:25">What else would you do for him? </span><span class="segment" data-start="389.52" data-end="392.52" title="6:29">With a working diagnosis of severe sepsis, </span><span class="segment" data-start="392.52" data-end="394.72" title="6:32">then he will need a central line. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="394.72"><span class="t-timestamp">6:34</span></div>
+  <div class="t-body"><span class="segment" data-start="394.72" data-end="397.52" title="6:34">This will help guide fluid resuscitation </span><span class="segment" data-start="397.52" data-end="399.92" title="6:37">and allow us to administer vasopressas </span><span class="segment" data-start="399.92" data-end="403.4" title="6:39">should his blood pressure not respond to fluids. </span><span class="segment" data-start="403.4" data-end="406.16" title="6:43">This would be if his mean arterial pressure </span><span class="segment" data-start="406.16" data-end="409.44" title="6:46">was less than 65 millimetres of mercury </span><span class="segment" data-start="409.44" data-end="413.72" title="6:49">despite his central venous pressure being above 8. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="413.72"><span class="t-timestamp">6:53</span></div>
+  <div class="t-body"><span class="segment" data-start="413.72" data-end="417.72" title="6:53">It would also allow us to measure his central venous saturation levels. </span><span class="segment" data-start="419.64" data-end="422.28" title="6:59">These should be above 70%. </span><span class="segment" data-start="422.28" data-end="424.72" title="7:02">I would also cite an arterial line </span><span class="segment" data-start="424.72" data-end="428.08" title="7:04">to enable constant arterial blood pressure monitoring </span><span class="segment" data-start="428.08" data-end="432.88" title="7:08">and blood gas sampling to gauge how he's responding to treatment. </span><span class="segment" data-start="432.88" data-end="436.0" title="7:12">What would you do if his mean arterial pressure remained lower than, </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="436.0"><span class="t-timestamp">7:16</span></div>
+  <div class="t-body"><span class="segment" data-start="436.0" data-end="437.92" title="7:16">as you said, 65, </span><span class="segment" data-start="437.92" data-end="441.92" title="7:17">despite what you thought was adequate fluid resuscitation? </span><span class="segment" data-start="443.0" data-end="447.4" title="7:23">If I was confident in my diagnosis of vasodilatory shock, </span><span class="segment" data-start="447.44" data-end="450.88" title="7:27">then I would start a noradrenaline infusion centrally, </span><span class="segment" data-start="450.88" data-end="452.72" title="7:30">titrated to response, </span><span class="segment" data-start="452.72" data-end="457.32" title="7:32">running up to 0.5 micrograms per kilo per minute. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="457.32"><span class="t-timestamp">7:37</span></div>
+  <div class="t-body"><span class="segment" data-start="457.32" data-end="460.56" title="7:37">In the event of a low central venous saturation, </span><span class="segment" data-start="460.56" data-end="463.0" title="7:40">that is less than 70%, </span><span class="segment" data-start="463.0" data-end="465.88" title="7:43">then dobutamine could be run concurrently </span><span class="segment" data-start="465.88" data-end="470.44" title="7:45">to optimize cardiac output and tissue oxygenation. </span><span class="segment" data-start="470.44" data-end="473.32" title="7:50">This again should be titrated to response. </span><span class="segment" data-start="473.32" data-end="476.32" title="7:53">The maximum therapeutic dose of dobutamine </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="476.36"><span class="t-timestamp">7:56</span></div>
+  <div class="t-body"><span class="segment" data-start="476.36" data-end="479.4" title="7:56">is 20 micrograms per kilo per minute. </span><span class="segment" data-start="481.72" data-end="484.56" title="8:01">Other things to consider would be to ensure </span><span class="segment" data-start="484.56" data-end="487.88" title="8:04">that the hematocrit was over 30%, </span><span class="segment" data-start="487.88" data-end="492.8" title="8:07">if the hypotension proved refractory to higher doses of vasopressors, </span><span class="segment" data-start="492.8" data-end="496.16" title="8:12">then low dose steroids should be considered. </span><span class="segment" data-start="496.16" data-end="498.6" title="8:16">In the center where I work at the moment, </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="498.6"><span class="t-timestamp">8:18</span></div>
+  <div class="t-body"><span class="segment" data-start="498.6" data-end="503.28" title="8:18">then vasopressin is used in septic shock refractory to noradrenaline. </span><span class="segment" data-start="504.28" data-end="507.08" title="8:24">Other therapeutic options to consider </span><span class="segment" data-start="507.08" data-end="510.24" title="8:27">would be using activated protein C, </span><span class="segment" data-start="510.24" data-end="514.08" title="8:30">initiating insulin therapy to keep blood glucose levels </span><span class="segment" data-start="514.08" data-end="517.4" title="8:34">less than 8.3 millimoles per liter, </span><span class="segment" data-start="517.4" data-end="520.32" title="8:37">prophylactic low molecular weight heprin, </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="520.32"><span class="t-timestamp">8:40</span></div>
+  <div class="t-body"><span class="segment" data-start="520.32" data-end="523.32" title="8:40">and stress ulcer prophylaxis. </span><span class="segment" data-start="523.32" data-end="525.52" title="8:43">You've mentioned a lot of therapeutic interventions </span><span class="segment" data-start="525.52" data-end="527.52" title="8:45">for managing sepsis. </span><span class="segment" data-start="527.52" data-end="530.52" title="8:47">Do you know of any recent publications or guidelines? </span><span class="segment" data-start="531.52" data-end="537.52" title="8:51">The Surviving Sepsis campaign was formed in Barcelona in 2002, </span><span class="segment" data-start="537.52" data-end="541.08" title="8:57">and is an international campaign developed to improve </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="541.08"><span class="t-timestamp">9:01</span></div>
+  <div class="t-body"><span class="segment" data-start="541.08" data-end="545.92" title="9:01">the diagnosis, treatment, and outcome from sepsis. </span><span class="segment" data-start="545.92" data-end="550.72" title="9:05">They have recently published revised guidelines in 2008, </span><span class="segment" data-start="550.72" data-end="554.36" title="9:10">outlining an international expert committee review </span><span class="segment" data-start="554.36" data-end="559.72" title="9:14">of the current literature recommending optimal management for sepsis. </span><span class="segment" data-start="559.92" data-end="562.12" title="9:19">There are two bundles, </span><span class="segment" data-start="562.12" data-end="565.08" title="9:22">a resuscitation bundle at six hours, </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="565.08"><span class="t-timestamp">9:25</span></div>
+  <div class="t-body"><span class="segment" data-start="565.08" data-end="568.16" title="9:25">and a management bundle at 24 hours, </span><span class="segment" data-start="568.16" data-end="570.92" title="9:28">where changes can be targeted for improvement. </span><span class="segment" data-start="572.0" data-end="575.72" title="9:32">The resuscitation bundle describes seven tasks </span><span class="segment" data-start="575.72" data-end="578.28" title="9:35">that should begin immediately. </span><span class="segment" data-start="578.28" data-end="580.28" title="9:38">The measurement of lactate, </span><span class="segment" data-start="580.28" data-end="583.92" title="9:40">the taking of blood cultures prior to antibiotics, </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="583.92"><span class="t-timestamp">9:43</span></div>
+  <div class="t-body"><span class="segment" data-start="583.92" data-end="587.28" title="9:43">the timely administration of antibiotics, </span><span class="segment" data-start="587.28" data-end="592.28" title="9:47">the administration of 20 to 40 mills per kilo of fluid, </span><span class="segment" data-start="592.28" data-end="595.6" title="9:52">the administration of vasopressures, </span><span class="segment" data-start="595.6" data-end="599.0" title="9:55">achieving an adequate central venous pressure, </span><span class="segment" data-start="599.0" data-end="602.48" title="9:59">and adequate central venous oxygen saturations. </span><span class="segment" data-start="604.36" data-end="607.92" title="10:04">The management bundle describes four interventions </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="607.92"><span class="t-timestamp">10:07</span></div>
+  <div class="t-body"><span class="segment" data-start="607.92" data-end="610.88" title="10:07">that should be applied in the first 24 hours. </span><span class="segment" data-start="612.04" data-end="617.2" title="10:12">Lodo steroids administered by a standard unit policy, </span><span class="segment" data-start="617.2" data-end="619.4" title="10:17">activated protein C, </span><span class="segment" data-start="619.4" data-end="622.12" title="10:19">administered by a standard unit policy, </span><span class="segment" data-start="623.16" data-end="625.8" title="10:23">adequate glycemic control, </span><span class="segment" data-start="625.8" data-end="629.6" title="10:25">and preventing excessive inspiratory plateau pressures </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="629.6"><span class="t-timestamp">10:29</span></div>
+  <div class="t-body"><span class="segment" data-start="629.6" data-end="632.8" title="10:29">in mechanically ventilated patients. </span><span class="segment" data-start="632.8" data-end="635.4" title="10:32">What do you know about early gold erected therapy? </span><span class="segment" data-start="637.76" data-end="642.36" title="10:37">In 2001, Rivers published a study showing that one life </span><span class="segment" data-start="642.36" data-end="645.16" title="10:42">was saved for every seven patients presenting </span><span class="segment" data-start="645.16" data-end="650.16" title="10:45">to an emergency department with severe sepsis or septic shock, </span><span class="segment" data-start="650.4" data-end="653.64" title="10:50">who were treated with early gold directed therapy. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="655.04"><span class="t-timestamp">10:55</span></div>
+  <div class="t-body"><span class="segment" data-start="655.04" data-end="660.04" title="10:55">All patients were associated to achieve a CVP of eight to 12, </span><span class="segment" data-start="661.0" data-end="663.92" title="11:01">a mean arterial pressure of 65, </span><span class="segment" data-start="663.92" data-end="668.52" title="11:03">under urine output greater than 0.5 mills per kilo per hour. </span><span class="segment" data-start="669.52" data-end="674.12" title="11:09">In the control group, this was under critical care consultation, </span><span class="segment" data-start="674.12" data-end="676.88" title="11:14">and patients admitted as soon as possible. </span><span class="segment" data-start="678.04" data-end="682.2" title="11:18">The treatment group were managed in the A&E for six hours, </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="682.2"><span class="t-timestamp">11:22</span></div>
+  <div class="t-body"><span class="segment" data-start="682.2" data-end="684.24" title="11:22">a central line was cited, </span><span class="segment" data-start="684.24" data-end="689.28" title="11:24">and central venous oxygen saturations measured with a hematocrit. </span><span class="segment" data-start="689.28" data-end="691.88" title="11:29">If, after achieving targets, </span><span class="segment" data-start="691.88" data-end="696.76" title="11:31">the central venous oxygen saturations remained less than 70%, </span><span class="segment" data-start="696.76" data-end="701.16" title="11:36">then the hematocrit was raised to 30% with a transfusion, </span><span class="segment" data-start="701.2" data-end="704.08" title="11:41">and should it still be less than 70%, </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="704.08"><span class="t-timestamp">11:44</span></div>
+  <div class="t-body"><span class="segment" data-start="704.08" data-end="707.24" title="11:44">then do butamine titrated to a maximum dose </span><span class="segment" data-start="707.24" data-end="709.92" title="11:47">of 20 micrograms per kilo per minute. </span><span class="segment" data-start="711.28" data-end="714.04" title="11:51">The butamine was decreased or stopped </span><span class="segment" data-start="714.04" data-end="717.52" title="11:54">if the mean arterial pressure fell below 65, </span><span class="segment" data-start="717.52" data-end="721.44" title="11:57">or the heart rate was greater than 120 beats per minute. </span><span class="segment" data-start="722.6" data-end="726.64" title="12:02">Patients whose oxygen delivery couldn't be achieved </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="726.64"><span class="t-timestamp">12:06</span></div>
+  <div class="t-body"><span class="segment" data-start="726.64" data-end="730.16" title="12:06">were sedated, intubated, and ventilated. </span><span class="segment" data-start="731.28" data-end="734.92" title="12:11">This led to the recommendations in the resuscitation bundle </span><span class="segment" data-start="734.92" data-end="736.68" title="12:14">of placing a central line, </span><span class="segment" data-start="736.68" data-end="741.12" title="12:16">measuring and treating central venous oxygen saturations, </span><span class="segment" data-start="741.12" data-end="744.28" title="12:21">and measuring the lactate in patients with sepsis. </span><span class="segment" data-start="745.24" data-end="747.4" title="12:25">A lactate of greater than four </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="747.4"><span class="t-timestamp">12:27</span></div>
+  <div class="t-body"><span class="segment" data-start="747.4" data-end="750.92" title="12:27">was an inclusion criteria into the study. </span><span class="segment" data-start="750.92" data-end="754.28" title="12:30">Steroids in sepsis are controversial, aren't they? </span><span class="segment" data-start="754.28" data-end="755.64" title="12:34">What do you know about that? </span><span class="segment" data-start="756.48" data-end="760.64" title="12:36">I think that the two most important trials to date </span><span class="segment" data-start="760.64" data-end="764.24" title="12:40">are the enane study from 2002, </span><span class="segment" data-start="764.24" data-end="769.24" title="12:44">and the more recent corticostudy published in 2008. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="769.24"><span class="t-timestamp">12:49</span></div>
+  <div class="t-body"><span class="segment" data-start="769.24" data-end="773.08" title="12:49">Enane demonstrated that for every seven patients </span><span class="segment" data-start="773.08" data-end="776.88" title="12:53">in septic shock and a low or absent response </span><span class="segment" data-start="776.88" data-end="781.36" title="12:56">to a short synaxan test treated with low dose hydrochlorozoan </span><span class="segment" data-start="781.36" data-end="783.36" title="13:01">and flue de cortozoan, </span><span class="segment" data-start="783.8" data-end="786.08" title="13:03">that one more person left hospital. </span><span class="segment" data-start="787.16" data-end="791.08" title="13:07">Of note, these patients also had a systolic blood pressure </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="791.08"><span class="t-timestamp">13:11</span></div>
+  <div class="t-body"><span class="segment" data-start="791.08" data-end="794.28" title="13:11">of less than 90 millimeters of mercury for one hour </span><span class="segment" data-start="794.28" data-end="797.16" title="13:14">despite fluid replacement and ionotropes. </span><span class="segment" data-start="798.16" data-end="802.24" title="13:18">The International Multicenter Corticostrial, however, </span><span class="segment" data-start="802.24" data-end="804.8" title="13:22">has more recently shown no benefit </span><span class="segment" data-start="804.8" data-end="806.92" title="13:24">of starting regular hydrochlorozoan. </span><span class="segment" data-start="807.8" data-end="809.76" title="13:27">There was quicker resolution of the need </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="809.76"><span class="t-timestamp">13:29</span></div>
+  <div class="t-body"><span class="segment" data-start="809.76" data-end="811.68" title="13:29">for vasopressor support, </span><span class="segment" data-start="811.68" data-end="814.92" title="13:31">but this was offset with an increased instance </span><span class="segment" data-start="814.92" data-end="816.76" title="13:34">of significant infection. </span><span class="segment" data-start="817.64" data-end="821.28" title="13:37">The short synaxan test result bore no influence </span><span class="segment" data-start="821.28" data-end="823.16" title="13:41">on 28-day mortality. </span><span class="segment" data-start="824.12" data-end="826.72" title="13:44">It could be that the patient's in anane's </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="826.72"><span class="t-timestamp">13:46</span></div>
+  <div class="t-body"><span class="segment" data-start="826.72" data-end="828.92" title="13:46">original study was sicker. </span><span class="segment" data-start="828.92" data-end="831.04" title="13:48">The surviving sepsis campaign </span><span class="segment" data-start="831.04" data-end="834.4" title="13:51">state that low dose steroids could be considered </span><span class="segment" data-start="834.4" data-end="838.96" title="13:54">in cases of septic shock refractory to vasopressors. </span><span class="segment" data-start="838.96" data-end="842.44" title="13:58">What is your view on using Recombinant Activator Protein C? </span><span class="segment" data-start="844.36" data-end="847.56" title="14:04">I know about the controversial prowess study </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="847.56"><span class="t-timestamp">14:07</span></div>
+  <div class="t-body"><span class="segment" data-start="847.56" data-end="849.96" title="14:07">published in 2001, </span><span class="segment" data-start="849.96" data-end="853.84" title="14:09">where for every 16 patients with severe sepsis </span><span class="segment" data-start="853.84" data-end="858.6" title="14:13">treated with activated protein C within 24 hours, </span><span class="segment" data-start="858.6" data-end="861.68" title="14:18">there is one less death at 28 days. </span><span class="segment" data-start="862.72" data-end="866.52" title="14:22">This was a large multicenter international trial </span><span class="segment" data-start="866.56" data-end="869.36" title="14:26">stopped after second interiminalysis </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="869.36"><span class="t-timestamp">14:29</span></div>
+  <div class="t-body"><span class="segment" data-start="869.36" data-end="872.44" title="14:29">because of significant difference between groups. </span><span class="segment" data-start="873.44" data-end="875.6" title="14:33">It was the first new treatment </span><span class="segment" data-start="875.6" data-end="879.28" title="14:35">to show any improved outcome in severe sepsis </span><span class="segment" data-start="879.28" data-end="882.72" title="14:39">and led to its inclusion in the 2004 </span><span class="segment" data-start="882.72" data-end="885.4" title="14:42">surviving sepsis campaign guidelines. </span><span class="segment" data-start="886.4" data-end="888.88" title="14:46">The results were particularly significant </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="888.88"><span class="t-timestamp">14:48</span></div>
+  <div class="t-body"><span class="segment" data-start="888.88" data-end="890.8" title="14:48">for patients who were sicker </span><span class="segment" data-start="890.8" data-end="893.08" title="14:50">with higher Apache 2 scores </span><span class="segment" data-start="893.08" data-end="894.96" title="14:53">for whom it has been licensed. </span><span class="segment" data-start="895.92" data-end="899.12" title="14:55">But criticisms have been made about the influence </span><span class="segment" data-start="899.12" data-end="901.28" title="14:59">and sponsorship from Lily, </span><span class="segment" data-start="901.28" data-end="904.08" title="15:01">the makers of activated protein C </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="904.08"><span class="t-timestamp">15:04</span></div>
+  <div class="t-body"><span class="segment" data-start="904.08" data-end="906.08" title="15:04">on these original guidelines </span><span class="segment" data-start="906.08" data-end="908.64" title="15:06">and also about the validity of the study. </span><span class="segment" data-start="909.68" data-end="911.96" title="15:09">The blinding has been criticised </span><span class="segment" data-start="911.96" data-end="914.2" title="15:11">because the control solution was changed </span><span class="segment" data-start="914.2" data-end="916.6" title="15:14">partway through the study. </span><span class="segment" data-start="916.6" data-end="918.52" title="15:16">Several centres were dropped </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="918.52"><span class="t-timestamp">15:18</span></div>
+  <div class="t-body"><span class="segment" data-start="918.52" data-end="922.36" title="15:18">and several more recruited partway through the study. </span><span class="segment" data-start="922.36" data-end="924.84" title="15:22">The most significant improvement </span><span class="segment" data-start="924.88" data-end="927.84" title="15:24">was in patients aged 80 to 90 </span><span class="segment" data-start="927.84" data-end="930.84" title="15:27">with significant cardiovascular comorbidity. </span><span class="segment" data-start="931.84" data-end="934.24" title="15:31">There was an unexplained reduction </span><span class="segment" data-start="934.24" data-end="938.04" title="15:34">in do not resuscitate orders in the treatment group </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="938.04"><span class="t-timestamp">15:38</span></div>
+  <div class="t-body"><span class="segment" data-start="938.04" data-end="940.24" title="15:38">and there was no significant difference </span><span class="segment" data-start="940.24" data-end="942.24" title="15:40">in the number of patients who survived </span><span class="segment" data-start="942.24" data-end="943.84" title="15:42">to hospital discharge. </span><span class="segment" data-start="945.0" data-end="947.92" title="15:45">Coupled with no proven benefit in the address trial </span><span class="segment" data-start="947.92" data-end="950.76" title="15:47">in patients at low risk of death </span><span class="segment" data-start="950.76" data-end="953.16" title="15:50">and increased harm in bleeding </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="953.16"><span class="t-timestamp">15:53</span></div>
+  <div class="t-body"><span class="segment" data-start="953.16" data-end="956.88" title="15:53">in the enhanced study of pediatric patients </span><span class="segment" data-start="956.88" data-end="959.32" title="15:56">and no clearly improved survival </span><span class="segment" data-start="959.32" data-end="961.12" title="15:59">in retrospective data </span><span class="segment" data-start="961.12" data-end="964.28" title="16:01">following the introduction of activated protein C. </span><span class="segment" data-start="964.28" data-end="966.64" title="16:04">It's use has reduced in popularity. </span><span class="segment" data-start="967.76" data-end="970.64" title="16:07">Of interest, studies show that patients </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="970.64"><span class="t-timestamp">16:10</span></div>
+  <div class="t-body"><span class="segment" data-start="970.64" data-end="972.72" title="16:10">with low protein C levels </span><span class="segment" data-start="972.72" data-end="975.36" title="16:12">have a worse outcome in septic shock. </span><span class="segment" data-start="976.36" data-end="979.72" title="16:16">Activated protein C might improve outcome </span><span class="segment" data-start="979.76" data-end="983.48" title="16:19">in those patients with low serum protein C levels </span><span class="segment" data-start="983.48" data-end="985.48" title="16:23">with severe sepsis </span><span class="segment" data-start="985.48" data-end="988.12" title="16:25">which I believe is an ongoing clinical trial </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="988.12"><span class="t-timestamp">16:28</span></div>
+  <div class="t-body"><span class="segment" data-start="988.12" data-end="989.6" title="16:28">recruiting at the moment. </span><span class="segment" data-start="991.0" data-end="995.6" title="16:31">It is thought that protein C has anti-inflammatory effects </span><span class="segment" data-start="995.6" data-end="998.68" title="16:35">and that in the context of severe sepsis </span><span class="segment" data-start="998.68" data-end="1000.4" title="16:38">the anticoagulant properties </span><span class="segment" data-start="1000.4" data-end="1002.52" title="16:40">are an unfortunate side effect. </span><span class="segment" data-start="1003.44" data-end="1006.84" title="16:43">At the moment, the surviving sepsis campaign </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="1006.84"><span class="t-timestamp">16:46</span></div>
+  <div class="t-body"><span class="segment" data-start="1006.84" data-end="1011.04" title="16:46">states that patients with Apache scores higher than 16 </span><span class="segment" data-start="1011.04" data-end="1012.88" title="16:51">probably warrant treatment. </span></div>
+</div>
+</div>
+
+<div class="subtitle-bar">
+  <span class="subtitle-text empty" id="subtitle-text">Play audio to see live subtitles&#8230;</span>
+</div>
+
+<script>
+
+const audio    = document.getElementById('audio');
+const allSegs  = Array.from(document.querySelectorAll('.segment'));
+const allBlocks = Array.from(document.querySelectorAll('.t-block'));
+const subtitleEl = document.getElementById('subtitle-text');
+let activeSegEl   = null;
+let activeBlockEl = null;
+let searchMatches = [];
+let searchIdx     = 0;
+
+// Duration display
+audio.addEventListener('loadedmetadata', () => {
+  const m = Math.floor(audio.duration / 60);
+  const s = Math.floor(audio.duration %% 60).toString().padStart(2,'0');
+  document.getElementById('dur').textContent = m + ':' + s;
+});
+
+// Seek helper
+function seekTo(t) {
+  audio.currentTime = t;
+  audio.play();
+}
+
+// Block gutter click
+document.querySelectorAll('.t-gutter').forEach(g => {
+  g.addEventListener('click', () => seekTo(parseFloat(g.dataset.start)));
+});
+
+// Segment click
+allSegs.forEach(s => {
+  s.addEventListener('click', e => {
+    e.stopPropagation();
+    seekTo(parseFloat(s.dataset.start));
+  });
+});
+
+// Real-time tracking
+audio.addEventListener('timeupdate', () => {
+  const t = audio.currentTime;
+
+  // Find active segment (last one whose start <= t)
+  let found = null;
+  for (let i = allSegs.length - 1; i >= 0; i--) {
+    if (parseFloat(allSegs[i].dataset.start) <= t) { found = allSegs[i]; break; }
+  }
+
+  if (found && found !== activeSegEl) {
+    // Clear previous
+    if (activeSegEl) activeSegEl.classList.remove('active');
+    if (activeBlockEl) {
+      activeBlockEl.classList.remove('block-active');
+      const pg = activeBlockEl.querySelector('.t-gutter');
+      if (pg) pg.classList.remove('gutter-active');
+    }
+    // Set new
+    found.classList.add('active');
+    const block = found.closest('.t-block');
+    if (block) {
+      block.classList.add('block-active');
+      const g = block.querySelector('.t-gutter');
+      if (g) g.classList.add('gutter-active');
+      activeBlockEl = block;
+    }
+    activeSegEl = found;
+
+    // Update subtitle
+    subtitleEl.textContent = found.textContent.trim();
+    subtitleEl.classList.remove('empty');
+
+    // Auto-scroll (only when not searching)
+    if (!document.getElementById('search').value) {
+      found.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }
+});
+
+// Search
+const searchInput = document.getElementById('search');
+searchInput.addEventListener('input', runSearch);
+searchInput.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && searchMatches.length) {
+    searchMatches[searchIdx].classList.remove('search-current');
+    searchIdx = (searchIdx + 1) %% searchMatches.length;
+    const el = searchMatches[searchIdx];
+    el.classList.add('search-current');
+    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+});
+
+function runSearch() {
+  const q = searchInput.value.trim().toLowerCase();
+  allSegs.forEach(s => s.classList.remove('search-match','search-current'));
+  searchMatches = [];
+  if (!q) return;
+  allSegs.forEach(s => {
+    if (s.textContent.toLowerCase().includes(q)) {
+      s.classList.add('search-match');
+      searchMatches.push(s);
+    }
+  });
+  if (!searchMatches.length) return;
+  searchIdx = 0;
+  searchMatches[0].classList.add('search-current');
+  searchMatches[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+</script>
+</body>
+</html>

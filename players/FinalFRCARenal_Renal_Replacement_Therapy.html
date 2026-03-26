@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Renal — Renal Replacement Therapy</title>
+<style>
+
+  :root {
+    --accent:    #0891b2;
+    --body-bg:   #f1f5f9;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: var(--body-bg);
+    color: #1e293b;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  /* ── Header ── */
+  .header {
+    background: #0f172a;
+    border-bottom: 3px solid var(--accent);
+    padding: 12px 20px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .header-left { flex: 1; min-width: 200px; }
+  .header h1 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #f1f5f9;
+    margin-bottom: 4px;
+    letter-spacing: 0.01em;
+  }
+  .header-sub {
+    font-size: 0.72rem;
+    color: #94a3b8;
+    font-style: italic;
+  }
+  audio {
+    height: 36px;
+    accent-color: var(--accent);
+    flex-shrink: 0;
+  }
+  .back-link {
+    font-size: 0.8rem;
+    color: #94a3b8;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .back-link:hover { color: #60a5fa; }
+
+  /* ── Toolbar ── */
+  .toolbar {
+    background: #1e293b;
+    padding: 7px 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-shrink: 0;
+    border-bottom: 1px solid #334155;
+  }
+  .toolbar input {
+    flex: 1;
+    max-width: 380px;
+    padding: 5px 11px;
+    border: 1px solid #475569;
+    border-radius: 6px;
+    background: #0f172a;
+    color: #e2e8f0;
+    font-size: 0.83rem;
+    outline: none;
+  }
+  .toolbar input:focus { border-color: var(--accent); }
+  .toolbar input::placeholder { color: #64748b; }
+  .stats {
+    font-size: 0.72rem;
+    color: #64748b;
+    white-space: nowrap;
+  }
+
+  /* ── Scroll area ── */
+  .scroll-area {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+  }
+  .scroll-area::-webkit-scrollbar { width: 6px; }
+  .scroll-area::-webkit-scrollbar-track { background: transparent; }
+  .scroll-area::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+
+  /* ── Subtitle bar ── */
+  .subtitle-bar {
+    background: #0f172a;
+    border-top: 2px solid var(--accent);
+    padding: 8px 20px;
+    flex-shrink: 0;
+    min-height: 42px;
+    display: flex;
+    align-items: center;
+  }
+  .subtitle-text {
+    font-size: 0.9rem;
+    color: #e2e8f0;
+    line-height: 1.5;
+    font-style: italic;
+  }
+  .subtitle-text.empty { color: #475569; }
+
+  /* ── Transcript blocks ── */
+  .t-block {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    margin-bottom: 14px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    display: flex;
+  }
+  .t-block.block-active {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px rgba(37,99,235,0.15);
+  }
+  .t-gutter {
+    background: #0f172a;
+    width: 52px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: 14px;
+    cursor: pointer;
+  }
+  .t-gutter:hover { background: #1e293b; }
+  .t-timestamp {
+    font-size: 0.7rem;
+    color: #64748b;
+    font-family: monospace;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+  .t-gutter.gutter-active .t-timestamp { color: var(--accent); }
+  .t-body {
+    flex: 1;
+    padding: 12px 16px;
+    line-height: 1.75;
+    font-size: 0.92rem;
+    color: #1e293b;
+  }
+
+  /* ── Segments ── */
+  .segment {
+    cursor: pointer;
+    border-radius: 3px;
+    transition: background 0.1s;
+  }
+  .segment:hover { background: #eff6ff; }
+  .segment.active {
+    background: #bfdbfe;
+    outline: 2px solid #3b82f6;
+    outline-offset: 1px;
+    border-radius: 3px;
+  }
+  .segment.search-match  { background: #fef9c3; }
+  .segment.search-current { background: #fde047; outline: 2px solid #ca8a04; }
+
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <h1>Renal — Renal Replacement Therapy</h1>
+    <div class="header-sub">Final FRCA &mdash; Exam Viva Simulation &mdash; Click any phrase to seek</div>
+  </div>
+  <audio id="audio" src="../FinalFRCARenal_Renal_Replacement_Therapy.mp3" controls preload="metadata"></audio>
+  <a class="back-link" href="index.html">&#8592; All Topics</a>
+</div>
+
+<div class="toolbar">
+  <input type="text" id="search" placeholder="Search transcript&#8230; (Enter = next match)">
+  <span class="stats" id="stats">200 segments &nbsp;|&nbsp; <span id="dur">loading&#8230;</span></span>
+</div>
+
+<div class="scroll-area" id="scroll-area">
+<div class="t-block">
+  <div class="t-gutter" data-start="0.0"><span class="t-timestamp">0:00</span></div>
+  <div class="t-body"><span class="segment" data-start="0.0" data-end="2.48" title="0:00">renal replacement therapies. </span><span class="segment" data-start="3.12" data-end="5.92" title="0:03">You were called to ITU to review a 46-year-old man. </span><span class="segment" data-start="6.8" data-end="11.76" title="0:06">He is a known IV drug abuser and alcoholic who was brought into A&E 24 hours previously. </span><span class="segment" data-start="12.8" data-end="16.88" title="0:12">He had been found by a neighbour collapsed in his hallway, having not been seen around for a few days. </span><span class="segment" data-start="18.0" data-end="23.28" title="0:18">He was hyperthermic with a low GCS in admission and was intubated. He remains ventilated. </span><span class="segment" data-start="24.24" data-end="25.68" title="0:24">His blood results are as follows. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="26.4"><span class="t-timestamp">0:26</span></div>
+  <div class="t-body"><span class="segment" data-start="26.4" data-end="30.16" title="0:26">Sodium 141, potassium 6.4, </span><span class="segment" data-start="30.88" data-end="32.72" title="0:30">Eurea 35.6, </span><span class="segment" data-start="33.68" data-end="35.44" title="0:33">creatinine 760, </span><span class="segment" data-start="36.32" data-end="38.08" title="0:36">hemoglobin 8.5, </span><span class="segment" data-start="39.12" data-end="41.12" title="0:39">white cell count 18.0, </span><span class="segment" data-start="42.08" data-end="43.68" title="0:42">platelets 150, </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="44.4"><span class="t-timestamp">0:44</span></div>
+  <div class="t-body"><span class="segment" data-start="44.4" data-end="46.88" title="0:44">creatinine kinase 15,600. </span><span class="segment" data-start="47.36" data-end="51.36" title="0:47">He has an ECG demonstrating a rate of 64 beats per minute, </span><span class="segment" data-start="52.0" data-end="54.96" title="0:52">with increased PR interval and tall 10-to-t waves. </span><span class="segment" data-start="54.96" data-end="58.72" title="0:54">This is a good example of a long case you may be faced with. </span><span class="segment" data-start="58.72" data-end="65.68" title="0:58">There are many potential routes of questioning, and often numerous abnormal results with the potential for discussion. </span><span class="segment" data-start="65.68" data-end="71.36" title="1:05">You will have 10 minutes to study the case and make notes. Use this time wisely. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="71.36"><span class="t-timestamp">1:11</span></div>
+  <div class="t-body"><span class="segment" data-start="71.36" data-end="75.36" title="1:11">This information will be available at the exam table 2, </span><span class="segment" data-start="75.44" data-end="77.28" title="1:15">so you don't need to copy it out. </span><span class="segment" data-start="78.16" data-end="81.84" title="1:18">The examiners will lead you along their desired pathway for questioning, </span><span class="segment" data-start="81.84" data-end="84.4" title="1:21">but they will start by asking you for a summary. </span><span class="segment" data-start="85.04" data-end="88.0" title="1:25">It is crucial you come across well at this stage, </span><span class="segment" data-start="88.0" data-end="90.56" title="1:28">and a succinct summary is advisable. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="91.04"><span class="t-timestamp">1:31</span></div>
+  <div class="t-body"><span class="segment" data-start="91.04" data-end="93.84" title="1:31">It is worth taking a few minutes to prepare your summary. </span><span class="segment" data-start="94.72" data-end="96.08" title="1:34">Can you summarize the case? </span><span class="segment" data-start="98.48" data-end="103.6" title="1:38">The case is a 46-year-old male, who is known for substance abuse, </span><span class="segment" data-start="104.32" data-end="107.44" title="1:44">found, clapsed for an unknown time period. </span><span class="segment" data-start="108.08" data-end="113.2" title="1:48">He has acute renal failure and life-threatening hyperkalemia, </span><span class="segment" data-start="113.2" data-end="116.4" title="1:53">which is most likely due to rabidomyelitis. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="117.2"><span class="t-timestamp">1:57</span></div>
+  <div class="t-body"><span class="segment" data-start="117.2" data-end="121.6" title="1:57">It is better to give a short summary and let the examiner lead the questioning </span><span class="segment" data-start="121.6" data-end="124.0" title="2:01">than go into the finer details of the case. </span><span class="segment" data-start="124.64" data-end="127.76" title="2:04">It is likely a discussion about the investigations, </span><span class="segment" data-start="127.76" data-end="131.12" title="2:07">particularly the causes of any abnormalities will follow. </span><span class="segment" data-start="131.36" data-end="134.64" title="2:11">What could be the cause of his acute kidney injury? </span><span class="segment" data-start="136.88" data-end="145.12" title="2:16">A acute kidney injury previously known as acute renal failure can be classified into pre-renal, </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="145.12"><span class="t-timestamp">2:25</span></div>
+  <div class="t-body"><span class="segment" data-start="145.12" data-end="148.24" title="2:25">intrinsic and post-renal causes. </span><span class="segment" data-start="149.12" data-end="157.12" title="2:29">The most likely in this case is an intrinsic renal cause, secondary to rabidomyelitis, </span><span class="segment" data-start="157.12" data-end="163.12" title="2:37">as the patient has a history suggesting rabidomyelitis and is significantly raised </span><span class="segment" data-start="163.12" data-end="169.2" title="2:43">creatinine kinase. Other possibilities could be pre-renal causes, </span><span class="segment" data-start="169.2" data-end="174.48" title="2:49">such as severe dehydration or hemorrhage, causing hypoverlemia, </span><span class="segment" data-start="175.2" data-end="181.28" title="2:55">hipaterenal syndrome, thromboembolic disease, or potentially sepsis. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="182.24"><span class="t-timestamp">3:02</span></div>
+  <div class="t-body"><span class="segment" data-start="182.24" data-end="190.72" title="3:02">Intrinsic renal causes could also include toxins or worsening of pre-existing renal disease, </span><span class="segment" data-start="190.72" data-end="195.2" title="3:10">or post-renal causes such as obstruction of the urinary tract. </span><span class="segment" data-start="196.72" data-end="199.52" title="3:16">Do you know any classifications for acute kidney injury? </span><span class="segment" data-start="200.24" data-end="205.92" title="3:20">If you don't know, then just say so. Don't try to make up an answer to a question like this. </span><span class="segment" data-start="205.92" data-end="209.04" title="3:25">It is unlikely to be a pass-failed question in itself. </span><span class="segment" data-start="211.36" data-end="217.92" title="3:31">As far as I am aware, there are no universally accepted classifications of acute kidney injury. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="218.64"><span class="t-timestamp">3:38</span></div>
+  <div class="t-body"><span class="segment" data-start="218.64" data-end="226.48" title="3:38">I am aware of two recently proposed classifications. The rifle criteria helps diagnose and </span><span class="segment" data-start="226.48" data-end="235.68" title="3:46">define the severity of acute kidney injury. Rifle stands for risk, injury, failure, </span><span class="segment" data-start="236.4" data-end="245.28" title="3:56">loss, and end-stage renal disease. Risk is if the creatinine is raised 1.5 times, </span><span class="segment" data-start="245.28" data-end="251.68" title="4:05">or the urinary output is less than 0.5 milliliters per kilo for six hours. </span><span class="segment" data-start="253.12" data-end="261.92" title="4:13">Injury is if the creatinine is raised by two times, or urinary output is less than 0.5 milliliters per </span><span class="segment" data-start="261.92" data-end="271.76" title="4:21">kilo for 12 hours. Failure is if the creatinine is raised by three times, or urinary output is less </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="271.76"><span class="t-timestamp">4:31</span></div>
+  <div class="t-body"><span class="segment" data-start="271.76" data-end="281.28" title="4:31">than 0.3 milliliters per kilo for 24 hours. Loss is persistent acute renal failure, </span><span class="segment" data-start="281.28" data-end="288.8" title="4:41">or complete loss of kidney function for more than four weeks, and end-stage renal disease is </span><span class="segment" data-start="288.8" data-end="296.32" title="4:48">complete loss of kidney function for more than three months. There is also the acute kidney injury </span><span class="segment" data-start="296.32" data-end="305.92" title="4:56">network staging of acute kidney injury. This divides the severity into stage 1, 2, and 3 based on </span><span class="segment" data-start="305.92" data-end="312.72" title="5:05">the rise in serum creatinine under the urinary output. What are your priorities in the treatment of </span><span class="segment" data-start="312.72" data-end="320.4" title="5:12">this patient? My priorities in the treatment of this patient are initially administration of </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="320.4"><span class="t-timestamp">5:20</span></div>
+  <div class="t-body"><span class="segment" data-start="320.4" data-end="328.64" title="5:20">oxygen and stabilization of the airway breathing and circulation. Following a swift clinical assessment, </span><span class="segment" data-start="328.64" data-end="336.4" title="5:28">treatment of his hyperkalemia should be undertaken immediately, as his potassium is dangerously high, </span><span class="segment" data-start="336.48" data-end="342.64" title="5:36">and he has significant ECG changes. How would you treat his hyperkalemia? </span><span class="segment" data-start="344.96" data-end="352.64" title="5:44">I would treat his hyperkalemia with 10 mills of 10% calcium gluconate to stabilize the </span><span class="segment" data-start="352.64" data-end="362.48" title="5:52">macardium by raising the threshold potential. I would start insulin 10 units in 50 mills of 50% </span><span class="segment" data-start="362.48" data-end="368.24" title="6:02">dextrose over 30 minutes to drive the potassium back into cells. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="369.6"><span class="t-timestamp">6:09</span></div>
+  <div class="t-body"><span class="segment" data-start="369.6" data-end="377.52" title="6:09">Sal butamol, 5 milligrams nebulized, would also have this effect, and could be used acutely. </span><span class="segment" data-start="378.16" data-end="384.8" title="6:18">I would then recheck his potassium, and if he is not responding, I would consider hemofiltration. </span><span class="segment" data-start="385.92" data-end="388.64" title="6:25">What are the indications for starting hemofiltration? </span><span class="segment" data-start="388.8" data-end="397.36" title="6:28">Hemofiltration should be commenced for persistent hyperkalemia, volume overload, </span><span class="segment" data-start="398.0" data-end="407.12" title="6:38">metabolic acidosis, or symptomatic uremia. Uremic symptoms include pericarditis, </span><span class="segment" data-start="407.12" data-end="415.84" title="6:47">blood discrasias, or encephalopathy. It can also be indicated in drug toxicity if the drug </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="415.84"><span class="t-timestamp">6:55</span></div>
+  <div class="t-body"><span class="segment" data-start="415.84" data-end="423.6" title="6:55">in question is cleared by dialysis. There are no universally agreed levels at which hemofiltration </span><span class="segment" data-start="423.6" data-end="432.16" title="7:03">is commenced, and there is variation between units. Generally speaking, hyperkalemia with potassium </span><span class="segment" data-start="432.16" data-end="441.6" title="7:12">above 6.5, or an acidosis with a pH less than 7.1 would guide towards hemofiltration. </span><span class="segment" data-start="442.16" data-end="448.24" title="7:22">Although I believe there is some evidence available showing lower morbidity with early and </span><span class="segment" data-start="448.24" data-end="453.6" title="7:28">aggressive continuous renal replacement, even in critically ill patients. </span><span class="segment" data-start="454.88" data-end="461.92" title="7:34">The rare indications for hemofiltration include cooling a hypothermic patient, </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="461.92"><span class="t-timestamp">7:41</span></div>
+  <div class="t-body"><span class="segment" data-start="461.92" data-end="468.72" title="7:41">or inducing deliberate hypothermia, also in rewarming a hypothermic patient. </span><span class="segment" data-start="469.6" data-end="474.72" title="7:49">It can also be used in this systemic inflammatory response syndrome, </span><span class="segment" data-start="474.72" data-end="480.4" title="7:54">or endotoxic shock, to reduce the plasma levels of inflammatory mediators. </span><span class="segment" data-start="481.68" data-end="484.32" title="8:01">Can you give an example of drugs cleared by dialysis? </span><span class="segment" data-start="486.64" data-end="496.56" title="8:06">Yes. Some I'm aware of include ethylene glycol, methanol, aspirin, vancomycin, </span><span class="segment" data-start="496.56" data-end="502.8" title="8:16">thioffaline and lythium. Can you classify the types of renal replacement therapies? </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="505.12"><span class="t-timestamp">8:25</span></div>
+  <div class="t-body"><span class="segment" data-start="505.12" data-end="511.92" title="8:25">Renal replacement therapies can be classified into intermittent and continuous techniques. </span><span class="segment" data-start="512.88" data-end="520.16" title="8:32">Intermittent dialysis can be either intermittent hemodialysis or peritoneal dialysis. </span><span class="segment" data-start="520.32" data-end="527.12" title="8:40">Continuous renal replacement therapies are more commonly used in the critical care setting. </span><span class="segment" data-start="527.92" data-end="532.0" title="8:47">They consist of continuous venovenus hemofiltration, </span><span class="segment" data-start="532.88" data-end="541.28" title="8:52">continuous venovenus hemodialysis, continuous venovenus hemodial filtration, </span><span class="segment" data-start="542.16" data-end="545.36" title="9:02">and slow continuous ultra-filtration. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="545.76"><span class="t-timestamp">9:05</span></div>
+  <div class="t-body"><span class="segment" data-start="545.76" data-end="550.72" title="9:05">Can you tell me a bit more about the intermittent techniques of renal replacement therapy? </span><span class="segment" data-start="551.6" data-end="556.4" title="9:11">This is unlikely to be asked, but it is helpful for your understanding of the subject. </span><span class="segment" data-start="558.72" data-end="565.12" title="9:18">Intermittent renal replacement therapies are most commonly used in chronic renal failure, </span><span class="segment" data-start="565.12" data-end="568.0" title="9:25">whether patients are hemodynamically stable. </span><span class="segment" data-start="568.16" data-end="577.28" title="9:28">Intermittent hemodialysis requires insertion of specialist dialysis catheters or the formation of a </span><span class="segment" data-start="577.28" data-end="583.28" title="9:37">fistula. It is undertaken at regular intervals, depending on the patient's needs, </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="583.84"><span class="t-timestamp">9:43</span></div>
+  <div class="t-body"><span class="segment" data-start="583.84" data-end="590.72" title="9:43">commonly three times a week. It involves a large volumes of blood leaving the circulation at </span><span class="segment" data-start="590.72" data-end="598.64" title="9:50">any one time, so rapidly removes a solute or volume load, but is unsuitable if a patient is </span><span class="segment" data-start="598.64" data-end="607.28" title="9:58">hemodynamically compromised. The primary method of solute and fluid removal in hemodialysis </span><span class="segment" data-start="607.28" data-end="615.44" title="10:07">is diffusion. Peritoneal dialysis uses the peritoneum as the dialysis membrane, </span><span class="segment" data-start="615.44" data-end="621.6" title="10:15">and fluid can be introduced at regular intervals throughout the day, which is continuous </span><span class="segment" data-start="621.6" data-end="628.32" title="10:21">ambulatory peritoneal dialysis, or overnight in automatic peritoneal dialysis. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="629.28"><span class="t-timestamp">10:29</span></div>
+  <div class="t-body"><span class="segment" data-start="629.28" data-end="636.24" title="10:29">This form of dialysis requires a permanent peritoneal catheter, which carries a considerable risk </span><span class="segment" data-start="636.24" data-end="643.36" title="10:36">of infection. It is also inefficient at removing large volumes of fluid or solute, </span><span class="segment" data-start="643.44" data-end="650.24" title="10:43">and would be inappropriate in critically ill patients, as the increase in intra-abdominal volume </span><span class="segment" data-start="650.24" data-end="656.96" title="10:50">could cause splinting of the diaphragm and ventilation difficulties. What are the differences </span><span class="segment" data-start="656.96" data-end="665.2" title="10:56">between the types of continuous renal replacement therapies? The continuous renal replacement therapies </span><span class="segment" data-start="665.2" data-end="672.64" title="11:05">are based on the transfer of solute and fluid across a semi-permeable membrane by either diffusion, </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="672.64"><span class="t-timestamp">11:12</span></div>
+  <div class="t-body"><span class="segment" data-start="672.64" data-end="680.48" title="11:12">in the case of hemodialysis, or convection, in the case of hemofiltration, or a combination of </span><span class="segment" data-start="680.48" data-end="685.92" title="11:20">the two processes in hemodire filtration. What is diffusion? </span><span class="segment" data-start="688.4" data-end="694.56" title="11:28">Diffusion is the spontaneous movement of substances from a region where they have a high </span><span class="segment" data-start="694.56" data-end="701.44" title="11:34">concentration to a region where the concentration is lower. The rate of diffusion </span><span class="segment" data-start="701.52" data-end="709.2" title="11:41">is proportional to the concentration gradient. Osmosis is the diffusion of a liquid solvent </span><span class="segment" data-start="709.2" data-end="716.8" title="11:49">when its solute is left behind, whereas dialysis is the diffusion of a solute across a membrane. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="718.0"><span class="t-timestamp">11:58</span></div>
+  <div class="t-body"><span class="segment" data-start="718.0" data-end="726.48" title="11:58">What determines the rate of dialysis? In hemodialysis, the rate of diffusion is driven by the </span><span class="segment" data-start="726.48" data-end="734.24" title="12:06">differing concentrations of solute between the blood and dialisate. The higher the concentration </span><span class="segment" data-start="734.24" data-end="741.92" title="12:14">gradient, the greater the rate of diffusion. The other factors influencing the rate of diffusion </span><span class="segment" data-start="741.92" data-end="749.92" title="12:21">include solute factors such as the size of the particles or their charge and any protein binding. </span><span class="segment" data-start="750.8" data-end="759.12" title="12:30">Also, membrane factors such as the size and number of pores, its thickness and surface area, </span><span class="segment" data-start="759.12" data-end="763.76" title="12:39">and the rate of delivery of solute and concentration of the dialisate. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="764.96"><span class="t-timestamp">12:44</span></div>
+  <div class="t-body"><span class="segment" data-start="764.96" data-end="766.0" title="12:44">What is convection? </span><span class="segment" data-start="768.4" data-end="775.84" title="12:48">Convection is also described as solvent drag and occurs when a moving stream sweeps a </span><span class="segment" data-start="775.92" data-end="782.96" title="12:55">solute molecule along causing it to pass through a membrane. A positive pressure is produced in </span><span class="segment" data-start="782.96" data-end="790.24" title="13:02">the blood compartment and the solute molecules are pushed into the dialisate compartment where the </span><span class="segment" data-start="790.24" data-end="798.48" title="13:10">fast flows create a negative pressure effectively pulling the solute along. This transmembrane force </span><span class="segment" data-start="798.48" data-end="806.24" title="13:18">that is created is the driving force for ultra filtration. Therefore, convection, unlike </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="806.24"><span class="t-timestamp">13:26</span></div>
+  <div class="t-body"><span class="segment" data-start="806.24" data-end="811.36" title="13:26">diffusion, is independent of concentration gradients across the membrane. </span><span class="segment" data-start="812.8" data-end="814.96" title="13:32">What factors influence the rate of convection? </span><span class="segment" data-start="817.12" data-end="823.2" title="13:37">The amount of convective transport is determined by the direction and magnitude of the </span><span class="segment" data-start="823.28" data-end="830.8" title="13:43">transmembrane force. The porosity of the membrane also influences the rate at which solutes are removed. </span><span class="segment" data-start="831.76" data-end="837.36" title="13:51">The faster the flow rate of blood to the membrane, the greater the rate of ultra filtration </span><span class="segment" data-start="837.36" data-end="845.2" title="13:57">and solute clearance. Also, the greater the negative pressures in the ultra-filtrate compartment, </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="845.2"><span class="t-timestamp">14:05</span></div>
+  <div class="t-body"><span class="segment" data-start="845.2" data-end="851.76" title="14:05">the greater the rate of ultra-filtration. This means that increased hydrostatic pressure in the </span><span class="segment" data-start="851.76" data-end="860.16" title="14:11">blood will increase transmembrane pressure and to speed up ultra-filtration. Similar effects would </span><span class="segment" data-start="860.16" data-end="866.4" title="14:20">occur with a reduction in the plasma colloid osmotic pressure. Can you draw a simple circuit for </span><span class="segment" data-start="866.4" data-end="872.88" title="14:26">continuous venovina's hemofiltration? This could well be expected and it is recommended you spend </span><span class="segment" data-start="872.88" data-end="879.04" title="14:32">a bit of time practicing a simple diagram of a hemofiltration circuit. You need to understand the </span><span class="segment" data-start="879.04" data-end="887.12" title="14:39">differences between CvVH and CvVHDF circuits and be able to illustrate these on your diagram. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="888.08"><span class="t-timestamp">14:48</span></div>
+  <div class="t-body"><span class="segment" data-start="888.08" data-end="891.36" title="14:48">Try to picture a circuit and listen to the explanation. </span><span class="segment" data-start="893.68" data-end="900.96" title="14:53">A continuous venovina's hemofiltration circuit starts with a large bore venous access to the </span><span class="segment" data-start="900.96" data-end="908.88" title="15:00">patient. A single cannula has a dual lumen for removal and return of blood. The removal </span><span class="segment" data-start="908.88" data-end="916.88" title="15:08">flow may be from 0 to 300 mils per minute. This will pass through a pressure sensor to detect a </span><span class="segment" data-start="916.88" data-end="924.32" title="15:16">drop in pressure that may indicate cannula blockage. Then a pump drives the flow of blood through </span><span class="segment" data-start="924.32" data-end="931.44" title="15:24">the hemofilter where the ultra-filtrate is removed, pumped away into a collection bag and </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="931.44"><span class="t-timestamp">15:31</span></div>
+  <div class="t-body"><span class="segment" data-start="931.44" data-end="939.12" title="15:31">disposed of. And the filtered blood continues in the circuit through another sensor to detect </span><span class="segment" data-start="939.12" data-end="945.76" title="15:39">low pressure which would indicate hemofilter blockage or high pressure which would indicate </span><span class="segment" data-start="945.76" data-end="952.8" title="15:45">downstream clotting. The blood then passes into a drip chamber where a placement fluid may be </span><span class="segment" data-start="952.8" data-end="959.44" title="15:52">added in and runs from there through a final pressure sensor before re-entering the patient. </span><span class="segment" data-start="960.4" data-end="969.12" title="16:00">In summary, the components are pressure sensors, pumps, a hemofilter and drip chamber. </span><span class="segment" data-start="970.0" data-end="977.84" title="16:10">Ultra-filtrate leaves the hemofilter and anti-comagulation and replacement fluids are added to the circuit. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="980.24"><span class="t-timestamp">16:20</span></div>
+  <div class="t-body"><span class="segment" data-start="980.24" data-end="985.44" title="16:20">With reference to your diagram, describe how the stifres from continuous venovina's hemodire filtration. </span><span class="segment" data-start="985.92" data-end="995.12" title="16:25">In continuous venovina's hemodire filtration, there is dialisate entering the hemofilter </span><span class="segment" data-start="995.12" data-end="1003.12" title="16:35">and filtrate leaving the filter. These two solutions must run in opposite directions to allow </span><span class="segment" data-start="1003.12" data-end="1011.2" title="16:43">convection to occur. The other difference is the speed of blood flow which is between 200 and 400 </span><span class="segment" data-start="1011.36" data-end="1019.2" title="16:51">mils per minute for continuous venovina's hemodire filtration and 0 to 300 mils per minute </span><span class="segment" data-start="1019.2" data-end="1026.08" title="16:59">for continuous venovina's hemofilteration. Can you tell me what types of membranes are used in </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="1026.08"><span class="t-timestamp">17:06</span></div>
+  <div class="t-body"><span class="segment" data-start="1026.08" data-end="1035.52" title="17:06">continuous renal replacement therapy? I am aware there are synthetic membranes such as polyacrylonitrile </span><span class="segment" data-start="1035.52" data-end="1043.44" title="17:15">membranes and cellulose-based membranes. The modern hemofilters use synthetic membranes </span><span class="segment" data-start="1043.44" data-end="1048.64" title="17:23">due to increased permeability and improved compatibility with patient blood. </span><span class="segment" data-start="1049.68" data-end="1052.64" title="17:29">What are the different types of replacement fluids commonly used? </span><span class="segment" data-start="1054.72" data-end="1061.76" title="17:34">The replacement fluids consist of balanced solutions containing phosphate and potassium </span><span class="segment" data-start="1061.84" data-end="1069.6" title="17:41">and either lactate or bicarbonate as a buffer. Lactate containing solutions are cheaper and have </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="1069.6"><span class="t-timestamp">17:49</span></div>
+  <div class="t-body"><span class="segment" data-start="1069.6" data-end="1076.96" title="17:49">a longer shelf life but can cause an increase in plasma lactate and worsening metabolic acidosis. </span><span class="segment" data-start="1077.92" data-end="1085.6" title="17:57">Patients with liver dysfunction are at higher risk of this. Also, those with a pre-existing raised </span><span class="segment" data-start="1085.76" data-end="1092.88" title="18:05">lactate or profound hypo perfusion should be considered for lactate-free replacement fluid. </span><span class="segment" data-start="1093.76" data-end="1101.2" title="18:13">The bicarbonate solutions require pre-mixing as the bicarbonate is not stable in aqueous solution. </span><span class="segment" data-start="1102.8" data-end="1107.04" title="18:22">What are the options for anti-coragulation when hemofiltering a patient on ITU? </span><span class="segment" data-start="1107.52" data-end="1116.0" title="18:27">Anti-coragulation is required for hemofiltration as the blood makes direct contact with the </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="1116.0"><span class="t-timestamp">18:36</span></div>
+  <div class="t-body"><span class="segment" data-start="1116.0" data-end="1124.72" title="18:36">hemofilter circuit and membrane thereby activating the clotting cascade. The aim of anti-coragulation </span><span class="segment" data-start="1124.72" data-end="1131.12" title="18:44">is to extend the life of the hemofilter by preventing it clotting off and to minimise the </span><span class="segment" data-start="1131.2" data-end="1139.12" title="18:51">systemic anti-coragulation. Usually, heparin is used initially to flush the filter and does a </span><span class="segment" data-start="1139.12" data-end="1146.56" title="18:59">bolus to start the filter then as an infusion whilst the filter is running. The other option for </span><span class="segment" data-start="1146.56" data-end="1154.88" title="19:06">anti-coragulation is prostocycline otherwise known as flowlan. This is indicated in patients with </span><span class="segment" data-start="1154.88" data-end="1162.4" title="19:14">low platelets and it acts to prevent platelet aggregation. It also causes vasodilitation. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="1163.28"><span class="t-timestamp">19:23</span></div>
+  <div class="t-body"><span class="segment" data-start="1163.28" data-end="1169.84" title="19:23">It may also be appropriate in patients with a pre-existing coagulopathy, although in some cases </span><span class="segment" data-start="1169.84" data-end="1176.64" title="19:29">this may mean anti-coragulation is not required at all. Other alternatives for anti-coragulation </span><span class="segment" data-start="1176.88" data-end="1185.2" title="19:36">are low molecular weight heparins, fonda parenux, denaperoid or citrate. Citrate is thought to be </span><span class="segment" data-start="1185.2" data-end="1191.76" title="19:45">advantageous as its effects are more confined to the hemofilter circuit causing less systemic </span><span class="segment" data-start="1191.76" data-end="1198.72" title="19:51">anti-coragulation. It acts through chelation of calcium ions causing inhibition of </span><span class="segment" data-start="1198.72" data-end="1205.76" title="19:58">coagulation. The calcium is then replaced after filtering to reverse this effect and residual </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="1205.76"><span class="t-timestamp">20:05</span></div>
+  <div class="t-body"><span class="segment" data-start="1205.76" data-end="1212.4" title="20:05">citrate is rapidly metabolised in the liver. What are the potential complications of CVVH? </span><span class="segment" data-start="1214.72" data-end="1222.0" title="20:14">The complications of continuous venous hemofiltration can be divided into those associated with the </span><span class="segment" data-start="1222.0" data-end="1230.08" title="20:22">vascaff itself, those associated with the anti-coragulation and those associated with the filtration </span><span class="segment" data-start="1230.08" data-end="1238.64" title="20:30">process. Cafferter-related complications include complications at insertion, which is site </span><span class="segment" data-start="1238.64" data-end="1246.16" title="20:38">dependent and the same as those for a standard central line. Bearing in mind, the vascaffs for </span><span class="segment" data-start="1246.16" data-end="1254.08" title="20:46">hemofiltration are significantly larger bore than a standard central line. These include bleeding, </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="1254.08"><span class="t-timestamp">20:54</span></div>
+  <div class="t-body"><span class="segment" data-start="1254.08" data-end="1263.6" title="20:54">infection, damage to surrounding structures, arteriovenous fistulas, arrhythmias, pneumothorax and </span><span class="segment" data-start="1263.6" data-end="1271.6" title="21:03">pain. Anti-coragulation related problems are bleeding and if heparin is used then heparin-induced </span><span class="segment" data-start="1271.84" data-end="1281.2" title="21:11">thrombocytopenia is a risk. General complications include cardiovascular instability and hypotension, </span><span class="segment" data-start="1281.2" data-end="1287.68" title="21:21">particularly when starting the filter on a critically ill patient. Also hypovalemia, </span><span class="segment" data-start="1288.24" data-end="1297.52" title="21:28">hypothermia, electrolyte imbalance, metabolic abnormalities, air embolism and anemia can all occur. </span><span class="segment" data-start="1298.24" data-end="1303.12" title="21:38">There is a risk of reactions to the filter membrane and anaphylaxis can occur. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="1304.48"><span class="t-timestamp">21:44</span></div>
+  <div class="t-body"><span class="segment" data-start="1304.48" data-end="1307.76" title="21:44">Can you tell me more about the role of renal replacement therapies in sepsis? </span><span class="segment" data-start="1310.0" data-end="1315.2" title="21:50">I understand that there is a potential role for renal replacement therapies in sepsis. </span><span class="segment" data-start="1315.92" data-end="1323.36" title="21:55">This is because most of the inflammatory mediators thought to be pathogenic in sepsis are medium-sized </span><span class="segment" data-start="1323.36" data-end="1330.56" title="22:03">water soluble compounds that can be removed by hemodire filtration. It has been shown that </span><span class="segment" data-start="1330.56" data-end="1338.4" title="22:10">standard rates of hemofiltration of around 20 mL per kilo per hour are not sufficient to reduce </span><span class="segment" data-start="1338.4" data-end="1345.76" title="22:18">the concentration of inflammatory mediators in sepsis. However, high volume hemofiltration </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="1345.76"><span class="t-timestamp">22:25</span></div>
+  <div class="t-body"><span class="segment" data-start="1345.76" data-end="1352.48" title="22:25">may result in significant reduction in the plasma concentrations of these mediators and there have </span><span class="segment" data-start="1352.48" data-end="1360.08" title="22:32">been animal studies demonstrating improvements in outcomes. </span></div>
+</div>
+</div>
+
+<div class="subtitle-bar">
+  <span class="subtitle-text empty" id="subtitle-text">Play audio to see live subtitles&#8230;</span>
+</div>
+
+<script>
+
+const audio    = document.getElementById('audio');
+const allSegs  = Array.from(document.querySelectorAll('.segment'));
+const allBlocks = Array.from(document.querySelectorAll('.t-block'));
+const subtitleEl = document.getElementById('subtitle-text');
+let activeSegEl   = null;
+let activeBlockEl = null;
+let searchMatches = [];
+let searchIdx     = 0;
+
+// Duration display
+audio.addEventListener('loadedmetadata', () => {
+  const m = Math.floor(audio.duration / 60);
+  const s = Math.floor(audio.duration %% 60).toString().padStart(2,'0');
+  document.getElementById('dur').textContent = m + ':' + s;
+});
+
+// Seek helper
+function seekTo(t) {
+  audio.currentTime = t;
+  audio.play();
+}
+
+// Block gutter click
+document.querySelectorAll('.t-gutter').forEach(g => {
+  g.addEventListener('click', () => seekTo(parseFloat(g.dataset.start)));
+});
+
+// Segment click
+allSegs.forEach(s => {
+  s.addEventListener('click', e => {
+    e.stopPropagation();
+    seekTo(parseFloat(s.dataset.start));
+  });
+});
+
+// Real-time tracking
+audio.addEventListener('timeupdate', () => {
+  const t = audio.currentTime;
+
+  // Find active segment (last one whose start <= t)
+  let found = null;
+  for (let i = allSegs.length - 1; i >= 0; i--) {
+    if (parseFloat(allSegs[i].dataset.start) <= t) { found = allSegs[i]; break; }
+  }
+
+  if (found && found !== activeSegEl) {
+    // Clear previous
+    if (activeSegEl) activeSegEl.classList.remove('active');
+    if (activeBlockEl) {
+      activeBlockEl.classList.remove('block-active');
+      const pg = activeBlockEl.querySelector('.t-gutter');
+      if (pg) pg.classList.remove('gutter-active');
+    }
+    // Set new
+    found.classList.add('active');
+    const block = found.closest('.t-block');
+    if (block) {
+      block.classList.add('block-active');
+      const g = block.querySelector('.t-gutter');
+      if (g) g.classList.add('gutter-active');
+      activeBlockEl = block;
+    }
+    activeSegEl = found;
+
+    // Update subtitle
+    subtitleEl.textContent = found.textContent.trim();
+    subtitleEl.classList.remove('empty');
+
+    // Auto-scroll (only when not searching)
+    if (!document.getElementById('search').value) {
+      found.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }
+});
+
+// Search
+const searchInput = document.getElementById('search');
+searchInput.addEventListener('input', runSearch);
+searchInput.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && searchMatches.length) {
+    searchMatches[searchIdx].classList.remove('search-current');
+    searchIdx = (searchIdx + 1) %% searchMatches.length;
+    const el = searchMatches[searchIdx];
+    el.classList.add('search-current');
+    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+});
+
+function runSearch() {
+  const q = searchInput.value.trim().toLowerCase();
+  allSegs.forEach(s => s.classList.remove('search-match','search-current'));
+  searchMatches = [];
+  if (!q) return;
+  allSegs.forEach(s => {
+    if (s.textContent.toLowerCase().includes(q)) {
+      s.classList.add('search-match');
+      searchMatches.push(s);
+    }
+  });
+  if (!searchMatches.length) return;
+  searchIdx = 0;
+  searchMatches[0].classList.add('search-current');
+  searchMatches[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+</script>
+</body>
+</html>

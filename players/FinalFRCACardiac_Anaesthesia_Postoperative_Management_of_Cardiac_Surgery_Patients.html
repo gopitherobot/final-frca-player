@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cardiac Anaesthesia — Postoperative Management of Cardiac Surgery Patients</title>
+<style>
+
+  :root {
+    --accent:    #ef4444;
+    --body-bg:   #f1f5f9;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: var(--body-bg);
+    color: #1e293b;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  /* ── Header ── */
+  .header {
+    background: #0f172a;
+    border-bottom: 3px solid var(--accent);
+    padding: 12px 20px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .header-left { flex: 1; min-width: 200px; }
+  .header h1 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #f1f5f9;
+    margin-bottom: 4px;
+    letter-spacing: 0.01em;
+  }
+  .header-sub {
+    font-size: 0.72rem;
+    color: #94a3b8;
+    font-style: italic;
+  }
+  audio {
+    height: 36px;
+    accent-color: var(--accent);
+    flex-shrink: 0;
+  }
+  .back-link {
+    font-size: 0.8rem;
+    color: #94a3b8;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .back-link:hover { color: #60a5fa; }
+
+  /* ── Toolbar ── */
+  .toolbar {
+    background: #1e293b;
+    padding: 7px 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-shrink: 0;
+    border-bottom: 1px solid #334155;
+  }
+  .toolbar input {
+    flex: 1;
+    max-width: 380px;
+    padding: 5px 11px;
+    border: 1px solid #475569;
+    border-radius: 6px;
+    background: #0f172a;
+    color: #e2e8f0;
+    font-size: 0.83rem;
+    outline: none;
+  }
+  .toolbar input:focus { border-color: var(--accent); }
+  .toolbar input::placeholder { color: #64748b; }
+  .stats {
+    font-size: 0.72rem;
+    color: #64748b;
+    white-space: nowrap;
+  }
+
+  /* ── Scroll area ── */
+  .scroll-area {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+  }
+  .scroll-area::-webkit-scrollbar { width: 6px; }
+  .scroll-area::-webkit-scrollbar-track { background: transparent; }
+  .scroll-area::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+
+  /* ── Subtitle bar ── */
+  .subtitle-bar {
+    background: #0f172a;
+    border-top: 2px solid var(--accent);
+    padding: 8px 20px;
+    flex-shrink: 0;
+    min-height: 42px;
+    display: flex;
+    align-items: center;
+  }
+  .subtitle-text {
+    font-size: 0.9rem;
+    color: #e2e8f0;
+    line-height: 1.5;
+    font-style: italic;
+  }
+  .subtitle-text.empty { color: #475569; }
+
+  /* ── Transcript blocks ── */
+  .t-block {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    margin-bottom: 14px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    display: flex;
+  }
+  .t-block.block-active {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px rgba(37,99,235,0.15);
+  }
+  .t-gutter {
+    background: #0f172a;
+    width: 52px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: 14px;
+    cursor: pointer;
+  }
+  .t-gutter:hover { background: #1e293b; }
+  .t-timestamp {
+    font-size: 0.7rem;
+    color: #64748b;
+    font-family: monospace;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+  .t-gutter.gutter-active .t-timestamp { color: var(--accent); }
+  .t-body {
+    flex: 1;
+    padding: 12px 16px;
+    line-height: 1.75;
+    font-size: 0.92rem;
+    color: #1e293b;
+  }
+
+  /* ── Segments ── */
+  .segment {
+    cursor: pointer;
+    border-radius: 3px;
+    transition: background 0.1s;
+  }
+  .segment:hover { background: #eff6ff; }
+  .segment.active {
+    background: #bfdbfe;
+    outline: 2px solid #3b82f6;
+    outline-offset: 1px;
+    border-radius: 3px;
+  }
+  .segment.search-match  { background: #fef9c3; }
+  .segment.search-current { background: #fde047; outline: 2px solid #ca8a04; }
+
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <h1>Cardiac Anaesthesia — Postoperative Management of Cardiac Surgery Patients</h1>
+    <div class="header-sub">Final FRCA &mdash; Exam Viva Simulation &mdash; Click any phrase to seek</div>
+  </div>
+  <audio id="audio" src="../FinalFRCACardiac_Anaesthesia_Postoperative_Management_of_Cardiac_Surgery_Patients.mp3" controls preload="metadata"></audio>
+  <a class="back-link" href="index.html">&#8592; All Topics</a>
+</div>
+
+<div class="toolbar">
+  <input type="text" id="search" placeholder="Search transcript&#8230; (Enter = next match)">
+  <span class="stats" id="stats">182 segments &nbsp;|&nbsp; <span id="dur">loading&#8230;</span></span>
+</div>
+
+<div class="scroll-area" id="scroll-area">
+<div class="t-block">
+  <div class="t-gutter" data-start="0.0"><span class="t-timestamp">0:00</span></div>
+  <div class="t-body"><span class="segment" data-start="0.0" data-end="3.0" title="0:00">post-operative care after cardiac surgery. </span><span class="segment" data-start="3.0" data-end="7.0" title="0:03">It's unlikely that this will be the only topic of a viber, </span><span class="segment" data-start="7.0" data-end="10.0" title="0:07">even though there is a lot to cover potentially here. </span><span class="segment" data-start="10.0" data-end="13.0" title="0:10">What are your concerns when looking after a patient, </span><span class="segment" data-start="13.0" data-end="18.0" title="0:13">having undergone an on-pump coronary bypass grafting on cardiac ITU? </span><span class="segment" data-start="18.0" data-end="21.0" title="0:18">It's best to stick to organ systems here, </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="21.0"><span class="t-timestamp">0:21</span></div>
+  <div class="t-body"><span class="segment" data-start="21.0" data-end="23.0" title="0:21">to keep things in a logical order. </span><span class="segment" data-start="23.0" data-end="26.0" title="0:23">Try and start with an overview. </span><span class="segment" data-start="26.0" data-end="31.0" title="0:26">The examiner will probably pick up on specific issues from there. </span><span class="segment" data-start="31.0" data-end="35.0" title="0:31">When looking after patients on cardiac ITU, </span><span class="segment" data-start="35.0" data-end="41.0" title="0:35">I want to look out for, prevent and treat post-operative complications. </span><span class="segment" data-start="41.0" data-end="45.0" title="0:41">In straightforward cases, the main aims are re-warming, </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="45.0"><span class="t-timestamp">0:45</span></div>
+  <div class="t-body"><span class="segment" data-start="45.0" data-end="49.0" title="0:45">the correction of acid-base and electrolyte abnormalities, </span><span class="segment" data-start="49.0" data-end="52.0" title="0:49">and early extubation. </span><span class="segment" data-start="52.0" data-end="55.0" title="0:52">I would monitor patients for ongoing bleeding </span><span class="segment" data-start="55.0" data-end="58.0" title="0:55">and keep a close eye on their fluid balance. </span><span class="segment" data-start="58.0" data-end="61.0" title="0:58">Some patients may require Ionotropic support </span><span class="segment" data-start="61.0" data-end="64.0" title="1:01">and can have problems with arrhythmias. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="64.0"><span class="t-timestamp">1:04</span></div>
+  <div class="t-body"><span class="segment" data-start="64.0" data-end="69.0" title="1:04">Weaning off mechanical ventilation needs to be managed carefully </span><span class="segment" data-start="69.0" data-end="72.0" title="1:09">and post-operative analgesia optimised. </span><span class="segment" data-start="72.0" data-end="75.0" title="1:12">Tell us a little bit more about problems with bleeding. </span><span class="segment" data-start="75.0" data-end="80.0" title="1:15">During on-pump, as well as during off-pump cardiac bypass surgery, </span><span class="segment" data-start="80.0" data-end="83.0" title="1:20">patients are given large doses of Heparin, </span><span class="segment" data-start="83.0" data-end="87.0" title="1:23">which is reversed with protamine at the end of the procedure. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="87.0"><span class="t-timestamp">1:27</span></div>
+  <div class="t-body"><span class="segment" data-start="87.0" data-end="90.0" title="1:27">The use of cardiopulmonary bypass itself </span><span class="segment" data-start="90.0" data-end="94.0" title="1:30">leads to hemodiolution of all blood components. </span><span class="segment" data-start="94.0" data-end="99.0" title="1:34">In addition, platelet numbers and function can be reduced. </span><span class="segment" data-start="99.0" data-end="104.0" title="1:39">The patients leave theatre with a number of chest drains in situ </span><span class="segment" data-start="104.0" data-end="107.0" title="1:44">which serve as monitors for ongoing bleeding. </span><span class="segment" data-start="107.0" data-end="110.0" title="1:47">However, bleeding can also be concealed </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="110.0"><span class="t-timestamp">1:50</span></div>
+  <div class="t-body"><span class="segment" data-start="110.0" data-end="115.0" title="1:50">and may present as a pericardial or plural effusion. </span><span class="segment" data-start="115.0" data-end="117.0" title="1:55">My index of suspicion for bleeding </span><span class="segment" data-start="117.0" data-end="121.0" title="1:57">would always be high in these patients. </span><span class="segment" data-start="121.0" data-end="125.0" title="2:01">Close monitoring and communication with the surgical team </span><span class="segment" data-start="125.0" data-end="128.0" title="2:05">is crucial in managing post-operative bleeding. </span><span class="segment" data-start="128.0" data-end="133.0" title="2:08">Blood loss should be less than 200mAh. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="134.0"><span class="t-timestamp">2:14</span></div>
+  <div class="t-body"><span class="segment" data-start="134.0" data-end="138.0" title="2:14">Bleeding may have surgical or hematological causes. </span><span class="segment" data-start="138.0" data-end="141.0" title="2:18">I would check a full blood count, </span><span class="segment" data-start="141.0" data-end="144.0" title="2:21">coagulation screen and a bleeding time. </span><span class="segment" data-start="144.0" data-end="146.0" title="2:24">If any of the tests are abnormal, </span><span class="segment" data-start="146.0" data-end="151.0" title="2:26">the patient may need blood products or a further dose of protamine. </span><span class="segment" data-start="151.0" data-end="156.0" title="2:31">In the case of heavy bleeding, i.e. more than 400mAh, </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="156.0"><span class="t-timestamp">2:36</span></div>
+  <div class="t-body"><span class="segment" data-start="156.0" data-end="160.0" title="2:36">surgical re-exploration may be necessary. </span><span class="segment" data-start="160.0" data-end="165.0" title="2:40">Restanotomy carries an increased in-hospital mortality. </span><span class="segment" data-start="165.0" data-end="168.0" title="2:45">In cases of most severe bleeding, </span><span class="segment" data-start="168.0" data-end="173.0" title="2:48">it has to be undertaken immediately on the intensive care unit. </span><span class="segment" data-start="173.0" data-end="179.0" title="2:53">Appropriate sedation and analgesia are crucial under these circumstances. </span><span class="segment" data-start="179.0" data-end="184.0" title="2:59">How would you manage these patients fluid balance? </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="184.0"><span class="t-timestamp">3:04</span></div>
+  <div class="t-body"><span class="segment" data-start="184.0" data-end="189.0" title="3:04">Large fluid shifts take place during cardiopulmonary bypass. </span><span class="segment" data-start="189.0" data-end="192.0" title="3:09">This leads to an increase in extracellular fluid </span><span class="segment" data-start="192.0" data-end="198.0" title="3:12">due to the volume of priming solution given and capillary leakage. </span><span class="segment" data-start="198.0" data-end="200.0" title="3:18">Himo dilution occurs. </span><span class="segment" data-start="200.0" data-end="205.0" title="3:20">The extracellular fluid load increases with the duration of bypass. </span><span class="segment" data-start="205.0" data-end="210.0" title="3:25">However, there may be co-existent relative intravascular hypotherlemia. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="210.0"><span class="t-timestamp">3:30</span></div>
+  <div class="t-body"><span class="segment" data-start="210.0" data-end="215.0" title="3:30">This can be worsened by post-operative phaseodilitation </span><span class="segment" data-start="215.0" data-end="221.0" title="3:35">with re-warming, ongoing blood loss and a marked diuresis post-bypass. </span><span class="segment" data-start="221.0" data-end="228.0" title="3:41">Post-operative fluid replacement therapy is usually a combination of colloid and crystaloid fluids </span><span class="segment" data-start="228.0" data-end="230.0" title="3:48">as well as blood products. </span><span class="segment" data-start="230.0" data-end="237.0" title="3:50">I would be guided by urinoutput, blood pressure, heart rate and CVP trends </span><span class="segment" data-start="237.0" data-end="242.0" title="3:57">as well as blood gas studies whilst monitoring ongoing losses. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="243.0"><span class="t-timestamp">4:03</span></div>
+  <div class="t-body"><span class="segment" data-start="243.0" data-end="250.0" title="4:03">Otherwise, healthy patients tend to tolerate hemoglobin levels down to 8 grams per litre. </span><span class="segment" data-start="250.0" data-end="256.0" title="4:10">The associated reduced viscosity has been shown to improve coronary perfusion </span><span class="segment" data-start="256.0" data-end="261.0" title="4:16">as well as cardiac output by reducing left ventricular work. </span><span class="segment" data-start="261.0" data-end="267.0" title="4:21">Tell us about problems for electrolyte disturbance as after cardiac surgery. </span><span class="segment" data-start="267.0" data-end="275.0" title="4:27">In post-operative cardiac patients, I am mainly concerned about electrolytes like potassium and magnesium </span><span class="segment" data-start="275.0" data-end="280.0" title="4:35">since derangement of these can predispose patients to arrhythmias. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="280.0"><span class="t-timestamp">4:40</span></div>
+  <div class="t-body"><span class="segment" data-start="280.0" data-end="288.0" title="4:40">Potassium tends to be low with increased renal excretion and preoperative use of diuretics. </span><span class="segment" data-start="288.0" data-end="297.0" title="4:48">Severe hypocholemia may present as ECG changes like ST depression, T-wave inversion and U-waves. </span><span class="segment" data-start="297.0" data-end="302.0" title="4:57">Hypocholemia can predispose to tachy arrhythmias. </span><span class="segment" data-start="302.0" data-end="310.0" title="5:02">I would aim to keep serum potassium in the normal range between 4.5 to 5 millimoles per litre </span><span class="segment" data-start="310.0" data-end="315.0" title="5:10">and replace it by infusing potassium chloride centrally. </span><span class="segment" data-start="315.0" data-end="322.0" title="5:15">Hypocholemia can also occur and in severe cases presents as peaked T-waves, </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="322.0"><span class="t-timestamp">5:22</span></div>
+  <div class="t-body"><span class="segment" data-start="322.0" data-end="327.0" title="5:22">atroventricular block and broadening QRS complexes. </span><span class="segment" data-start="327.0" data-end="335.0" title="5:27">Treatment of severe hypercholemia is urgent with calcium chloride, 10 millimoles intravenously </span><span class="segment" data-start="335.0" data-end="341.0" title="5:35">and 50 mills of 50% dextrose with 10 units of act rapid added. </span><span class="segment" data-start="341.0" data-end="347.0" title="5:41">Hypocholemia is a common problem after cardiopulmonary bypass. </span><span class="segment" data-start="347.0" data-end="354.0" title="5:47">It can lead to tachy arrhythmias, decreased cardiac output and prolonged ventilatory support. </span><span class="segment" data-start="354.0" data-end="361.0" title="5:54">It should be replaced by slow intravenous infusion of 2 grams of magnesium sulfate. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="361.0"><span class="t-timestamp">6:01</span></div>
+  <div class="t-body"><span class="segment" data-start="361.0" data-end="366.0" title="6:01">How would you manage patients acid-based balance? </span><span class="segment" data-start="366.0" data-end="373.0" title="6:06">Disturbances in acid-based balance are also common after cardiopulmonary bypass. </span><span class="segment" data-start="373.0" data-end="380.0" title="6:13">Careful adjustment of mechanical ventilation is necessary to correct any respiratory component. </span><span class="segment" data-start="380.0" data-end="385.0" title="6:20">Metabolic disturbances need treating according to the underlying cause. </span><span class="segment" data-start="385.0" data-end="395.0" title="6:25">A combination of fluid replacement therapy, ionotropes and vasodilators is used to optimize tissue perfusion and cardiac output. </span><span class="segment" data-start="395.0" data-end="402.0" title="6:35">Hyperglycemia should be corrected and renal impairment managed appropriately. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="402.0"><span class="t-timestamp">6:42</span></div>
+  <div class="t-body"><span class="segment" data-start="402.0" data-end="407.0" title="6:42">Careful monitoring for other causes such as sepsis is crucial. </span><span class="segment" data-start="407.0" data-end="411.0" title="6:47">How would you manage postoperative arrhythmias? </span><span class="segment" data-start="411.0" data-end="418.0" title="6:51">Arhythmias are a common problem after cardiac surgery and require prompt and effective treatment. </span><span class="segment" data-start="418.0" data-end="426.0" title="6:58">There is a multitude of possible underlying causes which should be corrected before pharmacological treatment is commenced. </span><span class="segment" data-start="426.0" data-end="436.0" title="7:06">Possible reasons for postoperative arrhythmias are myocardial ischemia, hypoxia, hypercarbure and electrolyte imbalances. </span><span class="segment" data-start="436.0" data-end="440.0" title="7:16">Drugs can also precipitate rhythm disturbances. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="440.0"><span class="t-timestamp">7:20</span></div>
+  <div class="t-body"><span class="segment" data-start="440.0" data-end="444.0" title="7:20">Preexisting arrhythmias or pacemaker failure may contribute. </span><span class="segment" data-start="444.0" data-end="449.0" title="7:24">There is also a chance of surgical damage to the conducting system. </span><span class="segment" data-start="449.0" data-end="455.0" title="7:29">Treatment of arrhythmias can be by physical or pharmacological methods. </span><span class="segment" data-start="455.0" data-end="459.0" title="7:35">Can you tell us more about physical methods please? </span><span class="segment" data-start="459.0" data-end="471.0" title="7:39">The physical method of DC-cardiaversion is used to convert superventricular tachycardias, ventricular tachycardias and atrial fibrillation back to sinus rhythm. </span><span class="segment" data-start="471.0" data-end="476.0" title="7:51">A DC shock is applied via the fibrillator paddles to the chest. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="476.0"><span class="t-timestamp">7:56</span></div>
+  <div class="t-body"><span class="segment" data-start="476.0" data-end="482.0" title="7:56">The timing of shock application is synchronized with the R wave on the ECG. </span><span class="segment" data-start="482.0" data-end="489.0" title="8:02">The shock energy delivered depends on the underlying rhythm and the type of defibrillator used. </span><span class="segment" data-start="489.0" data-end="495.0" title="8:09">Cardiac pacing is another physical method to control arrhythmias. </span><span class="segment" data-start="495.0" data-end="500.0" title="8:15">It can be used in the treatment of bradiarrhythmias as well as tachyarrhythmias. </span><span class="segment" data-start="500.0" data-end="509.0" title="8:20">Many patients will leave theatre with temporary pacing wires in situ to control transient postoperative rhythm problems. </span><span class="segment" data-start="509.0" data-end="515.0" title="8:29">If possible, the sequential nature of atrial and ventricular contraction is maintained. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="515.0"><span class="t-timestamp">8:35</span></div>
+  <div class="t-body"><span class="segment" data-start="515.0" data-end="523.0" title="8:35">That improves ventricular filling. This can be achieved by atrial or sequential pacing. </span><span class="segment" data-start="523.0" data-end="527.0" title="8:43">What do you know about drug treatment of arrhythmias? </span><span class="segment" data-start="527.0" data-end="535.0" title="8:47">Pharmacological methods may sometimes involve the discontinuation of pro-rhythmic agents in the first place. </span><span class="segment" data-start="535.0" data-end="538.0" title="8:55">Examples are dopamine or adrenaline. </span><span class="segment" data-start="538.0" data-end="543.0" title="8:58">Thereafter, anti-rhythmic drugs can be considered. </span><span class="segment" data-start="543.0" data-end="548.0" title="9:03">In the treatment of tachyarrhythmias, the clinical picture needs to be considered. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="548.0"><span class="t-timestamp">9:08</span></div>
+  <div class="t-body"><span class="segment" data-start="548.0" data-end="558.0" title="9:08">DC-cardiaversion is the method of choice in superventricular and ventricular tachycardias with hemodynamic compromise. </span><span class="segment" data-start="558.0" data-end="565.0" title="9:18">In uncompromised patients, amyode-rone is the drug of choice for many tachyarrhythmias. </span><span class="segment" data-start="565.0" data-end="571.0" title="9:25">In atrial fibrillation and flutter, the duration of the arrhythmiar is also important. </span><span class="segment" data-start="571.0" data-end="580.0" title="9:31">If it has been present for more than 48 hours, the patient should be fully anticoagulated before any cardiac version is attempted. </span><span class="segment" data-start="580.0" data-end="586.0" title="9:40">Didoxin or beta blockers can be used for rate control. </span><span class="segment" data-start="586.0" data-end="600.0" title="9:46">In superventricular narrow complex tachycardias without compromise, vagal maneuvers such as carotid sinus massage can sometimes be successful in terminating the abnormal rhythm. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="600.0"><span class="t-timestamp">10:00</span></div>
+  <div class="t-body"><span class="segment" data-start="600.0" data-end="603.0" title="10:00">Failing that, a denazine can be used. </span><span class="segment" data-start="603.0" data-end="612.0" title="10:03">Other effective drug treatments include amyode-rone, calcium channel blockers or beta blockers. </span><span class="segment" data-start="612.0" data-end="620.0" title="10:12">Uncompromised ventricular tachycardias can be treated with amyode-rone or lignacane. </span><span class="segment" data-start="620.0" data-end="629.0" title="10:20">Bradiarhythmias can be treated with cardiac pacing, either internal or external, atropine or isoprenoline. </span><span class="segment" data-start="629.0" data-end="637.0" title="10:29">In complex or treatment resistant arrhythmias, expert help from a cardiologist should be sought early. </span><span class="segment" data-start="637.0" data-end="642.0" title="10:37">How would you manage low cardiac output after cardiac surgery? </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="642.0"><span class="t-timestamp">10:42</span></div>
+  <div class="t-body"><span class="segment" data-start="642.0" data-end="652.0" title="10:42">Cardiac output can be low because of pre-existing ischemic damage or because of mycardial stunning after the use of cardiopulmonary bypass. </span><span class="segment" data-start="653.0" data-end="661.0" title="10:53">Firstly, I would have to ensure adequate filling guided mainly by urine output and central venous pressures. </span><span class="segment" data-start="661.0" data-end="670.0" title="11:01">If response to fluid therapy alone is unsatisfactory, I would like to get an estimate of afterload and cardiac performance. </span><span class="segment" data-start="670.0" data-end="675.0" title="11:10">This can be done by transosophageal Doppler or picomegiments. </span><span class="segment" data-start="675.0" data-end="681.0" title="11:15">The use of a more invasive pulmonary artery catheter is less common nowadays. </span><span class="segment" data-start="681.0" data-end="689.0" title="11:21">They were not shown to improve outcomes but have higher complication rates than other less invasive techniques. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="689.0"><span class="t-timestamp">11:29</span></div>
+  <div class="t-body"><span class="segment" data-start="689.0" data-end="696.0" title="11:29">I would then choose an appropriate ionotropic or vasopressor agent to augment cardiac performance. </span><span class="segment" data-start="696.0" data-end="702.0" title="11:36">Some patients may need intraaortic bloom pumps or other assist devices. </span><span class="segment" data-start="702.0" data-end="706.0" title="11:42">Can you tell us more about ionotropic agents? </span><span class="segment" data-start="707.0" data-end="713.0" title="11:47">Dopamine or dobutamine are often chosen as the first-line ionotropic agent. </span><span class="segment" data-start="713.0" data-end="718.0" title="11:53">Noradrenlin tends to be the first-line vasopressor agent. </span><span class="segment" data-start="718.0" data-end="727.0" title="11:58">Dopamine is a noradrenlin precursor and acts as an agonist at alpha, beta and doper-minergic receptors. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="727.0"><span class="t-timestamp">12:07</span></div>
+  <div class="t-body"><span class="segment" data-start="727.0" data-end="735.0" title="12:07">It causes mesenteric and renal vasodilitation via doper-minergic receptors at low adoses. </span><span class="segment" data-start="735.0" data-end="740.0" title="12:15">Its use at those doses for renal protection has been abandoned. </span><span class="segment" data-start="740.0" data-end="750.0" title="12:20">At higher doses, sympathetic effects predominate with positive coronatropia and ionotropia via beta adrenusectors. </span><span class="segment" data-start="750.0" data-end="756.0" title="12:30">It also results in vasoconstriction via alpha adrenusectors. </span><span class="segment" data-start="756.0" data-end="763.0" title="12:36">Dubutamine is a synthetic beta agonist with mainly beta-1 cardiac effects. </span><span class="segment" data-start="763.0" data-end="771.0" title="12:43">It therefore causes positive ionotropia but also a marked tachycardia which can be a limiting factor for its use. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="771.0"><span class="t-timestamp">12:51</span></div>
+  <div class="t-body"><span class="segment" data-start="771.0" data-end="778.0" title="12:51">Noradrenlin tends to be the first-line vasopressor because of its predominant alpha effects. </span><span class="segment" data-start="778.0" data-end="785.0" title="12:58">It also has limited ionotropic activity via cardiac beta-1 receptors. </span><span class="segment" data-start="785.0" data-end="791.0" title="13:05">Adrenalin is a potent ionotrop with both alpha and beta adrenergic effects. </span><span class="segment" data-start="791.0" data-end="798.0" title="13:11">Beta-1 effects are responsible for an increase in heart rate and myocardial contractility. </span><span class="segment" data-start="798.0" data-end="805.0" title="13:18">It also acts on alpha receptors and thereby causes peripheral vasoconstriction. </span><span class="segment" data-start="805.0" data-end="810.0" title="13:25">Bronco-dilitation is caused via beta-2 effects. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="810.0"><span class="t-timestamp">13:30</span></div>
+  <div class="t-body"><span class="segment" data-start="810.0" data-end="814.0" title="13:30">What second-line ionotropes do you know about? </span><span class="segment" data-start="814.0" data-end="824.0" title="13:34">Phosphodiesterase-3 inhibitors such as milrenone or inoximone act by an increase in cyclic AMP. </span><span class="segment" data-start="824.0" data-end="832.0" title="13:44">These agents decrease intracellular cyclic AMP degradation via the Phosphodiesterase-3 enzyme. </span><span class="segment" data-start="832.0" data-end="839.0" title="13:52">They therefore increase contractility whilst also causing peripheral vasodilitation. </span><span class="segment" data-start="839.0" data-end="848.0" title="13:59">Dopexamine is a dopamine analogue with effects on dopamine-ergic and beta-2 receptors but no alpha effects. </span><span class="segment" data-start="848.0" data-end="858.0" title="14:08">It is therefore an INO dilator which increases myocardial contractility but decreases systemic vascular resistance. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="858.0"><span class="t-timestamp">14:18</span></div>
+  <div class="t-body"><span class="segment" data-start="858.0" data-end="862.0" title="14:18">It also dilates the splanknic circulation. </span><span class="segment" data-start="862.0" data-end="870.0" title="14:22">Dejuoxin is also used for its ionotropic properties and acts via an increase in intracellular calcium. </span><span class="segment" data-start="870.0" data-end="876.0" title="14:30">How would you go about managing renal impairment after cardiac surgery? </span><span class="segment" data-start="876.0" data-end="885.0" title="14:36">Cardiopulmonary bypass decreases renal blood flow and glomerular filtration rate by about 30%. </span><span class="segment" data-start="885.0" data-end="896.0" title="14:45">Renal failure is a major contributing factor in perioperative morbidity and mortality and appropriate management of impaired renal function is crucial. </span><span class="segment" data-start="896.0" data-end="904.0" title="14:56">In the first instance it is important to maintain renal perfusion pressure throughout the perioperative period. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="904.0"><span class="t-timestamp">15:04</span></div>
+  <div class="t-body"><span class="segment" data-start="904.0" data-end="917.0" title="15:04">Patients with comorbidities such as pre-existing renal disease, hyper-attention or diabetes will need higher mean arterial pressures than those with no other medical problems. </span><span class="segment" data-start="917.0" data-end="930.0" title="15:17">Nephrotoxic drugs such as non-steroidols or amino glycocides should be avoided if possible or doses adjusted carefully according to plasma levels. </span><span class="segment" data-start="930.0" data-end="938.0" title="15:30">Fluid management is very important to eliminate any pre-renal component of renal impairment. </span><span class="segment" data-start="938.0" data-end="952.0" title="15:38">In established renal failure, loop diuretics such as frusomide are often used to turn oliguric into polyuric renal failure but this does not change the course of the disease. </span><span class="segment" data-start="952.0" data-end="959.0" title="15:52">Renal replacement therapy is sometimes necessary to bridge the time until recovery of renal function. </span><span class="segment" data-start="959.0" data-end="965.0" title="15:59">Continuous venovinas hemofiltration is usually the method of choice. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="965.0"><span class="t-timestamp">16:05</span></div>
+  <div class="t-body"><span class="segment" data-start="965.0" data-end="978.0" title="16:05">This should be considered if there is prolonged anuria, fluid overload, a significant metabolic acidosis or accumulation of electrolytes or metabolites. </span><span class="segment" data-start="978.0" data-end="985.0" title="16:18">What sort of problems might you encounter when trying to wean the patient off mechanical ventilation? </span><span class="segment" data-start="985.0" data-end="994.0" title="16:25">Ideally, in straightforward cases, the period of mechanical ventilation postoperatively should be kept to a minimum. </span><span class="segment" data-start="994.0" data-end="1000.0" title="16:34">Cidation and ventilation after cardiac surgery allows for a period of stability. </span><span class="segment" data-start="1000.0" data-end="1013.0" title="16:40">During that time, physiological parameters such as temperature, acid base and fluid balance and electrolytes are corrected as well as significant ongoing bleeding excluded. </span><span class="segment" data-start="1013.0" data-end="1021.0" title="16:53">Once all of these parameters are satisfactory, sedation and ventilation are weaned and the patient is allowed to wake up. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="1021.0"><span class="t-timestamp">17:01</span></div>
+  <div class="t-body"><span class="segment" data-start="1021.0" data-end="1026.0" title="17:01">Problems with weaning may occur for a variety of reasons. </span><span class="segment" data-start="1026.0" data-end="1037.0" title="17:06">It can be difficult in patients with pre-existing medical problems such as pulmonary disease, pneumonia, sepsis from other sources or left ventricular failure. </span><span class="segment" data-start="1037.0" data-end="1046.0" title="17:17">Surgical complications can also be responsible for instance frenic nerve damage, pneumothorax or plural effusions. </span><span class="segment" data-start="1046.0" data-end="1057.0" title="17:26">The use of cardiopulmonary bypass itself can also contribute to difficulties by causing neurological deficits or acute lung injury. </span><span class="segment" data-start="1057.0" data-end="1066.0" title="17:37">If ventilation is anticipated to be prolonged, many centres will opt for early elective tracheostomy to aid weaning. </span><span class="segment" data-start="1066.0" data-end="1071.0" title="17:46">Can it us more about acute lung injury after cardiopulmonary bypass? </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="1071.0"><span class="t-timestamp">17:51</span></div>
+  <div class="t-body"><span class="segment" data-start="1071.0" data-end="1082.0" title="17:51">Cardiopulmonary bypass invariably causes a degree of acute lung injury. This is usually mild and clinically insignificant. </span><span class="segment" data-start="1082.0" data-end="1092.0" title="18:02">It is thought to be due to an inflammatory response caused by the exposure of circulating blood to the non-physiological surface of the bypass circuit. </span><span class="segment" data-start="1092.0" data-end="1102.0" title="18:12">About 2% of people will develop acute respiratory distress syndrome which will significantly delay weaning and post-operative recovery. </span><span class="segment" data-start="1102.0" data-end="1112.0" title="18:22">Management is as for ARDS from other causes, with pressure controlled ventilation at low tidal volumes of 6-8 mils per kilo. </span><span class="segment" data-start="1112.0" data-end="1117.0" title="18:32">Peak pressures should be limited to less than 35 centimetres of water. </span><span class="segment" data-start="1117.0" data-end="1126.0" title="18:37">The use of peep is essential and FIO2 should be kept at a minimal level required to achieve satisfactory oxygenation. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="1126.0"><span class="t-timestamp">18:46</span></div>
+  <div class="t-body"><span class="segment" data-start="1126.0" data-end="1133.0" title="18:46">Permissive hypercapnea may have to be tolerated with these ventilation strategies. </span><span class="segment" data-start="1133.0" data-end="1145.0" title="18:53">Mortality associated with cardiopulmonary bypass-related ARDS is significantly lower than that from sepsis or other major causes of ARDS. </span></div>
+</div>
+</div>
+
+<div class="subtitle-bar">
+  <span class="subtitle-text empty" id="subtitle-text">Play audio to see live subtitles&#8230;</span>
+</div>
+
+<script>
+
+const audio    = document.getElementById('audio');
+const allSegs  = Array.from(document.querySelectorAll('.segment'));
+const allBlocks = Array.from(document.querySelectorAll('.t-block'));
+const subtitleEl = document.getElementById('subtitle-text');
+let activeSegEl   = null;
+let activeBlockEl = null;
+let searchMatches = [];
+let searchIdx     = 0;
+
+// Duration display
+audio.addEventListener('loadedmetadata', () => {
+  const m = Math.floor(audio.duration / 60);
+  const s = Math.floor(audio.duration %% 60).toString().padStart(2,'0');
+  document.getElementById('dur').textContent = m + ':' + s;
+});
+
+// Seek helper
+function seekTo(t) {
+  audio.currentTime = t;
+  audio.play();
+}
+
+// Block gutter click
+document.querySelectorAll('.t-gutter').forEach(g => {
+  g.addEventListener('click', () => seekTo(parseFloat(g.dataset.start)));
+});
+
+// Segment click
+allSegs.forEach(s => {
+  s.addEventListener('click', e => {
+    e.stopPropagation();
+    seekTo(parseFloat(s.dataset.start));
+  });
+});
+
+// Real-time tracking
+audio.addEventListener('timeupdate', () => {
+  const t = audio.currentTime;
+
+  // Find active segment (last one whose start <= t)
+  let found = null;
+  for (let i = allSegs.length - 1; i >= 0; i--) {
+    if (parseFloat(allSegs[i].dataset.start) <= t) { found = allSegs[i]; break; }
+  }
+
+  if (found && found !== activeSegEl) {
+    // Clear previous
+    if (activeSegEl) activeSegEl.classList.remove('active');
+    if (activeBlockEl) {
+      activeBlockEl.classList.remove('block-active');
+      const pg = activeBlockEl.querySelector('.t-gutter');
+      if (pg) pg.classList.remove('gutter-active');
+    }
+    // Set new
+    found.classList.add('active');
+    const block = found.closest('.t-block');
+    if (block) {
+      block.classList.add('block-active');
+      const g = block.querySelector('.t-gutter');
+      if (g) g.classList.add('gutter-active');
+      activeBlockEl = block;
+    }
+    activeSegEl = found;
+
+    // Update subtitle
+    subtitleEl.textContent = found.textContent.trim();
+    subtitleEl.classList.remove('empty');
+
+    // Auto-scroll (only when not searching)
+    if (!document.getElementById('search').value) {
+      found.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }
+});
+
+// Search
+const searchInput = document.getElementById('search');
+searchInput.addEventListener('input', runSearch);
+searchInput.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && searchMatches.length) {
+    searchMatches[searchIdx].classList.remove('search-current');
+    searchIdx = (searchIdx + 1) %% searchMatches.length;
+    const el = searchMatches[searchIdx];
+    el.classList.add('search-current');
+    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+});
+
+function runSearch() {
+  const q = searchInput.value.trim().toLowerCase();
+  allSegs.forEach(s => s.classList.remove('search-match','search-current'));
+  searchMatches = [];
+  if (!q) return;
+  allSegs.forEach(s => {
+    if (s.textContent.toLowerCase().includes(q)) {
+      s.classList.add('search-match');
+      searchMatches.push(s);
+    }
+  });
+  if (!searchMatches.length) return;
+  searchIdx = 0;
+  searchMatches[0].classList.add('search-current');
+  searchMatches[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+</script>
+</body>
+</html>

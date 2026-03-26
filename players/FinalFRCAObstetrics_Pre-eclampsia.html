@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Obstetrics — Pre-eclampsia</title>
+<style>
+
+  :root {
+    --accent:    #db2777;
+    --body-bg:   #f1f5f9;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: var(--body-bg);
+    color: #1e293b;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  /* ── Header ── */
+  .header {
+    background: #0f172a;
+    border-bottom: 3px solid var(--accent);
+    padding: 12px 20px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .header-left { flex: 1; min-width: 200px; }
+  .header h1 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #f1f5f9;
+    margin-bottom: 4px;
+    letter-spacing: 0.01em;
+  }
+  .header-sub {
+    font-size: 0.72rem;
+    color: #94a3b8;
+    font-style: italic;
+  }
+  audio {
+    height: 36px;
+    accent-color: var(--accent);
+    flex-shrink: 0;
+  }
+  .back-link {
+    font-size: 0.8rem;
+    color: #94a3b8;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .back-link:hover { color: #60a5fa; }
+
+  /* ── Toolbar ── */
+  .toolbar {
+    background: #1e293b;
+    padding: 7px 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-shrink: 0;
+    border-bottom: 1px solid #334155;
+  }
+  .toolbar input {
+    flex: 1;
+    max-width: 380px;
+    padding: 5px 11px;
+    border: 1px solid #475569;
+    border-radius: 6px;
+    background: #0f172a;
+    color: #e2e8f0;
+    font-size: 0.83rem;
+    outline: none;
+  }
+  .toolbar input:focus { border-color: var(--accent); }
+  .toolbar input::placeholder { color: #64748b; }
+  .stats {
+    font-size: 0.72rem;
+    color: #64748b;
+    white-space: nowrap;
+  }
+
+  /* ── Scroll area ── */
+  .scroll-area {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+  }
+  .scroll-area::-webkit-scrollbar { width: 6px; }
+  .scroll-area::-webkit-scrollbar-track { background: transparent; }
+  .scroll-area::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+
+  /* ── Subtitle bar ── */
+  .subtitle-bar {
+    background: #0f172a;
+    border-top: 2px solid var(--accent);
+    padding: 8px 20px;
+    flex-shrink: 0;
+    min-height: 42px;
+    display: flex;
+    align-items: center;
+  }
+  .subtitle-text {
+    font-size: 0.9rem;
+    color: #e2e8f0;
+    line-height: 1.5;
+    font-style: italic;
+  }
+  .subtitle-text.empty { color: #475569; }
+
+  /* ── Transcript blocks ── */
+  .t-block {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    margin-bottom: 14px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    display: flex;
+  }
+  .t-block.block-active {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px rgba(37,99,235,0.15);
+  }
+  .t-gutter {
+    background: #0f172a;
+    width: 52px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: 14px;
+    cursor: pointer;
+  }
+  .t-gutter:hover { background: #1e293b; }
+  .t-timestamp {
+    font-size: 0.7rem;
+    color: #64748b;
+    font-family: monospace;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+  .t-gutter.gutter-active .t-timestamp { color: var(--accent); }
+  .t-body {
+    flex: 1;
+    padding: 12px 16px;
+    line-height: 1.75;
+    font-size: 0.92rem;
+    color: #1e293b;
+  }
+
+  /* ── Segments ── */
+  .segment {
+    cursor: pointer;
+    border-radius: 3px;
+    transition: background 0.1s;
+  }
+  .segment:hover { background: #eff6ff; }
+  .segment.active {
+    background: #bfdbfe;
+    outline: 2px solid #3b82f6;
+    outline-offset: 1px;
+    border-radius: 3px;
+  }
+  .segment.search-match  { background: #fef9c3; }
+  .segment.search-current { background: #fde047; outline: 2px solid #ca8a04; }
+
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <h1>Obstetrics — Pre-eclampsia</h1>
+    <div class="header-sub">Final FRCA &mdash; Exam Viva Simulation &mdash; Click any phrase to seek</div>
+  </div>
+  <audio id="audio" src="../FinalFRCAObstetrics_Pre-eclampsia.mp3" controls preload="metadata"></audio>
+  <a class="back-link" href="index.html">&#8592; All Topics</a>
+</div>
+
+<div class="toolbar">
+  <input type="text" id="search" placeholder="Search transcript&#8230; (Enter = next match)">
+  <span class="stats" id="stats">252 segments &nbsp;|&nbsp; <span id="dur">loading&#8230;</span></span>
+</div>
+
+<div class="scroll-area" id="scroll-area">
+<div class="t-block">
+  <div class="t-gutter" data-start="0.0"><span class="t-timestamp">0:00</span></div>
+  <div class="t-body"><span class="segment" data-start="0.0" data-end="2.18" title="0:00">Complications of pregnancy. </span><span class="segment" data-start="2.18" data-end="4.58" title="0:02">Prayer Clampsia. </span><span class="segment" data-start="4.58" data-end="10.24" title="0:04">The topics will probably come as part of a case-based discussion, and so try to keep your answer relevant </span><span class="segment" data-start="10.24" data-end="14.4" title="0:10">to the particular case to gain maximum marks. </span><span class="segment" data-start="14.4" data-end="18.84" title="0:14">Your ask-to-reviewer 28-year-old Prima-Gravida 36-weeks pregnant woman has been recently </span><span class="segment" data-start="18.84" data-end="21.64" title="0:18">admitted to the Labour Ward for an induction of labour. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="21.64"><span class="t-timestamp">0:21</span></div>
+  <div class="t-body"><span class="segment" data-start="21.64" data-end="24.92" title="0:21">She is known to have hypertension. </span><span class="segment" data-start="24.92" data-end="28.04" title="0:24">What are the important issues you would like to explore in her history? </span><span class="segment" data-start="28.44" data-end="33.36" title="0:28">Here the examiner is looking to see the ear of had plenty of obstetric experience, and </span><span class="segment" data-start="33.36" data-end="36.16" title="0:33">that you can imagine yourself in this situation. </span><span class="segment" data-start="36.16" data-end="40.52" title="0:36">A structured approach is vital. </span><span class="segment" data-start="40.52" data-end="45.6" title="0:40">When taking a history, I would introduce myself to the patient and look to ascertain a number </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="45.6"><span class="t-timestamp">0:45</span></div>
+  <div class="t-body"><span class="segment" data-start="45.6" data-end="48.52" title="0:45">of general and specific issues. </span><span class="segment" data-start="48.52" data-end="53.24" title="0:48">In general, I would want to know how her pregnancy has progressed and whether there have been </span><span class="segment" data-start="53.24" data-end="57.88" title="0:53">any complications, whether she has had any previous pregnancies. </span><span class="segment" data-start="57.88" data-end="63.36" title="0:57">What is her past medical history, past anaesthetic history, and drug history? </span><span class="segment" data-start="63.36" data-end="65.32" title="1:03">Does she have any allergies? </span><span class="segment" data-start="65.32" data-end="67.44" title="1:05">When did she last eat or drink? </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="67.44"><span class="t-timestamp">1:07</span></div>
+  <div class="t-body"><span class="segment" data-start="67.44" data-end="72.68" title="1:07">What is her dentition and is there a family history of problems with anaesthesia? </span><span class="segment" data-start="72.68" data-end="77.88" title="1:12">More specifically, I would inquire about why and how she is being induced. </span><span class="segment" data-start="77.88" data-end="82.28" title="1:17">What her most recent blood pressures have been, and whether she had hypertension prior </span><span class="segment" data-start="82.28" data-end="84.2" title="1:22">to her pregnancy. </span><span class="segment" data-start="84.2" data-end="89.32" title="1:24">I would want to know what amtihypertensive agents she is taking, and whether she has any </span><span class="segment" data-start="89.32" data-end="96.72" title="1:29">other symptoms or signs of preeclampsia or PET. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="96.72"><span class="t-timestamp">1:36</span></div>
+  <div class="t-body"><span class="segment" data-start="96.72" data-end="101.04" title="1:36">How do you diagnose preeclampsia? </span><span class="segment" data-start="101.04" data-end="106.6" title="1:41">Preeclampsia is a multi-system disease with a number of manifestations that occur after </span><span class="segment" data-start="106.6" data-end="109.6" title="1:46">the 20th week of pregnancy. </span><span class="segment" data-start="109.6" data-end="115.92" title="1:49">The main features are the triad of hypertension, edema, and protein year-year. </span><span class="segment" data-start="115.92" data-end="123.24" title="1:55">The hypertension is diagnosed as a systolic greater than 140mm of mercury, diastolic greater </span><span class="segment" data-start="123.24" data-end="130.44" title="2:03">than 90mm of mercury, or a mean greater than 105mm of mercury. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="130.44"><span class="t-timestamp">2:10</span></div>
+  <div class="t-body"><span class="segment" data-start="130.44" data-end="136.72" title="2:10">Alternatively, it is described as an increase in systolic or diastolic pressure of more </span><span class="segment" data-start="136.72" data-end="143.2" title="2:16">than 30mm of mercury, or 15mm of mercury, respectively. </span><span class="segment" data-start="143.2" data-end="150.36" title="2:23">The protein year-year is greater than 0.3g per litre in 24 hours. </span><span class="segment" data-start="150.36" data-end="154.4" title="2:30">How common is preeclampsia? </span><span class="segment" data-start="154.4" data-end="161.84" title="2:34">Preeclampsia occurs in approximately 2-3% of pregnancies, but pregnancy-induced hypertension </span><span class="segment" data-start="161.84" data-end="169.92" title="2:41">without other features of preeclampsia is more common and has an incidence of about 10%. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="169.92"><span class="t-timestamp">2:49</span></div>
+  <div class="t-body"><span class="segment" data-start="169.92" data-end="172.4" title="2:49">Why does preeclampsia develop? </span><span class="segment" data-start="172.4" data-end="180.2" title="2:52">Try not to get too bogged down in this answer since it's complicated and not yet fully understood. </span><span class="segment" data-start="180.2" data-end="184.6" title="3:00">The exact cause of preeclampsia is unknown. </span><span class="segment" data-start="184.6" data-end="189.28" title="3:04">Patients may be genetically susceptible and there is thought to be an autoimmune reaction </span><span class="segment" data-start="189.28" data-end="191.64" title="3:09">against the placenta. </span><span class="segment" data-start="191.64" data-end="196.4" title="3:11">It is thought that failure of the normal vasodilitation of the blood vessels within the </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="196.4"><span class="t-timestamp">3:16</span></div>
+  <div class="t-body"><span class="segment" data-start="196.4" data-end="203.8" title="3:16">placental bed leads to placental ischemia and the release of vasoconstrictive substances. </span><span class="segment" data-start="203.8" data-end="211.0" title="3:23">This alters the thromboxane prostocycle in ratio, causing widespread organ system effects, </span><span class="segment" data-start="211.0" data-end="217.16" title="3:31">including vasoconstriction and altered capillary permeability. </span><span class="segment" data-start="217.16" data-end="219.64" title="3:37">What are the features of preeclampsia? </span><span class="segment" data-start="219.64" data-end="226.24" title="3:39">Why use your systems approach to keep structure to your answer? </span><span class="segment" data-start="226.24" data-end="232.4" title="3:46">The symptoms and signs of preeclampsia may be split into the different organ systems. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="232.4"><span class="t-timestamp">3:52</span></div>
+  <div class="t-body"><span class="segment" data-start="232.4" data-end="237.84" title="3:52">In the cardiovascular system, the systemic vascular resistance is raised and hypertension </span><span class="segment" data-start="237.84" data-end="239.6" title="3:57">is a feature. </span><span class="segment" data-start="239.6" data-end="246.16" title="3:59">The plasma volume is reduced when compared to the expansion normally seen in pregnancy. </span><span class="segment" data-start="246.16" data-end="252.0" title="4:06">It is reduced in capillary permeability and reduced plasma oncotic pressure lead to peripheral </span><span class="segment" data-start="252.0" data-end="253.0" title="4:12">edema. </span><span class="segment" data-start="253.0" data-end="259.64" title="4:13">Furthermore, the combination of raised pulmonary artery pressure, low plasma oncotic pressure </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="259.64"><span class="t-timestamp">4:19</span></div>
+  <div class="t-body"><span class="segment" data-start="259.64" data-end="265.76" title="4:19">and altered capillary permeability in the lungs make these patients particularly susceptible </span><span class="segment" data-start="265.76" data-end="268.2" title="4:25">to pulmonary edema. </span><span class="segment" data-start="268.2" data-end="273.2" title="4:28">With regards to the kidneys, a reduction in renal blood flow, glomerular filtration </span><span class="segment" data-start="273.2" data-end="276.68" title="4:33">rate and urine output may be observed. </span><span class="segment" data-start="276.68" data-end="280.36" title="4:36">Protein urea and renal failure may develop. </span><span class="segment" data-start="280.36" data-end="286.96" title="4:40">The hematological system may be affected with a fall in fibrinogen and platelet levels. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="286.96"><span class="t-timestamp">4:46</span></div>
+  <div class="t-body"><span class="segment" data-start="286.96" data-end="293.48" title="4:46">The help syndrome of hemolysis, elevated liver enzymes and low platelets is a recognized </span><span class="segment" data-start="293.48" data-end="296.08" title="4:53">associated condition. </span><span class="segment" data-start="296.08" data-end="303.0" title="4:56">In patients with severe preeclampsia, disseminated intravascular coagulation may ensue. </span><span class="segment" data-start="303.0" data-end="308.92" title="5:03">The gastrointestinal system may be involved as part of help and the patient may experience </span><span class="segment" data-start="308.92" data-end="313.8" title="5:08">abdominal pain due to edema and enlargement of the liver capsule. </span><span class="segment" data-start="313.8" data-end="319.72" title="5:13">Finally, with regards to the neurological system, the patient may describe visual disturbance </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="319.72"><span class="t-timestamp">5:19</span></div>
+  <div class="t-body"><span class="segment" data-start="319.72" data-end="321.52" title="5:19">and headaches. </span><span class="segment" data-start="321.52" data-end="328.36" title="5:21">Hyper excitability, hyperreflexia and papilladema may be demonstrated and the patient may develop </span><span class="segment" data-start="328.36" data-end="330.36" title="5:28">seizures. </span><span class="segment" data-start="330.36" data-end="335.0" title="5:30">How might preeclampsia affect the fetus? </span><span class="segment" data-start="335.0" data-end="340.96" title="5:35">The reduced placental perfusion may be compounded by aschemia and infarction. </span><span class="segment" data-start="340.96" data-end="344.88" title="5:40">This can lead to inter-uteroine growth retardation. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="344.88"><span class="t-timestamp">5:44</span></div>
+  <div class="t-body"><span class="segment" data-start="344.88" data-end="350.92" title="5:44">The incidence of placental abruption and preterm labour is also increased. </span><span class="segment" data-start="350.92" data-end="354.28" title="5:50">Are there any risk factors for preeclampsia? </span><span class="segment" data-start="354.28" data-end="356.32" title="5:54">Yes. </span><span class="segment" data-start="356.32" data-end="363.56" title="5:56">These include women who have diabetes, multiple pregnancy, positive family history, pre-existing </span><span class="segment" data-start="363.56" data-end="370.24" title="6:03">hypertensive disease, increasing maternal age and obesity. </span><span class="segment" data-start="370.24" data-end="373.04" title="6:10">What is the treatment for preeclampsia? </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="373.04"><span class="t-timestamp">6:13</span></div>
+  <div class="t-body"><span class="segment" data-start="373.04" data-end="375.76" title="6:13">There is no specific answer to this question. </span><span class="segment" data-start="375.76" data-end="382.44" title="6:15">The examiners are looking to see that you have an understanding of the general issues involved. </span><span class="segment" data-start="382.44" data-end="387.68" title="6:22">The treatment for preeclampsia is delivery of the baby, but this must be balanced against </span><span class="segment" data-start="387.68" data-end="395.32" title="6:27">the gestational age of the fetus and the potential risks associated with uncontrolled hypertension. </span><span class="segment" data-start="395.32" data-end="400.64" title="6:35">In many cases, anti-hypertensive treatment will be commenced in order to regain control </span><span class="segment" data-start="400.64" data-end="406.92" title="6:40">of blood pressure prior to delivery, but this does not prevent the disease progression. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="406.92"><span class="t-timestamp">6:46</span></div>
+  <div class="t-body"><span class="segment" data-start="406.92" data-end="412.62" title="6:46">Most monitoring of observational parameters, hematological and neurological indices, is </span><span class="segment" data-start="412.62" data-end="417.96" title="6:52">indicated in these patients both before and after delivery. </span><span class="segment" data-start="417.96" data-end="421.52" title="6:57">What anti-hypertensive treatment might this woman be taking? </span><span class="segment" data-start="421.52" data-end="426.32" title="7:01">Try and think back to a case that you have seen. </span><span class="segment" data-start="426.32" data-end="432.6" title="7:06">Methal dopa, libitalol, hydrozene and nephedipine have all been used. </span><span class="segment" data-start="432.6" data-end="437.92" title="7:12">Hydrall can be taken orally or intravenously by infusion or as boluses. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="437.92"><span class="t-timestamp">7:17</span></div>
+  <div class="t-body"><span class="segment" data-start="437.92" data-end="444.48" title="7:17">Methal dopa is taken orally, hydrozene intravenously and nephedipine may be administered by either </span><span class="segment" data-start="444.48" data-end="446.16" title="7:24">root. </span><span class="segment" data-start="446.16" data-end="449.2" title="7:26">What is the role of magnesium in preeclampsia and acryppsia? </span><span class="segment" data-start="449.2" data-end="454.52" title="7:29">Can you tell me anything about the magpie trial? </span><span class="segment" data-start="454.52" data-end="460.0" title="7:34">The magpie trial was a large international study to evaluate the effects of magnesium </span><span class="segment" data-start="460.0" data-end="466.12" title="7:40">sulfate compared to placebo when given to women with preeclampsia. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="466.12"><span class="t-timestamp">7:46</span></div>
+  <div class="t-body"><span class="segment" data-start="466.12" data-end="470.72" title="7:46">Magnesium sulfate more than half the risk of aclampsia and probably reduce the risk of </span><span class="segment" data-start="470.72" data-end="472.92" title="7:50">maternal death. </span><span class="segment" data-start="472.92" data-end="478.96" title="7:52">Currently, magnesium sulfate is used to treat pre and postpartum seizure activity. </span><span class="segment" data-start="478.96" data-end="484.88" title="7:58">A loading dose of 4 grams is given over 10 minutes followed by an infusion of 1 gram per </span><span class="segment" data-start="484.88" data-end="486.72" title="8:04">hour. </span><span class="segment" data-start="486.72" data-end="492.2" title="8:06">Current seizures are treated with further 2 gram boluses of magnesium. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="492.2"><span class="t-timestamp">8:12</span></div>
+  <div class="t-body"><span class="segment" data-start="492.2" data-end="495.44" title="8:12">What clinical assessments would you perform on this woman and what would you be looking </span><span class="segment" data-start="495.44" data-end="498.76" title="8:15">for? </span><span class="segment" data-start="498.76" data-end="504.44" title="8:18">I would examine the cardio-respiratory, neurological and gastrointestinal systems looking for </span><span class="segment" data-start="504.44" data-end="507.28" title="8:24">any signs of preeclampsia. </span><span class="segment" data-start="507.28" data-end="514.88" title="8:27">These might include hypertension, peripheral edema, respiratory compromise, hyperreflexia, </span><span class="segment" data-start="514.88" data-end="520.52" title="8:34">hypnosis, abdominal discomfort and right upper quadrant tenderness. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="520.52"><span class="t-timestamp">8:40</span></div>
+  <div class="t-body"><span class="segment" data-start="520.52" data-end="525.44" title="8:40">I would also assess the patient's airway looking for factors which might predispose to </span><span class="segment" data-start="525.44" data-end="528.12" title="8:45">a difficult incubation. </span><span class="segment" data-start="528.12" data-end="533.28" title="8:48">What would you consider necessary investigations? </span><span class="segment" data-start="533.28" data-end="537.24" title="8:53">You're in dipstick will indicate protein nearer. </span><span class="segment" data-start="537.24" data-end="541.24" title="8:57">24 hour urine collection will quantify this further. </span><span class="segment" data-start="541.24" data-end="546.92" title="9:01">I would also request that the results of a full blood count, urea and electrolytes, </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="546.92"><span class="t-timestamp">9:06</span></div>
+  <div class="t-body"><span class="segment" data-start="546.92" data-end="552.28" title="9:06">liver function tests, coagulation studies and ensure that a sample of blood has been </span><span class="segment" data-start="552.28" data-end="554.52" title="9:12">sent for a group and save. </span><span class="segment" data-start="554.52" data-end="561.8" title="9:14">I would be looking for anemia, thrombocytopenia, renal failure, hepatic derangement and clotting </span><span class="segment" data-start="561.8" data-end="564.2" title="9:21">abnormalities. </span><span class="segment" data-start="564.2" data-end="567.88" title="9:24">What advice would you give this woman regarding an epidural? </span><span class="segment" data-start="567.88" data-end="572.96" title="9:27">This question is assessing whether you have appreciated the role of epidural analgesia </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="572.96"><span class="t-timestamp">9:32</span></div>
+  <div class="t-body"><span class="segment" data-start="572.96" data-end="576.16" title="9:32">in women with preeclampsia. </span><span class="segment" data-start="576.16" data-end="582.92" title="9:36">A good working epidural placed early during labor will potentially reduce catacolominsucretion </span><span class="segment" data-start="582.92" data-end="588.96" title="9:42">associated with pain and improve placental blood flow, thus benefiting both mother and </span><span class="segment" data-start="588.96" data-end="590.84" title="9:48">fetus. </span><span class="segment" data-start="590.84" data-end="597.2" title="9:50">It may also be rapidly topped up for instrumental or emergency cesarean section. </span><span class="segment" data-start="597.2" data-end="604.12" title="9:57">I would discuss these benefits with the patient, but also explain the risks of epidural placement. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="604.12"><span class="t-timestamp">10:04</span></div>
+  <div class="t-body"><span class="segment" data-start="604.12" data-end="609.24" title="10:04">I would list the complications with the level of risk as published by the obstetric and </span><span class="segment" data-start="609.24" data-end="612.04" title="10:09">aesthetic association. </span><span class="segment" data-start="612.04" data-end="620.72" title="10:12">These are nausea and vomiting, hypotension, the risk is 1 in 50, headache, the risk is </span><span class="segment" data-start="620.72" data-end="630.08" title="10:20">1 in 100, nerve damage, the risk is 1 in 1000 for temporary nerve damage and 1 in 13,000 </span><span class="segment" data-start="630.08" data-end="635.92" title="10:30">for permanent nerve damage, and an increased risk of instrumental delivery. </span><span class="segment" data-start="635.92" data-end="641.68" title="10:35">The incidence increases from 7 to 14% with an epidural. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="641.68"><span class="t-timestamp">10:41</span></div>
+  <div class="t-body"><span class="segment" data-start="641.68" data-end="645.16" title="10:41">What hematological parameters would you consider it safe for performing an epidural in this </span><span class="segment" data-start="645.16" data-end="648.36" title="10:45">case? </span><span class="segment" data-start="648.36" data-end="652.92" title="10:48">I would need to review a full blood count and a clotting screen prior to the insertion </span><span class="segment" data-start="652.92" data-end="655.76" title="10:52">of a spinal or epidural needle. </span><span class="segment" data-start="655.76" data-end="662.08" title="10:55">I would consider a platelet count below 100,000 per millimeter cubed, a contraindication </span><span class="segment" data-start="662.08" data-end="664.24" title="11:02">for an epidural. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="664.24"><span class="t-timestamp">11:04</span></div>
+  <div class="t-body"><span class="segment" data-start="664.24" data-end="670.04" title="11:04">An abnormal clotting screen with platelet counts above 100,000 per millimeter cubed would </span><span class="segment" data-start="670.04" data-end="672.28" title="11:10">also be of concern. </span><span class="segment" data-start="672.28" data-end="675.24" title="11:12">I would also review the white cell count. </span><span class="segment" data-start="675.24" data-end="683.44" title="11:15">A leukocytosis of 25,000 per liter or more can be normal in labor. </span><span class="segment" data-start="683.44" data-end="688.56" title="11:23">If the white cell count were raised, I would check the patient's temperature and look for </span><span class="segment" data-start="688.56" data-end="693.84" title="11:28">a source of sepsis prior to considering inserting an epidural. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="693.84"><span class="t-timestamp">11:33</span></div>
+  <div class="t-body"><span class="segment" data-start="693.84" data-end="699.52" title="11:33">The risk of epidural infection then needs to be weighed against the potential benefits </span><span class="segment" data-start="699.52" data-end="704.12" title="11:39">of epidural placement and discussed with the patient. </span><span class="segment" data-start="704.12" data-end="709.24" title="11:44">What about the platelet count considered safe for performing a spinal? </span><span class="segment" data-start="709.24" data-end="714.8" title="11:49">In my department, the criteria is slightly different for spinal anesthesia and a platelet </span><span class="segment" data-start="714.8" data-end="721.88" title="11:54">count above 70 with normal clotting is acceptable for a spinal anesthetic. </span><span class="segment" data-start="721.88" data-end="725.32" title="12:01">How would you manage this patient's fluid balance? </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="725.32"><span class="t-timestamp">12:05</span></div>
+  <div class="t-body"><span class="segment" data-start="725.32" data-end="730.4" title="12:05">Try and think of what your unit's protocol says. </span><span class="segment" data-start="730.4" data-end="736.16" title="12:10">And to fluid balance in patients with preeclampsia can be extremely challenging. </span><span class="segment" data-start="736.16" data-end="742.2" title="12:16">It is important to carefully monitor the input and output, usually with the urinary catheter </span><span class="segment" data-start="742.2" data-end="747.52" title="12:22">in situ, and renal function should be regularly checked. </span><span class="segment" data-start="747.52" data-end="754.48" title="12:27">Oliguria is common in preeclampsia and does not necessarily imply volume depletion. </span><span class="segment" data-start="754.48" data-end="760.64" title="12:34">The hydration may contribute to the development of pulmonary edema, but over-enthusiastic fluid </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="760.64"><span class="t-timestamp">12:40</span></div>
+  <div class="t-body"><span class="segment" data-start="760.64" data-end="766.64" title="12:40">restriction or additional blood loss may also lead to renal failure. </span><span class="segment" data-start="766.64" data-end="774.8" title="12:46">In my unit, a fluid restriction regime of 85 mAh is generally adapted with a target </span><span class="segment" data-start="774.8" data-end="779.84" title="12:54">urine output of 0.5 mAh per kilogram per hour. </span><span class="segment" data-start="779.84" data-end="788.84" title="12:59">If the urine output falls, then 250 ml judicious boluses of colloid are considered up to 500 </span><span class="segment" data-start="788.84" data-end="789.84" title="13:08">ml. </span><span class="segment" data-start="789.84" data-end="795.76" title="13:09">If this fails, 2-20 mg fruasamide boluses may be given. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="795.76"><span class="t-timestamp">13:15</span></div>
+  <div class="t-body"><span class="segment" data-start="795.76" data-end="803.48" title="13:15">If this is still ineffective, then central venous pressure monitoring may be required. </span><span class="segment" data-start="803.48" data-end="807.32" title="13:23">Once the epidural is sighted and the test has been administered, the patient has a tonic </span><span class="segment" data-start="807.32" data-end="809.16" title="13:27">chronic seizure. </span><span class="segment" data-start="809.16" data-end="813.28" title="13:29">What are the possible causes for this? </span><span class="segment" data-start="813.28" data-end="819.6" title="13:33">The seizure may be due to an obstetric or non-obstetric condition and then further split </span><span class="segment" data-start="819.6" data-end="826.84" title="13:39">into neurological, non-neurological or anesthetic related causes. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="826.84"><span class="t-timestamp">13:46</span></div>
+  <div class="t-body"><span class="segment" data-start="826.84" data-end="833.84" title="13:46">Neurological obstetric conditions might include eclampsia, subarachnoid hemorrhage or intracranial </span><span class="segment" data-start="833.84" data-end="835.72" title="13:53">hemorrhage. </span><span class="segment" data-start="835.72" data-end="842.44" title="13:55">Non-obstetric neurological conditions such as pre-existing epilepsy, intracranial mass </span><span class="segment" data-start="842.44" data-end="847.44" title="14:02">or infection may have precipitated the seizure. </span><span class="segment" data-start="847.44" data-end="855.0" title="14:07">Respiratory conditions that cause significant hypoxia or hypercapnia can initiate seizures. </span><span class="segment" data-start="855.0" data-end="860.64" title="14:15">These might be related to the pregnancy, such as amniotic fluid embolism or pulmonary </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="860.64"><span class="t-timestamp">14:20</span></div>
+  <div class="t-body"><span class="segment" data-start="860.64" data-end="865.2" title="14:20">embolism, or be due to pre-existing conditions. </span><span class="segment" data-start="865.2" data-end="872.64" title="14:25">Metabolic conditions causing seizures include hypoglycemia and hyponatremia. </span><span class="segment" data-start="872.64" data-end="878.8" title="14:32">These may be related to the pregnancy, for example, a gestational diabetic who is starved </span><span class="segment" data-start="878.8" data-end="884.24" title="14:38">and has received insulin, or due to a pre-existing condition. </span><span class="segment" data-start="884.24" data-end="891.48" title="14:44">Finally, with regards to anesthetic interventions, the epidural may in fact be interethical leading </span><span class="segment" data-start="891.48" data-end="897.84" title="14:51">to a high spinal, or the epidural solution may have been injected into a vein leading </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="897.84"><span class="t-timestamp">14:57</span></div>
+  <div class="t-body"><span class="segment" data-start="897.84" data-end="902.12" title="14:57">to local anesthetic toxicity. </span><span class="segment" data-start="902.12" data-end="905.24" title="15:02">What would be your initial management of this scenario? </span><span class="segment" data-start="905.24" data-end="911.56" title="15:05">Try and picture yourself in this situation and describe how you'd manage it. </span><span class="segment" data-start="911.56" data-end="917.08" title="15:11">This is an obstetric medical emergency that needs prompt management. </span><span class="segment" data-start="917.08" data-end="922.28" title="15:17">I would delegate a member of staff to call the Labour Ward resuscitation team, including </span><span class="segment" data-start="922.28" data-end="926.76" title="15:22">senior anesthetic help and an ODP. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="926.76"><span class="t-timestamp">15:26</span></div>
+  <div class="t-body"><span class="segment" data-start="926.76" data-end="932.64" title="15:26">I would also request the emergency eclampsia box and have this available. </span><span class="segment" data-start="932.64" data-end="939.08" title="15:32">I would start by assessing the airway, give 100% oxygen via a face mask and ensure that </span><span class="segment" data-start="939.08" data-end="942.56" title="15:39">the patient was in the left lateral tilt. </span><span class="segment" data-start="942.56" data-end="949.08" title="15:42">I would then quickly examine the respiratory system and measure the oxygen saturation. </span><span class="segment" data-start="949.08" data-end="954.72" title="15:49">The blood pressure, heart rate and any obvious blood loss would need to be measured. </span><span class="segment" data-start="954.72" data-end="961.68" title="15:54">I would obtain intravenous access and send bloods for full blood count, urea and electrolytes, </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="961.68"><span class="t-timestamp">16:01</span></div>
+  <div class="t-body"><span class="segment" data-start="961.68" data-end="968.56" title="16:01">liver function tests, glucose, coaggs and cross match if not already done. </span><span class="segment" data-start="968.56" data-end="972.52" title="16:08">The obstetric team should examine the abdomen and uterus. </span><span class="segment" data-start="972.52" data-end="979.2" title="16:12">I would give a bolus of 4 grams magnesium sulfate intravenously in an attempt to halt the </span><span class="segment" data-start="979.2" data-end="981.2" title="16:19">seizure. </span><span class="segment" data-start="981.2" data-end="985.88" title="16:21">Depending on whether the seizure stopped and the mother regained consciousness, I would </span><span class="segment" data-start="985.88" data-end="989.72" title="16:25">consider intubating the mother at this stage. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="989.72"><span class="t-timestamp">16:29</span></div>
+  <div class="t-body"><span class="segment" data-start="989.72" data-end="998.08" title="16:29">Further pharmacological treatment with anti-hypertensive drugs, magnesium sulfate infusion and benzodiazepines </span><span class="segment" data-start="998.08" data-end="1000.68" title="16:38">may be required. </span><span class="segment" data-start="1000.68" data-end="1005.16" title="16:40">The baby may need to be delivered by emergency caesarian section. </span><span class="segment" data-start="1005.16" data-end="1011.12" title="16:45">If possible, a neurological assessment of the patient should be performed. </span><span class="segment" data-start="1011.12" data-end="1015.36" title="16:51">The fit subsides and the woman partially regains consciousness, but the obstetricians are keen </span><span class="segment" data-start="1015.36" data-end="1018.92" title="16:55">to proceed to a category one emergency caesarian section due to fetal distress. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="1018.92"><span class="t-timestamp">16:58</span></div>
+  <div class="t-body"><span class="segment" data-start="1018.92" data-end="1024.68" title="16:58">There is not enough time to top up the epidural and you are required to perform a general anaesthetic. </span><span class="segment" data-start="1024.68" data-end="1025.72" title="17:04">How would you perform this? </span><span class="segment" data-start="1028.16" data-end="1034.28" title="17:08">Having informed my senior support of the situation and asked for their assistance, I would prepare </span><span class="segment" data-start="1034.28" data-end="1036.56" title="17:14">for a general anaesthetic. </span><span class="segment" data-start="1036.56" data-end="1043.4" title="17:16">I would ensure that I had at least one skilled assistant, a tilting table, suction and </span><span class="segment" data-start="1043.4" data-end="1045.92" title="17:23">a checked anaesthetic machine. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="1045.92"><span class="t-timestamp">17:25</span></div>
+  <div class="t-body"><span class="segment" data-start="1045.92" data-end="1050.84" title="17:25">I would administer 30 ml of 0.3 molar sodium citrate. </span><span class="segment" data-start="1050.84" data-end="1058.56" title="17:30">I would preoxygenate the woman to achieve an entire oxygen level of at least 93% or </span><span class="segment" data-start="1058.56" data-end="1063.52" title="17:38">for 3 minutes in a 15 degrees tilt position. </span><span class="segment" data-start="1063.52" data-end="1069.8" title="17:43">During preoxygenation, I would expect the obstetricians to be scrubbed and preparing the abdomen </span><span class="segment" data-start="1069.8" data-end="1072.4" title="17:49">so that they are ready to start. </span><span class="segment" data-start="1072.4" data-end="1077.92" title="17:52">I would prefer to have an arterial line in situ to closely monitor blood pressure, but </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="1077.92"><span class="t-timestamp">17:57</span></div>
+  <div class="t-body"><span class="segment" data-start="1077.92" data-end="1082.72" title="17:57">would not delay the induction of anesthesia unnecessarily. </span><span class="segment" data-start="1082.72" data-end="1090.8" title="18:02">I would induce anesthesia using a rapid sequence induction with fire pentone 3-5 mg, suction </span><span class="segment" data-start="1090.8" data-end="1099.48" title="18:10">athenium 2 mg per kilogram and alfentinal 10-20 mg per kilogram. </span><span class="segment" data-start="1099.48" data-end="1104.4" title="18:19">I would inform the pediatrician of the use of an opiate to obtain the presser response </span><span class="segment" data-start="1104.4" data-end="1106.36" title="18:24">to laryngoscopy. </span><span class="segment" data-start="1106.36" data-end="1112.52" title="18:26">I would secure the airway with an endotracheal tube and confirm correct positioning prior </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="1112.52"><span class="t-timestamp">18:32</span></div>
+  <div class="t-body"><span class="segment" data-start="1112.52" data-end="1115.72" title="18:32">to allowing the commencement of surgery. </span><span class="segment" data-start="1115.72" data-end="1124.08" title="18:35">I would maintain anesthesia using a 50-50 nitrous oxygen mix and 2% isofluorine for about </span><span class="segment" data-start="1124.08" data-end="1132.68" title="18:44">3 minutes, then reducing the isofluorine to 1% and maintaining levels at about 0.6%. </span><span class="segment" data-start="1132.68" data-end="1138.4" title="18:52">I would aim to achieve a mild respiratory alkylosis to maintain this physiologically </span><span class="segment" data-start="1138.4" data-end="1142.44" title="18:58">normal adaptation of pregnancy. </span><span class="segment" data-start="1142.44" data-end="1148.28" title="19:02">Once the succcemethonium had worn off, I would administer a non-depolarising muscle relaxant </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="1148.28"><span class="t-timestamp">19:08</span></div>
+  <div class="t-body"><span class="segment" data-start="1148.28" data-end="1155.2" title="19:08">such as atrocurium, reducing the dose as magnesium sulfate had been given. </span><span class="segment" data-start="1155.2" data-end="1161.72" title="19:15">After delivery, I would give scintocinon 5 international units as a slow bolus. </span><span class="segment" data-start="1161.72" data-end="1166.2" title="19:21">Following the operation, I would administer cautious fluid therapy. </span><span class="segment" data-start="1166.2" data-end="1171.44" title="19:26">If necessary, I would insert a central line to monitor central venous pressures and </span><span class="segment" data-start="1171.44" data-end="1174.68" title="19:31">help guide my resuscitation. </span><span class="segment" data-start="1174.68" data-end="1180.44" title="19:34">With regards to postoperative analgesia, I would consider bilateral Ilioingonal nerve </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="1180.44"><span class="t-timestamp">19:40</span></div>
+  <div class="t-body"><span class="segment" data-start="1180.44" data-end="1185.76" title="19:40">blocks or use the epidural to administer morphine and fentinal. </span><span class="segment" data-start="1185.76" data-end="1192.04" title="19:45">I would prescribe regular paracetamol and consider a non-steeroidal anti-inflammatory such </span><span class="segment" data-start="1192.04" data-end="1197.74" title="19:52">as di-clophonac, although in this particular case, I would not give this drug due to the </span><span class="segment" data-start="1197.74" data-end="1202.24" title="19:57">risk of worsening the patient's renal function. </span><span class="segment" data-start="1202.24" data-end="1208.44" title="20:02">What potential problems might you anticipate during and after the operation? </span><span class="segment" data-start="1208.44" data-end="1215.72" title="20:08">The problems may be divided into cardiovascular and hematological, respiratory, neurological </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="1215.72"><span class="t-timestamp">20:15</span></div>
+  <div class="t-body"><span class="segment" data-start="1215.72" data-end="1218.66" title="20:15">and renal. </span><span class="segment" data-start="1218.66" data-end="1224.64" title="20:18">Cardiovascular instability may occur at induction, laryngoscopy and intubation, intra </span><span class="segment" data-start="1224.64" data-end="1227.16" title="20:24">and postoperatively. </span><span class="segment" data-start="1227.16" data-end="1232.28" title="20:27">Dramatic swings in blood pressure may require prompt treatment. </span><span class="segment" data-start="1232.28" data-end="1238.64" title="20:32">Intubation of crises may lead to intracranial hemorrhage and bleeding at the operative site. </span><span class="segment" data-start="1238.64" data-end="1242.8" title="20:38">This may be complicated further by a coagulopathy. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="1242.8"><span class="t-timestamp">20:42</span></div>
+  <div class="t-body"><span class="segment" data-start="1242.8" data-end="1247.76" title="20:42">Fluid balance will be difficult to manage and so a urinary catheter is important and a </span><span class="segment" data-start="1247.76" data-end="1250.8" title="20:47">central line may be helpful. </span><span class="segment" data-start="1250.8" data-end="1255.72" title="20:50">With regards to the respiratory system, the intubation may be difficult due to airway </span><span class="segment" data-start="1255.72" data-end="1261.84" title="20:55">edema and the patient may be difficult to ventilate due to pulmonary edema. </span><span class="segment" data-start="1261.84" data-end="1267.72" title="21:01">Postoperatively, the patient may have further seizures and she may require admission to a </span><span class="segment" data-start="1267.72" data-end="1274.08" title="21:07">critical care unit for respiratory, neurological, hematological or renal support. </span></div>
+</div>
+</div>
+
+<div class="subtitle-bar">
+  <span class="subtitle-text empty" id="subtitle-text">Play audio to see live subtitles&#8230;</span>
+</div>
+
+<script>
+
+const audio    = document.getElementById('audio');
+const allSegs  = Array.from(document.querySelectorAll('.segment'));
+const allBlocks = Array.from(document.querySelectorAll('.t-block'));
+const subtitleEl = document.getElementById('subtitle-text');
+let activeSegEl   = null;
+let activeBlockEl = null;
+let searchMatches = [];
+let searchIdx     = 0;
+
+// Duration display
+audio.addEventListener('loadedmetadata', () => {
+  const m = Math.floor(audio.duration / 60);
+  const s = Math.floor(audio.duration %% 60).toString().padStart(2,'0');
+  document.getElementById('dur').textContent = m + ':' + s;
+});
+
+// Seek helper
+function seekTo(t) {
+  audio.currentTime = t;
+  audio.play();
+}
+
+// Block gutter click
+document.querySelectorAll('.t-gutter').forEach(g => {
+  g.addEventListener('click', () => seekTo(parseFloat(g.dataset.start)));
+});
+
+// Segment click
+allSegs.forEach(s => {
+  s.addEventListener('click', e => {
+    e.stopPropagation();
+    seekTo(parseFloat(s.dataset.start));
+  });
+});
+
+// Real-time tracking
+audio.addEventListener('timeupdate', () => {
+  const t = audio.currentTime;
+
+  // Find active segment (last one whose start <= t)
+  let found = null;
+  for (let i = allSegs.length - 1; i >= 0; i--) {
+    if (parseFloat(allSegs[i].dataset.start) <= t) { found = allSegs[i]; break; }
+  }
+
+  if (found && found !== activeSegEl) {
+    // Clear previous
+    if (activeSegEl) activeSegEl.classList.remove('active');
+    if (activeBlockEl) {
+      activeBlockEl.classList.remove('block-active');
+      const pg = activeBlockEl.querySelector('.t-gutter');
+      if (pg) pg.classList.remove('gutter-active');
+    }
+    // Set new
+    found.classList.add('active');
+    const block = found.closest('.t-block');
+    if (block) {
+      block.classList.add('block-active');
+      const g = block.querySelector('.t-gutter');
+      if (g) g.classList.add('gutter-active');
+      activeBlockEl = block;
+    }
+    activeSegEl = found;
+
+    // Update subtitle
+    subtitleEl.textContent = found.textContent.trim();
+    subtitleEl.classList.remove('empty');
+
+    // Auto-scroll (only when not searching)
+    if (!document.getElementById('search').value) {
+      found.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }
+});
+
+// Search
+const searchInput = document.getElementById('search');
+searchInput.addEventListener('input', runSearch);
+searchInput.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && searchMatches.length) {
+    searchMatches[searchIdx].classList.remove('search-current');
+    searchIdx = (searchIdx + 1) %% searchMatches.length;
+    const el = searchMatches[searchIdx];
+    el.classList.add('search-current');
+    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+});
+
+function runSearch() {
+  const q = searchInput.value.trim().toLowerCase();
+  allSegs.forEach(s => s.classList.remove('search-match','search-current'));
+  searchMatches = [];
+  if (!q) return;
+  allSegs.forEach(s => {
+    if (s.textContent.toLowerCase().includes(q)) {
+      s.classList.add('search-match');
+      searchMatches.push(s);
+    }
+  });
+  if (!searchMatches.length) return;
+  searchIdx = 0;
+  searchMatches[0].classList.add('search-current');
+  searchMatches[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+</script>
+</body>
+</html>

@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Thoracics — Pneumonia</title>
+<style>
+
+  :root {
+    --accent:    #7c3aed;
+    --body-bg:   #f1f5f9;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: var(--body-bg);
+    color: #1e293b;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  /* ── Header ── */
+  .header {
+    background: #0f172a;
+    border-bottom: 3px solid var(--accent);
+    padding: 12px 20px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .header-left { flex: 1; min-width: 200px; }
+  .header h1 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #f1f5f9;
+    margin-bottom: 4px;
+    letter-spacing: 0.01em;
+  }
+  .header-sub {
+    font-size: 0.72rem;
+    color: #94a3b8;
+    font-style: italic;
+  }
+  audio {
+    height: 36px;
+    accent-color: var(--accent);
+    flex-shrink: 0;
+  }
+  .back-link {
+    font-size: 0.8rem;
+    color: #94a3b8;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .back-link:hover { color: #60a5fa; }
+
+  /* ── Toolbar ── */
+  .toolbar {
+    background: #1e293b;
+    padding: 7px 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-shrink: 0;
+    border-bottom: 1px solid #334155;
+  }
+  .toolbar input {
+    flex: 1;
+    max-width: 380px;
+    padding: 5px 11px;
+    border: 1px solid #475569;
+    border-radius: 6px;
+    background: #0f172a;
+    color: #e2e8f0;
+    font-size: 0.83rem;
+    outline: none;
+  }
+  .toolbar input:focus { border-color: var(--accent); }
+  .toolbar input::placeholder { color: #64748b; }
+  .stats {
+    font-size: 0.72rem;
+    color: #64748b;
+    white-space: nowrap;
+  }
+
+  /* ── Scroll area ── */
+  .scroll-area {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+  }
+  .scroll-area::-webkit-scrollbar { width: 6px; }
+  .scroll-area::-webkit-scrollbar-track { background: transparent; }
+  .scroll-area::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+
+  /* ── Subtitle bar ── */
+  .subtitle-bar {
+    background: #0f172a;
+    border-top: 2px solid var(--accent);
+    padding: 8px 20px;
+    flex-shrink: 0;
+    min-height: 42px;
+    display: flex;
+    align-items: center;
+  }
+  .subtitle-text {
+    font-size: 0.9rem;
+    color: #e2e8f0;
+    line-height: 1.5;
+    font-style: italic;
+  }
+  .subtitle-text.empty { color: #475569; }
+
+  /* ── Transcript blocks ── */
+  .t-block {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    margin-bottom: 14px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    display: flex;
+  }
+  .t-block.block-active {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px rgba(37,99,235,0.15);
+  }
+  .t-gutter {
+    background: #0f172a;
+    width: 52px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: 14px;
+    cursor: pointer;
+  }
+  .t-gutter:hover { background: #1e293b; }
+  .t-timestamp {
+    font-size: 0.7rem;
+    color: #64748b;
+    font-family: monospace;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+  .t-gutter.gutter-active .t-timestamp { color: var(--accent); }
+  .t-body {
+    flex: 1;
+    padding: 12px 16px;
+    line-height: 1.75;
+    font-size: 0.92rem;
+    color: #1e293b;
+  }
+
+  /* ── Segments ── */
+  .segment {
+    cursor: pointer;
+    border-radius: 3px;
+    transition: background 0.1s;
+  }
+  .segment:hover { background: #eff6ff; }
+  .segment.active {
+    background: #bfdbfe;
+    outline: 2px solid #3b82f6;
+    outline-offset: 1px;
+    border-radius: 3px;
+  }
+  .segment.search-match  { background: #fef9c3; }
+  .segment.search-current { background: #fde047; outline: 2px solid #ca8a04; }
+
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <h1>Thoracics — Pneumonia</h1>
+    <div class="header-sub">Final FRCA &mdash; Exam Viva Simulation &mdash; Click any phrase to seek</div>
+  </div>
+  <audio id="audio" src="../FinalFRCAThoracics_Pneumonia.mp3" controls preload="metadata"></audio>
+  <a class="back-link" href="index.html">&#8592; All Topics</a>
+</div>
+
+<div class="toolbar">
+  <input type="text" id="search" placeholder="Search transcript&#8230; (Enter = next match)">
+  <span class="stats" id="stats">141 segments &nbsp;|&nbsp; <span id="dur">loading&#8230;</span></span>
+</div>
+
+<div class="scroll-area" id="scroll-area">
+<div class="t-block">
+  <div class="t-gutter" data-start="0.0"><span class="t-timestamp">0:00</span></div>
+  <div class="t-body"><span class="segment" data-start="0.0" data-end="1.64" title="0:00">Nimonia. </span><span class="segment" data-start="1.64" data-end="6.88" title="0:01">This topic would be well suited to the clinical sciences' viper, but may feature in the physiology </span><span class="segment" data-start="6.88" data-end="9.48" title="0:06">or even pharmacology viper. </span><span class="segment" data-start="9.48" data-end="14.04" title="0:09">As this is such a common and important disease, you should be able to answer the questions </span><span class="segment" data-start="14.04" data-end="19.64" title="0:14">confidently, accurately, and with recent guidelines or evidence-based medicine at the forefront </span><span class="segment" data-start="19.64" data-end="20.64" title="0:19">of your mind. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="20.64"><span class="t-timestamp">0:20</span></div>
+  <div class="t-body"><span class="segment" data-start="20.64" data-end="23.56" title="0:20">What are the different types of pneumonia? </span><span class="segment" data-start="23.56" data-end="28.64" title="0:23">A structured approach is vital to ensure that you do not forget any of the key points. </span><span class="segment" data-start="28.64" data-end="33.88" title="0:28">It will be a good idea to start with a brief summary. </span><span class="segment" data-start="33.88" data-end="39.56" title="0:33">Nimonia is an important and common clinical problem, responsible for around one quarter </span><span class="segment" data-start="39.56" data-end="43.96" title="0:39">of all admissions to a general intensive care unit. </span><span class="segment" data-start="43.96" data-end="49.04" title="0:43">Although we now have a range of antibiotics to treat the causative organisms, mortality </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="49.04"><span class="t-timestamp">0:49</span></div>
+  <div class="t-body"><span class="segment" data-start="49.04" data-end="55.2" title="0:49">from pneumonia remains around 10% overall and as high as 40% for patients that develop </span><span class="segment" data-start="55.2" data-end="57.92" title="0:55">severe sepsis. </span><span class="segment" data-start="57.92" data-end="63.88" title="0:57">We can generally classify the disease into community acquired, nose acomial and aspiration </span><span class="segment" data-start="63.88" data-end="65.84" title="1:03">pneumonia. </span><span class="segment" data-start="65.84" data-end="71.48" title="1:05">This classification gives us information not only about the likely pathogens, but also the </span><span class="segment" data-start="71.48" data-end="76.56" title="1:11">patterns of lung involvement and likely prognosis. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="76.56"><span class="t-timestamp">1:16</span></div>
+  <div class="t-body"><span class="segment" data-start="76.56" data-end="81.32" title="1:16">Community acquired pneumonia can be further subdivided into primary, where no underlying </span><span class="segment" data-start="81.32" data-end="86.84" title="1:21">lung disease is present, and secondary, where lung disease is present. </span><span class="segment" data-start="86.84" data-end="92.12" title="1:26">The most common causative organism found overall in community acquired pneumonia is the </span><span class="segment" data-start="92.12" data-end="97.64" title="1:32">Graham positive aerobic coccus, streptococcus pneumonia. </span><span class="segment" data-start="97.64" data-end="105.04" title="1:37">Other so-called atypical pneumonia also feature, including microplasma, legionella and staphler </span><span class="segment" data-start="105.04" data-end="107.96" title="1:45">coccus aureus. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="107.96"><span class="t-timestamp">1:47</span></div>
+  <div class="t-body"><span class="segment" data-start="107.96" data-end="113.84" title="1:47">Hospital acquired or nose acomial pneumonia is of particular importance for anesthetists </span><span class="segment" data-start="113.92" data-end="116.64" title="1:53">for two main reasons. </span><span class="segment" data-start="116.64" data-end="122.6" title="1:56">Firstly, the vast majority of post-operative pneumonia are nose acomial. </span><span class="segment" data-start="122.6" data-end="128.92" title="2:02">Secondly, the so-called ventilator associated pneumonia is also a type of nose acomial </span><span class="segment" data-start="128.92" data-end="130.16" title="2:08">pneumonia. </span><span class="segment" data-start="130.16" data-end="136.72" title="2:10">Here, resistant organisms tend to be responsible, including Graham negative species, staphler </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="136.72"><span class="t-timestamp">2:16</span></div>
+  <div class="t-body"><span class="segment" data-start="136.72" data-end="144.4" title="2:16">coccus aureus, methamethyl in resistant staphler coccus aureus, pseudomonas and klebsiela. </span><span class="segment" data-start="144.4" data-end="150.24" title="2:24">Finally, an aspiration pneumonia is normally precipitated by an event leading to poor </span><span class="segment" data-start="150.24" data-end="154.28" title="2:30">bulba or esophageal function. </span><span class="segment" data-start="154.28" data-end="160.68" title="2:34">Causative organisms tend to be anaerobic, and the prognosis is particularly poor. </span><span class="segment" data-start="160.68" data-end="166.48" title="2:40">Despite this microbiological knowledge, most pneumonia are termed culture negative, and </span><span class="segment" data-start="166.48" data-end="171.24" title="2:46">no single causative organism is identified. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="171.24"><span class="t-timestamp">2:51</span></div>
+  <div class="t-body"><span class="segment" data-start="171.24" data-end="176.32" title="2:51">This does not mean that a causative organism is not present or responsible, but rather </span><span class="segment" data-start="176.32" data-end="182.8" title="2:56">the influence of early antibiotic administration may affect its growth in culture. </span><span class="segment" data-start="182.8" data-end="187.8" title="3:02">Patients should therefore be treated empirically according to clinical suspicion and their </span><span class="segment" data-start="187.8" data-end="193.28" title="3:07">clinical condition, and not simply on microbiological results. </span><span class="segment" data-start="193.28" data-end="199.96" title="3:13">Where an organism is identified, therapy could thus be narrowed to a more specific agent. </span><span class="segment" data-start="199.96" data-end="205.84" title="3:19">What is the mechanism causing hypoxia in severe pneumonia? </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="205.84"><span class="t-timestamp">3:25</span></div>
+  <div class="t-body"><span class="segment" data-start="205.84" data-end="211.8" title="3:25">Hypoxia in pneumonia results from a mismatch between oxygen supply and demand. </span><span class="segment" data-start="211.8" data-end="218.32" title="3:31">Most oxygen is required to sustain the systemic inflammatory response syndrome of tachycardia, </span><span class="segment" data-start="218.32" data-end="223.72" title="3:38">pyrexia and high systemic inflammatory mediators. </span><span class="segment" data-start="223.72" data-end="228.92" title="3:43">Demand is reduced due to ventilation perfusion mismatch from bacteria and inflammatory cell </span><span class="segment" data-start="228.92" data-end="232.48" title="3:48">perencomal infiltration. </span><span class="segment" data-start="232.48" data-end="237.48" title="3:52">Localised edema also contributes which leads to overall reduced ventilation to affected </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="237.48"><span class="t-timestamp">3:57</span></div>
+  <div class="t-body"><span class="segment" data-start="237.48" data-end="239.92" title="3:57">lung areas. </span><span class="segment" data-start="239.92" data-end="245.44" title="3:59">Forensic pulmonary vasoconstriction is less effective in these areas than during health, </span><span class="segment" data-start="245.44" data-end="251.16" title="4:05">due to the many inflammatory mediators released, and hence there is an overall reduction in </span><span class="segment" data-start="251.16" data-end="256.2" title="4:11">the VQ ratio in these segments, also known as SHUNT. </span><span class="segment" data-start="256.2" data-end="261.12" title="4:16">What is ventilator associated pneumonia? </span><span class="segment" data-start="261.12" data-end="267.16" title="4:21">Ventilator associated pneumonia is responsible for around 50% of all hospital acquired infections </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="267.16"><span class="t-timestamp">4:27</span></div>
+  <div class="t-body"><span class="segment" data-start="267.16" data-end="269.52" title="4:27">in the intensive care unit. </span><span class="segment" data-start="269.52" data-end="275.8" title="4:29">Forelong's mechanical ventilation and can lead to increased patient mortality. </span><span class="segment" data-start="275.8" data-end="282.16" title="4:35">Although no formal diagnostic criteria exist, new or prolonged pulmonary infiltrates, </span><span class="segment" data-start="282.16" data-end="289.72" title="4:42">with fever, leukocytosis and purulent trachyobronkyl secretions in patients ventilated for over </span><span class="segment" data-start="289.72" data-end="298.12" title="4:49">48 hours, have been used to indicate the presence of ventilated associated pneumonia. </span><span class="segment" data-start="298.12" data-end="304.04" title="4:58">Excessingly, evidence now suggests that directed or non-directed bronchial lavage should </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="304.04"><span class="t-timestamp">5:04</span></div>
+  <div class="t-body"><span class="segment" data-start="304.04" data-end="307.24" title="5:04">be included in these criteria. </span><span class="segment" data-start="307.24" data-end="312.04" title="5:07">Although the pathogenesis is unknown, it is likely that aspiration of or-unfair and </span><span class="segment" data-start="312.04" data-end="318.2" title="5:12">dual contents is primarily responsible, therefore explaining why the causative organisms are </span><span class="segment" data-start="318.2" data-end="325.16" title="5:18">mainly gram-negative species, as well as Staffelococosaurus and MRSA. </span><span class="segment" data-start="325.16" data-end="331.22" title="5:25">The main risk factors identified which increased the risks of VAP occurring include nursing </span><span class="segment" data-start="331.22" data-end="337.92" title="5:31">patients in a fully supine position, prolonged ventilation, heavy sedation, inadequate cuff </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="337.92"><span class="t-timestamp">5:37</span></div>
+  <div class="t-body"><span class="segment" data-start="337.92" data-end="345.44" title="5:37">pressures and possibly the use of H2 receptor antagonists, although this is controversial. </span><span class="segment" data-start="345.44" data-end="347.52" title="5:45">What are the correct cuff pressures? </span><span class="segment" data-start="347.52" data-end="351.76" title="5:47">What cuffs are currently used and how do they contribute towards VAP? </span><span class="segment" data-start="352.0" data-end="356.2" title="5:52">Don't be put off folks by questions that are small prints. </span><span class="segment" data-start="356.2" data-end="361.0" title="5:56">The examiner is probing your knowledge and wants to see basic concepts applied to clinical </span><span class="segment" data-start="361.0" data-end="364.0" title="6:01">practice. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="364.0"><span class="t-timestamp">6:04</span></div>
+  <div class="t-body"><span class="segment" data-start="364.0" data-end="369.2" title="6:04">The cuff of an endotracheal tube may minimize the passage of secretions from above to </span><span class="segment" data-start="369.2" data-end="371.16" title="6:09">below the cuff. </span><span class="segment" data-start="371.16" data-end="376.56" title="6:11">Obviously, greatly increasing the cuff pressure would form a more secure seal in the short </span><span class="segment" data-start="377.56" data-end="381.8" title="6:17">term, but these benefits must be balanced against the trauma that this would cause from </span><span class="segment" data-start="381.8" data-end="385.68" title="6:21">mucusal ischemia after long term use. </span><span class="segment" data-start="385.68" data-end="390.96" title="6:25">It is now thought that small folds appear in the trakeal tube cuffs which allow the </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="390.96"><span class="t-timestamp">6:30</span></div>
+  <div class="t-body"><span class="segment" data-start="390.96" data-end="397.96" title="6:30">passage of material from above to below, therefore contributing toward the incidence of VAP. </span><span class="segment" data-start="397.96" data-end="404.12" title="6:37">The use of high volume low pressure cuffs has helped balance the benefits of a secure </span><span class="segment" data-start="404.12" data-end="411.2" title="6:44">seal against the risks of mucusal edema and the use of new soft flexible silicon cuffs </span><span class="segment" data-start="411.2" data-end="414.12" title="6:51">is becoming increasingly popular. </span><span class="segment" data-start="414.12" data-end="420.64" title="6:54">A pressure of between 15 to 40mm of mercury is considered acceptable in these high volume </span><span class="segment" data-start="420.64" data-end="427.4" title="7:00">cuffs and protection can be optimised by using an endotracheal tube of correct size. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="427.4"><span class="t-timestamp">7:07</span></div>
+  <div class="t-body"><span class="segment" data-start="427.4" data-end="431.56" title="7:07">What can be done to minimise the risk of post-operative pneumonia in a patient with chronic </span><span class="segment" data-start="431.56" data-end="434.28" title="7:11">lung disease undergoing a laparotomy? </span><span class="segment" data-start="434.28" data-end="439.04" title="7:14">This is a bread and butter issue for an ecotest, and a good knowledge of the methods used </span><span class="segment" data-start="439.04" data-end="444.92" title="7:19">to minimise the risk of post-operative pneumonia would be expected. </span><span class="segment" data-start="444.92" data-end="450.4" title="7:24">The two main important factors in preventing post-operative chest infection would include </span><span class="segment" data-start="450.4" data-end="457.04" title="7:30">providing adequate analgesia and providing good quality respiratory aftercare. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="457.04"><span class="t-timestamp">7:37</span></div>
+  <div class="t-body"><span class="segment" data-start="457.04" data-end="462.3" title="7:37">All anesthesia, such as a thoracic epidural, will allow good quality pain relief to be </span><span class="segment" data-start="462.3" data-end="468.72" title="7:42">achieved without giving systemic opioids which may result in hypoventilation, basal-ate </span><span class="segment" data-start="468.72" data-end="473.08" title="7:48">electasis and hence noseocomial pneumonia. </span><span class="segment" data-start="473.08" data-end="478.36" title="7:53">Good regional anesthesia should allow deep breathing and coughing to occur, again helping </span><span class="segment" data-start="478.36" data-end="483.44" title="7:58">to prevent sputum retention and basal-ate electasis. </span><span class="segment" data-start="483.44" data-end="489.4" title="8:03">Should she aftercare should include regular chest physiotherapy, humidified inspired oxygen </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="489.4"><span class="t-timestamp">8:09</span></div>
+  <div class="t-body"><span class="segment" data-start="489.4" data-end="496.48" title="8:09">and continuing her patients' usual respiratory medications such as bronchodilators. </span><span class="segment" data-start="496.48" data-end="502.18" title="8:16">For ventilated patients, one should follow the ventilator care bundle as promoted by the </span><span class="segment" data-start="502.18" data-end="507.88" title="8:22">Institute for Healthcare Improvements Save a Thousand Lives Campaign. </span><span class="segment" data-start="507.88" data-end="513.78" title="8:27">This bundle consists of four main elements, ensuring prophylactic anti-thrombotic measures </span><span class="segment" data-start="513.78" data-end="520.36" title="8:33">are taken, ensuring gastric ulcer protection, maintaining the bed at a 30 degree head-up </span><span class="segment" data-start="520.36" data-end="525.64" title="8:40">tilt and providing regular sedation breaks where appropriate. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="525.64"><span class="t-timestamp">8:45</span></div>
+  <div class="t-body"><span class="segment" data-start="525.64" data-end="531.92" title="8:45">The latter two of these components have been shown to reduce ventilator-associated pneumonia. </span><span class="segment" data-start="531.92" data-end="538.08" title="8:51">An early tracheotomy performed before day 7 of mechanical ventilation in patients that </span><span class="segment" data-start="538.08" data-end="544.12" title="8:58">are anticipated to undergo prolonged mechanical ventilation may reduce post-operative chest </span><span class="segment" data-start="544.12" data-end="550.12" title="9:04">infections, although this is controversial and the Trackman study looking into this issue </span><span class="segment" data-start="550.12" data-end="552.2" title="9:10">is still ongoing. </span><span class="segment" data-start="552.2" data-end="557.28" title="9:12">You are asked to see a patient on the intensive care unit with community acquired pneumonia. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="557.28"><span class="t-timestamp">9:17</span></div>
+  <div class="t-body"><span class="segment" data-start="557.28" data-end="561.68" title="9:17">He has been increasingly difficult to ventilate over the last 24 hours and now has an intermittent </span><span class="segment" data-start="561.68" data-end="564.08" title="9:21">high-grade perexia. </span><span class="segment" data-start="564.08" data-end="568.56" title="9:24">A plane chest radiograph shows evidence of a large pleural effusion. </span><span class="segment" data-start="568.56" data-end="573.32" title="9:28">What are the possible cause of the suffusion and how should we manage it? </span><span class="segment" data-start="573.32" data-end="579.24" title="9:33">The two main differential diagnoses in this patient would be an exudative pleural effusion </span><span class="segment" data-start="579.24" data-end="581.64" title="9:39">and an empireema. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="581.64"><span class="t-timestamp">9:41</span></div>
+  <div class="t-body"><span class="segment" data-start="581.64" data-end="587.84" title="9:41">Several effusions are defined as fluid between the visceral and parietal layers of pleura. </span><span class="segment" data-start="587.84" data-end="593.62" title="9:47">For an effusion to be seen on plane chest radiography at least 400 mills of fluid must </span><span class="segment" data-start="593.62" data-end="602.04" title="9:53">be present and so smaller effusions may be demonstrated by using computerized tomography. </span><span class="segment" data-start="602.04" data-end="607.64" title="10:02">Effusions can be divided into transidates or exudates where parinumonic effusions tend </span><span class="segment" data-start="607.64" data-end="610.88" title="10:07">to be exudate and type. </span><span class="segment" data-start="610.88" data-end="617.12" title="10:10">Although it is normally stated that a transidate will have less than 30 grams per liter of protein, </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="617.12"><span class="t-timestamp">10:17</span></div>
+  <div class="t-body"><span class="segment" data-start="617.12" data-end="620.8" title="10:17">this is dependent upon the plasma albumin level. </span><span class="segment" data-start="620.8" data-end="625.88" title="10:20">As this is often reduced in critically old patients, a level of protein in pleural fluid </span><span class="segment" data-start="625.88" data-end="631.76" title="10:25">greater than one half of the plasma level is accepted to be sufficient to term an effusion </span><span class="segment" data-start="631.76" data-end="633.76" title="10:31">and exudate. </span><span class="segment" data-start="633.76" data-end="636.88" title="10:33">Alternatively, this may be an empireema. </span><span class="segment" data-start="636.88" data-end="643.2" title="10:36">A collection of bacteria and pus cells which normally has a pH less than 7.2. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="643.2"><span class="t-timestamp">10:43</span></div>
+  <div class="t-body"><span class="segment" data-start="643.2" data-end="648.96" title="10:43">This would certainly account for the high pyrexias that the patient has been experiencing. </span><span class="segment" data-start="648.96" data-end="654.44" title="10:48">If any effusion, regardless of type, is causing respiratory embarrassment, it should be drained </span><span class="segment" data-start="654.44" data-end="657.8" title="10:54">by inserting an intercostal drain. </span><span class="segment" data-start="657.8" data-end="663.68" title="10:57">If the effusion is exudative or an empireema, a large bore into costal drain should be </span><span class="segment" data-start="663.68" data-end="669.72" title="11:03">used using a surgical dissection method rather than the salda-gar approach used for smaller </span><span class="segment" data-start="669.72" data-end="673.84" title="11:09">drains suited for the treatment of pneumothorices. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="673.84"><span class="t-timestamp">11:13</span></div>
+  <div class="t-body"><span class="segment" data-start="673.84" data-end="678.84" title="11:13">It is important the fluid from the effusion be sent for microscopy and culture in order </span><span class="segment" data-start="678.84" data-end="682.04" title="11:18">to direct antimicrobial therapy. </span><span class="segment" data-start="682.04" data-end="687.52" title="11:22">Although blood cultures may be useful here, their low yield in patients already receiving </span><span class="segment" data-start="687.52" data-end="693.64" title="11:27">antibiotics and false positives due to contamination may lead many to argue that aspirin </span><span class="segment" data-start="693.64" data-end="698.68" title="11:33">and alteration and culture of the site of infection is the most accurate method of directing </span><span class="segment" data-start="698.68" data-end="701.48" title="11:38">antimicrobial therapy. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="701.48"><span class="t-timestamp">11:41</span></div>
+  <div class="t-body"><span class="segment" data-start="701.48" data-end="706.6" title="11:41">Although antimicrobial therapy will often be used in these circumstances, penetration </span><span class="segment" data-start="706.6" data-end="712.64" title="11:46">into the site of abscess formation will often be poor and draining the empireema will be </span><span class="segment" data-start="712.64" data-end="716.76" title="11:52">the most effective way of reducing fever and improving well-being. </span></div>
+</div>
+</div>
+
+<div class="subtitle-bar">
+  <span class="subtitle-text empty" id="subtitle-text">Play audio to see live subtitles&#8230;</span>
+</div>
+
+<script>
+
+const audio    = document.getElementById('audio');
+const allSegs  = Array.from(document.querySelectorAll('.segment'));
+const allBlocks = Array.from(document.querySelectorAll('.t-block'));
+const subtitleEl = document.getElementById('subtitle-text');
+let activeSegEl   = null;
+let activeBlockEl = null;
+let searchMatches = [];
+let searchIdx     = 0;
+
+// Duration display
+audio.addEventListener('loadedmetadata', () => {
+  const m = Math.floor(audio.duration / 60);
+  const s = Math.floor(audio.duration %% 60).toString().padStart(2,'0');
+  document.getElementById('dur').textContent = m + ':' + s;
+});
+
+// Seek helper
+function seekTo(t) {
+  audio.currentTime = t;
+  audio.play();
+}
+
+// Block gutter click
+document.querySelectorAll('.t-gutter').forEach(g => {
+  g.addEventListener('click', () => seekTo(parseFloat(g.dataset.start)));
+});
+
+// Segment click
+allSegs.forEach(s => {
+  s.addEventListener('click', e => {
+    e.stopPropagation();
+    seekTo(parseFloat(s.dataset.start));
+  });
+});
+
+// Real-time tracking
+audio.addEventListener('timeupdate', () => {
+  const t = audio.currentTime;
+
+  // Find active segment (last one whose start <= t)
+  let found = null;
+  for (let i = allSegs.length - 1; i >= 0; i--) {
+    if (parseFloat(allSegs[i].dataset.start) <= t) { found = allSegs[i]; break; }
+  }
+
+  if (found && found !== activeSegEl) {
+    // Clear previous
+    if (activeSegEl) activeSegEl.classList.remove('active');
+    if (activeBlockEl) {
+      activeBlockEl.classList.remove('block-active');
+      const pg = activeBlockEl.querySelector('.t-gutter');
+      if (pg) pg.classList.remove('gutter-active');
+    }
+    // Set new
+    found.classList.add('active');
+    const block = found.closest('.t-block');
+    if (block) {
+      block.classList.add('block-active');
+      const g = block.querySelector('.t-gutter');
+      if (g) g.classList.add('gutter-active');
+      activeBlockEl = block;
+    }
+    activeSegEl = found;
+
+    // Update subtitle
+    subtitleEl.textContent = found.textContent.trim();
+    subtitleEl.classList.remove('empty');
+
+    // Auto-scroll (only when not searching)
+    if (!document.getElementById('search').value) {
+      found.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }
+});
+
+// Search
+const searchInput = document.getElementById('search');
+searchInput.addEventListener('input', runSearch);
+searchInput.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && searchMatches.length) {
+    searchMatches[searchIdx].classList.remove('search-current');
+    searchIdx = (searchIdx + 1) %% searchMatches.length;
+    const el = searchMatches[searchIdx];
+    el.classList.add('search-current');
+    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+});
+
+function runSearch() {
+  const q = searchInput.value.trim().toLowerCase();
+  allSegs.forEach(s => s.classList.remove('search-match','search-current'));
+  searchMatches = [];
+  if (!q) return;
+  allSegs.forEach(s => {
+    if (s.textContent.toLowerCase().includes(q)) {
+      s.classList.add('search-match');
+      searchMatches.push(s);
+    }
+  });
+  if (!searchMatches.length) return;
+  searchIdx = 0;
+  searchMatches[0].classList.add('search-current');
+  searchMatches[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+</script>
+</body>
+</html>

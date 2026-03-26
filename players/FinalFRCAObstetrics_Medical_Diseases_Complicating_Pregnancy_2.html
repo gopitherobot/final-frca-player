@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Obstetrics — Medical Diseases Complicating Pregnancy 2</title>
+<style>
+
+  :root {
+    --accent:    #db2777;
+    --body-bg:   #f1f5f9;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: var(--body-bg);
+    color: #1e293b;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  /* ── Header ── */
+  .header {
+    background: #0f172a;
+    border-bottom: 3px solid var(--accent);
+    padding: 12px 20px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .header-left { flex: 1; min-width: 200px; }
+  .header h1 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #f1f5f9;
+    margin-bottom: 4px;
+    letter-spacing: 0.01em;
+  }
+  .header-sub {
+    font-size: 0.72rem;
+    color: #94a3b8;
+    font-style: italic;
+  }
+  audio {
+    height: 36px;
+    accent-color: var(--accent);
+    flex-shrink: 0;
+  }
+  .back-link {
+    font-size: 0.8rem;
+    color: #94a3b8;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .back-link:hover { color: #60a5fa; }
+
+  /* ── Toolbar ── */
+  .toolbar {
+    background: #1e293b;
+    padding: 7px 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-shrink: 0;
+    border-bottom: 1px solid #334155;
+  }
+  .toolbar input {
+    flex: 1;
+    max-width: 380px;
+    padding: 5px 11px;
+    border: 1px solid #475569;
+    border-radius: 6px;
+    background: #0f172a;
+    color: #e2e8f0;
+    font-size: 0.83rem;
+    outline: none;
+  }
+  .toolbar input:focus { border-color: var(--accent); }
+  .toolbar input::placeholder { color: #64748b; }
+  .stats {
+    font-size: 0.72rem;
+    color: #64748b;
+    white-space: nowrap;
+  }
+
+  /* ── Scroll area ── */
+  .scroll-area {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+  }
+  .scroll-area::-webkit-scrollbar { width: 6px; }
+  .scroll-area::-webkit-scrollbar-track { background: transparent; }
+  .scroll-area::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+
+  /* ── Subtitle bar ── */
+  .subtitle-bar {
+    background: #0f172a;
+    border-top: 2px solid var(--accent);
+    padding: 8px 20px;
+    flex-shrink: 0;
+    min-height: 42px;
+    display: flex;
+    align-items: center;
+  }
+  .subtitle-text {
+    font-size: 0.9rem;
+    color: #e2e8f0;
+    line-height: 1.5;
+    font-style: italic;
+  }
+  .subtitle-text.empty { color: #475569; }
+
+  /* ── Transcript blocks ── */
+  .t-block {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    margin-bottom: 14px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    display: flex;
+  }
+  .t-block.block-active {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px rgba(37,99,235,0.15);
+  }
+  .t-gutter {
+    background: #0f172a;
+    width: 52px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: 14px;
+    cursor: pointer;
+  }
+  .t-gutter:hover { background: #1e293b; }
+  .t-timestamp {
+    font-size: 0.7rem;
+    color: #64748b;
+    font-family: monospace;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+  .t-gutter.gutter-active .t-timestamp { color: var(--accent); }
+  .t-body {
+    flex: 1;
+    padding: 12px 16px;
+    line-height: 1.75;
+    font-size: 0.92rem;
+    color: #1e293b;
+  }
+
+  /* ── Segments ── */
+  .segment {
+    cursor: pointer;
+    border-radius: 3px;
+    transition: background 0.1s;
+  }
+  .segment:hover { background: #eff6ff; }
+  .segment.active {
+    background: #bfdbfe;
+    outline: 2px solid #3b82f6;
+    outline-offset: 1px;
+    border-radius: 3px;
+  }
+  .segment.search-match  { background: #fef9c3; }
+  .segment.search-current { background: #fde047; outline: 2px solid #ca8a04; }
+
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <h1>Obstetrics — Medical Diseases Complicating Pregnancy 2</h1>
+    <div class="header-sub">Final FRCA &mdash; Exam Viva Simulation &mdash; Click any phrase to seek</div>
+  </div>
+  <audio id="audio" src="../FinalFRCAObstetrics_Medical_Diseases_Complicating_Pregnancy_2.mp3" controls preload="metadata"></audio>
+  <a class="back-link" href="index.html">&#8592; All Topics</a>
+</div>
+
+<div class="toolbar">
+  <input type="text" id="search" placeholder="Search transcript&#8230; (Enter = next match)">
+  <span class="stats" id="stats">124 segments &nbsp;|&nbsp; <span id="dur">loading&#8230;</span></span>
+</div>
+
+<div class="scroll-area" id="scroll-area">
+<div class="t-block">
+  <div class="t-gutter" data-start="0.0"><span class="t-timestamp">0:00</span></div>
+  <div class="t-body"><span class="segment" data-start="0.0" data-end="4.0" title="0:00">Medical disease complicating pregnancy, too. </span><span class="segment" data-start="4.0" data-end="6.96" title="0:04">You're called to the obstetric ward urgently to see a woman who just had a </span><span class="segment" data-start="6.96" data-end="10.0" title="0:06">child delivery but is now bleeding significantly. </span><span class="segment" data-start="10.0" data-end="13.0" title="0:10">What is your immediate management? </span><span class="segment" data-start="13.0" data-end="17.0" title="0:13">I would ask a member of staff to call for senior help </span><span class="segment" data-start="17.0" data-end="20.0" title="0:17">and alert the hematology and portoring services. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="20.0"><span class="t-timestamp">0:20</span></div>
+  <div class="t-body"><span class="segment" data-start="20.0" data-end="24.0" title="0:20">It is vital to work in a team with the midwives and obstetricians. </span><span class="segment" data-start="24.0" data-end="28.0" title="0:24">Having established a brief history from the midwifery staff, </span><span class="segment" data-start="28.0" data-end="34.0" title="0:28">the patient's notes and the obstetricians, I would need to establish how much blood </span><span class="segment" data-start="34.0" data-end="39.0" title="0:34">had been lost, how much fluid had already been given, and assess the current </span><span class="segment" data-start="39.0" data-end="41.0" title="0:39">hemodynamic status. </span><span class="segment" data-start="41.0" data-end="46.0" title="0:41">I would give a hundred percent oxygen, ensure that the airway was patent and </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="46.0"><span class="t-timestamp">0:46</span></div>
+  <div class="t-body"><span class="segment" data-start="46.0" data-end="49.0" title="0:46">establish verbal communication with the patient. </span><span class="segment" data-start="49.0" data-end="54.0" title="0:49">The blood pressure, pulse rate and capillary refill would need to be assessed </span><span class="segment" data-start="54.0" data-end="59.0" title="0:54">large bore intravenous cannula inserted for further volume resuscitation. </span><span class="segment" data-start="59.0" data-end="64.0" title="0:59">I would take blood for a full blood count, year-ear and electrolytes, </span><span class="segment" data-start="64.0" data-end="68.0" title="1:04">coagulation studies and cross-match six units of blood. </span><span class="segment" data-start="68.0" data-end="72.0" title="1:08">I would initially resuscitate the woman with up to two litres of intravenous </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="72.0"><span class="t-timestamp">1:12</span></div>
+  <div class="t-body"><span class="segment" data-start="72.0" data-end="75.0" title="1:12">crystalloid and then consider using blood. </span><span class="segment" data-start="75.0" data-end="78.0" title="1:15">Ideally I would use warmed fluids. </span><span class="segment" data-start="78.0" data-end="82.0" title="1:18">I would be in constant communication with the rest of the team to </span><span class="segment" data-start="82.0" data-end="86.0" title="1:22">ascertain the extent of the bleeding and the planned treatment. </span><span class="segment" data-start="86.0" data-end="91.0" title="1:26">This might include manual stimulation of an atonic uterus, placement of a </span><span class="segment" data-start="91.0" data-end="97.0" title="1:31">urinary catheter and a drug such as sintosinone, ergo metrin and carbaprost. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="97.0"><span class="t-timestamp">1:37</span></div>
+  <div class="t-body"><span class="segment" data-start="97.0" data-end="102.0" title="1:37">The obstetricians diagnose uterine atonine retained products of conception. </span><span class="segment" data-start="102.0" data-end="105.0" title="1:42">They are keen to move to theatre and surgically intervene. </span><span class="segment" data-start="105.0" data-end="107.0" title="1:45">The woman continues to bleed. </span><span class="segment" data-start="107.0" data-end="110.0" title="1:47">What are your concerns? </span><span class="segment" data-start="110.0" data-end="115.0" title="1:50">I would appreciate the urgency of the situation and attempt to move the woman quickly. </span><span class="segment" data-start="115.0" data-end="120.0" title="1:55">I would want to continue fluid resuscitation, consider invasive monitoring and have the woman </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="120.0"><span class="t-timestamp">2:00</span></div>
+  <div class="t-body"><span class="segment" data-start="120.0" data-end="122.0" title="2:00">catheterised in theatre. </span><span class="segment" data-start="122.0" data-end="129.0" title="2:02">It might be necessary to transfuse fresh frozen plasma, cryoprecipitate and platelets </span><span class="segment" data-start="129.0" data-end="132.0" title="2:09">depending on the blood transfusion requirements. </span><span class="segment" data-start="132.0" data-end="137.0" title="2:12">Cell salvage and attention to normal fermia would also be considerations. </span><span class="segment" data-start="137.0" data-end="141.0" title="2:17">In order to provide anesthesia for removal of the products of conception, </span><span class="segment" data-start="141.0" data-end="145.0" title="2:21">the options are a general or regional anesthetic technique. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="145.0"><span class="t-timestamp">2:25</span></div>
+  <div class="t-body"><span class="segment" data-start="145.0" data-end="148.0" title="2:25">My choice would depend upon the urgency, </span><span class="segment" data-start="148.0" data-end="154.0" title="2:28">hemodynamic stability of the patient and potential for coagulopathy. </span><span class="segment" data-start="154.0" data-end="158.0" title="2:34">What surgical interventions might be considered? </span><span class="segment" data-start="158.0" data-end="163.0" title="2:38">The obstetricians might only need to manually remove the placenta and stimulate </span><span class="segment" data-start="163.0" data-end="166.0" title="2:43">the uterus for the bleeding to subside. </span><span class="segment" data-start="166.0" data-end="170.0" title="2:46">If this fails, further options include uterine packing, </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="170.0"><span class="t-timestamp">2:50</span></div>
+  <div class="t-body"><span class="segment" data-start="170.0" data-end="174.0" title="2:50">uterine and internal iliac artery ligation, </span><span class="segment" data-start="174.0" data-end="179.0" title="2:54">b-link suture and finally a hysterectomy. </span><span class="segment" data-start="179.0" data-end="185.0" title="2:59">In some units, radiological embolisation of pelvic vessels may be available. </span><span class="segment" data-start="185.0" data-end="189.0" title="3:05">On your postnatal ward round, you identify a woman who complains of a headache. </span><span class="segment" data-start="189.0" data-end="194.0" title="3:09">She had an epidural for labour and an un-event for the journal delivery 24 hours ago. </span><span class="segment" data-start="194.0" data-end="200.0" title="3:14">What are the possible causes of her headache and how much you differentiate between them? </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="200.0"><span class="t-timestamp">3:20</span></div>
+  <div class="t-body"><span class="segment" data-start="200.0" data-end="203.0" title="3:20">There are many causes for a postnatal headache, </span><span class="segment" data-start="203.0" data-end="207.0" title="3:23">and it is important to take a thorough history and examine the patient </span><span class="segment" data-start="207.0" data-end="210.0" title="3:27">in order to ascertain the possible diagnosis. </span><span class="segment" data-start="210.0" data-end="217.0" title="3:30">Investigations would include the white cell count and CRP to exclude sepsis as a cause. </span><span class="segment" data-start="217.0" data-end="220.0" title="3:37">The headache might be due to a neurological condition, </span><span class="segment" data-start="220.0" data-end="225.0" title="3:40">generalised condition or secondary to an anaesthetic intervention. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="225.0"><span class="t-timestamp">3:45</span></div>
+  <div class="t-body"><span class="segment" data-start="225.0" data-end="228.0" title="3:45">Neurological conditions include simple headache, </span><span class="segment" data-start="228.0" data-end="233.0" title="3:48">migraine, meningitis, benign intercranial hypertension, </span><span class="segment" data-start="233.0" data-end="239.0" title="3:53">cortical vein thrombosis and intracranial bleed and tumour. </span><span class="segment" data-start="239.0" data-end="244.0" title="3:59">Generalised conditions include preeclampsia, dehydration and stress. </span><span class="segment" data-start="244.0" data-end="247.0" title="4:04">With regards to anaesthetic intervention, </span><span class="segment" data-start="247.0" data-end="252.0" title="4:07">the woman may have developed a post-dueral puncher headache. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="252.0"><span class="t-timestamp">4:12</span></div>
+  <div class="t-body"><span class="segment" data-start="252.0" data-end="257.0" title="4:12">The classical features of a post-dueral puncher headache include an onset </span><span class="segment" data-start="257.0" data-end="263.0" title="4:17">within 72 hours of neuraxial blockade with a severe frontal or occipital headache. </span><span class="segment" data-start="263.0" data-end="268.0" title="4:23">This is worse when sitting, moving suddenly, coughing and straining, </span><span class="segment" data-start="268.0" data-end="270.0" title="4:28">and is relieved when supine. </span><span class="segment" data-start="270.0" data-end="274.0" title="4:30">Next stiffness may occur as well as photophobia, </span><span class="segment" data-start="274.0" data-end="277.0" title="4:34">which may mimic raised intracranial pressure. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="277.0"><span class="t-timestamp">4:37</span></div>
+  <div class="t-body"><span class="segment" data-start="277.0" data-end="285.0" title="4:37">Rarely, cranial nerve pauses and even subdueral or intracranial hemorrhage have been reported. </span><span class="segment" data-start="285.0" data-end="290.0" title="4:45">How would you treat suspect a post-dueral puncher headache? </span><span class="segment" data-start="290.0" data-end="293.0" title="4:50">I would discuss the possible diagnosis with the woman </span><span class="segment" data-start="293.0" data-end="296.0" title="4:53">and advise that she should try and remain well hydrated </span><span class="segment" data-start="296.0" data-end="299.0" title="4:56">and take oral anaergetia as tolerated. </span><span class="segment" data-start="299.0" data-end="303.0" title="4:59">I would like to exclude some of the serological markers of sepsis </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="303.0"><span class="t-timestamp">5:03</span></div>
+  <div class="t-body"><span class="segment" data-start="303.0" data-end="309.0" title="5:03">by sending off bloods for white cell count and would also monitor her temperature. </span><span class="segment" data-start="309.0" data-end="314.0" title="5:09">If the headache persisted, I would consider performing an epidural blood patch. </span><span class="segment" data-start="314.0" data-end="317.0" title="5:14">The optimal timing for a blood patch is contentious. </span><span class="segment" data-start="317.0" data-end="322.0" title="5:17">I would aim to perform the technique within one to two days of the headache onset </span><span class="segment" data-start="322.0" data-end="325.0" title="5:22">and if conservative measures had failed. </span><span class="segment" data-start="325.0" data-end="331.0" title="5:25">Prophylectic blood patching for patients with recognised ural tap is controversial </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="331.0"><span class="t-timestamp">5:31</span></div>
+  <div class="t-body"><span class="segment" data-start="331.0" data-end="337.0" title="5:31">as it may be unnecessary, less effective and poses a potential infection risk. </span><span class="segment" data-start="337.0" data-end="342.0" title="5:37">What is a success rate with an epidural blood patch? </span><span class="segment" data-start="342.0" data-end="346.0" title="5:42">Most patients will recover completely after an epidural blood patch </span><span class="segment" data-start="346.0" data-end="353.0" title="5:46">with a success rate of up to 80% rising to 90% after a second blood patch. </span><span class="segment" data-start="354.0" data-end="359.0" title="5:54">The most recent CMAC report, 2003-2005, identified six maternal deaths </span><span class="segment" data-start="359.0" data-end="362.0" title="5:59">and much anaesthesia directly contributed. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="362.0"><span class="t-timestamp">6:02</span></div>
+  <div class="t-body"><span class="segment" data-start="362.0" data-end="365.0" title="6:02">Can you describe these? </span><span class="segment" data-start="365.0" data-end="370.0" title="6:05">Three patients were obese with post-operative respiratory complications. </span><span class="segment" data-start="370.0" data-end="374.0" title="6:10">Of these patients, one had an emergency removal of ectopic pregnancy </span><span class="segment" data-start="374.0" data-end="380.0" title="6:14">and respiratory distress following extubation with failed re-intubation. </span><span class="segment" data-start="380.0" data-end="384.0" title="6:20">One received a second dose of opiate prior to extubation </span><span class="segment" data-start="384.0" data-end="387.0" title="6:24">and had respiratory failure in recovery </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="387.0"><span class="t-timestamp">6:27</span></div>
+  <div class="t-body"><span class="segment" data-start="387.0" data-end="393.0" title="6:27">and the third had a fatal asthma attack after a cesarean section performed under regional anaesthesia. </span><span class="segment" data-start="393.0" data-end="398.0" title="6:33">The fourth patient received an overdose of intravenous bupivocane. </span><span class="segment" data-start="398.0" data-end="403.0" title="6:38">The fifth patient developed a hemophorex after attempted central line insertion </span><span class="segment" data-start="403.0" data-end="405.0" title="6:43">for preeclampsia and help. </span><span class="segment" data-start="406.0" data-end="409.0" title="6:46">Finally, the sixth patient died two weeks after childbirth </span><span class="segment" data-start="409.0" data-end="414.0" title="6:49">whilst having a general anaesthetic to have a septic focus-drain from a kidney. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="414.0"><span class="t-timestamp">6:54</span></div>
+  <div class="t-body"><span class="segment" data-start="414.0" data-end="418.0" title="6:54">The exact cause of her death was unknown. </span><span class="segment" data-start="418.0" data-end="422.0" title="6:58">What lessons can be learned from these cases? </span><span class="segment" data-start="422.0" data-end="427.0" title="7:02">The CMAC report highlighted the need for trained experienced recovery staff </span><span class="segment" data-start="427.0" data-end="432.0" title="7:07">and an aesthetic being readily available at all times for this group of patients. </span><span class="segment" data-start="432.0" data-end="439.0" title="7:12">There were some issues regarding the experience of trainees and the accessibility of senior support. </span><span class="segment" data-start="439.0" data-end="446.0" title="7:19">The report reminded clinicians to consider the respiratory implications of a pez excavator </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="446.0"><span class="t-timestamp">7:26</span></div>
+  <div class="t-body"><span class="segment" data-start="446.0" data-end="453.0" title="7:26">but accepted that the use of ultrasound might not avoid all complications of central line insertion. </span><span class="segment" data-start="453.0" data-end="461.0" title="7:33">Finally, the report identified factors that may contribute to the inadvertent intravenous infusion of local anaesthetic drugs, </span><span class="segment" data-start="461.0" data-end="468.0" title="7:41">such as the location of storage of these drugs in relation to standard infusion bags. </span><span class="segment" data-start="468.0" data-end="478.0" title="7:48">Staff also needed to be aware of where the intra-lippid 20% is located for the treatment of severe local anaesthetic toxicity. </span><span class="segment" data-start="478.0" data-end="484.0" title="7:58">Did the report make any suggestions regarding the 31 deaths and much anaesthesia contributors? </span><span class="segment" data-start="484.0" data-end="491.0" title="8:04">Yes, the report identified a failure to recognise serious illness and poor management of hemorrhage, </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="491.0"><span class="t-timestamp">8:11</span></div>
+  <div class="t-body"><span class="segment" data-start="491.0" data-end="495.0" title="8:11">sepsis, preeclampsia and obese women. </span><span class="segment" data-start="495.0" data-end="500.0" title="8:15">What do the reports say about the challenges now facing obstetrics? </span><span class="segment" data-start="500.0" data-end="507.0" title="8:20">The CMAC report acknowledged the increase in migrant population as an increasing challenge </span><span class="segment" data-start="507.0" data-end="513.0" title="8:27">since women are presenting late with complicated pregnancies, serious underlying medical conditions, </span><span class="segment" data-start="513.0" data-end="521.0" title="8:33">and poor general health. Furthermore, vulnerable women with socially complex lives are less likely to seek </span><span class="segment" data-start="521.0" data-end="526.0" title="8:41">antenatal care and stay in contact with maternity services. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="526.0"><span class="t-timestamp">8:46</span></div>
+  <div class="t-body"><span class="segment" data-start="526.0" data-end="533.0" title="8:46">More than 15% of all women who died from direct or indirect causes were morbidly obese. </span><span class="segment" data-start="533.0" data-end="539.0" title="8:53">Finally, as old women are now presenting, they have more chronic health problems. </span><span class="segment" data-start="539.0" data-end="544.0" title="8:59">What were the principal direct causes of death? </span><span class="segment" data-start="544.0" data-end="556.0" title="9:04">These included thromboembolism, amniotic fluid embolism, sepsis, preeclampsia, hemorrhage, anaesthesia and direct uterine trauma. </span><span class="segment" data-start="556.0" data-end="562.0" title="9:16">The CMAC report suggested a national early warning school for identifying women who are unwell. </span><span class="segment" data-start="562.0" data-end="566.0" title="9:22">What indices they suggest might be measured? </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="566.0"><span class="t-timestamp">9:26</span></div>
+  <div class="t-body"><span class="segment" data-start="566.0" data-end="571.0" title="9:26">The report suggested both general and specific indices. </span><span class="segment" data-start="571.0" data-end="576.0" title="9:31">The obstetrics specific indices were Lockier, Protein-Urea and Lycor, </span><span class="segment" data-start="576.0" data-end="585.0" title="9:36">whilst the general indices included respiratory rate, oxygen saturation, temperature, heart rate, blood pressure, </span><span class="segment" data-start="585.0" data-end="591.0" title="9:45">urine output, conscious level and pain score. </span></div>
+</div>
+</div>
+
+<div class="subtitle-bar">
+  <span class="subtitle-text empty" id="subtitle-text">Play audio to see live subtitles&#8230;</span>
+</div>
+
+<script>
+
+const audio    = document.getElementById('audio');
+const allSegs  = Array.from(document.querySelectorAll('.segment'));
+const allBlocks = Array.from(document.querySelectorAll('.t-block'));
+const subtitleEl = document.getElementById('subtitle-text');
+let activeSegEl   = null;
+let activeBlockEl = null;
+let searchMatches = [];
+let searchIdx     = 0;
+
+// Duration display
+audio.addEventListener('loadedmetadata', () => {
+  const m = Math.floor(audio.duration / 60);
+  const s = Math.floor(audio.duration %% 60).toString().padStart(2,'0');
+  document.getElementById('dur').textContent = m + ':' + s;
+});
+
+// Seek helper
+function seekTo(t) {
+  audio.currentTime = t;
+  audio.play();
+}
+
+// Block gutter click
+document.querySelectorAll('.t-gutter').forEach(g => {
+  g.addEventListener('click', () => seekTo(parseFloat(g.dataset.start)));
+});
+
+// Segment click
+allSegs.forEach(s => {
+  s.addEventListener('click', e => {
+    e.stopPropagation();
+    seekTo(parseFloat(s.dataset.start));
+  });
+});
+
+// Real-time tracking
+audio.addEventListener('timeupdate', () => {
+  const t = audio.currentTime;
+
+  // Find active segment (last one whose start <= t)
+  let found = null;
+  for (let i = allSegs.length - 1; i >= 0; i--) {
+    if (parseFloat(allSegs[i].dataset.start) <= t) { found = allSegs[i]; break; }
+  }
+
+  if (found && found !== activeSegEl) {
+    // Clear previous
+    if (activeSegEl) activeSegEl.classList.remove('active');
+    if (activeBlockEl) {
+      activeBlockEl.classList.remove('block-active');
+      const pg = activeBlockEl.querySelector('.t-gutter');
+      if (pg) pg.classList.remove('gutter-active');
+    }
+    // Set new
+    found.classList.add('active');
+    const block = found.closest('.t-block');
+    if (block) {
+      block.classList.add('block-active');
+      const g = block.querySelector('.t-gutter');
+      if (g) g.classList.add('gutter-active');
+      activeBlockEl = block;
+    }
+    activeSegEl = found;
+
+    // Update subtitle
+    subtitleEl.textContent = found.textContent.trim();
+    subtitleEl.classList.remove('empty');
+
+    // Auto-scroll (only when not searching)
+    if (!document.getElementById('search').value) {
+      found.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }
+});
+
+// Search
+const searchInput = document.getElementById('search');
+searchInput.addEventListener('input', runSearch);
+searchInput.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && searchMatches.length) {
+    searchMatches[searchIdx].classList.remove('search-current');
+    searchIdx = (searchIdx + 1) %% searchMatches.length;
+    const el = searchMatches[searchIdx];
+    el.classList.add('search-current');
+    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+});
+
+function runSearch() {
+  const q = searchInput.value.trim().toLowerCase();
+  allSegs.forEach(s => s.classList.remove('search-match','search-current'));
+  searchMatches = [];
+  if (!q) return;
+  allSegs.forEach(s => {
+    if (s.textContent.toLowerCase().includes(q)) {
+      s.classList.add('search-match');
+      searchMatches.push(s);
+    }
+  });
+  if (!searchMatches.length) return;
+  searchIdx = 0;
+  searchMatches[0].classList.add('search-current');
+  searchMatches[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+</script>
+</body>
+</html>

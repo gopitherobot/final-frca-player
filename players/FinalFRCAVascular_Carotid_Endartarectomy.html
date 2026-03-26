@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vascular — Carotid Endartarectomy</title>
+<style>
+
+  :root {
+    --accent:    #ea580c;
+    --body-bg:   #f1f5f9;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: var(--body-bg);
+    color: #1e293b;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  /* ── Header ── */
+  .header {
+    background: #0f172a;
+    border-bottom: 3px solid var(--accent);
+    padding: 12px 20px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .header-left { flex: 1; min-width: 200px; }
+  .header h1 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #f1f5f9;
+    margin-bottom: 4px;
+    letter-spacing: 0.01em;
+  }
+  .header-sub {
+    font-size: 0.72rem;
+    color: #94a3b8;
+    font-style: italic;
+  }
+  audio {
+    height: 36px;
+    accent-color: var(--accent);
+    flex-shrink: 0;
+  }
+  .back-link {
+    font-size: 0.8rem;
+    color: #94a3b8;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .back-link:hover { color: #60a5fa; }
+
+  /* ── Toolbar ── */
+  .toolbar {
+    background: #1e293b;
+    padding: 7px 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-shrink: 0;
+    border-bottom: 1px solid #334155;
+  }
+  .toolbar input {
+    flex: 1;
+    max-width: 380px;
+    padding: 5px 11px;
+    border: 1px solid #475569;
+    border-radius: 6px;
+    background: #0f172a;
+    color: #e2e8f0;
+    font-size: 0.83rem;
+    outline: none;
+  }
+  .toolbar input:focus { border-color: var(--accent); }
+  .toolbar input::placeholder { color: #64748b; }
+  .stats {
+    font-size: 0.72rem;
+    color: #64748b;
+    white-space: nowrap;
+  }
+
+  /* ── Scroll area ── */
+  .scroll-area {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+  }
+  .scroll-area::-webkit-scrollbar { width: 6px; }
+  .scroll-area::-webkit-scrollbar-track { background: transparent; }
+  .scroll-area::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+
+  /* ── Subtitle bar ── */
+  .subtitle-bar {
+    background: #0f172a;
+    border-top: 2px solid var(--accent);
+    padding: 8px 20px;
+    flex-shrink: 0;
+    min-height: 42px;
+    display: flex;
+    align-items: center;
+  }
+  .subtitle-text {
+    font-size: 0.9rem;
+    color: #e2e8f0;
+    line-height: 1.5;
+    font-style: italic;
+  }
+  .subtitle-text.empty { color: #475569; }
+
+  /* ── Transcript blocks ── */
+  .t-block {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    margin-bottom: 14px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    display: flex;
+  }
+  .t-block.block-active {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px rgba(37,99,235,0.15);
+  }
+  .t-gutter {
+    background: #0f172a;
+    width: 52px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: 14px;
+    cursor: pointer;
+  }
+  .t-gutter:hover { background: #1e293b; }
+  .t-timestamp {
+    font-size: 0.7rem;
+    color: #64748b;
+    font-family: monospace;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+  .t-gutter.gutter-active .t-timestamp { color: var(--accent); }
+  .t-body {
+    flex: 1;
+    padding: 12px 16px;
+    line-height: 1.75;
+    font-size: 0.92rem;
+    color: #1e293b;
+  }
+
+  /* ── Segments ── */
+  .segment {
+    cursor: pointer;
+    border-radius: 3px;
+    transition: background 0.1s;
+  }
+  .segment:hover { background: #eff6ff; }
+  .segment.active {
+    background: #bfdbfe;
+    outline: 2px solid #3b82f6;
+    outline-offset: 1px;
+    border-radius: 3px;
+  }
+  .segment.search-match  { background: #fef9c3; }
+  .segment.search-current { background: #fde047; outline: 2px solid #ca8a04; }
+
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <h1>Vascular — Carotid Endartarectomy</h1>
+    <div class="header-sub">Final FRCA &mdash; Exam Viva Simulation &mdash; Click any phrase to seek</div>
+  </div>
+  <audio id="audio" src="../FinalFRCAVascular_Carotid_Endartarectomy.mp3" controls preload="metadata"></audio>
+  <a class="back-link" href="index.html">&#8592; All Topics</a>
+</div>
+
+<div class="toolbar">
+  <input type="text" id="search" placeholder="Search transcript&#8230; (Enter = next match)">
+  <span class="stats" id="stats">168 segments &nbsp;|&nbsp; <span id="dur">loading&#8230;</span></span>
+</div>
+
+<div class="scroll-area" id="scroll-area">
+<div class="t-block">
+  <div class="t-gutter" data-start="0.0"><span class="t-timestamp">0:00</span></div>
+  <div class="t-body"><span class="segment" data-start="0.0" data-end="2.8" title="0:00">Anasthesia for Carotid Endar Terectomy </span><span class="segment" data-start="2.8" data-end="9.84" title="0:02">Questions about Carotid Endar Terectomy feature in both the short answer questions and structured oral examinations. </span><span class="segment" data-start="9.84" data-end="16.24" title="0:09">This is a reflection of the increase in the use of regional techniques instead of general anesthesia for this procedure </span><span class="segment" data-start="16.24" data-end="22.4" title="0:16">and in recent publications regarding the benefits and complications of the different aesthetic options. </span><span class="segment" data-start="22.4" data-end="26.16" title="0:22">A 75-year-old man presents the Carotid Endar Terectomy. </span><span class="segment" data-start="26.16" data-end="32.88" title="0:26">He has a history of MI 10 years ago, non-instant-dependent diabetes and prostatic hypertrophy. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="32.88"><span class="t-timestamp">0:32</span></div>
+  <div class="t-body"><span class="segment" data-start="32.88" data-end="38.56" title="0:32">He can walk up two flights of stairs with some breathlessness and he's on ramperell, aspirin and metformin. </span><span class="segment" data-start="39.44" data-end="41.28" title="0:39">What is a Carotid Endar Terectomy? </span><span class="segment" data-start="43.44" data-end="49.68" title="0:43">Carotid Endar Terectomy is a vascular surgical procedure for treating Carotid Sternosis. </span><span class="segment" data-start="50.24" data-end="54.96" title="0:50">It involves removing plaque from the lining of the internal Carotid Atory. </span><span class="segment" data-start="55.84" data-end="60.32" title="0:55">Disease Intima and a portion of the media may be removed. </span><span class="segment" data-start="60.32" data-end="64.08" title="1:00">It is aimed at reducing the stroke rate in high-risk patients. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="65.44"><span class="t-timestamp">1:05</span></div>
+  <div class="t-body"><span class="segment" data-start="65.44" data-end="67.36" title="1:05">What are the indications for surgery? </span><span class="segment" data-start="69.44" data-end="76.72" title="1:09">Carotid Endar Terectomy is a prophylactic operation, so careful evaluation of the risks and benefits </span><span class="segment" data-start="76.72" data-end="82.08" title="1:16">is required. There are two large randomized controlled trials, </span><span class="segment" data-start="82.08" data-end="88.64" title="1:22">providing evidence to guide which patients should undergo surgery for Carotid Atory Sternosis. </span><span class="segment" data-start="90.72" data-end="98.8" title="1:30">They are the North American Symptomatic Carotid Endar Terectomy Trial, Nasset and the European </span><span class="segment" data-start="98.8" data-end="108.48" title="1:38">Carotid Surgery Trial, ECST. The Nasset Trial demonstrated that for every six patients treated, </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="108.48"><span class="t-timestamp">1:48</span></div>
+  <div class="t-body"><span class="segment" data-start="108.48" data-end="116.88" title="1:48">one major stroke was prevented at two years for symptomatic patients with 70 to 99% Sternosis. </span><span class="segment" data-start="117.84" data-end="124.08" title="1:57">Smaller benefit was demonstrated with patients with 50 to 69% occlusion, </span><span class="segment" data-start="124.08" data-end="127.92" title="2:04">with a number needed to treat of 22 at five years. </span><span class="segment" data-start="128.0" data-end="139.2" title="2:08">NICE Guidance published in July 2008 advises patients with non-disabling strokes or TIAs </span><span class="segment" data-start="139.2" data-end="145.6" title="2:19">receive Carotid Imaging within a week of symptom onset. Sternosis is measured according to </span><span class="segment" data-start="145.6" data-end="154.72" title="2:25">the criteria from either of the trials mentioned. Symptomatic Sternosis of 50 to 99% according to </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="154.72"><span class="t-timestamp">2:34</span></div>
+  <div class="t-body"><span class="segment" data-start="154.72" data-end="161.92" title="2:34">Nasset criteria or 70 to 99% according to ECST criteria, </span><span class="segment" data-start="161.92" data-end="168.32" title="2:41">warrants referral and assessment for Carotid Endar Terectomy with the procedure being undertaken </span><span class="segment" data-start="168.32" data-end="175.92" title="2:48">within two weeks from symptom onset. Discuss the risks involved in Carotid Endar Terectomy. </span><span class="segment" data-start="175.92" data-end="180.08" title="2:55">The risk can be classified into those associated with the patient comorbidities </span><span class="segment" data-start="180.16" data-end="183.44" title="3:00">and those associated with the anaesthetic and the procedure itself. </span><span class="segment" data-start="185.36" data-end="192.88" title="3:05">Carotid Endar Terectomy is a high-risk procedure. The risks can be classified into those associated </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="192.88"><span class="t-timestamp">3:12</span></div>
+  <div class="t-body"><span class="segment" data-start="192.88" data-end="198.24" title="3:12">with the patient's comorbidities and those related to the surgery itself. </span><span class="segment" data-start="199.44" data-end="206.48" title="3:19">Patients presenting with symptomatic Sternosis commonly have widespread atherosclerotic disease. </span><span class="segment" data-start="207.2" data-end="213.6" title="3:27">Therefore they are often elderly, hyper-tensive, smokers with diabetes, </span><span class="segment" data-start="213.6" data-end="221.36" title="3:33">ischemic heart disease and or COPD. Comorbidity adversely affects the outcome, </span><span class="segment" data-start="221.36" data-end="227.84" title="3:41">so patients with multiple medical problems have a higher postoperative mortality and morbidity </span><span class="segment" data-start="227.84" data-end="234.88" title="3:47">and hence benefits less from the procedure. The procedure itself carries considerable risk. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="234.88"><span class="t-timestamp">3:54</span></div>
+  <div class="t-body"><span class="segment" data-start="234.88" data-end="240.72" title="3:54">Perioperative combined mortality and major stroke risk is 2-5%. </span><span class="segment" data-start="241.6" data-end="248.24" title="4:01">Other than stroke, the procedure carries a risk of TIAs, myocardial infarction and dyschemia. </span><span class="segment" data-start="249.12" data-end="256.4" title="4:09">Hypo or hyper-tension may occur, hemorrhage can be potentially life-threatening and hematomas </span><span class="segment" data-start="256.4" data-end="263.36" title="4:16">can cause tracheal compression and laryngeal edema. Damage to surrounding structures </span><span class="segment" data-start="263.44" data-end="269.28" title="4:23">such as the recurrent laryngeal nerve or hypoglossal nerve can occur during surgery. </span><span class="segment" data-start="270.16" data-end="276.48" title="4:30">Another rare but potentially serious complication is the hyper-perfusion syndrome </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="276.48"><span class="t-timestamp">4:36</span></div>
+  <div class="t-body"><span class="segment" data-start="276.48" data-end="281.68" title="4:36">due to the sudden increase in perfusion of the vasculature distal to the sternosis. </span><span class="segment" data-start="282.88" data-end="286.48" title="4:42">Do you know any specific risk factors at Influence Perioperative Care? </span><span class="segment" data-start="286.64" data-end="297.6" title="4:46">An increased risk is associated with female sex, age over 75, systolic hyper-attention </span><span class="segment" data-start="297.6" data-end="305.52" title="4:57">and recent neurological symptoms. Other less well-confirmed risks include cardiovascular disease, </span><span class="segment" data-start="306.08" data-end="316.08" title="5:06">diabetes, smoking, hyper-lippidemia and contralateral sternosis. Risk of a cerebrovascular event </span><span class="segment" data-start="316.08" data-end="323.76" title="5:16">is decreased by anti-platelet drugs, being asymptomatic or suffering purely ocular symptoms. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="325.84"><span class="t-timestamp">5:25</span></div>
+  <div class="t-body"><span class="segment" data-start="325.84" data-end="326.96" title="5:25">Anasthetic options available </span><span class="segment" data-start="328.96" data-end="333.6" title="5:28">Corrotid endartorectomy can be done under local or general anesthesia. </span><span class="segment" data-start="334.32" data-end="341.12" title="5:34">Local anesthetic techniques are deep and superficial cervical plexus block and local infiltration. </span><span class="segment" data-start="342.0" data-end="347.76" title="5:42">So, cervical epidural has also been described but is associated with significant risk. </span><span class="segment" data-start="356.08" data-end="362.4" title="5:56">Vigala trial comparing general anesthesia and local anesthesia is a multi-center </span><span class="segment" data-start="362.4" data-end="369.68" title="6:02">randomized control trial assessing the relative risks of stroke, cardiac events and death, </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="369.68"><span class="t-timestamp">6:09</span></div>
+  <div class="t-body"><span class="segment" data-start="369.68" data-end="376.0" title="6:09">following corroded endartorectomy between two groups randomly assigned to general or local </span><span class="segment" data-start="376.0" data-end="382.0" title="6:16">anesthesia. The risks of these events in the two groups were not shown to be statistically </span><span class="segment" data-start="382.0" data-end="387.68" title="6:22">different and no differences were noted in quality of life or length of hospital stay. </span><span class="segment" data-start="388.48" data-end="394.88" title="6:28">The conclusion was that the anesthetist and surgeon should consult with the patient and decide </span><span class="segment" data-start="394.88" data-end="401.52" title="6:34">upon suitable anesthetic technique on an individual basis. Can you tell me a little more about </span><span class="segment" data-start="401.52" data-end="405.84" title="6:41">the nerves you would need to block to perform corrotid endartorectomy under local anesthetic? </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="408.24"><span class="t-timestamp">6:48</span></div>
+  <div class="t-body"><span class="segment" data-start="408.24" data-end="416.64" title="6:48">It is necessary to block the dermatomes of C2, C3 and C4 for successful surgery. These are </span><span class="segment" data-start="416.64" data-end="424.08" title="6:56">blocked using deep and superficial cervical plexus blocks. Surgical retraction of sub-mandipular </span><span class="segment" data-start="424.08" data-end="430.64" title="7:04">tissues can cause pain in the region of the trigeminal nerve. The corroded sheath also has a cranial </span><span class="segment" data-start="430.64" data-end="436.72" title="7:10">nerve innovation. Local anesthetic can be infiltrated into these two areas by the surgeon. </span><span class="segment" data-start="438.24" data-end="442.0" title="7:18">Describe the technique for performing a superficial cervical plexus block. </span><span class="segment" data-start="443.04" data-end="447.68" title="7:23">When asked to describe any nerve block, do not forget to mention the preparations you would make. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="448.32"><span class="t-timestamp">7:28</span></div>
+  <div class="t-body"><span class="segment" data-start="448.32" data-end="453.04" title="7:28">If the examiner is not interested in this, they can stop you but is important to demonstrate </span><span class="segment" data-start="453.04" data-end="460.48" title="7:33">you are safe and thoughtful. Prior to performing any nerve block, I would take a full history and </span><span class="segment" data-start="460.48" data-end="467.52" title="7:40">examine the patient. Once establishing their suitability and ruling out any contraindications, </span><span class="segment" data-start="467.52" data-end="474.4" title="7:47">I would explain the procedure and risks and consent the patient. I would prepare my equipment </span><span class="segment" data-start="474.4" data-end="479.28" title="7:54">and monitoring and have a trained assistant and emergency equipment to hand. </span><span class="segment" data-start="480.24" data-end="488.48" title="8:00">Firstly, I would gain intravenous access, attach monitoring and give sedation and oxygen if indicated. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="489.28"><span class="t-timestamp">8:09</span></div>
+  <div class="t-body"><span class="segment" data-start="489.28" data-end="496.0" title="8:09">I would position the patient supine with some head up tilt and the head turned slightly away </span><span class="segment" data-start="496.0" data-end="502.24" title="8:16">from the side of the block. The landmark is the midpoint of the posterior border of the sternic </span><span class="segment" data-start="502.72" data-end="510.88" title="8:22">mastoid muscle. Using a sterile technique, I would insert a 21 gauge needle along the posterior </span><span class="segment" data-start="510.88" data-end="517.76" title="8:30">border of the sterniclider mastoid, both kephalad and cordad, puncturing the first facial layer, </span><span class="segment" data-start="518.4" data-end="527.6" title="8:38">aspirating and injecting a total of 10 mils of 0.25% bupivocane. I would expect a sausage shape </span><span class="segment" data-start="527.6" data-end="531.12" title="8:47">to form along the posterior border of the sterniclider mastoid. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="532.32"><span class="t-timestamp">8:52</span></div>
+  <div class="t-body"><span class="segment" data-start="532.32" data-end="535.68" title="8:52">Describe the technique for performing a deep cervical plexus block. </span><span class="segment" data-start="537.6" data-end="543.6" title="8:57">I would prepare the patient, as I have previously mentioned, and position the patient supine with </span><span class="segment" data-start="543.6" data-end="551.28" title="9:03">some head up tilt and the head turned away from the side of the block. I would identify the landmarks, </span><span class="segment" data-start="551.28" data-end="557.52" title="9:11">the posterior border of the sterniclider mastoid muscle and feel for the interscaling groove </span><span class="segment" data-start="557.84" data-end="564.72" title="9:17">behind the lateral border of the sterniclider mastoid at the level of the thyroid cartilage C4. </span><span class="segment" data-start="565.6" data-end="571.76" title="9:25">Then, using a septic technique, I would use some local anesthetic to the skin and </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="571.76"><span class="t-timestamp">9:31</span></div>
+  <div class="t-body"><span class="segment" data-start="571.76" data-end="581.2" title="9:31">insert a 5mm needle towards the contralateral elbow, that is in a medial, cordal and dorsal direction </span><span class="segment" data-start="581.28" data-end="587.92" title="9:41">until the patient feels parasthesia or the bone of C4 transverse process is contacted. </span><span class="segment" data-start="588.8" data-end="596.56" title="9:48">After careful aspiration, I would inject 8-10 mils of 0.25% bupivocane. </span><span class="segment" data-start="597.92" data-end="601.2" title="9:57">What risks are associated with the deep cervical plexus block? </span><span class="segment" data-start="602.32" data-end="607.12" title="10:02">When asked the risks of any nerve block, you can classify into the generic risks of local </span><span class="segment" data-start="607.12" data-end="610.64" title="10:07">anesthetic injection and those specific to the particular block. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="612.88"><span class="t-timestamp">10:12</span></div>
+  <div class="t-body"><span class="segment" data-start="612.88" data-end="617.76" title="10:12">The risks can be classified into those due to local anesthetic injection, </span><span class="segment" data-start="617.76" data-end="625.2" title="10:17">such as local anesthetic toxicity, anaphylaxis and nerve damage, and those specific to deep </span><span class="segment" data-start="625.2" data-end="633.92" title="10:25">cervical plexus blocks. These include intravascular injection, particularly into the vertebral artery </span><span class="segment" data-start="634.0" data-end="641.12" title="10:34">and nerve palsies. Specifically, the frenic nerve is often affected and this block should </span><span class="segment" data-start="641.12" data-end="647.68" title="10:41">never be performed bilaterally for this reason. The recurrent laryngeal nerve can be damaged, </span><span class="segment" data-start="647.68" data-end="655.2" title="10:47">causing hoarseness from vocal cord paralysis, sympathetic block can occur, giving a horn as syndrome. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="656.08"><span class="t-timestamp">10:56</span></div>
+  <div class="t-body"><span class="segment" data-start="656.08" data-end="662.32" title="10:56">There is a risk of epidural spread of the local anesthetic and possible interethical injection </span><span class="segment" data-start="662.32" data-end="667.76" title="11:02">or spinal cord damage. There is also a smaller risk of pneumothorax. </span><span class="segment" data-start="669.28" data-end="672.8" title="11:09">What are the risks and benefits of using a local anesthetic technique? </span><span class="segment" data-start="675.04" data-end="680.56" title="11:15">As I previously mentioned, the Gala trial has not shown any clear benefits </span><span class="segment" data-start="680.56" data-end="687.04" title="11:20">in using local over general anesthesia, so the anesthetic technique must be decided on an </span><span class="segment" data-start="687.04" data-end="694.24" title="11:27">individual basis. A regional technique has the advantages of avoidance of general anesthesia </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="694.24"><span class="t-timestamp">11:34</span></div>
+  <div class="t-body"><span class="segment" data-start="694.24" data-end="701.44" title="11:34">in what is likely to be a high-risk patient group. The other main advantage to regional techniques </span><span class="segment" data-start="701.44" data-end="707.6" title="11:41">is that cerebral function can be continually assessed throughout surgery by maintaining verbal </span><span class="segment" data-start="707.6" data-end="716.08" title="11:47">contact with the patient. Disadvantages include potential poor compliance during a potentially </span><span class="segment" data-start="716.08" data-end="723.6" title="11:56">long operation, discomfort of the patient and movement of the surgical field, anxiety-related </span><span class="segment" data-start="723.6" data-end="730.72" title="12:03">tachycardia and hyper-tension may make hemastasis more challenging as well as risk myocardial </span><span class="segment" data-start="730.72" data-end="738.4" title="12:10">ischemia. High anxiety levels may also lead to an increased cerebral metabolic rate and therefore </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="738.4"><span class="t-timestamp">12:18</span></div>
+  <div class="t-body"><span class="segment" data-start="738.4" data-end="746.0" title="12:18">increased oxygen demand during a time when supply may be reduced. If the need arises to convert </span><span class="segment" data-start="746.0" data-end="752.4" title="12:26">to a general anesthetic due to inadequate block or for patient or surgical reasons, </span><span class="segment" data-start="752.4" data-end="756.48" title="12:32">this may present practical problems for the surgeon and anesthetist. </span><span class="segment" data-start="757.84" data-end="760.96" title="12:37">Frenic and recurrent laryngeal nerve palsy, </span><span class="segment" data-start="760.96" data-end="767.2" title="12:40">jurorial puncture with the danger of a total spinal and injection of local anesthetic into the </span><span class="segment" data-start="767.2" data-end="772.88" title="12:47">vertebraler artery. If you were to choose a regional technique, which would you choose? </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="773.68"><span class="t-timestamp">12:53</span></div>
+  <div class="t-body"><span class="segment" data-start="773.68" data-end="778.0" title="12:53">Feel free to express your own opinions when asked a question about personal choice, </span><span class="segment" data-start="778.0" data-end="786.56" title="12:58">however be prepared to justify your choices. A combination of a superficial and deep cervical </span><span class="segment" data-start="786.56" data-end="794.0" title="13:06">plexus block with optional infiltration by the surgeon is my preferred technique. I would use this </span><span class="segment" data-start="794.0" data-end="800.56" title="13:14">technique using ultrasound guidance to help reduce the risks of complications of the deep block. </span><span class="segment" data-start="801.2" data-end="807.76" title="13:21">There is a randomized control trial comparing deep and superficial block with superficial block </span><span class="segment" data-start="807.76" data-end="814.16" title="13:27">alone. It demonstrated the techniques were comparable in the amount of supplemental local anesthetic </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="814.16"><span class="t-timestamp">13:34</span></div>
+  <div class="t-body"><span class="segment" data-start="814.16" data-end="821.44" title="13:34">given by the surgeon. Anatomically, a superficial block alone would not be expected to block all of </span><span class="segment" data-start="821.44" data-end="827.12" title="13:41">the relevant nerves, however, di studies suggest that as long as the injection is below the </span><span class="segment" data-start="827.12" data-end="832.88" title="13:47">investing fascia, local anesthetic may spread from the superficial to deep structures. </span><span class="segment" data-start="833.76" data-end="839.44" title="13:53">A superficial block alone avoids the hazards of the deep cervical plexus block. </span><span class="segment" data-start="840.72" data-end="844.32" title="14:00">What are the principles of general anesthesia for carostendotorectomy? </span><span class="segment" data-start="846.4" data-end="854.08" title="14:06">When using general anesthesia for carotid endotorectomy, it is important to establish invasive arterial </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="854.08"><span class="t-timestamp">14:14</span></div>
+  <div class="t-body"><span class="segment" data-start="854.08" data-end="861.12" title="14:14">monitoring prior to induction. A cautious intravenous induction should be undertaken with the use of </span><span class="segment" data-start="861.12" data-end="868.56" title="14:21">an opioid prior to intubation. Many centres consider it essential to intubate as the airway will </span><span class="segment" data-start="868.56" data-end="875.68" title="14:28">be inaccessible during surgery and a laryngeal mask may alter the anatomy and compromise surgical </span><span class="segment" data-start="875.68" data-end="882.24" title="14:35">access. However, it is important to note that managing the airway with a laryngeal mask </span><span class="segment" data-start="882.24" data-end="888.72" title="14:42">may be acceptable in other centres. Throughout the procedure, it is important to maintain </span><span class="segment" data-start="888.72" data-end="896.4" title="14:48">cardiovascular stability and good oxygenation. The patient's cerebral circulation is dependent </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="896.4"><span class="t-timestamp">14:56</span></div>
+  <div class="t-body"><span class="segment" data-start="896.4" data-end="904.0" title="14:56">on collateral circulation during carotid cross-clamping, and although a shunt may be used by the surgeon, </span><span class="segment" data-start="904.0" data-end="908.88" title="15:04">the key to the anesthesia is the maintenance of an adequate profusion pressure. </span><span class="segment" data-start="909.36" data-end="917.44" title="15:09">A beneficial aspect of general anesthesia is that it reduces the cerebral metabolic rate for oxygen, </span><span class="segment" data-start="917.44" data-end="925.44" title="15:17">which is desirable when cerebral blood flow may be reduced. Total intravenous anesthesia techniques </span><span class="segment" data-start="925.44" data-end="932.24" title="15:25">allow rapid control in changes in blood pressure, allow smooth emergence with less coughing, </span><span class="segment" data-start="932.24" data-end="938.72" title="15:32">which is not desirable as it may precipitate surgical site bleeding, and allow rapid awakening </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="938.72"><span class="t-timestamp">15:38</span></div>
+  <div class="t-body"><span class="segment" data-start="938.72" data-end="945.04" title="15:38">for early neurological assessment. How may cerebral profusion be monitored during general anesthesia? </span><span class="segment" data-start="947.2" data-end="955.12" title="15:47">Cerebral profusion may be assessed using EEG monitoring, measuring jugular venous oxygen tension, </span><span class="segment" data-start="955.12" data-end="962.48" title="15:55">transcranial Doppler or carotid artery stump pressure. The EEG gives a crude measure of the </span><span class="segment" data-start="962.48" data-end="969.6" title="16:02">trend in brain electrical activity and is largely unspecific and dependent on correct application </span><span class="segment" data-start="969.6" data-end="978.4" title="16:09">of surface electrodes. A low jugular venous oxygen tension indicates high oxygen uptake by the brain, </span><span class="segment" data-start="978.4" data-end="984.32" title="16:18">and so lower blood flow, assuming there is a constant oxygen consumption by the brain. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="985.44"><span class="t-timestamp">16:25</span></div>
+  <div class="t-body"><span class="segment" data-start="985.44" data-end="991.76" title="16:25">Transcranial Doppler measures flow in the middle cerebral artery, and can therefore give an estimate </span><span class="segment" data-start="991.76" data-end="996.64" title="16:31">of cerebral blood flow and also an indication of particulate embelly. </span><span class="segment" data-start="997.6" data-end="1003.92" title="16:37">Carotid artery stump pressure measurement is a crude method to estimate adequacy of perfusion. </span><span class="segment" data-start="1004.56" data-end="1011.2" title="16:44">A mean pulsatile pressure of above 50 millimeters of mercury is accepted as sufficient to proceed </span><span class="segment" data-start="1011.2" data-end="1017.04" title="16:51">without a shunt. How would you manage cerebral ischemia upon carotid cross clamping? </span><span class="segment" data-start="1017.52" data-end="1025.76" title="16:57">The initial management would be to administer supplemental oxygen and increase the mean arterial </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="1025.76"><span class="t-timestamp">17:05</span></div>
+  <div class="t-body"><span class="segment" data-start="1025.76" data-end="1032.64" title="17:05">pressure roughly 20% greater than the preoperative level in an attempt at maintaining collateral </span><span class="segment" data-start="1032.64" data-end="1041.52" title="17:12">perfusion. If cerebral ischemia persists, insertion of a shunt is indicated, however an increased arterial </span><span class="segment" data-start="1041.52" data-end="1048.4" title="17:21">pressure is required to maintain flow through a surgical shunt. Shunts are associated with many </span><span class="segment" data-start="1048.4" data-end="1056.88" title="17:28">other problems, including air and plaque ambulization, intimal tears, carotid dissection, and late </span><span class="segment" data-start="1056.88" data-end="1065.12" title="17:36">carotid re stenosis. Even following shunt insertion flow may be insufficient to meet cerebral oxygen </span><span class="segment" data-start="1066.08" data-end="1069.68" title="17:46">requirements. Where should these patients be looked after postoperatively? </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="1072.08"><span class="t-timestamp">17:52</span></div>
+  <div class="t-body"><span class="segment" data-start="1072.08" data-end="1078.08" title="17:52">Postoperative care should be provided on a high dependency unit or specialized area that </span><span class="segment" data-start="1078.08" data-end="1085.2" title="17:58">can provide appropriate care. Postoperative problems that are significant to long-term outcome </span><span class="segment" data-start="1085.2" data-end="1092.32" title="18:05">or which require rapid intervention are possible. For example, neurological deficit occurs in up to </span><span class="segment" data-start="1092.32" data-end="1100.16" title="18:12">7% and there may be headache, seizures, or intracranial bleeding. Airway obstruction, following </span><span class="segment" data-start="1100.16" data-end="1105.84" title="18:20">bleeding into the surgical site may occur and this requires rapid intervention to manage the </span><span class="segment" data-start="1105.84" data-end="1113.6" title="18:25">airway and stop the bleeding. Postoperative hyper-tension in response to pain or barra receptor </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="1113.6"><span class="t-timestamp">18:33</span></div>
+  <div class="t-body"><span class="segment" data-start="1113.6" data-end="1119.04" title="18:33">dysfunction is common. Do you know full-time treatments for carotid artery stenosis? </span><span class="segment" data-start="1119.2" data-end="1128.0" title="18:39">Corotid artery stenting is a developing procedure. The sapphire study demonstrated that a </span><span class="segment" data-start="1128.0" data-end="1135.52" title="18:48">carotid stenting is not inferior to end-artorectomy at three years in total major adverse event rates, </span><span class="segment" data-start="1136.16" data-end="1144.16" title="18:56">but superior in rates of major procedural stroke, cranial nerve palsy, and myocardial infarction. </span><span class="segment" data-start="1145.04" data-end="1151.6" title="19:05">However, there are concerns that re-sternosis is more common following stenting and long-term </span><span class="segment" data-start="1151.6" data-end="1161.28" title="19:11">efficiency in terms of preventing stroke is unknown. </span></div>
+</div>
+</div>
+
+<div class="subtitle-bar">
+  <span class="subtitle-text empty" id="subtitle-text">Play audio to see live subtitles&#8230;</span>
+</div>
+
+<script>
+
+const audio    = document.getElementById('audio');
+const allSegs  = Array.from(document.querySelectorAll('.segment'));
+const allBlocks = Array.from(document.querySelectorAll('.t-block'));
+const subtitleEl = document.getElementById('subtitle-text');
+let activeSegEl   = null;
+let activeBlockEl = null;
+let searchMatches = [];
+let searchIdx     = 0;
+
+// Duration display
+audio.addEventListener('loadedmetadata', () => {
+  const m = Math.floor(audio.duration / 60);
+  const s = Math.floor(audio.duration %% 60).toString().padStart(2,'0');
+  document.getElementById('dur').textContent = m + ':' + s;
+});
+
+// Seek helper
+function seekTo(t) {
+  audio.currentTime = t;
+  audio.play();
+}
+
+// Block gutter click
+document.querySelectorAll('.t-gutter').forEach(g => {
+  g.addEventListener('click', () => seekTo(parseFloat(g.dataset.start)));
+});
+
+// Segment click
+allSegs.forEach(s => {
+  s.addEventListener('click', e => {
+    e.stopPropagation();
+    seekTo(parseFloat(s.dataset.start));
+  });
+});
+
+// Real-time tracking
+audio.addEventListener('timeupdate', () => {
+  const t = audio.currentTime;
+
+  // Find active segment (last one whose start <= t)
+  let found = null;
+  for (let i = allSegs.length - 1; i >= 0; i--) {
+    if (parseFloat(allSegs[i].dataset.start) <= t) { found = allSegs[i]; break; }
+  }
+
+  if (found && found !== activeSegEl) {
+    // Clear previous
+    if (activeSegEl) activeSegEl.classList.remove('active');
+    if (activeBlockEl) {
+      activeBlockEl.classList.remove('block-active');
+      const pg = activeBlockEl.querySelector('.t-gutter');
+      if (pg) pg.classList.remove('gutter-active');
+    }
+    // Set new
+    found.classList.add('active');
+    const block = found.closest('.t-block');
+    if (block) {
+      block.classList.add('block-active');
+      const g = block.querySelector('.t-gutter');
+      if (g) g.classList.add('gutter-active');
+      activeBlockEl = block;
+    }
+    activeSegEl = found;
+
+    // Update subtitle
+    subtitleEl.textContent = found.textContent.trim();
+    subtitleEl.classList.remove('empty');
+
+    // Auto-scroll (only when not searching)
+    if (!document.getElementById('search').value) {
+      found.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }
+});
+
+// Search
+const searchInput = document.getElementById('search');
+searchInput.addEventListener('input', runSearch);
+searchInput.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && searchMatches.length) {
+    searchMatches[searchIdx].classList.remove('search-current');
+    searchIdx = (searchIdx + 1) %% searchMatches.length;
+    const el = searchMatches[searchIdx];
+    el.classList.add('search-current');
+    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+});
+
+function runSearch() {
+  const q = searchInput.value.trim().toLowerCase();
+  allSegs.forEach(s => s.classList.remove('search-match','search-current'));
+  searchMatches = [];
+  if (!q) return;
+  allSegs.forEach(s => {
+    if (s.textContent.toLowerCase().includes(q)) {
+      s.classList.add('search-match');
+      searchMatches.push(s);
+    }
+  });
+  if (!searchMatches.length) return;
+  searchIdx = 0;
+  searchMatches[0].classList.add('search-current');
+  searchMatches[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+</script>
+</body>
+</html>

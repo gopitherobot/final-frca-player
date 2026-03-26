@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Paediatric & Neonatal — Oesophageal atresia Diaphragmatic Hernia and Exomphalos</title>
+<style>
+
+  :root {
+    --accent:    #fbbf24;
+    --body-bg:   #f1f5f9;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: var(--body-bg);
+    color: #1e293b;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  /* ── Header ── */
+  .header {
+    background: #0f172a;
+    border-bottom: 3px solid var(--accent);
+    padding: 12px 20px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .header-left { flex: 1; min-width: 200px; }
+  .header h1 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #f1f5f9;
+    margin-bottom: 4px;
+    letter-spacing: 0.01em;
+  }
+  .header-sub {
+    font-size: 0.72rem;
+    color: #94a3b8;
+    font-style: italic;
+  }
+  audio {
+    height: 36px;
+    accent-color: var(--accent);
+    flex-shrink: 0;
+  }
+  .back-link {
+    font-size: 0.8rem;
+    color: #94a3b8;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .back-link:hover { color: #60a5fa; }
+
+  /* ── Toolbar ── */
+  .toolbar {
+    background: #1e293b;
+    padding: 7px 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-shrink: 0;
+    border-bottom: 1px solid #334155;
+  }
+  .toolbar input {
+    flex: 1;
+    max-width: 380px;
+    padding: 5px 11px;
+    border: 1px solid #475569;
+    border-radius: 6px;
+    background: #0f172a;
+    color: #e2e8f0;
+    font-size: 0.83rem;
+    outline: none;
+  }
+  .toolbar input:focus { border-color: var(--accent); }
+  .toolbar input::placeholder { color: #64748b; }
+  .stats {
+    font-size: 0.72rem;
+    color: #64748b;
+    white-space: nowrap;
+  }
+
+  /* ── Scroll area ── */
+  .scroll-area {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+  }
+  .scroll-area::-webkit-scrollbar { width: 6px; }
+  .scroll-area::-webkit-scrollbar-track { background: transparent; }
+  .scroll-area::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+
+  /* ── Subtitle bar ── */
+  .subtitle-bar {
+    background: #0f172a;
+    border-top: 2px solid var(--accent);
+    padding: 8px 20px;
+    flex-shrink: 0;
+    min-height: 42px;
+    display: flex;
+    align-items: center;
+  }
+  .subtitle-text {
+    font-size: 0.9rem;
+    color: #e2e8f0;
+    line-height: 1.5;
+    font-style: italic;
+  }
+  .subtitle-text.empty { color: #475569; }
+
+  /* ── Transcript blocks ── */
+  .t-block {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    margin-bottom: 14px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    display: flex;
+  }
+  .t-block.block-active {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px rgba(37,99,235,0.15);
+  }
+  .t-gutter {
+    background: #0f172a;
+    width: 52px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: 14px;
+    cursor: pointer;
+  }
+  .t-gutter:hover { background: #1e293b; }
+  .t-timestamp {
+    font-size: 0.7rem;
+    color: #64748b;
+    font-family: monospace;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+  .t-gutter.gutter-active .t-timestamp { color: var(--accent); }
+  .t-body {
+    flex: 1;
+    padding: 12px 16px;
+    line-height: 1.75;
+    font-size: 0.92rem;
+    color: #1e293b;
+  }
+
+  /* ── Segments ── */
+  .segment {
+    cursor: pointer;
+    border-radius: 3px;
+    transition: background 0.1s;
+  }
+  .segment:hover { background: #eff6ff; }
+  .segment.active {
+    background: #bfdbfe;
+    outline: 2px solid #3b82f6;
+    outline-offset: 1px;
+    border-radius: 3px;
+  }
+  .segment.search-match  { background: #fef9c3; }
+  .segment.search-current { background: #fde047; outline: 2px solid #ca8a04; }
+
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <h1>Paediatric & Neonatal — Oesophageal atresia Diaphragmatic Hernia and Exomphalos</h1>
+    <div class="header-sub">Final FRCA &mdash; Exam Viva Simulation &mdash; Click any phrase to seek</div>
+  </div>
+  <audio id="audio" src="../FinalFRCAPaediatric_and_Neonatal_Oesophageal_atresia_Diaphragmatic_Hernia_and_Exomphalos.mp3" controls preload="metadata"></audio>
+  <a class="back-link" href="index.html">&#8592; All Topics</a>
+</div>
+
+<div class="toolbar">
+  <input type="text" id="search" placeholder="Search transcript&#8230; (Enter = next match)">
+  <span class="stats" id="stats">94 segments &nbsp;|&nbsp; <span id="dur">loading&#8230;</span></span>
+</div>
+
+<div class="scroll-area" id="scroll-area">
+<div class="t-block">
+  <div class="t-gutter" data-start="0.0"><span class="t-timestamp">0:00</span></div>
+  <div class="t-body"><span class="segment" data-start="0.0" data-end="5.0" title="0:00">As offergeolatresia, diaphragmatic hernia, and exonphalus. </span><span class="segment" data-start="5.0" data-end="12.0" title="0:05">These are pediatric surgical problems which many final FRCA candidates may not have encountered in their training. </span><span class="segment" data-start="12.0" data-end="18.0" title="0:12">You are unlikely to encounter questions on more than one of these problems within a viber. </span><span class="segment" data-start="18.0" data-end="24.0" title="0:18">A structured understanding of each problem and the main anaesthetic considerations relating to it </span><span class="segment" data-start="24.0" data-end="28.0" title="0:24">will ensure you tackle a potentially difficult question well. </span><span class="segment" data-start="28.0" data-end="35.0" title="0:28">You are on call for pediatric emergencies and are asked to assess a term neonate with a Zoffegyolatresia. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="35.0"><span class="t-timestamp">0:35</span></div>
+  <div class="t-body"><span class="segment" data-start="35.0" data-end="39.0" title="0:35">What do you understand about this condition? </span><span class="segment" data-start="39.0" data-end="46.0" title="0:39">A Zoffegyolatresia and Tricio a Zoffegyol fistula are part of a spectrum of conditions </span><span class="segment" data-start="46.0" data-end="52.0" title="0:46">where there is defective embryological development of the Tricio and Zoffegos. </span><span class="segment" data-start="52.0" data-end="60.0" title="0:52">The incidence is approximately one in 3,500 live births and many cases are diagnosed antinatally. </span><span class="segment" data-start="60.0" data-end="63.0" title="1:00">Can you describe the anatomical abnormality in more detail? </span><span class="segment" data-start="63.0" data-end="66.0" title="1:03">There are several patterns of abnormal anatomy. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="66.0"><span class="t-timestamp">1:06</span></div>
+  <div class="t-body"><span class="segment" data-start="66.0" data-end="75.0" title="1:06">It is worth being able to sketch these as it makes remembering and explaining the differences easier. </span><span class="segment" data-start="75.0" data-end="85.0" title="1:15">The most common type involves a blind ending of a Zoffegos with a fistula between the distal portion of the Zoffegos and the Tricio. </span><span class="segment" data-start="85.0" data-end="89.0" title="1:25">This occurs in approximately 80% of cases. </span><span class="segment" data-start="89.0" data-end="94.0" title="1:29">What would you look for in your pre-operative assessment of this infant? </span><span class="segment" data-start="94.0" data-end="104.0" title="1:34">It is important to look for other congenital abnormalities because 50% of infants with a Tricio a Zoffegyol fistula will have associated problems. </span><span class="segment" data-start="104.0" data-end="110.0" title="1:44">It is particularly important to look for evidence of congenital cardiac problems. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="110.0"><span class="t-timestamp">1:50</span></div>
+  <div class="t-body"><span class="segment" data-start="110.0" data-end="119.0" title="1:50">The baby may have been born prematurely, raising the possibility of lung disease, retinal problems and impaired blood sugar regulation. </span><span class="segment" data-start="119.0" data-end="122.0" title="1:59">What is the Vacturl Association? </span><span class="segment" data-start="122.0" data-end="128.0" title="2:02">If you are doing particularly well up to this point, this may be asked. </span><span class="segment" data-start="129.0" data-end="135.0" title="2:09">This is an acronym used to describe a group of congenital problems which can occur together. </span><span class="segment" data-start="135.0" data-end="146.0" title="2:15">An affected infant has vertebral, anorectal, cardiac, Tricio a Zoffegyol, renal and limb abnormalities. </span><span class="segment" data-start="146.0" data-end="152.0" title="2:26">How does Tricio a Zoffegyol fistula present? </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="152.0"><span class="t-timestamp">2:32</span></div>
+  <div class="t-body"><span class="segment" data-start="152.0" data-end="158.0" title="2:32">The baby may have repeated episodes of coughing, choking and cyanosis. </span><span class="segment" data-start="158.0" data-end="161.0" title="2:38">This is exacerbated by attempts at feeding. </span><span class="segment" data-start="161.0" data-end="167.0" title="2:41">There is resistance to passage of an oragastric tube. </span><span class="segment" data-start="167.0" data-end="172.0" title="2:47">How should the infant be managed pre-operatively? </span><span class="segment" data-start="172.0" data-end="179.0" title="2:52">The child cannot take oral fluids or nutrition, so intravenous fluids should be administered, </span><span class="segment" data-start="179.0" data-end="183.0" title="2:59">taking care to avoid hypoglycemia. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="183.0"><span class="t-timestamp">3:03</span></div>
+  <div class="t-body"><span class="segment" data-start="183.0" data-end="192.0" title="3:03">A specialized suction tube, called a replogal tube, can be used to prevent pooling of secretions in the upper part of the esophagus. </span><span class="segment" data-start="192.0" data-end="202.0" title="3:12">This works by letting air in to avoid high negative pressures sucking the esophageal mucusa into the catheter. </span><span class="segment" data-start="202.0" data-end="208.0" title="3:22">What is the optimum timing of corrective surgery after birth? </span><span class="segment" data-start="208.0" data-end="215.0" title="3:28">In an otherwise uncomplicated case of Tricio a Zoffegyol fistula or a Zoffegyol atrizia, </span><span class="segment" data-start="215.0" data-end="225.0" title="3:35">surgery should be carried out within 24 hours of delivery because accumulation of fluid in the upper esophagus leads to a risk of aspiration. </span><span class="segment" data-start="225.0" data-end="231.0" title="3:45">How would you induce anesthesia in this patient? </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="231.0"><span class="t-timestamp">3:51</span></div>
+  <div class="t-body"><span class="segment" data-start="231.0" data-end="237.0" title="3:51">The tube in the upper pouch should be suctioned following attachment to the saturation probe. </span><span class="segment" data-start="237.0" data-end="241.0" title="3:57">Inhalational induction with Civa flurain is carried out. </span><span class="segment" data-start="241.0" data-end="247.0" title="4:01">The Tricio is intubated with a size 3 or 3.5mm tube. </span><span class="segment" data-start="247.0" data-end="256.0" title="4:07">Vigorous bag and mask ventilation is avoided because this can force air through the fistula from the Tricio to the distal esophagus and stomach. </span><span class="segment" data-start="256.0" data-end="260.0" title="4:16">This can splint the diaphragm and impair ventilation. </span><span class="segment" data-start="260.0" data-end="271.0" title="4:20">The infant is allowed to begin to breathe spontaneously on the tube, at which point the tube can be removed to permit examination of the airway with a rigid broncuscope. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="271.0"><span class="t-timestamp">4:31</span></div>
+  <div class="t-body"><span class="segment" data-start="271.0" data-end="275.0" title="4:31">The exact anatomy of the Tricio a Zoffegyol fistula can be established. </span><span class="segment" data-start="275.0" data-end="283.0" title="4:35">The endotricial tube can then be replaced and positioned so that the Tricio a Zoffegyol fistula is occluded. </span><span class="segment" data-start="283.0" data-end="292.0" title="4:43">In this way, the escape of gas from the Tricio to the distal esophagus and stomach during positive pressure ventilation is minimized. </span><span class="segment" data-start="292.0" data-end="302.0" title="4:52">Once the tube position is correct, a neuromuscular blocking agent can be administered and gentle hand ventilation commenced. </span><span class="segment" data-start="302.0" data-end="307.0" title="5:02">What are the intraoperative concerns? </span><span class="segment" data-start="307.0" data-end="316.0" title="5:07">These relate to positioning, monitoring, temperature regulation and maintenance of reliable intravenous access. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="316.0"><span class="t-timestamp">5:16</span></div>
+  <div class="t-body"><span class="segment" data-start="316.0" data-end="323.0" title="5:16">The infant is usually positioned right lateral and strict attention must be paid to pressure areas. </span><span class="segment" data-start="323.0" data-end="333.0" title="5:23">Invasive monitoring with arterial and central venous lines is appropriate. Active warming methods must be used. </span><span class="segment" data-start="333.0" data-end="337.0" title="5:33">How will you manage the child postoperatively? </span><span class="segment" data-start="337.0" data-end="345.0" title="5:37">Most infants remain ventilated postoperatively and are cared for on the neonatal or pediatric intensive care unit. </span><span class="segment" data-start="345.0" data-end="351.0" title="5:45">Appropriate sedation and analgesia should be ensured. </span><span class="segment" data-start="351.0" data-end="356.0" title="5:51">What can you tell me about congenital diaphragmatic hernia? </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="356.0"><span class="t-timestamp">5:56</span></div>
+  <div class="t-body"><span class="segment" data-start="356.0" data-end="364.0" title="5:56">Congenital diaphragmatic hernia occurs in approximately one in every three to four thousand live births. </span><span class="segment" data-start="364.0" data-end="373.0" title="6:04">The diaphragmatic defect is most commonly left-sided and associated with a variable degree of lung hypoplasia. </span><span class="segment" data-start="373.0" data-end="382.0" title="6:13">40% of patients have significant associated congenital abnormalities of which cardiac anomalies are most common. </span><span class="segment" data-start="382.0" data-end="392.0" title="6:22">Continental data suggests that abnormal lung development begins at an early stage of embryonic development before the diaphragm begins to form. </span><span class="segment" data-start="392.0" data-end="398.0" title="6:32">Subsequent diaphragmatic development is disturbed leading to the observed anatomical defect. </span><span class="segment" data-start="398.0" data-end="408.0" title="6:38">Herniation of abdominal contents through the defect in the later stages of fetal development exerts a pressure effect further impairing lung development. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="408.0"><span class="t-timestamp">6:48</span></div>
+  <div class="t-body"><span class="segment" data-start="408.0" data-end="418.0" title="6:48">The affected lung has poorly developed airways, reduced numbers of type 2 numerocytes and abnormal highly reactive pulmonary vasculature. </span><span class="segment" data-start="418.0" data-end="424.0" title="6:58">All affected infants have some degree of pulmonary hypertension. </span><span class="segment" data-start="424.0" data-end="429.0" title="7:04">Is surgical correction of the defect an emergency procedure? </span><span class="segment" data-start="429.0" data-end="436.0" title="7:09">No, the condition of the child should be optimised prior to considering a surgical procedure. </span><span class="segment" data-start="436.0" data-end="445.0" title="7:16">Surgery does not improve gas exchange because of the associated pulmonary hypertension and lung hypoplasia. </span><span class="segment" data-start="445.0" data-end="449.0" title="7:25">How should the patient be optimised prior to theatre? </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="449.0"><span class="t-timestamp">7:29</span></div>
+  <div class="t-body"><span class="segment" data-start="449.0" data-end="455.0" title="7:29">Delivery should take place as close as possible to term to maximise lung development. </span><span class="segment" data-start="455.0" data-end="462.0" title="7:35">Bag and mask ventilation should be minimised to prevent distension of the intra-theracic bowel. </span><span class="segment" data-start="462.0" data-end="468.0" title="7:42">Intubation and ventilation with close attention to avoiding baritourma should follow. </span><span class="segment" data-start="468.0" data-end="474.0" title="7:48">The bowel lying within the chest cavity can be decompressed within a gastric tube. </span><span class="segment" data-start="474.0" data-end="482.0" title="7:54">The child should be transferred to a pediatric critical care area for invasive monitoring and further stabilisation. </span><span class="segment" data-start="482.0" data-end="489.0" title="8:02">Appropriate investigations include arterial blood gases, chest x-ray and echocardiogram. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="490.0"><span class="t-timestamp">8:10</span></div>
+  <div class="t-body"><span class="segment" data-start="490.0" data-end="498.0" title="8:10">The principles of ventilating the infant are to achieve adequate gas exchange whilst preventing eye-atrogenic injury to the lung. </span><span class="segment" data-start="498.0" data-end="504.0" title="8:18">In spiritary pressures are limited and permissive hyper-capnia is used. </span><span class="segment" data-start="504.0" data-end="510.0" title="8:24">Inhalled nitric oxide may be trialled in patients with significant pulmonary hypertension, </span><span class="segment" data-start="510.0" data-end="516.0" title="8:30">although the evidence of an improved outcome in this condition is so far lacking. </span><span class="segment" data-start="516.0" data-end="524.0" title="8:36">Surgery is generally delayed for 24 to 48 hours to allow a fall in pulmonary resistance. </span><span class="segment" data-start="524.0" data-end="528.0" title="8:44">What is exomphalus? </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="528.0"><span class="t-timestamp">8:48</span></div>
+  <div class="t-body"><span class="segment" data-start="528.0" data-end="533.0" title="8:48">Exomphalus is a congenital defect of the abdominal wall. </span><span class="segment" data-start="533.0" data-end="539.0" title="8:53">There is herniation of abdominal contents with a covering sac through a midline defect. </span><span class="segment" data-start="539.0" data-end="546.0" title="8:59">It is caused by failure of the gut to migrate into the abdominal cavity during fetal development. </span><span class="segment" data-start="546.0" data-end="551.0" title="9:06">How does gastroskycis differ? </span><span class="segment" data-start="551.0" data-end="560.0" title="9:11">Gastrocysis is also an anterior abdominal wall defect, allowing herniation of intra-dominal contents. </span><span class="segment" data-start="560.0" data-end="566.0" title="9:20">It does not occur in the midline and there is no covering sac over the exposed bowel. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="566.0"><span class="t-timestamp">9:26</span></div>
+  <div class="t-body"><span class="segment" data-start="566.0" data-end="573.0" title="9:26">Exomphalus is commonly associated with other congenital problems, particularly cardiac defects, </span><span class="segment" data-start="573.0" data-end="578.0" title="9:33">whilst gastrocysis is usually an isolated problem. </span><span class="segment" data-start="578.0" data-end="583.0" title="9:38">What are the problems associated with the two conditions? </span><span class="segment" data-start="583.0" data-end="590.0" title="9:43">There is significant loss of heat and moisture by evaporation from the exposed abdominal contents. </span><span class="segment" data-start="590.0" data-end="597.0" title="9:50">The bowel can be damaged by the drying effect and is a potential root for the entry of infection. </span><span class="segment" data-start="597.0" data-end="601.0" title="9:57">What is the management? </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="601.0"><span class="t-timestamp">10:01</span></div>
+  <div class="t-body"><span class="segment" data-start="601.0" data-end="607.0" title="10:01">The exposed bowel should be initially covered with a non-porus material such as cling film. </span><span class="segment" data-start="607.0" data-end="614.0" title="10:07">Strict attention should be given to estimating and replacing fluid losses and to maintenance of normothermia. </span><span class="segment" data-start="614.0" data-end="620.0" title="10:14">Primary surgical closure is attempted once the infant is adequately resuscitated. </span><span class="segment" data-start="620.0" data-end="628.0" title="10:20">Staged closure may be necessary if the abdominal contents cannot be reduced without compromising respiratory function. </span></div>
+</div>
+</div>
+
+<div class="subtitle-bar">
+  <span class="subtitle-text empty" id="subtitle-text">Play audio to see live subtitles&#8230;</span>
+</div>
+
+<script>
+
+const audio    = document.getElementById('audio');
+const allSegs  = Array.from(document.querySelectorAll('.segment'));
+const allBlocks = Array.from(document.querySelectorAll('.t-block'));
+const subtitleEl = document.getElementById('subtitle-text');
+let activeSegEl   = null;
+let activeBlockEl = null;
+let searchMatches = [];
+let searchIdx     = 0;
+
+// Duration display
+audio.addEventListener('loadedmetadata', () => {
+  const m = Math.floor(audio.duration / 60);
+  const s = Math.floor(audio.duration %% 60).toString().padStart(2,'0');
+  document.getElementById('dur').textContent = m + ':' + s;
+});
+
+// Seek helper
+function seekTo(t) {
+  audio.currentTime = t;
+  audio.play();
+}
+
+// Block gutter click
+document.querySelectorAll('.t-gutter').forEach(g => {
+  g.addEventListener('click', () => seekTo(parseFloat(g.dataset.start)));
+});
+
+// Segment click
+allSegs.forEach(s => {
+  s.addEventListener('click', e => {
+    e.stopPropagation();
+    seekTo(parseFloat(s.dataset.start));
+  });
+});
+
+// Real-time tracking
+audio.addEventListener('timeupdate', () => {
+  const t = audio.currentTime;
+
+  // Find active segment (last one whose start <= t)
+  let found = null;
+  for (let i = allSegs.length - 1; i >= 0; i--) {
+    if (parseFloat(allSegs[i].dataset.start) <= t) { found = allSegs[i]; break; }
+  }
+
+  if (found && found !== activeSegEl) {
+    // Clear previous
+    if (activeSegEl) activeSegEl.classList.remove('active');
+    if (activeBlockEl) {
+      activeBlockEl.classList.remove('block-active');
+      const pg = activeBlockEl.querySelector('.t-gutter');
+      if (pg) pg.classList.remove('gutter-active');
+    }
+    // Set new
+    found.classList.add('active');
+    const block = found.closest('.t-block');
+    if (block) {
+      block.classList.add('block-active');
+      const g = block.querySelector('.t-gutter');
+      if (g) g.classList.add('gutter-active');
+      activeBlockEl = block;
+    }
+    activeSegEl = found;
+
+    // Update subtitle
+    subtitleEl.textContent = found.textContent.trim();
+    subtitleEl.classList.remove('empty');
+
+    // Auto-scroll (only when not searching)
+    if (!document.getElementById('search').value) {
+      found.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }
+});
+
+// Search
+const searchInput = document.getElementById('search');
+searchInput.addEventListener('input', runSearch);
+searchInput.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && searchMatches.length) {
+    searchMatches[searchIdx].classList.remove('search-current');
+    searchIdx = (searchIdx + 1) %% searchMatches.length;
+    const el = searchMatches[searchIdx];
+    el.classList.add('search-current');
+    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+});
+
+function runSearch() {
+  const q = searchInput.value.trim().toLowerCase();
+  allSegs.forEach(s => s.classList.remove('search-match','search-current'));
+  searchMatches = [];
+  if (!q) return;
+  allSegs.forEach(s => {
+    if (s.textContent.toLowerCase().includes(q)) {
+      s.classList.add('search-match');
+      searchMatches.push(s);
+    }
+  });
+  if (!searchMatches.length) return;
+  searchIdx = 0;
+  searchMatches[0].classList.add('search-current');
+  searchMatches[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+</script>
+</body>
+</html>

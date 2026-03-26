@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Emergency Medicine — Burns and Drowning</title>
+<style>
+
+  :root {
+    --accent:    #dc2626;
+    --body-bg:   #f1f5f9;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: var(--body-bg);
+    color: #1e293b;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  /* ── Header ── */
+  .header {
+    background: #0f172a;
+    border-bottom: 3px solid var(--accent);
+    padding: 12px 20px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .header-left { flex: 1; min-width: 200px; }
+  .header h1 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #f1f5f9;
+    margin-bottom: 4px;
+    letter-spacing: 0.01em;
+  }
+  .header-sub {
+    font-size: 0.72rem;
+    color: #94a3b8;
+    font-style: italic;
+  }
+  audio {
+    height: 36px;
+    accent-color: var(--accent);
+    flex-shrink: 0;
+  }
+  .back-link {
+    font-size: 0.8rem;
+    color: #94a3b8;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .back-link:hover { color: #60a5fa; }
+
+  /* ── Toolbar ── */
+  .toolbar {
+    background: #1e293b;
+    padding: 7px 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-shrink: 0;
+    border-bottom: 1px solid #334155;
+  }
+  .toolbar input {
+    flex: 1;
+    max-width: 380px;
+    padding: 5px 11px;
+    border: 1px solid #475569;
+    border-radius: 6px;
+    background: #0f172a;
+    color: #e2e8f0;
+    font-size: 0.83rem;
+    outline: none;
+  }
+  .toolbar input:focus { border-color: var(--accent); }
+  .toolbar input::placeholder { color: #64748b; }
+  .stats {
+    font-size: 0.72rem;
+    color: #64748b;
+    white-space: nowrap;
+  }
+
+  /* ── Scroll area ── */
+  .scroll-area {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+  }
+  .scroll-area::-webkit-scrollbar { width: 6px; }
+  .scroll-area::-webkit-scrollbar-track { background: transparent; }
+  .scroll-area::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+
+  /* ── Subtitle bar ── */
+  .subtitle-bar {
+    background: #0f172a;
+    border-top: 2px solid var(--accent);
+    padding: 8px 20px;
+    flex-shrink: 0;
+    min-height: 42px;
+    display: flex;
+    align-items: center;
+  }
+  .subtitle-text {
+    font-size: 0.9rem;
+    color: #e2e8f0;
+    line-height: 1.5;
+    font-style: italic;
+  }
+  .subtitle-text.empty { color: #475569; }
+
+  /* ── Transcript blocks ── */
+  .t-block {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    margin-bottom: 14px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    display: flex;
+  }
+  .t-block.block-active {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px rgba(37,99,235,0.15);
+  }
+  .t-gutter {
+    background: #0f172a;
+    width: 52px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: 14px;
+    cursor: pointer;
+  }
+  .t-gutter:hover { background: #1e293b; }
+  .t-timestamp {
+    font-size: 0.7rem;
+    color: #64748b;
+    font-family: monospace;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+  .t-gutter.gutter-active .t-timestamp { color: var(--accent); }
+  .t-body {
+    flex: 1;
+    padding: 12px 16px;
+    line-height: 1.75;
+    font-size: 0.92rem;
+    color: #1e293b;
+  }
+
+  /* ── Segments ── */
+  .segment {
+    cursor: pointer;
+    border-radius: 3px;
+    transition: background 0.1s;
+  }
+  .segment:hover { background: #eff6ff; }
+  .segment.active {
+    background: #bfdbfe;
+    outline: 2px solid #3b82f6;
+    outline-offset: 1px;
+    border-radius: 3px;
+  }
+  .segment.search-match  { background: #fef9c3; }
+  .segment.search-current { background: #fde047; outline: 2px solid #ca8a04; }
+
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <h1>Emergency Medicine — Burns and Drowning</h1>
+    <div class="header-sub">Final FRCA &mdash; Exam Viva Simulation &mdash; Click any phrase to seek</div>
+  </div>
+  <audio id="audio" src="../FinalFRCAEmergency_Medicine_Burns_and_Drowning.mp3" controls preload="metadata"></audio>
+  <a class="back-link" href="index.html">&#8592; All Topics</a>
+</div>
+
+<div class="toolbar">
+  <input type="text" id="search" placeholder="Search transcript&#8230; (Enter = next match)">
+  <span class="stats" id="stats">128 segments &nbsp;|&nbsp; <span id="dur">loading&#8230;</span></span>
+</div>
+
+<div class="scroll-area" id="scroll-area">
+<div class="t-block">
+  <div class="t-gutter" data-start="0.0"><span class="t-timestamp">0:00</span></div>
+  <div class="t-body"><span class="segment" data-start="0.0" data-end="2.0" title="0:00">Burns and drowning. </span><span class="segment" data-start="2.0" data-end="9.0" title="0:02">These are potentially life-threatening situations, the initial management of which you will be expected to be confident of, </span><span class="segment" data-start="9.0" data-end="17.0" title="0:09">apply an airway, breathing circulation approach, and add the details specific to the particular scenario you are given. </span><span class="segment" data-start="17.0" data-end="21.0" title="0:17">A 25-year-old male is brought into A&E following a house fire. </span><span class="segment" data-start="21.0" data-end="24.0" title="0:21">Describe your initial assessment. </span><span class="segment" data-start="25.0" data-end="32.0" title="0:25">I would make an initial assessment of the patient according to an airway, breathing, and circulation approach, </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="32.0"><span class="t-timestamp">0:32</span></div>
+  <div class="t-body"><span class="segment" data-start="32.0" data-end="39.0" title="0:32">aiming to identify potentially life-threatening problems and make an estimation of the extent of the burn. </span><span class="segment" data-start="39.0" data-end="45.0" title="0:39">I would simultaneously take a brief history, including the timing and circumstances of the injury, </span><span class="segment" data-start="45.0" data-end="51.0" title="0:45">consumption of alcohol or recreational drugs, and relevant past medical history. </span><span class="segment" data-start="51.0" data-end="60.0" title="0:51">I would firstly assess the patency of the airway, listening for any added sound such as stride or, which may indicate airway compromise. </span><span class="segment" data-start="60.0" data-end="65.0" title="1:00">Sovaco's spine control must be maintained if there is any history of trauma. </span><span class="segment" data-start="65.0" data-end="72.0" title="1:05">High flow, humidified oxygen should be given via a non-rebreathing bag and face mask. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="72.0"><span class="t-timestamp">1:12</span></div>
+  <div class="t-body"><span class="segment" data-start="72.0" data-end="80.0" title="1:12">I would make an assessment of the respiratory system by observation of the chest for respiratory movements and involvement in the burn, </span><span class="segment" data-start="80.0" data-end="87.0" title="1:20">determination of respiratory rate, consultation of the chest, and measurement of oxygen saturations. </span><span class="segment" data-start="87.0" data-end="97.0" title="1:27">Circulation would be assessed by feeling the warmth of the peripheries and measuring central capillary refill time, heart rate, and blood pressure. </span><span class="segment" data-start="98.0" data-end="105.0" title="1:38">I would obtain intravenous access with two large bore cannuli and commence fluid resuscitation. </span><span class="segment" data-start="105.0" data-end="115.0" title="1:45">Assessment of the neurological system would consist of determination of Glasgow coma scale score or AVPOO score and assessment of the pupils. </span><span class="segment" data-start="115.0" data-end="122.0" title="1:55">I would titrate intravenous morphine to the patient's pain provided there were no contraindications. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="122.0"><span class="t-timestamp">2:02</span></div>
+  <div class="t-body"><span class="segment" data-start="122.0" data-end="128.0" title="2:02">The patient should then be exposed to allow the extent of the burn to be estimated. </span><span class="segment" data-start="128.0" data-end="132.0" title="2:08">How is the severity of a burn graded? </span><span class="segment" data-start="132.0" data-end="139.0" title="2:12">Burns can be graded both on the depth of the injury and the percentage surface area that is affected. </span><span class="segment" data-start="139.0" data-end="144.0" title="2:19">The depth of a burn can be subdivided into superficial or deep. </span><span class="segment" data-start="144.0" data-end="147.0" title="2:24">Superficial burns affect the epidermis only. </span><span class="segment" data-start="147.0" data-end="151.0" title="2:27">Their peer-read can blister and are painful. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="151.0"><span class="t-timestamp">2:31</span></div>
+  <div class="t-body"><span class="segment" data-start="151.0" data-end="156.0" title="2:31">Deep burns cause damage to the dermis and have a white appearance. </span><span class="segment" data-start="156.0" data-end="162.0" title="2:36">There is loss of pinprick sensation due to destruction of the nerve endings. </span><span class="segment" data-start="162.0" data-end="173.0" title="2:42">Percentage surface area can be estimated using the rule of 9s, whereby areas of the body are assigned a surface area based on multiples of 9. </span><span class="segment" data-start="173.0" data-end="179.0" title="2:53">This rule is not applicable to children as they have small limbs in comparison to their head and trunk. </span><span class="segment" data-start="179.0" data-end="188.0" title="2:59">Alternatively, the area of the patient's own palm can be used to represent 1% of their total surface area. </span><span class="segment" data-start="188.0" data-end="193.0" title="3:08">What further investigations are appropriate for this patient? </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="193.0"><span class="t-timestamp">3:13</span></div>
+  <div class="t-body"><span class="segment" data-start="193.0" data-end="198.0" title="3:13">Blood tests should be performed including full blood count and urea and electrolytes. </span><span class="segment" data-start="198.0" data-end="204.0" title="3:18">Alcohol levels under drug toxicology may be indicated depending on the history. </span><span class="segment" data-start="204.0" data-end="207.0" title="3:24">Arterial blood gases should be obtained. </span><span class="segment" data-start="207.0" data-end="212.0" title="3:27">Cooxymetry allows accurate to determination of carboxyhemoglobin levels. </span><span class="segment" data-start="212.0" data-end="216.0" title="3:32">A chest x-ray should be performed at this stage. </span><span class="segment" data-start="216.0" data-end="222.0" title="3:36">What would alert you to the possibility that this patient may have suffered an inhalation injury? </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="222.0"><span class="t-timestamp">3:42</span></div>
+  <div class="t-body"><span class="segment" data-start="222.0" data-end="229.0" title="3:42">Features from the history and clinical examination would raise the possibility of an inhalational injury. </span><span class="segment" data-start="229.0" data-end="239.0" title="3:49">In the history, evidence of prolonged exposure to smoke such as entrapment in a burning building or loss of consciousness at the scene are worrying features. </span><span class="segment" data-start="239.0" data-end="255.0" title="3:59">Evidence on examination of sut around the nostrils or inside the mouth, facial burns, respiratory distress, stride or sut staining of the sputum or aurofarongiolidema are markers of possible inhalational injury. </span><span class="segment" data-start="255.0" data-end="261.0" title="4:15">What is the appropriate course of action if inhalational injury is expected? </span><span class="segment" data-start="261.0" data-end="266.0" title="4:21">The airway should be secured by endotracheal intubation immediately. </span><span class="segment" data-start="266.0" data-end="273.0" title="4:26">The reason for this is that swelling of the airway can progress rapidly leading to complete obstruction. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="273.0"><span class="t-timestamp">4:33</span></div>
+  <div class="t-body"><span class="segment" data-start="273.0" data-end="281.0" title="4:33">A range of endotracheal tube sizes should be immediately to hand as the edema may be advanced by the time of presentation hospital. </span><span class="segment" data-start="281.0" data-end="287.0" title="4:41">A full length endotracheal tube should be used to allow for the development of facial edema. </span><span class="segment" data-start="287.0" data-end="293.0" title="4:47">A nasogastric tube may be inserted at the same time to permit early-enteral feeding. </span><span class="segment" data-start="293.0" data-end="298.0" title="4:53">How is the fluid requirement of this patient calculated? </span><span class="segment" data-start="298.0" data-end="306.0" title="4:58">There are several different equations available for estimating the fluid requirement for a cessitation following a major burn. </span><span class="segment" data-start="306.0" data-end="309.0" title="5:06">One of these is the Parkland formula. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="309.0"><span class="t-timestamp">5:09</span></div>
+  <div class="t-body"><span class="segment" data-start="309.0" data-end="319.0" title="5:09">The information needed to make the calculation is the patient's weight, the percentage area of the burn and the approximate time of the injury. </span><span class="segment" data-start="319.0" data-end="330.0" title="5:19">Over the first 24 hours after the injury, the patient should receive 4 milliliters of crystalloid solution per kilogram per percentage area of the burn. </span><span class="segment" data-start="330.0" data-end="338.0" title="5:30">Half of this total volume should be administered in the first 8 hours after the burn and the remainder in the following 16 hours. </span><span class="segment" data-start="338.0" data-end="345.0" title="5:38">This formula only provides guidance for fluid administration and additional fluid may be required. </span><span class="segment" data-start="345.0" data-end="352.0" title="5:45">What specific monitoring and investigations are indicated in the first 24 hours of admission? </span><span class="segment" data-start="352.0" data-end="356.0" title="5:52">The patient should be managed in a critical care environment. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="356.0"><span class="t-timestamp">5:56</span></div>
+  <div class="t-body"><span class="segment" data-start="356.0" data-end="361.0" title="5:56">The airway is maintained by endotracheal intubation with adequate sedation. </span><span class="segment" data-start="361.0" data-end="368.0" title="6:01">Invasive monitoring is indicated to assess the adequacy of ventilation and the response to fluid resuscitation. </span><span class="segment" data-start="368.0" data-end="374.0" title="6:08">A urine output of .5 to 1 mills per kilo per hour should be ensured. </span><span class="segment" data-start="374.0" data-end="382.0" title="6:14">Himatocrit, urinary osmolality and serial plasma electrolytes can be used to guide fluid replacement. </span><span class="segment" data-start="382.0" data-end="388.0" title="6:22">A full secondary survey is performed to detail the full extent of the burn and any other injuries. </span><span class="segment" data-start="388.0" data-end="395.0" title="6:28">Circumferential burns which compromise ventilation or distal perfusion require escherotomy. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="395.0"><span class="t-timestamp">6:35</span></div>
+  <div class="t-body"><span class="segment" data-start="395.0" data-end="402.0" title="6:35">Strict attention should be paid to analgesia, gastric ulcer-prosylaxis and nutrition. </span><span class="segment" data-start="402.0" data-end="408.0" title="6:42">What's the criteria for transfer of this patient to a regional burns unit? </span><span class="segment" data-start="408.0" data-end="415.0" title="6:48">Transfer should be organised if this patient has a burn surface of more than 10% of total body surface area. </span><span class="segment" data-start="415.0" data-end="428.0" title="6:55">Has sustained burns to specific parts of the body including face, hands, feet, genitalia, perineum or major joints or there is an inhalational injury. </span><span class="segment" data-start="428.0" data-end="437.0" title="7:08">Other criteria for transfer are greater than 5% surface area burns in children, electrical and chemical burns, </span><span class="segment" data-start="437.0" data-end="447.0" title="7:17">circumferential burns to the limbs or chest and burns in patients with pre-existing medical conditions or at the extremes of age. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="447.0"><span class="t-timestamp">7:27</span></div>
+  <div class="t-body"><span class="segment" data-start="447.0" data-end="451.0" title="7:27">The patient has been transferred to a regional burns unit. </span><span class="segment" data-start="451.0" data-end="458.0" title="7:31">He has a total burn surface area of approximately 20%, affecting his right arm, flank and thigh. </span><span class="segment" data-start="458.0" data-end="462.0" title="7:38">He does not have a significant inhalational injury. </span><span class="segment" data-start="462.0" data-end="468.0" title="7:42">Outline your perioperative management of this patient for the bridesmaid and split skin grafting of his burn. </span><span class="segment" data-start="468.0" data-end="477.0" title="7:48">Answer this one in a structured way, beginning with aspects of your preoperative assessment followed by intraoperative and postoperative issues. </span><span class="segment" data-start="477.0" data-end="489.0" title="7:57">It is vitally important to mention an awareness of the possibility of massive blood loss, maintenance of the patient's temperature and provision of adequate analgesia. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="489.0"><span class="t-timestamp">8:09</span></div>
+  <div class="t-body"><span class="segment" data-start="489.0" data-end="497.0" title="8:09">In my preoperative assessment of this patient I would look at events since his admission to the burns unit to establish how stable he has been. </span><span class="segment" data-start="497.0" data-end="507.0" title="8:17">In addition to this I would gather available information regarding past medical and anaesthetic history, medication and allergies. </span><span class="segment" data-start="507.0" data-end="519.0" title="8:27">Appropriate preparation for this case include warming the theatre to 28-32 degrees and ensuring there are at least six units of cross-matched blood available. </span><span class="segment" data-start="519.0" data-end="524.0" title="8:39">I would intubate the patient ensuring that succcemathonium was not used. </span><span class="segment" data-start="524.0" data-end="534.0" title="8:44">This is because succcemathonium can precipitate a marked increase in plasma potassium levels due to a proliferation of the extrajunctional astyle-coline receptors. </span><span class="segment" data-start="534.0" data-end="543.0" title="8:54">It is commonly considered to be unsafe to use succcemathonium from 24 hours after the burn for a period of up to one year. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="543.0"><span class="t-timestamp">9:03</span></div>
+  <div class="t-body"><span class="segment" data-start="543.0" data-end="549.0" title="9:03">If not already in use, invasive arterial monitoring is appropriate for this case. </span><span class="segment" data-start="549.0" data-end="556.0" title="9:09">An arterial line allows beaked to beat monitoring of blood pressure and regular sampling of blood gases. </span><span class="segment" data-start="557.0" data-end="564.0" title="9:17">One of the potential problems I would anticipate in theatre is massive blood loss and cardiovascular instability. </span><span class="segment" data-start="564.0" data-end="572.0" title="9:24">The brided tissue bleeds significantly and it can be difficult to keep an accurate track of how much blood has been lost. </span><span class="segment" data-start="572.0" data-end="577.0" title="9:32">Arterial blood gases at regular intervals will show a trend in hemoglobin. </span><span class="segment" data-start="577.0" data-end="584.0" title="9:37">Pact cells should be transfused as indicated by the clinical findings and hemoglobin. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="584.0"><span class="t-timestamp">9:44</span></div>
+  <div class="t-body"><span class="segment" data-start="584.0" data-end="593.0" title="9:44">Some units use techniques such as a soft-gill Doppler and arterial waveform analysis to optimise fluid administration. </span><span class="segment" data-start="593.0" data-end="598.0" title="9:53">The patient should be actively warmed with a forced air device and fluid warmer. </span><span class="segment" data-start="598.0" data-end="603.0" title="9:58">The temperature of the theatre should also be increased to above 25 degrees. </span><span class="segment" data-start="603.0" data-end="612.0" title="10:03">The post-doctorative care of the patient will take place on a specialized burns intensive care unit or general ITU. </span><span class="segment" data-start="612.0" data-end="620.0" title="10:12">Strict attention should be paid to fluid balance, analgesia, prevention of infection and nutrition. </span><span class="segment" data-start="620.0" data-end="626.0" title="10:20">The patient will need regular dressing changes for which they may require sedation and analgesia. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="626.0"><span class="t-timestamp">10:26</span></div>
+  <div class="t-body"><span class="segment" data-start="626.0" data-end="632.0" title="10:26">A 16-year-old male is brought into A&E having fallen into a river on outdoor pursuit's course. </span><span class="segment" data-start="632.0" data-end="638.0" title="10:32">He is unconscious with no obvious external injuries and has a weekly palpable carotid pulse. </span><span class="segment" data-start="638.0" data-end="641.0" title="10:38">His rectal temperature is 28 degrees. </span><span class="segment" data-start="641.0" data-end="649.0" title="10:41">This is an uncommon scenario but can be simplified by using advanced life support guidelines as the mainstay of your answer. </span><span class="segment" data-start="649.0" data-end="656.0" title="10:49">Always remember and make clear in your answer that other injuries can coexist in this type of patient. </span><span class="segment" data-start="656.0" data-end="660.0" title="10:56">Appropriate precautions must be taken, for example, cease-fire protection. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="660.0"><span class="t-timestamp">11:00</span></div>
+  <div class="t-body"><span class="segment" data-start="660.0" data-end="664.0" title="11:00">How do you define drowning and near-drowning? </span><span class="segment" data-start="665.0" data-end="672.0" title="11:05">Drowning is defined as death following a sphiksia due to partial or complete submersion in water. </span><span class="segment" data-start="672.0" data-end="678.0" title="11:12">Near-drowning is a term which has been used to describe evidence of recovery following submersion. </span><span class="segment" data-start="678.0" data-end="682.0" title="11:18">What is the initial management of this patient? </span><span class="segment" data-start="682.0" data-end="692.0" title="11:22">After a brief assessment of airway, breathing and circulation, the first step is to intubate the patient with cervical spine control. </span><span class="segment" data-start="692.0" data-end="695.0" title="11:32">He should be ventilated with 100% oxygen. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="695.0"><span class="t-timestamp">11:35</span></div>
+  <div class="t-body"><span class="segment" data-start="695.0" data-end="700.0" title="11:35">His cardiovascular system should be assessed for evidence of a spontaneous circulation. </span><span class="segment" data-start="700.0" data-end="708.0" title="11:40">If this is absent, cardiopulmonary resuscitation, according to the advanced life support guidelines, must be commenced. </span><span class="segment" data-start="708.0" data-end="714.0" title="11:48">Intravenous access should be secured and administration of intravenous fluids commenced. </span><span class="segment" data-start="714.0" data-end="717.0" title="11:54">Active re-warming measures should be taken. </span><span class="segment" data-start="718.0" data-end="729.0" title="11:58">These include warmed inspired gases, forced air-warming blankets, warming of intravenous fluids, and irrigation of the bladder or stomach with warm fluid. </span><span class="segment" data-start="729.0" data-end="736.0" title="12:09">More invasive methods include peritoneal lavage with warm fluid and the use of extra corporeal warming. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="736.0"><span class="t-timestamp">12:16</span></div>
+  <div class="t-body"><span class="segment" data-start="736.0" data-end="741.0" title="12:16">What is the significance of hypothermia following this type of injury? </span><span class="segment" data-start="742.0" data-end="751.0" title="12:22">Hypothermia in this setting may provide a degree of protection from the harmful effects of hypoxia on the central nervous system. </span><span class="segment" data-start="751.0" data-end="758.0" title="12:31">Resuscitation should not be discontinued until the patient's temperature is above 32 degrees. </span><span class="segment" data-start="758.0" data-end="762.0" title="12:38">What is the appearance of the ECG in hypothermia? </span><span class="segment" data-start="762.0" data-end="770.0" title="12:42">The ECG in hypothermia can show bradycardia, various stages of heart block progressing to complete heart block. </span><span class="segment" data-start="770.0" data-end="776.0" title="12:50">There may be J-waves visible, which appear as positive deflections after the QRS complex. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="776.0"><span class="t-timestamp">12:56</span></div>
+  <div class="t-body"><span class="segment" data-start="776.0" data-end="786.0" title="12:56">There is a significant risk of arrhythmias, particularly atrial fibrillation and ventricular fibrillation, which may be refractory to defibrillation. </span><span class="segment" data-start="786.0" data-end="791.0" title="13:06">Can you list any predictors of patient outcome following a near drowning? </span><span class="segment" data-start="791.0" data-end="798.0" title="13:11">There are a number of factors which are poor prognostic indicators in this type of presentation. </span><span class="segment" data-start="798.0" data-end="806.0" title="13:18">These include a prolonged immersion time of greater than 5 to 10 minutes, cardiac arrest at the scene, </span><span class="segment" data-start="806.0" data-end="816.0" title="13:26">dilated, unreactive pupils, or pH less than 7 on arrival to hospital and a lack of purposeful motor response at 24 hours. </span><span class="segment" data-start="816.0" data-end="821.0" title="13:36">What other issues may be important in the treatment of this patient? </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="821.0"><span class="t-timestamp">13:41</span></div>
+  <div class="t-body"><span class="segment" data-start="821.0" data-end="827.0" title="13:41">The clinical picture may be complicated by intoxication with alcohol or recreational drugs, </span><span class="segment" data-start="827.0" data-end="832.0" title="13:47">or coexisting acute medical conditions such as epilepsy. </span><span class="segment" data-start="832.0" data-end="838.0" title="13:52">A distinction was commonly made between fresh water and salt water near drowning. </span><span class="segment" data-start="838.0" data-end="845.0" title="13:58">Absorption of fresh water from the lungs into the systemic circulation can provoke hemolysis and electrolyte disturbances. </span><span class="segment" data-start="845.0" data-end="852.0" title="14:05">Both types of water produce a similar clinical picture of pulmonary edema and hypoxemic respiratory failure, </span><span class="segment" data-start="852.0" data-end="856.0" title="14:12">and the distinction is of limited clinical value. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="856.0"><span class="t-timestamp">14:16</span></div>
+  <div class="t-body"><span class="segment" data-start="856.0" data-end="863.0" title="14:16">In the longer term, near drowning victims are at risk of developing an acute lung injury and or sepsis. </span><span class="segment" data-start="863.0" data-end="869.0" title="14:23">The latter is a particular issue if the injury took place in contaminated water. </span></div>
+</div>
+</div>
+
+<div class="subtitle-bar">
+  <span class="subtitle-text empty" id="subtitle-text">Play audio to see live subtitles&#8230;</span>
+</div>
+
+<script>
+
+const audio    = document.getElementById('audio');
+const allSegs  = Array.from(document.querySelectorAll('.segment'));
+const allBlocks = Array.from(document.querySelectorAll('.t-block'));
+const subtitleEl = document.getElementById('subtitle-text');
+let activeSegEl   = null;
+let activeBlockEl = null;
+let searchMatches = [];
+let searchIdx     = 0;
+
+// Duration display
+audio.addEventListener('loadedmetadata', () => {
+  const m = Math.floor(audio.duration / 60);
+  const s = Math.floor(audio.duration %% 60).toString().padStart(2,'0');
+  document.getElementById('dur').textContent = m + ':' + s;
+});
+
+// Seek helper
+function seekTo(t) {
+  audio.currentTime = t;
+  audio.play();
+}
+
+// Block gutter click
+document.querySelectorAll('.t-gutter').forEach(g => {
+  g.addEventListener('click', () => seekTo(parseFloat(g.dataset.start)));
+});
+
+// Segment click
+allSegs.forEach(s => {
+  s.addEventListener('click', e => {
+    e.stopPropagation();
+    seekTo(parseFloat(s.dataset.start));
+  });
+});
+
+// Real-time tracking
+audio.addEventListener('timeupdate', () => {
+  const t = audio.currentTime;
+
+  // Find active segment (last one whose start <= t)
+  let found = null;
+  for (let i = allSegs.length - 1; i >= 0; i--) {
+    if (parseFloat(allSegs[i].dataset.start) <= t) { found = allSegs[i]; break; }
+  }
+
+  if (found && found !== activeSegEl) {
+    // Clear previous
+    if (activeSegEl) activeSegEl.classList.remove('active');
+    if (activeBlockEl) {
+      activeBlockEl.classList.remove('block-active');
+      const pg = activeBlockEl.querySelector('.t-gutter');
+      if (pg) pg.classList.remove('gutter-active');
+    }
+    // Set new
+    found.classList.add('active');
+    const block = found.closest('.t-block');
+    if (block) {
+      block.classList.add('block-active');
+      const g = block.querySelector('.t-gutter');
+      if (g) g.classList.add('gutter-active');
+      activeBlockEl = block;
+    }
+    activeSegEl = found;
+
+    // Update subtitle
+    subtitleEl.textContent = found.textContent.trim();
+    subtitleEl.classList.remove('empty');
+
+    // Auto-scroll (only when not searching)
+    if (!document.getElementById('search').value) {
+      found.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }
+});
+
+// Search
+const searchInput = document.getElementById('search');
+searchInput.addEventListener('input', runSearch);
+searchInput.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && searchMatches.length) {
+    searchMatches[searchIdx].classList.remove('search-current');
+    searchIdx = (searchIdx + 1) %% searchMatches.length;
+    const el = searchMatches[searchIdx];
+    el.classList.add('search-current');
+    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+});
+
+function runSearch() {
+  const q = searchInput.value.trim().toLowerCase();
+  allSegs.forEach(s => s.classList.remove('search-match','search-current'));
+  searchMatches = [];
+  if (!q) return;
+  allSegs.forEach(s => {
+    if (s.textContent.toLowerCase().includes(q)) {
+      s.classList.add('search-match');
+      searchMatches.push(s);
+    }
+  });
+  if (!searchMatches.length) return;
+  searchIdx = 0;
+  searchMatches[0].classList.add('search-current');
+  searchMatches[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+</script>
+</body>
+</html>

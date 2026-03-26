@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Endocrinology — Phaeochromocytoma</title>
+<style>
+
+  :root {
+    --accent:    #8b5cf6;
+    --body-bg:   #f1f5f9;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: var(--body-bg);
+    color: #1e293b;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  /* ── Header ── */
+  .header {
+    background: #0f172a;
+    border-bottom: 3px solid var(--accent);
+    padding: 12px 20px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .header-left { flex: 1; min-width: 200px; }
+  .header h1 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #f1f5f9;
+    margin-bottom: 4px;
+    letter-spacing: 0.01em;
+  }
+  .header-sub {
+    font-size: 0.72rem;
+    color: #94a3b8;
+    font-style: italic;
+  }
+  audio {
+    height: 36px;
+    accent-color: var(--accent);
+    flex-shrink: 0;
+  }
+  .back-link {
+    font-size: 0.8rem;
+    color: #94a3b8;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .back-link:hover { color: #60a5fa; }
+
+  /* ── Toolbar ── */
+  .toolbar {
+    background: #1e293b;
+    padding: 7px 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-shrink: 0;
+    border-bottom: 1px solid #334155;
+  }
+  .toolbar input {
+    flex: 1;
+    max-width: 380px;
+    padding: 5px 11px;
+    border: 1px solid #475569;
+    border-radius: 6px;
+    background: #0f172a;
+    color: #e2e8f0;
+    font-size: 0.83rem;
+    outline: none;
+  }
+  .toolbar input:focus { border-color: var(--accent); }
+  .toolbar input::placeholder { color: #64748b; }
+  .stats {
+    font-size: 0.72rem;
+    color: #64748b;
+    white-space: nowrap;
+  }
+
+  /* ── Scroll area ── */
+  .scroll-area {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+  }
+  .scroll-area::-webkit-scrollbar { width: 6px; }
+  .scroll-area::-webkit-scrollbar-track { background: transparent; }
+  .scroll-area::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+
+  /* ── Subtitle bar ── */
+  .subtitle-bar {
+    background: #0f172a;
+    border-top: 2px solid var(--accent);
+    padding: 8px 20px;
+    flex-shrink: 0;
+    min-height: 42px;
+    display: flex;
+    align-items: center;
+  }
+  .subtitle-text {
+    font-size: 0.9rem;
+    color: #e2e8f0;
+    line-height: 1.5;
+    font-style: italic;
+  }
+  .subtitle-text.empty { color: #475569; }
+
+  /* ── Transcript blocks ── */
+  .t-block {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    margin-bottom: 14px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    display: flex;
+  }
+  .t-block.block-active {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px rgba(37,99,235,0.15);
+  }
+  .t-gutter {
+    background: #0f172a;
+    width: 52px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: 14px;
+    cursor: pointer;
+  }
+  .t-gutter:hover { background: #1e293b; }
+  .t-timestamp {
+    font-size: 0.7rem;
+    color: #64748b;
+    font-family: monospace;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+  .t-gutter.gutter-active .t-timestamp { color: var(--accent); }
+  .t-body {
+    flex: 1;
+    padding: 12px 16px;
+    line-height: 1.75;
+    font-size: 0.92rem;
+    color: #1e293b;
+  }
+
+  /* ── Segments ── */
+  .segment {
+    cursor: pointer;
+    border-radius: 3px;
+    transition: background 0.1s;
+  }
+  .segment:hover { background: #eff6ff; }
+  .segment.active {
+    background: #bfdbfe;
+    outline: 2px solid #3b82f6;
+    outline-offset: 1px;
+    border-radius: 3px;
+  }
+  .segment.search-match  { background: #fef9c3; }
+  .segment.search-current { background: #fde047; outline: 2px solid #ca8a04; }
+
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <h1>Endocrinology — Phaeochromocytoma</h1>
+    <div class="header-sub">Final FRCA &mdash; Exam Viva Simulation &mdash; Click any phrase to seek</div>
+  </div>
+  <audio id="audio" src="../FinalFRCAEndocrinology_Phaeochromocytoma.mp3" controls preload="metadata"></audio>
+  <a class="back-link" href="index.html">&#8592; All Topics</a>
+</div>
+
+<div class="toolbar">
+  <input type="text" id="search" placeholder="Search transcript&#8230; (Enter = next match)">
+  <span class="stats" id="stats">103 segments &nbsp;|&nbsp; <span id="dur">loading&#8230;</span></span>
+</div>
+
+<div class="scroll-area" id="scroll-area">
+<div class="t-block">
+  <div class="t-gutter" data-start="0.0"><span class="t-timestamp">0:00</span></div>
+  <div class="t-body"><span class="segment" data-start="0.0" data-end="3.0" title="0:00">Anastasia for phyocromocytoma </span><span class="segment" data-start="3.0" data-end="6.0" title="0:03">You are contacted by the surgical secretary </span><span class="segment" data-start="6.0" data-end="9.0" title="0:06">to inform you that a 40-year-old female patients </span><span class="segment" data-start="9.0" data-end="13.0" title="0:09">having a phyocromocytoma removed will be on your list next week. </span><span class="segment" data-start="13.0" data-end="16.0" title="0:13">He is coming into the pre-assessment clinically to this morning. </span><span class="segment" data-start="16.0" data-end="19.0" title="0:16">What is a phyocromocytoma? </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="20.0"><span class="t-timestamp">0:20</span></div>
+  <div class="t-body"><span class="segment" data-start="20.0" data-end="25.0" title="0:20">A phyocromocytoma is a rare cataclylamine secreting tumor. </span><span class="segment" data-start="25.0" data-end="28.0" title="0:25">It is usually found in the adrenal medulla </span><span class="segment" data-start="28.0" data-end="31.0" title="0:28">and develops from chromafin tissue, </span><span class="segment" data-start="31.0" data-end="39.0" title="0:31">although between 6 and 10% can develop in other areas within the sympathetic nervous system. </span><span class="segment" data-start="40.0" data-end="47.0" title="0:40">Other sites include celiac, renal, hypogastric, sympathetic chain ganglia </span><span class="segment" data-start="47.0" data-end="50.0" title="0:47">and the organ of zookacandel. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="50.0"><span class="t-timestamp">0:50</span></div>
+  <div class="t-body"><span class="segment" data-start="50.0" data-end="54.0" title="0:50">It is often known as the 10% tumour, </span><span class="segment" data-start="54.0" data-end="63.0" title="0:54">as 10% bilateral, 10% amelignant, 10% amelial and 10% occur in childhood. </span><span class="segment" data-start="63.0" data-end="69.0" title="1:03">It may present at any age, but usually affects people in their 40s and 50s. </span><span class="segment" data-start="69.0" data-end="72.0" title="1:09">It is more common in females. </span><span class="segment" data-start="72.0" data-end="78.0" title="1:12">Phyocromocytoma forms part of multiple endocrine near-plasia syndromes, </span><span class="segment" data-start="78.0" data-end="81.0" title="1:18">types 2A and 2B, </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="81.0"><span class="t-timestamp">1:21</span></div>
+  <div class="t-body"><span class="segment" data-start="81.0" data-end="87.0" title="1:21">and can therefore be accompanied by medullary thyroid cancer and parathyroid adenoma. </span><span class="segment" data-start="87.0" data-end="90.0" title="1:27">Tumors can secrete adrenaline, </span><span class="segment" data-start="90.0" data-end="95.0" title="1:30">noradrenaline, dopamine or a combination of these cataclylamines. </span><span class="segment" data-start="95.0" data-end="98.0" title="1:35">What are the presenting symptoms? </span><span class="segment" data-start="98.0" data-end="101.0" title="1:38">If you are unsure about the exact signs and symptoms, </span><span class="segment" data-start="101.0" data-end="107.0" title="1:41">think back to first principles and what happens during maximal sympathetic stimulation. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="107.0"><span class="t-timestamp">1:47</span></div>
+  <div class="t-body"><span class="segment" data-start="107.0" data-end="114.0" title="1:47">Persistent hypertension, refractory to treatment, is the most common presentation. </span><span class="segment" data-start="114.0" data-end="122.0" title="1:54">Headaches, palpitations, psychosis, panic attacks, nausea, sweating and palore </span><span class="segment" data-start="122.0" data-end="125.0" title="2:02">can also be the presenting complaints. </span><span class="segment" data-start="125.0" data-end="129.0" title="2:05">Tachy arrhythmias are more likely if the tumour secretes are adrenaline, </span><span class="segment" data-start="129.0" data-end="136.0" title="2:09">whereas hypertension, vasoconstriction and dyschemia occur in noradrenaline secreting tumours. </span><span class="segment" data-start="137.0" data-end="142.0" title="2:17">However, some patients do not have an elevated resting blood pressure, </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="142.0"><span class="t-timestamp">2:22</span></div>
+  <div class="t-body"><span class="segment" data-start="142.0" data-end="148.0" title="2:22">and up to 70% may also suffer from postural hypotension. </span><span class="segment" data-start="148.0" data-end="154.0" title="2:28">Glucose intolerance is a common feature due to increased glycogenolysis. </span><span class="segment" data-start="154.0" data-end="161.0" title="2:34">Acute pulmonary edema can also occur, especially where beta blockade has been started. </span><span class="segment" data-start="161.0" data-end="168.0" title="2:41">For a long secretion of cataclylamine, without treatment, can result in dilated cardiomyopathy </span><span class="segment" data-start="168.0" data-end="170.0" title="2:48">and left ventricular failure. </span><span class="segment" data-start="170.0" data-end="179.0" title="2:50">The diagnosis should also be considered in preeclampsia, thyrotoxicosis and malignant type attention. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="179.0"><span class="t-timestamp">2:59</span></div>
+  <div class="t-body"><span class="segment" data-start="179.0" data-end="182.0" title="2:59">How is it diagnosed? </span><span class="segment" data-start="182.0" data-end="188.0" title="3:02">A 24-hour urine collection should be tested for free cataclylamine metabolites, </span><span class="segment" data-start="188.0" data-end="192.0" title="3:08">including vanilla mandalic acid and metanephrine. </span><span class="segment" data-start="192.0" data-end="199.0" title="3:12">Metanephrine is the most accurate test, as VMA can miss up to 20% of tumours. </span><span class="segment" data-start="199.0" data-end="205.0" title="3:19">The levels of plasmacatocol amines, adrenaline and noradrenaline, can also be measured, </span><span class="segment" data-start="205.0" data-end="210.0" title="3:25">but often yield false negatives due to their short half-lives. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="210.0"><span class="t-timestamp">3:30</span></div>
+  <div class="t-body"><span class="segment" data-start="210.0" data-end="217.0" title="3:30">A T2 weighted magnetic resonance imaging scan should then be carried out to locate the tumour </span><span class="segment" data-start="217.0" data-end="219.0" title="3:37">starting with the abdomen. </span><span class="segment" data-start="219.0" data-end="228.0" title="3:39">MIGB, which is an amine precursor, is taken up by the tumour and can be used to locate tumours in abnormal sites, </span><span class="segment" data-start="228.0" data-end="231.0" title="3:48">with a 90% pick-up rate. </span><span class="segment" data-start="231.0" data-end="235.0" title="3:51">What are the anesthetic considerations preoperatively? </span><span class="segment" data-start="235.0" data-end="240.0" title="3:55">It is imperative that the patient is adequately prepared preoperatively. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="240.0"><span class="t-timestamp">4:00</span></div>
+  <div class="t-body"><span class="segment" data-start="240.0" data-end="245.0" title="4:00">This is best done in conjunction with an endocrinologist. </span><span class="segment" data-start="245.0" data-end="249.0" title="4:05">Initially, the patient should be prescribed an alpha blocker. </span><span class="segment" data-start="249.0" data-end="256.0" title="4:09">Traditionally, finoxybenzamine, a non-competitive irreversible alpha blocker has been used. </span><span class="segment" data-start="256.0" data-end="266.0" title="4:16">It has a long half-life, allowing plasma volume re-expansion, but causes hypertension and is associated with toxic mega-colon. </span><span class="segment" data-start="266.0" data-end="271.0" title="4:26">Prososin is now more commonly used for alpha blockade. </span><span class="segment" data-start="271.0" data-end="276.0" title="4:31">A beta blocker can then be introduced once alpha blockade is complete. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="276.0"><span class="t-timestamp">4:36</span></div>
+  <div class="t-body"><span class="segment" data-start="276.0" data-end="286.0" title="4:36">This is to avoid exacerbating hypertension and ventricular dysfunction secondary to antagonism of beta-2-mediated vasodilitation. </span><span class="segment" data-start="286.0" data-end="291.0" title="4:46">A tenelol and libetolol are the two most commonly used. </span><span class="segment" data-start="291.0" data-end="297.0" title="4:51">Beta blockade helps to manage tachycardia, arrhythmias and angina symptoms. </span><span class="segment" data-start="297.0" data-end="307.0" title="4:57">Calcium channel blockers are sometimes used and are thought to work by inhibiting noradrenaline-mediated calcium influx in smooth muscle. </span><span class="segment" data-start="307.0" data-end="312.0" title="5:07">Magnesium is also used to help in the management of acute episodes. </span><span class="segment" data-start="312.0" data-end="320.0" title="5:12">Preoperatively, the patient's blood pressure should be well controlled and they should be asymptomatic. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="320.0"><span class="t-timestamp">5:20</span></div>
+  <div class="t-body"><span class="segment" data-start="320.0" data-end="325.0" title="5:20">24-hour ambulatory blood pressure monitoring can be used to assess this. </span><span class="segment" data-start="325.0" data-end="334.0" title="5:25">The aim should be a blood pressure below 140 over 90 and a heart rate below 100 beats per minute. </span><span class="segment" data-start="334.0" data-end="340.0" title="5:34">Marked postural hypotension should be present with a compensatory tachycardia. </span><span class="segment" data-start="340.0" data-end="347.0" title="5:40">The patient may need fluid replacement as the blockade takes place and the vasoconstriction subsides. </span><span class="segment" data-start="348.0" data-end="355.0" title="5:48">The patient is normally fit and well and has a mass on her right adrenal gland which was diagnosed two months ago. </span><span class="segment" data-start="355.0" data-end="359.0" title="5:55">She is taking prasocin and a tenelol which controls her symptoms. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="359.0"><span class="t-timestamp">5:59</span></div>
+  <div class="t-body"><span class="segment" data-start="359.0" data-end="362.0" title="5:59">She reports occasional disinistence standing. </span><span class="segment" data-start="362.0" data-end="371.0" title="6:02">She has no allergies and you have no concerns with her airway. Her blood pressure is 135 over 80 and her heart rate is 90 beats per minute. </span><span class="segment" data-start="371.0" data-end="374.0" title="6:11">Would you be happy to proceed with this case? </span><span class="segment" data-start="375.0" data-end="378.0" title="6:15">How would you anesthetize this patient? </span><span class="segment" data-start="378.0" data-end="390.0" title="6:18">Alpha and beta blockade should be continued until the evening of surgery and pre-medication should be given on the morning of surgery, usually 20 mg of tamazapam. </span><span class="segment" data-start="390.0" data-end="400.0" title="6:30">The aim of anesthesia for fiochromosytoma excision is to avoid excessive sympathetic stimulation, hypoxia and hypercarbia </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="400.0"><span class="t-timestamp">6:40</span></div>
+  <div class="t-body"><span class="segment" data-start="400.0" data-end="408.0" title="6:40">by the careful use of drugs to counteract acute changes in the cardiovascular system which may arise. </span><span class="segment" data-start="408.0" data-end="422.0" title="6:48">In addition to the minimum standards of monitoring, invasive monitoring through both arterial and central venous lines should be obtained prior to induction and large bore intravenous access is mandatory. </span><span class="segment" data-start="422.0" data-end="433.0" title="7:02">If available, use of the esophageal Doppler can provide valuable information perioperatively and help guide fluid therapy and isotropic support. </span><span class="segment" data-start="433.0" data-end="439.0" title="7:13">A cardiac stable induction and endotracheal intubation can then be carried out. </span><span class="segment" data-start="439.0" data-end="447.0" title="7:19">Remi-fentinal is increasingly used for both induction and maintenance for its cardiac stable properties. </span><span class="segment" data-start="447.0" data-end="453.0" title="7:27">This can be used in combination with a volatile or total intravenous anesthesia with proper fall. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="453.0"><span class="t-timestamp">7:33</span></div>
+  <div class="t-body"><span class="segment" data-start="453.0" data-end="461.0" title="7:33">Large swings in blood pressure may occur in response to stimulation and in particular when handling the tumor itself. </span><span class="segment" data-start="461.0" data-end="468.0" title="7:41">Anti-hypertensives, anti-arithmics and vasodilators should therefore be readily available. </span><span class="segment" data-start="468.0" data-end="482.0" title="7:48">Magnesium sulfate, glycerol-try nitrate, phentolamine, sodium nitroproside and presosin can all be used for hypertension and beta blockers can be used to treat tachycardia. </span><span class="segment" data-start="482.0" data-end="493.0" title="8:02">Pain relief depends upon the site of surgery. If the tumor is located in the abdomen, epidural analgesia should be used with local anaesthetic and opiates. </span><span class="segment" data-start="494.0" data-end="504.0" title="8:14">If an epidural is not appropriate, a synthetic opioid such as fentanyl, alphentanyl or remi-fentanyl should be used until the tumor is excised. </span><span class="segment" data-start="504.0" data-end="508.0" title="8:24">More phen can then be used into the post-operative period. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="508.0"><span class="t-timestamp">8:28</span></div>
+  <div class="t-body"><span class="segment" data-start="508.0" data-end="515.0" title="8:28">The patient should be kept warm throughout the operation by use of a fluid warmer and a forced air warmer. </span><span class="segment" data-start="515.0" data-end="526.0" title="8:35">Following removal of the tumor, intravenous fluid hydration and vasoconstrictors such as phenyl effrin or ionotropes may be necessary to maintain blood pressure. </span><span class="segment" data-start="526.0" data-end="530.0" title="8:46">How should the patient be managed post-operatively? </span><span class="segment" data-start="530.0" data-end="537.0" title="8:50">Patients should be nursed in HDU or ITU post-operatively with invasive monitoring. </span><span class="segment" data-start="537.0" data-end="545.0" title="8:57">Blood glucose should be monitored as they are at risk of hypoglycemia and often need glucose infusion initially. </span><span class="segment" data-start="545.0" data-end="551.0" title="9:05">Signs and symptoms of an adesonian crisis should be looked for and treated promptly. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="551.0"><span class="t-timestamp">9:11</span></div>
+  <div class="t-body"><span class="segment" data-start="551.0" data-end="558.0" title="9:11">Elective steroid replacement should be considered, especially if both the dreamers have been resected. </span><span class="segment" data-start="558.0" data-end="564.0" title="9:18">An unexpectedly low blood pressure would suggest hypodrenalism. </span><span class="segment" data-start="564.0" data-end="568.0" title="9:24">How would you manage post-operative hypotension in this patient? </span><span class="segment" data-start="568.0" data-end="578.0" title="9:28">Hypotension, post-excision of fiochromosautoma, is very common due to a combination of residual alpha and beta blockade, </span><span class="segment" data-start="578.0" data-end="585.0" title="9:38">a fall in circulating cataclyclic amine levels, receptor downgrading and a diminished blood volume. </span><span class="segment" data-start="585.0" data-end="591.0" title="9:45">In about a half of cases, the hypotension can persist for up to three days. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="592.0"><span class="t-timestamp">9:52</span></div>
+  <div class="t-body"><span class="segment" data-start="592.0" data-end="600.0" title="9:52">It should be treated with adequate fluid resuscitation and close monitoring, ideally on a high dependency unit. </span><span class="segment" data-start="600.0" data-end="605.0" title="10:00">Intravenous infusions of cataclyclic amines may also be necessary. </span><span class="segment" data-start="605.0" data-end="610.0" title="10:05">How would you manage a patient who has diagnosed the fiochromosautoma during pregnancy? </span><span class="segment" data-start="610.0" data-end="616.0" title="10:10">There are two options for managing a pregnant patient with a fiochromosautoma. </span><span class="segment" data-start="616.0" data-end="626.0" title="10:16">The tumour can either be excised during the second trimester, or a simultaneous cesarean section, and tumeric scission can be done in the third trimester. </span><span class="segment" data-start="626.0" data-end="633.0" title="10:26">The overall mortality is about 17% and is highest with a normal vaginal delivery. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="633.0"><span class="t-timestamp">10:33</span></div>
+  <div class="t-body"><span class="segment" data-start="633.0" data-end="640.0" title="10:33">Phinoxybenzamine and propanol can be safely used during pregnancy for symptom control. </span></div>
+</div>
+</div>
+
+<div class="subtitle-bar">
+  <span class="subtitle-text empty" id="subtitle-text">Play audio to see live subtitles&#8230;</span>
+</div>
+
+<script>
+
+const audio    = document.getElementById('audio');
+const allSegs  = Array.from(document.querySelectorAll('.segment'));
+const allBlocks = Array.from(document.querySelectorAll('.t-block'));
+const subtitleEl = document.getElementById('subtitle-text');
+let activeSegEl   = null;
+let activeBlockEl = null;
+let searchMatches = [];
+let searchIdx     = 0;
+
+// Duration display
+audio.addEventListener('loadedmetadata', () => {
+  const m = Math.floor(audio.duration / 60);
+  const s = Math.floor(audio.duration %% 60).toString().padStart(2,'0');
+  document.getElementById('dur').textContent = m + ':' + s;
+});
+
+// Seek helper
+function seekTo(t) {
+  audio.currentTime = t;
+  audio.play();
+}
+
+// Block gutter click
+document.querySelectorAll('.t-gutter').forEach(g => {
+  g.addEventListener('click', () => seekTo(parseFloat(g.dataset.start)));
+});
+
+// Segment click
+allSegs.forEach(s => {
+  s.addEventListener('click', e => {
+    e.stopPropagation();
+    seekTo(parseFloat(s.dataset.start));
+  });
+});
+
+// Real-time tracking
+audio.addEventListener('timeupdate', () => {
+  const t = audio.currentTime;
+
+  // Find active segment (last one whose start <= t)
+  let found = null;
+  for (let i = allSegs.length - 1; i >= 0; i--) {
+    if (parseFloat(allSegs[i].dataset.start) <= t) { found = allSegs[i]; break; }
+  }
+
+  if (found && found !== activeSegEl) {
+    // Clear previous
+    if (activeSegEl) activeSegEl.classList.remove('active');
+    if (activeBlockEl) {
+      activeBlockEl.classList.remove('block-active');
+      const pg = activeBlockEl.querySelector('.t-gutter');
+      if (pg) pg.classList.remove('gutter-active');
+    }
+    // Set new
+    found.classList.add('active');
+    const block = found.closest('.t-block');
+    if (block) {
+      block.classList.add('block-active');
+      const g = block.querySelector('.t-gutter');
+      if (g) g.classList.add('gutter-active');
+      activeBlockEl = block;
+    }
+    activeSegEl = found;
+
+    // Update subtitle
+    subtitleEl.textContent = found.textContent.trim();
+    subtitleEl.classList.remove('empty');
+
+    // Auto-scroll (only when not searching)
+    if (!document.getElementById('search').value) {
+      found.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }
+});
+
+// Search
+const searchInput = document.getElementById('search');
+searchInput.addEventListener('input', runSearch);
+searchInput.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && searchMatches.length) {
+    searchMatches[searchIdx].classList.remove('search-current');
+    searchIdx = (searchIdx + 1) %% searchMatches.length;
+    const el = searchMatches[searchIdx];
+    el.classList.add('search-current');
+    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+});
+
+function runSearch() {
+  const q = searchInput.value.trim().toLowerCase();
+  allSegs.forEach(s => s.classList.remove('search-match','search-current'));
+  searchMatches = [];
+  if (!q) return;
+  allSegs.forEach(s => {
+    if (s.textContent.toLowerCase().includes(q)) {
+      s.classList.add('search-match');
+      searchMatches.push(s);
+    }
+  });
+  if (!searchMatches.length) return;
+  searchIdx = 0;
+  searchMatches[0].classList.add('search-current');
+  searchMatches[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+</script>
+</body>
+</html>

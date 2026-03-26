@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Paediatric & Neonatal — Principles of Neonatal Physiology</title>
+<style>
+
+  :root {
+    --accent:    #fbbf24;
+    --body-bg:   #f1f5f9;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: var(--body-bg);
+    color: #1e293b;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  /* ── Header ── */
+  .header {
+    background: #0f172a;
+    border-bottom: 3px solid var(--accent);
+    padding: 12px 20px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .header-left { flex: 1; min-width: 200px; }
+  .header h1 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #f1f5f9;
+    margin-bottom: 4px;
+    letter-spacing: 0.01em;
+  }
+  .header-sub {
+    font-size: 0.72rem;
+    color: #94a3b8;
+    font-style: italic;
+  }
+  audio {
+    height: 36px;
+    accent-color: var(--accent);
+    flex-shrink: 0;
+  }
+  .back-link {
+    font-size: 0.8rem;
+    color: #94a3b8;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .back-link:hover { color: #60a5fa; }
+
+  /* ── Toolbar ── */
+  .toolbar {
+    background: #1e293b;
+    padding: 7px 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-shrink: 0;
+    border-bottom: 1px solid #334155;
+  }
+  .toolbar input {
+    flex: 1;
+    max-width: 380px;
+    padding: 5px 11px;
+    border: 1px solid #475569;
+    border-radius: 6px;
+    background: #0f172a;
+    color: #e2e8f0;
+    font-size: 0.83rem;
+    outline: none;
+  }
+  .toolbar input:focus { border-color: var(--accent); }
+  .toolbar input::placeholder { color: #64748b; }
+  .stats {
+    font-size: 0.72rem;
+    color: #64748b;
+    white-space: nowrap;
+  }
+
+  /* ── Scroll area ── */
+  .scroll-area {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+  }
+  .scroll-area::-webkit-scrollbar { width: 6px; }
+  .scroll-area::-webkit-scrollbar-track { background: transparent; }
+  .scroll-area::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+
+  /* ── Subtitle bar ── */
+  .subtitle-bar {
+    background: #0f172a;
+    border-top: 2px solid var(--accent);
+    padding: 8px 20px;
+    flex-shrink: 0;
+    min-height: 42px;
+    display: flex;
+    align-items: center;
+  }
+  .subtitle-text {
+    font-size: 0.9rem;
+    color: #e2e8f0;
+    line-height: 1.5;
+    font-style: italic;
+  }
+  .subtitle-text.empty { color: #475569; }
+
+  /* ── Transcript blocks ── */
+  .t-block {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    margin-bottom: 14px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    display: flex;
+  }
+  .t-block.block-active {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px rgba(37,99,235,0.15);
+  }
+  .t-gutter {
+    background: #0f172a;
+    width: 52px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: 14px;
+    cursor: pointer;
+  }
+  .t-gutter:hover { background: #1e293b; }
+  .t-timestamp {
+    font-size: 0.7rem;
+    color: #64748b;
+    font-family: monospace;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+  .t-gutter.gutter-active .t-timestamp { color: var(--accent); }
+  .t-body {
+    flex: 1;
+    padding: 12px 16px;
+    line-height: 1.75;
+    font-size: 0.92rem;
+    color: #1e293b;
+  }
+
+  /* ── Segments ── */
+  .segment {
+    cursor: pointer;
+    border-radius: 3px;
+    transition: background 0.1s;
+  }
+  .segment:hover { background: #eff6ff; }
+  .segment.active {
+    background: #bfdbfe;
+    outline: 2px solid #3b82f6;
+    outline-offset: 1px;
+    border-radius: 3px;
+  }
+  .segment.search-match  { background: #fef9c3; }
+  .segment.search-current { background: #fde047; outline: 2px solid #ca8a04; }
+
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <h1>Paediatric & Neonatal — Principles of Neonatal Physiology</h1>
+    <div class="header-sub">Final FRCA &mdash; Exam Viva Simulation &mdash; Click any phrase to seek</div>
+  </div>
+  <audio id="audio" src="../FinalFRCAPaediatric_and_Neonatal_Principles_of_Neonatal_Physiology.mp3" controls preload="metadata"></audio>
+  <a class="back-link" href="index.html">&#8592; All Topics</a>
+</div>
+
+<div class="toolbar">
+  <input type="text" id="search" placeholder="Search transcript&#8230; (Enter = next match)">
+  <span class="stats" id="stats">86 segments &nbsp;|&nbsp; <span id="dur">loading&#8230;</span></span>
+</div>
+
+<div class="scroll-area" id="scroll-area">
+<div class="t-block">
+  <div class="t-gutter" data-start="0.0"><span class="t-timestamp">0:00</span></div>
+  <div class="t-body"><span class="segment" data-start="0.0" data-end="3.0" title="0:00">Principles of neonatal physiology </span><span class="segment" data-start="4.0" data-end="8.0" title="0:04">How does neonatal physiology differ from that of the adult? </span><span class="segment" data-start="9.0" data-end="14.0" title="0:09">A neonate is defined as a child within 28 days of birth. </span><span class="segment" data-start="15.0" data-end="21.0" title="0:15">There are many important physiological differences between neonates and older patients, </span><span class="segment" data-start="21.0" data-end="24.0" title="0:21">which have a significant impact on anaesthetic practice. </span><span class="segment" data-start="25.0" data-end="28.0" title="0:25">These will be dealt with by a system's based approach. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="29.0"><span class="t-timestamp">0:29</span></div>
+  <div class="t-body"><span class="segment" data-start="29.0" data-end="35.0" title="0:29">Neonates have a higher heart rate and lower blood pressure in comparison to adults. </span><span class="segment" data-start="35.0" data-end="41.0" title="0:35">An average heart rate of 120 to 180 beats per minute, </span><span class="segment" data-start="41.0" data-end="46.0" title="0:41">and average systolic blood pressure of 50 to 90 millimetres of mercury, </span><span class="segment" data-start="46.0" data-end="49.0" title="0:46">would be expected in a healthy neonate. </span><span class="segment" data-start="50.0" data-end="55.0" title="0:50">The neonatal cardiovascular system is subject to increased demand </span><span class="segment" data-start="55.0" data-end="60.0" title="0:55">and has a limited ability to respond to change as compared to an adult. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="61.0"><span class="t-timestamp">1:01</span></div>
+  <div class="t-body"><span class="segment" data-start="61.0" data-end="67.0" title="1:01">The increased demand is a consequence of the neonates need to maintain a stable body temperature </span><span class="segment" data-start="67.0" data-end="70.0" title="1:07">via production of heat energy. </span><span class="segment" data-start="72.0" data-end="77.0" title="1:12">This results in an oxygen consumption of 7 mills per kilo per minute, </span><span class="segment" data-start="77.0" data-end="80.0" title="1:17">which is twice that of an adult. </span><span class="segment" data-start="81.0" data-end="87.0" title="1:21">Cardiovascular compensation is limited by the neonates relatively fixed stroke volume. </span><span class="segment" data-start="88.0" data-end="94.0" title="1:28">An increase in cardiac output is brought about largely by an increase in heart rate. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="95.0"><span class="t-timestamp">1:35</span></div>
+  <div class="t-body"><span class="segment" data-start="95.0" data-end="99.0" title="1:35">Parasympathetic tone predominates, and Bradicardia is common, </span><span class="segment" data-start="99.0" data-end="103.0" title="1:39">most importantly as a reflex response to hypoxia, </span><span class="segment" data-start="103.0" data-end="107.0" title="1:43">as well as vagal stimulation, such as tracheal suction. </span><span class="segment" data-start="108.0" data-end="113.0" title="1:48">What is the circulating volume in a neonate, and what is the significance of this? </span><span class="segment" data-start="114.0" data-end="125.0" title="1:54">A circulating volume at birth of 90 mills per kilo corresponds to a total blood volume of 300 to 400 mills in an average neonate. </span><span class="segment" data-start="126.0" data-end="134.0" title="2:06">Interoperative bleeding of apparently small volumes can rapidly lead to a loss of a significant proportion of this total volume. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="135.0"><span class="t-timestamp">2:15</span></div>
+  <div class="t-body"><span class="segment" data-start="135.0" data-end="139.0" title="2:15">What is a transitional circulation? </span><span class="segment" data-start="140.0" data-end="145.0" title="2:20">At birth, massive cardiovascular changes take place. </span><span class="segment" data-start="145.0" data-end="151.0" title="2:25">There are rapid changes in both systemic and pulmonary vascular resistance. </span><span class="segment" data-start="151.0" data-end="160.0" title="2:31">During fetal life, systemic vascular resistance is low due to the presence of the low resistance fetoplasental unit. </span><span class="segment" data-start="160.0" data-end="166.0" title="2:40">Following clamping of the umbilical cord, systemic vascular resistance increases markedly. </span><span class="segment" data-start="166.0" data-end="175.0" title="2:46">In contrast, pulmonary vascular resistance is very high in the fetus, and falls as the first breaths are taken. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="175.0"><span class="t-timestamp">2:55</span></div>
+  <div class="t-body"><span class="segment" data-start="175.0" data-end="186.0" title="2:55">The Phrymenovale closes under the influence of the pressure effect of increased venous return to the left atrium from the pulmonary circulation. </span><span class="segment" data-start="187.0" data-end="196.0" title="3:07">The ductus arteriosus closes under the influence of the increased partial pressure of oxygen in the blood in the pulmonary artery. </span><span class="segment" data-start="196.0" data-end="203.0" title="3:16">Closure of both ducts is initially functional only and is potentially reversible. </span><span class="segment" data-start="203.0" data-end="212.0" title="3:23">It is possible for a normal neonate to revert to a fetal pattern circulation in certain pathological circumstances. </span><span class="segment" data-start="213.0" data-end="223.0" title="3:33">Hypocsia, hypercarbia, and acidosis can cause constriction of the pulmonary vascular, raising pulmonary vascular resistance. </span><span class="segment" data-start="223.0" data-end="231.0" title="3:43">This can result in opening of the Phrymenovale and ductus arteriosus with right to left shunting. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="231.0"><span class="t-timestamp">3:51</span></div>
+  <div class="t-body"><span class="segment" data-start="231.0" data-end="239.0" title="3:51">This can lead to a self-perpetuating cycle of worsening hypoxia and worsening shunt. </span><span class="segment" data-start="239.0" data-end="246.0" title="3:59">This is known as a transitional circulation or persistent fetal circulation. </span><span class="segment" data-start="246.0" data-end="251.0" title="4:06">What are the important factors to be considered in the respiratory system? </span><span class="segment" data-start="251.0" data-end="263.0" title="4:11">In the neonatal respiratory system, there is incomplete development of the alveoli, fatigable intercostal and accessory muscles, and a compliant chest wall. </span><span class="segment" data-start="263.0" data-end="272.0" title="4:23">The functional residual capacity is small because the compliant chest wall is pulled inwards by the elastic recoil of the lungs. </span><span class="segment" data-start="272.0" data-end="283.0" title="4:32">Tidal volume lies close to or within the closing range and airway collapse readily occurs, producing intrappomanary shunt and hypoxemia. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="283.0"><span class="t-timestamp">4:43</span></div>
+  <div class="t-body"><span class="segment" data-start="283.0" data-end="288.0" title="4:43">This can be reduced with the application of continuous positive airway pressure. </span><span class="segment" data-start="289.0" data-end="299.0" title="4:49">The horizontal alignment of the ribs in the neonate means that they are unable to generate the bucket handle movement seen in inspiration in adults. </span><span class="segment" data-start="299.0" data-end="310.0" title="4:59">Breathing is predominantly diaphragmatic, and the diaphragm is prone to fatigue given the reduced number of type 1 fatigue resistant muscle fibers. </span><span class="segment" data-start="310.0" data-end="317.0" title="5:10">Raised abdominal pressures can splint the diaphragm and precipitate respiratory failure. </span><span class="segment" data-start="317.0" data-end="324.0" title="5:17">Resting respiratory rate is high, and increases further if respiratory compensation is required. </span><span class="segment" data-start="324.0" data-end="329.0" title="5:24">The capacity for an increase in tidal volume is limited. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="329.0"><span class="t-timestamp">5:29</span></div>
+  <div class="t-body"><span class="segment" data-start="329.0" data-end="335.0" title="5:29">The ventilatory response to hyper-capnia is poorly developed and not well sustained. </span><span class="segment" data-start="335.0" data-end="343.0" title="5:35">Neonates are obligate to nose breathers, therefore nasal obstruction of any cause can precipitate respiratory failure. </span><span class="segment" data-start="343.0" data-end="358.0" title="5:43">This is seen in the congenital condition, coainer atreasia, where there is membranous or bony obstruction of the posterior nasal cavity, or in respiratory tract infections where the nasal passages are blocked with secretions. </span><span class="segment" data-start="358.0" data-end="363.0" title="5:58">How does the central nervous system of a neonate differ? </span><span class="segment" data-start="364.0" data-end="369.0" title="6:04">In the central nervous system, development is incomplete at birth. </span><span class="segment" data-start="369.0" data-end="376.0" title="6:09">Myelination begins prior to full gestation and continues throughout the first year of life. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="376.0"><span class="t-timestamp">6:16</span></div>
+  <div class="t-body"><span class="segment" data-start="376.0" data-end="383.0" title="6:16">Normal intracranial pressure is lower than that of adults at 2-4mm of mercury. </span><span class="segment" data-start="383.0" data-end="390.0" title="6:23">The skull is less rigid than that of an adult due to the presence of unfused sutures and fontanelles. </span><span class="segment" data-start="390.0" data-end="400.0" title="6:30">An increase in intracranial pressure can be compensated for to an extent by expansion of sutures and bulging of fontanelles. </span><span class="segment" data-start="400.0" data-end="408.0" title="6:40">Seribral blood flow in neonates is higher than that in adults, with auto-regulation occurring at lower mean arterial pressure. </span><span class="segment" data-start="408.0" data-end="416.0" title="6:48">In premature neonates, auto-regulation is absent, and seribral perfusion is pressure dependent. </span><span class="segment" data-start="416.0" data-end="428.0" title="6:56">The blood-brain barrier is more permeable, leading to increased sensitivity to sedative drugs such as opiates, barbiturates and benzodiazepines. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="428.0"><span class="t-timestamp">7:08</span></div>
+  <div class="t-body"><span class="segment" data-start="428.0" data-end="438.0" title="7:08">It was previously thought that the relative immaturity of the nervous system meant that neonates did not experience the sensation of pain. </span><span class="segment" data-start="438.0" data-end="449.0" title="7:18">This has now been demonstrated to be incorrect, with characteristic behavioural and physiological responses recognised in neonatal patients experiencing pain. </span><span class="segment" data-start="449.0" data-end="457.0" title="7:29">These include tachycardia, hypertension, grimacing, crying and restlessness. </span><span class="segment" data-start="457.0" data-end="462.0" title="7:37">How is temperature regulation achieved in the neonate? </span><span class="segment" data-start="462.0" data-end="475.0" title="7:42">Neonates have very different mechanisms for maintenance of a stable body temperature. They lose heat readily due to a high surface area to weight ratio and are unable to shiver. </span><span class="segment" data-start="475.0" data-end="483.0" title="7:55">Heat is produced by the metabolism of brown fat in a process known as non-shivering thermogenesis. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="483.0"><span class="t-timestamp">8:03</span></div>
+  <div class="t-body"><span class="segment" data-start="483.0" data-end="494.0" title="8:03">Brown fat constitutes 5 to 6% of the body weight of a neonate and is located around the scapulae, kidneys and medius dynum. </span><span class="segment" data-start="494.0" data-end="506.0" title="8:14">The metabolism of brown fat is sympathetically mediated and is a significant contributor to the high oxygen demand placed on the neonatal cardiorespiratory system. </span><span class="segment" data-start="506.0" data-end="512.0" title="8:26">Thermogenesis by this mechanism is ablated by beta blockade. </span><span class="segment" data-start="512.0" data-end="517.0" title="8:32">Can you think of any issues of relevance to the renal system? </span><span class="segment" data-start="517.0" data-end="524.0" title="8:37">In common with the lungs and central nervous system, the kidneys continue to develop after birth. </span><span class="segment" data-start="524.0" data-end="537.0" title="8:44">In the neonatal period, there is a reduced glomerular filtration rate, reduced capacity to concentrate urine and reduced tubular function compared to adults. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="537.0"><span class="t-timestamp">8:57</span></div>
+  <div class="t-body"><span class="segment" data-start="537.0" data-end="548.0" title="8:57">This results in a limited ability to either conserve water in the event of dehydration or to cope with excessive solute or solvent administration. </span><span class="segment" data-start="548.0" data-end="559.0" title="9:08">Fluid balance must be carefully calculated based on weight, insensible and observed fluid losses and maintenance requirements. </span><span class="segment" data-start="559.0" data-end="574.0" title="9:19">The afferent arterial in a neonate is sensitive to prostaglandins, therefore non-steroidal anti-inflammatory drugs are avoided as they produce phasoconstriction and decreased renal blood flow. </span><span class="segment" data-start="574.0" data-end="580.0" title="9:34">Are you aware of any adaptations required to drug doses in neonatal patients? </span><span class="segment" data-start="580.0" data-end="587.0" title="9:40">Total body water is proportionally increased in neonates compared to adults. </span><span class="segment" data-start="587.0" data-end="597.0" title="9:47">Water soluble drugs have a greater volume of distribution and higher doses may be needed to achieve the same clinical effect. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="597.0"><span class="t-timestamp">9:57</span></div>
+  <div class="t-body"><span class="segment" data-start="597.0" data-end="607.0" title="9:57">An example of this is succcemethonium, which has a dose of 2 mg per kilogram in neonates compared to 1 mg per kilogram in adults. </span><span class="segment" data-start="608.0" data-end="619.0" title="10:08">Succcemethonium can have an effect on the muscarinic astyle-colyne receptors at the Sinowatrial node, producing profound bradycardia and even acistually. </span><span class="segment" data-start="619.0" data-end="625.0" title="10:19">This can be opposed by giving intravenous atropine before the succcemethonium. </span><span class="segment" data-start="625.0" data-end="638.0" title="10:25">Enzyme pathways in the liver are not fully developed, and this combined with renal immaturity can lead to delayed metabolism and excretion of drugs. </span><span class="segment" data-start="638.0" data-end="650.0" title="10:38">This is reflected in a considerable prolongation of the half-life of morphine due to a reduced ability to produce glucuronide conjugates. </span><span class="segment" data-start="650.0" data-end="664.0" title="10:50">Circulating levels of plasma proteins such as albumin and alpha-acid glycoprotein are reduced, leading to a higher free fraction of some drugs such as local anaesthetics. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="664.0"><span class="t-timestamp">11:04</span></div>
+  <div class="t-body"><span class="segment" data-start="664.0" data-end="676.0" title="11:04">The neuromuscular junction in neonates is more susceptible to the effects of non-depolarizing blocking agents, suggesting that reduced doses may be needed. </span><span class="segment" data-start="676.0" data-end="687.0" title="11:16">However, the large extracellular volume increases the volume of distribution of these agents, and the required dose is unchanged. </span></div>
+</div>
+</div>
+
+<div class="subtitle-bar">
+  <span class="subtitle-text empty" id="subtitle-text">Play audio to see live subtitles&#8230;</span>
+</div>
+
+<script>
+
+const audio    = document.getElementById('audio');
+const allSegs  = Array.from(document.querySelectorAll('.segment'));
+const allBlocks = Array.from(document.querySelectorAll('.t-block'));
+const subtitleEl = document.getElementById('subtitle-text');
+let activeSegEl   = null;
+let activeBlockEl = null;
+let searchMatches = [];
+let searchIdx     = 0;
+
+// Duration display
+audio.addEventListener('loadedmetadata', () => {
+  const m = Math.floor(audio.duration / 60);
+  const s = Math.floor(audio.duration %% 60).toString().padStart(2,'0');
+  document.getElementById('dur').textContent = m + ':' + s;
+});
+
+// Seek helper
+function seekTo(t) {
+  audio.currentTime = t;
+  audio.play();
+}
+
+// Block gutter click
+document.querySelectorAll('.t-gutter').forEach(g => {
+  g.addEventListener('click', () => seekTo(parseFloat(g.dataset.start)));
+});
+
+// Segment click
+allSegs.forEach(s => {
+  s.addEventListener('click', e => {
+    e.stopPropagation();
+    seekTo(parseFloat(s.dataset.start));
+  });
+});
+
+// Real-time tracking
+audio.addEventListener('timeupdate', () => {
+  const t = audio.currentTime;
+
+  // Find active segment (last one whose start <= t)
+  let found = null;
+  for (let i = allSegs.length - 1; i >= 0; i--) {
+    if (parseFloat(allSegs[i].dataset.start) <= t) { found = allSegs[i]; break; }
+  }
+
+  if (found && found !== activeSegEl) {
+    // Clear previous
+    if (activeSegEl) activeSegEl.classList.remove('active');
+    if (activeBlockEl) {
+      activeBlockEl.classList.remove('block-active');
+      const pg = activeBlockEl.querySelector('.t-gutter');
+      if (pg) pg.classList.remove('gutter-active');
+    }
+    // Set new
+    found.classList.add('active');
+    const block = found.closest('.t-block');
+    if (block) {
+      block.classList.add('block-active');
+      const g = block.querySelector('.t-gutter');
+      if (g) g.classList.add('gutter-active');
+      activeBlockEl = block;
+    }
+    activeSegEl = found;
+
+    // Update subtitle
+    subtitleEl.textContent = found.textContent.trim();
+    subtitleEl.classList.remove('empty');
+
+    // Auto-scroll (only when not searching)
+    if (!document.getElementById('search').value) {
+      found.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }
+});
+
+// Search
+const searchInput = document.getElementById('search');
+searchInput.addEventListener('input', runSearch);
+searchInput.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && searchMatches.length) {
+    searchMatches[searchIdx].classList.remove('search-current');
+    searchIdx = (searchIdx + 1) %% searchMatches.length;
+    const el = searchMatches[searchIdx];
+    el.classList.add('search-current');
+    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+});
+
+function runSearch() {
+  const q = searchInput.value.trim().toLowerCase();
+  allSegs.forEach(s => s.classList.remove('search-match','search-current'));
+  searchMatches = [];
+  if (!q) return;
+  allSegs.forEach(s => {
+    if (s.textContent.toLowerCase().includes(q)) {
+      s.classList.add('search-match');
+      searchMatches.push(s);
+    }
+  });
+  if (!searchMatches.length) return;
+  searchIdx = 0;
+  searchMatches[0].classList.add('search-current');
+  searchMatches[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+</script>
+</body>
+</html>

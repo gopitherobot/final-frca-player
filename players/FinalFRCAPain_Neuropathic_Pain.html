@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pain — Neuropathic Pain</title>
+<style>
+
+  :root {
+    --accent:    #a855f7;
+    --body-bg:   #f1f5f9;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: var(--body-bg);
+    color: #1e293b;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  /* ── Header ── */
+  .header {
+    background: #0f172a;
+    border-bottom: 3px solid var(--accent);
+    padding: 12px 20px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .header-left { flex: 1; min-width: 200px; }
+  .header h1 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #f1f5f9;
+    margin-bottom: 4px;
+    letter-spacing: 0.01em;
+  }
+  .header-sub {
+    font-size: 0.72rem;
+    color: #94a3b8;
+    font-style: italic;
+  }
+  audio {
+    height: 36px;
+    accent-color: var(--accent);
+    flex-shrink: 0;
+  }
+  .back-link {
+    font-size: 0.8rem;
+    color: #94a3b8;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .back-link:hover { color: #60a5fa; }
+
+  /* ── Toolbar ── */
+  .toolbar {
+    background: #1e293b;
+    padding: 7px 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-shrink: 0;
+    border-bottom: 1px solid #334155;
+  }
+  .toolbar input {
+    flex: 1;
+    max-width: 380px;
+    padding: 5px 11px;
+    border: 1px solid #475569;
+    border-radius: 6px;
+    background: #0f172a;
+    color: #e2e8f0;
+    font-size: 0.83rem;
+    outline: none;
+  }
+  .toolbar input:focus { border-color: var(--accent); }
+  .toolbar input::placeholder { color: #64748b; }
+  .stats {
+    font-size: 0.72rem;
+    color: #64748b;
+    white-space: nowrap;
+  }
+
+  /* ── Scroll area ── */
+  .scroll-area {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+  }
+  .scroll-area::-webkit-scrollbar { width: 6px; }
+  .scroll-area::-webkit-scrollbar-track { background: transparent; }
+  .scroll-area::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+
+  /* ── Subtitle bar ── */
+  .subtitle-bar {
+    background: #0f172a;
+    border-top: 2px solid var(--accent);
+    padding: 8px 20px;
+    flex-shrink: 0;
+    min-height: 42px;
+    display: flex;
+    align-items: center;
+  }
+  .subtitle-text {
+    font-size: 0.9rem;
+    color: #e2e8f0;
+    line-height: 1.5;
+    font-style: italic;
+  }
+  .subtitle-text.empty { color: #475569; }
+
+  /* ── Transcript blocks ── */
+  .t-block {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    margin-bottom: 14px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    display: flex;
+  }
+  .t-block.block-active {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px rgba(37,99,235,0.15);
+  }
+  .t-gutter {
+    background: #0f172a;
+    width: 52px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: 14px;
+    cursor: pointer;
+  }
+  .t-gutter:hover { background: #1e293b; }
+  .t-timestamp {
+    font-size: 0.7rem;
+    color: #64748b;
+    font-family: monospace;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+  .t-gutter.gutter-active .t-timestamp { color: var(--accent); }
+  .t-body {
+    flex: 1;
+    padding: 12px 16px;
+    line-height: 1.75;
+    font-size: 0.92rem;
+    color: #1e293b;
+  }
+
+  /* ── Segments ── */
+  .segment {
+    cursor: pointer;
+    border-radius: 3px;
+    transition: background 0.1s;
+  }
+  .segment:hover { background: #eff6ff; }
+  .segment.active {
+    background: #bfdbfe;
+    outline: 2px solid #3b82f6;
+    outline-offset: 1px;
+    border-radius: 3px;
+  }
+  .segment.search-match  { background: #fef9c3; }
+  .segment.search-current { background: #fde047; outline: 2px solid #ca8a04; }
+
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <h1>Pain — Neuropathic Pain</h1>
+    <div class="header-sub">Final FRCA &mdash; Exam Viva Simulation &mdash; Click any phrase to seek</div>
+  </div>
+  <audio id="audio" src="../FinalFRCAPain_Neuropathic_Pain.mp3" controls preload="metadata"></audio>
+  <a class="back-link" href="index.html">&#8592; All Topics</a>
+</div>
+
+<div class="toolbar">
+  <input type="text" id="search" placeholder="Search transcript&#8230; (Enter = next match)">
+  <span class="stats" id="stats">223 segments &nbsp;|&nbsp; <span id="dur">loading&#8230;</span></span>
+</div>
+
+<div class="scroll-area" id="scroll-area">
+<div class="t-block">
+  <div class="t-gutter" data-start="0.0"><span class="t-timestamp">0:00</span></div>
+  <div class="t-body"><span class="segment" data-start="0.0" data-end="4.16" title="0:00">Neuropathic pain, complex regional pain syndrome, </span><span class="segment" data-start="4.16" data-end="8.0" title="0:04">tri-debonyl neuralgia and post-hepestic neuralgia. </span><span class="segment" data-start="8.0" data-end="11.84" title="0:08">These topics are well suited to the clinical science vivas, </span><span class="segment" data-start="11.84" data-end="16.24" title="0:11">but equally they make them up as part of the clinical vivas. </span><span class="segment" data-start="16.24" data-end="20.0" title="0:16">What is the definition of pain? </span><span class="segment" data-start="20.0" data-end="26.32" title="0:20">The definition of pain is an unpleasant sensory and emotional experience </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="26.4"><span class="t-timestamp">0:26</span></div>
+  <div class="t-body"><span class="segment" data-start="26.4" data-end="30.48" title="0:26">associated with actual or potential tissue damage </span><span class="segment" data-start="30.48" data-end="34.32" title="0:30">and expressed in terms of such damage. </span><span class="segment" data-start="34.32" data-end="37.92" title="0:34">What is Neuropathic pain? </span><span class="segment" data-start="37.92" data-end="45.2" title="0:37">Neuropathic pain is pain that is initiated or caused by a primary lesion or dysfunction </span><span class="segment" data-start="45.2" data-end="49.28" title="0:45">in the peripheral or central nervous system. </span><span class="segment" data-start="49.28" data-end="54.32" title="0:49">Neuropathic pain can also be called neurogenic pain. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="54.32"><span class="t-timestamp">0:54</span></div>
+  <div class="t-body"><span class="segment" data-start="54.32" data-end="56.56" title="0:54">They mean the same thing. </span><span class="segment" data-start="56.56" data-end="63.92" title="0:56">Neuropathic pain can be in a region of motor, sensory or autonomic nerve dysfunction. </span><span class="segment" data-start="63.92" data-end="70.08" title="1:03">It is often described by patients as a burning, tingling or numb sensation </span><span class="segment" data-start="70.08" data-end="72.96" title="1:10">or as a sharp or shooting pain. </span><span class="segment" data-start="72.96" data-end="76.8" title="1:12">Another common way that patients describe neuropathic pain </span><span class="segment" data-start="76.8" data-end="81.6" title="1:16">is like an electric shock or like a stabbing pain. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="81.68"><span class="t-timestamp">1:21</span></div>
+  <div class="t-body"><span class="segment" data-start="81.68" data-end="86.88" title="1:21">Can you give me any examples of neuropathic pain conditions? </span><span class="segment" data-start="86.88" data-end="90.8" title="1:26">There are seven types of neuropathic pain conditions </span><span class="segment" data-start="90.8" data-end="93.52" title="1:30">commonly seen in the pain clinic. </span><span class="segment" data-start="93.52" data-end="97.52" title="1:33">The first example is trigeminal neuralgia. </span><span class="segment" data-start="97.52" data-end="100.64" title="1:37">Secondly, post-herpetic neuralgia. </span><span class="segment" data-start="100.64" data-end="104.56" title="1:40">The third is complex regional pain syndrome. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="104.56"><span class="t-timestamp">1:44</span></div>
+  <div class="t-body"><span class="segment" data-start="104.56" data-end="107.04" title="1:44">Fourthly, phantom limb pain. </span><span class="segment" data-start="107.04" data-end="110.32" title="1:47">Fifthly, diabetic neuropathy. </span><span class="segment" data-start="110.32" data-end="113.6" title="1:50">Sixthly, central pain syndromes. </span><span class="segment" data-start="113.6" data-end="119.2" title="1:53">And lastly, but most commonly, lumbarodicular pain. </span><span class="segment" data-start="119.2" data-end="124.24" title="1:59">Can you describe the clinical features of neuropathic pain? </span><span class="segment" data-start="124.24" data-end="128.48" title="2:04">Neuropathic pain can be associated with spontaneous pain </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="128.48"><span class="t-timestamp">2:08</span></div>
+  <div class="t-body"><span class="segment" data-start="128.48" data-end="130.96" title="2:08">in the absence of any stimulus. </span><span class="segment" data-start="130.96" data-end="135.36" title="2:10">This spontaneous pain may be continuous or paroxysmal. </span><span class="segment" data-start="135.36" data-end="139.92" title="2:15">Neuropathic pain is also characterized by evoked pains </span><span class="segment" data-start="140.0" data-end="145.12" title="2:20">such as aledinia, which is pain following an innocuous stimulus. </span><span class="segment" data-start="145.12" data-end="148.64" title="2:25">Another evoked pain is hyperalgesia, </span><span class="segment" data-start="148.64" data-end="151.52" title="2:28">which is a pain of abnormal severity, </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="151.52"><span class="t-timestamp">2:31</span></div>
+  <div class="t-body"><span class="segment" data-start="151.52" data-end="154.4" title="2:31">following a painful stimulus. </span><span class="segment" data-start="154.4" data-end="158.48" title="2:34">What are the treatments for neuropathic pain? </span><span class="segment" data-start="158.48" data-end="162.16" title="2:38">The treatment of neuropathic pain is difficult. </span><span class="segment" data-start="162.16" data-end="165.04" title="2:42">No one treatment works for everyone, </span><span class="segment" data-start="165.04" data-end="167.44" title="2:45">and nothing works well. </span><span class="segment" data-start="167.44" data-end="170.96" title="2:47">It is worth remembering that polypharmacy </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="170.96"><span class="t-timestamp">2:50</span></div>
+  <div class="t-body"><span class="segment" data-start="170.96" data-end="174.56" title="2:50">or the use of multiple therapies is rational </span><span class="segment" data-start="174.56" data-end="177.68" title="2:54">in the treatment of neuropathic pain. </span><span class="segment" data-start="177.68" data-end="183.6" title="2:57">The treatment of neuropathic pain can be divided into five categories. </span><span class="segment" data-start="183.6" data-end="186.24" title="3:03">Firstly, drug treatment. </span><span class="segment" data-start="186.24" data-end="189.6" title="3:06">Secondly, injection treatments. </span><span class="segment" data-start="189.6" data-end="193.2" title="3:09">Thirdly, neuromodulation therapies. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="193.2"><span class="t-timestamp">3:13</span></div>
+  <div class="t-body"><span class="segment" data-start="193.2" data-end="196.0" title="3:13">Fourthly, physical therapies. </span><span class="segment" data-start="196.08" data-end="199.6" title="3:16">Fifthly, cognitive behavioral therapy. </span><span class="segment" data-start="199.6" data-end="203.04" title="3:19">But not necessarily in that order. </span><span class="segment" data-start="203.04" data-end="207.2" title="3:23">What drugs do you know can be used in the treatment of neuropathic pain? </span><span class="segment" data-start="207.2" data-end="212.72" title="3:27">Remember to classify the type of drug before launching into individual drug names, </span><span class="segment" data-start="212.72" data-end="218.56" title="3:32">as there are many drugs used in the treatment of neuropathic pain. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="218.56"><span class="t-timestamp">3:38</span></div>
+  <div class="t-body"><span class="segment" data-start="218.56" data-end="221.84" title="3:38">Simple analgesics such as paracetamol, </span><span class="segment" data-start="221.92" data-end="226.0" title="3:41">non-steeroidal anti-inflammatory drugs and weak opioids, </span><span class="segment" data-start="226.0" data-end="230.0" title="3:46">such as codine, should always be tried first, </span><span class="segment" data-start="230.0" data-end="234.8" title="3:50">and this is usually done by the patient themselves or the general practitioner. </span><span class="segment" data-start="235.76" data-end="239.36" title="3:55">The next class of drugs commonly used in pain clinics </span><span class="segment" data-start="239.36" data-end="244.32" title="3:59">to treat neuropathic pain, other tricyclic antidepressants, </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="244.32"><span class="t-timestamp">4:04</span></div>
+  <div class="t-body"><span class="segment" data-start="244.32" data-end="247.44" title="4:04">such as ametriptoline and nortriptoline. </span><span class="segment" data-start="248.4" data-end="254.24" title="4:08">Tri-cyclic antidepressants act by blocking the reuptake of monoeumines, </span><span class="segment" data-start="254.24" data-end="259.84" title="4:14">and it is both the norantroinergic and serotonergic effects that are needed </span><span class="segment" data-start="259.84" data-end="261.92" title="4:19">in the treatment of neuropathic pain. </span><span class="segment" data-start="262.72" data-end="268.64" title="4:22">It is worth explaining to the patient when prescribing tricyclic antidepressants, </span><span class="segment" data-start="268.64" data-end="274.0" title="4:28">that their analgesic effect is separate from their antidepressant effect. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="274.48"><span class="t-timestamp">4:34</span></div>
+  <div class="t-body"><span class="segment" data-start="274.48" data-end="279.68" title="4:34">The membrane stabilizing drugs, such as the anti-convulsants, </span><span class="segment" data-start="279.68" data-end="282.08" title="4:39">carburetum, carburetum, carburetum, carburetum, </span><span class="segment" data-start="282.08" data-end="287.76" title="4:42">and pre-gablin, and local anaesthetics, such as lydocane, </span><span class="segment" data-start="287.76" data-end="290.8" title="4:47">are also used to treat neuropathic pain. </span><span class="segment" data-start="290.8" data-end="296.24" title="4:50">It is thought that the mechanism of action of gaburetum and pre-gablin </span><span class="segment" data-start="296.24" data-end="300.48" title="4:56">is that they bind to the alpha-2 delta subunit </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="300.56"><span class="t-timestamp">5:00</span></div>
+  <div class="t-body"><span class="segment" data-start="300.56" data-end="306.24" title="5:00">of the voltage-dependent calcium channel and have calcium channel blocking activity. </span><span class="segment" data-start="307.44" data-end="313.12" title="5:07">Topical treatments used in neuropathic pain include capsacin cream, </span><span class="segment" data-start="313.12" data-end="317.36" title="5:13">which is thought to deplete peptide neurotransmitters in nerve endings. </span><span class="segment" data-start="318.16" data-end="323.12" title="5:18">Lydocane patches are also used for discrete painful areas, </span><span class="segment" data-start="323.12" data-end="328.8" title="5:23">and non-steroidal anti-inflammatory gels are sometimes helpful with neuropathic pain. </span><span class="segment" data-start="329.76" data-end="334.08" title="5:29">N-methyl-D-aspartate receptor antagonists, </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="334.08"><span class="t-timestamp">5:34</span></div>
+  <div class="t-body"><span class="segment" data-start="334.08" data-end="341.04" title="5:34">such as ketamine and a manterdeen, are sometimes used by infusion to treat neuropathic pain. </span><span class="segment" data-start="341.84" data-end="345.36" title="5:41">Unfortunately, their effect is short-lived, </span><span class="segment" data-start="345.36" data-end="347.52" title="5:45">and treatments need to be repeated. </span><span class="segment" data-start="348.24" data-end="352.88" title="5:48">They also need to be given as an infusion in hospital with monitoring. </span><span class="segment" data-start="353.68" data-end="360.96" title="5:53">Dextromythorthan is an orally administered NMDA antagonist, but is not commonly used. </span><span class="segment" data-start="361.52" data-end="365.68" title="6:01">Ketamine can also be used sublingually or intranasally. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="367.2"><span class="t-timestamp">6:07</span></div>
+  <div class="t-body"><span class="segment" data-start="367.2" data-end="371.52" title="6:07">Opioids can be helpful in the management of neuropathic pain, </span><span class="segment" data-start="371.52" data-end="374.24" title="6:11">but their use must not be undertaken lightly. </span><span class="segment" data-start="375.04" data-end="381.52" title="6:15">Patients should undergo an opioid trial and sustain release rather than immediate release </span><span class="segment" data-start="381.52" data-end="387.76" title="6:21">is preferable. There should be an agreed plan between the patient's GP and the pain clinic </span><span class="segment" data-start="387.76" data-end="392.8" title="6:27">as to prescribing responsibility and the patient should be followed up regularly. </span><span class="segment" data-start="393.6" data-end="398.0" title="6:33">The long-term side effects of opioids are not fully understood, </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="398.0"><span class="t-timestamp">6:38</span></div>
+  <div class="t-body"><span class="segment" data-start="398.0" data-end="401.52" title="6:38">but it is thought that there may be an effect on the immune system, </span><span class="segment" data-start="401.52" data-end="404.56" title="6:41">and we know that tolerance and dependence develop. </span><span class="segment" data-start="405.68" data-end="408.48" title="6:45">What injection treatments are used in neuropathic pain? </span><span class="segment" data-start="408.56" data-end="417.04" title="6:48">Local infiltration with steroid and local anaesthetic can be performed either into joints or soft tissue. </span><span class="segment" data-start="418.08" data-end="423.36" title="6:58">Fasit joint injection with steroid and local anaesthetic and direct serage guidance </span><span class="segment" data-start="423.36" data-end="426.16" title="7:03">is a common pain clinic procedure for back pain. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="426.96"><span class="t-timestamp">7:06</span></div>
+  <div class="t-body"><span class="segment" data-start="426.96" data-end="433.04" title="7:06">Lumber epidural or cordal with steroid and local anaesthetic is also commonly performed </span><span class="segment" data-start="433.04" data-end="435.44" title="7:13">in the pain clinic for a ridiculous leg pain. </span><span class="segment" data-start="436.8" data-end="443.36" title="7:16">Nerve root injection can be performed at any level of the spine for nerve root pain in a single </span><span class="segment" data-start="443.36" data-end="449.84" title="7:23">dermatome. This pain can occur due to nerve root compressions or after surgery. </span><span class="segment" data-start="450.64" data-end="455.36" title="7:30">Nerve root blocks can be both diagnostic and therapeutic. </span><span class="segment" data-start="456.16" data-end="462.88" title="7:36">Soft tissue injections are performed for painful scar tissue and into painful muscular trigger points. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="463.76"><span class="t-timestamp">7:43</span></div>
+  <div class="t-body"><span class="segment" data-start="463.76" data-end="470.72" title="7:43">Sympathetic blocks, such as stellate ganglion block, are used to moderate pain in the face and </span><span class="segment" data-start="470.72" data-end="477.84" title="7:50">upper limb. Lumber sympathetic block is used for sympathetically mediated pain in the lower limbs, </span><span class="segment" data-start="477.84" data-end="482.64" title="7:57">and is most useful for a schemic leg pain, especially rest pain. </span><span class="segment" data-start="483.68" data-end="490.48" title="8:03">Celiacplexus block is most often indicated for the relief of pain from pancreatic carcinoma, </span><span class="segment" data-start="490.48" data-end="495.6" title="8:10">but it can be used in managing pain from malignant disease of other viscera, </span><span class="segment" data-start="495.6" data-end="500.08" title="8:15">such as liver, stomach, spleen, kidney and colon. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="501.28"><span class="t-timestamp">8:21</span></div>
+  <div class="t-body"><span class="segment" data-start="501.28" data-end="504.24" title="8:21">What neuro-modulation treatments do you know for chronic pain? </span><span class="segment" data-start="506.48" data-end="513.2" title="8:26">Transcutaneous electrical nerve stimulation or tens is thought to work on the basis of the </span><span class="segment" data-start="513.2" data-end="521.6" title="8:33">gate theory of pain. Tens aims to stimulate the large myelinated A-beta sensory fibers </span><span class="segment" data-start="521.6" data-end="530.32" title="8:41">to block input from unmyelinated C-fibers. Pre-synaptic inhibition of C-fibers occurs with release </span><span class="segment" data-start="530.32" data-end="538.4" title="8:50">of inhibitory neurotransmitters such as GABA and glycine. Stimulation of the A-beta fibers </span><span class="segment" data-start="538.4" data-end="545.28" title="8:58">may also activate descending inhibitory pathways within the central nervous system to effect pain </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="545.28"><span class="t-timestamp">9:05</span></div>
+  <div class="t-body"><span class="segment" data-start="545.28" data-end="554.32" title="9:05">relief. Other neuro-modulatory devices are spinal cord stimulators, which also work via stimulation </span><span class="segment" data-start="554.32" data-end="561.76" title="9:14">of A-beta fibers, but this time the large concentration of A-beta fibers in the dorsal columns are </span><span class="segment" data-start="561.76" data-end="568.32" title="9:21">targeted, which is thought to cause inhibition of C-fibers and produce pain relief. </span><span class="segment" data-start="569.6" data-end="575.6" title="9:29">More recently, deep brain stimulators have been used for chronic pain conditions, </span><span class="segment" data-start="575.6" data-end="582.24" title="9:35">and this involves neurosurgical implantation of electrodes via stereotactic positioning </span><span class="segment" data-start="582.24" data-end="588.08" title="9:42">into areas of the thalamus. How is physical therapy important in chronic pain conditions? </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="588.24"><span class="t-timestamp">9:48</span></div>
+  <div class="t-body"><span class="segment" data-start="588.24" data-end="597.2" title="9:48">The traditional role of physiotherapy is important in chronic pain conditions in restoring the </span><span class="segment" data-start="597.2" data-end="604.16" title="9:57">function and mobility of damaged muscle and joints, and can be helpful in restoring mobility </span><span class="segment" data-start="604.16" data-end="611.68" title="10:04">and relieving pain in stiff joints, back pain, and limbs affected with complex regional pain syndrome. </span><span class="segment" data-start="612.4" data-end="618.4" title="10:12">The physiotherapist is an important part of the multidisciplinary pain clinic staff, </span><span class="segment" data-start="618.4" data-end="625.12" title="10:18">whose role is often to educate the patient in the active participation in managing their own pain. </span><span class="segment" data-start="626.24" data-end="628.64" title="10:26">How can the psychologist help in pain management? </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="630.96"><span class="t-timestamp">10:30</span></div>
+  <div class="t-body"><span class="segment" data-start="630.96" data-end="636.96" title="10:30">Remembering that the definition of pain is a sensory and emotional response, </span><span class="segment" data-start="636.96" data-end="643.68" title="10:36">it is not uncommon for people with chronic pain to suffer so much that they are unable to function </span><span class="segment" data-start="643.68" data-end="650.72" title="10:43">with breakdown of relationships and loss of their job. The psychological effects of chronic pain </span><span class="segment" data-start="650.72" data-end="658.08" title="10:50">are negative thinking, stress, disability, loss of control, and impaired mental and physical </span><span class="segment" data-start="658.08" data-end="665.28" title="10:58">performance. Psychologists are involved in pain management programs which are effective in improving </span><span class="segment" data-start="665.28" data-end="672.56" title="11:05">quality of life. The aim in the pain management program is to bring about an understanding of pain </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="672.56"><span class="t-timestamp">11:12</span></div>
+  <div class="t-body"><span class="segment" data-start="672.56" data-end="680.8" title="11:12">and alteration of beliefs about pain using cognitive behavioral therapy. The patient learns coping </span><span class="segment" data-start="680.8" data-end="686.56" title="11:20">skills and the aim is to reduce stress and disability caused by chronic pain. </span><span class="segment" data-start="687.92" data-end="691.6" title="11:27">What is complex regional pain syndrome or CRPS? </span><span class="segment" data-start="692.32" data-end="699.2" title="11:32">Don't be caught out if the examiners ask you what CRPS is and say chronic regional pain syndrome </span><span class="segment" data-start="699.2" data-end="707.84" title="11:39">instead of complex regional pain syndrome. Complex regional pain syndrome is a chronic pain </span><span class="segment" data-start="707.84" data-end="714.88" title="11:47">condition where the key symptom is continuous intense pain which is out of proportion to the </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="714.88"><span class="t-timestamp">11:54</span></div>
+  <div class="t-body"><span class="segment" data-start="714.88" data-end="723.12" title="11:54">severity of the injury. There are two types of CRPS. Type 1 was formerly known as reflex </span><span class="segment" data-start="723.12" data-end="730.48" title="12:03">sympathetic distrophy and occurs after a minor fracture or injury to a limb without direct injury </span><span class="segment" data-start="730.48" data-end="739.28" title="12:10">to a nerve. CRPS type 2 was formerly known as Causalgia and to develop softer injury to a major </span><span class="segment" data-start="739.44" data-end="744.16" title="12:19">peripheral nerve. What are the clinical characteristics of CRPS? </span><span class="segment" data-start="746.48" data-end="754.48" title="12:26">There are four categories of signs and symptoms associated with CRPS. The first category is </span><span class="segment" data-start="754.48" data-end="761.28" title="12:34">abnormal sensory changes such as continuous burning pain of the affected extremity and </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="761.28"><span class="t-timestamp">12:41</span></div>
+  <div class="t-body"><span class="segment" data-start="761.28" data-end="769.84" title="12:41">stimulus evoked pains such as mechanical and thermal allodinia. The second category of CRPS </span><span class="segment" data-start="769.84" data-end="776.48" title="12:49">characteristics is autonomic abnormalities such as changes in skin temperature, </span><span class="segment" data-start="776.48" data-end="785.2" title="12:56">hyper or hypohydrosis and swelling of the distal extremity. The third category is trophic </span><span class="segment" data-start="785.2" data-end="794.56" title="13:05">changes associated with CRPS such as abnormal nail and hair growth, fibrosis, osteoporosis </span><span class="segment" data-start="794.56" data-end="801.76" title="13:14">and thin glossy skin. The fourth category of characteristics associated with CRPS </span><span class="segment" data-start="801.76" data-end="810.4" title="13:21">is motor abnormalities such as weakness, dystonia, tremor and neglect like symptoms or symptoms of </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="810.4"><span class="t-timestamp">13:30</span></div>
+  <div class="t-body"><span class="segment" data-start="810.4" data-end="816.96" title="13:30">disturbed body perception of the affected extremity. In addition to these four categories, </span><span class="segment" data-start="816.96" data-end="822.8" title="13:36">there may be a component of sympathetically maintained pain but this is not diagnostic. </span><span class="segment" data-start="824.24" data-end="832.08" title="13:44">What treatments do you know for CRPS? Treatments for CRPS can be pharmacological, </span><span class="segment" data-start="832.8" data-end="841.2" title="13:52">interventional, physical therapy or neuro stimulatory. A multidisciplinary approach is important </span><span class="segment" data-start="841.2" data-end="848.72" title="14:01">and treatments start immediately after diagnosis. The pharmacological treatment of CRPS </span><span class="segment" data-start="848.72" data-end="857.2" title="14:08">includes the tricyclic antidepressants, the anticonvulsants such as gabapentin and pre-gabolin </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="857.2"><span class="t-timestamp">14:17</span></div>
+  <div class="t-body"><span class="segment" data-start="857.2" data-end="862.96" title="14:17">and drugs used to treat sympathetically maintained pain such as guanathiadine. </span><span class="segment" data-start="864.32" data-end="869.76" title="14:24">Topical capsacin has also been used in the pharmacological treatment of CRPS. </span><span class="segment" data-start="870.96" data-end="878.32" title="14:30">Interventional treatments used for CRPS include the sympathetic blocks such as stellate ganglion </span><span class="segment" data-start="878.32" data-end="883.6" title="14:38">block and lumbar sympathetic to me and more recently guanathiadine blocks. </span><span class="segment" data-start="884.32" data-end="891.04" title="14:44">These blocks may help with the diagnosis of sympathetically mediated pain as well as being a </span><span class="segment" data-start="891.04" data-end="898.0" title="14:51">treatment. Physical therapy is particularly important in the first few weeks of the diagnosis </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="898.0"><span class="t-timestamp">14:58</span></div>
+  <div class="t-body"><span class="segment" data-start="898.0" data-end="905.92" title="14:58">and patients must be encouraged to move the affected limb. Neurostimulatory treatments include </span><span class="segment" data-start="906.24" data-end="910.96" title="15:06">tens spinal cord stimulation and a deep brain stimulation. </span><span class="segment" data-start="912.16" data-end="914.72" title="15:12">What are the clinical features of trideminal neuralgia? </span><span class="segment" data-start="916.96" data-end="923.68" title="15:16">Trideminal neuralgia, which is also known as tick-dollaroo, is neuropathic pain in the </span><span class="segment" data-start="923.68" data-end="931.04" title="15:23">distribution of the trideminal nerve. Episodes of paroxysmal pain can occur in the eyes, </span><span class="segment" data-start="931.12" data-end="939.76" title="15:31">lips, nose, scalp, jaw or forehead. The pain can be due to involvement of the gastroenganglion </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="939.76"><span class="t-timestamp">15:39</span></div>
+  <div class="t-body"><span class="segment" data-start="939.76" data-end="946.96" title="15:39">or the peripheral branches of the trideminal nerve. The pain is shooting or sharp in nature </span><span class="segment" data-start="946.96" data-end="953.52" title="15:46">and the patient may describe it as electric shock-like pain. Pain is typically provoked by </span><span class="segment" data-start="953.6" data-end="961.68" title="15:53">innocuous stimuli such as light touch, eating, washing, talking or even air currents on the face. </span><span class="segment" data-start="962.4" data-end="969.68" title="16:02">It is commoner in patients with multiple sclerosis and in patients over 50 years of age but can </span><span class="segment" data-start="969.68" data-end="977.84" title="16:09">occur in young adults. The pain is usually unilateral but can be bilateral in multiple sclerosis. </span><span class="segment" data-start="979.28" data-end="981.28" title="16:19">What is the cause of trideminal neuralgia? </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="983.52"><span class="t-timestamp">16:23</span></div>
+  <div class="t-body"><span class="segment" data-start="983.52" data-end="988.8" title="16:23">It is thought that vascular compression of the trideminal nerve near the ponds </span><span class="segment" data-start="988.8" data-end="996.0" title="16:28">alters electrical activity in the trideminal neurons. Many patients with trideminal neuralgia </span><span class="segment" data-start="996.0" data-end="1001.76" title="16:36">have an aberrant microvascular loop pressing on the nerve which is seen on MRI scan. </span><span class="segment" data-start="1002.64" data-end="1010.48" title="16:42">Other causes are microvascular aneurysms, tumour, arachnoid cyst in the cerebellar pontine angle </span><span class="segment" data-start="1010.48" data-end="1017.6" title="16:50">or by traumatic events such as car accidents. What treatments do you know for trideminal neuralgia? </span><span class="segment" data-start="1019.92" data-end="1024.4" title="16:59">There are both drug treatments and surgical treatments for trideminal neuralgia. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="1025.04"><span class="t-timestamp">17:05</span></div>
+  <div class="t-body"><span class="segment" data-start="1025.04" data-end="1031.04" title="17:05">The drug treatment of choice for trideminal neuralgia is carbamazepine. If this fails, </span><span class="segment" data-start="1031.04" data-end="1037.6" title="17:11">GABA pentin and pre-gablin have had some success and baccalafen has also been used. </span><span class="segment" data-start="1038.32" data-end="1043.68" title="17:18">The tricyclic antidepressants have not proved as useful in trideminal neuralgia as the </span><span class="segment" data-start="1043.68" data-end="1051.52" title="17:23">anticonvulsants. Surgical treatments include microvascular decompression of the aberrant vessel </span><span class="segment" data-start="1051.52" data-end="1057.52" title="17:31">and about 75% of patients will have immediate pain relief following the procedure, </span><span class="segment" data-start="1057.52" data-end="1064.32" title="17:37">although sometimes the pain does recur. Other surgical treatments include radio frequency </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="1064.4"><span class="t-timestamp">17:44</span></div>
+  <div class="t-body"><span class="segment" data-start="1064.4" data-end="1071.12" title="17:44">lesioning of the nerve, glycerol injection and blue inflation into the ferraiman ovale. </span><span class="segment" data-start="1072.0" data-end="1077.12" title="17:52">All of the ablative treatments have the potential to cause anesthesia dolerossa, </span><span class="segment" data-start="1077.12" data-end="1083.44" title="17:57">which is pain in an area of anesthesia. What are the clinical features of post-herpetic neuralgia? </span><span class="segment" data-start="1085.44" data-end="1092.0" title="18:05">Post-herpetic neuralgia is the persistence of pain in the affected dermatomes after the </span><span class="segment" data-start="1092.0" data-end="1100.16" title="18:12">resolution of an acute terpese-oster infection, also known as shingles. The diagnosis is usually </span><span class="segment" data-start="1100.16" data-end="1107.12" title="18:20">given if the pain persists or arises at least three months after the skin lesions have healed. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="1107.84"><span class="t-timestamp">18:27</span></div>
+  <div class="t-body"><span class="segment" data-start="1107.84" data-end="1114.56" title="18:27">The communist areas for shingles are the thoracic dermatomes and the ophthalmic division of the </span><span class="segment" data-start="1114.56" data-end="1121.92" title="18:34">trideminal nerve. The pain of post-herpetic neuralgia is described by patients as a constant </span><span class="segment" data-start="1122.08" data-end="1130.08" title="18:42">burning, tingling or numb sensation. Other symptoms include parathesia and sensory loss </span><span class="segment" data-start="1130.08" data-end="1137.28" title="18:50">and lancinating pain which is triggered by light touch or cold air. Often patients cannot even </span><span class="segment" data-start="1137.28" data-end="1145.12" title="18:57">bear their clothes touching the affected area. This is typical of neuropathic pain. The affected </span><span class="segment" data-start="1145.12" data-end="1151.44" title="19:05">dermatomes in post-herpetic neuralgia often exhibit aledinia and hyperalgesia. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="1152.08"><span class="t-timestamp">19:12</span></div>
+  <div class="t-body"><span class="segment" data-start="1152.08" data-end="1158.56" title="19:12">Aledinia is the experience of pain following a normally non-painful or innocuous stimulus. </span><span class="segment" data-start="1159.36" data-end="1165.12" title="19:19">Hyperalgesia is pain of abnormal severity following a painful stimulus. </span><span class="segment" data-start="1166.16" data-end="1173.04" title="19:26">Post-herpetic neuralgia occurs in 9-34% of all patients with herpese-oster, </span><span class="segment" data-start="1173.6" data-end="1180.48" title="19:33">the incidence being the same in men and women. The onset of post-herpetic neuralgia </span><span class="segment" data-start="1180.48" data-end="1187.92" title="19:40">cannot be predicted by the severity of the acute herpese-oster infection, but we do know that post-herpetic </span><span class="segment" data-start="1187.92" data-end="1196.64" title="19:47">neuralgia is more likely to occur with advancing age. In the over 70s, about 50% of those suffering </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="1196.64"><span class="t-timestamp">19:56</span></div>
+  <div class="t-body"><span class="segment" data-start="1196.64" data-end="1203.52" title="19:56">with post-herpetic neuralgia may have persistent pain even a year after the initials-oster infection. </span><span class="segment" data-start="1204.64" data-end="1207.44" title="20:04">What is the pathophysiology of post-herpetic neuralgia? </span><span class="segment" data-start="1209.52" data-end="1216.16" title="20:09">Following a varicella-zoster or chickenpox infection, the virus settles in the dorsal horns of </span><span class="segment" data-start="1216.16" data-end="1223.12" title="20:16">the sensory ganglia and remains dormant. That is, until reactivation of the virus produces </span><span class="segment" data-start="1223.12" data-end="1229.52" title="20:23">inflammation in the peripheral nerve and neural destruction. This then causes pain in the </span><span class="segment" data-start="1229.52" data-end="1236.56" title="20:29">distribution of the nerve. Reactivation of the virus is thought to be caused by immunosuppression, </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="1236.56"><span class="t-timestamp">20:36</span></div>
+  <div class="t-body"><span class="segment" data-start="1236.56" data-end="1243.12" title="20:36">which is more likely with increasing age. Chronic pain is thought to arise due to the loss of no </span><span class="segment" data-start="1243.6" data-end="1248.24" title="20:43">receptive afferent neurons and a-beta-fibre demyelination. </span><span class="segment" data-start="1249.6" data-end="1252.16" title="20:49">What treatments do you know for post-herpetic neuralgia? </span><span class="segment" data-start="1254.4" data-end="1260.16" title="20:54">Treatments can be divided into three categories. Firstly, oral drugs, </span><span class="segment" data-start="1260.8" data-end="1266.24" title="21:00">secondly, topical treatments, and thirdly interventions or injections. </span><span class="segment" data-start="1267.12" data-end="1273.92" title="21:07">Oral drugs used in the treatment of post-herpetic neuralgia include amatryptaline and other </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="1273.92"><span class="t-timestamp">21:13</span></div>
+  <div class="t-body"><span class="segment" data-start="1273.92" data-end="1282.08" title="21:13">antidepressants, the anticonvulsants, gabapentin and pre-gabbalin, conventional analgesics, </span><span class="segment" data-start="1282.08" data-end="1290.96" title="21:22">and opioids. Occasionally, intravenous infusion of NMDA receptor antagonists, such as ketamine </span><span class="segment" data-start="1291.04" data-end="1298.96" title="21:31">used. Topical treatments include the use of capsaceine cream, non-steeroidal anti-inflammatory </span><span class="segment" data-start="1298.96" data-end="1308.64" title="21:38">creams, and more recently, lidocaine patches. Interventional treatments for post-herpetic neuralgia </span><span class="segment" data-start="1308.64" data-end="1316.32" title="21:48">include tens, sympathetic blocks, such as stellate ganglion block, and epidural steroid and </span><span class="segment" data-start="1316.4" data-end="1323.76" title="21:56">local anaesthetic at the level of the affected dorsal root ganglion. The epidural steroid is thought </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="1323.76"><span class="t-timestamp">22:03</span></div>
+  <div class="t-body"><span class="segment" data-start="1323.76" data-end="1333.04" title="22:03">to interrupt the mechanisms producing chronic pain. </span></div>
+</div>
+</div>
+
+<div class="subtitle-bar">
+  <span class="subtitle-text empty" id="subtitle-text">Play audio to see live subtitles&#8230;</span>
+</div>
+
+<script>
+
+const audio    = document.getElementById('audio');
+const allSegs  = Array.from(document.querySelectorAll('.segment'));
+const allBlocks = Array.from(document.querySelectorAll('.t-block'));
+const subtitleEl = document.getElementById('subtitle-text');
+let activeSegEl   = null;
+let activeBlockEl = null;
+let searchMatches = [];
+let searchIdx     = 0;
+
+// Duration display
+audio.addEventListener('loadedmetadata', () => {
+  const m = Math.floor(audio.duration / 60);
+  const s = Math.floor(audio.duration %% 60).toString().padStart(2,'0');
+  document.getElementById('dur').textContent = m + ':' + s;
+});
+
+// Seek helper
+function seekTo(t) {
+  audio.currentTime = t;
+  audio.play();
+}
+
+// Block gutter click
+document.querySelectorAll('.t-gutter').forEach(g => {
+  g.addEventListener('click', () => seekTo(parseFloat(g.dataset.start)));
+});
+
+// Segment click
+allSegs.forEach(s => {
+  s.addEventListener('click', e => {
+    e.stopPropagation();
+    seekTo(parseFloat(s.dataset.start));
+  });
+});
+
+// Real-time tracking
+audio.addEventListener('timeupdate', () => {
+  const t = audio.currentTime;
+
+  // Find active segment (last one whose start <= t)
+  let found = null;
+  for (let i = allSegs.length - 1; i >= 0; i--) {
+    if (parseFloat(allSegs[i].dataset.start) <= t) { found = allSegs[i]; break; }
+  }
+
+  if (found && found !== activeSegEl) {
+    // Clear previous
+    if (activeSegEl) activeSegEl.classList.remove('active');
+    if (activeBlockEl) {
+      activeBlockEl.classList.remove('block-active');
+      const pg = activeBlockEl.querySelector('.t-gutter');
+      if (pg) pg.classList.remove('gutter-active');
+    }
+    // Set new
+    found.classList.add('active');
+    const block = found.closest('.t-block');
+    if (block) {
+      block.classList.add('block-active');
+      const g = block.querySelector('.t-gutter');
+      if (g) g.classList.add('gutter-active');
+      activeBlockEl = block;
+    }
+    activeSegEl = found;
+
+    // Update subtitle
+    subtitleEl.textContent = found.textContent.trim();
+    subtitleEl.classList.remove('empty');
+
+    // Auto-scroll (only when not searching)
+    if (!document.getElementById('search').value) {
+      found.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }
+});
+
+// Search
+const searchInput = document.getElementById('search');
+searchInput.addEventListener('input', runSearch);
+searchInput.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && searchMatches.length) {
+    searchMatches[searchIdx].classList.remove('search-current');
+    searchIdx = (searchIdx + 1) %% searchMatches.length;
+    const el = searchMatches[searchIdx];
+    el.classList.add('search-current');
+    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+});
+
+function runSearch() {
+  const q = searchInput.value.trim().toLowerCase();
+  allSegs.forEach(s => s.classList.remove('search-match','search-current'));
+  searchMatches = [];
+  if (!q) return;
+  allSegs.forEach(s => {
+    if (s.textContent.toLowerCase().includes(q)) {
+      s.classList.add('search-match');
+      searchMatches.push(s);
+    }
+  });
+  if (!searchMatches.length) return;
+  searchIdx = 0;
+  searchMatches[0].classList.add('search-current');
+  searchMatches[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+</script>
+</body>
+</html>

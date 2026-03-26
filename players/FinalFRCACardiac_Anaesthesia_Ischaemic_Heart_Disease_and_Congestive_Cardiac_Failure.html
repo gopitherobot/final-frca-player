@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cardiac Anaesthesia — Ischaemic Heart Disease and Congestive Cardiac Failure</title>
+<style>
+
+  :root {
+    --accent:    #ef4444;
+    --body-bg:   #f1f5f9;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: var(--body-bg);
+    color: #1e293b;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  /* ── Header ── */
+  .header {
+    background: #0f172a;
+    border-bottom: 3px solid var(--accent);
+    padding: 12px 20px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .header-left { flex: 1; min-width: 200px; }
+  .header h1 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #f1f5f9;
+    margin-bottom: 4px;
+    letter-spacing: 0.01em;
+  }
+  .header-sub {
+    font-size: 0.72rem;
+    color: #94a3b8;
+    font-style: italic;
+  }
+  audio {
+    height: 36px;
+    accent-color: var(--accent);
+    flex-shrink: 0;
+  }
+  .back-link {
+    font-size: 0.8rem;
+    color: #94a3b8;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .back-link:hover { color: #60a5fa; }
+
+  /* ── Toolbar ── */
+  .toolbar {
+    background: #1e293b;
+    padding: 7px 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-shrink: 0;
+    border-bottom: 1px solid #334155;
+  }
+  .toolbar input {
+    flex: 1;
+    max-width: 380px;
+    padding: 5px 11px;
+    border: 1px solid #475569;
+    border-radius: 6px;
+    background: #0f172a;
+    color: #e2e8f0;
+    font-size: 0.83rem;
+    outline: none;
+  }
+  .toolbar input:focus { border-color: var(--accent); }
+  .toolbar input::placeholder { color: #64748b; }
+  .stats {
+    font-size: 0.72rem;
+    color: #64748b;
+    white-space: nowrap;
+  }
+
+  /* ── Scroll area ── */
+  .scroll-area {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+  }
+  .scroll-area::-webkit-scrollbar { width: 6px; }
+  .scroll-area::-webkit-scrollbar-track { background: transparent; }
+  .scroll-area::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+
+  /* ── Subtitle bar ── */
+  .subtitle-bar {
+    background: #0f172a;
+    border-top: 2px solid var(--accent);
+    padding: 8px 20px;
+    flex-shrink: 0;
+    min-height: 42px;
+    display: flex;
+    align-items: center;
+  }
+  .subtitle-text {
+    font-size: 0.9rem;
+    color: #e2e8f0;
+    line-height: 1.5;
+    font-style: italic;
+  }
+  .subtitle-text.empty { color: #475569; }
+
+  /* ── Transcript blocks ── */
+  .t-block {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    margin-bottom: 14px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    display: flex;
+  }
+  .t-block.block-active {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px rgba(37,99,235,0.15);
+  }
+  .t-gutter {
+    background: #0f172a;
+    width: 52px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: 14px;
+    cursor: pointer;
+  }
+  .t-gutter:hover { background: #1e293b; }
+  .t-timestamp {
+    font-size: 0.7rem;
+    color: #64748b;
+    font-family: monospace;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+  .t-gutter.gutter-active .t-timestamp { color: var(--accent); }
+  .t-body {
+    flex: 1;
+    padding: 12px 16px;
+    line-height: 1.75;
+    font-size: 0.92rem;
+    color: #1e293b;
+  }
+
+  /* ── Segments ── */
+  .segment {
+    cursor: pointer;
+    border-radius: 3px;
+    transition: background 0.1s;
+  }
+  .segment:hover { background: #eff6ff; }
+  .segment.active {
+    background: #bfdbfe;
+    outline: 2px solid #3b82f6;
+    outline-offset: 1px;
+    border-radius: 3px;
+  }
+  .segment.search-match  { background: #fef9c3; }
+  .segment.search-current { background: #fde047; outline: 2px solid #ca8a04; }
+
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <h1>Cardiac Anaesthesia — Ischaemic Heart Disease and Congestive Cardiac Failure</h1>
+    <div class="header-sub">Final FRCA &mdash; Exam Viva Simulation &mdash; Click any phrase to seek</div>
+  </div>
+  <audio id="audio" src="../FinalFRCACardiac_Anaesthesia_Ischaemic_Heart_Disease_and_Congestive_Cardiac_Failure.mp3" controls preload="metadata"></audio>
+  <a class="back-link" href="index.html">&#8592; All Topics</a>
+</div>
+
+<div class="toolbar">
+  <input type="text" id="search" placeholder="Search transcript&#8230; (Enter = next match)">
+  <span class="stats" id="stats">184 segments &nbsp;|&nbsp; <span id="dur">loading&#8230;</span></span>
+</div>
+
+<div class="scroll-area" id="scroll-area">
+<div class="t-block">
+  <div class="t-gutter" data-start="0.0"><span class="t-timestamp">0:00</span></div>
+  <div class="t-body"><span class="segment" data-start="0.0" data-end="5.5" title="0:00">Anathesia for patients with a Schemic heart disease and congestive cardiac failure. </span><span class="segment" data-start="5.5" data-end="10.98" title="0:05">Schemic heart disease is widely prevalent in the adult population in the UK. </span><span class="segment" data-start="10.98" data-end="16.0" title="0:10">Figures from the National Confidential Inquiry into Perioperative Deaths 2000 </span><span class="segment" data-start="16.0" data-end="20.7" title="0:16">show that in the surgical population, Schemic heart disease is the leading cause of death </span><span class="segment" data-start="20.7" data-end="27.7" title="0:20">within 30 days of a surgical procedure, accounting for 36% of all Perioperative deaths. </span><span class="segment" data-start="27.9" data-end="32.1" title="0:27">As a result, the anesthetic management of patients with the Schemic heart disease </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="32.1"><span class="t-timestamp">0:32</span></div>
+  <div class="t-body"><span class="segment" data-start="32.1" data-end="35.9" title="0:32">undergoing non-cardiac surgery is a very important issue </span><span class="segment" data-start="35.9" data-end="40.9" title="0:35">and the examiner will be looking for a good understanding of the key principles of management. </span><span class="segment" data-start="40.9" data-end="46.7" title="0:40">Explain the pathophysiology behind myocardial Schemia in the Perioperative period. </span><span class="segment" data-start="46.7" data-end="48.7" title="0:46">This is quite a dry question. </span><span class="segment" data-start="48.7" data-end="55.2" title="0:48">However, the key to this question is understanding that myocardial oxygen supply must meet demand. </span><span class="segment" data-start="55.2" data-end="60.2" title="0:55">The examiner will want to see relevant physiology linked to clinical practice. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="61.2"><span class="t-timestamp">1:01</span></div>
+  <div class="t-body"><span class="segment" data-start="61.2" data-end="68.2" title="1:01">The pathological feature in patients with a Schemic heart disease is atheromatous plaques </span><span class="segment" data-start="68.2" data-end="71.2" title="1:08">within the walls of the coronary arteries. </span><span class="segment" data-start="71.2" data-end="74.2" title="1:11">Two problems can arise from this. </span><span class="segment" data-start="74.2" data-end="83.2" title="1:14">Firstly, myocardial ischemia, as myocardial oxygen demand exceeds a limited myocardial oxygen supply. </span><span class="segment" data-start="83.2" data-end="92.2" title="1:23">Secondly, plaque rupture with thrombus formation leading to complete or near-complete coronary artery occlusion. </span><span class="segment" data-start="92.2" data-end="97.2" title="1:32">Correct, but why is this important during the Perioperative period? </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="97.2"><span class="t-timestamp">1:37</span></div>
+  <div class="t-body"><span class="segment" data-start="97.2" data-end="102.2" title="1:37">The overriding principle is to avoid cardiac Schemia. </span><span class="segment" data-start="102.2" data-end="109.2" title="1:42">This is done by ensuring that the supply of oxygen to the myocardium always meets the demand. </span><span class="segment" data-start="110.2" data-end="117.2" title="1:50">In patients who undergo anesthesia and surgery, a number of stresses, including tissue trauma, </span><span class="segment" data-start="117.2" data-end="125.2" title="1:57">temperature changes, alteration in organ function, as well as the stress and inflammatory responses, </span><span class="segment" data-start="125.2" data-end="130.2" title="2:05">may combine to produce a range of pathophysiological derangements. </span><span class="segment" data-start="130.2" data-end="137.2" title="2:10">In the presence of a Schemic heart disease, these derangements may upset the balance of oxygen supply </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="137.2"><span class="t-timestamp">2:17</span></div>
+  <div class="t-body"><span class="segment" data-start="137.2" data-end="140.2" title="2:17">and demand to the myocardium. </span><span class="segment" data-start="140.2" data-end="149.2" title="2:20">This may lead to myocardial injury, arrhythmias, ventricular failure, or sudden cardiac death. </span><span class="segment" data-start="149.2" data-end="156.2" title="2:29">Furthermore, the inflammatory response may result in the activation of the vascular endothelium </span><span class="segment" data-start="156.2" data-end="162.2" title="2:36">leading to plaque instability, rupture, and coronary artery spasm. </span><span class="segment" data-start="162.2" data-end="168.2" title="2:42">Changes in platelet function, collagulation, and the fibrenolithic system </span><span class="segment" data-start="168.2" data-end="174.2" title="2:48">also contribute and predispose to coronary artery thrombosis. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="174.2"><span class="t-timestamp">2:54</span></div>
+  <div class="t-body"><span class="segment" data-start="174.2" data-end="181.2" title="2:54">How important an IHD and congestive cardiac failure as risk factors for cardiac morbidity and mortality? </span><span class="segment" data-start="181.2" data-end="188.2" title="3:01">This question gives you a good opportunity to show your knowledge on at least one of the clinical risk stratification indices. </span><span class="segment" data-start="188.2" data-end="192.2" title="3:08">Many candidates will mention the Goldman cardiac risk index. </span><span class="segment" data-start="192.2" data-end="198.2" title="3:12">However, this dates back to 1977, and like a number of other scoring systems that followed soon after, </span><span class="segment" data-start="198.2" data-end="200.2" title="3:18">its predictive value was poor. </span><span class="segment" data-start="200.2" data-end="209.2" title="3:20">Lee's revised Goldman cardiac risk index in 1999 has an improved predictive value and is a better one to mention. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="209.2"><span class="t-timestamp">3:29</span></div>
+  <div class="t-body"><span class="segment" data-start="209.2" data-end="217.2" title="3:29">A number of scoring systems have been developed to assess cardiac risk for non-cardiac surgery. </span><span class="segment" data-start="217.2" data-end="224.2" title="3:37">In all of them, ischemic heart disease and congestive cardiac failure score highly. </span><span class="segment" data-start="224.2" data-end="233.2" title="3:44">The revised Goldman index, produced in 1999, has a better predictive value than many of the other indexes. </span><span class="segment" data-start="233.2" data-end="238.2" title="3:53">Can you give me some more details on the revised Goldman cardiac risk index? </span><span class="segment" data-start="238.2" data-end="243.2" title="3:58">This index is very simple and worth knowing. </span><span class="segment" data-start="243.2" data-end="249.2" title="4:03">The index identifies six predictors for major cardiac complications. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="249.2"><span class="t-timestamp">4:09</span></div>
+  <div class="t-body"><span class="segment" data-start="249.2" data-end="259.2" title="4:09">These are high-risk surgery, which includes any intraperitoneal, intra-therasic or suprainguinal vascular procedures, </span><span class="segment" data-start="259.2" data-end="270.2" title="4:19">ischemic heart disease, congestive cardiac failure, cerebral vascular disease, insular independent diabetes and renal impairment. </span><span class="segment" data-start="271.2" data-end="281.2" title="4:31">In essence, if a patient fits into three or more of these groups, then their risk of perioperative cardiac morbidity or mortality is 11%. </span><span class="segment" data-start="281.2" data-end="288.2" title="4:41">It is 7% with 2, and under 1% with 1 or no predictors. </span><span class="segment" data-start="288.2" data-end="293.2" title="4:48">It may be useful to have some knowledge of the American Heart Association guidelines. </span><span class="segment" data-start="293.2" data-end="299.2" title="4:53">They also provide a framework for considering cardiac risk in patients undergoing non-cardiac surgery. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="299.2"><span class="t-timestamp">4:59</span></div>
+  <div class="t-body"><span class="segment" data-start="299.2" data-end="305.2" title="4:59">Furthermore, give guidance on cardiovascular pre-optimization. </span><span class="segment" data-start="305.2" data-end="313.2" title="5:05">The American Heart Association updated their 1996 guidelines in 2007. </span><span class="segment" data-start="313.2" data-end="320.2" title="5:13">They provide a framework for considering cardiac risk in patients undergoing non-cardiac surgery. </span><span class="segment" data-start="320.2" data-end="326.2" title="5:20">They assess risk and give guidance on cardiovascular pre-optimization. </span><span class="segment" data-start="326.2" data-end="330.2" title="5:26">Clinical predictors of outcome are assessed. </span><span class="segment" data-start="330.2" data-end="337.2" title="5:30">Based on these, the patient is placed into a major, intermediate or minor risk group. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="337.2"><span class="t-timestamp">5:37</span></div>
+  <div class="t-body"><span class="segment" data-start="337.2" data-end="347.2" title="5:37">The five major clinical predictors are myocardial infarction within 30 days, unstable or severe angina, </span><span class="segment" data-start="347.2" data-end="355.2" title="5:47">decompensated heart failure, significant arrhythmias and severe vascular disease. </span><span class="segment" data-start="355.2" data-end="369.2" title="5:55">The five intermediate predictors include myocardial infarction over 30 days, mild angina, compensated heart failure, diabetes and renal insufficiency. </span><span class="segment" data-start="369.2" data-end="384.2" title="6:09">Advice is that elective surgery in those with any major clinical predictors is cancelled or delayed for further investigation, medical optimization or referral for re-vascularization. </span><span class="segment" data-start="384.2" data-end="395.2" title="6:24">The presence of intermediate predictors necessitates further consideration based on functional capacity measured in METS and the extent of the planned surgery. </span><span class="segment" data-start="395.2" data-end="403.2" title="6:35">Patients would then either proceed with surgery or go for further investigations initially non-invasive. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="403.2"><span class="t-timestamp">6:43</span></div>
+  <div class="t-body"><span class="segment" data-start="403.2" data-end="415.2" title="6:43">Coronary re-vascularization occurring between six weeks and five years without the recurrence of symptoms or signs constitutes a low-risk group. </span><span class="segment" data-start="415.2" data-end="420.2" title="6:55">What is your approach to the anaesthetic management of patients with IHD? </span><span class="segment" data-start="420.2" data-end="424.2" title="7:00">Remember, any management question must be approached logically. </span><span class="segment" data-start="424.2" data-end="431.2" title="7:04">Split this one into the pre-operative, operative and post-operative management. </span><span class="segment" data-start="431.2" data-end="443.2" title="7:11">This can be split into pre-operative, operative and post-operative management as well as the detection and treatment of ischemia if it occurs. </span><span class="segment" data-start="443.2" data-end="449.2" title="7:23">Good. Can you tell me about the pre-operative management first? </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="449.2"><span class="t-timestamp">7:29</span></div>
+  <div class="t-body"><span class="segment" data-start="449.2" data-end="473.2" title="7:29">The aims of pre-operative management are firstly optimization of pre-operative status which involves appropriate investigations, review of anti-eschemic medical therapy and occasionally re-vascularization and to secondly consideration of the most appropriate anaesthetic level of monitoring and post-operative care. </span><span class="segment" data-start="473.2" data-end="478.2" title="7:53">Tell me about pre-operative medical therapy in these patients. </span><span class="segment" data-start="478.2" data-end="487.2" title="7:58">In general, all cardiovascular medications are continued throughout the operative period to protect against dyschemic stresses. </span><span class="segment" data-start="487.2" data-end="494.2" title="8:07">There is evidence that starting some drugs may carry additional benefit. </span><span class="segment" data-start="494.2" data-end="497.2" title="8:14">Which drugs are these? </span><span class="segment" data-start="497.2" data-end="503.2" title="8:17">Initial evidence for the use of beta blockers in the perioperative period was compelling. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="503.2"><span class="t-timestamp">8:23</span></div>
+  <div class="t-body"><span class="segment" data-start="503.2" data-end="517.2" title="8:23">Numerous clinical trials showed that the perioperative use of beta blockers could lead to reduction in the incidence of post-operative myocardial ischemia, myocardial infarction and cardiac mortality. </span><span class="segment" data-start="517.2" data-end="521.2" title="8:37">However, controversy still surrounds this issue. </span><span class="segment" data-start="521.2" data-end="533.2" title="8:41">The recent publication of some large prospective randomized trials such as the Poise trial have presented mixed results for the effectiveness of perioperative beta blockade. </span><span class="segment" data-start="533.2" data-end="545.2" title="8:53">Although a reduction in non-fatal myocardial infarction was seen in the Poise trial, it came at the cost of an increased stroke and total mortality rate. </span><span class="segment" data-start="545.2" data-end="554.2" title="9:05">As a result, there may be a move away from the acute initiation of higher dose beta blocker therapy in the perioperative period. </span><span class="segment" data-start="554.2" data-end="566.2" title="9:14">Those already on beta blockers should of course stay on them, indeed stopping them perioperatively is associated with a 2.6-fold increase in one year mortality. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="566.2"><span class="t-timestamp">9:26</span></div>
+  <div class="t-body"><span class="segment" data-start="566.2" data-end="578.2" title="9:26">Statins have been shown to be useful perioperatively due to their plaque stabilizing effects. They have been shown to lower the incidence of perioperative cardiac events. </span><span class="segment" data-start="578.2" data-end="593.2" title="9:38">There is current interest in alpha-2 agonists such as clonidine. These drugs can moderate the stress response by reducing prostaglandin mediated noradrenaline output. They are also analgesic. </span><span class="segment" data-start="593.2" data-end="599.2" title="9:53">What is a general approach for nest-tising a patient with IHD? </span><span class="segment" data-start="599.2" data-end="606.2" title="9:59">There is no evidence to demonstrate a consistent advantage with either general or regional anesthesia. </span><span class="segment" data-start="606.2" data-end="614.2" title="10:06">There is also no consistent evidence to support any general anesthetic agent or technique over another. </span><span class="segment" data-start="614.2" data-end="629.2" title="10:14">What is important is not the choice of agent or technique but how the anesthetic is managed to avoid cardiac ischemia by ensuring that the supply of oxygen to the macardium always meets the demand. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="629.2"><span class="t-timestamp">10:29</span></div>
+  <div class="t-body"><span class="segment" data-start="629.2" data-end="642.2" title="10:29">It is also important to remember that these patients often have a number of related comorbidities such as hypertension, diabetes and smoking-related lung disease. </span><span class="segment" data-start="642.2" data-end="653.2" title="10:42">At all times, good communication is required between relevant carers including cardiologists, critical care and surgical teams. </span><span class="segment" data-start="653.2" data-end="657.2" title="10:53">Can you give me some more details on the anesthetic and why particular facts are important? </span><span class="segment" data-start="657.2" data-end="665.2" title="10:57">This is an easy question, folks, and it gives you the opportunity to put physiology into practice. </span><span class="segment" data-start="665.2" data-end="675.2" title="11:05">Supply of oxygen to the macardium depends on two factors. The coronary artery blood flow and arterial oxygen content. </span><span class="segment" data-start="675.2" data-end="692.2" title="11:15">Coronary artery flow is determined by the coronary perfusion pressure and the duration of diastole. Due to the high macardial wall tension in systole, most macardial perfusion especially to the left ventricle occurs in diastole. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="692.2"><span class="t-timestamp">11:32</span></div>
+  <div class="t-body"><span class="segment" data-start="692.2" data-end="703.2" title="11:32">Therefore, it is the aortic diastolic pressure minus the left ventricular end diastolic pressure that determines the coronary perfusion pressure. </span><span class="segment" data-start="703.2" data-end="713.2" title="11:43">The duration of diastole is dependent upon the heart rate. As the heart rate increases, this time is reduced for two reasons. </span><span class="segment" data-start="713.2" data-end="724.2" title="11:53">Firstly, the length of the cardiac cycle is shorter and secondly, the proportion of time devoted to diastole in the cycle is reduced. </span><span class="segment" data-start="724.2" data-end="731.2" title="12:04">Arterial oxygen content can be derived from the oxygen content equation. </span><span class="segment" data-start="731.2" data-end="741.2" title="12:11">Oxygen content equals 1.34 times by the concentration of hemoglobin times by the oxygen saturation. </span><span class="segment" data-start="741.2" data-end="749.2" title="12:21">This is then added to 0.003 multiplied by the partial pressure of oxygen. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="749.2"><span class="t-timestamp">12:29</span></div>
+  <div class="t-body"><span class="segment" data-start="749.2" data-end="761.2" title="12:29">From this equation, we can conclude that oxygen content is dependent upon hemoglobin concentration, oxygen saturation and arterial oxygen tension. </span><span class="segment" data-start="761.2" data-end="765.2" title="12:41">What about demand? </span><span class="segment" data-start="765.2" data-end="777.2" title="12:45">Four factors determine myocardial oxygen demand. The preload, afterload, heart rate and the contractility. </span><span class="segment" data-start="777.2" data-end="780.2" title="12:57">What does this mean in practice? </span><span class="segment" data-start="780.2" data-end="794.2" title="13:00">Avoid hypoxemia, avoid hypotension, especially diastolic hypotension. There should not be a sustained drop of over 20% in the patient's baseline blood pressure. </span><span class="segment" data-start="794.2" data-end="809.2" title="13:14">Avoid hypertension. This increases afterload and hence the macardial oxygen demand. In fact, pressure work increases oxygen consumption much more than volume work. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="809.2"><span class="t-timestamp">13:29</span></div>
+  <div class="t-body"><span class="segment" data-start="809.2" data-end="816.2" title="13:29">The increased wall tension also causes further compression of the macardial vessels. </span><span class="segment" data-start="816.2" data-end="828.2" title="13:36">Avoid tachycardia. This shortens diastole and increases oxygen demand. Avoid autonomic stimulation. Avoid anemia. </span><span class="segment" data-start="828.2" data-end="836.2" title="13:48">One of the particular risk times during anesthesia in patients with IHD and how can they be managed? </span><span class="segment" data-start="837.2" data-end="844.2" title="13:57">These are any occasions which upset the balance between oxygen supply and demand. </span><span class="segment" data-start="844.2" data-end="853.2" title="14:04">Preoperative anxiety. This can cause tachycardia and hyper-tension. Use an anxiolytic or beta blockade. </span><span class="segment" data-start="854.2" data-end="869.2" title="14:14">Induction of anesthesia. This may cause hypotension. Reduce the induction dose by concurrent use of opiates such as fentanyl, alphentanyl or remy fentanyl or the use of medazolam. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="869.2"><span class="t-timestamp">14:29</span></div>
+  <div class="t-body"><span class="segment" data-start="869.2" data-end="886.2" title="14:29">Larynoscopy and intubation. This may cause hypoxemia, hyper-tension and tachycardia. Ensure good preoxygenation and adequate anesthesia or local anesthetic to the cords for intubation. </span><span class="segment" data-start="886.2" data-end="897.2" title="14:46">Consider the use of a short-acting beta blocker such as Esmolol. Alternatively avoid intubation and use a laryngeal mask. </span><span class="segment" data-start="898.2" data-end="917.2" title="14:58">Surgical incision. This causes autonomic stimulation. Use regional anesthesia. Neuraxial blockade is associated with reduced perioperative myocardial ischemia and infarction. However this must be balanced against the risk of hypotension. </span><span class="segment" data-start="917.2" data-end="927.2" title="15:17">Extubation. Extubate deep or use a short-acting beta blocker to avoid hyper-tension and tachycardia. </span><span class="segment" data-start="927.2" data-end="934.2" title="15:27">Postoperative pain must be controlled to avoid stimulation of the stress response. </span><span class="segment" data-start="934.2" data-end="944.2" title="15:34">Postoperative hypoxemia. Ensure adequate oxygenation. Patients should receive three to four days of supplemental oxygen after major surgery. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="944.2"><span class="t-timestamp">15:44</span></div>
+  <div class="t-body"><span class="segment" data-start="944.2" data-end="955.2" title="15:44">Avoid anemia. The optimum level of hemoglobin is a subject of much discussion but is probably around 10 grams per deciliter in this group. </span><span class="segment" data-start="955.2" data-end="959.2" title="15:55">Pay attention to fluid balance. </span><span class="segment" data-start="959.2" data-end="963.2" title="15:59">What about specific anesthetic agents? </span><span class="segment" data-start="963.2" data-end="975.2" title="16:03">It tomodates will cause less myocardial depression than other agents but others are often used. Catamine may increase cardiac workload and should be avoided. </span><span class="segment" data-start="975.2" data-end="981.2" title="16:15">Rockuronium and vecoronium are considered the most cardiac stable neuromuscular blockers. </span><span class="segment" data-start="981.2" data-end="997.2" title="16:21">Isofluorane may be the most appropriate volatile agent. While all volatiles cause vasodilitation, cardiac depression and bradycardia in a dose-dependent manner, isofluorane may cause the least of these. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="997.2"><span class="t-timestamp">16:37</span></div>
+  <div class="t-body"><span class="segment" data-start="997.2" data-end="1006.2" title="16:37">In humans isofluorane has never convincingly been shown to cause the coronary steel that is described in animal models. </span><span class="segment" data-start="1006.2" data-end="1011.2" title="16:46">What about monitoring and patients with IHD? </span><span class="segment" data-start="1011.2" data-end="1018.2" title="16:51">The level of monitoring should be appropriate to the disease severity and the magnitude of the surgery. </span><span class="segment" data-start="1018.2" data-end="1029.2" title="16:58">It should be based around the detection of factors important in the balancing of myocardial oxygen supply and demand and for the detection of introspective ischemia. </span><span class="segment" data-start="1029.2" data-end="1035.2" title="17:09">For the majority of patients the association of anesthetist's guidelines will be enough. </span><span class="segment" data-start="1035.2" data-end="1047.2" title="17:15">These are ECG, noninvasive blood pressure, pulse oximetry, oxygen, carbon dioxide and vapor analysis and airway pressure. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="1047.2"><span class="t-timestamp">17:27</span></div>
+  <div class="t-body"><span class="segment" data-start="1047.2" data-end="1054.2" title="17:27">These should be started before induction and continued until recovery from anesthesia. </span><span class="segment" data-start="1054.2" data-end="1064.2" title="17:34">A CMV-5 configuration should be used for the ECG electrodes as this is the most sensitive to ischemia in the left ventricle. </span><span class="segment" data-start="1064.2" data-end="1076.2" title="17:44">However, with more complicated patients further monitoring may be appropriate, including invasive cardiovascular monitoring, temperature and urine output. </span><span class="segment" data-start="1076.2" data-end="1082.2" title="17:56">Invasive monitoring includes an arterial line and a central venous pressure line. </span><span class="segment" data-start="1082.2" data-end="1094.2" title="18:02">The use of a pulmonary artery catheter is controversial and less intensive cardiac output monitors such as isophagyledoppler and picot may be more appropriate. </span><span class="segment" data-start="1094.2" data-end="1109.2" title="18:14">Consider their uses in patients with very recent myocardial infarction, significant ischemic heart disease, high-risk procedures and patients with significant left ventricular dysfunction. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="1109.2"><span class="t-timestamp">18:29</span></div>
+  <div class="t-body"><span class="segment" data-start="1109.2" data-end="1115.2" title="18:29">Can you tell me a little about the postoperative care of patients with IHD? </span><span class="segment" data-start="1115.2" data-end="1123.2" title="18:35">Interestingly, postoperative ischemia and myocardial infarction have a peak incidence at 48 hours. </span><span class="segment" data-start="1123.2" data-end="1130.2" title="18:43">The ischemia is silent in 90% of cases and often occurs in the early hours of the morning. </span><span class="segment" data-start="1130.2" data-end="1136.2" title="18:50">Its etiology is not simply explained by oxygen supply and demand. </span><span class="segment" data-start="1136.2" data-end="1145.2" title="18:56">However, management in the postoperative period is based around continuing the principles of care outlined previously. </span><span class="segment" data-start="1145.2" data-end="1152.2" title="19:05">Attention to postoperative analgesia is particularly important in reducing sympathetic activity. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="1152.2"><span class="t-timestamp">19:12</span></div>
+  <div class="t-body"><span class="segment" data-start="1152.2" data-end="1164.2" title="19:12">Unfortunately, postoperative ischemia in these patients remains common and is associated with the development of significant cardiac morbidity and mortality. </span><span class="segment" data-start="1164.2" data-end="1174.2" title="19:24">As a result, the plan for postoperative care should be considered thoroughly preoperatively and critical care support sought in advance. </span><span class="segment" data-start="1174.2" data-end="1179.2" title="19:34">How would you treat an intraoperative acute ischemic episode? </span><span class="segment" data-start="1179.2" data-end="1193.2" title="19:39">The management of intraoperative ischemia should concentrate on firstly correcting any deranged hemodynamic variables by manipulation of the depth of anesthesia and the use of vasoactive drugs. </span><span class="segment" data-start="1193.2" data-end="1205.2" title="19:53">The intravenous beta blocker, Esmolol, is particularly useful in reducing heart rate and oxygen demand due to its rapid onset and titrate ability. </span><span class="segment" data-start="1205.2" data-end="1216.2" title="20:05">Secondly, the use of intravenous nitrates which appear to redistribute myocardial blood flow and may reverse myocardial ischemia. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="1216.2"><span class="t-timestamp">20:16</span></div>
+  <div class="t-body"><span class="segment" data-start="1216.2" data-end="1224.2" title="20:16">As previously mentioned, there should be a high index of suspicion for ischemia in the postoperative period. </span><span class="segment" data-start="1224.2" data-end="1236.2" title="20:24">The diagnosis of myocardial infarction is made on the basis of history, ECG changes and a rise in the cardiac troponins T or I. </span><span class="segment" data-start="1236.2" data-end="1244.2" title="20:36">Standard therapy is then started depending on the diagnosis of the particular acute coronary syndrome. </span><span class="segment" data-start="1244.2" data-end="1252.2" title="20:44">The nature of the surgery may preclude the use of thrombolysis, if so primary angioplasty is preferred. </span><span class="segment" data-start="1252.2" data-end="1259.2" title="20:52">Cautious heparinization and the use of anti-plate let agents is usually acceptable. </span><span class="segment" data-start="1259.2" data-end="1266.2" title="20:59">Can you tell me about the management of patients with congestive cardiac failure undergoing anesthesia and surgery? </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="1266.2"><span class="t-timestamp">21:06</span></div>
+  <div class="t-body"><span class="segment" data-start="1266.2" data-end="1275.2" title="21:06">This is a very open question. Run through the management systematically. Start with a good introduction to set the scene. </span><span class="segment" data-start="1276.2" data-end="1283.2" title="21:16">Conjective cardiac failure is an increasingly common condition in the elderly population. </span><span class="segment" data-start="1283.2" data-end="1290.2" title="21:23">Prognosis is poor with 82% of patients dying within six years of diagnosis. </span><span class="segment" data-start="1290.2" data-end="1304.2" title="21:30">As a result, it is of no surprise that congestive cardiac failure is a significant risk factor for cardiac morbidity and mortality in all risk stratification scoring systems. </span><span class="segment" data-start="1304.2" data-end="1310.2" title="21:44">Conjective cardiac failure refers to both left and right heart involvement. </span><span class="segment" data-start="1310.2" data-end="1319.2" title="21:50">The commonest causes are a schemic heart disease, hyper tension, vascular disease and alcohol abuse. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="1319.2"><span class="t-timestamp">21:59</span></div>
+  <div class="t-body"><span class="segment" data-start="1319.2" data-end="1327.2" title="21:59">The anaesthetic management can be split into preoperative, operative and postoperative. </span><span class="segment" data-start="1327.2" data-end="1330.2" title="22:07">Tell me about preoperative management. </span><span class="segment" data-start="1330.2" data-end="1336.2" title="22:10">Answer this one in exactly the same way as with the schemic heart disease. </span><span class="segment" data-start="1336.2" data-end="1353.2" title="22:16">The aims of the preoperative management are firstly optimization of preoperative status by appropriate investigations, review of anti-failure medical therapy and correction of any exacerbating causes. </span><span class="segment" data-start="1353.2" data-end="1361.2" title="22:33">And secondly, deciding on the most appropriate anaesthetic, level of monitoring and postoperative care. </span><span class="segment" data-start="1361.2" data-end="1373.2" title="22:41">History and examination are aimed at identifying the presence of or recent episodes of decomposition within six months is significant. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="1373.2"><span class="t-timestamp">22:53</span></div>
+  <div class="t-body"><span class="segment" data-start="1373.2" data-end="1381.2" title="22:53">Medical therapy should be optimised to maximise left ventricular function and functional capacity. </span><span class="segment" data-start="1381.2" data-end="1387.2" title="23:01">All anti-failure medication is continued throughout the operative period. </span><span class="segment" data-start="1387.2" data-end="1400.2" title="23:07">Rhythms other than sinus rhythm are poorly tolerated and if they occur, efforts should be taken to restore normal sinus rhythm or optimise the rate to around 80 beats per minute. </span><span class="segment" data-start="1400.2" data-end="1426.2" title="23:20">Investigations should include blood tests to look for biochemical disturbances, aggravating factors such as anemia or comorbidities such as renal impairment, 12 lead ECG to look for arrhythmias, chest x-ray to look for signs of heart failure, trans-theratic echo may be useful to quantify the severity of the heart failure, </span><span class="segment" data-start="1426.2" data-end="1436.2" title="23:46">and also to look for a possible etiology, for example, of alveolar disease, wall motion abnormalities or pericardial effusion. </span><span class="segment" data-start="1436.2" data-end="1446.2" title="23:56">Cardiac catheterisation is sometimes performed if significant coronary artery disease or valvular heart disease is suspected. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="1446.2"><span class="t-timestamp">24:06</span></div>
+  <div class="t-body"><span class="segment" data-start="1446.2" data-end="1451.2" title="24:06">Good. Can it quantify the severity of heart failure for me? </span><span class="segment" data-start="1452.2" data-end="1461.2" title="24:12">This is usually based on the ejection fraction. A normal ejection fraction is 60 to 80 per cent. </span><span class="segment" data-start="1461.2" data-end="1481.2" title="24:21">Mild left ventricular impairment, an ejection fraction of 40 to 50 per cent, moderate left ventricular impairment, an ejection fraction of 30 to 40 per cent, severe left ventricular impairment, an ejection fraction under 30 per cent. </span><span class="segment" data-start="1481.2" data-end="1485.2" title="24:41">What about the perioperative management? </span><span class="segment" data-start="1486.2" data-end="1498.2" title="24:46">For major surgery there is little conclusive evidence for choice between general or regional anesthesia. However, for peripheral surgery, regional anesthesia is preferred. </span><span class="segment" data-start="1499.2" data-end="1511.2" title="24:59">Whichever anesthetic technique is chosen, the aim is to minimise negative Ionotropy, Tachycardia, Diastolic hypotension and Cystolic Hyper-Tension. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="1511.2"><span class="t-timestamp">25:11</span></div>
+  <div class="t-body"><span class="segment" data-start="1511.2" data-end="1526.2" title="25:11">Attention should be paid to fluid balance and temperature control and urine output. For all major surgery, invasive cardiac monitoring is required, including measurements of cardiac output. </span><span class="segment" data-start="1526.2" data-end="1535.2" title="25:26">Some patients may be considered too unfit for surgery. Beware those with an ejection fraction under 30 per cent. </span><span class="segment" data-start="1535.2" data-end="1545.2" title="25:35">These patients are dependent on their preload to maintain ventricular filling and may also rely on an increased sympathetic tone. </span><span class="segment" data-start="1545.2" data-end="1553.2" title="25:45">These patients live life on a knife edge, under extremely sensitive to small changes in their physiology. </span><span class="segment" data-start="1554.2" data-end="1566.2" title="25:54">In general, all antifalier medications should be given on the morning of surgery. Some anesthetists may withhold or reduce the dose of ACE inhibitors on the morning of surgery. </span><span class="segment" data-start="1566.2" data-end="1577.2" title="26:06">They can make the patient more prone to hypotension in the operative period. However, they should be resumed as soon as possible postoperatively. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="1577.2"><span class="t-timestamp">26:17</span></div>
+  <div class="t-body"><span class="segment" data-start="1577.2" data-end="1582.2" title="26:17">All patients should receive supplemental oxygen postoperatively. </span><span class="segment" data-start="1582.2" data-end="1600.2" title="26:22">Good postoperative analgesia is essential to minimise the detrimental effects of cataclyclic amine release. However, non-steeroidal anti-inflammatories should be avoided due to the susceptibility of these patients to renal failure and their effect on fluid retention. </span><span class="segment" data-start="1600.2" data-end="1608.2" title="26:40">Have a low threshold for admission to the intensive therapy unit or high dependency unit in the postoperative period. </span><span class="segment" data-start="1608.2" data-end="1613.2" title="26:48">Decompensation may require treatment with ionotropes. </span></div>
+</div>
+</div>
+
+<div class="subtitle-bar">
+  <span class="subtitle-text empty" id="subtitle-text">Play audio to see live subtitles&#8230;</span>
+</div>
+
+<script>
+
+const audio    = document.getElementById('audio');
+const allSegs  = Array.from(document.querySelectorAll('.segment'));
+const allBlocks = Array.from(document.querySelectorAll('.t-block'));
+const subtitleEl = document.getElementById('subtitle-text');
+let activeSegEl   = null;
+let activeBlockEl = null;
+let searchMatches = [];
+let searchIdx     = 0;
+
+// Duration display
+audio.addEventListener('loadedmetadata', () => {
+  const m = Math.floor(audio.duration / 60);
+  const s = Math.floor(audio.duration %% 60).toString().padStart(2,'0');
+  document.getElementById('dur').textContent = m + ':' + s;
+});
+
+// Seek helper
+function seekTo(t) {
+  audio.currentTime = t;
+  audio.play();
+}
+
+// Block gutter click
+document.querySelectorAll('.t-gutter').forEach(g => {
+  g.addEventListener('click', () => seekTo(parseFloat(g.dataset.start)));
+});
+
+// Segment click
+allSegs.forEach(s => {
+  s.addEventListener('click', e => {
+    e.stopPropagation();
+    seekTo(parseFloat(s.dataset.start));
+  });
+});
+
+// Real-time tracking
+audio.addEventListener('timeupdate', () => {
+  const t = audio.currentTime;
+
+  // Find active segment (last one whose start <= t)
+  let found = null;
+  for (let i = allSegs.length - 1; i >= 0; i--) {
+    if (parseFloat(allSegs[i].dataset.start) <= t) { found = allSegs[i]; break; }
+  }
+
+  if (found && found !== activeSegEl) {
+    // Clear previous
+    if (activeSegEl) activeSegEl.classList.remove('active');
+    if (activeBlockEl) {
+      activeBlockEl.classList.remove('block-active');
+      const pg = activeBlockEl.querySelector('.t-gutter');
+      if (pg) pg.classList.remove('gutter-active');
+    }
+    // Set new
+    found.classList.add('active');
+    const block = found.closest('.t-block');
+    if (block) {
+      block.classList.add('block-active');
+      const g = block.querySelector('.t-gutter');
+      if (g) g.classList.add('gutter-active');
+      activeBlockEl = block;
+    }
+    activeSegEl = found;
+
+    // Update subtitle
+    subtitleEl.textContent = found.textContent.trim();
+    subtitleEl.classList.remove('empty');
+
+    // Auto-scroll (only when not searching)
+    if (!document.getElementById('search').value) {
+      found.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }
+});
+
+// Search
+const searchInput = document.getElementById('search');
+searchInput.addEventListener('input', runSearch);
+searchInput.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && searchMatches.length) {
+    searchMatches[searchIdx].classList.remove('search-current');
+    searchIdx = (searchIdx + 1) %% searchMatches.length;
+    const el = searchMatches[searchIdx];
+    el.classList.add('search-current');
+    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+});
+
+function runSearch() {
+  const q = searchInput.value.trim().toLowerCase();
+  allSegs.forEach(s => s.classList.remove('search-match','search-current'));
+  searchMatches = [];
+  if (!q) return;
+  allSegs.forEach(s => {
+    if (s.textContent.toLowerCase().includes(q)) {
+      s.classList.add('search-match');
+      searchMatches.push(s);
+    }
+  });
+  if (!searchMatches.length) return;
+  searchIdx = 0;
+  searchMatches[0].classList.add('search-current');
+  searchMatches[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+</script>
+</body>
+</html>

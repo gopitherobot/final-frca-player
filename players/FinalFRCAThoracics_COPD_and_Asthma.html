@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Thoracics — COPD and Asthma</title>
+<style>
+
+  :root {
+    --accent:    #7c3aed;
+    --body-bg:   #f1f5f9;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: var(--body-bg);
+    color: #1e293b;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  /* ── Header ── */
+  .header {
+    background: #0f172a;
+    border-bottom: 3px solid var(--accent);
+    padding: 12px 20px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .header-left { flex: 1; min-width: 200px; }
+  .header h1 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #f1f5f9;
+    margin-bottom: 4px;
+    letter-spacing: 0.01em;
+  }
+  .header-sub {
+    font-size: 0.72rem;
+    color: #94a3b8;
+    font-style: italic;
+  }
+  audio {
+    height: 36px;
+    accent-color: var(--accent);
+    flex-shrink: 0;
+  }
+  .back-link {
+    font-size: 0.8rem;
+    color: #94a3b8;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .back-link:hover { color: #60a5fa; }
+
+  /* ── Toolbar ── */
+  .toolbar {
+    background: #1e293b;
+    padding: 7px 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-shrink: 0;
+    border-bottom: 1px solid #334155;
+  }
+  .toolbar input {
+    flex: 1;
+    max-width: 380px;
+    padding: 5px 11px;
+    border: 1px solid #475569;
+    border-radius: 6px;
+    background: #0f172a;
+    color: #e2e8f0;
+    font-size: 0.83rem;
+    outline: none;
+  }
+  .toolbar input:focus { border-color: var(--accent); }
+  .toolbar input::placeholder { color: #64748b; }
+  .stats {
+    font-size: 0.72rem;
+    color: #64748b;
+    white-space: nowrap;
+  }
+
+  /* ── Scroll area ── */
+  .scroll-area {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+  }
+  .scroll-area::-webkit-scrollbar { width: 6px; }
+  .scroll-area::-webkit-scrollbar-track { background: transparent; }
+  .scroll-area::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+
+  /* ── Subtitle bar ── */
+  .subtitle-bar {
+    background: #0f172a;
+    border-top: 2px solid var(--accent);
+    padding: 8px 20px;
+    flex-shrink: 0;
+    min-height: 42px;
+    display: flex;
+    align-items: center;
+  }
+  .subtitle-text {
+    font-size: 0.9rem;
+    color: #e2e8f0;
+    line-height: 1.5;
+    font-style: italic;
+  }
+  .subtitle-text.empty { color: #475569; }
+
+  /* ── Transcript blocks ── */
+  .t-block {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    margin-bottom: 14px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    display: flex;
+  }
+  .t-block.block-active {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px rgba(37,99,235,0.15);
+  }
+  .t-gutter {
+    background: #0f172a;
+    width: 52px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: 14px;
+    cursor: pointer;
+  }
+  .t-gutter:hover { background: #1e293b; }
+  .t-timestamp {
+    font-size: 0.7rem;
+    color: #64748b;
+    font-family: monospace;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+  .t-gutter.gutter-active .t-timestamp { color: var(--accent); }
+  .t-body {
+    flex: 1;
+    padding: 12px 16px;
+    line-height: 1.75;
+    font-size: 0.92rem;
+    color: #1e293b;
+  }
+
+  /* ── Segments ── */
+  .segment {
+    cursor: pointer;
+    border-radius: 3px;
+    transition: background 0.1s;
+  }
+  .segment:hover { background: #eff6ff; }
+  .segment.active {
+    background: #bfdbfe;
+    outline: 2px solid #3b82f6;
+    outline-offset: 1px;
+    border-radius: 3px;
+  }
+  .segment.search-match  { background: #fef9c3; }
+  .segment.search-current { background: #fde047; outline: 2px solid #ca8a04; }
+
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <h1>Thoracics — COPD and Asthma</h1>
+    <div class="header-sub">Final FRCA &mdash; Exam Viva Simulation &mdash; Click any phrase to seek</div>
+  </div>
+  <audio id="audio" src="../FinalFRCAThoracics_COPD_and_Asthma.mp3" controls preload="metadata"></audio>
+  <a class="back-link" href="index.html">&#8592; All Topics</a>
+</div>
+
+<div class="toolbar">
+  <input type="text" id="search" placeholder="Search transcript&#8230; (Enter = next match)">
+  <span class="stats" id="stats">159 segments &nbsp;|&nbsp; <span id="dur">loading&#8230;</span></span>
+</div>
+
+<div class="scroll-area" id="scroll-area">
+<div class="t-block">
+  <div class="t-gutter" data-start="0.0"><span class="t-timestamp">0:00</span></div>
+  <div class="t-body"><span class="segment" data-start="0.0" data-end="2.88" title="0:00">Chronic obstructive pulmonary disease and asthma. </span><span class="segment" data-start="2.88" data-end="7.2" title="0:02">This topic is most likely to appear as part of the clinical viather, </span><span class="segment" data-start="7.2" data-end="13.52" title="0:07">although it may also feature in the pharmacology or physiology sections of the basic sciences viather. </span><span class="segment" data-start="13.52" data-end="17.92" title="0:13">How would you assess a 70-year-old man with chronic obstructive pulmonary disease </span><span class="segment" data-start="17.92" data-end="20.56" title="0:17">who presents from emergency laparotomy? </span><span class="segment" data-start="20.56" data-end="24.64" title="0:20">This is a common situation which you will have often encountered. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="24.64"><span class="t-timestamp">0:24</span></div>
+  <div class="t-body"><span class="segment" data-start="24.64" data-end="27.36" title="0:24">The examiner will want to see a well-structured approach </span><span class="segment" data-start="27.36" data-end="30.8" title="0:27">demonstrating your competence at dealing with this important scenario. </span><span class="segment" data-start="32.96" data-end="39.04" title="0:32">The term chronic obstructive pulmonary disease describes a wide spectrum of illness severity, </span><span class="segment" data-start="39.04" data-end="45.28" title="0:39">encompassing the clinical entity of chronic bronchitis and the pathological process of endocimer. </span><span class="segment" data-start="46.24" data-end="49.92" title="0:46">Although these are two distinct entities, they frequently coexist. </span><span class="segment" data-start="50.88" data-end="55.92" title="0:50">Preoperatively, I would focus on assessing disease severity and looking for related </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="56.0"><span class="t-timestamp">0:56</span></div>
+  <div class="t-body"><span class="segment" data-start="56.0" data-end="59.76" title="0:56">comorbidities such as smoking related ischemic heart disease. </span><span class="segment" data-start="61.04" data-end="65.2" title="1:01">Disease severity can be assessed clinically or by using investigations. </span><span class="segment" data-start="66.0" data-end="70.72" title="1:06">Whilst taking a focused history, I would classify the patient's exercise tolerance </span><span class="segment" data-start="70.72" data-end="74.96" title="1:10">according to the Medical Research Council's disneyer scale, </span><span class="segment" data-start="74.96" data-end="79.2" title="1:14">where a rating of one would describe no restriction of activity, </span><span class="segment" data-start="79.2" data-end="83.12" title="1:19">and a rating of five would describe breathlessness whilst undressing. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="84.08"><span class="t-timestamp">1:24</span></div>
+  <div class="t-body"><span class="segment" data-start="84.08" data-end="89.04" title="1:24">Alternatively, I may quantify the distance a patient is able to walk on the flat </span><span class="segment" data-start="89.04" data-end="96.24" title="1:29">or on an incline. I would ask about recent admissions to hospital with exacerbations of COPD, </span><span class="segment" data-start="96.24" data-end="101.84" title="1:36">including any previous intensive care admissions. I would actively seek evidence of current </span><span class="segment" data-start="101.84" data-end="108.32" title="1:41">infection and quantify the amount of sputum produced. Finally, I would note the gentleman's </span><span class="segment" data-start="108.8" data-end="114.56" title="1:48">oracle and inhaled medications, including the use of steroids and home oxygen therapy. </span><span class="segment" data-start="115.68" data-end="121.44" title="1:55">Moving on from the history, a focused clinical examination may show evidence of a barrel-shaped </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="121.44"><span class="t-timestamp">2:01</span></div>
+  <div class="t-body"><span class="segment" data-start="121.44" data-end="127.92" title="2:01">chest, nicotine staining, bronchospasm, active infection or call pulmonali with an elevated </span><span class="segment" data-start="127.92" data-end="133.76" title="2:07">jugular venous pressure and epatomegally. The patient's pattern of breathing, including </span><span class="segment" data-start="133.76" data-end="139.76" title="2:13">the use of accessory muscles and posturing, may reveal disneyer at rest. In addition, </span><span class="segment" data-start="139.76" data-end="145.68" title="2:19">the use of perced lip breathing to provide a degree of positive end-expiratory pressure, </span><span class="segment" data-start="145.68" data-end="150.4" title="2:25">therefore preventing premature airway collapse may also be seen. </span><span class="segment" data-start="151.52" data-end="157.92" title="2:31">Finally, the presence of a long expiratory phase would indicate long time constants of </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="157.92"><span class="t-timestamp">2:37</span></div>
+  <div class="t-body"><span class="segment" data-start="157.92" data-end="163.36" title="2:37">somehow-vially with resultant air trapping. What investigations may be useful? </span><span class="segment" data-start="164.08" data-end="169.28" title="2:44">Try to avoid the temptation to jump straight into a discussion of lung function tests, </span><span class="segment" data-start="169.28" data-end="175.04" title="2:49">but be prepared to move on swiftly if the examiner accepts that you would look at common blood tests first. </span><span class="segment" data-start="177.36" data-end="183.76" title="2:57">A full blood count may reveal polycythemia as evidence of chronic hypoxia and an elevated </span><span class="segment" data-start="183.76" data-end="190.8" title="3:03">neutrophil count may suggest active intercurrent infection. Arterial blood gas analysis may </span><span class="segment" data-start="190.8" data-end="198.24" title="3:10">show evidence of hypoxia and compensated type 2 respiratory failure with a normal pH despite </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="198.24"><span class="t-timestamp">3:18</span></div>
+  <div class="t-body"><span class="segment" data-start="198.24" data-end="206.4" title="3:18">hypercarbure as a result of an elevated bicarbonate concentration. An electrocardiogram may show evidence </span><span class="segment" data-start="206.4" data-end="212.48" title="3:26">of right ventricular hypertrophy, right axis deviation and right atrial enlargement. </span><span class="segment" data-start="213.36" data-end="218.96" title="3:33">Moving on to more specialist investigations, I would expect this patient's pulmonary function </span><span class="segment" data-start="218.96" data-end="228.96" title="3:38">tests to show an obstructive defect with the FEV1, FVC ratio being less than 70% thus indicating </span><span class="segment" data-start="228.96" data-end="236.72" title="3:48">small and medium-sized airway obstruction. If an endosemeter's disease process is also present, </span><span class="segment" data-start="237.68" data-end="245.2" title="3:57">the carbon monoxide transfer factor may be reduced. Although an absolute value of FEV1 </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="245.2"><span class="t-timestamp">4:05</span></div>
+  <div class="t-body"><span class="segment" data-start="245.2" data-end="251.92" title="4:05">less than 1 liter is included in the British thoracic society guidelines for assessment of thoracic </span><span class="segment" data-start="251.92" data-end="258.88" title="4:11">surgery, there is little evidence for its application in non-thraceic surgery. We can say however </span><span class="segment" data-start="259.04" data-end="266.4" title="4:19">that an FEV1 of more than 0.8 liters is required for an adequate cough and therefore values less than </span><span class="segment" data-start="266.4" data-end="272.0" title="4:26">this would indicate a high chance of postoperative respiratory morbidity and mortality. </span><span class="segment" data-start="273.6" data-end="278.88" title="4:33">In addition to these basic lung function tests, this patient may show evidence of </span><span class="segment" data-start="278.88" data-end="285.52" title="4:38">reversibility with bronchodilators or steroids. If flow volume loops were obtained, </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="285.52"><span class="t-timestamp">4:45</span></div>
+  <div class="t-body"><span class="segment" data-start="285.52" data-end="291.04" title="4:45">they would show the characteristic scooped out appearance to the initial expiratory phase. </span><span class="segment" data-start="292.64" data-end="297.52" title="4:52">This is because maximal expiratory flow rates during the latter two thirds of an </span><span class="segment" data-start="297.52" data-end="304.72" title="4:57">expiratory maneuver are largely effort independent but vary directly with the elastic recoil of the </span><span class="segment" data-start="304.72" data-end="310.32" title="5:04">lung and inversely with the airway resistance upstream of the equal pressure point. </span><span class="segment" data-start="310.64" data-end="317.92" title="5:10">Lung compliance may be increased if emphysemeters changes predominate or may be reduced if </span><span class="segment" data-start="317.92" data-end="325.36" title="5:17">chronic bronchitis is the main pathology. An echocardiogram may show evidence of right ventricular </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="325.36"><span class="t-timestamp">5:25</span></div>
+  <div class="t-body"><span class="segment" data-start="325.36" data-end="330.96" title="5:25">failure as a result of chronic lung disease leading to elevated pulmonary artery pressures. </span><span class="segment" data-start="332.24" data-end="339.84" title="5:32">Finally, cardiopulmonary exercise testing is now being increasingly used for risk stratification </span><span class="segment" data-start="339.84" data-end="348.48" title="5:39">before major elective surgery. A VO2 max of less than 15 mills per kilogram per minute </span><span class="segment" data-start="348.48" data-end="356.0" title="5:48">or an anaerobic threshold of less than 10 mills of oxygen per kilogram per minute has been shown </span><span class="segment" data-start="356.0" data-end="362.24" title="5:56">to significantly increase postoperative mortality. Your history and investigation suggest this </span><span class="segment" data-start="362.24" data-end="368.4" title="6:02">man has severe COPD. In addition, he's been shown to have an active pneumonia with an elevated </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="368.4"><span class="t-timestamp">6:08</span></div>
+  <div class="t-body"><span class="segment" data-start="368.4" data-end="374.24" title="6:08">neutrophil count and a mild porexia. What role should a regional technique play when considering </span><span class="segment" data-start="374.24" data-end="380.32" title="6:14">postoperative analgesia in this patient? There is no right answer as to whether an epidural should </span><span class="segment" data-start="380.32" data-end="386.16" title="6:20">or should not be inserted in this case. Instead, the examiner wants to see your thought process </span><span class="segment" data-start="386.16" data-end="389.36" title="6:26">balancing the risks against the benefits of such an intervention. </span><span class="segment" data-start="391.36" data-end="396.4" title="6:31">As well as the usual contraindications to central neuroaxial blockade, </span><span class="segment" data-start="396.4" data-end="402.24" title="6:36">such as clotting abnormalities and anti-platelet agents, we need to balance the risks of </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="402.24"><span class="t-timestamp">6:42</span></div>
+  <div class="t-body"><span class="segment" data-start="402.24" data-end="407.92" title="6:42">epidural abscess against the benefits that a regional technique would bring to this patient with </span><span class="segment" data-start="407.92" data-end="416.0" title="6:47">severe chronic lung disease. Although the master trial showed no significant overall mortality benefit </span><span class="segment" data-start="416.0" data-end="421.6" title="6:56">when comparing epidural analgesia to systemic opioids following major surgery, </span><span class="segment" data-start="422.08" data-end="427.84" title="7:02">a subset of patients with severe lung disease did have marginal mortality benefits. </span><span class="segment" data-start="428.64" data-end="434.96" title="7:08">Epidural abscess is a very rare complication of epidural use occurring in around one in </span><span class="segment" data-start="434.96" data-end="442.24" title="7:14">200,000 episodes. The recent third National Audit project carried out by the Royal College of </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="442.24"><span class="t-timestamp">7:22</span></div>
+  <div class="t-body"><span class="segment" data-start="442.24" data-end="448.48" title="7:22">Anesthetist has just been formally published and was designed to look at the incidents and risk </span><span class="segment" data-start="448.96" data-end="455.04" title="7:28">factors for such complications in the United Kingdom. In this case, unless the patient shows signs </span><span class="segment" data-start="455.04" data-end="461.44" title="7:35">of severe systemic sepsis, I would proceed with epidural analgesia as I fill the benefits of an </span><span class="segment" data-start="461.44" data-end="468.8" title="7:41">improved cough, improved respiratory function, and reduced thromboembolic events outweigh the </span><span class="segment" data-start="468.8" data-end="475.28" title="7:48">risks of epidural use, including that of epidural abscess. What mode of ventilation would you use </span><span class="segment" data-start="475.28" data-end="481.84" title="7:55">intraoperatively? Again, there is no right answer to this question and you could justify your answer </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="481.84"><span class="t-timestamp">8:01</span></div>
+  <div class="t-body"><span class="segment" data-start="481.84" data-end="489.76" title="8:01">either way. The two basic modes of ventilation used are volume and pressure directed ventilation. </span><span class="segment" data-start="490.48" data-end="497.36" title="8:10">The former uses a constant flow generator to deliver a set tidal volume whilst the latter uses a </span><span class="segment" data-start="497.36" data-end="503.2" title="8:17">set pressure to deliver tidal volumes in accordance with the pressure's total chest compliance. </span><span class="segment" data-start="503.36" data-end="510.24" title="8:23">Both can be triggered either by time or by patient effort in the form of synchronized intermittent </span><span class="segment" data-start="510.24" data-end="517.84" title="8:30">mandatory ventilation. The high peak pressures delivered when using constant flow generators </span><span class="segment" data-start="517.84" data-end="524.48" title="8:37">have theoretical disadvantages for those patients with chronic lung disease. In addition, it is known </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="524.48"><span class="t-timestamp">8:44</span></div>
+  <div class="t-body"><span class="segment" data-start="524.48" data-end="530.8" title="8:44">that such patients have alveoli with a wide range of different time constants and therefore rates </span><span class="segment" data-start="530.8" data-end="538.48" title="8:50">of inflation. Thus, using constant flow generators, there is a tendency to over-expand some lung </span><span class="segment" data-start="538.48" data-end="545.92" title="8:58">units whilst under-expanding others in accordance with Laplace's law. As this can result in a </span><span class="segment" data-start="545.92" data-end="552.4" title="9:05">combination of baratraum and atylectasis, it has been suggested that constant pressure ventilation </span><span class="segment" data-start="552.4" data-end="558.08" title="9:12">may be of benefit. What can be done post-operatively to help reduce the problems associated with chronic </span><span class="segment" data-start="558.08" data-end="565.84" title="9:18">lung disease? This man should be managed in a critical care environment. Good analgesia with a </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="565.84"><span class="t-timestamp">9:25</span></div>
+  <div class="t-body"><span class="segment" data-start="565.84" data-end="571.6" title="9:25">regional technique will help with coughing and therefore sputum clearance as well as avoid the </span><span class="segment" data-start="571.6" data-end="579.36" title="9:31">need for systemic opioids which may result in type 2 respiratory failure. Regular physiotherapy is </span><span class="segment" data-start="579.36" data-end="586.16" title="9:39">essential and may include the use of incentive spirometry, percussion therapy and vital capacity </span><span class="segment" data-start="586.16" data-end="593.6" title="9:46">breathing. Regular arterial blood gases and timely adjustment of the inspired oxygen concentration </span><span class="segment" data-start="593.6" data-end="601.44" title="9:53">will help ensure that the oxygenation is maintained whilst avoiding oxygen toxicity. Any supplemental </span><span class="segment" data-start="601.44" data-end="608.48" title="10:01">oxygen used should be humidified to reduce drying of secretions. If the patient requires invasive </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="608.48"><span class="t-timestamp">10:08</span></div>
+  <div class="t-body"><span class="segment" data-start="608.48" data-end="614.24" title="10:08">ventilation post-operatively, there is controversy as to the role that an early tracheotomy </span><span class="segment" data-start="614.24" data-end="621.04" title="10:14">may have in reducing ventilator days and hence mortality. The trache man's study is currently </span><span class="segment" data-start="621.04" data-end="628.8" title="10:21">examining this issue and is due to report shortly. What causes asthma? A broad summary of asthma and </span><span class="segment" data-start="628.8" data-end="635.28" title="10:28">its etiological factors is required here, but try not to get fixated on one or another particular </span><span class="segment" data-start="635.28" data-end="643.68" title="10:35">cause. Asma is characterized by episodes of breathlessness, chest tightness and weasers result </span><span class="segment" data-start="643.68" data-end="650.96" title="10:43">of airway narrowing. This in turn is due to a triad of smooth muscle spasm, mucusulidema and </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="650.96"><span class="t-timestamp">10:50</span></div>
+  <div class="t-body"><span class="segment" data-start="650.96" data-end="658.4" title="10:50">increased secretions. It can generally be classified into a topic asthma which occurs in early childhood </span><span class="segment" data-start="658.4" data-end="665.92" title="10:58">in individuals with IgE hypersensitivity to common environmental allergens and late onset asthma </span><span class="segment" data-start="666.0" data-end="675.36" title="11:06">which is not IgE related. The causes are multifactorial and controversial. There is evidence that environmental, </span><span class="segment" data-start="675.36" data-end="681.36" title="11:15">genetic, infective and immunological factors all play a role in the pathogenesis of asthma, </span><span class="segment" data-start="681.36" data-end="688.88" title="11:21">although recently the so-called clean hypothesis has aroused particular interest. This describes how </span><span class="segment" data-start="688.88" data-end="695.44" title="11:28">immunomodulation of a synophils and the IgE system occurs due to modern living conditions, </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="695.44"><span class="t-timestamp">11:35</span></div>
+  <div class="t-body"><span class="segment" data-start="695.44" data-end="700.64" title="11:35">reducing greatly the bacterial and parasite load that children are exposed to. </span><span class="segment" data-start="707.04" data-end="712.56" title="11:47">These can be divided into three main groups. Drugs causing bronchodilitation, </span><span class="segment" data-start="712.56" data-end="718.8" title="11:52">reducing mucusulidema or modulating the immune response. Bronchodilators are generally </span><span class="segment" data-start="719.04" data-end="727.12" title="11:59">sympathetic or anticholinergic. The sympathetic drugs act as beta-2adrenoseptic agonists, </span><span class="segment" data-start="727.12" data-end="735.76" title="12:07">activating G proteins, therefore inducing bronchodilitation. Examples include short acting </span><span class="segment" data-start="735.76" data-end="744.64" title="12:15">salbutamol, longer acting salmeterol and related drugs such as effedrin, adrenaline and the S-plus </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="744.64"><span class="t-timestamp">12:24</span></div>
+  <div class="t-body"><span class="segment" data-start="744.64" data-end="752.32" title="12:24">stereoisomer of ketamine. Anticholinergic commonly used include inhaled </span><span class="segment" data-start="752.32" data-end="759.6" title="12:32">hiprotropium. Beware that neo-stigmean by increasing the concentration of acetylcholine </span><span class="segment" data-start="759.6" data-end="766.72" title="12:39">can precipitate broncus spasm by antagonizing this mechanism. Other agents which act by decreasing </span><span class="segment" data-start="766.72" data-end="774.16" title="12:46">broncus spasm via a G protein mechanism include volatile anaesthetic agents and phosphodiesterase </span><span class="segment" data-start="774.16" data-end="781.6" title="12:54">inhibitors such as theophilin. A reduction in mucusulidema is achieved primarily by using </span><span class="segment" data-start="781.6" data-end="789.6" title="13:01">inhaled and oral corticosteroids and newer agents such as the monoclonal anti-IGE antibody </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="789.6"><span class="t-timestamp">13:09</span></div>
+  <div class="t-body"><span class="segment" data-start="789.6" data-end="794.96" title="13:09">or malizumab, manipulating the immune system to improve symptoms of asthma. </span><span class="segment" data-start="796.16" data-end="800.96" title="13:16">Should positive end-experatory pressure be used when an acetylcholine is asthmatic for a laparotomy? </span><span class="segment" data-start="801.44" data-end="809.04" title="13:21">Positive end-experatory pressure is generally used during major intra-obdominal surgery to help </span><span class="segment" data-start="809.04" data-end="816.56" title="13:29">minimize basal atelectasis and hence reduce ventilation perfusion mismatch. However, asthmatic </span><span class="segment" data-start="816.56" data-end="823.6" title="13:36">patients tend to have high levels of gas trapping and develop high levels of intrinsic or auto-peep. </span><span class="segment" data-start="823.76" data-end="831.04" title="13:43">In theory, applying additional levels of extrinsic peep may cause hyperinflation of the chest, </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="831.04"><span class="t-timestamp">13:51</span></div>
+  <div class="t-body"><span class="segment" data-start="831.04" data-end="838.24" title="13:51">reduce venous return and increase peak and spiritually pressures. This in turn leads to a patient </span><span class="segment" data-start="838.24" data-end="844.72" title="13:58">who is difficult to ventilate and may precipitate a pneumothorax. However, there is controversy in the </span><span class="segment" data-start="844.72" data-end="851.12" title="14:04">use of peep in the intensive care management of acute asthma with some sources arguing that it can </span><span class="segment" data-start="851.12" data-end="856.32" title="14:11">be of benefit. Would you use non-steroidal anti-inflammatory drugs and people with asthma? </span><span class="segment" data-start="858.4" data-end="863.68" title="14:18">Although non-steroidal anti-inflammatory drugs are a very effective adjunct in balanced </span><span class="segment" data-start="863.68" data-end="872.08" title="14:23">analgesia, in around 10% of asthmatics, they can precipitate bronchospasm. This is due to the biosynthesis </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="872.08"><span class="t-timestamp">14:32</span></div>
+  <div class="t-body"><span class="segment" data-start="872.08" data-end="879.6" title="14:32">of arachidonic acid derivatives being shifted towards leukotrains and away from endoperoxides </span><span class="segment" data-start="879.6" data-end="887.44" title="14:39">due to the inhibition of cyclooxygenase 1 and 2. The groups most likely to be affected are those </span><span class="segment" data-start="887.44" data-end="894.48" title="14:47">with atopic asthma, especially those with nasal polyps. Although a history of non-steroidal use is </span><span class="segment" data-start="894.48" data-end="900.08" title="14:54">helpful in deciding whether they are safe to prescribe, different non-steroidal anti-inflammatory </span><span class="segment" data-start="900.08" data-end="905.92" title="15:00">drugs have different levels of coxin inhibition and may therefore produce differing results. </span><span class="segment" data-start="906.72" data-end="911.52" title="15:06">There are many other drugs used in anesthesia that can precipitate bronchospasm, </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="911.52"><span class="t-timestamp">15:11</span></div>
+  <div class="t-body"><span class="segment" data-start="911.52" data-end="915.6" title="15:11">including fire pentome, atochirium and succcemethonium. </span><span class="segment" data-start="916.56" data-end="921.04" title="15:16">Should steroid supplementation be given to an asthmatic on long-term and health fliticusone </span><span class="segment" data-start="921.04" data-end="928.16" title="15:21">undergoing major surgery? Classically, steroid supplements have been given to patients in order to </span><span class="segment" data-start="928.16" data-end="935.52" title="15:28">avoid an adisonian crisis precipitated by steroid withdrawal after long-term administration </span><span class="segment" data-start="935.52" data-end="942.64" title="15:35">and a blunted stress response to surgery. Recent guidelines suggest that steroid supplementation </span><span class="segment" data-start="942.64" data-end="949.28" title="15:42">is only necessary when patients have been taking greater than 10mg equivalent of prednisolone </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="949.28"><span class="t-timestamp">15:49</span></div>
+  <div class="t-body"><span class="segment" data-start="949.28" data-end="956.0" title="15:49">daily or who have stopped doing so less than three months previously. Inhalled steroids, </span><span class="segment" data-start="956.0" data-end="962.72" title="15:56">mainly exhibit a local effect, although systemic effects can also be seen. They are therefore not </span><span class="segment" data-start="962.72" data-end="967.76" title="16:02">included in these recommendations and generally supplementation is not required. </span><span class="segment" data-start="968.72" data-end="970.88" title="16:08">What is your approach to asthma in pregnancy? </span><span class="segment" data-start="972.8" data-end="979.36" title="16:12">Asthma affects about 1% of pregnancies, with 10% of these requiring hospital admission, </span><span class="segment" data-start="979.36" data-end="984.64" title="16:19">either due to superimposed respiratory tract infection or worsened bronchospasm. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="985.68"><span class="t-timestamp">16:25</span></div>
+  <div class="t-body"><span class="segment" data-start="985.68" data-end="990.48" title="16:25">Although asthma can improve, worsening or remain unchanged in pregnancy, </span><span class="segment" data-start="991.04" data-end="996.64" title="16:31">these women should receive antenatal counseling and those with moderate to severe asthma should </span><span class="segment" data-start="996.64" data-end="1003.52" title="16:36">be encouraged to have early epidural analgesia. If operative interventions are required, </span><span class="segment" data-start="1003.52" data-end="1009.44" title="16:43">a regional technique is the preferred method of choice. Regular medications should be continued </span><span class="segment" data-start="1009.44" data-end="1015.92" title="16:49">during pregnancy and are overall thought to be safe. Salbutamol, for example, is a beta-2 </span><span class="segment" data-start="1016.64" data-end="1021.36" title="16:56">and acts as a tockerlytic and therefore has been used to prevent early labor. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="1022.08"><span class="t-timestamp">17:02</span></div>
+  <div class="t-body"><span class="segment" data-start="1022.08" data-end="1028.96" title="17:02">However, those taking high dose inhaled or oral steroids may show evidence of macrosomia </span><span class="segment" data-start="1028.96" data-end="1036.8" title="17:08">and are more likely to develop gestational diabetes, now termed type 3 diabetes by the most recent </span><span class="segment" data-start="1036.8" data-end="1038.48" title="17:16">classification system. </span></div>
+</div>
+</div>
+
+<div class="subtitle-bar">
+  <span class="subtitle-text empty" id="subtitle-text">Play audio to see live subtitles&#8230;</span>
+</div>
+
+<script>
+
+const audio    = document.getElementById('audio');
+const allSegs  = Array.from(document.querySelectorAll('.segment'));
+const allBlocks = Array.from(document.querySelectorAll('.t-block'));
+const subtitleEl = document.getElementById('subtitle-text');
+let activeSegEl   = null;
+let activeBlockEl = null;
+let searchMatches = [];
+let searchIdx     = 0;
+
+// Duration display
+audio.addEventListener('loadedmetadata', () => {
+  const m = Math.floor(audio.duration / 60);
+  const s = Math.floor(audio.duration %% 60).toString().padStart(2,'0');
+  document.getElementById('dur').textContent = m + ':' + s;
+});
+
+// Seek helper
+function seekTo(t) {
+  audio.currentTime = t;
+  audio.play();
+}
+
+// Block gutter click
+document.querySelectorAll('.t-gutter').forEach(g => {
+  g.addEventListener('click', () => seekTo(parseFloat(g.dataset.start)));
+});
+
+// Segment click
+allSegs.forEach(s => {
+  s.addEventListener('click', e => {
+    e.stopPropagation();
+    seekTo(parseFloat(s.dataset.start));
+  });
+});
+
+// Real-time tracking
+audio.addEventListener('timeupdate', () => {
+  const t = audio.currentTime;
+
+  // Find active segment (last one whose start <= t)
+  let found = null;
+  for (let i = allSegs.length - 1; i >= 0; i--) {
+    if (parseFloat(allSegs[i].dataset.start) <= t) { found = allSegs[i]; break; }
+  }
+
+  if (found && found !== activeSegEl) {
+    // Clear previous
+    if (activeSegEl) activeSegEl.classList.remove('active');
+    if (activeBlockEl) {
+      activeBlockEl.classList.remove('block-active');
+      const pg = activeBlockEl.querySelector('.t-gutter');
+      if (pg) pg.classList.remove('gutter-active');
+    }
+    // Set new
+    found.classList.add('active');
+    const block = found.closest('.t-block');
+    if (block) {
+      block.classList.add('block-active');
+      const g = block.querySelector('.t-gutter');
+      if (g) g.classList.add('gutter-active');
+      activeBlockEl = block;
+    }
+    activeSegEl = found;
+
+    // Update subtitle
+    subtitleEl.textContent = found.textContent.trim();
+    subtitleEl.classList.remove('empty');
+
+    // Auto-scroll (only when not searching)
+    if (!document.getElementById('search').value) {
+      found.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }
+});
+
+// Search
+const searchInput = document.getElementById('search');
+searchInput.addEventListener('input', runSearch);
+searchInput.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && searchMatches.length) {
+    searchMatches[searchIdx].classList.remove('search-current');
+    searchIdx = (searchIdx + 1) %% searchMatches.length;
+    const el = searchMatches[searchIdx];
+    el.classList.add('search-current');
+    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+});
+
+function runSearch() {
+  const q = searchInput.value.trim().toLowerCase();
+  allSegs.forEach(s => s.classList.remove('search-match','search-current'));
+  searchMatches = [];
+  if (!q) return;
+  allSegs.forEach(s => {
+    if (s.textContent.toLowerCase().includes(q)) {
+      s.classList.add('search-match');
+      searchMatches.push(s);
+    }
+  });
+  if (!searchMatches.length) return;
+  searchIdx = 0;
+  searchMatches[0].classList.add('search-current');
+  searchMatches[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+</script>
+</body>
+</html>

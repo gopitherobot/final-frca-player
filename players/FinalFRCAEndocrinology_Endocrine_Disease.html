@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Endocrinology — Endocrine Disease</title>
+<style>
+
+  :root {
+    --accent:    #8b5cf6;
+    --body-bg:   #f1f5f9;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: var(--body-bg);
+    color: #1e293b;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  /* ── Header ── */
+  .header {
+    background: #0f172a;
+    border-bottom: 3px solid var(--accent);
+    padding: 12px 20px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .header-left { flex: 1; min-width: 200px; }
+  .header h1 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #f1f5f9;
+    margin-bottom: 4px;
+    letter-spacing: 0.01em;
+  }
+  .header-sub {
+    font-size: 0.72rem;
+    color: #94a3b8;
+    font-style: italic;
+  }
+  audio {
+    height: 36px;
+    accent-color: var(--accent);
+    flex-shrink: 0;
+  }
+  .back-link {
+    font-size: 0.8rem;
+    color: #94a3b8;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .back-link:hover { color: #60a5fa; }
+
+  /* ── Toolbar ── */
+  .toolbar {
+    background: #1e293b;
+    padding: 7px 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-shrink: 0;
+    border-bottom: 1px solid #334155;
+  }
+  .toolbar input {
+    flex: 1;
+    max-width: 380px;
+    padding: 5px 11px;
+    border: 1px solid #475569;
+    border-radius: 6px;
+    background: #0f172a;
+    color: #e2e8f0;
+    font-size: 0.83rem;
+    outline: none;
+  }
+  .toolbar input:focus { border-color: var(--accent); }
+  .toolbar input::placeholder { color: #64748b; }
+  .stats {
+    font-size: 0.72rem;
+    color: #64748b;
+    white-space: nowrap;
+  }
+
+  /* ── Scroll area ── */
+  .scroll-area {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+  }
+  .scroll-area::-webkit-scrollbar { width: 6px; }
+  .scroll-area::-webkit-scrollbar-track { background: transparent; }
+  .scroll-area::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+
+  /* ── Subtitle bar ── */
+  .subtitle-bar {
+    background: #0f172a;
+    border-top: 2px solid var(--accent);
+    padding: 8px 20px;
+    flex-shrink: 0;
+    min-height: 42px;
+    display: flex;
+    align-items: center;
+  }
+  .subtitle-text {
+    font-size: 0.9rem;
+    color: #e2e8f0;
+    line-height: 1.5;
+    font-style: italic;
+  }
+  .subtitle-text.empty { color: #475569; }
+
+  /* ── Transcript blocks ── */
+  .t-block {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    margin-bottom: 14px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    display: flex;
+  }
+  .t-block.block-active {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px rgba(37,99,235,0.15);
+  }
+  .t-gutter {
+    background: #0f172a;
+    width: 52px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: 14px;
+    cursor: pointer;
+  }
+  .t-gutter:hover { background: #1e293b; }
+  .t-timestamp {
+    font-size: 0.7rem;
+    color: #64748b;
+    font-family: monospace;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+  .t-gutter.gutter-active .t-timestamp { color: var(--accent); }
+  .t-body {
+    flex: 1;
+    padding: 12px 16px;
+    line-height: 1.75;
+    font-size: 0.92rem;
+    color: #1e293b;
+  }
+
+  /* ── Segments ── */
+  .segment {
+    cursor: pointer;
+    border-radius: 3px;
+    transition: background 0.1s;
+  }
+  .segment:hover { background: #eff6ff; }
+  .segment.active {
+    background: #bfdbfe;
+    outline: 2px solid #3b82f6;
+    outline-offset: 1px;
+    border-radius: 3px;
+  }
+  .segment.search-match  { background: #fef9c3; }
+  .segment.search-current { background: #fde047; outline: 2px solid #ca8a04; }
+
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <h1>Endocrinology — Endocrine Disease</h1>
+    <div class="header-sub">Final FRCA &mdash; Exam Viva Simulation &mdash; Click any phrase to seek</div>
+  </div>
+  <audio id="audio" src="../FinalFRCAEndocrinology_Endocrine_Disease.mp3" controls preload="metadata"></audio>
+  <a class="back-link" href="index.html">&#8592; All Topics</a>
+</div>
+
+<div class="toolbar">
+  <input type="text" id="search" placeholder="Search transcript&#8230; (Enter = next match)">
+  <span class="stats" id="stats">130 segments &nbsp;|&nbsp; <span id="dur">loading&#8230;</span></span>
+</div>
+
+<div class="scroll-area" id="scroll-area">
+<div class="t-block">
+  <div class="t-gutter" data-start="0.0"><span class="t-timestamp">0:00</span></div>
+  <div class="t-body"><span class="segment" data-start="0.0" data-end="2.0" title="0:00">Endocrine disease. </span><span class="segment" data-start="3.0" data-end="6.0" title="0:03">What are the presenting features of a pituitary tumour? </span><span class="segment" data-start="7.0" data-end="15.0" title="0:07">Pituitary tumours comprise approximately 10-15% of all intracranial tumours. </span><span class="segment" data-start="15.0" data-end="22.0" title="0:15">The vast majority are benign adenomas and arise from the anterior portion of the gland. </span><span class="segment" data-start="22.0" data-end="29.0" title="0:22">Tumours can actively secrete hormones, most commonly prolactin produced by 30% of tumours, </span><span class="segment" data-start="29.0" data-end="37.0" title="0:29">growth hormone produced by 20% and ACTH by approximately 15%. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="37.0"><span class="t-timestamp">0:37</span></div>
+  <div class="t-body"><span class="segment" data-start="37.0" data-end="46.0" title="0:37">Conversely, there can be decreased or absent hormone secretion resulting in the clinical picture of hypopituitarism. </span><span class="segment" data-start="47.0" data-end="52.0" title="0:47">Pituitary tumours can produce localized or generalized pressure effects. </span><span class="segment" data-start="52.0" data-end="59.0" title="0:52">Locally, pressure may be exerted on the optic chiasm, producing a visual field defect, </span><span class="segment" data-start="59.0" data-end="62.0" title="0:59">classically by temporal hemionopia. </span><span class="segment" data-start="62.0" data-end="71.0" title="1:02">Generalized signs and symptoms include vomiting, headache, papal edema and cranial nerve pauses. </span><span class="segment" data-start="71.0" data-end="79.0" title="1:11">Large adenomas can occasionally interfere with the circulation of cerebrospinal fluid, producing hydrochephalus </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="79.0"><span class="t-timestamp">1:19</span></div>
+  <div class="t-body"><span class="segment" data-start="79.0" data-end="83.0" title="1:19">and as a consequence raised intracranial pressure. </span><span class="segment" data-start="83.0" data-end="91.0" title="1:23">A proportion of asymptomatic pituitary lesions are incidentally detected during imaging for another indication. </span><span class="segment" data-start="92.0" data-end="94.0" title="1:32">What is acromegaly? </span><span class="segment" data-start="95.0" data-end="104.0" title="1:35">Acromegaly is a rare endocrine syndrome caused by excess production of growth hormone by the anterior pituitary gland. </span><span class="segment" data-start="104.0" data-end="110.0" title="1:44">The annual incidence is 6 to 8 cases per million population. </span><span class="segment" data-start="110.0" data-end="116.0" title="1:50">Symptoms and signs result mainly from the overgrowth of soft tissue structures. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="116.0"><span class="t-timestamp">1:56</span></div>
+  <div class="t-body"><span class="segment" data-start="116.0" data-end="123.0" title="1:56">Changes are gradual and include an increase in skull size, course and oily skin, </span><span class="segment" data-start="123.0" data-end="128.0" title="2:03">prominent superorbital ridge and large hands and feet. </span><span class="segment" data-start="128.0" data-end="133.0" title="2:08">What potential anaesthetic issues is acromegaly present? </span><span class="segment" data-start="133.0" data-end="144.0" title="2:13">Acromegaly can pose a problem for the anesthetist, both in terms of the effects of the disease on the airway and also the systemic effects. </span><span class="segment" data-start="144.0" data-end="151.0" title="2:24">Preoperatively, any history suggestive of obstructive sleep apnea should be thoroughly explored. </span><span class="segment" data-start="151.0" data-end="157.0" title="2:31">This includes a history of snoring, disturbed sleep and daytime tiredness. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="157.0"><span class="t-timestamp">2:37</span></div>
+  <div class="t-body"><span class="segment" data-start="157.0" data-end="166.0" title="2:37">The presence of these features suggests the potential for a difficult airway and the risk of postoperative airway obstruction. </span><span class="segment" data-start="166.0" data-end="175.0" title="2:46">Airway problems arise due to the hypertrophy of the soft tissues of the upper respiratory tract, including the tongue. </span><span class="segment" data-start="176.0" data-end="183.0" title="2:56">A quarter of patients have enlargement of the thyroid gland which can exacerbate airway compromise. </span><span class="segment" data-start="183.0" data-end="189.0" title="3:03">Despite enlargement of the mandible and other facial structures in acromegalyc patients, </span><span class="segment" data-start="189.0" data-end="194.0" title="3:09">bag mask ventilation can usually be achieved without difficulty. </span><span class="segment" data-start="194.0" data-end="199.0" title="3:14">A large-sized face mask and a farangial airway may be helpful. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="200.0"><span class="t-timestamp">3:20</span></div>
+  <div class="t-body"><span class="segment" data-start="200.0" data-end="207.0" title="3:20">Obtaining a good view at larynxoscopy may be difficult due to an enlarged tongue and epiglottis. </span><span class="segment" data-start="207.0" data-end="210.0" title="3:27">A long blade may improve the situation. </span><span class="segment" data-start="210.0" data-end="219.0" title="3:30">Passage of an endotracheal tube can be impeded by vocal cord thickening and a reduction in the size of the laryngeal opening. </span><span class="segment" data-start="219.0" data-end="227.0" title="3:39">Thura airway assessment in the preoperative period is essential and indirect larynxoscopy may add useful information. </span><span class="segment" data-start="227.0" data-end="233.0" title="3:47">A fiber optic technique is appropriate in those cases where difficulty is anticipated. </span><span class="segment" data-start="233.0" data-end="240.0" title="3:53">The systemic effects of acromegaly are predominantly cardiac and endocrine. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="240.0"><span class="t-timestamp">4:00</span></div>
+  <div class="t-body"><span class="segment" data-start="240.0" data-end="251.0" title="4:00">Acromegaly is an important cause of secondary hypertension and can also result in a schemic heart disease, cardiomyopathy and congestive cardiac failure. </span><span class="segment" data-start="251.0" data-end="261.0" title="4:11">A preoperative cardiac assessment in the form of a full history, examination and electrocardiogram should be carried out. </span><span class="segment" data-start="261.0" data-end="273.0" title="4:21">Patients with evidence of schemic heart disease or left ventricular failure should be further investigated with an echocardiogram and angiogram if deemed appropriate. </span><span class="segment" data-start="273.0" data-end="279.0" title="4:33">Treatment of these conditions should be optimised prior to an elective surgical procedure. </span><span class="segment" data-start="280.0" data-end="288.0" title="4:40">The endocrine features are glucose intolerance, diabetes mellitus and thyroid abnormalities. </span><span class="segment" data-start="288.0" data-end="298.0" title="4:48">Approximately one quarter of patients with acromegaly have diabetes and will require management of their blood sugars in the perioperative period. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="298.0"><span class="t-timestamp">4:58</span></div>
+  <div class="t-body"><span class="segment" data-start="298.0" data-end="303.0" title="4:58">What are the importance clinical features of cushing's disease? </span><span class="segment" data-start="304.0" data-end="313.0" title="5:04">Cushing's disease refers to the condition resulting from excess production of adrenal corticotrophic hormone by a pituitary adenoma. </span><span class="segment" data-start="313.0" data-end="331.0" title="5:13">It is clinically difficult to distinguish from other causes of high concentrations of cortisol, such as following treatment with corticosteroids, ectopic ACTH production in some near plastic conditions and excess cortisol production by an adrenal tumor. </span><span class="segment" data-start="332.0" data-end="343.0" title="5:32">The above conditions are collectively referred to as cushing's syndrome. Cushing's disease is rare and 80% of affected individuals are female. </span><span class="segment" data-start="343.0" data-end="352.0" title="5:43">Cushing's disease produces effects in many systems, many of which are of major interest to the anesthetist. </span><span class="segment" data-start="352.0" data-end="360.0" title="5:52">Around 80% of individuals are hyper-attensive and this can prove resistant to pharmacological treatment. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="360.0"><span class="t-timestamp">6:00</span></div>
+  <div class="t-body"><span class="segment" data-start="360.0" data-end="367.0" title="6:00">Long-standing hyper-attention can result in left ventricular hypertrophy and impairment. </span><span class="segment" data-start="367.0" data-end="377.0" title="6:07">Abesity, sleep apnea and gastroesophageal reflux are recognised complications of the condition with implications for airway management. </span><span class="segment" data-start="377.0" data-end="389.0" title="6:17">There can also be electrolyte disturbances in the form of hyper-nutremia and hypocholemia and impaired glucose tolerance or Frank diabetes mellitus. </span><span class="segment" data-start="389.0" data-end="395.0" title="6:29">What are the important considerations for surgery to remove a pituitary lesion? </span><span class="segment" data-start="395.0" data-end="404.0" title="6:35">The principles of anesthesia for surgery to a pituitary lesion are common to those for any neurosurgical procedure. </span><span class="segment" data-start="404.0" data-end="425.0" title="6:44">These are to maintain hemodynamic stability, ensure adequate cerebral perfusion, prevent rapid alterations in intra-cranial pressure and provide a stable state of anesthesia which can be rapidly reversed at the end of surgery to allow early neurosurgical assessment. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="425.0"><span class="t-timestamp">7:05</span></div>
+  <div class="t-body"><span class="segment" data-start="425.0" data-end="430.0" title="7:05">In addition, there are some specific issues to consider. </span><span class="segment" data-start="430.0" data-end="442.0" title="7:10">Preoperative assessment of the patient entails a full history, examination and appropriate investigations to ascertain any pathological effects of the tumor. </span><span class="segment" data-start="442.0" data-end="456.0" title="7:22">As explained before, these would include syndromes of hormone overproduction, symptoms due to raised intra-cranial pressure or problems due to lack of production of pituitary hormones. </span><span class="segment" data-start="456.0" data-end="462.0" title="7:36">The patient's past medical and anesthetic history should be fully explored. </span><span class="segment" data-start="462.0" data-end="472.0" title="7:42">The preoperative assessment must identify and investigate any comorbidities either arising because of the tumor or that are unrelated. </span><span class="segment" data-start="472.0" data-end="484.0" title="7:52">The patient should be optimised in terms of cardiovascular and respiratory function, management of diabetes and hormone replacement if indicated. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="484.0"><span class="t-timestamp">8:04</span></div>
+  <div class="t-body"><span class="segment" data-start="484.0" data-end="496.0" title="8:04">Induction of anesthesia proceeds as for a standard neurosurgical case. Some differences in anesthetic technique may arise as a result of the surgical approach which is to be used. </span><span class="segment" data-start="496.0" data-end="509.0" title="8:16">Exposure of the pituitary gland and surrounding structures can be achieved via a transphanoidal approach whereby an incision is made in the nasal septum or by a frontal craniotomy. </span><span class="segment" data-start="510.0" data-end="518.0" title="8:30">For a transphanoidal approach, the use of a throat pack prevents contamination of the airway with blood and debris. </span><span class="segment" data-start="518.0" data-end="524.0" title="8:38">A vasoconstrictor agent can be applied to the nasal mucuser to reduce bleeding. </span><span class="segment" data-start="524.0" data-end="528.0" title="8:44">The patient is positioned in a head-up position in theatre. </span><span class="segment" data-start="528.0" data-end="537.0" title="8:48">Acromagallic patients are particularly prone to nerve compression syndromes so special care should be taken with positioning and padding. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="538.0"><span class="t-timestamp">8:58</span></div>
+  <div class="t-body"><span class="segment" data-start="538.0" data-end="543.0" title="8:58">Maintenance of anesthesia can be with either an inhalational or intravenous technique. </span><span class="segment" data-start="543.0" data-end="550.0" title="9:03">The aim is to provide stability throughout the surgery with a rapid wake up at the end of the procedure. </span><span class="segment" data-start="550.0" data-end="556.0" title="9:10">Adequate analgesia must be provided prior to emergence. </span><span class="segment" data-start="556.0" data-end="561.0" title="9:16">Perioperative complications related to pituitary surgery are uncommon. </span><span class="segment" data-start="562.0" data-end="570.0" title="9:22">However, the issues to be aware of are hemorrhage, damage to the optic chiasm with consequent visual field defects, </span><span class="segment" data-start="570.0" data-end="576.0" title="9:30">cerebral spinal fluid leak and postoperative pan-hypoperiturism. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="576.0"><span class="t-timestamp">9:36</span></div>
+  <div class="t-body"><span class="segment" data-start="576.0" data-end="590.0" title="9:36">Postoperative airway complications are unusual but patients with preoperative airway issues such as obstructive sleep apnea should be monitored in a high dependency environment for the first 24 hours. </span><span class="segment" data-start="591.0" data-end="598.0" title="9:51">You are asked to assess a 46-year-old lady for an abdominal hysterectomy. She has a diagnosis of Adeson's disease. </span><span class="segment" data-start="598.0" data-end="602.0" title="9:58">What do you understand about this condition? </span><span class="segment" data-start="602.0" data-end="609.0" title="10:02">Adeson's disease is a clinical syndrome resulting from the destruction of the adrenal cortex. </span><span class="segment" data-start="609.0" data-end="613.0" title="10:09">This leads to a deficiency of the adrenal steroid hormones. </span><span class="segment" data-start="614.0" data-end="631.0" title="10:14">The majority of cases seen in the UK are due to an autoimmune process and there is an association between Adeson's disease and other autoimmune conditions such as panicious anemia, vitiligo and thyroid disorders. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="631.0"><span class="t-timestamp">10:31</span></div>
+  <div class="t-body"><span class="segment" data-start="631.0" data-end="644.0" title="10:31">Alternative causes include infiltration of the adrenal glands by malignancy or infection, infarction due to a compromised blood supply and hemorrhage into the adrenal tissue. </span><span class="segment" data-start="644.0" data-end="658.0" title="10:44">The presenting features of chronic cases are commonly non-specific and include weakness, fatigue, abdominal pain, nausea, vomiting, diarrhea and weight loss. </span><span class="segment" data-start="658.0" data-end="665.0" title="10:58">Signs include postural hypotension and hyperpigmentation of skin creases. </span><span class="segment" data-start="665.0" data-end="675.0" title="11:05">Acute presentations are also seen during which the patient is typically profoundly unwell with hypotension, vomiting and weakness. </span><span class="segment" data-start="675.0" data-end="687.0" title="11:15">Characteristic by a chemical abnormalities are seen, namely hyperkalemia, hyponatremia, hypercalcemia and hypoglycemia. </span><span class="segment" data-start="687.0" data-end="691.0" title="11:27">How is Adeson's disease treated? </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="691.0"><span class="t-timestamp">11:31</span></div>
+  <div class="t-body"><span class="segment" data-start="691.0" data-end="701.0" title="11:31">Patients require a replacement of the adrenal steroid hormones. This is given orally in the form of hydrocortezone and fluid recordazone. </span><span class="segment" data-start="701.0" data-end="706.0" title="11:41">Patients should be cancelled regarding the importance of not emitting doses. </span><span class="segment" data-start="706.0" data-end="714.0" title="11:46">Intramuscular supplementation may be needed in the event of significant gastrointestinal upset. </span><span class="segment" data-start="714.0" data-end="721.0" title="11:54">Adesonian crisis is managed with an airway breathing and circulation approach. </span><span class="segment" data-start="721.0" data-end="735.0" title="12:01">Admission to a critical care area is likely to be necessary for ventilatory support, intravenous steroid supplementation, fluid resuscitation and correction of serum electrolytes and glucose. </span><span class="segment" data-start="735.0" data-end="741.0" title="12:15">What are the principles of a perioperative management of patients with Adeson's disease? </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="742.0"><span class="t-timestamp">12:22</span></div>
+  <div class="t-body"><span class="segment" data-start="742.0" data-end="755.0" title="12:22">Regular medication should be continued up to the time of surgery. An intravenous dose of 25 mg of hydrocortezone should be given at the time of induction of anesthesia. </span><span class="segment" data-start="755.0" data-end="767.0" title="12:35">Following minus surgery, whether patient is expected to resume oral intake promptly in the post-operative period, the normal medication regime can be reestablished. </span><span class="segment" data-start="767.0" data-end="780.0" title="12:47">After more invasive surgical procedures, intravenous steroid supplementation of 50 mg of hydrocortezone at six hourly intervals is appropriate until oral intake is restored. </span><span class="segment" data-start="780.0" data-end="787.0" title="13:00">Blood glucose monitoring is important, as is the daily measurement of urea and electrolytes. </span><span class="segment" data-start="787.0" data-end="796.0" title="13:07">A 35-year-old male is to undergo surgical resection of a feocromocytoma. What are the principles of his pre-operative optimization? </span><span class="segment" data-start="797.0" data-end="814.0" title="13:17">Feocromocytoma is a rare tumor derived from chromophine cells. 90% of tumors are located in the adrenal medulla whilst the remainder occur at other sites in the sympathetic nervous system. Most tumors are benign. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="814.0"><span class="t-timestamp">13:34</span></div>
+  <div class="t-body"><span class="segment" data-start="814.0" data-end="822.0" title="13:34">These tumors can arise as an isolated problem or as part of a condition known as multiple endocrine near pleasure. </span><span class="segment" data-start="823.0" data-end="838.0" title="13:43">In this condition, medullary carcinoma of the thyroid, parathyroid adenomas, or marphinoid characteristics, coexist with the feocromocytoma depending on the precise sub-tight of multi-endocrine near pleasure. </span><span class="segment" data-start="839.0" data-end="849.0" title="13:59">Feocromocytomas secrete cataclylamines and the systemic effects of these substances lead to the symptoms and signs of the condition. </span><span class="segment" data-start="849.0" data-end="858.0" title="14:09">Tumors which produce mainly nor epinephrine result in severe hyper-attention which is resistant to pharmacological treatment. </span><span class="segment" data-start="859.0" data-end="868.0" title="14:19">Production of epinephrine and dopamine produce symptoms of episodic palpitations, sweating and anxiety. </span><span class="segment" data-start="868.0" data-end="875.0" title="14:28">A mixed pattern of cataclylamine secretion and physiological effects often occurs. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="875.0"><span class="t-timestamp">14:35</span></div>
+  <div class="t-body"><span class="segment" data-start="875.0" data-end="884.0" title="14:35">Although surgical resection of the tumor is the definitive treatment for feocromocytoma, the patient requires a period of optimization. </span><span class="segment" data-start="885.0" data-end="893.0" title="14:45">This should ideally be undertaken in a centre familiar with dealing with these cases. Optimization is twofold. </span><span class="segment" data-start="893.0" data-end="904.0" title="14:53">Firstly, assessment of any end organ damage to the heart or kidneys, and secondly, pharmacological blockade of the sympathetic overactivity. </span><span class="segment" data-start="905.0" data-end="920.0" title="15:05">The aim of treatment is to reduce blood pressure and heart rate, prevent tachyridis rhythmias, and oppose nor epinephrine-induced vasoconstriction permitting expansion of the intravascular volume. </span><span class="segment" data-start="920.0" data-end="931.0" title="15:20">In this way, the patient's hemodynamic responses both to general anesthesia and surgical manipulation of the tumor are blunted. </span><span class="segment" data-start="931.0" data-end="937.0" title="15:31">Sympathetic blockade is achieved with an alpha blocker as the first line agent. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="937.0"><span class="t-timestamp">15:37</span></div>
+  <div class="t-body"><span class="segment" data-start="937.0" data-end="946.0" title="15:37">Alpha blockade was traditionally undertaken with a long-acting, non-selective agent such as phenoxybenzamine. </span><span class="segment" data-start="946.0" data-end="958.0" title="15:46">Limitations with using this agent include the finding that it commonly provokes a compensatory tachycardia and that its effects can persist into the post-operative period, </span><span class="segment" data-start="958.0" data-end="962.0" title="15:58">producing unwanted hypotension. </span><span class="segment" data-start="962.0" data-end="973.0" title="16:02">For these reasons, shorter acting alpha-1 selective agents such as prazocin or doxozocin are used as an alternative. </span><span class="segment" data-start="973.0" data-end="980.0" title="16:13">If tachycardia is a problem after alpha blockade, addition of a beta blocker may be necessary. </span><span class="segment" data-start="980.0" data-end="993.0" title="16:20">Beta blockade, in the absence of alpha blockade, can theoretically worsen hyper-tension by abolishing beta-2-mediated vasodilitation in skeletal muscle. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="993.0"><span class="t-timestamp">16:33</span></div>
+  <div class="t-body"><span class="segment" data-start="993.0" data-end="1003.0" title="16:33">The adequacy of sympathetic blockade can be assessed by ambulatory monitoring demonstrating stability of both heart rate and blood pressure. </span><span class="segment" data-start="1003.0" data-end="1009.0" title="16:43">A postural drop-in blood pressure is also used as a marker of adequate blockade. </span><span class="segment" data-start="1009.0" data-end="1013.0" title="16:49">The patient has now been adequately investigated and optimised. </span><span class="segment" data-start="1013.0" data-end="1019.0" title="16:53">What are the important factors to be considered in your intraoperative and postoperative management of his case? </span><span class="segment" data-start="1019.0" data-end="1034.0" title="16:59">The aims of anesthesia in this case are to provide as much hemodynamic stability as possible with the ability to respond rapidly and appropriately to any cardiovascular changes as they occur. </span><span class="segment" data-start="1034.0" data-end="1043.0" title="17:14">Invasive cardiovascular monitoring, with an arterial line and central venous catheter is mandatory in this case. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="1043.0"><span class="t-timestamp">17:23</span></div>
+  <div class="t-body"><span class="segment" data-start="1043.0" data-end="1052.0" title="17:23">The stress response to surgical incision can be reduced by the use of an epidural or opiates given at high doses. </span><span class="segment" data-start="1052.0" data-end="1061.0" title="17:32">If the latter approach is taken, this may have implications on the patient's respiratory function in the early postoperative period. </span><span class="segment" data-start="1061.0" data-end="1073.0" title="17:41">Surgical manipulation of the tumor can cause significant catacletamine release with consequent instability in heart rate, rhythm or blood pressure. </span><span class="segment" data-start="1073.0" data-end="1083.0" title="17:53">Short-acting intravenous agents such as phentolamine and alpha-blocker or libiterol are useful to control these episodes. </span><span class="segment" data-start="1083.0" data-end="1089.0" title="18:03">Blood pressure usually settles over a period of minutes after the resection of the tumor. </span><span class="segment" data-start="1089.0" data-end="1096.0" title="18:09">The circulation should be supported with generous administration of intravenous fluid. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="1096.0"><span class="t-timestamp">18:16</span></div>
+  <div class="t-body"><span class="segment" data-start="1096.0" data-end="1105.0" title="18:16">Postoperatively, the patient requires ongoing cardiovascular monitoring in addition to management of any instability. </span><span class="segment" data-start="1105.0" data-end="1109.0" title="18:25">This is best undertaken in a critical care environment. </span><span class="segment" data-start="1109.0" data-end="1117.0" title="18:29">Administration of ionotropes or vasopressors may be needed to maintain an adequate blood pressure. </span><span class="segment" data-start="1117.0" data-end="1130.0" title="18:37">In addition to management of cardiovascular parameters, attention must also be paid to maintenance of blood glucose, which may fall following the acute reduction in circulating catacletamine levels. </span></div>
+</div>
+</div>
+
+<div class="subtitle-bar">
+  <span class="subtitle-text empty" id="subtitle-text">Play audio to see live subtitles&#8230;</span>
+</div>
+
+<script>
+
+const audio    = document.getElementById('audio');
+const allSegs  = Array.from(document.querySelectorAll('.segment'));
+const allBlocks = Array.from(document.querySelectorAll('.t-block'));
+const subtitleEl = document.getElementById('subtitle-text');
+let activeSegEl   = null;
+let activeBlockEl = null;
+let searchMatches = [];
+let searchIdx     = 0;
+
+// Duration display
+audio.addEventListener('loadedmetadata', () => {
+  const m = Math.floor(audio.duration / 60);
+  const s = Math.floor(audio.duration %% 60).toString().padStart(2,'0');
+  document.getElementById('dur').textContent = m + ':' + s;
+});
+
+// Seek helper
+function seekTo(t) {
+  audio.currentTime = t;
+  audio.play();
+}
+
+// Block gutter click
+document.querySelectorAll('.t-gutter').forEach(g => {
+  g.addEventListener('click', () => seekTo(parseFloat(g.dataset.start)));
+});
+
+// Segment click
+allSegs.forEach(s => {
+  s.addEventListener('click', e => {
+    e.stopPropagation();
+    seekTo(parseFloat(s.dataset.start));
+  });
+});
+
+// Real-time tracking
+audio.addEventListener('timeupdate', () => {
+  const t = audio.currentTime;
+
+  // Find active segment (last one whose start <= t)
+  let found = null;
+  for (let i = allSegs.length - 1; i >= 0; i--) {
+    if (parseFloat(allSegs[i].dataset.start) <= t) { found = allSegs[i]; break; }
+  }
+
+  if (found && found !== activeSegEl) {
+    // Clear previous
+    if (activeSegEl) activeSegEl.classList.remove('active');
+    if (activeBlockEl) {
+      activeBlockEl.classList.remove('block-active');
+      const pg = activeBlockEl.querySelector('.t-gutter');
+      if (pg) pg.classList.remove('gutter-active');
+    }
+    // Set new
+    found.classList.add('active');
+    const block = found.closest('.t-block');
+    if (block) {
+      block.classList.add('block-active');
+      const g = block.querySelector('.t-gutter');
+      if (g) g.classList.add('gutter-active');
+      activeBlockEl = block;
+    }
+    activeSegEl = found;
+
+    // Update subtitle
+    subtitleEl.textContent = found.textContent.trim();
+    subtitleEl.classList.remove('empty');
+
+    // Auto-scroll (only when not searching)
+    if (!document.getElementById('search').value) {
+      found.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }
+});
+
+// Search
+const searchInput = document.getElementById('search');
+searchInput.addEventListener('input', runSearch);
+searchInput.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && searchMatches.length) {
+    searchMatches[searchIdx].classList.remove('search-current');
+    searchIdx = (searchIdx + 1) %% searchMatches.length;
+    const el = searchMatches[searchIdx];
+    el.classList.add('search-current');
+    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+});
+
+function runSearch() {
+  const q = searchInput.value.trim().toLowerCase();
+  allSegs.forEach(s => s.classList.remove('search-match','search-current'));
+  searchMatches = [];
+  if (!q) return;
+  allSegs.forEach(s => {
+    if (s.textContent.toLowerCase().includes(q)) {
+      s.classList.add('search-match');
+      searchMatches.push(s);
+    }
+  });
+  if (!searchMatches.length) return;
+  searchIdx = 0;
+  searchMatches[0].classList.add('search-current');
+  searchMatches[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+</script>
+</body>
+</html>

@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ophthalmic — Cataract and Detached Retina</title>
+<style>
+
+  :root {
+    --accent:    #059669;
+    --body-bg:   #f1f5f9;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: var(--body-bg);
+    color: #1e293b;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  /* ── Header ── */
+  .header {
+    background: #0f172a;
+    border-bottom: 3px solid var(--accent);
+    padding: 12px 20px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .header-left { flex: 1; min-width: 200px; }
+  .header h1 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #f1f5f9;
+    margin-bottom: 4px;
+    letter-spacing: 0.01em;
+  }
+  .header-sub {
+    font-size: 0.72rem;
+    color: #94a3b8;
+    font-style: italic;
+  }
+  audio {
+    height: 36px;
+    accent-color: var(--accent);
+    flex-shrink: 0;
+  }
+  .back-link {
+    font-size: 0.8rem;
+    color: #94a3b8;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .back-link:hover { color: #60a5fa; }
+
+  /* ── Toolbar ── */
+  .toolbar {
+    background: #1e293b;
+    padding: 7px 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-shrink: 0;
+    border-bottom: 1px solid #334155;
+  }
+  .toolbar input {
+    flex: 1;
+    max-width: 380px;
+    padding: 5px 11px;
+    border: 1px solid #475569;
+    border-radius: 6px;
+    background: #0f172a;
+    color: #e2e8f0;
+    font-size: 0.83rem;
+    outline: none;
+  }
+  .toolbar input:focus { border-color: var(--accent); }
+  .toolbar input::placeholder { color: #64748b; }
+  .stats {
+    font-size: 0.72rem;
+    color: #64748b;
+    white-space: nowrap;
+  }
+
+  /* ── Scroll area ── */
+  .scroll-area {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+  }
+  .scroll-area::-webkit-scrollbar { width: 6px; }
+  .scroll-area::-webkit-scrollbar-track { background: transparent; }
+  .scroll-area::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+
+  /* ── Subtitle bar ── */
+  .subtitle-bar {
+    background: #0f172a;
+    border-top: 2px solid var(--accent);
+    padding: 8px 20px;
+    flex-shrink: 0;
+    min-height: 42px;
+    display: flex;
+    align-items: center;
+  }
+  .subtitle-text {
+    font-size: 0.9rem;
+    color: #e2e8f0;
+    line-height: 1.5;
+    font-style: italic;
+  }
+  .subtitle-text.empty { color: #475569; }
+
+  /* ── Transcript blocks ── */
+  .t-block {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    margin-bottom: 14px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    display: flex;
+  }
+  .t-block.block-active {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px rgba(37,99,235,0.15);
+  }
+  .t-gutter {
+    background: #0f172a;
+    width: 52px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: 14px;
+    cursor: pointer;
+  }
+  .t-gutter:hover { background: #1e293b; }
+  .t-timestamp {
+    font-size: 0.7rem;
+    color: #64748b;
+    font-family: monospace;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+  .t-gutter.gutter-active .t-timestamp { color: var(--accent); }
+  .t-body {
+    flex: 1;
+    padding: 12px 16px;
+    line-height: 1.75;
+    font-size: 0.92rem;
+    color: #1e293b;
+  }
+
+  /* ── Segments ── */
+  .segment {
+    cursor: pointer;
+    border-radius: 3px;
+    transition: background 0.1s;
+  }
+  .segment:hover { background: #eff6ff; }
+  .segment.active {
+    background: #bfdbfe;
+    outline: 2px solid #3b82f6;
+    outline-offset: 1px;
+    border-radius: 3px;
+  }
+  .segment.search-match  { background: #fef9c3; }
+  .segment.search-current { background: #fde047; outline: 2px solid #ca8a04; }
+
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <h1>Ophthalmic — Cataract and Detached Retina</h1>
+    <div class="header-sub">Final FRCA &mdash; Exam Viva Simulation &mdash; Click any phrase to seek</div>
+  </div>
+  <audio id="audio" src="../FinalFRCAOphthalmic_Cataract_and_Detached_Retina.mp3" controls preload="metadata"></audio>
+  <a class="back-link" href="index.html">&#8592; All Topics</a>
+</div>
+
+<div class="toolbar">
+  <input type="text" id="search" placeholder="Search transcript&#8230; (Enter = next match)">
+  <span class="stats" id="stats">131 segments &nbsp;|&nbsp; <span id="dur">loading&#8230;</span></span>
+</div>
+
+<div class="scroll-area" id="scroll-area">
+<div class="t-block">
+  <div class="t-gutter" data-start="0.0"><span class="t-timestamp">0:00</span></div>
+  <div class="t-body"><span class="segment" data-start="0.0" data-end="2.48" title="0:00">cataracts and retinal detachments. </span><span class="segment" data-start="2.48" data-end="7.56" title="0:02">Each of these three topics could be encountered in the clinical short cases, </span><span class="segment" data-start="7.56" data-end="14.96" title="0:07">or potentially as a prelude to discussing eye blocks in the case of cataract or vitrioretonal surgery. </span><span class="segment" data-start="14.96" data-end="22.76" title="0:14">It is important to know the nuances of each type of surgery and the relevance to us as an ecetist. </span><span class="segment" data-start="22.76" data-end="28.96" title="0:22">I'd like you to tell me what the main factors are in managing anesthesia for an 80-year-old man presenting for cataract surgery. </span><span class="segment" data-start="29.12" data-end="32.56" title="0:29">There are many different approaches to answering this question. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="32.56"><span class="t-timestamp">0:32</span></div>
+  <div class="t-body"><span class="segment" data-start="32.56" data-end="38.56" title="0:32">One would be to categorise the answer into preoperative, intraoperative and postoperative factors. </span><span class="segment" data-start="40.56" data-end="45.68" title="0:40">This type of surgery is generally performed on a day-case basis, </span><span class="segment" data-start="45.68" data-end="52.0" title="0:45">and all of the usual day-case criteria should be met before embarking on surgery. </span><span class="segment" data-start="52.96" data-end="58.48" title="0:52">Preoperatively, it is important to take a brief but focused history. </span><span class="segment" data-start="58.48" data-end="63.84" title="0:58">The population that presents for this type of surgery are usually elderly, </span><span class="segment" data-start="63.84" data-end="71.04" title="1:03">with a high incidence of comorbid disease, particularly cardiovascular and respiratory disease. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="72.24"><span class="t-timestamp">1:12</span></div>
+  <div class="t-body"><span class="segment" data-start="72.24" data-end="78.88" title="1:12">Such patients may be taking warphrine for atrial fibrillation or artificial heart valves, </span><span class="segment" data-start="78.88" data-end="86.16" title="1:18">and it is important to discuss with the surgeons the IONR level that they are happy to proceed with surgery. </span><span class="segment" data-start="86.96" data-end="91.76" title="1:26">It is also important to elicit whether the patient has heart failure, </span><span class="segment" data-start="91.76" data-end="99.84" title="1:31">chronic obstructive pulmonary disease, Parkinson's disease, dementia, muscular skeletal problems, </span><span class="segment" data-start="99.84" data-end="105.92" title="1:39">or any other reason why they may be unable to lie flat or still for the duration of surgery. </span><span class="segment" data-start="106.48" data-end="111.68" title="1:46">Back and neck problems can be helped by placing a pillow under the knees, </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="111.68"><span class="t-timestamp">1:51</span></div>
+  <div class="t-body"><span class="segment" data-start="111.68" data-end="120.72" title="1:51">having a slightly flexed neck, and if necessary using table tilt to get the eye horizontal under the microscope. </span><span class="segment" data-start="120.72" data-end="127.92" title="2:00">Patients are often diabetic, and their usual regime should be maintained on the day of surgery. </span><span class="segment" data-start="127.92" data-end="135.68" title="2:07">This is possible because fasting is not usually required for cataract extraction under local anesthesia. </span><span class="segment" data-start="136.88" data-end="143.28" title="2:16">Before performing a peribolba block, it is important to check the axial length of the eye, </span><span class="segment" data-start="143.28" data-end="150.88" title="2:23">which should be less than 26mm to reduce the risk of accidental globe perforation due to the </span><span class="segment" data-start="150.88" data-end="159.2" title="2:30">presence of staphilomata. If the axial length is greater than this, a subteinon's block is preferable, </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="159.2"><span class="t-timestamp">2:39</span></div>
+  <div class="t-body"><span class="segment" data-start="159.2" data-end="166.56" title="2:39">or in older patients a topical intracameral injection, where local anesthetic is injected into the </span><span class="segment" data-start="166.56" data-end="173.2" title="2:46">anterior chamber of the eye, can be done intraoperatively. Acetane whether the patient has had </span><span class="segment" data-start="173.2" data-end="179.6" title="2:53">previous cataract surgery, the method of anesthesia used, and any problems encountered. </span><span class="segment" data-start="180.48" data-end="186.88" title="3:00">Pre-medication is not normally used to avoid the potential for movement on sudden waking, </span><span class="segment" data-start="186.88" data-end="192.16" title="3:06">but may be necessary in small, titrated boluses of intravenous medazolam. </span><span class="segment" data-start="193.36" data-end="200.32" title="3:13">However, extreme caution should be exercised because the elderly can become very disorientated </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="200.32"><span class="t-timestamp">3:20</span></div>
+  <div class="t-body"><span class="segment" data-start="200.32" data-end="208.0" title="3:20">on even tiny doses. Intraoperative factors depend on the anesthetic technique employed. </span><span class="segment" data-start="208.72" data-end="216.0" title="3:28">Cataract extraction is usually performed using a local technique, but in some circumstances a general </span><span class="segment" data-start="216.0" data-end="222.88" title="3:36">anesthetic may be required. Reasons for this might include patient refusal for local anesthesia, </span><span class="segment" data-start="223.44" data-end="231.92" title="3:43">allergy to local anesthetics, clotting abnormalities, severe myopia, orbital pathology, or young age. </span><span class="segment" data-start="232.72" data-end="238.16" title="3:52">If performed using a local technique, communication should be maintained throughout, </span><span class="segment" data-start="238.72" data-end="245.04" title="3:58">supplemental oxygen should be provided, and oxygen saturation and heart rate should be monitored. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="246.0"><span class="t-timestamp">4:06</span></div>
+  <div class="t-body"><span class="segment" data-start="246.0" data-end="252.64" title="4:06">Atropine should be available in case of bradacardia. If necessary, the surgeon can supplement the </span><span class="segment" data-start="252.64" data-end="261.2" title="4:12">block with topical or subtenon's injection. Postoperatively, simple oral analgesics are usually </span><span class="segment" data-start="261.2" data-end="267.68" title="4:21">all that is required, especially if a block has been used. What are the local techniques that you've </span><span class="segment" data-start="267.68" data-end="273.04" title="4:27">mentioned and describe one technique with which you're familiar? It will be helpful in this answer </span><span class="segment" data-start="273.04" data-end="278.16" title="4:33">if you've done a few of the blocks that you describe so that you can convey confidence in your technique. </span><span class="segment" data-start="280.24" data-end="287.92" title="4:40">The most commonly employed techniques include topical anesthesia, subtenons and peribolba blocks. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="288.72"><span class="t-timestamp">4:48</span></div>
+  <div class="t-body"><span class="segment" data-start="288.72" data-end="294.48" title="4:48">Other techniques used include subconjunctival and retrobolba blocks. </span><span class="segment" data-start="295.44" data-end="302.08" title="4:55">My preferred technique is the subtenons block, which is a safe and effective alternative to </span><span class="segment" data-start="302.08" data-end="309.68" title="5:02">retrobolba and peribolba blocks. Teenons capsule is a connective tissue layer surrounding the </span><span class="segment" data-start="309.68" data-end="317.04" title="5:09">eye and extroocular muscles. Injection of local anesthetic in the subtenon space between the </span><span class="segment" data-start="317.04" data-end="324.08" title="5:17">capsule and the scleror effectively blocks the silvery ganglion, long and short, silvery nerves. </span><span class="segment" data-start="324.88" data-end="331.2" title="5:24">Usually enough local anesthetic diffuses into the muscle cone to produce complete achynesia. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="332.24"><span class="t-timestamp">5:32</span></div>
+  <div class="t-body"><span class="segment" data-start="332.24" data-end="339.44" title="5:32">Before embarking on any regional block, it is essential to obtain consent for the block, check the </span><span class="segment" data-start="339.44" data-end="346.32" title="5:39">side of surgery, ensure resuscitation, drugs and equipment is available, and institute full </span><span class="segment" data-start="346.32" data-end="353.76" title="5:46">monitoring of the patient. Although controversial, the joint Royal College's guidelines suggest that </span><span class="segment" data-start="353.76" data-end="360.08" title="5:53">it is not mandatory to insert an intravenous cannula for a subtenon's block. However, this is up </span><span class="segment" data-start="360.16" data-end="366.72" title="6:00">to the discretion of the anesthetist. Firstly, topical anesthetic is applied to the conjunct </span><span class="segment" data-start="366.72" data-end="376.48" title="6:06">tiver, for example, proxymetocane.5%. A lid speculum is then inserted to retract both eyelids </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="376.48"><span class="t-timestamp">6:16</span></div>
+  <div class="t-body"><span class="segment" data-start="376.48" data-end="385.12" title="6:16">and the patient asked to look up. A lid speculum is then inserted to retract both eyelids </span><span class="segment" data-start="385.12" data-end="393.2" title="6:25">and the patient asked to look up and out. With more fields, four steps, the conjunct tiver and </span><span class="segment" data-start="393.2" data-end="400.48" title="6:33">anterior t-nons capsule are lifted up approximately seven millimeters in ferromedial to the limbus. </span><span class="segment" data-start="401.44" data-end="408.32" title="6:41">A small incision is then made in the conjunct tiver with Westcotts spring scissors and blunt </span><span class="segment" data-start="408.32" data-end="416.32" title="6:48">dissection performed in ferronazely in a plane underneath t-nons capsule. Usually only three </span><span class="segment" data-start="416.32" data-end="424.0" title="6:56">millimeters of dissection is required to access the desired plane. An alternative technique is using </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="424.0"><span class="t-timestamp">7:04</span></div>
+  <div class="t-body"><span class="segment" data-start="424.0" data-end="431.44" title="7:04">hydro-disection to separate the t-nons capsule from the scleror. The advancing ball of local </span><span class="segment" data-start="431.6" data-end="439.6" title="7:11">anesthetic renders the area ahead insensitive quite quickly. A special curved and blunt-ended </span><span class="segment" data-start="439.6" data-end="447.6" title="7:19">cannula can then be passed into this space, aiming backwards towards the equator, and 3.5 to four </span><span class="segment" data-start="447.6" data-end="457.76" title="7:27">mils of local anesthetic is slowly injected. The space itself holds only around 0.75 to 1 mil </span><span class="segment" data-start="457.76" data-end="465.2" title="7:37">under the rest spreads along the muscle sheets. Alternatively, a plastic intravenous cannula can </span><span class="segment" data-start="465.2" data-end="472.96" title="7:45">be used which is cheaper and maybe even less traumatic. Gentle, external pressure is then applied </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="472.96"><span class="t-timestamp">7:52</span></div>
+  <div class="t-body"><span class="segment" data-start="472.96" data-end="479.6" title="7:52">to the eye, however, ocular pressure should be used with caution in glaucoma patients and is best </span><span class="segment" data-start="479.68" data-end="488.08" title="7:59">avoided if the intraocular pressure is very high. The Honeyns Blune is a device designed for this </span><span class="segment" data-start="488.08" data-end="494.32" title="8:08">purpose and can measure the applied pressure which should not be more than 30 millimeters of mercury. </span><span class="segment" data-start="495.44" data-end="497.68" title="8:15">What solution of local anesthetic do you use? </span><span class="segment" data-start="499.92" data-end="507.04" title="8:19">I use a mixture of 2% lignicane and 15 units per mil of high-aluronadase. </span><span class="segment" data-start="507.84" data-end="513.44" title="8:27">This should last 30 to 40 minutes. In complicated cataracts, </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="513.44"><span class="t-timestamp">8:33</span></div>
+  <div class="t-body"><span class="segment" data-start="513.44" data-end="521.12" title="8:33">feco-trobectulectomies or vitrioretinal surgery, it is advantageous to use a longer-acting agent </span><span class="segment" data-start="521.12" data-end="527.92" title="8:41">or lignicane mixed with the longer-acting agent. For example, a 50-50 mix of lignicane </span><span class="segment" data-start="527.92" data-end="533.36" title="8:47">2% and levobupevacane 0.75% would be suitable. </span><span class="segment" data-start="533.84" data-end="536.72" title="8:53">What is the purpose of the high-aluronadase? </span><span class="segment" data-start="538.8" data-end="545.28" title="8:58">High-aluronadase promotes spread of the local anesthetic and reduces intracular pressure. </span><span class="segment" data-start="546.32" data-end="552.72" title="9:06">A disadvantage of its use is that it is expensive and can rarely cause allergic reaction. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="553.84"><span class="t-timestamp">9:13</span></div>
+  <div class="t-body"><span class="segment" data-start="553.84" data-end="560.16" title="9:13">The optimum doses are known but is probably between 5 and 50 units per mil. </span><span class="segment" data-start="560.96" data-end="570.16" title="9:20">In the UK we commonly use 15 units per mil but many anesthetists in the US use only one to 5 units per </span><span class="segment" data-start="570.16" data-end="574.24" title="9:30">mil. What are the complications of the block that you've described? </span><span class="segment" data-start="576.56" data-end="583.84" title="9:36">Common complications include mild chemosis and superficial hemorrhage which although are </span><span class="segment" data-start="583.84" data-end="588.8" title="9:43">cosmetically undesirable will resolve completely in a matter of days. </span><span class="segment" data-start="589.76" data-end="597.6" title="9:49">Major conjunctival hematoma occurs in less than 0.5% of blocks and can be treated easily by </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="597.6"><span class="t-timestamp">9:57</span></div>
+  <div class="t-body"><span class="segment" data-start="597.6" data-end="605.28" title="9:57">cortery. Central nervous system spread of local anesthetic is almost unheard of except with </span><span class="segment" data-start="605.28" data-end="612.8" title="10:05">retrobole bublocks. Major complications are the ocular cardic reflex and angina which are not </span><span class="segment" data-start="612.8" data-end="620.48" title="10:12">infrequent. Peri-bolber blocks with needles of less than 25 millimetres in length such as those </span><span class="segment" data-start="620.48" data-end="628.72" title="10:20">of 13 or 16 millimetres do not risk entering the cone. Let's move on to a new clinical scenario. </span><span class="segment" data-start="629.76" data-end="634.32" title="10:29">A 65-year-old lady presents with retinal detachment and the surgeons would like to proceed </span><span class="segment" data-start="634.32" data-end="638.08" title="10:34">with surgery as soon as possible. What are the important issues here? </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="638.8"><span class="t-timestamp">10:38</span></div>
+  <div class="t-body"><span class="segment" data-start="638.8" data-end="644.56" title="10:38">Think of this answer in terms of preoperative, intraoperative and postoperative factors </span><span class="segment" data-start="644.56" data-end="647.76" title="10:44">to ensure that you do not forget any of the important points. </span><span class="segment" data-start="649.92" data-end="655.36" title="10:49">Retinal detachment are not usually so urgent that they have to be done immediately on </span><span class="segment" data-start="655.36" data-end="661.04" title="10:55">presentation and it is usually reasonable to wait for an adequate period of starvation. </span><span class="segment" data-start="661.92" data-end="668.24" title="11:01">The surgery is often prolonged and performed largely in darkness so the anesthetist should </span><span class="segment" data-start="668.24" data-end="672.4" title="11:08">ensure that there is sufficient lighting to perform anesthesia safely. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="673.6"><span class="t-timestamp">11:13</span></div>
+  <div class="t-body"><span class="segment" data-start="673.6" data-end="679.36" title="11:13">Scleral buckling for retinal detachment can be extremely uncomfortable and is often </span><span class="segment" data-start="679.36" data-end="685.2" title="11:19">performed under general anesthesia although local anesthesia is increasingly being used. </span><span class="segment" data-start="686.08" data-end="691.28" title="11:26">Controlled ventilation is usually preferable due to the duration of surgery and are </span><span class="segment" data-start="691.28" data-end="696.0" title="11:31">wish to avoid hypercarbure which is said to raise intraocular pressure. </span><span class="segment" data-start="696.88" data-end="702.56" title="11:36">The use of either arm and laryngeal masks or the ray endotachial tubes are acceptable. </span><span class="segment" data-start="703.36" data-end="709.76" title="11:43">However, laryngeal mask airways are useful as they avoid the presser response to intubation </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="709.84"><span class="t-timestamp">11:49</span></div>
+  <div class="t-body"><span class="segment" data-start="709.84" data-end="713.28" title="11:49">and reduce the incidence of coughing on extubation. </span><span class="segment" data-start="714.32" data-end="720.32" title="11:54">Vega-litic agents must be available should the ocular cardic reflex occur during surgical </span><span class="segment" data-start="720.32" data-end="726.96" title="12:00">manipulation of the globe. Towards the end of the procedure, the surgeons may want to introduce a </span><span class="segment" data-start="726.96" data-end="734.72" title="12:06">bubble of sulfur hexafluoride or per fluoro-propein gas between the vitrius and retina to tamponade the </span><span class="segment" data-start="734.72" data-end="741.44" title="12:14">retina. It is important not to use nitrous oxide for maintenance in these instances. </span><span class="segment" data-start="742.96" data-end="744.16" title="12:22">What is the reason for this? </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="746.08"><span class="t-timestamp">12:26</span></div>
+  <div class="t-body"><span class="segment" data-start="746.08" data-end="753.12" title="12:26">Nitrous oxide is highly insoluble in blood and can diffuse and expand into closed gas-filled </span><span class="segment" data-start="753.12" data-end="760.08" title="12:33">spaces because it is 40 times more soluble than nitrogen. It would therefore increase the </span><span class="segment" data-start="760.08" data-end="767.28" title="12:40">volume of the gas bubble injected. Whilst this is acceptable during surgery, it will diffuse out </span><span class="segment" data-start="767.28" data-end="773.44" title="12:47">during the post-operative period, reducing the volume of the bubble and therefore reducing the </span><span class="segment" data-start="773.44" data-end="781.68" title="12:53">tamponade effect. If the patient subsequently requires non-opthalmic surgery and nitrous oxide is </span><span class="segment" data-start="781.68" data-end="789.2" title="13:01">used, the bubble is at risk of expanding. Nitrous oxide use should therefore be avoided in the three </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="789.2"><span class="t-timestamp">13:09</span></div>
+  <div class="t-body"><span class="segment" data-start="789.2" data-end="796.4" title="13:09">months immediately following surgery using intraocular gas. It is also important for patients not </span><span class="segment" data-start="796.4" data-end="803.36" title="13:16">to fly with gas-tamponade because even a pressurised aircraft cabin is at a pressure altitude of about </span><span class="segment" data-start="803.36" data-end="810.96" title="13:23">8,000 feet so the gas bubble will expand. Our local anesthetic block suitable for this type of surgery. </span><span class="segment" data-start="811.04" data-end="819.68" title="13:31">Retinal detachment surgery can be painful post-operatively, particularly revision surgery, </span><span class="segment" data-start="819.68" data-end="826.72" title="13:39">and so a local anesthetic block should be routine. A sub-teen ons block is ideal in combination with </span><span class="segment" data-start="826.72" data-end="834.56" title="13:46">general anesthesia as it improves intraoperative stability, reduces the need for opioids and reduces </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="834.64"><span class="t-timestamp">13:54</span></div>
+  <div class="t-body"><span class="segment" data-start="834.64" data-end="841.76" title="13:54">post-operative pain. This can be performed after induction of anesthesia or by the surgeon during </span><span class="segment" data-start="841.76" data-end="849.6" title="14:01">or at the end of surgery. If a supplementary block is not used, remy fentanyl can be a good alternative </span><span class="segment" data-start="849.6" data-end="857.76" title="14:09">as sclerol indentation is often very stimulating. In these cases, supplemental analgesium must be </span><span class="segment" data-start="857.76" data-end="864.32" title="14:17">given at the end, for example, 0.1 mg per kilogram of intravenous morphine, unless the </span><span class="segment" data-start="864.32" data-end="873.6" title="14:24">patient is old and frail. Intravenous paracetamol should be used routinely, and in the post-operative </span><span class="segment" data-start="873.6" data-end="880.96" title="14:33">period, oral morphine with a non-steroidal anti-inflammatory and paracetamol are usually adequate. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="882.16"><span class="t-timestamp">14:42</span></div>
+  <div class="t-body"><span class="segment" data-start="882.16" data-end="888.24" title="14:42">If the patient is presenting for redo retinal detachment surgery, having previously had a </span><span class="segment" data-start="888.24" data-end="895.2" title="14:48">sclerol buckle, it may be difficult to get circumferential spread of local anesthetic with a sub-teen ons block. </span><span class="segment" data-start="896.48" data-end="903.52" title="14:56">Injections are required in more than one quadrant, so in this instance a peri-bulber block is preferred. </span><span class="segment" data-start="903.52" data-end="910.32" title="15:03">However, a sub-teen ons top-up can be given after the teen ons capsule is dissected off and opened for </span><span class="segment" data-start="910.32" data-end="911.6" title="15:10">the surgery. </span></div>
+</div>
+</div>
+
+<div class="subtitle-bar">
+  <span class="subtitle-text empty" id="subtitle-text">Play audio to see live subtitles&#8230;</span>
+</div>
+
+<script>
+
+const audio    = document.getElementById('audio');
+const allSegs  = Array.from(document.querySelectorAll('.segment'));
+const allBlocks = Array.from(document.querySelectorAll('.t-block'));
+const subtitleEl = document.getElementById('subtitle-text');
+let activeSegEl   = null;
+let activeBlockEl = null;
+let searchMatches = [];
+let searchIdx     = 0;
+
+// Duration display
+audio.addEventListener('loadedmetadata', () => {
+  const m = Math.floor(audio.duration / 60);
+  const s = Math.floor(audio.duration %% 60).toString().padStart(2,'0');
+  document.getElementById('dur').textContent = m + ':' + s;
+});
+
+// Seek helper
+function seekTo(t) {
+  audio.currentTime = t;
+  audio.play();
+}
+
+// Block gutter click
+document.querySelectorAll('.t-gutter').forEach(g => {
+  g.addEventListener('click', () => seekTo(parseFloat(g.dataset.start)));
+});
+
+// Segment click
+allSegs.forEach(s => {
+  s.addEventListener('click', e => {
+    e.stopPropagation();
+    seekTo(parseFloat(s.dataset.start));
+  });
+});
+
+// Real-time tracking
+audio.addEventListener('timeupdate', () => {
+  const t = audio.currentTime;
+
+  // Find active segment (last one whose start <= t)
+  let found = null;
+  for (let i = allSegs.length - 1; i >= 0; i--) {
+    if (parseFloat(allSegs[i].dataset.start) <= t) { found = allSegs[i]; break; }
+  }
+
+  if (found && found !== activeSegEl) {
+    // Clear previous
+    if (activeSegEl) activeSegEl.classList.remove('active');
+    if (activeBlockEl) {
+      activeBlockEl.classList.remove('block-active');
+      const pg = activeBlockEl.querySelector('.t-gutter');
+      if (pg) pg.classList.remove('gutter-active');
+    }
+    // Set new
+    found.classList.add('active');
+    const block = found.closest('.t-block');
+    if (block) {
+      block.classList.add('block-active');
+      const g = block.querySelector('.t-gutter');
+      if (g) g.classList.add('gutter-active');
+      activeBlockEl = block;
+    }
+    activeSegEl = found;
+
+    // Update subtitle
+    subtitleEl.textContent = found.textContent.trim();
+    subtitleEl.classList.remove('empty');
+
+    // Auto-scroll (only when not searching)
+    if (!document.getElementById('search').value) {
+      found.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }
+});
+
+// Search
+const searchInput = document.getElementById('search');
+searchInput.addEventListener('input', runSearch);
+searchInput.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && searchMatches.length) {
+    searchMatches[searchIdx].classList.remove('search-current');
+    searchIdx = (searchIdx + 1) %% searchMatches.length;
+    const el = searchMatches[searchIdx];
+    el.classList.add('search-current');
+    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+});
+
+function runSearch() {
+  const q = searchInput.value.trim().toLowerCase();
+  allSegs.forEach(s => s.classList.remove('search-match','search-current'));
+  searchMatches = [];
+  if (!q) return;
+  allSegs.forEach(s => {
+    if (s.textContent.toLowerCase().includes(q)) {
+      s.classList.add('search-match');
+      searchMatches.push(s);
+    }
+  });
+  if (!searchMatches.length) return;
+  searchIdx = 0;
+  searchMatches[0].classList.add('search-current');
+  searchMatches[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+</script>
+</body>
+</html>

@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Final FRCA &mdash; Viva Exam Player</title>
+<style>
+  :root { --accent: #2563eb; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: #0f172a;
+    color: #e2e8f0;
+    min-height: 100vh;
+    padding: 32px 24px;
+  }
+  .top-header {
+    text-align: center;
+    margin-bottom: 36px;
+  }
+  .top-header h1 {
+    font-size: 1.6rem;
+    color: #f1f5f9;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    margin-bottom: 6px;
+  }
+  .top-header p {
+    font-size: 0.85rem;
+    color: #64748b;
+  }
+  .filter-wrap {
+    max-width: 480px;
+    margin: 0 auto 32px;
+  }
+  .filter-wrap input {
+    width: 100%;
+    padding: 10px 16px;
+    border: 1px solid #334155;
+    border-radius: 8px;
+    background: #1e293b;
+    color: #e2e8f0;
+    font-size: 0.9rem;
+    outline: none;
+  }
+  .filter-wrap input:focus { border-color: var(--accent); }
+  .filter-wrap input::placeholder { color: #475569; }
+  .category { margin-bottom: 36px; }
+  .cat-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+  .cat-header h2 {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    font-weight: 700;
+    color: #94a3b8;
+  }
+  .cat-line {
+    flex: 1;
+    height: 1px;
+    background: #1e293b;
+  }
+  .cat-dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .cat-cardiac .cat-dot { background: #ef4444; }
+  .cat-daystay .cat-dot { background: #6b7280; }
+  .cat-ent .cat-dot { background: #f59e0b; }
+  .cat-em .cat-dot { background: #dc2626; }
+  .cat-endo .cat-dot { background: #8b5cf6; }
+  .cat-git .cat-dot { background: #f97316; }
+  .cat-haem .cat-dot { background: #ec4899; }
+  .cat-hep .cat-dot { background: #b45309; }
+  .cat-icm .cat-dot { background: #0ea5e9; }
+  .cat-meta .cat-dot { background: #10b981; }
+  .cat-neuro .cat-dot { background: #6366f1; }
+  .cat-obs .cat-dot { background: #db2777; }
+  .cat-ophth .cat-dot { background: #059669; }
+  .cat-ortho .cat-dot { background: #64748b; }
+  .cat-paeds .cat-dot { background: #fbbf24; }
+  .cat-pain .cat-dot { background: #a855f7; }
+  .cat-reg .cat-dot { background: #2563eb; }
+  .cat-renal .cat-dot { background: #0891b2; }
+  .cat-thor .cat-dot { background: #7c3aed; }
+  .cat-vasc .cat-dot { background: #ea580c; }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 10px;
+  }
+  .card {
+    background: #1e293b;
+    border: 1px solid #334155;
+    border-radius: 8px;
+    padding: 12px 16px;
+    text-decoration: none;
+    color: #cbd5e1;
+    font-size: 0.85rem;
+    line-height: 1.4;
+    display: block;
+    transition: border-color 0.15s, color 0.15s, transform 0.1s;
+  }
+  .card:hover {
+    border-color: var(--accent);
+    color: #93c5fd;
+    transform: translateY(-1px);
+  }
+  .card.hidden { display: none; }
+  .card-prefix {
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+</style>
+</head>
+<body>
+<div class="top-header">
+  <h1>Final FRCA &mdash; Viva Exam Player</h1>
+  <p>Interactive audio + transcript. Click any phrase to jump to that moment in the recording.</p>
+</div>
+
+<div class="filter-wrap">
+  <input type="text" id="filter" placeholder="Filter topics&#8230;" oninput="filterCards(this.value)">
+</div>
+
+<div class="category">
+<div class="cat-header">
+  <div class="cat-dot" style="background:#ef4444"></div>
+  <h2>Cardiac Anaesthesia</h2>
+  <div class="cat-line"></div>
+</div>
+<div class="grid">
+<a class="card cat-cardiac" href="FinalFRCACardiac_Anaesthesia_Anaesthesia_for_Cardiac_Surgery.html"><div class="card-prefix" style="color:#ef4444">Cardiac Anaesthesia</div>Anaesthesia for Cardiac Surgery</a>
+<a class="card cat-cardiac" href="FinalFRCACardiac_Anaesthesia_Anaesthesia_of_Cardiac_Patient_for_Non-cardiac_Surgery.html"><div class="card-prefix" style="color:#ef4444">Cardiac Anaesthesia</div>Anaesthesia of Cardiac Patient for Non-cardiac Surgery</a>
+<a class="card cat-cardiac" href="FinalFRCACardiac_Anaesthesia_Arrhythmias.html"><div class="card-prefix" style="color:#ef4444">Cardiac Anaesthesia</div>Arrhythmias</a>
+<a class="card cat-cardiac" href="FinalFRCACardiac_Anaesthesia_Cardiomyopathy.html"><div class="card-prefix" style="color:#ef4444">Cardiac Anaesthesia</div>Cardiomyopathy</a>
+<a class="card cat-cardiac" href="FinalFRCACardiac_Anaesthesia_Congenital_Heart_Disease.html"><div class="card-prefix" style="color:#ef4444">Cardiac Anaesthesia</div>Congenital Heart Disease</a>
+<a class="card cat-cardiac" href="FinalFRCACardiac_Anaesthesia_Hypertension.html"><div class="card-prefix" style="color:#ef4444">Cardiac Anaesthesia</div>Hypertension</a>
+<a class="card cat-cardiac" href="FinalFRCACardiac_Anaesthesia_Ischaemic_Heart_Disease_and_Congestive_Cardiac_Failure.html"><div class="card-prefix" style="color:#ef4444">Cardiac Anaesthesia</div>Ischaemic Heart Disease and Congestive Cardiac Failure</a>
+<a class="card cat-cardiac" href="FinalFRCACardiac_Anaesthesia_Pacemakers.html"><div class="card-prefix" style="color:#ef4444">Cardiac Anaesthesia</div>Pacemakers</a>
+<a class="card cat-cardiac" href="FinalFRCACardiac_Anaesthesia_Post-operative_Management_of_MI.html"><div class="card-prefix" style="color:#ef4444">Cardiac Anaesthesia</div>Post-operative Management of MI</a>
+<a class="card cat-cardiac" href="FinalFRCACardiac_Anaesthesia_Postoperative_Management_of_Cardiac_Surgery_Patients.html"><div class="card-prefix" style="color:#ef4444">Cardiac Anaesthesia</div>Postoperative Management of Cardiac Surgery Patients</a>
+<a class="card cat-cardiac" href="FinalFRCACardiac_Anaesthesia_Preoperative_Assessment_of_Patients_with_Cardiac_Disease.html"><div class="card-prefix" style="color:#ef4444">Cardiac Anaesthesia</div>Preoperative Assessment of Patients with Cardiac Disease</a>
+<a class="card cat-cardiac" href="FinalFRCACardiac_Anaesthesia_Valvular_Defects.html"><div class="card-prefix" style="color:#ef4444">Cardiac Anaesthesia</div>Valvular Defects</a>
+</div>
+</div><div class="category">
+<div class="cat-header">
+  <div class="cat-dot" style="background:#6b7280"></div>
+  <h2>Day Stay</h2>
+  <div class="cat-line"></div>
+</div>
+<div class="grid">
+<a class="card cat-daystay" href="FinalFRCADay_Stay_Day_Case_Selection_Criteria.html"><div class="card-prefix" style="color:#6b7280">Day Stay</div>Day Case Selection Criteria</a>
+</div>
+</div><div class="category">
+<div class="cat-header">
+  <div class="cat-dot" style="background:#f59e0b"></div>
+  <h2>ENT</h2>
+  <div class="cat-line"></div>
+</div>
+<div class="grid">
+<a class="card cat-ent" href="FinalFRCAENT_Bleeding_Tonsil_and_Foreign_Body.html"><div class="card-prefix" style="color:#f59e0b">ENT</div>Bleeding Tonsil and Foreign Body</a>
+<a class="card cat-ent" href="FinalFRCAENT_Difficult_Intubation.html"><div class="card-prefix" style="color:#f59e0b">ENT</div>Difficult Intubation</a>
+<a class="card cat-ent" href="FinalFRCAENT_Obstructive_Sleep_Apnoea.html"><div class="card-prefix" style="color:#f59e0b">ENT</div>Obstructive Sleep Apnoea</a>
+<a class="card cat-ent" href="FinalFRCAENT_Performing_a_Tracheostomy.html"><div class="card-prefix" style="color:#f59e0b">ENT</div>Performing a Tracheostomy</a>
+<a class="card cat-ent" href="FinalFRCAENT_Upper_Airway_Infections.html"><div class="card-prefix" style="color:#f59e0b">ENT</div>Upper Airway Infections</a>
+</div>
+</div><div class="category">
+<div class="cat-header">
+  <div class="cat-dot" style="background:#dc2626"></div>
+  <h2>Emergency Medicine</h2>
+  <div class="cat-line"></div>
+</div>
+<div class="grid">
+<a class="card cat-em" href="FinalFRCAEmergency_Medicine_Acute_Poisoning.html"><div class="card-prefix" style="color:#dc2626">Emergency Medicine</div>Acute Poisoning</a>
+<a class="card cat-em" href="FinalFRCAEmergency_Medicine_Burns_and_Drowning.html"><div class="card-prefix" style="color:#dc2626">Emergency Medicine</div>Burns and Drowning</a>
+</div>
+</div><div class="category">
+<div class="cat-header">
+  <div class="cat-dot" style="background:#8b5cf6"></div>
+  <h2>Endocrinology</h2>
+  <div class="cat-line"></div>
+</div>
+<div class="grid">
+<a class="card cat-endo" href="FinalFRCAEndocrinology_Endocrine_Disease.html"><div class="card-prefix" style="color:#8b5cf6">Endocrinology</div>Endocrine Disease</a>
+<a class="card cat-endo" href="FinalFRCAEndocrinology_Phaeochromocytoma.html"><div class="card-prefix" style="color:#8b5cf6">Endocrinology</div>Phaeochromocytoma</a>
+<a class="card cat-endo" href="FinalFRCAEndocrinology_Thyroid_Disease_and_Thyroid_Surgery.html"><div class="card-prefix" style="color:#8b5cf6">Endocrinology</div>Thyroid Disease and Thyroid Surgery</a>
+</div>
+</div><div class="category">
+<div class="cat-header">
+  <div class="cat-dot" style="background:#f97316"></div>
+  <h2>Gastrointestinal Tract</h2>
+  <div class="cat-line"></div>
+</div>
+<div class="grid">
+<a class="card cat-git" href="FinalFRCAGastrointestinal_Tract_Feeding.html"><div class="card-prefix" style="color:#f97316">Gastrointestinal Tract</div>Feeding</a>
+<a class="card cat-git" href="FinalFRCAGastrointestinal_Tract_Nausea_and_Vomiting.html"><div class="card-prefix" style="color:#f97316">Gastrointestinal Tract</div>Nausea and Vomiting</a>
+<a class="card cat-git" href="FinalFRCAGastrointestinal_Tract_Nutrition_Requirements_and_Malnutrition.html"><div class="card-prefix" style="color:#f97316">Gastrointestinal Tract</div>Nutrition Requirements and Malnutrition</a>
+<a class="card cat-git" href="FinalFRCAGastrointestinal_Tract_Oesophageal_Reflux.html"><div class="card-prefix" style="color:#f97316">Gastrointestinal Tract</div>Oesophageal Reflux</a>
+<a class="card cat-git" href="FinalFRCAGastrointestinal_Tract_Pancreatitis.html"><div class="card-prefix" style="color:#f97316">Gastrointestinal Tract</div>Pancreatitis</a>
+</div>
+</div><div class="category">
+<div class="cat-header">
+  <div class="cat-dot" style="background:#ec4899"></div>
+  <h2>Haematological</h2>
+  <div class="cat-line"></div>
+</div>
+<div class="grid">
+<a class="card cat-haem" href="FinalFRCAHaematological_Abnormalities_of_Coagulation_and_Haemostasis.html"><div class="card-prefix" style="color:#ec4899">Haematological</div>Abnormalities of Coagulation and Haemostasis</a>
+<a class="card cat-haem" href="FinalFRCAHaematological_Anaemia_and_Abnormal_Haemoglobins.html"><div class="card-prefix" style="color:#ec4899">Haematological</div>Anaemia and Abnormal Haemoglobins</a>
+<a class="card cat-haem" href="FinalFRCAHaematological_Anticoagulant_Agents.html"><div class="card-prefix" style="color:#ec4899">Haematological</div>Anticoagulant Agents</a>
+<a class="card cat-haem" href="FinalFRCAHaematological_Antiplatelet_Agents_and_Antifibrinolytic_Agents.html"><div class="card-prefix" style="color:#ec4899">Haematological</div>Antiplatelet Agents and Antifibrinolytic Agents</a>
+<a class="card cat-haem" href="FinalFRCAHaematological_Blood_Groups.html"><div class="card-prefix" style="color:#ec4899">Haematological</div>Blood Groups</a>
+</div>
+</div><div class="category">
+<div class="cat-header">
+  <div class="cat-dot" style="background:#b45309"></div>
+  <h2>Hepatology</h2>
+  <div class="cat-line"></div>
+</div>
+<div class="grid">
+<a class="card cat-hep" href="FinalFRCAHepatology_Hepatic_Failure.html"><div class="card-prefix" style="color:#b45309">Hepatology</div>Hepatic Failure</a>
+<a class="card cat-hep" href="FinalFRCAHepatology_Jaundice.html"><div class="card-prefix" style="color:#b45309">Hepatology</div>Jaundice</a>
+</div>
+</div><div class="category">
+<div class="cat-header">
+  <div class="cat-dot" style="background:#0ea5e9"></div>
+  <h2>Intensive Care Medicine</h2>
+  <div class="cat-line"></div>
+</div>
+<div class="grid">
+<a class="card cat-icm" href="FinalFRCAIntensive_Care_Medicine_ARDS_and_Ventilation_Difficulties.html"><div class="card-prefix" style="color:#0ea5e9">Intensive Care Medicine</div>ARDS and Ventilation Difficulties</a>
+<a class="card cat-icm" href="FinalFRCAIntensive_Care_Medicine_High_Risk_Surgical_Patient.html"><div class="card-prefix" style="color:#0ea5e9">Intensive Care Medicine</div>High Risk Surgical Patient</a>
+<a class="card cat-icm" href="FinalFRCAIntensive_Care_Medicine_Management_of_Multi_Organ_Failure.html"><div class="card-prefix" style="color:#0ea5e9">Intensive Care Medicine</div>Management of Multi Organ Failure</a>
+<a class="card cat-icm" href="FinalFRCAIntensive_Care_Medicine_Management_of_Severe_Sepsis.html"><div class="card-prefix" style="color:#0ea5e9">Intensive Care Medicine</div>Management of Severe Sepsis</a>
+</div>
+</div><div class="category">
+<div class="cat-header">
+  <div class="cat-dot" style="background:#10b981"></div>
+  <h2>Metabolism</h2>
+  <div class="cat-line"></div>
+</div>
+<div class="grid">
+<a class="card cat-meta" href="FinalFRCAMetabolism_Diabetes.html"><div class="card-prefix" style="color:#10b981">Metabolism</div>Diabetes</a>
+<a class="card cat-meta" href="FinalFRCAMetabolism_Hormonal_and_Metabolic_Response_to_Trauma.html"><div class="card-prefix" style="color:#10b981">Metabolism</div>Hormonal and Metabolic Response to Trauma</a>
+<a class="card cat-meta" href="FinalFRCAMetabolism_Hyperthermia.html"><div class="card-prefix" style="color:#10b981">Metabolism</div>Hyperthermia</a>
+<a class="card cat-meta" href="FinalFRCAMetabolism_Hypothermia.html"><div class="card-prefix" style="color:#10b981">Metabolism</div>Hypothermia</a>
+<a class="card cat-meta" href="FinalFRCAMetabolism_Obesity.html"><div class="card-prefix" style="color:#10b981">Metabolism</div>Obesity</a>
+</div>
+</div><div class="category">
+<div class="cat-header">
+  <div class="cat-dot" style="background:#6366f1"></div>
+  <h2>Neurosurgical Anaesthesia</h2>
+  <div class="cat-line"></div>
+</div>
+<div class="grid">
+<a class="card cat-neuro" href="FinalFRCANeurosurgical_Anaesthesia_Anaesthesia_for_an_MRI_Scan.html"><div class="card-prefix" style="color:#6366f1">Neurosurgical Anaesthesia</div>Anaesthesia for an MRI Scan</a>
+<a class="card cat-neuro" href="FinalFRCANeurosurgical_Anaesthesia_Brainstem_Death.html"><div class="card-prefix" style="color:#6366f1">Neurosurgical Anaesthesia</div>Brainstem Death</a>
+<a class="card cat-neuro" href="FinalFRCANeurosurgical_Anaesthesia_Depth_of_Anaesthesia_Monitoring.html"><div class="card-prefix" style="color:#6366f1">Neurosurgical Anaesthesia</div>Depth of Anaesthesia Monitoring</a>
+<a class="card cat-neuro" href="FinalFRCANeurosurgical_Anaesthesia_ECT_and_Anti-Psychotics.html"><div class="card-prefix" style="color:#6366f1">Neurosurgical Anaesthesia</div>ECT and Anti-Psychotics</a>
+<a class="card cat-neuro" href="FinalFRCANeurosurgical_Anaesthesia_Epilepsy.html"><div class="card-prefix" style="color:#6366f1">Neurosurgical Anaesthesia</div>Epilepsy</a>
+<a class="card cat-neuro" href="FinalFRCANeurosurgical_Anaesthesia_Head_Injuries_and_Control_of_ICP.html"><div class="card-prefix" style="color:#6366f1">Neurosurgical Anaesthesia</div>Head Injuries and Control of ICP</a>
+<a class="card cat-neuro" href="FinalFRCANeurosurgical_Anaesthesia_Late_Management_of_Spinal_Cord_Injury.html"><div class="card-prefix" style="color:#6366f1">Neurosurgical Anaesthesia</div>Late Management of Spinal Cord Injury</a>
+<a class="card cat-neuro" href="FinalFRCANeurosurgical_Anaesthesia_Management_of_Acute_Spinal_Cord_Injury.html"><div class="card-prefix" style="color:#6366f1">Neurosurgical Anaesthesia</div>Management of Acute Spinal Cord Injury</a>
+<a class="card cat-neuro" href="FinalFRCANeurosurgical_Anaesthesia_Principles_for_Craniotomy.html"><div class="card-prefix" style="color:#6366f1">Neurosurgical Anaesthesia</div>Principles for Craniotomy</a>
+<a class="card cat-neuro" href="FinalFRCANeurosurgical_Anaesthesia_Subarachnnoid_Haemorrhage.html"><div class="card-prefix" style="color:#6366f1">Neurosurgical Anaesthesia</div>Subarachnnoid Haemorrhage</a>
+</div>
+</div><div class="category">
+<div class="cat-header">
+  <div class="cat-dot" style="background:#db2777"></div>
+  <h2>Obstetrics</h2>
+  <div class="cat-line"></div>
+</div>
+<div class="grid">
+<a class="card cat-obs" href="FinalFRCAObstetrics_Anaesthesia_in_Early_Pregnancy.html"><div class="card-prefix" style="color:#db2777">Obstetrics</div>Anaesthesia in Early Pregnancy</a>
+<a class="card cat-obs" href="FinalFRCAObstetrics_Medical_Diseases_Complicating_Pregnancy_1.html"><div class="card-prefix" style="color:#db2777">Obstetrics</div>Medical Diseases Complicating Pregnancy 1</a>
+<a class="card cat-obs" href="FinalFRCAObstetrics_Medical_Diseases_Complicating_Pregnancy_2.html"><div class="card-prefix" style="color:#db2777">Obstetrics</div>Medical Diseases Complicating Pregnancy 2</a>
+<a class="card cat-obs" href="FinalFRCAObstetrics_Physiological_and_Anatomical_Changes_of_Pregnancy.html"><div class="card-prefix" style="color:#db2777">Obstetrics</div>Physiological and Anatomical Changes of Pregnancy</a>
+<a class="card cat-obs" href="FinalFRCAObstetrics_Pre-eclampsia.html"><div class="card-prefix" style="color:#db2777">Obstetrics</div>Pre-eclampsia</a>
+</div>
+</div><div class="category">
+<div class="cat-header">
+  <div class="cat-dot" style="background:#059669"></div>
+  <h2>Ophthalmic</h2>
+  <div class="cat-line"></div>
+</div>
+<div class="grid">
+<a class="card cat-ophth" href="FinalFRCAOphthalmic_Cataract_and_Detached_Retina.html"><div class="card-prefix" style="color:#059669">Ophthalmic</div>Cataract and Detached Retina</a>
+<a class="card cat-ophth" href="FinalFRCAOphthalmic_Control_of_Intraocular_Pressure.html"><div class="card-prefix" style="color:#059669">Ophthalmic</div>Control of Intraocular Pressure</a>
+<a class="card cat-ophth" href="FinalFRCAOphthalmic_Orbital_Anatomy.html"><div class="card-prefix" style="color:#059669">Ophthalmic</div>Orbital Anatomy</a>
+<a class="card cat-ophth" href="FinalFRCAOphthalmic_Penetrating_Eye_Injury.html"><div class="card-prefix" style="color:#059669">Ophthalmic</div>Penetrating Eye Injury</a>
+<a class="card cat-ophth" href="FinalFRCAOphthalmic_Strabismum.html"><div class="card-prefix" style="color:#059669">Ophthalmic</div>Strabismum</a>
+</div>
+</div><div class="category">
+<div class="cat-header">
+  <div class="cat-dot" style="background:#64748b"></div>
+  <h2>Orthopaedics</h2>
+  <div class="cat-line"></div>
+</div>
+<div class="grid">
+<a class="card cat-ortho" href="FinalFRCAOrthopaedics_Embolic_Disease.html"><div class="card-prefix" style="color:#64748b">Orthopaedics</div>Embolic Disease</a>
+<a class="card cat-ortho" href="FinalFRCAOrthopaedics_Myasthenia_and_Muscle_Diseases.html"><div class="card-prefix" style="color:#64748b">Orthopaedics</div>Myasthenia and Muscle Diseases</a>
+<a class="card cat-ortho" href="FinalFRCAOrthopaedics_Procedures_under_Tourniquet.html"><div class="card-prefix" style="color:#64748b">Orthopaedics</div>Procedures under Tourniquet</a>
+<a class="card cat-ortho" href="FinalFRCAOrthopaedics_Rheumatoid_Arthritis.html"><div class="card-prefix" style="color:#64748b">Orthopaedics</div>Rheumatoid Arthritis</a>
+</div>
+</div><div class="category">
+<div class="cat-header">
+  <div class="cat-dot" style="background:#fbbf24"></div>
+  <h2>Paediatric & Neonatal</h2>
+  <div class="cat-line"></div>
+</div>
+<div class="grid">
+<a class="card cat-paeds" href="FinalFRCAPaediatric_and_Neonatal_Development_in_infancy_and_childhood.html"><div class="card-prefix" style="color:#fbbf24">Paediatric & Neonatal</div>Development in infancy and childhood</a>
+<a class="card cat-paeds" href="FinalFRCAPaediatric_and_Neonatal_Intussuception.html"><div class="card-prefix" style="color:#fbbf24">Paediatric & Neonatal</div>Intussuception</a>
+<a class="card cat-paeds" href="FinalFRCAPaediatric_and_Neonatal_Neonatal_Resuscitation_and_Effects_of_Prematurity.html"><div class="card-prefix" style="color:#fbbf24">Paediatric & Neonatal</div>Neonatal Resuscitation and Effects of Prematurity</a>
+<a class="card cat-paeds" href="FinalFRCAPaediatric_and_Neonatal_Oesophageal_atresia_Diaphragmatic_Hernia_and_Exomphalos.html"><div class="card-prefix" style="color:#fbbf24">Paediatric & Neonatal</div>Oesophageal atresia Diaphragmatic Hernia and Exomphalos</a>
+<a class="card cat-paeds" href="FinalFRCAPaediatric_and_Neonatal_Principles_of_Neonatal_Physiology.html"><div class="card-prefix" style="color:#fbbf24">Paediatric & Neonatal</div>Principles of Neonatal Physiology</a>
+<a class="card cat-paeds" href="FinalFRCAPaediatric_and_Neonatal_Pyloric_Stenosis.html"><div class="card-prefix" style="color:#fbbf24">Paediatric & Neonatal</div>Pyloric Stenosis</a>
+</div>
+</div><div class="category">
+<div class="cat-header">
+  <div class="cat-dot" style="background:#a855f7"></div>
+  <h2>Pain</h2>
+  <div class="cat-line"></div>
+</div>
+<div class="grid">
+<a class="card cat-pain" href="FinalFRCAPain_Assessment_of_Acute_and_Chronic_Pain.html"><div class="card-prefix" style="color:#a855f7">Pain</div>Assessment of Acute and Chronic Pain</a>
+<a class="card cat-pain" href="FinalFRCAPain_Back_Pain.html"><div class="card-prefix" style="color:#a855f7">Pain</div>Back Pain</a>
+<a class="card cat-pain" href="FinalFRCAPain_Neuropathic_Pain.html"><div class="card-prefix" style="color:#a855f7">Pain</div>Neuropathic Pain</a>
+</div>
+</div><div class="category">
+<div class="cat-header">
+  <div class="cat-dot" style="background:#2563eb"></div>
+  <h2>Regional Anaesthesia</h2>
+  <div class="cat-line"></div>
+</div>
+<div class="grid">
+<a class="card cat-reg" href="FinalFRCARegional_Anaesthesia_ANS_Anatomy.html"><div class="card-prefix" style="color:#2563eb">Regional Anaesthesia</div>ANS Anatomy</a>
+<a class="card cat-reg" href="FinalFRCARegional_Anaesthesia_Anatomy_of_Central_Venous_Access.html"><div class="card-prefix" style="color:#2563eb">Regional Anaesthesia</div>Anatomy of Central Venous Access</a>
+<a class="card cat-reg" href="FinalFRCARegional_Anaesthesia_Anatomy_of_Extradural_Space.html"><div class="card-prefix" style="color:#2563eb">Regional Anaesthesia</div>Anatomy of Extradural Space</a>
+<a class="card cat-reg" href="FinalFRCARegional_Anaesthesia_Anatomy_of_the_Trachea_and_Bronchi.html"><div class="card-prefix" style="color:#2563eb">Regional Anaesthesia</div>Anatomy of the Trachea and Bronchi</a>
+<a class="card cat-reg" href="FinalFRCARegional_Anaesthesia_Ankle_and_Knee_Blocks.html"><div class="card-prefix" style="color:#2563eb">Regional Anaesthesia</div>Ankle and Knee Blocks</a>
+<a class="card cat-reg" href="FinalFRCARegional_Anaesthesia_Brachial_Plexus_Interscalene_and_Axillary_Blocks.html"><div class="card-prefix" style="color:#2563eb">Regional Anaesthesia</div>Brachial Plexus Interscalene and Axillary Blocks</a>
+<a class="card cat-reg" href="FinalFRCARegional_Anaesthesia_Caudal_Block.html"><div class="card-prefix" style="color:#2563eb">Regional Anaesthesia</div>Caudal Block</a>
+<a class="card cat-reg" href="FinalFRCARegional_Anaesthesia_Cranial_Nerves.html"><div class="card-prefix" style="color:#2563eb">Regional Anaesthesia</div>Cranial Nerves</a>
+<a class="card cat-reg" href="FinalFRCARegional_Anaesthesia_LA_Toxicity.html"><div class="card-prefix" style="color:#2563eb">Regional Anaesthesia</div>LA Toxicity</a>
+<a class="card cat-reg" href="FinalFRCARegional_Anaesthesia_Lumbar_Plexus_Femoral_and_Sciatic_Nerve_Blocks.html"><div class="card-prefix" style="color:#2563eb">Regional Anaesthesia</div>Lumbar Plexus Femoral and Sciatic Nerve Blocks</a>
+<a class="card cat-reg" href="FinalFRCARegional_Anaesthesia_Stellate_Ganglion_and_Celiac_Plexus_Blocks.html"><div class="card-prefix" style="color:#2563eb">Regional Anaesthesia</div>Stellate Ganglion and Celiac Plexus Blocks</a>
+<a class="card cat-reg" href="FinalFRCARegional_Anaesthesia_Ulnar_Median_and_Radial_Nerve_Blocks.html"><div class="card-prefix" style="color:#2563eb">Regional Anaesthesia</div>Ulnar Median and Radial Nerve Blocks</a>
+</div>
+</div><div class="category">
+<div class="cat-header">
+  <div class="cat-dot" style="background:#0891b2"></div>
+  <h2>Renal</h2>
+  <div class="cat-line"></div>
+</div>
+<div class="grid">
+<a class="card cat-renal" href="FinalFRCARenal_Calcium_and_Magnesium_Homeostatis.html"><div class="card-prefix" style="color:#0891b2">Renal</div>Calcium and Magnesium Homeostatis</a>
+<a class="card cat-renal" href="FinalFRCARenal_Hypokalaemia_and_Hyperkalaemia.html"><div class="card-prefix" style="color:#0891b2">Renal</div>Hypokalaemia and Hyperkalaemia</a>
+<a class="card cat-renal" href="FinalFRCARenal_Hyponatraemia_and_Hypernatraemia.html"><div class="card-prefix" style="color:#0891b2">Renal</div>Hyponatraemia and Hypernatraemia</a>
+<a class="card cat-renal" href="FinalFRCARenal_Renal_Failure.html"><div class="card-prefix" style="color:#0891b2">Renal</div>Renal Failure</a>
+<a class="card cat-renal" href="FinalFRCARenal_Renal_Replacement_Therapy.html"><div class="card-prefix" style="color:#0891b2">Renal</div>Renal Replacement Therapy</a>
+</div>
+</div><div class="category">
+<div class="cat-header">
+  <div class="cat-dot" style="background:#7c3aed"></div>
+  <h2>Thoracics</h2>
+  <div class="cat-line"></div>
+</div>
+<div class="grid">
+<a class="card cat-thor" href="FinalFRCAThoracics_Anaesthesia_for_Bronchoscopy.html"><div class="card-prefix" style="color:#7c3aed">Thoracics</div>Anaesthesia for Bronchoscopy</a>
+<a class="card cat-thor" href="FinalFRCAThoracics_COPD_and_Asthma.html"><div class="card-prefix" style="color:#7c3aed">Thoracics</div>COPD and Asthma</a>
+<a class="card cat-thor" href="FinalFRCAThoracics_Lung_Cancer_and_Pulmonary_Fibrosis.html"><div class="card-prefix" style="color:#7c3aed">Thoracics</div>Lung Cancer and Pulmonary Fibrosis</a>
+<a class="card cat-thor" href="FinalFRCAThoracics_One_Lung_Ventilation.html"><div class="card-prefix" style="color:#7c3aed">Thoracics</div>One Lung Ventilation</a>
+<a class="card cat-thor" href="FinalFRCAThoracics_Oxygen_Toxicity.html"><div class="card-prefix" style="color:#7c3aed">Thoracics</div>Oxygen Toxicity</a>
+<a class="card cat-thor" href="FinalFRCAThoracics_Pneumonia.html"><div class="card-prefix" style="color:#7c3aed">Thoracics</div>Pneumonia</a>
+<a class="card cat-thor" href="FinalFRCAThoracics_Pneumothorax.html"><div class="card-prefix" style="color:#7c3aed">Thoracics</div>Pneumothorax</a>
+</div>
+</div><div class="category">
+<div class="cat-header">
+  <div class="cat-dot" style="background:#ea580c"></div>
+  <h2>Vascular</h2>
+  <div class="cat-line"></div>
+</div>
+<div class="grid">
+<a class="card cat-vasc" href="FinalFRCAVascular_Abdominal_Aortic_Aneurysm.html"><div class="card-prefix" style="color:#ea580c">Vascular</div>Abdominal Aortic Aneurysm</a>
+<a class="card cat-vasc" href="FinalFRCAVascular_Carotid_Endartarectomy.html"><div class="card-prefix" style="color:#ea580c">Vascular</div>Carotid Endartarectomy</a>
+</div>
+</div>
+
+<script>
+function filterCards(q) {
+  q = q.toLowerCase();
+  document.querySelectorAll('.card').forEach(c => {
+    c.classList.toggle('hidden', q && !c.textContent.toLowerCase().includes(q));
+  });
+}
+</script>
+</body>
+</html>

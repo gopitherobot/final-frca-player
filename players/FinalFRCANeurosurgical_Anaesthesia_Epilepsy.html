@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Neurosurgical Anaesthesia — Epilepsy</title>
+<style>
+
+  :root {
+    --accent:    #6366f1;
+    --body-bg:   #f1f5f9;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: var(--body-bg);
+    color: #1e293b;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  /* ── Header ── */
+  .header {
+    background: #0f172a;
+    border-bottom: 3px solid var(--accent);
+    padding: 12px 20px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .header-left { flex: 1; min-width: 200px; }
+  .header h1 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #f1f5f9;
+    margin-bottom: 4px;
+    letter-spacing: 0.01em;
+  }
+  .header-sub {
+    font-size: 0.72rem;
+    color: #94a3b8;
+    font-style: italic;
+  }
+  audio {
+    height: 36px;
+    accent-color: var(--accent);
+    flex-shrink: 0;
+  }
+  .back-link {
+    font-size: 0.8rem;
+    color: #94a3b8;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .back-link:hover { color: #60a5fa; }
+
+  /* ── Toolbar ── */
+  .toolbar {
+    background: #1e293b;
+    padding: 7px 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-shrink: 0;
+    border-bottom: 1px solid #334155;
+  }
+  .toolbar input {
+    flex: 1;
+    max-width: 380px;
+    padding: 5px 11px;
+    border: 1px solid #475569;
+    border-radius: 6px;
+    background: #0f172a;
+    color: #e2e8f0;
+    font-size: 0.83rem;
+    outline: none;
+  }
+  .toolbar input:focus { border-color: var(--accent); }
+  .toolbar input::placeholder { color: #64748b; }
+  .stats {
+    font-size: 0.72rem;
+    color: #64748b;
+    white-space: nowrap;
+  }
+
+  /* ── Scroll area ── */
+  .scroll-area {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+  }
+  .scroll-area::-webkit-scrollbar { width: 6px; }
+  .scroll-area::-webkit-scrollbar-track { background: transparent; }
+  .scroll-area::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+
+  /* ── Subtitle bar ── */
+  .subtitle-bar {
+    background: #0f172a;
+    border-top: 2px solid var(--accent);
+    padding: 8px 20px;
+    flex-shrink: 0;
+    min-height: 42px;
+    display: flex;
+    align-items: center;
+  }
+  .subtitle-text {
+    font-size: 0.9rem;
+    color: #e2e8f0;
+    line-height: 1.5;
+    font-style: italic;
+  }
+  .subtitle-text.empty { color: #475569; }
+
+  /* ── Transcript blocks ── */
+  .t-block {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    margin-bottom: 14px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    display: flex;
+  }
+  .t-block.block-active {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px rgba(37,99,235,0.15);
+  }
+  .t-gutter {
+    background: #0f172a;
+    width: 52px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: 14px;
+    cursor: pointer;
+  }
+  .t-gutter:hover { background: #1e293b; }
+  .t-timestamp {
+    font-size: 0.7rem;
+    color: #64748b;
+    font-family: monospace;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+  .t-gutter.gutter-active .t-timestamp { color: var(--accent); }
+  .t-body {
+    flex: 1;
+    padding: 12px 16px;
+    line-height: 1.75;
+    font-size: 0.92rem;
+    color: #1e293b;
+  }
+
+  /* ── Segments ── */
+  .segment {
+    cursor: pointer;
+    border-radius: 3px;
+    transition: background 0.1s;
+  }
+  .segment:hover { background: #eff6ff; }
+  .segment.active {
+    background: #bfdbfe;
+    outline: 2px solid #3b82f6;
+    outline-offset: 1px;
+    border-radius: 3px;
+  }
+  .segment.search-match  { background: #fef9c3; }
+  .segment.search-current { background: #fde047; outline: 2px solid #ca8a04; }
+
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <h1>Neurosurgical Anaesthesia — Epilepsy</h1>
+    <div class="header-sub">Final FRCA &mdash; Exam Viva Simulation &mdash; Click any phrase to seek</div>
+  </div>
+  <audio id="audio" src="../FinalFRCANeurosurgical_Anaesthesia_Epilepsy.mp3" controls preload="metadata"></audio>
+  <a class="back-link" href="index.html">&#8592; All Topics</a>
+</div>
+
+<div class="toolbar">
+  <input type="text" id="search" placeholder="Search transcript&#8230; (Enter = next match)">
+  <span class="stats" id="stats">85 segments &nbsp;|&nbsp; <span id="dur">loading&#8230;</span></span>
+</div>
+
+<div class="scroll-area" id="scroll-area">
+<div class="t-block">
+  <div class="t-gutter" data-start="0.0"><span class="t-timestamp">0:00</span></div>
+  <div class="t-body"><span class="segment" data-start="0.0" data-end="5.78" title="0:00">Epilepsy. A 28-year-old female presents to the accident in emergency department with </span><span class="segment" data-start="5.78" data-end="11.0" title="0:05">generalized tonic clonic seizures for the past 30 minutes. You've been called to provide </span><span class="segment" data-start="11.0" data-end="16.0" title="0:11">assistance. What is your approach? Epilepsy is important to the </span><span class="segment" data-start="16.0" data-end="23.08" title="0:16">anaesthetist in clinical practice and therefore in the final FRCA. Epilepsy is a common comorbidity </span><span class="segment" data-start="23.08" data-end="28.88" title="0:23">in our surgical patients and we need to be aware of medication and drug interactions, the </span><span class="segment" data-start="28.88" data-end="34.4" title="0:28">effect of our anaesthetic technique on post-operative seizures and intensive care management of </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="34.4"><span class="t-timestamp">0:34</span></div>
+  <div class="t-body"><span class="segment" data-start="34.4" data-end="44.4" title="0:34">status epilepticas. This is a case of status epilepticas. It is a medical emergency. The immediate </span><span class="segment" data-start="44.4" data-end="51.96" title="0:44">management involves protecting the airway, ensuring adequate breathing, obtaining intravenous </span><span class="segment" data-start="51.96" data-end="61.52" title="0:51">access and supporting the circulation. The first line antipoleptic is lorazapam at a dose </span><span class="segment" data-start="61.52" data-end="73.88" title="1:01">of 0.1 mg per kilogram or a total dose of 4 mg in most adults. In the face of continued seizures, </span><span class="segment" data-start="73.88" data-end="82.92" title="1:13">penitoin at a dose of 15 mg per kilogram or a total dose of 1 g in a 70 kg adult should </span><span class="segment" data-start="82.92" data-end="90.84" title="1:22">be given at a rate of less than 50 mg per minute with continuous ECG and blood pressure monitoring. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="90.84"><span class="t-timestamp">1:30</span></div>
+  <div class="t-body"><span class="segment" data-start="90.84" data-end="101.56" title="1:30">An alternative at this stage would be phosphenitoin at a dose of 15 mg per kilogram at a rate of </span><span class="segment" data-start="101.56" data-end="112.12" title="1:41">100 to 150 mg per minute. Continued seizures may prompt general anesthesia with thio pentone and </span><span class="segment" data-start="112.12" data-end="121.4" title="1:52">intubation and ventilation. Further management includes the monitoring of ECG, blood pressure and </span><span class="segment" data-start="121.4" data-end="128.76" title="2:01">pulse oximetry and fluids should be given to maintain cerebral perfusion pressure. Blood should </span><span class="segment" data-start="128.76" data-end="138.28" title="2:08">be taken for a full blood count, urea and electrolytes, glucose, toxicology, drug levels and an arterial </span><span class="segment" data-start="138.28" data-end="146.76" title="2:18">blood gas. EEG monitoring is useful if available. What are the complications of status epilepticas? </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="148.92"><span class="t-timestamp">2:28</span></div>
+  <div class="t-body"><span class="segment" data-start="148.92" data-end="153.48" title="2:28">The complications can be divided up into the systems of the body, </span><span class="segment" data-start="154.2" data-end="160.2" title="2:34">beginning with the central nervous system, cerebral hypoxia, cerebral edema, </span><span class="segment" data-start="160.84" data-end="168.68" title="2:40">hemorrhage and venous thrombosis can occur. In the cardiovascular system there may be hyper or </span><span class="segment" data-start="168.68" data-end="177.32" title="2:48">hypotension, myocardial infarction, arrhythmias, cardiogenic shock and cardiac arrest. </span><span class="segment" data-start="178.2" data-end="187.48" title="2:58">In the respiratory system complications include apnea, respiratory failure, pulmonary edema, </span><span class="segment" data-start="187.48" data-end="195.48" title="3:07">aspiration and pneumonia. Metabolic complications include hyponatremia, </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="195.48"><span class="t-timestamp">3:15</span></div>
+  <div class="t-body"><span class="segment" data-start="195.48" data-end="206.76" title="3:15">hypoglycemia, hyperkalemia, metabolic acidosis, acute tubular necrosis, acute hepatic necrosis, </span><span class="segment" data-start="207.48" data-end="214.36" title="3:27">and acute pancreatitis. Other complications include disseminated intravascular </span><span class="segment" data-start="214.36" data-end="222.68" title="3:34">calculation, rapdo myelitis and fractures. What is the differential diagnosis of epileptic seizures? </span><span class="segment" data-start="225.08" data-end="232.04" title="3:45">The differential diagnosis is broad and includes arrhythmias, drug-induced seizures, </span><span class="segment" data-start="232.68" data-end="244.76" title="3:52">hypoglycemia, head injury, syncopy, transient ischemic attacks, narcolepsy, cataplexi and pseudosesias. </span><span class="segment" data-start="246.04" data-end="247.96" title="4:06">Can you classify epileptic seizures? </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="250.52"><span class="t-timestamp">4:10</span></div>
+  <div class="t-body"><span class="segment" data-start="250.52" data-end="257.32" title="4:10">Epilepsy is defined as recurrent i.e. two or more epileptic seizures </span><span class="segment" data-start="257.32" data-end="261.08" title="4:17">unprovoked by any immediately identifiable cause. </span><span class="segment" data-start="262.36" data-end="269.4" title="4:22">A seizure can be defined as the clinical manifestations of an abnormal and excessive discharge of </span><span class="segment" data-start="269.4" data-end="276.92" title="4:29">neurons, which is seen as an alteration of consciousness, motor, sensory or autonomic events. </span><span class="segment" data-start="278.12" data-end="284.92" title="4:38">Seizures are classified based upon its clinical presentation and the electro-encephalographic picture. </span><span class="segment" data-start="285.88" data-end="290.76" title="4:45">They can be divided up into generalized and partial seizures. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="291.96"><span class="t-timestamp">4:51</span></div>
+  <div class="t-body"><span class="segment" data-start="291.96" data-end="298.36" title="4:51">Generalized seizures are characterized by diffuse symmetric brain involvement </span><span class="segment" data-start="298.36" data-end="304.04" title="4:58">and can be further broken down into inhibitory and excitatory seizures. </span><span class="segment" data-start="305.4" data-end="311.64" title="5:05">Inhibitory generalized seizures are absence or pity mal and atonic. </span><span class="segment" data-start="312.6" data-end="319.0" title="5:12">Exitatory seizures are the classic tonic, clonic and myoclonic variations. </span><span class="segment" data-start="320.12" data-end="327.4" title="5:20">In partial seizures there is seizure activity restricted to discrete areas of the cerebral hemispheres. </span><span class="segment" data-start="328.28" data-end="336.04" title="5:28">Consciousness is preserved in simple partial seizures, whereas it is impaired in complex partial </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="336.04"><span class="t-timestamp">5:36</span></div>
+  <div class="t-body"><span class="segment" data-start="336.04" data-end="340.44" title="5:36">seizures. What drugs are used in preventing epileptic seizures? </span><span class="segment" data-start="342.6" data-end="350.84" title="5:42">Commonly used drugs include fenetone, sodium valprowate, carbamazepine and lumotrogen. </span><span class="segment" data-start="351.96" data-end="357.24" title="5:51">Other anti-epileptics include leverteracetam and gabapentin. </span><span class="segment" data-start="358.04" data-end="362.04" title="5:58">Clonazepam is used for absence and atonic seizures. </span><span class="segment" data-start="362.04" data-end="364.84" title="6:02">Tell me about fenetone. </span><span class="segment" data-start="392.12" data-end="420.6" title="6:32">Fenetoin is used for the prevention and treatment of generalized tonic, clonic seizures. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="421.32"><span class="t-timestamp">7:01</span></div>
+  <div class="t-body"><span class="segment" data-start="421.32" data-end="427.32" title="7:01">It is also used as an anti-arithmic and neuropathic pain modulating agent. </span><span class="segment" data-start="428.28" data-end="431.48" title="7:08">Its chemical class is a high dantuin derivative. </span><span class="segment" data-start="432.28" data-end="439.4" title="7:12">In its intravenous form it is presented as a clear colorless solution of a concentration of </span><span class="segment" data-start="439.4" data-end="448.52" title="7:19">50 mg per mill of fenetoin sodium. The main actions are anti-convulsant and anti-arithmic. </span><span class="segment" data-start="449.48" data-end="456.84" title="7:29">Fenetoin works by inhibiting sodium and calcium influx during depolarization, thereby </span><span class="segment" data-start="456.84" data-end="465.32" title="7:36">exerting a membrane stabilizing effect. The intravenous loading dose for the management of epilepsy </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="465.32"><span class="t-timestamp">7:45</span></div>
+  <div class="t-body"><span class="segment" data-start="465.32" data-end="474.84" title="7:45">is a slow bolus of 10 to 15 mg per kilogram. It is highly lipid soluble and peak brain levels </span><span class="segment" data-start="475.0" data-end="482.2" title="7:55">are achieved within 15 minutes. The maintenance dose is 100 mg 8 hourly. </span><span class="segment" data-start="483.32" data-end="490.12" title="8:03">Fenetoin has an anti-convulsant effect on the central nervous system stabilizing the neuronal </span><span class="segment" data-start="490.12" data-end="497.4" title="8:10">membrane and preventing the spread of seizure activity. It exhibits class one anti-arithmic </span><span class="segment" data-start="497.4" data-end="507.08" title="8:17">properties but may cause hypotension and arrhythmias itself. Metabolic effects include hyperglycemia, </span><span class="segment" data-start="507.08" data-end="514.68" title="8:27">hypocalcemia, alterations in liver function tests and inhibition of ADH secretion. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="515.96"><span class="t-timestamp">8:35</span></div>
+  <div class="t-body"><span class="segment" data-start="515.96" data-end="525.16" title="8:35">The side effects include gum hyperplasia, megaloblastic anemia, nausea and vomiting, tremor and </span><span class="segment" data-start="525.16" data-end="535.0" title="8:45">ataxia. Fenetoin is 95% protein bound. It is metabolized in the liver and exhibits zero water </span><span class="segment" data-start="535.0" data-end="542.44" title="8:55">kinetics just above its therapeutic range. It is excreted as an inactive metabolite by the kidney. </span><span class="segment" data-start="544.52" data-end="552.68" title="9:04">Fenetoin is a potent enzyme inducer, increasing the metabolism of many drugs, including carbamazepine, </span><span class="segment" data-start="552.68" data-end="561.88" title="9:12">benzodiazepines and warfarin. Importantly, Fenetoin toxicity can be precipitated by metronidazole </span><span class="segment" data-start="561.88" data-end="568.28" title="9:21">and isonizid co-administration. What specific features might an epileptic patient </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="568.28"><span class="t-timestamp">9:28</span></div>
+  <div class="t-body"><span class="segment" data-start="568.28" data-end="571.8" title="9:28">get rid of an elective surgery present in pre-operative assessment? </span><span class="segment" data-start="574.04" data-end="580.84" title="9:34">I would perform a full routine pre-operative anaesthetic assessment. In the history, </span><span class="segment" data-start="580.84" data-end="586.6" title="9:40">I would focus on seizure, frequency and complications, and a full drug history of </span><span class="segment" data-start="586.6" data-end="595.0" title="9:46">anti-epileptic medications and compliance. Airway assessment may reveal gingival hyperplasia </span><span class="segment" data-start="595.0" data-end="603.0" title="9:55">and poor dentition caused by fenetoin. ECG may reveal dysrhythmias caused by carbamazepine or </span><span class="segment" data-start="603.0" data-end="611.64" title="10:03">fenetoin. A full blood count may identify anemia, thrombocytopenia or leukopenia </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="611.64"><span class="t-timestamp">10:11</span></div>
+  <div class="t-body"><span class="segment" data-start="611.64" data-end="620.04" title="10:11">again caused by the anti-convulsant medication. Electralite abnormalities include hyponatremia, </span><span class="segment" data-start="620.04" data-end="629.24" title="10:20">hypocalcemia and hypoglycemia. A number of anti-convulsants cause hepatocellular dysfunction </span><span class="segment" data-start="629.24" data-end="636.6" title="10:29">and colostatic jaundice. Anti-convulsant drug levels may be relevant where poor compliance </span><span class="segment" data-start="636.6" data-end="641.96" title="10:36">or toxicity is suspected. Which anaesthetic drugs are pro-convulsant? </span><span class="segment" data-start="644.28" data-end="651.0" title="10:44">Automodate and ketamine can precipitate generalized tonic clonic seizures in epileptic patients. </span><span class="segment" data-start="651.96" data-end="660.04" title="10:51">Toxic doses of local anaesthetics can cause seizures. Tramadol lowers the seizure threshold </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="660.04"><span class="t-timestamp">11:00</span></div>
+  <div class="t-body"><span class="segment" data-start="660.04" data-end="667.48" title="11:00">and high doses of other opioids can induce seizure activity. The metabolites of pephidine </span><span class="segment" data-start="667.48" data-end="675.08" title="11:07">and atrocurium are epileptogenic. Enfluorane is pro-convulsant at greater than 2 Mac. </span><span class="segment" data-start="675.48" data-end="678.44" title="11:15">Which anaesthetic drugs are anti-convulsant? </span><span class="segment" data-start="680.44" data-end="686.76" title="11:20">Benzodiazepines are potent anti-convulsants at sub-anesthetic doses. </span><span class="segment" data-start="687.8" data-end="692.68" title="11:27">Fire pentone effectively terminates seizures in therapeutic doses. </span><span class="segment" data-start="693.4" data-end="699.72" title="11:33">Prophefall is anti-convulsant but may cause myoclonic jerks which mimic seizures. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="699.72"><span class="t-timestamp">11:39</span></div>
+  <div class="t-body"><span class="segment" data-start="699.72" data-end="713.08" title="11:39">The inhalational anaesthetic agents barring enfluorane are anti-convulsant. </span></div>
+</div>
+</div>
+
+<div class="subtitle-bar">
+  <span class="subtitle-text empty" id="subtitle-text">Play audio to see live subtitles&#8230;</span>
+</div>
+
+<script>
+
+const audio    = document.getElementById('audio');
+const allSegs  = Array.from(document.querySelectorAll('.segment'));
+const allBlocks = Array.from(document.querySelectorAll('.t-block'));
+const subtitleEl = document.getElementById('subtitle-text');
+let activeSegEl   = null;
+let activeBlockEl = null;
+let searchMatches = [];
+let searchIdx     = 0;
+
+// Duration display
+audio.addEventListener('loadedmetadata', () => {
+  const m = Math.floor(audio.duration / 60);
+  const s = Math.floor(audio.duration %% 60).toString().padStart(2,'0');
+  document.getElementById('dur').textContent = m + ':' + s;
+});
+
+// Seek helper
+function seekTo(t) {
+  audio.currentTime = t;
+  audio.play();
+}
+
+// Block gutter click
+document.querySelectorAll('.t-gutter').forEach(g => {
+  g.addEventListener('click', () => seekTo(parseFloat(g.dataset.start)));
+});
+
+// Segment click
+allSegs.forEach(s => {
+  s.addEventListener('click', e => {
+    e.stopPropagation();
+    seekTo(parseFloat(s.dataset.start));
+  });
+});
+
+// Real-time tracking
+audio.addEventListener('timeupdate', () => {
+  const t = audio.currentTime;
+
+  // Find active segment (last one whose start <= t)
+  let found = null;
+  for (let i = allSegs.length - 1; i >= 0; i--) {
+    if (parseFloat(allSegs[i].dataset.start) <= t) { found = allSegs[i]; break; }
+  }
+
+  if (found && found !== activeSegEl) {
+    // Clear previous
+    if (activeSegEl) activeSegEl.classList.remove('active');
+    if (activeBlockEl) {
+      activeBlockEl.classList.remove('block-active');
+      const pg = activeBlockEl.querySelector('.t-gutter');
+      if (pg) pg.classList.remove('gutter-active');
+    }
+    // Set new
+    found.classList.add('active');
+    const block = found.closest('.t-block');
+    if (block) {
+      block.classList.add('block-active');
+      const g = block.querySelector('.t-gutter');
+      if (g) g.classList.add('gutter-active');
+      activeBlockEl = block;
+    }
+    activeSegEl = found;
+
+    // Update subtitle
+    subtitleEl.textContent = found.textContent.trim();
+    subtitleEl.classList.remove('empty');
+
+    // Auto-scroll (only when not searching)
+    if (!document.getElementById('search').value) {
+      found.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }
+});
+
+// Search
+const searchInput = document.getElementById('search');
+searchInput.addEventListener('input', runSearch);
+searchInput.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && searchMatches.length) {
+    searchMatches[searchIdx].classList.remove('search-current');
+    searchIdx = (searchIdx + 1) %% searchMatches.length;
+    const el = searchMatches[searchIdx];
+    el.classList.add('search-current');
+    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+});
+
+function runSearch() {
+  const q = searchInput.value.trim().toLowerCase();
+  allSegs.forEach(s => s.classList.remove('search-match','search-current'));
+  searchMatches = [];
+  if (!q) return;
+  allSegs.forEach(s => {
+    if (s.textContent.toLowerCase().includes(q)) {
+      s.classList.add('search-match');
+      searchMatches.push(s);
+    }
+  });
+  if (!searchMatches.length) return;
+  searchIdx = 0;
+  searchMatches[0].classList.add('search-current');
+  searchMatches[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+</script>
+</body>
+</html>

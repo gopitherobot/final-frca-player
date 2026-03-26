@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Haematological — Blood Groups</title>
+<style>
+
+  :root {
+    --accent:    #ec4899;
+    --body-bg:   #f1f5f9;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: var(--body-bg);
+    color: #1e293b;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  /* ── Header ── */
+  .header {
+    background: #0f172a;
+    border-bottom: 3px solid var(--accent);
+    padding: 12px 20px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .header-left { flex: 1; min-width: 200px; }
+  .header h1 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #f1f5f9;
+    margin-bottom: 4px;
+    letter-spacing: 0.01em;
+  }
+  .header-sub {
+    font-size: 0.72rem;
+    color: #94a3b8;
+    font-style: italic;
+  }
+  audio {
+    height: 36px;
+    accent-color: var(--accent);
+    flex-shrink: 0;
+  }
+  .back-link {
+    font-size: 0.8rem;
+    color: #94a3b8;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .back-link:hover { color: #60a5fa; }
+
+  /* ── Toolbar ── */
+  .toolbar {
+    background: #1e293b;
+    padding: 7px 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-shrink: 0;
+    border-bottom: 1px solid #334155;
+  }
+  .toolbar input {
+    flex: 1;
+    max-width: 380px;
+    padding: 5px 11px;
+    border: 1px solid #475569;
+    border-radius: 6px;
+    background: #0f172a;
+    color: #e2e8f0;
+    font-size: 0.83rem;
+    outline: none;
+  }
+  .toolbar input:focus { border-color: var(--accent); }
+  .toolbar input::placeholder { color: #64748b; }
+  .stats {
+    font-size: 0.72rem;
+    color: #64748b;
+    white-space: nowrap;
+  }
+
+  /* ── Scroll area ── */
+  .scroll-area {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+  }
+  .scroll-area::-webkit-scrollbar { width: 6px; }
+  .scroll-area::-webkit-scrollbar-track { background: transparent; }
+  .scroll-area::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+
+  /* ── Subtitle bar ── */
+  .subtitle-bar {
+    background: #0f172a;
+    border-top: 2px solid var(--accent);
+    padding: 8px 20px;
+    flex-shrink: 0;
+    min-height: 42px;
+    display: flex;
+    align-items: center;
+  }
+  .subtitle-text {
+    font-size: 0.9rem;
+    color: #e2e8f0;
+    line-height: 1.5;
+    font-style: italic;
+  }
+  .subtitle-text.empty { color: #475569; }
+
+  /* ── Transcript blocks ── */
+  .t-block {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    margin-bottom: 14px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    display: flex;
+  }
+  .t-block.block-active {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px rgba(37,99,235,0.15);
+  }
+  .t-gutter {
+    background: #0f172a;
+    width: 52px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: 14px;
+    cursor: pointer;
+  }
+  .t-gutter:hover { background: #1e293b; }
+  .t-timestamp {
+    font-size: 0.7rem;
+    color: #64748b;
+    font-family: monospace;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+  .t-gutter.gutter-active .t-timestamp { color: var(--accent); }
+  .t-body {
+    flex: 1;
+    padding: 12px 16px;
+    line-height: 1.75;
+    font-size: 0.92rem;
+    color: #1e293b;
+  }
+
+  /* ── Segments ── */
+  .segment {
+    cursor: pointer;
+    border-radius: 3px;
+    transition: background 0.1s;
+  }
+  .segment:hover { background: #eff6ff; }
+  .segment.active {
+    background: #bfdbfe;
+    outline: 2px solid #3b82f6;
+    outline-offset: 1px;
+    border-radius: 3px;
+  }
+  .segment.search-match  { background: #fef9c3; }
+  .segment.search-current { background: #fde047; outline: 2px solid #ca8a04; }
+
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <h1>Haematological — Blood Groups</h1>
+    <div class="header-sub">Final FRCA &mdash; Exam Viva Simulation &mdash; Click any phrase to seek</div>
+  </div>
+  <audio id="audio" src="../FinalFRCAHaematological_Blood_Groups.mp3" controls preload="metadata"></audio>
+  <a class="back-link" href="index.html">&#8592; All Topics</a>
+</div>
+
+<div class="toolbar">
+  <input type="text" id="search" placeholder="Search transcript&#8230; (Enter = next match)">
+  <span class="stats" id="stats">63 segments &nbsp;|&nbsp; <span id="dur">loading&#8230;</span></span>
+</div>
+
+<div class="scroll-area" id="scroll-area">
+<div class="t-block">
+  <div class="t-gutter" data-start="0.0"><span class="t-timestamp">0:00</span></div>
+  <div class="t-body"><span class="segment" data-start="0.0" data-end="4.0" title="0:00">Blood groups. What is a blood group and how are they classified? </span><span class="segment" data-start="6.0" data-end="10.0" title="0:06">Blood groups are defined as inherited character of the red cell surface, </span><span class="segment" data-start="10.0" data-end="14.0" title="0:10">which are detected by a specific alloantibolly. </span><span class="segment" data-start="14.0" data-end="22.0" title="0:14">The main system in use is the ABO system. There are, however, over 285 blood group antigens. </span><span class="segment" data-start="22.0" data-end="29.0" title="0:22">Examples of other systems are the MNS, the RISIS, KEL, and Duffy systems. </span><span class="segment" data-start="29.0" data-end="35.0" title="0:29">Blood group antigens may be proteins, glycoproteins, or glycolipids, </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="35.0"><span class="t-timestamp">0:35</span></div>
+  <div class="t-body"><span class="segment" data-start="35.0" data-end="39.0" title="0:35">which form an integral structure of the red cell membrane. </span><span class="segment" data-start="39.0" data-end="49.0" title="0:39">Adults have A or B, or both antigens, and naturally occurring antibodies to those ABO antigens they lack. </span><span class="segment" data-start="49.0" data-end="56.0" title="0:49">Describe the antigens, antibodies, and patterns of inheritance of the ABO blood groups. </span><span class="segment" data-start="56.0" data-end="64.0" title="0:56">The system has two antigens, A and B. These are products of the A and B allials. </span><span class="segment" data-start="64.0" data-end="70.0" title="1:04">There is a third allial O that produces no antigen and is recessive to A and B. </span><span class="segment" data-start="70.0" data-end="85.0" title="1:10">A, B, AB, and O are the phenotypes that result from the genotypes A or AO, BB or BO, </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="85.0"><span class="t-timestamp">1:25</span></div>
+  <div class="t-body"><span class="segment" data-start="85.0" data-end="91.0" title="1:25">AB from AB and O and O from OO. </span><span class="segment" data-start="91.0" data-end="107.0" title="1:31">In the UK, the commonest phenotype is O, 47%, followed by A, 42%, B, 8%, and AB, 3%. </span><span class="segment" data-start="107.0" data-end="118.0" title="1:47">Anti-A antibody is present when the A antigen is absent, and anti-B antibody is present when the B antigen is absent. </span><span class="segment" data-start="118.0" data-end="127.0" title="1:58">The antibodies in adults are most commonly IgM, however IgG and IgA may occur. </span><span class="segment" data-start="128.0" data-end="138.0" title="2:08">In neonates, the antibodies are usually IgG inherited from the mother and begin to reach adult levels by 5 to 10 years of age. </span><span class="segment" data-start="138.0" data-end="142.0" title="2:18">Are you aware of any recent changes to the transfusion guidelines? </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="142.0"><span class="t-timestamp">2:22</span></div>
+  <div class="t-body"><span class="segment" data-start="142.0" data-end="149.0" title="2:22">The AA-BGI published new guidelines titled Blood Transfusion and the Anisotus in 2008. </span><span class="segment" data-start="149.0" data-end="154.0" title="2:29">This is a lengthy document which has been summarized over the next few minutes. </span><span class="segment" data-start="155.0" data-end="166.0" title="2:35">Every patient should have an appropriate pre-operative assessment within an assist involved and be optimised if required prior to surgery that is likely to involve blood transfusion. </span><span class="segment" data-start="166.0" data-end="175.0" title="2:46">Normal hemoglobin post-operatively is an unnecessary as transfusion is not devoid of risks. </span><span class="segment" data-start="175.0" data-end="180.0" title="2:55">It is necessary to have written and readily available guidelines on blood transfusion. </span><span class="segment" data-start="180.0" data-end="189.0" title="3:00">European law advocates the permanent recording of every transfusion and the track and trace system should be in place in all departments. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="189.0"><span class="t-timestamp">3:09</span></div>
+  <div class="t-body"><span class="segment" data-start="189.0" data-end="193.0" title="3:09">The reason for transfusions should be clearly recorded in the patient's notes. </span><span class="segment" data-start="193.0" data-end="199.0" title="3:13">All hospitals should have a transfusion committee with an anaesthetic representative. </span><span class="segment" data-start="199.0" data-end="204.0" title="3:19">Blood loss of 30% may be treated effectively with colloids or crystalloids. </span><span class="segment" data-start="205.0" data-end="209.0" title="3:25">The main function of the hemoglobin is oxygen carriage and delivery. </span><span class="segment" data-start="209.0" data-end="217.0" title="3:29">Post-optive patients are likely to be less mobile and the oxygen demand will not necessarily exceed the supply. </span><span class="segment" data-start="217.0" data-end="225.0" title="3:37">Hence, patients should not be transfused if the hemoglobin concentration is greater than 10 grams per desi-litre. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="226.0"><span class="t-timestamp">3:46</span></div>
+  <div class="t-body"><span class="segment" data-start="226.0" data-end="236.0" title="3:46">A hemoglobin concentration of 8-10 grams per desi-litre is a safe level even for those patients with significant cardiorespiratory disease. </span><span class="segment" data-start="236.0" data-end="243.0" title="3:56">However, if these patients become symptomatic, they should be transfused. </span><span class="segment" data-start="243.0" data-end="250.0" title="4:03">Patients with hemoglobin concentrations of less than 7 grams per desi-litre are likely to need transfusion. </span><span class="segment" data-start="250.0" data-end="256.0" title="4:10">And those with a concentration less than 5 grams per desi-litre should certainly be transfused. </span><span class="segment" data-start="256.0" data-end="261.0" title="4:16">How can the need for allergenic blood transfusion be minimized? </span><span class="segment" data-start="261.0" data-end="267.0" title="4:21">Appropriate pre-optive assessment is the key to minimizing post-operative transfusion. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="267.0"><span class="t-timestamp">4:27</span></div>
+  <div class="t-body"><span class="segment" data-start="267.0" data-end="274.0" title="4:27">Elective surgery in anemic patients should be postponed until they have been appropriately investigated and treated. </span><span class="segment" data-start="275.0" data-end="281.0" title="4:35">Patients on anti-coagulants should have their medications stopped for the prerequisite time before surgery. </span><span class="segment" data-start="281.0" data-end="288.0" title="4:41">Early hematological advice should be sought in patients with bleeding and coagulation disorders. </span><span class="segment" data-start="288.0" data-end="295.0" title="4:48">Autologous blood transfusion is the collection of blood from a patient and re-transfusioned to the same patient. </span><span class="segment" data-start="295.0" data-end="298.0" title="4:55">Three techniques are commonly described. </span><span class="segment" data-start="298.0" data-end="309.0" title="4:58">Pre-operative autologous transfusion, where the patient donates blood pre-operatively, it is stored appropriately and then transfused back to the patient if required. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="309.0"><span class="t-timestamp">5:09</span></div>
+  <div class="t-body"><span class="segment" data-start="309.0" data-end="321.0" title="5:09">The next technique commonly used is cell salvage, where blood collected from surgical sites and drains is washed, filtered and transfused, and then back to the patient. </span><span class="segment" data-start="321.0" data-end="327.0" title="5:21">A technique less commonly used is the acute normovalemic hemodilution, </span><span class="segment" data-start="327.0" data-end="333.0" title="5:27">where blood is collected just before surgery and is repaced with colloidal crystalloid. </span><span class="segment" data-start="333.0" data-end="338.0" title="5:33">Once hemostasis is achieved, the blood is re-transfused. </span><span class="segment" data-start="338.0" data-end="350.0" title="5:38">Blood loss may be minimized by using a hypotensive anesthetic technique, regional anesthesia, the use of tornocase and local infiltration of vasoconstrictors. </span><span class="segment" data-start="350.0" data-end="363.0" title="5:50">Pharmacotherapy involves the use of trinocaminic acid and desmopressin, post-operatively the oxygen consumption may be decreased by elective ventilation of the patient and avoiding hyperthermia. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="363.0"><span class="t-timestamp">6:03</span></div>
+  <div class="t-body"><span class="segment" data-start="363.0" data-end="375.0" title="6:03">Alternative oxygen delivering fluids also commonly referred to as blood substitutes include perfluoro-carbon and modified hemoglobin solutions. </span><span class="segment" data-start="375.0" data-end="384.0" title="6:15">These have been under investigation for many years and there is no indication that these components will become available for routine use. </span><span class="segment" data-start="384.0" data-end="388.0" title="6:24">What are the risks of blood transfusion? </span><span class="segment" data-start="388.0" data-end="393.0" title="6:28">Have a systematic approach to the answer and most complications should be covered. </span><span class="segment" data-start="393.0" data-end="401.0" title="6:33">A system-wise approach is used here however, alternative classifications such as immediate and delayed may also be used. </span><span class="segment" data-start="401.0" data-end="405.0" title="6:41">Immunological reactions occur in 2% of transfusions. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="405.0"><span class="t-timestamp">6:45</span></div>
+  <div class="t-body"><span class="segment" data-start="405.0" data-end="418.0" title="6:45">IgE-mediated anaphylaxis, IgM-mediated hemolysis, and IgG-mediated hemolysis and hemolytic disease of the newborn may occur. </span><span class="segment" data-start="418.0" data-end="430.0" title="6:58">Other immune-mediated complications are delayed hemolysis, transfusion-related acute lung injury, graft-facestus-host disease in immunocompromised patients, </span><span class="segment" data-start="430.0" data-end="442.0" title="7:10">and fibroial-erticarial reactions. Metabolic complications include hyperkalemia, hypocalcemia, citrate toxicity and alkylosis. </span><span class="segment" data-start="442.0" data-end="448.0" title="7:22">Fluid overload and cardiac failure may occur in susceptible patients. </span><span class="segment" data-start="448.0" data-end="456.0" title="7:28">Impaired coagulation may occur due to lack of clotting factors and platelets impact red cell transfusions. </span><span class="segment" data-start="456.0" data-end="462.0" title="7:36">Embellism, microaggregates and ex-travisation are possible during transfusion. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="462.0"><span class="t-timestamp">7:42</span></div>
+  <div class="t-body"><span class="segment" data-start="462.0" data-end="468.0" title="7:42">Rapid transfusion of cold blood may lead to hypothermia. </span><span class="segment" data-start="468.0" data-end="477.0" title="7:48">Due to the left shift of the oxyhemoglobin dissociation curve installed blood tissue oxygen delivery is impaired. </span><span class="segment" data-start="477.0" data-end="497.0" title="7:57">Infective risks associated with blood transfusion include transmission of hepatitis B, hepatitis C, HIV, HTL, malaria, cytomegalovirus, brusolosis, bacterial contamination and prion diseases. </span></div>
+</div>
+</div>
+
+<div class="subtitle-bar">
+  <span class="subtitle-text empty" id="subtitle-text">Play audio to see live subtitles&#8230;</span>
+</div>
+
+<script>
+
+const audio    = document.getElementById('audio');
+const allSegs  = Array.from(document.querySelectorAll('.segment'));
+const allBlocks = Array.from(document.querySelectorAll('.t-block'));
+const subtitleEl = document.getElementById('subtitle-text');
+let activeSegEl   = null;
+let activeBlockEl = null;
+let searchMatches = [];
+let searchIdx     = 0;
+
+// Duration display
+audio.addEventListener('loadedmetadata', () => {
+  const m = Math.floor(audio.duration / 60);
+  const s = Math.floor(audio.duration %% 60).toString().padStart(2,'0');
+  document.getElementById('dur').textContent = m + ':' + s;
+});
+
+// Seek helper
+function seekTo(t) {
+  audio.currentTime = t;
+  audio.play();
+}
+
+// Block gutter click
+document.querySelectorAll('.t-gutter').forEach(g => {
+  g.addEventListener('click', () => seekTo(parseFloat(g.dataset.start)));
+});
+
+// Segment click
+allSegs.forEach(s => {
+  s.addEventListener('click', e => {
+    e.stopPropagation();
+    seekTo(parseFloat(s.dataset.start));
+  });
+});
+
+// Real-time tracking
+audio.addEventListener('timeupdate', () => {
+  const t = audio.currentTime;
+
+  // Find active segment (last one whose start <= t)
+  let found = null;
+  for (let i = allSegs.length - 1; i >= 0; i--) {
+    if (parseFloat(allSegs[i].dataset.start) <= t) { found = allSegs[i]; break; }
+  }
+
+  if (found && found !== activeSegEl) {
+    // Clear previous
+    if (activeSegEl) activeSegEl.classList.remove('active');
+    if (activeBlockEl) {
+      activeBlockEl.classList.remove('block-active');
+      const pg = activeBlockEl.querySelector('.t-gutter');
+      if (pg) pg.classList.remove('gutter-active');
+    }
+    // Set new
+    found.classList.add('active');
+    const block = found.closest('.t-block');
+    if (block) {
+      block.classList.add('block-active');
+      const g = block.querySelector('.t-gutter');
+      if (g) g.classList.add('gutter-active');
+      activeBlockEl = block;
+    }
+    activeSegEl = found;
+
+    // Update subtitle
+    subtitleEl.textContent = found.textContent.trim();
+    subtitleEl.classList.remove('empty');
+
+    // Auto-scroll (only when not searching)
+    if (!document.getElementById('search').value) {
+      found.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }
+});
+
+// Search
+const searchInput = document.getElementById('search');
+searchInput.addEventListener('input', runSearch);
+searchInput.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && searchMatches.length) {
+    searchMatches[searchIdx].classList.remove('search-current');
+    searchIdx = (searchIdx + 1) %% searchMatches.length;
+    const el = searchMatches[searchIdx];
+    el.classList.add('search-current');
+    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+});
+
+function runSearch() {
+  const q = searchInput.value.trim().toLowerCase();
+  allSegs.forEach(s => s.classList.remove('search-match','search-current'));
+  searchMatches = [];
+  if (!q) return;
+  allSegs.forEach(s => {
+    if (s.textContent.toLowerCase().includes(q)) {
+      s.classList.add('search-match');
+      searchMatches.push(s);
+    }
+  });
+  if (!searchMatches.length) return;
+  searchIdx = 0;
+  searchMatches[0].classList.add('search-current');
+  searchMatches[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+</script>
+</body>
+</html>

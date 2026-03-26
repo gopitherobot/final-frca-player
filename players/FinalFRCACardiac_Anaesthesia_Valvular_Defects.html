@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cardiac Anaesthesia — Valvular Defects</title>
+<style>
+
+  :root {
+    --accent:    #ef4444;
+    --body-bg:   #f1f5f9;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: var(--body-bg);
+    color: #1e293b;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  /* ── Header ── */
+  .header {
+    background: #0f172a;
+    border-bottom: 3px solid var(--accent);
+    padding: 12px 20px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .header-left { flex: 1; min-width: 200px; }
+  .header h1 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #f1f5f9;
+    margin-bottom: 4px;
+    letter-spacing: 0.01em;
+  }
+  .header-sub {
+    font-size: 0.72rem;
+    color: #94a3b8;
+    font-style: italic;
+  }
+  audio {
+    height: 36px;
+    accent-color: var(--accent);
+    flex-shrink: 0;
+  }
+  .back-link {
+    font-size: 0.8rem;
+    color: #94a3b8;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .back-link:hover { color: #60a5fa; }
+
+  /* ── Toolbar ── */
+  .toolbar {
+    background: #1e293b;
+    padding: 7px 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-shrink: 0;
+    border-bottom: 1px solid #334155;
+  }
+  .toolbar input {
+    flex: 1;
+    max-width: 380px;
+    padding: 5px 11px;
+    border: 1px solid #475569;
+    border-radius: 6px;
+    background: #0f172a;
+    color: #e2e8f0;
+    font-size: 0.83rem;
+    outline: none;
+  }
+  .toolbar input:focus { border-color: var(--accent); }
+  .toolbar input::placeholder { color: #64748b; }
+  .stats {
+    font-size: 0.72rem;
+    color: #64748b;
+    white-space: nowrap;
+  }
+
+  /* ── Scroll area ── */
+  .scroll-area {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+  }
+  .scroll-area::-webkit-scrollbar { width: 6px; }
+  .scroll-area::-webkit-scrollbar-track { background: transparent; }
+  .scroll-area::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+
+  /* ── Subtitle bar ── */
+  .subtitle-bar {
+    background: #0f172a;
+    border-top: 2px solid var(--accent);
+    padding: 8px 20px;
+    flex-shrink: 0;
+    min-height: 42px;
+    display: flex;
+    align-items: center;
+  }
+  .subtitle-text {
+    font-size: 0.9rem;
+    color: #e2e8f0;
+    line-height: 1.5;
+    font-style: italic;
+  }
+  .subtitle-text.empty { color: #475569; }
+
+  /* ── Transcript blocks ── */
+  .t-block {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    margin-bottom: 14px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    display: flex;
+  }
+  .t-block.block-active {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px rgba(37,99,235,0.15);
+  }
+  .t-gutter {
+    background: #0f172a;
+    width: 52px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: 14px;
+    cursor: pointer;
+  }
+  .t-gutter:hover { background: #1e293b; }
+  .t-timestamp {
+    font-size: 0.7rem;
+    color: #64748b;
+    font-family: monospace;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+  .t-gutter.gutter-active .t-timestamp { color: var(--accent); }
+  .t-body {
+    flex: 1;
+    padding: 12px 16px;
+    line-height: 1.75;
+    font-size: 0.92rem;
+    color: #1e293b;
+  }
+
+  /* ── Segments ── */
+  .segment {
+    cursor: pointer;
+    border-radius: 3px;
+    transition: background 0.1s;
+  }
+  .segment:hover { background: #eff6ff; }
+  .segment.active {
+    background: #bfdbfe;
+    outline: 2px solid #3b82f6;
+    outline-offset: 1px;
+    border-radius: 3px;
+  }
+  .segment.search-match  { background: #fef9c3; }
+  .segment.search-current { background: #fde047; outline: 2px solid #ca8a04; }
+
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <h1>Cardiac Anaesthesia — Valvular Defects</h1>
+    <div class="header-sub">Final FRCA &mdash; Exam Viva Simulation &mdash; Click any phrase to seek</div>
+  </div>
+  <audio id="audio" src="../FinalFRCACardiac_Anaesthesia_Valvular_Defects.mp3" controls preload="metadata"></audio>
+  <a class="back-link" href="index.html">&#8592; All Topics</a>
+</div>
+
+<div class="toolbar">
+  <input type="text" id="search" placeholder="Search transcript&#8230; (Enter = next match)">
+  <span class="stats" id="stats">238 segments &nbsp;|&nbsp; <span id="dur">loading&#8230;</span></span>
+</div>
+
+<div class="scroll-area" id="scroll-area">
+<div class="t-block">
+  <div class="t-gutter" data-start="0.0"><span class="t-timestamp">0:00</span></div>
+  <div class="t-body"><span class="segment" data-start="0.0" data-end="1.64" title="0:00">Favular defects. </span><span class="segment" data-start="1.64" data-end="6.8" title="0:01">This topic has a high probability of coming up in one of the two vivas. </span><span class="segment" data-start="6.8" data-end="11.6" title="0:06">It's unlikely that there will be time to cover all the valvular defects in detail, </span><span class="segment" data-start="11.6" data-end="14.72" title="0:11">and you are more likely to concentrate on one of them. </span><span class="segment" data-start="14.72" data-end="19.32" title="0:14">It could come up in the clinical viber, but could also come up in the science viber, </span><span class="segment" data-start="19.32" data-end="24.16" title="0:19">where the examiner may ask for more detailed knowledge of the cardiovascular physiological </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="24.16"><span class="t-timestamp">0:24</span></div>
+  <div class="t-body"><span class="segment" data-start="24.16" data-end="26.88" title="0:24">changes that occur with these defects. </span><span class="segment" data-start="26.88" data-end="30.2" title="0:26">It is important to have a good understanding of this. </span><span class="segment" data-start="30.2" data-end="33.8" title="0:30">Remember these top tips, and you're going to be tip-top. </span><span class="segment" data-start="33.8" data-end="40.12" title="0:33">You were asked for Neast tyres in 86-year-old male for a dynamic hip screw insertion. </span><span class="segment" data-start="40.12" data-end="44.96" title="0:40">He unexpectedly collapsed on getting out of bed and fractured his hip. </span><span class="segment" data-start="44.96" data-end="51.16" title="0:44">He has no significant past medical history, and has never been in hospital before. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="51.16"><span class="t-timestamp">0:51</span></div>
+  <div class="t-body"><span class="segment" data-start="51.16" data-end="56.36" title="0:51">On examination, the house surgeon identified a systolic murmur over the apex of the heart </span><span class="segment" data-start="56.4" data-end="60.32" title="0:56">and had a range of trans-therasic echocardiogram. </span><span class="segment" data-start="60.32" data-end="63.92" title="1:00">He is unaware of any problem with this heart. </span><span class="segment" data-start="63.92" data-end="69.16" title="1:03">The echocardiogram showed a narrowed aortic valve area of 0.8cm squared </span><span class="segment" data-start="69.16" data-end="73.8" title="1:09">with the mean pressure gradient of 70mm of mercury across the valve. </span><span class="segment" data-start="73.8" data-end="77.28" title="1:13">His ejection fraction is 45%. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="77.28"><span class="t-timestamp">1:17</span></div>
+  <div class="t-body"><span class="segment" data-start="77.28" data-end="82.12" title="1:17">How would you assess his patient's fitness for anesthesia? </span><span class="segment" data-start="82.2" data-end="88.32" title="1:22">In summary, this is an 86-year-old man presenting for an emergency procedure </span><span class="segment" data-start="88.32" data-end="91.76" title="1:28">with severe aortic stenosis. </span><span class="segment" data-start="91.76" data-end="95.68" title="1:31">I would start by taking a detailed history from the patient </span><span class="segment" data-start="95.68" data-end="98.44" title="1:35">and to do a thorough examination. </span><span class="segment" data-start="98.44" data-end="102.96" title="1:38">It is important to quantify the patient's exercise tolerance </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="102.96"><span class="t-timestamp">1:42</span></div>
+  <div class="t-body"><span class="segment" data-start="102.96" data-end="107.04" title="1:42">and what symptoms if any limit exercise. </span><span class="segment" data-start="107.08" data-end="111.84" title="1:47">In particular, I would ask about symptoms of angina during exertion, </span><span class="segment" data-start="111.84" data-end="114.72" title="1:51">syncopy and disnia. </span><span class="segment" data-start="114.72" data-end="119.44" title="1:54">I would also ask about symptoms of palpitations, orthopnea </span><span class="segment" data-start="119.44" data-end="122.8" title="1:59">and paroxysmal nocturnal dysnia. </span><span class="segment" data-start="122.8" data-end="125.12" title="2:02">This gentleman rarely gets out of the house, </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="125.12"><span class="t-timestamp">2:05</span></div>
+  <div class="t-body"><span class="segment" data-start="125.12" data-end="128.72" title="2:05">has helped with cleaning but manages to his own cooking. </span><span class="segment" data-start="128.72" data-end="132.92" title="2:08">What do you think of his functional capacity? </span><span class="segment" data-start="132.96" data-end="137.92" title="2:12">He has very poor functional capacity, less than four mets. </span><span class="segment" data-start="137.92" data-end="144.16" title="2:17">The four on getting out of bed could have been syncopy caused by azerotic stenosis. </span><span class="segment" data-start="144.16" data-end="148.64" title="2:24">What signs may you find on examination? </span><span class="segment" data-start="148.64" data-end="153.44" title="2:28">The pulse should be checked for its rate, rhythm and character. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="153.44"><span class="t-timestamp">2:33</span></div>
+  <div class="t-body"><span class="segment" data-start="153.44" data-end="156.6" title="2:33">The patient may be in atrial fibrillation. </span><span class="segment" data-start="156.6" data-end="161.8" title="2:36">Classically, the pulse is said to be slow rising and of low volume. </span><span class="segment" data-start="161.84" data-end="167.16" title="2:41">The classical murmur of aortic stenosis is an ejection systolic murmur </span><span class="segment" data-start="167.16" data-end="170.6" title="2:47">which is either heard best at the apex of the heart </span><span class="segment" data-start="170.6" data-end="173.88" title="2:50">or at the second right intercostal space. </span><span class="segment" data-start="173.88" data-end="177.48" title="2:53">The murmur may radiate to the crottids. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="177.48"><span class="t-timestamp">2:57</span></div>
+  <div class="t-body"><span class="segment" data-start="177.48" data-end="182.16" title="2:57">What other investigations would you like to see? </span><span class="segment" data-start="182.16" data-end="189.2" title="3:02">I would ask for a 12 lead ECG to look for arrhythmias and left ventricular hypertrophy </span><span class="segment" data-start="189.24" data-end="192.48" title="3:09">As the severity of the stenosis increases, </span><span class="segment" data-start="192.48" data-end="196.76" title="3:12">there may be evidence of left ventricular strain on the ECG </span><span class="segment" data-start="196.76" data-end="201.36" title="3:16">with T-wave inversion and ST segment depression. </span><span class="segment" data-start="201.36" data-end="206.96" title="3:21">I would also like to see a chest x-ray looking for left ventricular hypertrophy. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="206.96"><span class="t-timestamp">3:26</span></div>
+  <div class="t-body"><span class="segment" data-start="206.96" data-end="212.24" title="3:26">However, this is often normal until left ventricular failure occurs. </span><span class="segment" data-start="212.24" data-end="216.24" title="3:32">This patient's valve area is 0.8 cm squared. </span><span class="segment" data-start="216.24" data-end="220.12" title="3:36">What is a normalortic valve area? </span><span class="segment" data-start="220.12" data-end="224.2" title="3:40">2.5 to 3.5 cm squared. </span><span class="segment" data-start="224.2" data-end="229.6" title="3:44">Can you classify the severity of aortic stenosis on the valve area? </span><span class="segment" data-start="229.6" data-end="230.6" title="3:49">Yes. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="230.6"><span class="t-timestamp">3:50</span></div>
+  <div class="t-body"><span class="segment" data-start="230.6" data-end="237.92" title="3:50">It is classified as mild if the valve area is 1.2 to 1.8 cm squared </span><span class="segment" data-start="237.92" data-end="244.0" title="3:57">as moderate if the valve area is 0.8 to 1.2 cm squared. </span><span class="segment" data-start="244.04" data-end="249.52" title="4:04">As severe if the area is 0.6 to 0.8 cm squared </span><span class="segment" data-start="249.52" data-end="253.68" title="4:09">and critical if less than 0.6 cm squared, </span><span class="segment" data-start="253.68" data-end="258.32" title="4:13">therefore this gentleman has severe aortic stenosis. </span><span class="segment" data-start="258.32" data-end="260.96" title="4:18">What about the pressure gradient across the valve? </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="260.96"><span class="t-timestamp">4:20</span></div>
+  <div class="t-body"><span class="segment" data-start="260.96" data-end="264.12" title="4:20">Is it important? </span><span class="segment" data-start="264.12" data-end="269.84" title="4:24">Using the mean pressure gradient is another way of assessing the severity of the stenosis. </span><span class="segment" data-start="269.84" data-end="275.68" title="4:29">A gradient of 40 to 50 mm of mercury is classed as moderate stenosis </span><span class="segment" data-start="275.68" data-end="279.28" title="4:35">and more than 50 mm of mercury is severe. </span><span class="segment" data-start="279.28" data-end="282.72" title="4:39">However, once the left ventricle starts to fail, </span><span class="segment" data-start="282.72" data-end="288.48" title="4:42">the pressure gradient falls and therefore will underestimate disease severity. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="288.48"><span class="t-timestamp">4:48</span></div>
+  <div class="t-body"><span class="segment" data-start="288.48" data-end="293.2" title="4:48">What is the etiology of aortic stenosis? </span><span class="segment" data-start="293.2" data-end="298.56" title="4:53">Isolated aortic stenosis is more common in males than females </span><span class="segment" data-start="298.56" data-end="303.44" title="4:58">and is usually due to either degenerative calcific aortic stenosis </span><span class="segment" data-start="303.44" data-end="307.44" title="5:03">or a congenital bicarstrid aortic valve. </span><span class="segment" data-start="307.44" data-end="314.56" title="5:07">The degenerative calcific aortic stenosis is the commonest form of aortic stenosis in the UK. </span><span class="segment" data-start="314.56" data-end="317.84" title="5:14">It is caused by mechanical stress over time, </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="317.84"><span class="t-timestamp">5:17</span></div>
+  <div class="t-body"><span class="segment" data-start="317.84" data-end="323.44" title="5:17">leading to fibrosis and calcification of the previously normal valve. </span><span class="segment" data-start="323.44" data-end="327.68" title="5:23">It tends to occur in the elderly. </span><span class="segment" data-start="327.76" data-end="332.8" title="5:27">A bicarstrid aortic valve has two leaflets instead of three. </span><span class="segment" data-start="332.8" data-end="339.12" title="5:32">This causes turbulent flow and produces fibrosis and calcification of the valve. </span><span class="segment" data-start="339.12" data-end="344.0" title="5:39">It tends to produce symptoms in the fourth to sixth decades. </span><span class="segment" data-start="344.0" data-end="350.16" title="5:44">Worldwide, rheumatic heart disease is the commonest cause of mixed aortic stenosis </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="350.16"><span class="t-timestamp">5:50</span></div>
+  <div class="t-body"><span class="segment" data-start="350.16" data-end="353.28" title="5:50">and mitral valve disease. </span><span class="segment" data-start="353.36" data-end="356.96" title="5:53">What are the pathophysiological changes that occur as the valve area decreases? </span><span class="segment" data-start="359.36" data-end="365.44" title="5:59">As the valve area decreases, there is increased obstruction to outflow from the left ventricle. </span><span class="segment" data-start="366.16" data-end="370.32" title="6:06">The left ventricle initially responds by hypertrophy, </span><span class="segment" data-start="370.32" data-end="372.96" title="6:10">maintaining the pressure gradient across the valve. </span><span class="segment" data-start="373.6" data-end="377.92" title="6:13">As the valve narrows and the obstruction increases, </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="377.92"><span class="t-timestamp">6:17</span></div>
+  <div class="t-body"><span class="segment" data-start="377.92" data-end="382.0" title="6:17">the hypertrophied ventricle becomes stiff and less compliant. </span><span class="segment" data-start="382.72" data-end="387.12" title="6:22">This compromises its filling and causes diastolic dysfunction. </span><span class="segment" data-start="387.92" data-end="394.48" title="6:27">Filling becomes more dependent on atrial contraction and the cardiac output becomes fixed </span><span class="segment" data-start="394.48" data-end="398.64" title="6:34">with the blood pressure being proportional to the systemic vascular resistance. </span><span class="segment" data-start="399.36" data-end="406.16" title="6:39">Therefore, maintaining sinus rhythm is important as atrial fibrillation can lead to decomposition. </span><span class="segment" data-start="407.12" data-end="414.64" title="6:47">The increased muscle mass of the left ventricle and the increase in the ventricular wall tension </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="414.64"><span class="t-timestamp">6:54</span></div>
+  <div class="t-body"><span class="segment" data-start="414.64" data-end="418.4" title="6:54">causes an increase in left ventricular oxygen requirements. </span><span class="segment" data-start="419.04" data-end="422.64" title="6:59">However, mercadial oxygen supply is reduced. </span><span class="segment" data-start="423.2" data-end="429.2" title="7:03">This is due to a combination of a low aortic pressure and an increased left ventricular </span><span class="segment" data-start="429.28" data-end="436.96" title="7:09">diastolic pressure. This causes a mismatch between oxygen supply and demand and symptoms of </span><span class="segment" data-start="436.96" data-end="444.72" title="7:16">angina on exertion. Eventually, cardiac output and stroke volume falls and the pressure gradient </span><span class="segment" data-start="444.72" data-end="448.8" title="7:24">across the valve falls. At what valve area would you expect </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="448.8"><span class="t-timestamp">7:28</span></div>
+  <div class="t-body"><span class="segment" data-start="448.8" data-end="451.04" title="7:28">to see significant hemodynamic obstruction? </span><span class="segment" data-start="451.44" data-end="456.32" title="7:31">At about 1cm squared or less. </span><span class="segment" data-start="457.52" data-end="461.92" title="7:37">Tell me how you'd anesthetize this patient and what are your specific concerns with regards </span><span class="segment" data-start="461.92" data-end="467.68" title="7:41">to the aortic stenosis? The examiner wants to know that you understand what the specific </span><span class="segment" data-start="467.68" data-end="472.4" title="7:47">hemodynamic goals of anesthetizing a patient with aortic stenosis are. </span><span class="segment" data-start="473.36" data-end="478.24" title="7:53">You may want to start your answer by classifying your management into pre, </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="478.32"><span class="t-timestamp">7:58</span></div>
+  <div class="t-body"><span class="segment" data-start="478.32" data-end="484.4" title="7:58">peri and post operative. However, the examiner may stop you and guide you towards talking </span><span class="segment" data-start="484.4" data-end="492.48" title="8:04">specifically about your perioperative management. Pre operatively, I would take a detailed history </span><span class="segment" data-start="492.48" data-end="497.04" title="8:12">and examination and arrange investigations as I've already mentioned. </span><span class="segment" data-start="498.32" data-end="503.92" title="8:18">Okay, we've already discussed the pre operative assessment. Tell me how you'd anesthetize this patient. </span><span class="segment" data-start="504.4" data-end="512.8" title="8:24">I would anesthetize this patient using general anesthesia. I would prepare my equipment, </span><span class="segment" data-start="512.8" data-end="519.12" title="8:32">including emergency drugs and ensure that I have a trained assistant. I would secure two </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="519.12"><span class="t-timestamp">8:39</span></div>
+  <div class="t-body"><span class="segment" data-start="519.12" data-end="525.36" title="8:39">venous cannuli and also an arterial line for invative blood pressure monitoring prior to induction. </span><span class="segment" data-start="526.0" data-end="530.64" title="8:46">I would induce anesthesia in theatre so that there is no break in the monitoring. </span><span class="segment" data-start="531.36" data-end="537.68" title="8:51">I would pre-oxygenate the patient and then induce anesthesia using fentanyl 1-2 </span><span class="segment" data-start="537.68" data-end="544.32" title="8:57">micrograms per kilogram and automodate. An acceptable alternative would be to do an </span><span class="segment" data-start="544.32" data-end="551.84" title="9:04">inhalational induction with sever fluorane. If I used automodate, he is likely to need less than </span><span class="segment" data-start="551.84" data-end="558.24" title="9:11">the standard dose of 0.3 milligrams per kilogram and therefore I would titrate it to effect. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="558.96"><span class="t-timestamp">9:18</span></div>
+  <div class="t-body"><span class="segment" data-start="558.96" data-end="565.6" title="9:18">I would use a neuromuscular blocking agent such as atrochureum and secure the airway with a cuffed </span><span class="segment" data-start="565.6" data-end="572.8" title="9:25">endotracheal tube. To maintain a stable blood pressure during induction, I would run a metramonal </span><span class="segment" data-start="572.8" data-end="580.0" title="9:32">or phenyl-effarin infusion. I would titrate this to maintain blood pressures close to the pre-induction </span><span class="segment" data-start="580.0" data-end="584.96" title="9:40">level. What hemodynamic goals are you aiming for and how would you maintain them? </span><span class="segment" data-start="585.2" data-end="592.96" title="9:45">Anasthesia has the potential to disrupt the compensatory mechanisms that maintain the cardiac </span><span class="segment" data-start="592.96" data-end="600.64" title="9:52">output and I would aim to maintain hemodynamic stability. The important considerations are </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="600.64"><span class="t-timestamp">10:00</span></div>
+  <div class="t-body"><span class="segment" data-start="600.64" data-end="607.84" title="10:00">to firstly maintain the systemic vascular resistance and diastolic blood pressure. This is essential </span><span class="segment" data-start="607.84" data-end="614.4" title="10:07">to maintain coronary perfusion. I would use arterial blood pressure monitoring in this patient </span><span class="segment" data-start="614.4" data-end="620.4" title="10:14">so I can detect any changes in blood pressure early and treat any hypotension promptly. </span><span class="segment" data-start="621.36" data-end="628.72" title="10:21">Secondly, it is very important to maintain the preload at the upper end of normal by giving fluids </span><span class="segment" data-start="628.72" data-end="635.6" title="10:28">and avoiding excessive vasodilitation. I would not use spinal anesthesia in this case </span><span class="segment" data-start="635.6" data-end="642.24" title="10:35">since it causes vasodilitation which can lead to a sudden decrease in venous return to the heart </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="642.24"><span class="t-timestamp">10:42</span></div>
+  <div class="t-body"><span class="segment" data-start="642.24" data-end="650.08" title="10:42">and a potentially fatal decrease in cardiac output. Thirdly, it is important to avoid </span><span class="segment" data-start="650.08" data-end="657.68" title="10:50">tacky or bradycardia. Coronary perfusion occurs mainly during diastole which is the part that is </span><span class="segment" data-start="657.68" data-end="664.88" title="10:57">shortened most during tackycardia. We should aim for a heart rate of 60 to 80 beats per minute </span><span class="segment" data-start="664.88" data-end="672.16" title="11:04">to allow adequate time in diastole for coronary perfusion to occur. However, severe bradycardia </span><span class="segment" data-start="672.4" data-end="676.4" title="11:12">should also be avoided since it will decrease cardiac output. </span><span class="segment" data-start="677.6" data-end="683.92" title="11:17">Fourthly, myocardial contractility should be maintained. Anything that depresses this, </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="683.92"><span class="t-timestamp">11:23</span></div>
+  <div class="t-body"><span class="segment" data-start="683.92" data-end="688.96" title="11:23">for example drugs such as beta blockers or myocardial ischemia should be avoided. </span><span class="segment" data-start="689.76" data-end="695.52" title="11:29">Fifthly, arrhythmias in particular atrial fibrillation need aggressive treatment. </span><span class="segment" data-start="696.48" data-end="700.88" title="11:36">I would like to move on to discuss some of the other vascular lesions. Let's start with </span><span class="segment" data-start="700.88" data-end="705.52" title="11:40">mitral stenosis. What's the commonest cause of mitral stenosis? </span><span class="segment" data-start="707.84" data-end="714.56" title="11:47">The commonest cause by far is rheumatic fever. Good. Can you tell me what a normal mitral </span><span class="segment" data-start="714.56" data-end="722.96" title="11:54">valve area would be? The mitral valve area is bigger than the oortic. Normally it is 4 to 6 </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="723.28"><span class="t-timestamp">12:03</span></div>
+  <div class="t-body"><span class="segment" data-start="723.28" data-end="728.16" title="12:03">metres squared. Can it classify the severity of the disease according to the valve area? </span><span class="segment" data-start="730.32" data-end="738.24" title="12:10">Yes, a valve area of 1.6 to 2.5 centimetres squared is said to be mild mitral stenosis. </span><span class="segment" data-start="738.96" data-end="747.44" title="12:18">1.1 to 1.5 centimetres squared is said to be moderate, and an area of less than 1 centimetres squared </span><span class="segment" data-start="747.44" data-end="753.12" title="12:27">is classified as severe. Explained to me what happens over time as the valve area decreases. </span><span class="segment" data-start="755.76" data-end="761.2" title="12:35">Naring of the valve normally occurs over a number of years, but it isn't clinically </span><span class="segment" data-start="761.2" data-end="769.84" title="12:41">significant until the valve area reaches about 2.5 centimetres squared. Unlike aortic stenosis, </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="769.84"><span class="t-timestamp">12:49</span></div>
+  <div class="t-body"><span class="segment" data-start="769.84" data-end="776.8" title="12:49">symptoms appear relatively early. As the valve narrows, passive filling of the left ventricle </span><span class="segment" data-start="776.8" data-end="783.92" title="12:56">becomes more difficult, and atrial contraction becomes more and more important. In fact, </span><span class="segment" data-start="783.92" data-end="789.84" title="13:03">its contribution to filling of the left ventricle increases from 15 to 40 per cent. </span><span class="segment" data-start="790.64" data-end="797.84" title="13:10">With time, this causes atrial dilatation and hypertrophy. As the disease progresses, </span><span class="segment" data-start="797.84" data-end="804.0" title="13:17">the increase in left atrial pressure causes pulmonary hypertension and right ventricular failure. </span><span class="segment" data-start="804.96" data-end="810.56" title="13:24">Compare this disease to aortic stenosis. What are the hemodynamic goals we're aiming for during </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="810.56"><span class="t-timestamp">13:30</span></div>
+  <div class="t-body"><span class="segment" data-start="810.56" data-end="819.52" title="13:30">anesthesia with mitral stenosis? As with aortic stenosis, mitral stenosis is also a fixed </span><span class="segment" data-start="819.52" data-end="826.0" title="13:39">cardiac output state that relies on compensatory mechanisms to prevent decomposition. </span><span class="segment" data-start="826.72" data-end="831.92" title="13:46">There are a number of similarities between the hemodynamic goals of the two diseases. </span><span class="segment" data-start="832.88" data-end="839.76" title="13:52">As in aortic stenosis, the systemic vascular resistance and contractility should be maintained. </span><span class="segment" data-start="840.4" data-end="847.6" title="14:00">We should also avoid tacky and bradycardia and aim for a heart rate of 60 to 80 beats per minute. </span><span class="segment" data-start="848.32" data-end="855.68" title="14:08">It is also important to maintain sinus rhythm as left ventricular filling may depend upon atrial </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="855.68"><span class="t-timestamp">14:15</span></div>
+  <div class="t-body"><span class="segment" data-start="855.68" data-end="864.64" title="14:15">contraction. Again, as with aortic stenosis, it is essential to maintain normovolemia and preload </span><span class="segment" data-start="864.64" data-end="871.84" title="14:24">to allow sufficient flow across the valve. A decrease in preload will cause a decrease in left atrial </span><span class="segment" data-start="871.84" data-end="880.24" title="14:31">pressure and therefore a decrease in cardiac output. However, in mitral stenosis, we should also </span><span class="segment" data-start="880.24" data-end="886.64" title="14:40">avoid any sudden increase in venous return, for example when a tornake is applied. This could </span><span class="segment" data-start="886.64" data-end="894.24" title="14:46">cause a sudden increase in pulmonary pressures and result in pulmonary edema. We should also avoid </span><span class="segment" data-start="894.24" data-end="902.8" title="14:54">hypoxia, hypercarbia, acidosis and nitrous oxide. All of these increase pulmonary vascular </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="902.88"><span class="t-timestamp">15:02</span></div>
+  <div class="t-body"><span class="segment" data-start="902.88" data-end="909.44" title="15:02">resistance and can lead to right heart failure. Let's move on to regurgent lesions. </span><span class="segment" data-start="910.72" data-end="919.2" title="15:10">What's the cause of mitral regurgitation? Causes of mitral regurgitation can be classified as </span><span class="segment" data-start="919.2" data-end="927.12" title="15:19">primary and secondary. Primary causes are most common in particular rheumatic fever. Other </span><span class="segment" data-start="927.2" data-end="934.8" title="15:27">primary causes are mitral valve prolapse and endocarditis. Secondary causes are less common, </span><span class="segment" data-start="934.8" data-end="941.6" title="15:34">but include such things as ischemia of the papillary muscles and dilatation of the mitral ring </span><span class="segment" data-start="941.6" data-end="946.16" title="15:41">due to left ventricular hypertrophy or dilated cardiomyopathy. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="947.12"><span class="t-timestamp">15:47</span></div>
+  <div class="t-body"><span class="segment" data-start="947.12" data-end="951.36" title="15:47">Describe to me in physiological terms what happens in the heart with mitral regurgitation. </span><span class="segment" data-start="951.52" data-end="959.2" title="15:51">An incompetent mitral valve will allow backflow into the left atrium during sisterly. </span><span class="segment" data-start="959.84" data-end="964.64" title="15:59">This will result in volume overload of the left atrium and left ventricle. </span><span class="segment" data-start="965.44" data-end="972.88" title="16:05">Mitral regurgitation may be acute or chronic. In acute mitral regurgitation, for instance due </span><span class="segment" data-start="972.88" data-end="978.08" title="16:12">to papillary muscle rupture, there is no time for compensatory mechanisms to occur. </span><span class="segment" data-start="978.72" data-end="984.16" title="16:18">Therefore, there is a sudden increase in the volume of the left atrium and also in the left </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="984.16"><span class="t-timestamp">16:24</span></div>
+  <div class="t-body"><span class="segment" data-start="984.16" data-end="991.2" title="16:24">atrial pressure. This causes acute biventricular failure with decreased cardiac output, </span><span class="segment" data-start="991.2" data-end="994.8" title="16:31">right ventricular strain and acute pulmonary edema. </span><span class="segment" data-start="996.4" data-end="1002.4" title="16:36">In chronic regurgitation, there is time for some compensatory mechanisms, which means that </span><span class="segment" data-start="1002.48" data-end="1009.12" title="16:42">symptoms may not appear until late on in the disease. The left atrium dilates in response to </span><span class="segment" data-start="1009.12" data-end="1016.08" title="16:49">the gradual increase in left atrial volume. The left ventricle also dilates, increasing the </span><span class="segment" data-start="1016.08" data-end="1022.64" title="16:56">ventricular endiastolic volume. The function of the ventricle is preserved initially due to </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="1022.64"><span class="t-timestamp">17:02</span></div>
+  <div class="t-body"><span class="segment" data-start="1022.64" data-end="1030.0" title="17:02">blood being offloaded through the air-water and the mitral valve. However, as the disease progresses, </span><span class="segment" data-start="1030.0" data-end="1035.28" title="17:10">contraction decreases and irreversible left ventricular dysfunction occurs. </span><span class="segment" data-start="1037.04" data-end="1043.76" title="17:17">Atrial fibrillation is common, approximately 75% of patients at the time of surgery, </span><span class="segment" data-start="1043.76" data-end="1050.32" title="17:23">but is not as devastating as in mitral stenosis since ventricular filling is not as dependent on </span><span class="segment" data-start="1050.32" data-end="1057.12" title="17:30">the atrial contraction. In fact, there is often a compensatory tachycardia, which decreases the </span><span class="segment" data-start="1057.2" data-end="1062.64" title="17:37">time for regurgitation through the valve. How can we quantify the severity of the regurgitation? </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="1064.88"><span class="t-timestamp">17:44</span></div>
+  <div class="t-body"><span class="segment" data-start="1064.88" data-end="1073.28" title="17:44">We can measure the regurgent fraction. Up to 0.3 is classified as mild and more than 0.6 as severe. </span><span class="segment" data-start="1073.92" data-end="1081.2" title="17:53">Other values to look at are the ejection fraction and the end systolic diameter. An ejection </span><span class="segment" data-start="1081.28" data-end="1089.92" title="18:01">fraction of less than 60% or an end systolic diameter of more than 45 millimeters are indications of </span><span class="segment" data-start="1089.92" data-end="1096.4" title="18:09">significant left ventricular dysfunction and these patients should be referred for consideration of </span><span class="segment" data-start="1096.4" data-end="1102.16" title="18:16">surgery. What's the hemodynamic goals we're aiming for during anesthesia with mitral regurgitation? </span><span class="segment" data-start="1104.4" data-end="1109.84" title="18:24">The aims are to maintain forward flow and to decrease the regurgent factor. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="1110.48"><span class="t-timestamp">18:30</span></div>
+  <div class="t-body"><span class="segment" data-start="1110.48" data-end="1117.6" title="18:30">This is done by firstly keeping the systemic vascular resistance low. It is important to decrease </span><span class="segment" data-start="1117.6" data-end="1124.56" title="18:37">the resistance to flow out of the left ventricle. This means that vasoconstrictors should be used </span><span class="segment" data-start="1124.56" data-end="1133.44" title="18:44">very cautiously if at all. Secondly, as with mitral stenosis, the preload should be maintained, </span><span class="segment" data-start="1133.44" data-end="1140.16" title="18:53">but sudden large increases in preload should be avoided. Thirdly, we should aim for a relative </span><span class="segment" data-start="1140.16" data-end="1148.16" title="19:00">tachycardia of 80 to 100 beats per minute. As I've just mentioned, this decreases the systolic </span><span class="segment" data-start="1148.16" data-end="1156.32" title="19:08">duration which decreases the regurgent volume per beat. Although time for coronary perfusion is </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="1156.32"><span class="t-timestamp">19:16</span></div>
+  <div class="t-body"><span class="segment" data-start="1156.32" data-end="1164.08" title="19:16">also decreased with tachycardia, mitral regurgitation is a volume overload and not a pressure overload </span><span class="segment" data-start="1164.08" data-end="1172.56" title="19:24">as our mitral endaortic stenosis. Therefore, myocardial oxygen demand is not as high and tachycardia </span><span class="segment" data-start="1172.56" data-end="1179.04" title="19:32">does not threaten myocardial ischemia in the same way as it does with mitral endaortic stenosis. </span><span class="segment" data-start="1180.0" data-end="1185.68" title="19:40">Fourthly, as with all of the vascular lesions, contractility should be maintained. </span><span class="segment" data-start="1191.52" data-end="1198.56" title="19:51">These can be classified into acute causes and chronic causes. Acute causes include </span><span class="segment" data-start="1198.56" data-end="1206.4" title="19:58">dissection of the thoracic aorta and bacterial endocarditis. Chronic causes include infection </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="1206.48"><span class="t-timestamp">20:06</span></div>
+  <div class="t-body"><span class="segment" data-start="1206.48" data-end="1213.2" title="20:06">such as rheumatic fever and syphilis, connective tissue disorders such as marphans syndrome, </span><span class="segment" data-start="1213.92" data-end="1222.48" title="20:13">congenital such as a bicaspeed valve, and inflammatory causes such as systemic lupus erythematosis. </span><span class="segment" data-start="1223.76" data-end="1228.32" title="20:23">Let's concentrate on chronic aortic regurgitation since it's by far the communist form. </span><span class="segment" data-start="1228.96" data-end="1232.56" title="20:28">Described to me the pathophysiology of this condition. </span><span class="segment" data-start="1234.72" data-end="1240.88" title="20:34">An incompetent valve allows a significant part of the stroke volume to return into the left </span><span class="segment" data-start="1240.88" data-end="1248.48" title="20:40">ventricle during diastole. This causes a decrease in forward flow and volume overload of the </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="1248.48"><span class="t-timestamp">20:48</span></div>
+  <div class="t-body"><span class="segment" data-start="1248.48" data-end="1254.72" title="20:48">left ventricle. What happens in the early stages? Are there any compensatory mechanisms? </span><span class="segment" data-start="1255.36" data-end="1264.08" title="20:55">Initially, the left ventricle dilates. This causes an increase in the length of the myofibral, </span><span class="segment" data-start="1264.08" data-end="1270.08" title="21:04">which as the frankstalline curve describes causes an increase in mycardial contraction. </span><span class="segment" data-start="1270.96" data-end="1276.16" title="21:10">The examinant may ask you to draw this curve and explore it further, or he'll move on. </span><span class="segment" data-start="1276.96" data-end="1279.2" title="21:16">What happens is the ventricle dilates further? </span><span class="segment" data-start="1279.84" data-end="1288.56" title="21:19">As the ventricle dilates further, the myofibral stretch further and contractility is reduced, </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="1288.56"><span class="t-timestamp">21:28</span></div>
+  <div class="t-body"><span class="segment" data-start="1288.56" data-end="1294.4" title="21:28">which may lead to cardiac failure. This is demonstrated on the frankstalline curve </span><span class="segment" data-start="1294.4" data-end="1299.28" title="21:34">on the descending part of the curve. What are the different hemodynamic goals when </span><span class="segment" data-start="1299.28" data-end="1301.6" title="21:39">a needsetizing a patient with the aortic incompetence? </span><span class="segment" data-start="1302.24" data-end="1309.84" title="21:42">The aims when a needsetizing a patient with aortic regurgitation are to decrease the </span><span class="segment" data-start="1309.84" data-end="1316.32" title="21:49">regurgitant flow across the valve and therefore decrease the left ventricular distension </span><span class="segment" data-start="1316.32" data-end="1323.52" title="21:56">and also to maintain sub-endocardial blood flow. To do this, we must firstly keep the </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="1323.52"><span class="t-timestamp">22:03</span></div>
+  <div class="t-body"><span class="segment" data-start="1323.52" data-end="1330.8" title="22:03">systemic vascular resistance low. This decreases the resistance to left ventricular outflow </span><span class="segment" data-start="1330.8" data-end="1336.8" title="22:10">and therefore decreases the regurgitant factor and maintains cardiac output. </span><span class="segment" data-start="1337.84" data-end="1343.6" title="22:17">Secondly, the preload should be maintained, we should aim for norm overlimia, </span><span class="segment" data-start="1343.6" data-end="1347.04" title="22:23">so as to ensure the dilated ventricle is well filled. </span><span class="segment" data-start="1348.4" data-end="1353.52" title="22:28">Thirdly, unlike aortic stenosis, we should aim for a relative tachycardia. </span><span class="segment" data-start="1354.08" data-end="1360.0" title="22:34">Bradiccardia allows more time for regurgitation and therefore distension of the ventricle. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="1360.48"><span class="t-timestamp">22:40</span></div>
+  <div class="t-body"><span class="segment" data-start="1360.48" data-end="1365.92" title="22:40">We should aim for a heart rate of 80 to 100 beats per minute, which will decrease the </span><span class="segment" data-start="1365.92" data-end="1370.88" title="22:45">regurgitant factor without significantly affecting coronary perfusion. </span><span class="segment" data-start="1371.76" data-end="1377.44" title="22:51">Fourthly, as with the aortic stenosis, the contractility of the heart should be maintained. </span><span class="segment" data-start="1378.48" data-end="1383.44" title="22:58">If you are doing very well, the examiner may ask you about other rare evalvial </span><span class="segment" data-start="1383.52" data-end="1389.28" title="23:03">lesions. What about tricuspid stenosis? Can you compare this with mitral stenosis? </span><span class="segment" data-start="1390.24" data-end="1393.68" title="23:10">You can work through the physiology from what you already know. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="1395.76"><span class="t-timestamp">23:15</span></div>
+  <div class="t-body"><span class="segment" data-start="1395.76" data-end="1402.88" title="23:15">As with mitral stenosis on the left, tricuspid stenosis causes an increase in right atrial </span><span class="segment" data-start="1402.88" data-end="1409.92" title="23:22">pressure so as to maintain flow across the valve. This leads to right atrial dilatation and </span><span class="segment" data-start="1409.92" data-end="1417.52" title="23:29">hypertrophy. With time, this causes right heart failure and symptoms of peripheral adema and </span><span class="segment" data-start="1417.52" data-end="1424.08" title="23:37">hipatomegaly compared with the pulmonary adema that occurs with mitral stenosis. </span></div>
+</div>
+</div>
+
+<div class="subtitle-bar">
+  <span class="subtitle-text empty" id="subtitle-text">Play audio to see live subtitles&#8230;</span>
+</div>
+
+<script>
+
+const audio    = document.getElementById('audio');
+const allSegs  = Array.from(document.querySelectorAll('.segment'));
+const allBlocks = Array.from(document.querySelectorAll('.t-block'));
+const subtitleEl = document.getElementById('subtitle-text');
+let activeSegEl   = null;
+let activeBlockEl = null;
+let searchMatches = [];
+let searchIdx     = 0;
+
+// Duration display
+audio.addEventListener('loadedmetadata', () => {
+  const m = Math.floor(audio.duration / 60);
+  const s = Math.floor(audio.duration %% 60).toString().padStart(2,'0');
+  document.getElementById('dur').textContent = m + ':' + s;
+});
+
+// Seek helper
+function seekTo(t) {
+  audio.currentTime = t;
+  audio.play();
+}
+
+// Block gutter click
+document.querySelectorAll('.t-gutter').forEach(g => {
+  g.addEventListener('click', () => seekTo(parseFloat(g.dataset.start)));
+});
+
+// Segment click
+allSegs.forEach(s => {
+  s.addEventListener('click', e => {
+    e.stopPropagation();
+    seekTo(parseFloat(s.dataset.start));
+  });
+});
+
+// Real-time tracking
+audio.addEventListener('timeupdate', () => {
+  const t = audio.currentTime;
+
+  // Find active segment (last one whose start <= t)
+  let found = null;
+  for (let i = allSegs.length - 1; i >= 0; i--) {
+    if (parseFloat(allSegs[i].dataset.start) <= t) { found = allSegs[i]; break; }
+  }
+
+  if (found && found !== activeSegEl) {
+    // Clear previous
+    if (activeSegEl) activeSegEl.classList.remove('active');
+    if (activeBlockEl) {
+      activeBlockEl.classList.remove('block-active');
+      const pg = activeBlockEl.querySelector('.t-gutter');
+      if (pg) pg.classList.remove('gutter-active');
+    }
+    // Set new
+    found.classList.add('active');
+    const block = found.closest('.t-block');
+    if (block) {
+      block.classList.add('block-active');
+      const g = block.querySelector('.t-gutter');
+      if (g) g.classList.add('gutter-active');
+      activeBlockEl = block;
+    }
+    activeSegEl = found;
+
+    // Update subtitle
+    subtitleEl.textContent = found.textContent.trim();
+    subtitleEl.classList.remove('empty');
+
+    // Auto-scroll (only when not searching)
+    if (!document.getElementById('search').value) {
+      found.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }
+});
+
+// Search
+const searchInput = document.getElementById('search');
+searchInput.addEventListener('input', runSearch);
+searchInput.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && searchMatches.length) {
+    searchMatches[searchIdx].classList.remove('search-current');
+    searchIdx = (searchIdx + 1) %% searchMatches.length;
+    const el = searchMatches[searchIdx];
+    el.classList.add('search-current');
+    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+});
+
+function runSearch() {
+  const q = searchInput.value.trim().toLowerCase();
+  allSegs.forEach(s => s.classList.remove('search-match','search-current'));
+  searchMatches = [];
+  if (!q) return;
+  allSegs.forEach(s => {
+    if (s.textContent.toLowerCase().includes(q)) {
+      s.classList.add('search-match');
+      searchMatches.push(s);
+    }
+  });
+  if (!searchMatches.length) return;
+  searchIdx = 0;
+  searchMatches[0].classList.add('search-current');
+  searchMatches[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+</script>
+</body>
+</html>

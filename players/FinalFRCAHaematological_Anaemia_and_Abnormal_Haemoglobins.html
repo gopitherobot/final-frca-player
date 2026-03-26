@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Haematological — Anaemia and Abnormal Haemoglobins</title>
+<style>
+
+  :root {
+    --accent:    #ec4899;
+    --body-bg:   #f1f5f9;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: var(--body-bg);
+    color: #1e293b;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  /* ── Header ── */
+  .header {
+    background: #0f172a;
+    border-bottom: 3px solid var(--accent);
+    padding: 12px 20px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .header-left { flex: 1; min-width: 200px; }
+  .header h1 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #f1f5f9;
+    margin-bottom: 4px;
+    letter-spacing: 0.01em;
+  }
+  .header-sub {
+    font-size: 0.72rem;
+    color: #94a3b8;
+    font-style: italic;
+  }
+  audio {
+    height: 36px;
+    accent-color: var(--accent);
+    flex-shrink: 0;
+  }
+  .back-link {
+    font-size: 0.8rem;
+    color: #94a3b8;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .back-link:hover { color: #60a5fa; }
+
+  /* ── Toolbar ── */
+  .toolbar {
+    background: #1e293b;
+    padding: 7px 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-shrink: 0;
+    border-bottom: 1px solid #334155;
+  }
+  .toolbar input {
+    flex: 1;
+    max-width: 380px;
+    padding: 5px 11px;
+    border: 1px solid #475569;
+    border-radius: 6px;
+    background: #0f172a;
+    color: #e2e8f0;
+    font-size: 0.83rem;
+    outline: none;
+  }
+  .toolbar input:focus { border-color: var(--accent); }
+  .toolbar input::placeholder { color: #64748b; }
+  .stats {
+    font-size: 0.72rem;
+    color: #64748b;
+    white-space: nowrap;
+  }
+
+  /* ── Scroll area ── */
+  .scroll-area {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+  }
+  .scroll-area::-webkit-scrollbar { width: 6px; }
+  .scroll-area::-webkit-scrollbar-track { background: transparent; }
+  .scroll-area::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+
+  /* ── Subtitle bar ── */
+  .subtitle-bar {
+    background: #0f172a;
+    border-top: 2px solid var(--accent);
+    padding: 8px 20px;
+    flex-shrink: 0;
+    min-height: 42px;
+    display: flex;
+    align-items: center;
+  }
+  .subtitle-text {
+    font-size: 0.9rem;
+    color: #e2e8f0;
+    line-height: 1.5;
+    font-style: italic;
+  }
+  .subtitle-text.empty { color: #475569; }
+
+  /* ── Transcript blocks ── */
+  .t-block {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    margin-bottom: 14px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    display: flex;
+  }
+  .t-block.block-active {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px rgba(37,99,235,0.15);
+  }
+  .t-gutter {
+    background: #0f172a;
+    width: 52px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: 14px;
+    cursor: pointer;
+  }
+  .t-gutter:hover { background: #1e293b; }
+  .t-timestamp {
+    font-size: 0.7rem;
+    color: #64748b;
+    font-family: monospace;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+  .t-gutter.gutter-active .t-timestamp { color: var(--accent); }
+  .t-body {
+    flex: 1;
+    padding: 12px 16px;
+    line-height: 1.75;
+    font-size: 0.92rem;
+    color: #1e293b;
+  }
+
+  /* ── Segments ── */
+  .segment {
+    cursor: pointer;
+    border-radius: 3px;
+    transition: background 0.1s;
+  }
+  .segment:hover { background: #eff6ff; }
+  .segment.active {
+    background: #bfdbfe;
+    outline: 2px solid #3b82f6;
+    outline-offset: 1px;
+    border-radius: 3px;
+  }
+  .segment.search-match  { background: #fef9c3; }
+  .segment.search-current { background: #fde047; outline: 2px solid #ca8a04; }
+
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <h1>Haematological — Anaemia and Abnormal Haemoglobins</h1>
+    <div class="header-sub">Final FRCA &mdash; Exam Viva Simulation &mdash; Click any phrase to seek</div>
+  </div>
+  <audio id="audio" src="../FinalFRCAHaematological_Anaemia_and_Abnormal_Haemoglobins.mp3" controls preload="metadata"></audio>
+  <a class="back-link" href="index.html">&#8592; All Topics</a>
+</div>
+
+<div class="toolbar">
+  <input type="text" id="search" placeholder="Search transcript&#8230; (Enter = next match)">
+  <span class="stats" id="stats">215 segments &nbsp;|&nbsp; <span id="dur">loading&#8230;</span></span>
+</div>
+
+<div class="scroll-area" id="scroll-area">
+<div class="t-block">
+  <div class="t-gutter" data-start="0.0"><span class="t-timestamp">0:00</span></div>
+  <div class="t-body"><span class="segment" data-start="0.0" data-end="2.54" title="0:00">Anemia and abnormal hemoglobin. </span><span class="segment" data-start="2.54" data-end="7.74" title="0:02">We recommend that you consider listening to the hemoglobin and proteins primary podcast </span><span class="segment" data-start="7.74" data-end="12.96" title="0:07">and the final hematology podcast to add to your hematology revision. </span><span class="segment" data-start="12.96" data-end="17.5" title="0:12">Hematology is a topic that comes up again and again in the final exam, </span><span class="segment" data-start="17.5" data-end="22.08" title="0:17">since it is vital that we have a good understanding of key topics such as anemia </span><span class="segment" data-start="22.08" data-end="24.8" title="0:22">and can treat conditions appropriately. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="24.8"><span class="t-timestamp">0:24</span></div>
+  <div class="t-body"><span class="segment" data-start="24.8" data-end="28.88" title="0:24">Questions could come up anywhere in the exam, so be prepared. </span><span class="segment" data-start="28.96" data-end="32.56" title="0:28">You're reviewing a 77-year-old woman with rheumatoid arthritis </span><span class="segment" data-start="32.56" data-end="35.24" title="0:32">for a revision of her total hip replacement. </span><span class="segment" data-start="35.24" data-end="37.52" title="0:35">She has no other medical conditions. </span><span class="segment" data-start="37.52" data-end="41.68" title="0:37">Her blood results reveal a hemoglobin concentration of 9 grams per desolita </span><span class="segment" data-start="41.68" data-end="45.04" title="0:41">with a mean corpuscular volume of 80 femtolitis per cell </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="45.04"><span class="t-timestamp">0:45</span></div>
+  <div class="t-body"><span class="segment" data-start="45.04" data-end="49.16" title="0:45">and a mean corpuscular hemoglobin of 30 pg per cell. </span><span class="segment" data-start="49.16" data-end="55.12" title="0:49">The white cell count is 6.0 and a platelet count is 450. </span><span class="segment" data-start="55.12" data-end="58.84" title="0:55">What can you tell me about the hematology results? </span><span class="segment" data-start="59.32" data-end="61.64" title="0:59">This woman is anemic. </span><span class="segment" data-start="61.64" data-end="68.36" title="1:01">The normal hemoglobin concentration for a woman is 11 to 15 grams per desolita </span><span class="segment" data-start="68.36" data-end="73.32" title="1:08">and 13 to 16 grams per desolita for a man. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="73.32"><span class="t-timestamp">1:13</span></div>
+  <div class="t-body"><span class="segment" data-start="73.32" data-end="80.2" title="1:13">The mean corpuscular volume and mean corpuscular hemoglobin are within normal limits </span><span class="segment" data-start="80.2" data-end="85.92" title="1:20">indicating that the anemia is normachromic and normacytic. </span><span class="segment" data-start="86.0" data-end="89.6" title="1:26">What is the difference between the MCV and MCH? </span><span class="segment" data-start="90.88" data-end="98.4" title="1:30">The mean corpuscular volume or MCV is a measure of the average red blood cell volume. </span><span class="segment" data-start="98.4" data-end="105.28" title="1:38">The normal reference range is typically 80 to 100 femtolitis per cell. </span><span class="segment" data-start="105.28" data-end="111.52" title="1:45">In contrast, the mean corpuscular hemoglobin is the average mass of hemoglobin </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="111.52"><span class="t-timestamp">1:51</span></div>
+  <div class="t-body"><span class="segment" data-start="111.52" data-end="114.96" title="1:51">per red blood cell in a sample of blood. </span><span class="segment" data-start="114.96" data-end="121.2" title="1:54">A normal value is 27 to 31 pg per cell. </span><span class="segment" data-start="121.2" data-end="125.04" title="2:01">What are the clinical features of anemia? </span><span class="segment" data-start="125.04" data-end="132.08" title="2:05">The features will, to a certain extent, depend on the speed at which the anemia has developed. </span><span class="segment" data-start="132.08" data-end="136.16" title="2:12">If the red blood cell concentration has fallen slowly, </span><span class="segment" data-start="136.16" data-end="140.64" title="2:16">the patient may compensate and be asymptomatic. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="140.64"><span class="t-timestamp">2:20</span></div>
+  <div class="t-body"><span class="segment" data-start="140.64" data-end="146.88" title="2:20">Non-specific symptoms such as fatigue, headache and syncopy may occur </span><span class="segment" data-start="146.88" data-end="152.96" title="2:26">as may disp near and jyner intermittent claudication and palpitations. </span><span class="segment" data-start="153.84" data-end="157.44" title="2:33">These will be more pronounced in an acute situation </span><span class="segment" data-start="157.44" data-end="160.0" title="2:37">and the patient may become confused. </span><span class="segment" data-start="160.88" data-end="167.36" title="2:40">On examination, the patient may again have non-specific signs such as palore, </span><span class="segment" data-start="167.36" data-end="172.72" title="2:47">tachycardia, flow murmurs and ankle edema due to cardiac failure. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="173.52"><span class="t-timestamp">2:53</span></div>
+  <div class="t-body"><span class="segment" data-start="173.52" data-end="177.84" title="2:53">More specific signs may further define the cause of the anemia. </span><span class="segment" data-start="178.4" data-end="182.96" title="2:58">For example, coylanicia may be found in iron deficiency anemia, </span><span class="segment" data-start="183.6" data-end="190.64" title="3:03">jaundice indicating hemolysis, bone deformities that may be found in thalassemia </span><span class="segment" data-start="190.64" data-end="193.36" title="3:10">and leg ulcers in sickle cell disease. </span><span class="segment" data-start="194.64" data-end="195.92" title="3:14">What are the causes of anemia? </span><span class="segment" data-start="196.72" data-end="199.84" title="3:16">This question can be answered in a number of different ways, </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="199.84"><span class="t-timestamp">3:19</span></div>
+  <div class="t-body"><span class="segment" data-start="199.84" data-end="202.88" title="3:19">depending on how you want to classify the causes. </span><span class="segment" data-start="202.88" data-end="206.72" title="3:22">This is one way. Describing the type of anemia is another, </span><span class="segment" data-start="207.28" data-end="211.12" title="3:27">i.e. macrysitic, normocytic or macrysitic. </span><span class="segment" data-start="213.2" data-end="217.84" title="3:33">I would split the causes into reduced production of red blood cells, </span><span class="segment" data-start="218.56" data-end="225.36" title="3:38">increased breakdown, hemolysis and finally loss which might be acute or chronic. </span><span class="segment" data-start="226.48" data-end="231.2" title="3:46">There are many potential causes of reduced production of red blood cells. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="231.92"><span class="t-timestamp">3:51</span></div>
+  <div class="t-body"><span class="segment" data-start="231.92" data-end="239.84" title="3:51">Deficiencies of key components of red blood cells such as iron, vitamin B12 or folate </span><span class="segment" data-start="239.84" data-end="247.04" title="3:59">will cause reduced production, as may chronic diseases such as malignancy or infection </span><span class="segment" data-start="247.04" data-end="253.28" title="4:07">or endocrine disease such as hypothyroidism or a dreamer cortical insufficiency. </span><span class="segment" data-start="253.44" data-end="261.2" title="4:13">Bone marrow infiltration due to leukemia or mylofibrosis may also cause reduced production, </span><span class="segment" data-start="261.2" data-end="269.84" title="4:21">as may a plastic anemia. Furthermore, reduced erythropoetinsicretion, alcoholism, </span><span class="segment" data-start="269.84" data-end="275.36" title="4:29">liver and renal disease may also cause reduced production of red blood cells. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="275.36"><span class="t-timestamp">4:35</span></div>
+  <div class="t-body"><span class="segment" data-start="275.36" data-end="283.12" title="4:35">Increased red blood cell breakdown can be subdivided into conditions that are inherited </span><span class="segment" data-start="283.6" data-end="289.68" title="4:43">or acquired. Inherited diseases may affect the red cell membrane, </span><span class="segment" data-start="289.68" data-end="296.88" title="4:49">leading to increased sequestration in the spleen. This may occur in hereditary spherocytosis. </span><span class="segment" data-start="297.76" data-end="304.96" title="4:57">Abnormal hemoglobin containing cells, seen in patients with fallosemia or sickle cell disease, </span><span class="segment" data-start="304.96" data-end="309.04" title="5:04">are less deformable and so will become sequestered in the spleen. </span><span class="segment" data-start="309.36" data-end="318.8" title="5:09">Finally, metabolic defects such as glucose 6-phosphate dehydrogenase deficiency will also cause </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="318.8"><span class="t-timestamp">5:18</span></div>
+  <div class="t-body"><span class="segment" data-start="318.8" data-end="327.2" title="5:18">inherited hemolytic anemia. Acquired red blood cell breakdown can be classified into auto-immune, </span><span class="segment" data-start="327.2" data-end="338.0" title="5:27">ISO immune and non-immune conditions. In auto-immune conditions, the body's immune system attacks its own red blood cells. </span><span class="segment" data-start="338.8" data-end="346.64" title="5:38">Warm and cold hemolytic anemias may occur. In the cold condition, the antibodies only bind </span><span class="segment" data-start="346.64" data-end="353.44" title="5:46">to red blood cells at low body temperatures of about 28-31 degrees centigrade. </span><span class="segment" data-start="354.32" data-end="360.72" title="5:54">The test for the presence of antibodies against red blood cells is the direct cooms test. </span><span class="segment" data-start="361.68" data-end="368.0" title="6:01">Certain drugs can also stimulate the production of antibodies against red blood cells. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="368.0"><span class="t-timestamp">6:08</span></div>
+  <div class="t-body"><span class="segment" data-start="368.0" data-end="376.8" title="6:08">ISO immune conditions include recess or ABO incompatibility. Non-immune causes of </span><span class="segment" data-start="376.8" data-end="384.56" title="6:16">hemolytic anemia include red cell membrane defects such as paroxysmal nocturnal hemoglobin </span><span class="segment" data-start="384.64" data-end="392.56" title="6:24">and diseases affecting the liver and kidneys. Mechanical trauma or destruction of red blood cells </span><span class="segment" data-start="392.56" data-end="399.04" title="6:32">may occur in patients with micro-angio-pathic hemolytic anemia, valve prostheses, </span><span class="segment" data-start="399.04" data-end="405.84" title="6:39">march hemoglobinuria or sepsis. What blood tests would you consider for investigating anemia? </span><span class="segment" data-start="406.48" data-end="412.16" title="6:46">If you used the previous classification system, then it may be necessary to give a little bit more </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="412.16"><span class="t-timestamp">6:52</span></div>
+  <div class="t-body"><span class="segment" data-start="412.16" data-end="416.08" title="6:52">information regarding which causes produce which types of anemia. </span><span class="segment" data-start="418.32" data-end="424.88" title="6:58">The blood tests would depend on the type of anemia present. If the patient presented with a </span><span class="segment" data-start="424.88" data-end="433.52" title="7:04">hypokromic, micro-cytic anemia, then causes such as ion deficiency, anemia of chronic disease </span><span class="segment" data-start="433.52" data-end="440.88" title="7:13">or thalassemia should be considered. Appropriate initial investigations would include assessment of </span><span class="segment" data-start="440.88" data-end="450.8" title="7:20">ion status. In ion deficiency anemia, a low serum ferritin, low serum ion and high total ion </span><span class="segment" data-start="450.8" data-end="458.4" title="7:30">binding capacity would be expected. Hemoglobin electrophoresis would identify thalassemia. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="459.52"><span class="t-timestamp">7:39</span></div>
+  <div class="t-body"><span class="segment" data-start="459.52" data-end="466.72" title="7:39">A macrositic anemia should be investigated by assessment of vitamin B12 and folate levels. </span><span class="segment" data-start="467.44" data-end="475.04" title="7:47">If abnormal, testing for parietal cell and intrinsic factor antibodies will aid the diagnosis </span><span class="segment" data-start="475.04" data-end="482.88" title="7:55">of penicious anemia. If normal, then tests such as thyroid function, liver function, </span><span class="segment" data-start="482.88" data-end="490.72" title="8:02">and a pregnancy test should be considered. A normal chromic, normacytic anemia might be due to </span><span class="segment" data-start="490.72" data-end="498.72" title="8:10">acute blood loss, anemia of chronic disease, a plastic anemia, combined deficiency, </span><span class="segment" data-start="499.44" data-end="508.08" title="8:19">hemolytic anemias, or endocrine disorders. Investigations would therefore include B12 and folate </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="508.08"><span class="t-timestamp">8:28</span></div>
+  <div class="t-body"><span class="segment" data-start="508.08" data-end="517.92" title="8:28">levels, ion studies, evidence of hemolosis such as elevated serum bilirubin and lactate dehydrogenase, </span><span class="segment" data-start="518.64" data-end="524.72" title="8:38">the blood film should be assessed for sickle cells, parasites and reticular sites, </span><span class="segment" data-start="524.72" data-end="532.4" title="8:44">and the platelet count and white blood cells assessed. Endocrine tests such as thyroid, </span><span class="segment" data-start="532.4" data-end="537.44" title="8:52">pituitary, and adrenal function might be appropriate in some cases. </span><span class="segment" data-start="538.72" data-end="541.28" title="8:58">What are the potential physiological effects of anemia? </span><span class="segment" data-start="541.44" data-end="550.48" title="9:01">There are a number of effects of anemia. Firstly, there will be reduced oxygen carrying capacity, </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="550.48"><span class="t-timestamp">9:10</span></div>
+  <div class="t-body"><span class="segment" data-start="550.48" data-end="559.04" title="9:10">leading to fatigue, dyspnea and angina. Secondly, the cardiac output increases to maintain </span><span class="segment" data-start="559.04" data-end="568.4" title="9:19">oxygen flux, which can cause palpitations and tachycardia. Thirdly, anemia leads to an increase in </span><span class="segment" data-start="568.4" data-end="577.28" title="9:28">23 DPG and a shift of the oxyhemoglobin dissociation curve to the right. There will also be the </span><span class="segment" data-start="577.28" data-end="584.56" title="9:37">effects of the disease or condition causing the anemia. What can you tell me about this man B12 deficiency? </span><span class="segment" data-start="587.04" data-end="595.68" title="9:47">B12 deficiency causes a macroscopic anemia due to problems in DNA synthesis specifically thymine. </span><span class="segment" data-start="596.32" data-end="603.28" title="9:56">It has a number of causes, including inadequate dietary intake, impaired absorption, </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="603.92"><span class="t-timestamp">10:03</span></div>
+  <div class="t-body"><span class="segment" data-start="603.92" data-end="611.04" title="10:03">chronic fish tapeworm infestation, and drugs such as metformin that interfere with absorption. </span><span class="segment" data-start="612.08" data-end="618.0" title="10:12">The impaired absorption may be due to intrinsic factor deficiency or surgical </span><span class="segment" data-start="618.0" data-end="625.44" title="10:18">resection of the terminal isleum. Treatment requires identification of the deficiency under </span><span class="segment" data-start="625.44" data-end="634.24" title="10:25">then replacement. And what about folic acid deficiency? A deficiency of folate will occur </span><span class="segment" data-start="634.24" data-end="642.0" title="10:34">if the body's folate requirements increase, dietary intake is inadequate, or when the body excretes </span><span class="segment" data-start="642.0" data-end="651.36" title="10:42">more folate than usual. Circumstances in which folate requirements increase include pregnancy, </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="651.36"><span class="t-timestamp">10:51</span></div>
+  <div class="t-body"><span class="segment" data-start="651.36" data-end="659.68" title="10:51">lactation, malabsorption syndromes, and renal and liver disease. Many drugs interfere with folate </span><span class="segment" data-start="659.68" data-end="667.68" title="10:59">utilization, including anticonvulsants, metformin, cellphysalazine, and metatractsate. </span><span class="segment" data-start="668.0" data-end="671.12" title="11:08">What will the cause of iron deficiency anemia? </span><span class="segment" data-start="673.2" data-end="681.12" title="11:13">Iron deficiency may be due to chronic bleeding, inadequate intake, malabsorption, or drugs </span><span class="segment" data-start="681.12" data-end="688.32" title="11:21">interfering with iron absorption. Gastric acidity enhances solubility and therefore the </span><span class="segment" data-start="688.32" data-end="697.44" title="11:28">availability of iron derived from food. A chlorhydrous or alkaline drugs such as antacids </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="697.44"><span class="t-timestamp">11:37</span></div>
+  <div class="t-body"><span class="segment" data-start="697.44" data-end="704.64" title="11:37">can therefore interfere with iron absorption as can medications such as H2 receptor and tagonists. </span><span class="segment" data-start="706.0" data-end="707.36" title="11:46">Cyclecell anemia </span><span class="segment" data-start="707.36" data-end="712.8" title="11:47">This is a topic that comes up frequently folks. You should have a solid understanding of the condition. </span><span class="segment" data-start="713.76" data-end="718.4" title="11:53">You are the register on call for emergency theaters and a call to see a patient with acute appendicitis. </span><span class="segment" data-start="719.52" data-end="724.08" title="11:59">If the 24-year-old Afrocarabine tells her only medical condition is Cyclecell disease, </span><span class="segment" data-start="725.04" data-end="726.72" title="12:05">what can you tell me about this condition? </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="728.96"><span class="t-timestamp">12:08</span></div>
+  <div class="t-body"><span class="segment" data-start="728.96" data-end="734.72" title="12:08">Cyclecell is caused by an alteration of the amino acid sequence for hemoglobin. </span><span class="segment" data-start="735.52" data-end="743.44" title="12:15">Specifically, it is due to the substitution of glutamic acid by valine in the sixth amino acid of </span><span class="segment" data-start="743.44" data-end="752.0" title="12:23">the beta chains. This condition has an autosomal inheritance. Heterosigotes are described as having </span><span class="segment" data-start="752.0" data-end="760.72" title="12:32">Cyclecell trait and possess both normal and abnormal chains. Whilst homozygotes contain only </span><span class="segment" data-start="760.72" data-end="768.64" title="12:40">abnormal genes and are said to have Cyclecell disease. Cyclecell trait confers relative resistance </span><span class="segment" data-start="768.64" data-end="774.24" title="12:48">to malaria and is therefore thought to have propagated through certain at-risk populations. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="774.56"><span class="t-timestamp">12:54</span></div>
+  <div class="t-body"><span class="segment" data-start="774.56" data-end="782.4" title="12:54">The condition is most prevalent in African and Asian populations. In the American Black </span><span class="segment" data-start="782.4" data-end="790.8" title="13:02">population, the incidence of Cyclecell disease is less than 1% whilst the incidence of Cyclecell trait </span><span class="segment" data-start="790.8" data-end="796.0" title="13:10">is up to 10%. How do diagnosiclecell disease or trait? </span><span class="segment" data-start="796.32" data-end="805.68" title="13:16">The diagnosis is made by taking a full history, including family history and examining the patient. </span><span class="segment" data-start="806.56" data-end="814.32" title="13:26">The Cycledex test is a quick laboratory test, but this will not differentiate between disease and trait. </span><span class="segment" data-start="815.28" data-end="822.08" title="13:35">The gold standard test is electrophoresis, which will provide the clinician with a definite diagnosis. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="822.24"><span class="t-timestamp">13:42</span></div>
+  <div class="t-body"><span class="segment" data-start="822.24" data-end="826.08" title="13:42">One of the differences between Cyclecells and normal red blood cells. </span><span class="segment" data-start="828.24" data-end="835.2" title="13:48">The deoxygenated Cyclecell hemoglobin polymerizes and precipitates within the red blood cell. </span><span class="segment" data-start="835.92" data-end="842.4" title="13:55">This leads to formation of the Cycle shape, which is more rigid than the normal flexible red blood cell. </span><span class="segment" data-start="843.44" data-end="850.08" title="14:03">The Cyclecell thus increases blood viscosity and thrombosis with a reduction in flow. </span><span class="segment" data-start="851.04" data-end="857.68" title="14:11">The Cyclecell also has a reduced lifespan. The partial pressure at which the hemoglobin in </span><span class="segment" data-start="857.68" data-end="865.2" title="14:17">Cyclecell polymerizes depends on whether the patient has disease or trait. In patients with the </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="865.2"><span class="t-timestamp">14:25</span></div>
+  <div class="t-body"><span class="segment" data-start="865.2" data-end="872.96" title="14:25">disease, this may occur at partial pressures below six kilopascals, and so can happen continuously. </span><span class="segment" data-start="873.04" data-end="880.64" title="14:33">Whilst in trait, the hemoglobin will sickle at lower partial pressures of 2.5 to 4 kilopascals. </span><span class="segment" data-start="882.56" data-end="887.44" title="14:42">Oxygen affinity is normal only when the cell is not polymerized. </span><span class="segment" data-start="888.56" data-end="892.4" title="14:48">What features the Cyclecell disease you look for in your pre-operative assessment of this patient? </span><span class="segment" data-start="894.8" data-end="899.28" title="14:54">The features can be divided into those associated with hemolosis, </span><span class="segment" data-start="899.92" data-end="909.04" title="14:59">impaired blood flow, and end organ damage. The hemolosis associated with Cyclecell typically causes </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="909.04"><span class="t-timestamp">15:09</span></div>
+  <div class="t-body"><span class="segment" data-start="909.04" data-end="916.16" title="15:09">a normal chromic, normal citic anemia. The symptoms and signs of anemia may be present </span><span class="segment" data-start="916.16" data-end="923.12" title="15:16">depending upon its severity. There may be an associated hyperbilarubinemia and jaundice. </span><span class="segment" data-start="923.92" data-end="931.76" title="15:23">Patients may also develop gallstones. Furthermore, bone marrow hyperplasia can lead to skull </span><span class="segment" data-start="931.76" data-end="938.96" title="15:31">and long bone enlargement. The altered blood flow has a number of effects on the different organ </span><span class="segment" data-start="938.96" data-end="947.68" title="15:38">systems. There can be chronic changes and acute crises precipitated by conditions such as hypothermia, </span><span class="segment" data-start="947.68" data-end="956.56" title="15:47">dehydration, infection, exertion, and hypoxemia. With regard to the neurological system, </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="956.56"><span class="t-timestamp">15:56</span></div>
+  <div class="t-body"><span class="segment" data-start="956.56" data-end="962.08" title="15:56">the patients may have a history of stroke or present with an acute neurological lesion. </span><span class="segment" data-start="962.88" data-end="969.6" title="16:02">The respiratory system may be affected by pulmonary infarcts, pulmonary hyper-attention, </span><span class="segment" data-start="969.6" data-end="976.88" title="16:09">and right ventricular failure. Acute chest syndrome may occur with symptoms of </span><span class="segment" data-start="976.88" data-end="984.64" title="16:16">pleuritic chest pain, fever, attack it near, and pulmonary infarcts. The kidneys may be affected </span><span class="segment" data-start="984.64" data-end="992.24" title="16:24">by infarction and the development of papillary necrosis and renal impairment. The musculoskeletal </span><span class="segment" data-start="992.24" data-end="1000.16" title="16:32">system may gain having function and avascular necrosis. The gastrointestinal system may be affected </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="1000.16"><span class="t-timestamp">16:40</span></div>
+  <div class="t-body"><span class="segment" data-start="1000.16" data-end="1009.04" title="16:40">by bowel ischemia and splenic infarction or hypospelanism. These patients often require vaccination </span><span class="segment" data-start="1009.04" data-end="1016.4" title="16:49">against pneumococcus, hemophilus, and meningococcus, and may require prophylactic antibiotics. </span><span class="segment" data-start="1017.44" data-end="1023.04" title="16:57">The cardiovascular system may be affected by retinopathy due to arterial occlusion, </span><span class="segment" data-start="1023.6" data-end="1029.68" title="17:03">high output cardiac failure due to anemia, and increased risk of thrombotic events. </span><span class="segment" data-start="1030.56" data-end="1036.48" title="17:10">Finally, the patient may have ulcers due to impaired blood flow and pre-epism can occur. </span><span class="segment" data-start="1038.48" data-end="1045.36" title="17:18">Additional features of sickle cell anemia include an increased susceptibility to infections </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="1045.36"><span class="t-timestamp">17:25</span></div>
+  <div class="t-body"><span class="segment" data-start="1045.36" data-end="1051.76" title="17:25">such as salmonella, osteomyelitis, and delayed growth and development in children. </span><span class="segment" data-start="1052.0" data-end="1055.52" title="17:32">All you look for if the patient only had sickle cell trait. </span><span class="segment" data-start="1057.76" data-end="1063.52" title="17:37">The patient may be asymptomatic, but I would still look for all of the features of sickle cell </span><span class="segment" data-start="1063.52" data-end="1070.64" title="17:43">disease because trait in combination with other hemoglobinopathies can produce more rigid cells </span><span class="segment" data-start="1070.64" data-end="1077.04" title="17:50">that may sickle at a higher partial pressure of oxygen. The surgeons are keen to proceed with the case. </span><span class="segment" data-start="1078.0" data-end="1081.04" title="17:58">Are there any pre-operative measures that you would instigate before taking the patient </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="1081.04"><span class="t-timestamp">18:01</span></div>
+  <div class="t-body"><span class="segment" data-start="1081.04" data-end="1089.28" title="18:01">theatre? I would want to take a full history and examine the patient. I would then want to review </span><span class="segment" data-start="1089.28" data-end="1096.8" title="18:09">the full blood count, urea and electrolytes, liver function tests, and electrocardiogram before </span><span class="segment" data-start="1096.8" data-end="1102.08" title="18:16">going to theatre. I would check that blood was available for the patient if required. </span><span class="segment" data-start="1102.96" data-end="1109.76" title="18:22">In some cases, an exchange transfusion is performed preoperatively to reduce the hemoglobin </span><span class="segment" data-start="1109.76" data-end="1116.24" title="18:29">S concentration to below 40%, but this would depend on the urgency of the case. </span><span class="segment" data-start="1117.76" data-end="1123.44" title="18:37">I would want to avoid precipitation of a sickle cell crisis and so would aim to prevent </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="1123.44"><span class="t-timestamp">18:43</span></div>
+  <div class="t-body"><span class="segment" data-start="1123.44" data-end="1132.72" title="18:43">hypoxemia, dehydration, hypothermia, acidosis, and pain. What would be your concern interoperatively? </span><span class="segment" data-start="1133.12" data-end="1143.92" title="18:53">Again, I would aim to prevent hypoxemia, dehydration, hypothermia, acidosis, and pain. </span><span class="segment" data-start="1144.72" data-end="1150.8" title="19:04">In general, I would also avoid using a tornake, although this would not be required in an appendicectomy. </span><span class="segment" data-start="1152.0" data-end="1153.76" title="19:12">What can you tell me about phallosemia? </span><span class="segment" data-start="1156.0" data-end="1162.24" title="19:16">This disease is due to a lack of expression of a globin chain due to deletion or mutation. </span><span class="segment" data-start="1162.96" data-end="1167.84" title="19:22">This leads to reduced production of alpha or beta chains of hemoglobin. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="1168.88"><span class="t-timestamp">19:28</span></div>
+  <div class="t-body"><span class="segment" data-start="1168.88" data-end="1174.16" title="19:28">The severity of the condition is related to the patterns of inheritance of hemoglobin, </span><span class="segment" data-start="1174.16" data-end="1179.76" title="19:34">since usually one beta and two alpha genes are inherited from each parent. </span><span class="segment" data-start="1180.56" data-end="1186.64" title="19:40">The condition is more common in Mediterranean, African, and Asian populations. </span><span class="segment" data-start="1186.88" data-end="1194.64" title="19:46">In beta thalassemia, the condition may not be immediately identified as fetal hemoglobin does </span><span class="segment" data-start="1194.64" data-end="1202.24" title="19:54">not contain beta chains. Heterosigotes will have a mild anemia, whilst homozygotes develop a </span><span class="segment" data-start="1202.24" data-end="1209.76" title="20:02">severe anemia with craniofacial bone hyperplasia, hipatosplenomegaly, cardiac failure, </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="1209.76"><span class="t-timestamp">20:09</span></div>
+  <div class="t-body"><span class="segment" data-start="1209.76" data-end="1213.84" title="20:09">and hemocidlerosis if treated with repeated blood transfusions. </span><span class="segment" data-start="1214.0" data-end="1221.6" title="20:14">Alpha thalassemia patients usually are anemic, the severity of which depends on the number of gene </span><span class="segment" data-start="1221.6" data-end="1228.0" title="20:21">deletions. Let's talk about anemia during critical illness. Have you heard of the trick trial, </span><span class="segment" data-start="1228.0" data-end="1235.36" title="20:28">and what were the important findings? The trick trial stands for transfusion requirements in </span><span class="segment" data-start="1235.36" data-end="1243.12" title="20:35">critical care. It studied patients whose hemoglobin concentration had a value of 9 grams per desolita </span><span class="segment" data-start="1243.2" data-end="1249.68" title="20:43">during the first three days of their intensive care stay. It randomized them to two groups, </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="1249.68"><span class="t-timestamp">20:49</span></div>
+  <div class="t-body"><span class="segment" data-start="1249.68" data-end="1258.16" title="20:49">one with a transfusion trigger of 7 grams per desolita, with a target hemoglobin of 7 to 9 grams per desolita, </span><span class="segment" data-start="1258.16" data-end="1264.4" title="20:58">and the second group a trigger of less than 10 grams per desolita, and a target hemoglobin of 10 to </span><span class="segment" data-start="1264.4" data-end="1272.24" title="21:04">12 grams per desolita. Interestingly, the 30 and 60-day mortality was similar for both groups. </span><span class="segment" data-start="1272.96" data-end="1279.12" title="21:12">Furthermore, there was a significantly lower mortality with the restrictive strategy among younger </span><span class="segment" data-start="1279.12" data-end="1286.08" title="21:19">patients and less ill patients. This is led to the use of lower transfusion triggers in intensive </span><span class="segment" data-start="1286.08" data-end="1290.24" title="21:26">care units. Why do critically ill patients become anemic? </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="1292.48"><span class="t-timestamp">21:32</span></div>
+  <div class="t-body"><span class="segment" data-start="1292.48" data-end="1299.12" title="21:32">Critically ill patients tend to develop anemia quickly. There are many possible reasons for this. </span><span class="segment" data-start="1299.76" data-end="1306.08" title="21:39">These include hemodilution due to crystalloid or colloid-based fluid resuscitation, </span><span class="segment" data-start="1306.08" data-end="1311.04" title="21:46">and blood loss due to either occult hemorrhage or frequent blood sampling. </span><span class="segment" data-start="1312.08" data-end="1318.08" title="21:52">Additional causes include reduced red cell survival due to the systemic inflammatory </span><span class="segment" data-start="1318.08" data-end="1323.28" title="21:58">response syndrome causing cell destruction or altered membrane characteristics. </span><span class="segment" data-start="1324.08" data-end="1330.8" title="22:04">Red blood cell production due to bone marrow suppression in the presence of inflammation </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="1330.8"><span class="t-timestamp">22:10</span></div>
+  <div class="t-body"><span class="segment" data-start="1330.8" data-end="1338.08" title="22:10">and changes in ion metabolism since acute inflammation reduces the ion available for hemoglobin </span><span class="segment" data-start="1338.08" data-end="1347.52" title="22:18">synthesis. Finally, alterations in B12 and folate metabolism, inappropriately low circulating </span><span class="segment" data-start="1347.52" data-end="1354.88" title="22:27">erythropoetin concentrations, and abnormal red blood cell maturation may all be caused by </span><span class="segment" data-start="1354.88" data-end="1360.4" title="22:34">inflammatory cytokines interrupting normal pathways leading to anemia. </span><span class="segment" data-start="1366.08" data-end="1370.4" title="22:46">There are a number of measures that can be incorporated into managing anemia. </span><span class="segment" data-start="1371.04" data-end="1378.0" title="22:51">These include attempting to reduce red cell loss by restricting blood sampling and controlling </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="1378.0"><span class="t-timestamp">22:58</span></div>
+  <div class="t-body"><span class="segment" data-start="1378.0" data-end="1385.84" title="22:58">hemorrhage using appropriate transfusion triggers and recognizing and treating any deficiencies </span><span class="segment" data-start="1385.84" data-end="1390.72" title="23:05">promptly. What would you consider to be exceptions to the restrictor strategy now employed? </span><span class="segment" data-start="1392.88" data-end="1400.32" title="23:12">Patients with acute or chronic ischemic heart disease and early severe sepsis may be exceptions </span><span class="segment" data-start="1400.32" data-end="1407.12" title="23:20">to the restrictive strategy. In patients with either chronic or acute ischemic heart disease, </span><span class="segment" data-start="1407.12" data-end="1413.76" title="23:27">a transfusion trigger of less than 8 grams per deciliter is often suggested with a hemoglobin </span><span class="segment" data-start="1413.76" data-end="1420.72" title="23:33">concentration of 9 grams per deciliter. With regards to early severe sepsis, </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="1420.72"><span class="t-timestamp">23:40</span></div>
+  <div class="t-body"><span class="segment" data-start="1420.72" data-end="1426.72" title="23:40">gold directed therapy has been shown to improve mortality with central venous oxygen </span><span class="segment" data-start="1426.72" data-end="1434.32" title="23:46">saturations less than 70% used as the trigger for interventions to increase global oxygen delivery. </span><span class="segment" data-start="1435.12" data-end="1442.0" title="23:55">Part of this algorithm is blood transfusion to maintain the hematocrit above 30% </span><span class="segment" data-start="1442.0" data-end="1448.64" title="24:02">or a hemoglobin of 10 grams per deciliter, although it is unclear how important this component is </span><span class="segment" data-start="1448.64" data-end="1449.84" title="24:08">in improving outcome. </span></div>
+</div>
+</div>
+
+<div class="subtitle-bar">
+  <span class="subtitle-text empty" id="subtitle-text">Play audio to see live subtitles&#8230;</span>
+</div>
+
+<script>
+
+const audio    = document.getElementById('audio');
+const allSegs  = Array.from(document.querySelectorAll('.segment'));
+const allBlocks = Array.from(document.querySelectorAll('.t-block'));
+const subtitleEl = document.getElementById('subtitle-text');
+let activeSegEl   = null;
+let activeBlockEl = null;
+let searchMatches = [];
+let searchIdx     = 0;
+
+// Duration display
+audio.addEventListener('loadedmetadata', () => {
+  const m = Math.floor(audio.duration / 60);
+  const s = Math.floor(audio.duration %% 60).toString().padStart(2,'0');
+  document.getElementById('dur').textContent = m + ':' + s;
+});
+
+// Seek helper
+function seekTo(t) {
+  audio.currentTime = t;
+  audio.play();
+}
+
+// Block gutter click
+document.querySelectorAll('.t-gutter').forEach(g => {
+  g.addEventListener('click', () => seekTo(parseFloat(g.dataset.start)));
+});
+
+// Segment click
+allSegs.forEach(s => {
+  s.addEventListener('click', e => {
+    e.stopPropagation();
+    seekTo(parseFloat(s.dataset.start));
+  });
+});
+
+// Real-time tracking
+audio.addEventListener('timeupdate', () => {
+  const t = audio.currentTime;
+
+  // Find active segment (last one whose start <= t)
+  let found = null;
+  for (let i = allSegs.length - 1; i >= 0; i--) {
+    if (parseFloat(allSegs[i].dataset.start) <= t) { found = allSegs[i]; break; }
+  }
+
+  if (found && found !== activeSegEl) {
+    // Clear previous
+    if (activeSegEl) activeSegEl.classList.remove('active');
+    if (activeBlockEl) {
+      activeBlockEl.classList.remove('block-active');
+      const pg = activeBlockEl.querySelector('.t-gutter');
+      if (pg) pg.classList.remove('gutter-active');
+    }
+    // Set new
+    found.classList.add('active');
+    const block = found.closest('.t-block');
+    if (block) {
+      block.classList.add('block-active');
+      const g = block.querySelector('.t-gutter');
+      if (g) g.classList.add('gutter-active');
+      activeBlockEl = block;
+    }
+    activeSegEl = found;
+
+    // Update subtitle
+    subtitleEl.textContent = found.textContent.trim();
+    subtitleEl.classList.remove('empty');
+
+    // Auto-scroll (only when not searching)
+    if (!document.getElementById('search').value) {
+      found.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }
+});
+
+// Search
+const searchInput = document.getElementById('search');
+searchInput.addEventListener('input', runSearch);
+searchInput.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && searchMatches.length) {
+    searchMatches[searchIdx].classList.remove('search-current');
+    searchIdx = (searchIdx + 1) %% searchMatches.length;
+    const el = searchMatches[searchIdx];
+    el.classList.add('search-current');
+    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+});
+
+function runSearch() {
+  const q = searchInput.value.trim().toLowerCase();
+  allSegs.forEach(s => s.classList.remove('search-match','search-current'));
+  searchMatches = [];
+  if (!q) return;
+  allSegs.forEach(s => {
+    if (s.textContent.toLowerCase().includes(q)) {
+      s.classList.add('search-match');
+      searchMatches.push(s);
+    }
+  });
+  if (!searchMatches.length) return;
+  searchIdx = 0;
+  searchMatches[0].classList.add('search-current');
+  searchMatches[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+</script>
+</body>
+</html>

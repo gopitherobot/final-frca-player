@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Haematological — Antiplatelet Agents and Antifibrinolytic Agents</title>
+<style>
+
+  :root {
+    --accent:    #ec4899;
+    --body-bg:   #f1f5f9;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: var(--body-bg);
+    color: #1e293b;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  /* ── Header ── */
+  .header {
+    background: #0f172a;
+    border-bottom: 3px solid var(--accent);
+    padding: 12px 20px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .header-left { flex: 1; min-width: 200px; }
+  .header h1 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #f1f5f9;
+    margin-bottom: 4px;
+    letter-spacing: 0.01em;
+  }
+  .header-sub {
+    font-size: 0.72rem;
+    color: #94a3b8;
+    font-style: italic;
+  }
+  audio {
+    height: 36px;
+    accent-color: var(--accent);
+    flex-shrink: 0;
+  }
+  .back-link {
+    font-size: 0.8rem;
+    color: #94a3b8;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .back-link:hover { color: #60a5fa; }
+
+  /* ── Toolbar ── */
+  .toolbar {
+    background: #1e293b;
+    padding: 7px 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-shrink: 0;
+    border-bottom: 1px solid #334155;
+  }
+  .toolbar input {
+    flex: 1;
+    max-width: 380px;
+    padding: 5px 11px;
+    border: 1px solid #475569;
+    border-radius: 6px;
+    background: #0f172a;
+    color: #e2e8f0;
+    font-size: 0.83rem;
+    outline: none;
+  }
+  .toolbar input:focus { border-color: var(--accent); }
+  .toolbar input::placeholder { color: #64748b; }
+  .stats {
+    font-size: 0.72rem;
+    color: #64748b;
+    white-space: nowrap;
+  }
+
+  /* ── Scroll area ── */
+  .scroll-area {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+  }
+  .scroll-area::-webkit-scrollbar { width: 6px; }
+  .scroll-area::-webkit-scrollbar-track { background: transparent; }
+  .scroll-area::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+
+  /* ── Subtitle bar ── */
+  .subtitle-bar {
+    background: #0f172a;
+    border-top: 2px solid var(--accent);
+    padding: 8px 20px;
+    flex-shrink: 0;
+    min-height: 42px;
+    display: flex;
+    align-items: center;
+  }
+  .subtitle-text {
+    font-size: 0.9rem;
+    color: #e2e8f0;
+    line-height: 1.5;
+    font-style: italic;
+  }
+  .subtitle-text.empty { color: #475569; }
+
+  /* ── Transcript blocks ── */
+  .t-block {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    margin-bottom: 14px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    display: flex;
+  }
+  .t-block.block-active {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px rgba(37,99,235,0.15);
+  }
+  .t-gutter {
+    background: #0f172a;
+    width: 52px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: 14px;
+    cursor: pointer;
+  }
+  .t-gutter:hover { background: #1e293b; }
+  .t-timestamp {
+    font-size: 0.7rem;
+    color: #64748b;
+    font-family: monospace;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+  .t-gutter.gutter-active .t-timestamp { color: var(--accent); }
+  .t-body {
+    flex: 1;
+    padding: 12px 16px;
+    line-height: 1.75;
+    font-size: 0.92rem;
+    color: #1e293b;
+  }
+
+  /* ── Segments ── */
+  .segment {
+    cursor: pointer;
+    border-radius: 3px;
+    transition: background 0.1s;
+  }
+  .segment:hover { background: #eff6ff; }
+  .segment.active {
+    background: #bfdbfe;
+    outline: 2px solid #3b82f6;
+    outline-offset: 1px;
+    border-radius: 3px;
+  }
+  .segment.search-match  { background: #fef9c3; }
+  .segment.search-current { background: #fde047; outline: 2px solid #ca8a04; }
+
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <h1>Haematological — Antiplatelet Agents and Antifibrinolytic Agents</h1>
+    <div class="header-sub">Final FRCA &mdash; Exam Viva Simulation &mdash; Click any phrase to seek</div>
+  </div>
+  <audio id="audio" src="../FinalFRCAHaematological_Antiplatelet_Agents_and_Antifibrinolytic_Agents.mp3" controls preload="metadata"></audio>
+  <a class="back-link" href="index.html">&#8592; All Topics</a>
+</div>
+
+<div class="toolbar">
+  <input type="text" id="search" placeholder="Search transcript&#8230; (Enter = next match)">
+  <span class="stats" id="stats">113 segments &nbsp;|&nbsp; <span id="dur">loading&#8230;</span></span>
+</div>
+
+<div class="scroll-area" id="scroll-area">
+<div class="t-block">
+  <div class="t-gutter" data-start="0.0"><span class="t-timestamp">0:00</span></div>
+  <div class="t-body"><span class="segment" data-start="0.0" data-end="3.6" title="0:00">Anti-plate let an anti-fibrinolytic agents. </span><span class="segment" data-start="3.6" data-end="7.0" title="0:03">Can you classify anti-coagulants? </span><span class="segment" data-start="7.0" data-end="12.84" title="0:07">Remember, as with everything, you should classify the drugs if possible, as you will be less </span><span class="segment" data-start="12.84" data-end="16.0" title="0:12">likely to forget any. </span><span class="segment" data-start="16.0" data-end="21.48" title="0:16">Anti-coagulant drugs can be classified into those that inhibit platelet function, those </span><span class="segment" data-start="21.48" data-end="26.48" title="0:21">that affect the clotting cascade, and those that lead to the breakdown of a clot once </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="26.48"><span class="t-timestamp">0:26</span></div>
+  <div class="t-body"><span class="segment" data-start="26.48" data-end="27.48" title="0:26">it is formed. </span><span class="segment" data-start="27.96" data-end="32.04" title="0:27">Let's start by talking about anti-platelet agents. </span><span class="segment" data-start="32.04" data-end="37.36" title="0:32">Can you tell me about all the drugs you know of that inhibit platelet function? </span><span class="segment" data-start="37.36" data-end="42.44" title="0:37">There are several drugs that affect platelet function, all of which work in slightly different </span><span class="segment" data-start="42.44" data-end="43.44" title="0:42">ways. </span><span class="segment" data-start="43.44" data-end="48.12" title="0:43">It's helpful to have an understanding of platelet function to understand how these drugs </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="48.12"><span class="t-timestamp">0:48</span></div>
+  <div class="t-body"><span class="segment" data-start="48.12" data-end="50.04" title="0:48">work. </span><span class="segment" data-start="50.04" data-end="55.16" title="0:50">Platelets are activated when they are exposed to the subendothelial matrix when a vessel </span><span class="segment" data-start="55.16" data-end="57.96" title="0:55">wall is damaged. </span><span class="segment" data-start="57.96" data-end="64.24" title="0:57">Activation leads to degranulation of the platelets, and then a process of aggregation where platelets </span><span class="segment" data-start="64.24" data-end="68.16" title="1:04">stick to each other and clot formation. </span><span class="segment" data-start="68.16" data-end="74.32" title="1:08">Von Willibrand factor, a component of factor 8, is essential for the initial phase of platelets </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="74.32"><span class="t-timestamp">1:14</span></div>
+  <div class="t-body"><span class="segment" data-start="74.32" data-end="76.64" title="1:14">sticking to the vessel wall. </span><span class="segment" data-start="76.64" data-end="82.92" title="1:16">The degranulation process leads to release of thromboxane A2, which increases platelet </span><span class="segment" data-start="82.92" data-end="89.0" title="1:22">aggregation, and also causes localized vasoconstriction of the vessel. </span><span class="segment" data-start="89.0" data-end="94.6" title="1:29">More distant vessel walls release prostocycline, which has the opposite effect to thromboxane </span><span class="segment" data-start="94.6" data-end="100.48" title="1:34">A2, preventing platelet aggregation and leading to vasodilitation. </span><span class="segment" data-start="100.48" data-end="104.32" title="1:40">This aims to localize the clotting process. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="104.32"><span class="t-timestamp">1:44</span></div>
+  <div class="t-body"><span class="segment" data-start="104.32" data-end="109.76" title="1:44">Thrombin, produced as part of the clotting cascade, increases the activity of platelets </span><span class="segment" data-start="109.84" data-end="116.12" title="1:49">by increasing the production of glycoprotein 2B and 3A receptors. </span><span class="segment" data-start="116.12" data-end="122.2" title="1:56">These receptors are required for binding of fibrinogen to platelets, leading to cross-linking </span><span class="segment" data-start="122.2" data-end="126.84" title="2:02">of platelets, and strengthening the clot formed. </span><span class="segment" data-start="126.84" data-end="134.56" title="2:06">Adenosine diphosphate, ADP, is also released from the platelets in the degranulation process. </span><span class="segment" data-start="134.56" data-end="140.28" title="2:14">This has a positive feedback effect on the platelets by binding to an ADP receptor on </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="140.28"><span class="t-timestamp">2:20</span></div>
+  <div class="t-body"><span class="segment" data-start="140.28" data-end="142.4" title="2:20">the platelet surface. </span><span class="segment" data-start="142.4" data-end="149.88" title="2:22">This increases platelet activity by enabling the glycoprotein 2B3A receptor to transform </span><span class="segment" data-start="149.88" data-end="156.88" title="2:29">into its active form and therefore facilitate binding of fibrinogen to the platelets. </span><span class="segment" data-start="156.88" data-end="162.36" title="2:36">Drugs that affect the platelet function include non-steeroidal anti-inflammatory drugs, such </span><span class="segment" data-start="162.36" data-end="164.12" title="2:42">as aspirin. </span><span class="segment" data-start="164.12" data-end="170.76" title="2:44">These work by inhibiting cyclooxygenase enzymes, therefore reducing production of thromboxane </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="170.76"><span class="t-timestamp">2:50</span></div>
+  <div class="t-body"><span class="segment" data-start="170.76" data-end="178.56" title="2:50">A2 from a racodonic acid, thus inhibiting platelet aggregation and preventing localized vasoconstriction </span><span class="segment" data-start="178.56" data-end="180.72" title="2:58">of the vessel. </span><span class="segment" data-start="180.72" data-end="187.96" title="3:00">Clopidogrel, this works by irreversibly preventing ADP from binding to its receptor and thus </span><span class="segment" data-start="187.96" data-end="195.6" title="3:07">reducing platelet activity and inhibiting the glycoprotein 2B3A receptor. </span><span class="segment" data-start="195.6" data-end="204.92" title="3:15">Diperidomol, this inhibits platelet phosphodiesterase, reducing platelet adhesion to vessel walls. </span><span class="segment" data-start="204.92" data-end="211.76" title="3:24">Prostocyclin, as previously mentioned, this is a Prosteglandin produced endovascularly, </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="211.76"><span class="t-timestamp">3:31</span></div>
+  <div class="t-body"><span class="segment" data-start="211.76" data-end="217.4" title="3:31">which leads to localized vasodilitation and inhibition of platelet aggregation. </span><span class="segment" data-start="217.4" data-end="223.28" title="3:37">There can be given as a continuous infusion to anti-cigulate a hemofiltration circuit </span><span class="segment" data-start="223.28" data-end="226.76" title="3:43">in a patient unable to receive heprin. </span><span class="segment" data-start="226.76" data-end="232.48" title="3:46">It may also be used for its vasodilating properties, such as in patients with renoids </span><span class="segment" data-start="232.48" data-end="234.36" title="3:52">disease. </span><span class="segment" data-start="234.36" data-end="240.96" title="3:54">Dextrans, these are large chain carbohydrate molecules produced as fluids, which may be </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="240.96"><span class="t-timestamp">4:00</span></div>
+  <div class="t-body"><span class="segment" data-start="240.96" data-end="243.8" title="4:00">given for fluid resuscitation. </span><span class="segment" data-start="243.8" data-end="249.62" title="4:03">They have an inhibitory effect on Von Willibrand factor and therefore have an anti-curiculatory </span><span class="segment" data-start="249.62" data-end="251.46" title="4:09">effect. </span><span class="segment" data-start="251.46" data-end="255.8" title="4:11">Can you describe with the help of a diagram if you wish exactly how anti-inflammatory </span><span class="segment" data-start="255.8" data-end="258.84" title="4:15">drugs work to inhibit platelet function? </span><span class="segment" data-start="258.84" data-end="263.76" title="4:18">Always worth drawing a quick diagram if you can, but make sure you make it a big, clear </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="263.76"><span class="t-timestamp">4:23</span></div>
+  <div class="t-body"><span class="segment" data-start="263.76" data-end="266.72" title="4:23">diagram. </span><span class="segment" data-start="266.72" data-end="272.96" title="4:26">Membrane phospholipids are broken down to a racodonic acid by phospholipase A. This is </span><span class="segment" data-start="272.96" data-end="279.88" title="4:32">then converted to cyclic endoperoxidases by cyclooxygenase enzymes. </span><span class="segment" data-start="279.88" data-end="287.48" title="4:39">These are then converted to thromboxane A2 in platelets, prostocycline PGI2 in the vascular </span><span class="segment" data-start="287.48" data-end="298.6" title="4:47">endothelium and various prostocyclins PGE2, PGF2 alpha, PGD2 at other sites. </span><span class="segment" data-start="298.6" data-end="305.56" title="4:58">There is an alternative pathway where a racodonic acid is converted to lucotrains by lipooxygenase </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="305.56"><span class="t-timestamp">5:05</span></div>
+  <div class="t-body"><span class="segment" data-start="305.56" data-end="307.2" title="5:05">enzymes. </span><span class="segment" data-start="307.2" data-end="311.2" title="5:07">This is not affected by non-steroidal anti-inflammatory drugs. </span><span class="segment" data-start="311.2" data-end="317.44" title="5:11">It is thought that a relative excess of lucotrains, due to an inhibition of cyclooxygenase, </span><span class="segment" data-start="317.44" data-end="323.96" title="5:17">may be the cause for the wheeze precipitated by non-steroidal anti-inflammatory drugs. </span><span class="segment" data-start="323.96" data-end="328.92" title="5:23">What is the difference between aspirin and other NSAIDs with regards to duration of </span><span class="segment" data-start="328.92" data-end="332.04" title="5:28">action? </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="332.04"><span class="t-timestamp">5:32</span></div>
+  <div class="t-body"><span class="segment" data-start="332.04" data-end="337.0" title="5:32">Aspirin leads to an irreversible inhibition of the cyclooxygenase enzyme whilst other </span><span class="segment" data-start="337.0" data-end="342.68" title="5:37">non-steroidal anti-inflammatory drugs lead to reversible inhibition. </span><span class="segment" data-start="342.68" data-end="348.32" title="5:42">This therefore means that the effect of aspirin lasts for the lifetime of the platelet, whilst </span><span class="segment" data-start="348.32" data-end="353.68" title="5:48">the other non-steroidal anti-inflammatory drugs only have an effect whilst the drug is </span><span class="segment" data-start="353.68" data-end="356.72" title="5:53">in the system in its active form. </span><span class="segment" data-start="356.72" data-end="363.44" title="5:56">When given in a low dose, aspirin specifically has an effect on platelet cyclooxygenases, </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="363.44"><span class="t-timestamp">6:03</span></div>
+  <div class="t-body"><span class="segment" data-start="363.44" data-end="366.8" title="6:03">but not on vessel wall cyclooxygenase. </span><span class="segment" data-start="366.8" data-end="372.2" title="6:06">Therefore, having an anti-ciglin effect on platelets whilst preserving the production </span><span class="segment" data-start="372.2" data-end="375.12" title="6:12">of vessel wall prostocyclin. </span><span class="segment" data-start="375.12" data-end="380.2" title="6:15">Which groups of patients have routinely started on aspirin and clopidigrill or other anti-platelet </span><span class="segment" data-start="380.2" data-end="381.2" title="6:20">agents? </span><span class="segment" data-start="381.2" data-end="388.56" title="6:21">A review article of coronary artery stents and non-cardiac surgery by G. Howard Alp et al, </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="388.56"><span class="t-timestamp">6:28</span></div>
+  <div class="t-body"><span class="segment" data-start="388.56" data-end="394.12" title="6:28">published in the BJA in 2007, gives a good summary of the problems of anesthetizing patients </span><span class="segment" data-start="394.12" data-end="398.24" title="6:34">on aspirin and clopidigrill. </span><span class="segment" data-start="398.24" data-end="402.88" title="6:38">Aspirin and clopidigrill are most commonly used for their anti-platelet effect in patients </span><span class="segment" data-start="402.88" data-end="408.76" title="6:42">who are at risk of myocardial infarction or cerebrovascular accidents. </span><span class="segment" data-start="408.76" data-end="413.48" title="6:48">Both these drugs are routinely started in patients who have had percutaneous coronary </span><span class="segment" data-start="413.48" data-end="417.8" title="6:53">intervention with insertion of a coronary stent. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="417.8"><span class="t-timestamp">6:57</span></div>
+  <div class="t-body"><span class="segment" data-start="417.8" data-end="425.36" title="6:57">There are two types of stent that are commonly used, drug eluting stents and bare metal stents. </span><span class="segment" data-start="425.36" data-end="431.48" title="7:05">Both types lead, in the initial stage, to bare metal being exposed in the coronary vessel, </span><span class="segment" data-start="431.48" data-end="436.96" title="7:11">which is highly thrombogenic and prone to instant thrombosis. </span><span class="segment" data-start="436.96" data-end="440.24" title="7:16">Prevention of this is therefore extremely important. </span><span class="segment" data-start="440.24" data-end="445.96" title="7:20">Drug eluting stents have the effect of reducing intimal proliferation and are therefore used </span><span class="segment" data-start="445.96" data-end="450.4" title="7:25">to reduce the rates of instant re stenosis. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="450.4"><span class="t-timestamp">7:30</span></div>
+  <div class="t-body"><span class="segment" data-start="450.4" data-end="455.76" title="7:30">The drug that is released has the effect of prolonging the time that bare metal is exposed, </span><span class="segment" data-start="455.76" data-end="461.24" title="7:35">therefore increasing the risk of instant thrombosis for a longer period. </span><span class="segment" data-start="461.24" data-end="465.92" title="7:41">It has been suggested that dual anti-platelet therapy should be continued for at least </span><span class="segment" data-start="465.92" data-end="469.2" title="7:45">a year in patients with drug eluting stents. </span><span class="segment" data-start="469.2" data-end="474.48" title="7:49">A study has shown that premature cessation of anti-platelet therapy is the strongest </span><span class="segment" data-start="474.48" data-end="478.0" title="7:54">predictor of subsequent stent thrombosis. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="478.0"><span class="t-timestamp">7:58</span></div>
+  <div class="t-body"><span class="segment" data-start="478.0" data-end="484.0" title="7:58">The overall recommendations are that if non-cardiac surgery is known to be necessary within a year </span><span class="segment" data-start="484.0" data-end="489.72" title="8:04">of stent insertion, then a bare metal stent should be used in preference to a drug eluting </span><span class="segment" data-start="489.72" data-end="491.2" title="8:09">stent. </span><span class="segment" data-start="491.2" data-end="496.84" title="8:11">After a patient who has recently had a stent inserted, elective non-cardiac surgery should </span><span class="segment" data-start="496.84" data-end="501.36" title="8:16">be avoided until clopidogrel can be safely stopped. </span><span class="segment" data-start="501.36" data-end="506.36" title="8:21">Finally, can you tell me about the Fibreinolithic agents? </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="506.36"><span class="t-timestamp">8:26</span></div>
+  <div class="t-body"><span class="segment" data-start="506.36" data-end="511.44" title="8:26">The Fibreinolithic agents are Plasminogen activators. </span><span class="segment" data-start="511.44" data-end="516.8" title="8:31">During the process of clot breakdown, inactive Plasminogen has to be converted to the active </span><span class="segment" data-start="516.8" data-end="522.96" title="8:36">Plasmin, which can then break Fibrein down to Fibrein degradation products, thus dissolving </span><span class="segment" data-start="522.96" data-end="524.84" title="8:42">the clot. </span><span class="segment" data-start="524.84" data-end="531.04" title="8:44">Fibreinolithic agents initially form a Fibreinolithic Plasminogen activator complex. </span><span class="segment" data-start="531.04" data-end="536.88" title="8:51">This then goes on to convert further Plasminogen molecules to active Plasmin. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="536.88"><span class="t-timestamp">8:56</span></div>
+  <div class="t-body"><span class="segment" data-start="536.88" data-end="543.64" title="8:56">There are many examples of Fibreinolithic including streptokynaes and outer plays. </span><span class="segment" data-start="543.64" data-end="548.64" title="9:03">They are generally given to dissolve clot in a life-threatening situation, such as a </span><span class="segment" data-start="548.64" data-end="552.56" title="9:08">myocardial infarction or pulmonary embolus. </span><span class="segment" data-start="552.56" data-end="557.12" title="9:12">They carry with them the risk of serious bleeding, and so there are situations when the </span><span class="segment" data-start="557.12" data-end="561.4" title="9:17">risk of administration outweighs any potential benefit of treatment. </span></div>
+</div>
+</div>
+
+<div class="subtitle-bar">
+  <span class="subtitle-text empty" id="subtitle-text">Play audio to see live subtitles&#8230;</span>
+</div>
+
+<script>
+
+const audio    = document.getElementById('audio');
+const allSegs  = Array.from(document.querySelectorAll('.segment'));
+const allBlocks = Array.from(document.querySelectorAll('.t-block'));
+const subtitleEl = document.getElementById('subtitle-text');
+let activeSegEl   = null;
+let activeBlockEl = null;
+let searchMatches = [];
+let searchIdx     = 0;
+
+// Duration display
+audio.addEventListener('loadedmetadata', () => {
+  const m = Math.floor(audio.duration / 60);
+  const s = Math.floor(audio.duration %% 60).toString().padStart(2,'0');
+  document.getElementById('dur').textContent = m + ':' + s;
+});
+
+// Seek helper
+function seekTo(t) {
+  audio.currentTime = t;
+  audio.play();
+}
+
+// Block gutter click
+document.querySelectorAll('.t-gutter').forEach(g => {
+  g.addEventListener('click', () => seekTo(parseFloat(g.dataset.start)));
+});
+
+// Segment click
+allSegs.forEach(s => {
+  s.addEventListener('click', e => {
+    e.stopPropagation();
+    seekTo(parseFloat(s.dataset.start));
+  });
+});
+
+// Real-time tracking
+audio.addEventListener('timeupdate', () => {
+  const t = audio.currentTime;
+
+  // Find active segment (last one whose start <= t)
+  let found = null;
+  for (let i = allSegs.length - 1; i >= 0; i--) {
+    if (parseFloat(allSegs[i].dataset.start) <= t) { found = allSegs[i]; break; }
+  }
+
+  if (found && found !== activeSegEl) {
+    // Clear previous
+    if (activeSegEl) activeSegEl.classList.remove('active');
+    if (activeBlockEl) {
+      activeBlockEl.classList.remove('block-active');
+      const pg = activeBlockEl.querySelector('.t-gutter');
+      if (pg) pg.classList.remove('gutter-active');
+    }
+    // Set new
+    found.classList.add('active');
+    const block = found.closest('.t-block');
+    if (block) {
+      block.classList.add('block-active');
+      const g = block.querySelector('.t-gutter');
+      if (g) g.classList.add('gutter-active');
+      activeBlockEl = block;
+    }
+    activeSegEl = found;
+
+    // Update subtitle
+    subtitleEl.textContent = found.textContent.trim();
+    subtitleEl.classList.remove('empty');
+
+    // Auto-scroll (only when not searching)
+    if (!document.getElementById('search').value) {
+      found.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }
+});
+
+// Search
+const searchInput = document.getElementById('search');
+searchInput.addEventListener('input', runSearch);
+searchInput.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && searchMatches.length) {
+    searchMatches[searchIdx].classList.remove('search-current');
+    searchIdx = (searchIdx + 1) %% searchMatches.length;
+    const el = searchMatches[searchIdx];
+    el.classList.add('search-current');
+    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+});
+
+function runSearch() {
+  const q = searchInput.value.trim().toLowerCase();
+  allSegs.forEach(s => s.classList.remove('search-match','search-current'));
+  searchMatches = [];
+  if (!q) return;
+  allSegs.forEach(s => {
+    if (s.textContent.toLowerCase().includes(q)) {
+      s.classList.add('search-match');
+      searchMatches.push(s);
+    }
+  });
+  if (!searchMatches.length) return;
+  searchIdx = 0;
+  searchMatches[0].classList.add('search-current');
+  searchMatches[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+</script>
+</body>
+</html>

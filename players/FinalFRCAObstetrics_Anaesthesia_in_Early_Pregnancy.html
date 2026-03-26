@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Obstetrics — Anaesthesia in Early Pregnancy</title>
+<style>
+
+  :root {
+    --accent:    #db2777;
+    --body-bg:   #f1f5f9;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: var(--body-bg);
+    color: #1e293b;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  /* ── Header ── */
+  .header {
+    background: #0f172a;
+    border-bottom: 3px solid var(--accent);
+    padding: 12px 20px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .header-left { flex: 1; min-width: 200px; }
+  .header h1 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #f1f5f9;
+    margin-bottom: 4px;
+    letter-spacing: 0.01em;
+  }
+  .header-sub {
+    font-size: 0.72rem;
+    color: #94a3b8;
+    font-style: italic;
+  }
+  audio {
+    height: 36px;
+    accent-color: var(--accent);
+    flex-shrink: 0;
+  }
+  .back-link {
+    font-size: 0.8rem;
+    color: #94a3b8;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .back-link:hover { color: #60a5fa; }
+
+  /* ── Toolbar ── */
+  .toolbar {
+    background: #1e293b;
+    padding: 7px 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-shrink: 0;
+    border-bottom: 1px solid #334155;
+  }
+  .toolbar input {
+    flex: 1;
+    max-width: 380px;
+    padding: 5px 11px;
+    border: 1px solid #475569;
+    border-radius: 6px;
+    background: #0f172a;
+    color: #e2e8f0;
+    font-size: 0.83rem;
+    outline: none;
+  }
+  .toolbar input:focus { border-color: var(--accent); }
+  .toolbar input::placeholder { color: #64748b; }
+  .stats {
+    font-size: 0.72rem;
+    color: #64748b;
+    white-space: nowrap;
+  }
+
+  /* ── Scroll area ── */
+  .scroll-area {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+  }
+  .scroll-area::-webkit-scrollbar { width: 6px; }
+  .scroll-area::-webkit-scrollbar-track { background: transparent; }
+  .scroll-area::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+
+  /* ── Subtitle bar ── */
+  .subtitle-bar {
+    background: #0f172a;
+    border-top: 2px solid var(--accent);
+    padding: 8px 20px;
+    flex-shrink: 0;
+    min-height: 42px;
+    display: flex;
+    align-items: center;
+  }
+  .subtitle-text {
+    font-size: 0.9rem;
+    color: #e2e8f0;
+    line-height: 1.5;
+    font-style: italic;
+  }
+  .subtitle-text.empty { color: #475569; }
+
+  /* ── Transcript blocks ── */
+  .t-block {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    margin-bottom: 14px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    display: flex;
+  }
+  .t-block.block-active {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px rgba(37,99,235,0.15);
+  }
+  .t-gutter {
+    background: #0f172a;
+    width: 52px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: 14px;
+    cursor: pointer;
+  }
+  .t-gutter:hover { background: #1e293b; }
+  .t-timestamp {
+    font-size: 0.7rem;
+    color: #64748b;
+    font-family: monospace;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+  .t-gutter.gutter-active .t-timestamp { color: var(--accent); }
+  .t-body {
+    flex: 1;
+    padding: 12px 16px;
+    line-height: 1.75;
+    font-size: 0.92rem;
+    color: #1e293b;
+  }
+
+  /* ── Segments ── */
+  .segment {
+    cursor: pointer;
+    border-radius: 3px;
+    transition: background 0.1s;
+  }
+  .segment:hover { background: #eff6ff; }
+  .segment.active {
+    background: #bfdbfe;
+    outline: 2px solid #3b82f6;
+    outline-offset: 1px;
+    border-radius: 3px;
+  }
+  .segment.search-match  { background: #fef9c3; }
+  .segment.search-current { background: #fde047; outline: 2px solid #ca8a04; }
+
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <h1>Obstetrics — Anaesthesia in Early Pregnancy</h1>
+    <div class="header-sub">Final FRCA &mdash; Exam Viva Simulation &mdash; Click any phrase to seek</div>
+  </div>
+  <audio id="audio" src="../FinalFRCAObstetrics_Anaesthesia_in_Early_Pregnancy.mp3" controls preload="metadata"></audio>
+  <a class="back-link" href="index.html">&#8592; All Topics</a>
+</div>
+
+<div class="toolbar">
+  <input type="text" id="search" placeholder="Search transcript&#8230; (Enter = next match)">
+  <span class="stats" id="stats">128 segments &nbsp;|&nbsp; <span id="dur">loading&#8230;</span></span>
+</div>
+
+<div class="scroll-area" id="scroll-area">
+<div class="t-block">
+  <div class="t-gutter" data-start="0.0"><span class="t-timestamp">0:00</span></div>
+  <div class="t-body"><span class="segment" data-start="0.0" data-end="2.4" title="0:00">Anasthesia in early pregnancy </span><span class="segment" data-start="2.4" data-end="8.0" title="0:02">You may be asked about anasthesia in early pregnancy within a number of different clinical scenarios. </span><span class="segment" data-start="8.0" data-end="13.5" title="0:08">The examiner will want to know that you recognise the key differences that occur in pregnant patients </span><span class="segment" data-start="13.5" data-end="16.5" title="0:13">compared to the non-pregnant population. </span><span class="segment" data-start="16.5" data-end="20.0" title="0:16">You are asked on East Ties of 35-year-old, 25-week, </span><span class="segment" data-start="20.0" data-end="23.0" title="0:20">a preemigravida woman who has acute appendicitis. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="23.0"><span class="t-timestamp">0:23</span></div>
+  <div class="t-body"><span class="segment" data-start="23.0" data-end="28.0" title="0:23">She is previously fitting well and has not had any complications during the pregnancy so far. </span><span class="segment" data-start="28.5" data-end="34.0" title="0:28">She is admitted yesterday with abdominal pain, fever and a leachocytosis on her full blood count. </span><span class="segment" data-start="34.0" data-end="39.0" title="0:34">The surgeons are keen to take her to theatre for an emergency appendicitis to me. </span><span class="segment" data-start="39.0" data-end="45.0" title="0:39">Can you tell me what would be your differential diagnosis for this woman's abdominal pain? </span><span class="segment" data-start="45.0" data-end="50.0" title="0:45">The abdominal pain may be obstetric or non obstetric. </span><span class="segment" data-start="50.0" data-end="55.0" title="0:50">Obstetric causes would include preeclampsia and liver capsule pain, </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="55.0"><span class="t-timestamp">0:55</span></div>
+  <div class="t-body"><span class="segment" data-start="55.0" data-end="61.0" title="0:55">abruption, intra-uteroine infection and rarely uteroine rupture or torsion. </span><span class="segment" data-start="61.0" data-end="66.0" title="1:01">Non obstetric causes can be further divided into the systems. </span><span class="segment" data-start="66.0" data-end="70.0" title="1:06">The gastrointestinal system may be affected by appendicitis, </span><span class="segment" data-start="70.0" data-end="76.0" title="1:10">Crohn's disease, diverticulitis, colosistitis or ascending colangitis, </span><span class="segment" data-start="76.0" data-end="83.0" title="1:16">hepatitis, pancreatitis, peptic ulcer disease, gastroesophageal reflux disease, </span><span class="segment" data-start="83.0" data-end="87.0" title="1:23">intestinal obstruction and perforation. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="87.0"><span class="t-timestamp">1:27</span></div>
+  <div class="t-body"><span class="segment" data-start="87.0" data-end="96.0" title="1:27">Renal conditions such as pylinifritus, urinary tract infections or renal stones may have caused the discomfort. </span><span class="segment" data-start="96.0" data-end="104.0" title="1:36">Gynecological complications include salpingitis, fibroid torsion, ovarian torsion, </span><span class="segment" data-start="104.0" data-end="109.0" title="1:44">cyst, hemorrhage or rupture and even ectopic pregnancy. </span><span class="segment" data-start="109.0" data-end="115.0" title="1:49">Although the woman should have had an antenatal scan which would have excluded this possibility. </span><span class="segment" data-start="115.0" data-end="122.0" title="1:55">Respiratory problems such as pulmonary embolism and pneumonia can cause abdominal pain, </span><span class="segment" data-start="122.0" data-end="127.0" title="2:02">as can cardiovascular disease such as a myocardial infarction. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="127.0"><span class="t-timestamp">2:07</span></div>
+  <div class="t-body"><span class="segment" data-start="127.0" data-end="134.0" title="2:07">Hematological causes of abdominal pain include sickle cell crisis and finally metabolic conditions </span><span class="segment" data-start="134.0" data-end="141.0" title="2:14">such as diabetic ketoacidosis and porphyrya may present with an acute abdomen. </span><span class="segment" data-start="141.0" data-end="146.0" title="2:21">Can you briefly summarize the main issues to the anesthesiogardinous case? </span><span class="segment" data-start="146.0" data-end="151.0" title="2:26">The main issues are that the woman has an acute abdomen requiring urgent surgery </span><span class="segment" data-start="151.0" data-end="155.0" title="2:31">and that she is in the second trimester of pregnancy. </span><span class="segment" data-start="155.0" data-end="160.0" title="2:35">So what further information do you try and obtain at the pre-op visit? </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="160.0"><span class="t-timestamp">2:40</span></div>
+  <div class="t-body"><span class="segment" data-start="160.0" data-end="166.0" title="2:40">I would want to take a full history, examine the patient and review the investigations performed. </span><span class="segment" data-start="166.0" data-end="172.0" title="2:46">I would be looking to ascertain whether the patient was dehydrated, septic and in shock. </span><span class="segment" data-start="172.0" data-end="177.0" title="2:52">I would also be looking to confirm the diagnosis. </span><span class="segment" data-start="177.0" data-end="182.0" title="2:57">In taking the history I would pay particular attention to the presented complaint. </span><span class="segment" data-start="182.0" data-end="187.0" title="3:02">I would want to know how and when the pain had started, where it was located, </span><span class="segment" data-start="187.0" data-end="193.0" title="3:07">whether it radiated, its severity and character, whether there were any exacerbating, </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="193.0"><span class="t-timestamp">3:13</span></div>
+  <div class="t-body"><span class="segment" data-start="193.0" data-end="196.0" title="3:13">relieving or associated factors. </span><span class="segment" data-start="196.0" data-end="200.0" title="3:16">I would inquire about the patient's ability to eat and drink recently </span><span class="segment" data-start="200.0" data-end="204.0" title="3:20">and whether she had had any vomiting or diarrhea. </span><span class="segment" data-start="204.0" data-end="210.0" title="3:24">I would also ask about fevers and whether the patient had experienced any of these symptoms previously. </span><span class="segment" data-start="210.0" data-end="215.0" title="3:30">I would inquire about the patient's past and aesthetic and medical history </span><span class="segment" data-start="215.0" data-end="218.0" title="3:35">and take a full systems history. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="218.0"><span class="t-timestamp">3:38</span></div>
+  <div class="t-body"><span class="segment" data-start="218.0" data-end="223.0" title="3:38">I would then ask about medications, allergies and dentition. </span><span class="segment" data-start="223.0" data-end="229.0" title="3:43">Regarding the pregnancy, I would also inquire about any complications so far, </span><span class="segment" data-start="229.0" data-end="236.0" title="3:49">such as gestational diabetes, hypertension or coalesistitis of pregnancy. </span><span class="segment" data-start="236.0" data-end="241.0" title="3:56">What would you look for in your examination of this woman? </span><span class="segment" data-start="241.0" data-end="246.0" title="4:01">On examination, I would again be looking to assess the degree of dehydration, </span><span class="segment" data-start="246.0" data-end="252.0" title="4:06">confirm the diagnosis and decide whether the patient was septic and or in shock. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="252.0"><span class="t-timestamp">4:12</span></div>
+  <div class="t-body"><span class="segment" data-start="252.0" data-end="258.0" title="4:12">I would therefore look at the observation chart to review the respiratory rate, heart rate, </span><span class="segment" data-start="258.0" data-end="263.0" title="4:18">blood pressure, temperature, urine output and pain score. </span><span class="segment" data-start="263.0" data-end="267.0" title="4:23">I would then examine the cardiac respiratory system and the abdomen. </span><span class="segment" data-start="267.0" data-end="272.0" title="4:27">While talking to the woman, I would assess her conscious level and pain score. </span><span class="segment" data-start="272.0" data-end="276.0" title="4:32">I would check whether the obstetricians had performed a vaginal examination </span><span class="segment" data-start="276.0" data-end="281.0" title="4:36">and look in the notes to see their examination findings. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="281.0"><span class="t-timestamp">4:41</span></div>
+  <div class="t-body"><span class="segment" data-start="281.0" data-end="286.0" title="4:41">What investigations would you want to review before taking this woman to theatre? </span><span class="segment" data-start="286.0" data-end="293.0" title="4:46">I would want to have confirmation of the pregnancy, either by urine or blood test or by ultrasound scan. </span><span class="segment" data-start="293.0" data-end="298.0" title="4:53">I would check the urinalysis results and review the full blood count, </span><span class="segment" data-start="298.0" data-end="303.0" title="4:58">urea and electrolytes, liver enzymes, amylase and glucose level. </span><span class="segment" data-start="303.0" data-end="308.0" title="5:03">I would also ensure that a blood sample had been sent for group and save. </span><span class="segment" data-start="308.0" data-end="314.0" title="5:08">Depending upon the clinical picture, an ECG, arterial blood gas and blood cultures </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="314.0"><span class="t-timestamp">5:14</span></div>
+  <div class="t-body"><span class="segment" data-start="314.0" data-end="316.0" title="5:14">might be required. </span><span class="segment" data-start="316.0" data-end="323.0" title="5:16">What action would you take prior to taking this woman to theatre, assuming that she has acute appendicitis? </span><span class="segment" data-start="323.0" data-end="330.0" title="5:23">Prior to taking this woman to theatre, I would want to pre-optimize her condition as much as possible. </span><span class="segment" data-start="330.0" data-end="338.0" title="5:30">This would require large bore intravenous access followed by fluid resuscitation, antibiotics and analgesia. </span><span class="segment" data-start="338.0" data-end="344.0" title="5:38">Depending on the severity of her condition, this might need to be done in recovery all the high dependency unit. </span><span class="segment" data-start="344.0" data-end="351.0" title="5:44">Invasive arterial and central venous pressure monitoring might be required if the patient were in septic shock. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="351.0"><span class="t-timestamp">5:51</span></div>
+  <div class="t-body"><span class="segment" data-start="351.0" data-end="362.0" title="5:51">The duration of time taken to pre-optimize that patient needs to be balanced against the need to take the patient to theatre to remove the source of sepsis. </span><span class="segment" data-start="362.0" data-end="369.0" title="6:02">I would also want to inform the obstetricians and neonatologists of the patient and her condition, </span><span class="segment" data-start="369.0" data-end="376.0" title="6:09">because there is a risk that she might develop premature labour either due to the sepsis or the operation. </span><span class="segment" data-start="376.0" data-end="383.0" title="6:16">In addition, I would inform the consultant and ecsthetist on call of the patient's condition. </span><span class="segment" data-start="383.0" data-end="387.0" title="6:23">Pre-medication would be indicated in this case. </span><span class="segment" data-start="387.0" data-end="404.0" title="6:27">I would administer renitidine 50mg intravenously, metaclopromide 10mg intravenously and sodium citrate 30mg of 0.3 molar solution in order to reduce the volume and acidity of the gastric contents. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="404.0"><span class="t-timestamp">6:44</span></div>
+  <div class="t-body"><span class="segment" data-start="404.0" data-end="413.0" title="6:44">I would ensure that an experienced surgeon was available to perform the procedure since this may be technically challenging. </span><span class="segment" data-start="413.0" data-end="419.0" title="6:53">I would also ask my assistant to have available the difficult airway, trolley and equipment. </span><span class="segment" data-start="419.0" data-end="424.0" title="6:59">Why might intubation be more difficult in this patient? </span><span class="segment" data-start="424.0" data-end="435.0" title="7:04">Pregnant women have increased breast size, chest wall diameter, nasal engorgement and possibly laryngeal edema, which can all make intubation more challenging. </span><span class="segment" data-start="435.0" data-end="440.0" title="7:15">They need to be positioned in the left lateral tilt to avoid a auto-caval compression. </span><span class="segment" data-start="440.0" data-end="449.0" title="7:20">This should be considered by the anesthetic assistant, performing crycord pressure, so that the view at laryngeoscopy is not impaired. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="449.0"><span class="t-timestamp">7:29</span></div>
+  <div class="t-body"><span class="segment" data-start="449.0" data-end="460.0" title="7:29">Furthermore, from six weeks gestation, the increase in oxygen consumption and fall in oxygen reserve leads to a faster onset of hypoxia. </span><span class="segment" data-start="460.0" data-end="464.0" title="7:40">Why is the oxygen reserve lower? </span><span class="segment" data-start="464.0" data-end="471.0" title="7:44">The upwards displacement of the diaphragm causes a reduction in the functional residual capacity. </span><span class="segment" data-start="471.0" data-end="479.0" title="7:51">Closing capacity can then encroach on functional residual capacity, particularly in the supine position. </span><span class="segment" data-start="479.0" data-end="485.0" title="7:59">Oxygen reserve is therefore reduced, even after careful denitrogenation. </span><span class="segment" data-start="485.0" data-end="493.0" title="8:05">What are the effects of progesterone on the respiratory system? Would they affect a general anesthetic? </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="493.0"><span class="t-timestamp">8:13</span></div>
+  <div class="t-body"><span class="segment" data-start="493.0" data-end="502.0" title="8:13">The hormone progesterone mediates tracheal and bronchial smooth muscle relaxation, and so causes an increase in dead space. </span><span class="segment" data-start="502.0" data-end="510.0" title="8:22">Progesterone also sensitizes the respiratory center to changes in the partial pressure of carbon dioxide. </span><span class="segment" data-start="510.0" data-end="521.0" title="8:30">This coupled with the increase in carbon dioxide production occurring during pregnancy leads to an increase in the minute volume, mainly by increase in tidal volume. </span><span class="segment" data-start="521.0" data-end="527.0" title="8:41">The pregnant woman develops a respiratory alkylosis due to the increase in minute volume. </span><span class="segment" data-start="527.0" data-end="533.0" title="8:47">During an anesthetic, this normal physiological adaptation should be maintained. </span><span class="segment" data-start="533.0" data-end="541.0" title="8:53">What might be the cardiovascular effects of pregnancy on this woman? How might the effect of general anesthetic? </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="541.0"><span class="t-timestamp">9:01</span></div>
+  <div class="t-body"><span class="segment" data-start="541.0" data-end="553.0" title="9:01">In addition to the effects of a auto-caval compression, the 24-week parturant will have a significantly raised plasma volume and cardiac output. </span><span class="segment" data-start="553.0" data-end="558.0" title="9:13">Her diastolic blood pressure will be lower than pre-pregnant levels. </span><span class="segment" data-start="558.0" data-end="568.0" title="9:18">This should be taken into consideration during the operation and resuscitation, since her observation parameters will be different from the non-pregnant population. </span><span class="segment" data-start="568.0" data-end="574.0" title="9:28">Any fall in blood pressure should be treated aggressively. </span><span class="segment" data-start="574.0" data-end="582.0" title="9:34">How might the pregnancy effect the effect of the induction agents, volatile agents and succcemethonium? </span><span class="segment" data-start="582.0" data-end="589.0" title="9:42">Pregnancy is associated with lower anesthetic requirements. The exact mechanism is unknown. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="589.0"><span class="t-timestamp">9:49</span></div>
+  <div class="t-body"><span class="segment" data-start="589.0" data-end="597.0" title="9:49">The minimum alveolar concentration for the volatile agents is reduced by 30% by 12 weeks gestation. </span><span class="segment" data-start="597.0" data-end="602.0" title="9:57">The dose of intravenous induction agents is also reduced. </span><span class="segment" data-start="602.0" data-end="618.0" title="10:02">In contrast, the effects of succcemethonium can be prolonged by the reduced concentration of plasma colonesterase, but in reality, this is offset by the increase in volume of distribution, so minimal change in duration of action is usually observed. </span><span class="segment" data-start="618.0" data-end="622.0" title="10:18">What might be the effects in the renal system? </span><span class="segment" data-start="622.0" data-end="629.0" title="10:22">The increase in glomerular filtration rate leads to lower plasma concentrations of urea and creatinine. </span><span class="segment" data-start="629.0" data-end="637.0" title="10:29">This should be considered when reviewing the patient's renal function with regards to dehydration and sepsis. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="637.0"><span class="t-timestamp">10:37</span></div>
+  <div class="t-body"><span class="segment" data-start="637.0" data-end="641.0" title="10:37">How do you need to test this woman? </span><span class="segment" data-start="641.0" data-end="648.0" title="10:41">I would prepare all my emergency equipment, drugs and check my machine prior to the patient entering the anesthetic room. </span><span class="segment" data-start="648.0" data-end="655.0" title="10:48">I would ensure that I had suction available and a trained assistant who is able to perform crycord pressure. </span><span class="segment" data-start="655.0" data-end="663.0" title="10:55">I would then obtain mandatory monitoring as per the association of anesthetists of Great Britain and Ireland's guidelines. </span><span class="segment" data-start="663.0" data-end="668.0" title="11:03">I would ensure that the woman was placed at a 15 degree leftward tilt. </span><span class="segment" data-start="668.0" data-end="674.0" title="11:08">I would then pre-oxygenate the woman with a 100% oxygen for three minutes with the tight fitting face mask. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="674.0"><span class="t-timestamp">11:14</span></div>
+  <div class="t-body"><span class="segment" data-start="674.0" data-end="686.0" title="11:14">I would then ask my assistant to put on crycord pressure and induce anesthesia with five pentone, five milligrams per kilogram and succcemaphonium, two milligrams per kilogram. </span><span class="segment" data-start="686.0" data-end="696.0" title="11:26">After 30 seconds and the cessation of muscle twitches, I would intubate the patient with an appropriately sized cuffed oral tracheal tube. </span><span class="segment" data-start="697.0" data-end="704.0" title="11:37">I would confirm correct positioning of the tube visually by ascoletation and by capnography. </span><span class="segment" data-start="704.0" data-end="715.0" title="11:44">I would then maintain anesthesia using sieveau fluorane, oxygen and air, bearing in mind the reduction in minimum alveolar concentration associated with pregnancy. </span><span class="segment" data-start="715.0" data-end="726.0" title="11:55">I would use a nerve stimulator to monitor neuromuscular function since plasma colonesterase enzyme activity may be impaired and cause prolonged effects of the succcemaphonium. </span><span class="segment" data-start="726.0" data-end="733.0" title="12:06">With regard to analgesia, I would give IV parasitamol and increments of morphine. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="733.0"><span class="t-timestamp">12:13</span></div>
+  <div class="t-body"><span class="segment" data-start="733.0" data-end="738.0" title="12:13">I would also ask the surgeons to infiltrate the wound with levobupiracane. </span><span class="segment" data-start="738.0" data-end="750.0" title="12:18">Nonsteroidal anti-inflammatory drugs should be carefully considered due to the risk of premature closure of the ductus arteriosus and so I would avoid their use in this case. </span><span class="segment" data-start="750.0" data-end="756.0" title="12:30">What would be your post-operative plan for this patient and where would you manage her? </span><span class="segment" data-start="756.0" data-end="765.0" title="12:36">I would ensure that the patient was comfortable, conscious and that her observations were stable prior to discharge from the recovery room. </span><span class="segment" data-start="765.0" data-end="775.0" title="12:45">Depending on the extent of the surgery, a morphine PCA might be required for post-operative analgesia in addition to regular parasitamol. </span><span class="segment" data-start="775.0" data-end="782.0" title="12:55">I would contact the obstetric team to review the patient and to ensure the well-being of the fetus. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="782.0"><span class="t-timestamp">13:02</span></div>
+  <div class="t-body"><span class="segment" data-start="782.0" data-end="787.0" title="13:02">I would also discuss thrombo-prophylaxis with the surgical team. </span><span class="segment" data-start="787.0" data-end="796.0" title="13:07">The patient should be managed on the high dependency unit if there are concerns regarding her fluid balance or cardiorespiratory stability. </span><span class="segment" data-start="796.0" data-end="807.0" title="13:16">If she was stable, she could be nursed on an obstetric ward, provided the nursing staff had some surgical experience or vice versa on the surgical ward. </span><span class="segment" data-start="807.0" data-end="814.0" title="13:27">She would need to be regularly reviewed by both the obstetric and surgical teams. </span><span class="segment" data-start="814.0" data-end="820.0" title="13:34">Finally, can you tell me when anaesthetic drugs are most likely to have tarotogenic effects? </span><span class="segment" data-start="820.0" data-end="827.0" title="13:40">The 15th to 56th days of gestation are when the fetus is most vulnerable. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="827.0"><span class="t-timestamp">13:47</span></div>
+  <div class="t-body"><span class="segment" data-start="827.0" data-end="833.0" title="13:47">Whenever possible, surgery should be delayed until the second trimester. </span><span class="segment" data-start="833.0" data-end="838.0" title="13:53">Elective surgery should not be performed at all during pregnancy. </span></div>
+</div>
+</div>
+
+<div class="subtitle-bar">
+  <span class="subtitle-text empty" id="subtitle-text">Play audio to see live subtitles&#8230;</span>
+</div>
+
+<script>
+
+const audio    = document.getElementById('audio');
+const allSegs  = Array.from(document.querySelectorAll('.segment'));
+const allBlocks = Array.from(document.querySelectorAll('.t-block'));
+const subtitleEl = document.getElementById('subtitle-text');
+let activeSegEl   = null;
+let activeBlockEl = null;
+let searchMatches = [];
+let searchIdx     = 0;
+
+// Duration display
+audio.addEventListener('loadedmetadata', () => {
+  const m = Math.floor(audio.duration / 60);
+  const s = Math.floor(audio.duration %% 60).toString().padStart(2,'0');
+  document.getElementById('dur').textContent = m + ':' + s;
+});
+
+// Seek helper
+function seekTo(t) {
+  audio.currentTime = t;
+  audio.play();
+}
+
+// Block gutter click
+document.querySelectorAll('.t-gutter').forEach(g => {
+  g.addEventListener('click', () => seekTo(parseFloat(g.dataset.start)));
+});
+
+// Segment click
+allSegs.forEach(s => {
+  s.addEventListener('click', e => {
+    e.stopPropagation();
+    seekTo(parseFloat(s.dataset.start));
+  });
+});
+
+// Real-time tracking
+audio.addEventListener('timeupdate', () => {
+  const t = audio.currentTime;
+
+  // Find active segment (last one whose start <= t)
+  let found = null;
+  for (let i = allSegs.length - 1; i >= 0; i--) {
+    if (parseFloat(allSegs[i].dataset.start) <= t) { found = allSegs[i]; break; }
+  }
+
+  if (found && found !== activeSegEl) {
+    // Clear previous
+    if (activeSegEl) activeSegEl.classList.remove('active');
+    if (activeBlockEl) {
+      activeBlockEl.classList.remove('block-active');
+      const pg = activeBlockEl.querySelector('.t-gutter');
+      if (pg) pg.classList.remove('gutter-active');
+    }
+    // Set new
+    found.classList.add('active');
+    const block = found.closest('.t-block');
+    if (block) {
+      block.classList.add('block-active');
+      const g = block.querySelector('.t-gutter');
+      if (g) g.classList.add('gutter-active');
+      activeBlockEl = block;
+    }
+    activeSegEl = found;
+
+    // Update subtitle
+    subtitleEl.textContent = found.textContent.trim();
+    subtitleEl.classList.remove('empty');
+
+    // Auto-scroll (only when not searching)
+    if (!document.getElementById('search').value) {
+      found.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }
+});
+
+// Search
+const searchInput = document.getElementById('search');
+searchInput.addEventListener('input', runSearch);
+searchInput.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && searchMatches.length) {
+    searchMatches[searchIdx].classList.remove('search-current');
+    searchIdx = (searchIdx + 1) %% searchMatches.length;
+    const el = searchMatches[searchIdx];
+    el.classList.add('search-current');
+    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+});
+
+function runSearch() {
+  const q = searchInput.value.trim().toLowerCase();
+  allSegs.forEach(s => s.classList.remove('search-match','search-current'));
+  searchMatches = [];
+  if (!q) return;
+  allSegs.forEach(s => {
+    if (s.textContent.toLowerCase().includes(q)) {
+      s.classList.add('search-match');
+      searchMatches.push(s);
+    }
+  });
+  if (!searchMatches.length) return;
+  searchIdx = 0;
+  searchMatches[0].classList.add('search-current');
+  searchMatches[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+</script>
+</body>
+</html>

@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Intensive Care Medicine — Management of Multi Organ Failure</title>
+<style>
+
+  :root {
+    --accent:    #0ea5e9;
+    --body-bg:   #f1f5f9;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: var(--body-bg);
+    color: #1e293b;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  /* ── Header ── */
+  .header {
+    background: #0f172a;
+    border-bottom: 3px solid var(--accent);
+    padding: 12px 20px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .header-left { flex: 1; min-width: 200px; }
+  .header h1 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #f1f5f9;
+    margin-bottom: 4px;
+    letter-spacing: 0.01em;
+  }
+  .header-sub {
+    font-size: 0.72rem;
+    color: #94a3b8;
+    font-style: italic;
+  }
+  audio {
+    height: 36px;
+    accent-color: var(--accent);
+    flex-shrink: 0;
+  }
+  .back-link {
+    font-size: 0.8rem;
+    color: #94a3b8;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .back-link:hover { color: #60a5fa; }
+
+  /* ── Toolbar ── */
+  .toolbar {
+    background: #1e293b;
+    padding: 7px 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-shrink: 0;
+    border-bottom: 1px solid #334155;
+  }
+  .toolbar input {
+    flex: 1;
+    max-width: 380px;
+    padding: 5px 11px;
+    border: 1px solid #475569;
+    border-radius: 6px;
+    background: #0f172a;
+    color: #e2e8f0;
+    font-size: 0.83rem;
+    outline: none;
+  }
+  .toolbar input:focus { border-color: var(--accent); }
+  .toolbar input::placeholder { color: #64748b; }
+  .stats {
+    font-size: 0.72rem;
+    color: #64748b;
+    white-space: nowrap;
+  }
+
+  /* ── Scroll area ── */
+  .scroll-area {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+  }
+  .scroll-area::-webkit-scrollbar { width: 6px; }
+  .scroll-area::-webkit-scrollbar-track { background: transparent; }
+  .scroll-area::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+
+  /* ── Subtitle bar ── */
+  .subtitle-bar {
+    background: #0f172a;
+    border-top: 2px solid var(--accent);
+    padding: 8px 20px;
+    flex-shrink: 0;
+    min-height: 42px;
+    display: flex;
+    align-items: center;
+  }
+  .subtitle-text {
+    font-size: 0.9rem;
+    color: #e2e8f0;
+    line-height: 1.5;
+    font-style: italic;
+  }
+  .subtitle-text.empty { color: #475569; }
+
+  /* ── Transcript blocks ── */
+  .t-block {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    margin-bottom: 14px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    display: flex;
+  }
+  .t-block.block-active {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px rgba(37,99,235,0.15);
+  }
+  .t-gutter {
+    background: #0f172a;
+    width: 52px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: 14px;
+    cursor: pointer;
+  }
+  .t-gutter:hover { background: #1e293b; }
+  .t-timestamp {
+    font-size: 0.7rem;
+    color: #64748b;
+    font-family: monospace;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+  .t-gutter.gutter-active .t-timestamp { color: var(--accent); }
+  .t-body {
+    flex: 1;
+    padding: 12px 16px;
+    line-height: 1.75;
+    font-size: 0.92rem;
+    color: #1e293b;
+  }
+
+  /* ── Segments ── */
+  .segment {
+    cursor: pointer;
+    border-radius: 3px;
+    transition: background 0.1s;
+  }
+  .segment:hover { background: #eff6ff; }
+  .segment.active {
+    background: #bfdbfe;
+    outline: 2px solid #3b82f6;
+    outline-offset: 1px;
+    border-radius: 3px;
+  }
+  .segment.search-match  { background: #fef9c3; }
+  .segment.search-current { background: #fde047; outline: 2px solid #ca8a04; }
+
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <h1>Intensive Care Medicine — Management of Multi Organ Failure</h1>
+    <div class="header-sub">Final FRCA &mdash; Exam Viva Simulation &mdash; Click any phrase to seek</div>
+  </div>
+  <audio id="audio" src="../FinalFRCAIntensive_Care_Medicine_Management_of_Multi_Organ_Failure.mp3" controls preload="metadata"></audio>
+  <a class="back-link" href="index.html">&#8592; All Topics</a>
+</div>
+
+<div class="toolbar">
+  <input type="text" id="search" placeholder="Search transcript&#8230; (Enter = next match)">
+  <span class="stats" id="stats">181 segments &nbsp;|&nbsp; <span id="dur">loading&#8230;</span></span>
+</div>
+
+<div class="scroll-area" id="scroll-area">
+<div class="t-block">
+  <div class="t-gutter" data-start="0.0"><span class="t-timestamp">0:00</span></div>
+  <div class="t-body"><span class="segment" data-start="0.0" data-end="2.24" title="0:00">Management of multi-organ failure. </span><span class="segment" data-start="2.24" data-end="6.56" title="0:02">This is an extremely wide topic and could go almost anywhere. </span><span class="segment" data-start="6.56" data-end="12.64" title="0:06">If asked about management, be reassured that there is unlikely to be one right way to do things, </span><span class="segment" data-start="12.64" data-end="18.72" title="0:12">and as long as you are safe, sensible and can justify your actions, you will be unlucky to fail. </span><span class="segment" data-start="19.44" data-end="24.72" title="0:19">You can help yourself by thinking of patients and clinical problems you have encountered </span><span class="segment" data-start="24.72" data-end="26.0" title="0:24">and how they were managed. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="26.88"><span class="t-timestamp">0:26</span></div>
+  <div class="t-body"><span class="segment" data-start="26.88" data-end="29.52" title="0:26">What do you understand by the term multi-organ failure? </span><span class="segment" data-start="30.72" data-end="36.08" title="0:30">I associate the term with critically ill patients in the intensive care unit. </span><span class="segment" data-start="37.12" data-end="42.8" title="0:37">In one sense it just means failure of more than one organ, but is usually used in the context </span><span class="segment" data-start="42.8" data-end="50.0" title="0:42">of acute severe illness and refers to new organ failures requiring advanced organ support techniques, </span><span class="segment" data-start="50.0" data-end="53.04" title="0:50">for example ventilation and hemofiltration. </span><span class="segment" data-start="54.24" data-end="59.2" title="0:54">So far as I'm aware, there is no accepted definition of multi-organ failure, </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="59.2"><span class="t-timestamp">0:59</span></div>
+  <div class="t-body"><span class="segment" data-start="59.2" data-end="64.8" title="0:59">and it can be difficult to decide if, say, caragulopathy and thrombocytopenia </span><span class="segment" data-start="64.8" data-end="67.76" title="1:04">should be considered liver or blood failure, for example. </span><span class="segment" data-start="68.96" data-end="70.8" title="1:08">So do you think this is a useful concept? </span><span class="segment" data-start="72.8" data-end="75.52" title="1:12">As it stands, probably not that useful. </span><span class="segment" data-start="76.16" data-end="81.28" title="1:16">It is very non-specific and really says nothing detailed about the cause of the problem. </span><span class="segment" data-start="81.28" data-end="85.12" title="1:21">The organ is involved in the severity or the overall prognosis. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="86.08"><span class="t-timestamp">1:26</span></div>
+  <div class="t-body"><span class="segment" data-start="86.08" data-end="91.44" title="1:26">Organ failure itself can be difficult to define as it is often a matter of degree, </span><span class="segment" data-start="91.44" data-end="93.28" title="1:31">not an all or nothing phenomenon. </span><span class="segment" data-start="94.08" data-end="95.28" title="1:34">Are there any alternatives? </span><span class="segment" data-start="95.92" data-end="98.88" title="1:35">I'm thinking of more specific descriptions of organ dysfunction. </span><span class="segment" data-start="100.96" data-end="104.16" title="1:40">There are two ways of looking at individual organ dysfunction. </span><span class="segment" data-start="104.8" data-end="110.96" title="1:44">First, there are definitions that do reduce it to a simple question of failure or no failure. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="111.04"><span class="t-timestamp">1:51</span></div>
+  <div class="t-body"><span class="segment" data-start="111.04" data-end="115.6" title="1:51">For example, brain failure or delirium, which is either present or absent. </span><span class="segment" data-start="118.32" data-end="122.4" title="1:58">Then there are scores which recognise that organ failure is a matter of degree. </span><span class="segment" data-start="123.04" data-end="127.6" title="2:03">For example, the difference between acute lung injury and ARDS, </span><span class="segment" data-start="127.6" data-end="131.12" title="2:07">according to the PAO2-FIO2 ratio. </span><span class="segment" data-start="132.08" data-end="138.8" title="2:12">Other examples include the child puescore for liver dysfunction or the GCS for conscious level. </span><span class="segment" data-start="139.76" data-end="142.32" title="2:19">Yes, that's true, but not quite what I was getting at. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="144.16"><span class="t-timestamp">2:24</span></div>
+  <div class="t-body"><span class="segment" data-start="144.16" data-end="149.76" title="2:24">Well, there are consensus definitions of organ failure, produced by European and American </span><span class="segment" data-start="149.76" data-end="156.32" title="2:29">societies of intensive care medicine, as part of the updated sepsis definition in 2001, </span><span class="segment" data-start="156.32" data-end="159.44" title="2:36">but these tend to be present or absent kinds of definition. </span><span class="segment" data-start="160.08" data-end="166.0" title="2:40">And there are elements of organ dysfunction included in prognostic schools, such as Apache. </span><span class="segment" data-start="166.16" data-end="167.92" title="2:46">Again, true. </span><span class="segment" data-start="168.96" data-end="174.4" title="2:48">Have you heard of any composite schools of organ dysfunction relating more directly to multi-organ failure? </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="176.72"><span class="t-timestamp">2:56</span></div>
+  <div class="t-body"><span class="segment" data-start="176.72" data-end="181.92" title="2:56">Yes, I've heard of SOFA, the sequential organ failure assessment. </span><span class="segment" data-start="182.48" data-end="188.0" title="3:02">This well-established and validated scoring system was developed in Europe in the mid-90s. </span><span class="segment" data-start="188.32" data-end="194.4" title="3:08">It uses daily assessments of function in six organ systems and assigns a value to each, </span><span class="segment" data-start="194.4" data-end="199.52" title="3:14">depending on the deviation from normal, where higher numbers mean worse function. </span><span class="segment" data-start="200.4" data-end="206.72" title="3:20">The advantage of SOFA is that the progress of organ dysfunction can be followed from day to day, </span><span class="segment" data-start="206.72" data-end="210.48" title="3:26">both overall and within each of the six organs monitored. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="211.04"><span class="t-timestamp">3:31</span></div>
+  <div class="t-body"><span class="segment" data-start="211.04" data-end="215.12" title="3:31">It has been shown that mortality is related to the total score, </span><span class="segment" data-start="215.12" data-end="220.88" title="3:35">as well as the change in the score, where a particularly poor prognostic sign is an increase </span><span class="segment" data-start="221.04" data-end="223.76" title="3:41">in the SOFA score after the first 24 hours. </span><span class="segment" data-start="224.88" data-end="231.28" title="3:44">These scores are increasingly used as outcome measures in clinical trials in the intensive care unit. </span><span class="segment" data-start="232.32" data-end="234.48" title="3:52">What problems do you think these scores suffer from? </span><span class="segment" data-start="236.64" data-end="240.48" title="3:56">These scores seem to work well, but there are one or two questions. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="241.2"><span class="t-timestamp">4:01</span></div>
+  <div class="t-body"><span class="segment" data-start="241.2" data-end="243.84" title="4:01">First, there is the issue of case mix. </span><span class="segment" data-start="243.84" data-end="250.08" title="4:03">For example, the SOFA score was developed by consensus to apply to septic patients </span><span class="segment" data-start="250.08" data-end="256.72" title="4:10">and must not be assumed to apply to all critically ill patients, particularly in specialist areas, </span><span class="segment" data-start="256.72" data-end="262.72" title="4:16">although in fact, validation of SOFA score has been performed in populations of trauma, </span><span class="segment" data-start="262.72" data-end="268.56" title="4:22">cardiac surgery and bone marrow transplant patients, among others, and appears robust in each. </span><span class="segment" data-start="269.76" data-end="275.28" title="4:29">The problem of lead time bias is less with daily scores than with the general prognostic </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="275.28"><span class="t-timestamp">4:35</span></div>
+  <div class="t-body"><span class="segment" data-start="275.28" data-end="277.52" title="4:35">scores that use only admission data. </span><span class="segment" data-start="278.48" data-end="283.04" title="4:38">There are two other difficulties I can think of relating to trial use and everyday application. </span><span class="segment" data-start="285.12" data-end="290.64" title="4:45">Well, it was not developed as an outcome measure, and some skepticism regarding the relevance </span><span class="segment" data-start="290.64" data-end="296.56" title="4:50">to the patient of a drop in SOFA must be maintained, and there does not seem to be a simple </span><span class="segment" data-start="296.56" data-end="301.36" title="4:56">bedside way of quantifying cardiac dysfunction independent of therapy. </span><span class="segment" data-start="302.32" data-end="308.48" title="5:02">SOFA currently uses dose of vasoactive drugs, but maybe the future is measurement of brain </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="308.48"><span class="t-timestamp">5:08</span></div>
+  <div class="t-body"><span class="segment" data-start="308.48" data-end="311.04" title="5:08">naturaletic peptide and trapeonins. </span><span class="segment" data-start="312.32" data-end="316.32" title="5:12">Okay, we'll change tack. What causes multi-organ failure? </span><span class="segment" data-start="318.16" data-end="322.96" title="5:18">Multi-organ failure is seen with all the illnesses that present to intensive care, </span><span class="segment" data-start="323.6" data-end="329.6" title="5:23">medical, traumatic and surgical. It is the end point of a severe systemic inflammatory </span><span class="segment" data-start="329.68" data-end="335.44" title="5:29">response, whatever the trigger. When it develops after some time in the intensive care unit, </span><span class="segment" data-start="335.44" data-end="337.44" title="5:35">the most likely trigger is infection. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="338.56"><span class="t-timestamp">5:38</span></div>
+  <div class="t-body"><span class="segment" data-start="338.56" data-end="341.04" title="5:38">Is there a final common pathway at cellular level? </span><span class="segment" data-start="343.2" data-end="348.88" title="5:43">Yes, probably. There are several theories of the origin of cell dysfunction in multi-organ </span><span class="segment" data-start="348.88" data-end="354.4" title="5:48">dysfunction, which may just reflect the large number of triggering events rather than the cell </span><span class="segment" data-start="354.4" data-end="359.52" title="5:54">processes responsible for organ failure, which are more likely to be stereotypical. </span><span class="segment" data-start="360.56" data-end="366.56" title="6:00">Examples of triggers include sepsis, trauma or ischemia, especially with repofusion injury. </span><span class="segment" data-start="367.44" data-end="373.92" title="6:07">Each induces a pro-inflammatory response that includes local and systemic leukocyte and endothelial </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="373.92"><span class="t-timestamp">6:13</span></div>
+  <div class="t-body"><span class="segment" data-start="373.92" data-end="378.56" title="6:13">activation, and activation of innate immune and coagulation systems. </span><span class="segment" data-start="379.52" data-end="381.68" title="6:19">So how does it actually lead to organ failure? </span><span class="segment" data-start="382.64" data-end="389.6" title="6:22">Many believe that this produces microvascular occlusion within organs that results in cellular </span><span class="segment" data-start="389.6" data-end="397.04" title="6:29">hypoxia and dysfunction, even if global hemodynamics and oxygen transport appear relatively normal, </span><span class="segment" data-start="397.04" data-end="403.2" title="6:37">and there is certainly evidence of microvascular dysfunction in sears and multi-organ failure, </span><span class="segment" data-start="403.2" data-end="410.0" title="6:43">especially with sepsis. One step further, others have noted the lack of evidence of infarction </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="410.08"><span class="t-timestamp">6:50</span></div>
+  <div class="t-body"><span class="segment" data-start="410.08" data-end="416.32" title="6:50">in affected organs and their potential for complete recovery, and have proposed that multi-organ </span><span class="segment" data-start="416.32" data-end="423.52" title="6:56">failure is a form of adaptive cellular hibernation triggered by periods of cytopathic hypoxia </span><span class="segment" data-start="423.52" data-end="428.88" title="7:03">and maintained by the hormonal and metabolic changes induced by systemic inflammation. </span><span class="segment" data-start="429.52" data-end="435.04" title="7:09">What has not been explained is why some develop multi-organ failure and others do not, </span><span class="segment" data-start="435.04" data-end="439.76" title="7:15">and why a particular organ might be affected in one individual and not another. </span><span class="segment" data-start="441.04" data-end="443.6" title="7:21">What treatments are available for multi-organ failure? </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="445.6"><span class="t-timestamp">7:25</span></div>
+  <div class="t-body"><span class="segment" data-start="445.6" data-end="451.2" title="7:25">As yet, there are no treatments for multi-organ failure, although singers' hypothesis of </span><span class="segment" data-start="451.2" data-end="457.6" title="7:31">hibernation may generate some interesting therapies. At the moment, the focus is on prevention, </span><span class="segment" data-start="457.6" data-end="464.4" title="7:37">support, and avoiding secondary insults, ensuring adequate early resuscitation and control of </span><span class="segment" data-start="464.56" data-end="471.12" title="7:44">the trigger for sears are the basis of prevention. Maintaining oxygen delivery to mitochondria early in </span><span class="segment" data-start="471.12" data-end="477.6" title="7:51">the critical illness in theory prevents the switch off that underpins cell and organ dysfunction. </span><span class="segment" data-start="478.16" data-end="483.52" title="7:58">If multi-organ failure does occur, then the patient must be supported until recovery of </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="483.52"><span class="t-timestamp">8:03</span></div>
+  <div class="t-body"><span class="segment" data-start="483.52" data-end="490.24" title="8:03">function occurs. In this period, avoidance of secondary insults, notably infection, but also </span><span class="segment" data-start="490.24" data-end="496.56" title="8:10">hypoxia, hypotension, hypoglycemia will all reduce the period of organ failure. </span><span class="segment" data-start="497.44" data-end="498.8" title="8:17">Is this true in every case? </span><span class="segment" data-start="501.12" data-end="506.48" title="8:21">There is the odd situation, such as formannant, hepatic failure, where single organ </span><span class="segment" data-start="506.48" data-end="512.8" title="8:26">transplantation is a treatment for multi-organ failure, but the general principle of supporting organs </span><span class="segment" data-start="512.8" data-end="519.44" title="8:32">and maintaining homeostasis does apply to all. So, what organ support techniques are there? </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="520.64"><span class="t-timestamp">8:40</span></div>
+  <div class="t-body"><span class="segment" data-start="520.64" data-end="527.52" title="8:40">Mechanical devices are available to support lungs, heart, kidneys, and liver, although some are </span><span class="segment" data-start="527.52" data-end="533.52" title="8:47">more effective than others, or more suitable for long-term use. Drugs are also available for </span><span class="segment" data-start="533.52" data-end="539.76" title="8:53">support of cardiovascular function, with there being no real effective pharmacological support of </span><span class="segment" data-start="539.76" data-end="544.08" title="8:59">other organs. So, are you saying that there is no support for other organs? </span><span class="segment" data-start="544.64" data-end="549.6" title="9:04">No, because the gut may be supported by </span><span class="segment" data-start="549.6" data-end="554.24" title="9:09">enteral or parental feeding, or drug therapy of motility disorders. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="555.04"><span class="t-timestamp">9:15</span></div>
+  <div class="t-body"><span class="segment" data-start="555.04" data-end="561.6" title="9:15">Blood products, erythropoetin, vitamin K, and hematinics are used to support hematology </span><span class="segment" data-start="561.6" data-end="565.84" title="9:21">in regulation, and dressings and grafting to support the skin. </span><span class="segment" data-start="567.2" data-end="573.68" title="9:27">Endocrine support currently consists of insulin and glucocorticoids in selected patients, </span><span class="segment" data-start="573.68" data-end="576.96" title="9:33">although this may be an area that develops further in the future. </span><span class="segment" data-start="577.84" data-end="584.0" title="9:37">There is no substitute for the brain, although a wide range of drugs are used to alter function, </span><span class="segment" data-start="584.0" data-end="589.36" title="9:44">usually depressing it to reduce oxygen demand, thus protecting against ischemia. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="590.24"><span class="t-timestamp">9:50</span></div>
+  <div class="t-body"><span class="segment" data-start="590.24" data-end="591.6" title="9:50">Are these techniques benign? </span><span class="segment" data-start="593.76" data-end="600.0" title="9:53">None are entirely benign. Drugs have side effects that may be unpredictable in the context of </span><span class="segment" data-start="600.0" data-end="607.28" title="10:00">critical illness, or there are unintended consequences. For example, iron supplementation may </span><span class="segment" data-start="607.28" data-end="613.52" title="10:07">help prevent anemia and avoid transfusion, but the same iron may promote bacterial overgrowth. </span><span class="segment" data-start="614.4" data-end="621.12" title="10:14">Catacolomins are widely used for hemodynamic support, but increase myocardial oxygen demand </span><span class="segment" data-start="621.12" data-end="625.04" title="10:21">have metabolic consequences and enhance bacterial growth. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="625.92"><span class="t-timestamp">10:25</span></div>
+  <div class="t-body"><span class="segment" data-start="625.92" data-end="630.96" title="10:25">Blood products carry risks of immunosuppression, incompatibility, and infection. </span><span class="segment" data-start="632.08" data-end="639.12" title="10:32">Catheters are associated with complications of insertion, infection, and if intravascular thrombosis. </span><span class="segment" data-start="640.48" data-end="644.96" title="10:40">Ventilation, the supportive therapy that distinguishes intensive care, </span><span class="segment" data-start="644.96" data-end="651.6" title="10:44">has the potential to cause further lung injury when used badly. It is also forgotten that many </span><span class="segment" data-start="651.6" data-end="657.92" title="10:51">interventions in the intensive care unit are painful if nothing else. Before starting any therapy, </span><span class="segment" data-start="657.92" data-end="663.92" title="10:57">the benefits, risks, alternatives, and consequences of doing nothing must be considered. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="664.72"><span class="t-timestamp">11:04</span></div>
+  <div class="t-body"><span class="segment" data-start="664.72" data-end="669.36" title="11:04">Other and other important adjuncts to support a therapy, prophylaxis, for example. </span><span class="segment" data-start="671.2" data-end="676.88" title="11:11">DVT and stress ulcer prophylaxis are essential in the absence of contraindications. </span><span class="segment" data-start="677.6" data-end="682.16" title="11:17">Good nursing care and physiotherapy are also important in general supportive care. </span><span class="segment" data-start="683.04" data-end="688.48" title="11:23">Infection control and good hygiene are vital, as patients with multi-organ failure </span><span class="segment" data-start="688.48" data-end="691.04" title="11:28">have increased susceptibility to infections. </span><span class="segment" data-start="691.84" data-end="694.72" title="11:31">What is the mortality associated with multi-organ failure? </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="696.48"><span class="t-timestamp">11:36</span></div>
+  <div class="t-body"><span class="segment" data-start="696.48" data-end="702.72" title="11:36">It is very difficult to predict individual outcome, and models such as Apache scores are intended </span><span class="segment" data-start="702.88" data-end="710.64" title="11:42">for population, not personal use. A very rough guide is approximately 20% risk of mortality </span><span class="segment" data-start="710.64" data-end="717.36" title="11:50">per organ failure, although this will vary with the cause, comorbidity, organs failed, and initial </span><span class="segment" data-start="717.36" data-end="721.28" title="11:57">response to therapy. Are there any particularly ominous signs? </span><span class="segment" data-start="723.2" data-end="727.28" title="12:03">Some organ failures have a particularly high associated mortality. </span><span class="segment" data-start="728.08" data-end="734.88" title="12:08">Liver failure in the context of multi-organ failure is a poor sign, so hypoglycemia with high </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="734.88"><span class="t-timestamp">12:14</span></div>
+  <div class="t-body"><span class="segment" data-start="734.88" data-end="743.76" title="12:14">billi-rubin and lactate is ominous. The presence of DIC is similarly bad, and a simple DIC score </span><span class="segment" data-start="743.76" data-end="750.56" title="12:23">using INR, platelets, fibrinogen, and D-diamonds has good predictive accuracy for mortality. </span><span class="segment" data-start="751.52" data-end="758.08" title="12:31">The response to therapy is also important, and any failure to improve or deterioration after </span><span class="segment" data-start="758.08" data-end="765.04" title="12:38">supporters started is a poor sign. As I said before, this may be tracked more objectively using </span><span class="segment" data-start="765.04" data-end="768.72" title="12:45">sofa scores. How long would you continue organ support? </span><span class="segment" data-start="770.72" data-end="776.4" title="12:50">I would continue for as long as I thought the risks and burdens were outweighed by the benefits. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="776.72"><span class="t-timestamp">12:56</span></div>
+  <div class="t-body"><span class="segment" data-start="776.72" data-end="781.36" title="12:56">I, the possibility of survival with a quality of life meaningful to the patient. </span><span class="segment" data-start="782.64" data-end="788.16" title="13:02">Each decision is made on an individual basis considering the clinical context and the wishes </span><span class="segment" data-start="788.16" data-end="794.72" title="13:08">of the patient if they are known or can be ascertained. The relatives can give useful information </span><span class="segment" data-start="794.72" data-end="799.6" title="13:14">bearing on the patient's best interests, and their wishes should also be listened to. </span><span class="segment" data-start="800.64" data-end="805.28" title="13:20">It remains a medical decision, although the recent Mental Capacity Act </span><span class="segment" data-start="805.28" data-end="811.36" title="13:25">contains guidance on how to proceed when considering the best interests of incompetent patients. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="812.08"><span class="t-timestamp">13:32</span></div>
+  <div class="t-body"><span class="segment" data-start="812.08" data-end="814.24" title="13:32">What are the long-term effects on survivors? </span><span class="segment" data-start="815.6" data-end="821.28" title="13:35">Long-term effects can be considered in two groups, those that are present in hospital </span><span class="segment" data-start="821.28" data-end="827.2" title="13:41">and those that persist after discharge home. Some sequely of multi-organ failure are </span><span class="segment" data-start="827.2" data-end="832.8" title="13:47">slow to resolve and lead to problems within hospital and indeed delay discharge home. </span><span class="segment" data-start="833.04" data-end="841.12" title="13:53">In particular, critical illness polyneuropathy and polymyopathy are associated with multi-organ failure </span><span class="segment" data-start="841.12" data-end="845.04" title="14:01">and perhaps should be considered part of neurological system failure. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="846.48"><span class="t-timestamp">14:06</span></div>
+  <div class="t-body"><span class="segment" data-start="846.48" data-end="852.88" title="14:06">Muscle weakness is the most obvious manifestation and leads to prolonged dependency because of poor </span><span class="segment" data-start="852.88" data-end="859.92" title="14:12">mobility and muscle strength. Even feeding oneself may be difficult or impossible and supplements </span><span class="segment" data-start="859.92" data-end="865.12" title="14:19">or NG feeding may be needed for some time. Is there anything else? </span><span class="segment" data-start="867.44" data-end="872.96" title="14:27">Many things that we take for granted like sleep or bowel and bladder function may take time </span><span class="segment" data-start="872.96" data-end="879.44" title="14:32">to return to normal after multi-organ failure. Delirium is another neurological failure that can be </span><span class="segment" data-start="879.44" data-end="886.4" title="14:39">very subtle and slow to resolve and may be misattributed to memory impairment or considered a normal </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="886.4"><span class="t-timestamp">14:46</span></div>
+  <div class="t-body"><span class="segment" data-start="886.4" data-end="892.8" title="14:46">response to the events surrounding critical illness. For some particularly the elderly, </span><span class="segment" data-start="892.8" data-end="896.8" title="14:52">any of these effects may prevent return to home or independence. </span><span class="segment" data-start="897.76" data-end="899.28" title="14:57">And how about after discharge? </span><span class="segment" data-start="901.68" data-end="907.92" title="15:01">Overall mortality is increased after discharge from hospital. This is affected by age and </span><span class="segment" data-start="907.92" data-end="913.92" title="15:07">comorbidity but there is a clear effect of multi-organ failure that lasts for a year or more. </span><span class="segment" data-start="914.88" data-end="920.64" title="15:14">Of those who survive between one quarter and one half need assistance with activities of </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="920.64"><span class="t-timestamp">15:20</span></div>
+  <div class="t-body"><span class="segment" data-start="920.64" data-end="927.2" title="15:20">daily living at one year, though it is much less than this at three years. Again this is affected </span><span class="segment" data-start="927.2" data-end="934.96" title="15:27">by age and previous functional status. Few require long-term respiratory support and under 10% </span><span class="segment" data-start="934.96" data-end="940.96" title="15:34">go on to need long-term dialysis for example but testing will reveal subclinical deficits. </span><span class="segment" data-start="941.28" data-end="948.48" title="15:41">After ARDS a restrictive deficit with reduced diffusing capacity is present for months. </span><span class="segment" data-start="949.28" data-end="954.8" title="15:49">Studies of cognitive functions suggest that problems persist for months or years afterwards </span><span class="segment" data-start="954.8" data-end="960.32" title="15:54">across several domains such as attention, memory and task planning and execution. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="961.04"><span class="t-timestamp">16:01</span></div>
+  <div class="t-body"><span class="segment" data-start="961.04" data-end="963.92" title="16:01">So what does this mean for patients and how do they feel about it? </span><span class="segment" data-start="964.16" data-end="971.36" title="16:04">This can cause problems with return to work, relationships and general quality of life. </span><span class="segment" data-start="972.32" data-end="978.88" title="16:12">Using validated questionnaires most patients report a lower quality of life than matched controls </span><span class="segment" data-start="978.88" data-end="982.0" title="16:18">but most would undergo the ICU episode again. </span><span class="segment" data-start="983.04" data-end="987.84" title="16:23">Are there any other problems to arise from the ICU stay? How can patients with problems </span><span class="segment" data-start="988.24" data-end="994.88" title="16:28">identified and treated? There are many other problems that can result but there is insufficient </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="994.88"><span class="t-timestamp">16:34</span></div>
+  <div class="t-body"><span class="segment" data-start="994.88" data-end="999.28" title="16:34">data to make confident estimates of the size of the problem in the United Kingdom. </span><span class="segment" data-start="1000.4" data-end="1007.28" title="16:40">Chronic pain, chronic fatigue and sleep problems occur as does anxiety, depression and post-traumatic </span><span class="segment" data-start="1007.28" data-end="1014.64" title="16:47">stress disorder. These may be difficult to diagnose or may not be attributed to time spent in ICU </span><span class="segment" data-start="1014.72" data-end="1022.24" title="16:54">with multi-organ failure. As attention turns from simple mortality-based statistics to patient-related </span><span class="segment" data-start="1022.24" data-end="1029.36" title="17:02">outcome measures such problems are likely to be better identified. An ICU follow-up clinic </span><span class="segment" data-start="1029.36" data-end="1035.44" title="17:09">is one way in which patients can be identified earlier and appropriate support and treatment organized. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="1036.08"><span class="t-timestamp">17:16</span></div>
+  <div class="t-body"><span class="segment" data-start="1036.08" data-end="1037.44" title="17:16">Thank you, we'll finish there. </span></div>
+</div>
+</div>
+
+<div class="subtitle-bar">
+  <span class="subtitle-text empty" id="subtitle-text">Play audio to see live subtitles&#8230;</span>
+</div>
+
+<script>
+
+const audio    = document.getElementById('audio');
+const allSegs  = Array.from(document.querySelectorAll('.segment'));
+const allBlocks = Array.from(document.querySelectorAll('.t-block'));
+const subtitleEl = document.getElementById('subtitle-text');
+let activeSegEl   = null;
+let activeBlockEl = null;
+let searchMatches = [];
+let searchIdx     = 0;
+
+// Duration display
+audio.addEventListener('loadedmetadata', () => {
+  const m = Math.floor(audio.duration / 60);
+  const s = Math.floor(audio.duration %% 60).toString().padStart(2,'0');
+  document.getElementById('dur').textContent = m + ':' + s;
+});
+
+// Seek helper
+function seekTo(t) {
+  audio.currentTime = t;
+  audio.play();
+}
+
+// Block gutter click
+document.querySelectorAll('.t-gutter').forEach(g => {
+  g.addEventListener('click', () => seekTo(parseFloat(g.dataset.start)));
+});
+
+// Segment click
+allSegs.forEach(s => {
+  s.addEventListener('click', e => {
+    e.stopPropagation();
+    seekTo(parseFloat(s.dataset.start));
+  });
+});
+
+// Real-time tracking
+audio.addEventListener('timeupdate', () => {
+  const t = audio.currentTime;
+
+  // Find active segment (last one whose start <= t)
+  let found = null;
+  for (let i = allSegs.length - 1; i >= 0; i--) {
+    if (parseFloat(allSegs[i].dataset.start) <= t) { found = allSegs[i]; break; }
+  }
+
+  if (found && found !== activeSegEl) {
+    // Clear previous
+    if (activeSegEl) activeSegEl.classList.remove('active');
+    if (activeBlockEl) {
+      activeBlockEl.classList.remove('block-active');
+      const pg = activeBlockEl.querySelector('.t-gutter');
+      if (pg) pg.classList.remove('gutter-active');
+    }
+    // Set new
+    found.classList.add('active');
+    const block = found.closest('.t-block');
+    if (block) {
+      block.classList.add('block-active');
+      const g = block.querySelector('.t-gutter');
+      if (g) g.classList.add('gutter-active');
+      activeBlockEl = block;
+    }
+    activeSegEl = found;
+
+    // Update subtitle
+    subtitleEl.textContent = found.textContent.trim();
+    subtitleEl.classList.remove('empty');
+
+    // Auto-scroll (only when not searching)
+    if (!document.getElementById('search').value) {
+      found.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }
+});
+
+// Search
+const searchInput = document.getElementById('search');
+searchInput.addEventListener('input', runSearch);
+searchInput.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && searchMatches.length) {
+    searchMatches[searchIdx].classList.remove('search-current');
+    searchIdx = (searchIdx + 1) %% searchMatches.length;
+    const el = searchMatches[searchIdx];
+    el.classList.add('search-current');
+    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+});
+
+function runSearch() {
+  const q = searchInput.value.trim().toLowerCase();
+  allSegs.forEach(s => s.classList.remove('search-match','search-current'));
+  searchMatches = [];
+  if (!q) return;
+  allSegs.forEach(s => {
+    if (s.textContent.toLowerCase().includes(q)) {
+      s.classList.add('search-match');
+      searchMatches.push(s);
+    }
+  });
+  if (!searchMatches.length) return;
+  searchIdx = 0;
+  searchMatches[0].classList.add('search-current');
+  searchMatches[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+</script>
+</body>
+</html>

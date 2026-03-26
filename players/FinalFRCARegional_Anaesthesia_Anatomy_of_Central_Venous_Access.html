@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Regional Anaesthesia — Anatomy of Central Venous Access</title>
+<style>
+
+  :root {
+    --accent:    #2563eb;
+    --body-bg:   #f1f5f9;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: var(--body-bg);
+    color: #1e293b;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  /* ── Header ── */
+  .header {
+    background: #0f172a;
+    border-bottom: 3px solid var(--accent);
+    padding: 12px 20px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .header-left { flex: 1; min-width: 200px; }
+  .header h1 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #f1f5f9;
+    margin-bottom: 4px;
+    letter-spacing: 0.01em;
+  }
+  .header-sub {
+    font-size: 0.72rem;
+    color: #94a3b8;
+    font-style: italic;
+  }
+  audio {
+    height: 36px;
+    accent-color: var(--accent);
+    flex-shrink: 0;
+  }
+  .back-link {
+    font-size: 0.8rem;
+    color: #94a3b8;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .back-link:hover { color: #60a5fa; }
+
+  /* ── Toolbar ── */
+  .toolbar {
+    background: #1e293b;
+    padding: 7px 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-shrink: 0;
+    border-bottom: 1px solid #334155;
+  }
+  .toolbar input {
+    flex: 1;
+    max-width: 380px;
+    padding: 5px 11px;
+    border: 1px solid #475569;
+    border-radius: 6px;
+    background: #0f172a;
+    color: #e2e8f0;
+    font-size: 0.83rem;
+    outline: none;
+  }
+  .toolbar input:focus { border-color: var(--accent); }
+  .toolbar input::placeholder { color: #64748b; }
+  .stats {
+    font-size: 0.72rem;
+    color: #64748b;
+    white-space: nowrap;
+  }
+
+  /* ── Scroll area ── */
+  .scroll-area {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+  }
+  .scroll-area::-webkit-scrollbar { width: 6px; }
+  .scroll-area::-webkit-scrollbar-track { background: transparent; }
+  .scroll-area::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+
+  /* ── Subtitle bar ── */
+  .subtitle-bar {
+    background: #0f172a;
+    border-top: 2px solid var(--accent);
+    padding: 8px 20px;
+    flex-shrink: 0;
+    min-height: 42px;
+    display: flex;
+    align-items: center;
+  }
+  .subtitle-text {
+    font-size: 0.9rem;
+    color: #e2e8f0;
+    line-height: 1.5;
+    font-style: italic;
+  }
+  .subtitle-text.empty { color: #475569; }
+
+  /* ── Transcript blocks ── */
+  .t-block {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    margin-bottom: 14px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    display: flex;
+  }
+  .t-block.block-active {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px rgba(37,99,235,0.15);
+  }
+  .t-gutter {
+    background: #0f172a;
+    width: 52px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: 14px;
+    cursor: pointer;
+  }
+  .t-gutter:hover { background: #1e293b; }
+  .t-timestamp {
+    font-size: 0.7rem;
+    color: #64748b;
+    font-family: monospace;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+  .t-gutter.gutter-active .t-timestamp { color: var(--accent); }
+  .t-body {
+    flex: 1;
+    padding: 12px 16px;
+    line-height: 1.75;
+    font-size: 0.92rem;
+    color: #1e293b;
+  }
+
+  /* ── Segments ── */
+  .segment {
+    cursor: pointer;
+    border-radius: 3px;
+    transition: background 0.1s;
+  }
+  .segment:hover { background: #eff6ff; }
+  .segment.active {
+    background: #bfdbfe;
+    outline: 2px solid #3b82f6;
+    outline-offset: 1px;
+    border-radius: 3px;
+  }
+  .segment.search-match  { background: #fef9c3; }
+  .segment.search-current { background: #fde047; outline: 2px solid #ca8a04; }
+
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <h1>Regional Anaesthesia — Anatomy of Central Venous Access</h1>
+    <div class="header-sub">Final FRCA &mdash; Exam Viva Simulation &mdash; Click any phrase to seek</div>
+  </div>
+  <audio id="audio" src="../FinalFRCARegional_Anaesthesia_Anatomy_of_Central_Venous_Access.mp3" controls preload="metadata"></audio>
+  <a class="back-link" href="index.html">&#8592; All Topics</a>
+</div>
+
+<div class="toolbar">
+  <input type="text" id="search" placeholder="Search transcript&#8230; (Enter = next match)">
+  <span class="stats" id="stats">62 segments &nbsp;|&nbsp; <span id="dur">loading&#8230;</span></span>
+</div>
+
+<div class="scroll-area" id="scroll-area">
+<div class="t-block">
+  <div class="t-gutter" data-start="0.0"><span class="t-timestamp">0:00</span></div>
+  <div class="t-body"><span class="segment" data-start="0.0" data-end="6.48" title="0:00">anatomy of central venous access. What are the indications for central venous access? </span><span class="segment" data-start="6.48" data-end="10.24" title="0:06">This is a straightforward question and having done the procedure several times, </span><span class="segment" data-start="10.24" data-end="13.28" title="0:10">you should be able to answer the question, then easily move on. </span><span class="segment" data-start="15.36" data-end="20.96" title="0:15">Short term central venous access is performed mainly to administer drugs which are irritant </span><span class="segment" data-start="20.96" data-end="26.8" title="0:20">if given via peripheral vein. For hemodialysis, when peripheral access is difficult, </span><span class="segment" data-start="27.6" data-end="34.24" title="0:27">for transvenous cardiac pacing and cardiac catheterisation, and for the measurement of central </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="34.24"><span class="t-timestamp">0:34</span></div>
+  <div class="t-body"><span class="segment" data-start="34.24" data-end="41.28" title="0:34">venous pressures, long term access is mainly for total parental nutrition and chemotherapy. </span><span class="segment" data-start="42.24" data-end="45.2" title="0:42">What are the common sites used for central venous access? </span><span class="segment" data-start="47.52" data-end="53.92" title="0:47">Internal jugular, subclavian and femoral vein. Internal jugular is the preferred site </span><span class="segment" data-start="54.0" data-end="59.04" title="0:54">due to the low risk of complications. However, the subclavian vein is the site which </span><span class="segment" data-start="59.04" data-end="65.52" title="0:59">carries the least risk of infection. The femoral vein carries the highest risk of infection </span><span class="segment" data-start="65.52" data-end="71.52" title="1:05">owing to its proximity to the perineum. Can you describe the anatomy of the internal jugular vein? </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="72.8"><span class="t-timestamp">1:12</span></div>
+  <div class="t-body"><span class="segment" data-start="72.8" data-end="77.44" title="1:12">When answering an anatomy question, it's a good idea to use a simple diagram and have a </span><span class="segment" data-start="77.44" data-end="82.16" title="1:17">systematic approach describing the bones, muscles, ligaments, nerves and vasculature. </span><span class="segment" data-start="82.96" data-end="87.52" title="1:22">Another way of answering would be to describe the relations of the relevant structure </span><span class="segment" data-start="87.52" data-end="94.48" title="1:27">using a systematic approach, for example superior and inferior, medial and lateral and so on. </span><span class="segment" data-start="96.96" data-end="103.28" title="1:36">The internal jugular vein is a continuation of the jugular bulb and drains into the subclavian </span><span class="segment" data-start="103.28" data-end="109.92" title="1:43">vein. It extends from the jugular frame and in the skull to a point behind the sternoclavicular </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="109.92"><span class="t-timestamp">1:49</span></div>
+  <div class="t-body"><span class="segment" data-start="109.92" data-end="116.56" title="1:49">joint where it joins the subclavian vein. Antirially, it is related to the internal </span><span class="segment" data-start="116.56" data-end="122.24" title="1:56">crotted archery and the vagus nerve in the upper part of the neck. It is covered by the </span><span class="segment" data-start="122.24" data-end="129.76" title="2:02">crotted sheath, sternoclider mastoid muscle in the lower part of the neck, the platysma, subcutaneous </span><span class="segment" data-start="129.76" data-end="138.24" title="2:09">tissue and skin. On the right side, the thoracic duct lies anterior to the internal jugular vein. </span><span class="segment" data-start="140.16" data-end="145.44" title="2:20">Postearially, it's related to the pre-vertible fascia, sympathetic chain, </span><span class="segment" data-start="146.16" data-end="153.12" title="2:26">vertebral muscles and transverse processes of the cervical vertebrae. In the upper part of the </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="153.12"><span class="t-timestamp">2:33</span></div>
+  <div class="t-body"><span class="segment" data-start="153.12" data-end="160.16" title="2:33">neck, it is related to the first cervical vertebrae. At the root of the neck, the dome of the </span><span class="segment" data-start="160.16" data-end="168.72" title="2:40">plural lies close to the internal jugular vein. The ninth, tenth, eleventh and twelfth cranial </span><span class="segment" data-start="168.72" data-end="176.32" title="2:48">nerves lie medial to the internal jugular vein as do the common and internal crotted arteries </span><span class="segment" data-start="176.32" data-end="182.32" title="2:56">along with the trachea and esophagus. What are the complications of central venous access? </span><span class="segment" data-start="184.88" data-end="190.8" title="3:04">They can be divided into immediate and delayed complications. Immediate complications include </span><span class="segment" data-start="190.8" data-end="196.4" title="3:10">bleeding from the site, carotid arterial puncture, which may be associated with hematoma, </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="197.12"><span class="t-timestamp">3:17</span></div>
+  <div class="t-body"><span class="segment" data-start="197.12" data-end="202.8" title="3:17">pneumothorax, hemothorax, chylothorax, but only on the left side, </span><span class="segment" data-start="203.84" data-end="209.36" title="3:23">air embolism, foreign body embolism, e.g. guidewire or catheter fragment, </span><span class="segment" data-start="210.4" data-end="216.56" title="3:30">arrhythmias and complications associated with unrecognized catheter misplacement, </span><span class="segment" data-start="217.28" data-end="222.56" title="3:37">such as intriplural infusion. There have been reports of cardiac tampernard. </span><span class="segment" data-start="223.2" data-end="230.48" title="3:43">Long-term complications include infection, line-related sepsis and thrombus formation. </span><span class="segment" data-start="231.84" data-end="234.0" title="3:51">How can these complications be minimized? </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="236.32"><span class="t-timestamp">3:56</span></div>
+  <div class="t-body"><span class="segment" data-start="236.32" data-end="241.36" title="3:56">The risk of pneumothorax and hemothorax are minimized by using a high approach. </span><span class="segment" data-start="242.4" data-end="249.84" title="4:02">An ultrasound guided technique may also reduce the risk of arterial puncture and catheter misplacement. </span><span class="segment" data-start="250.08" data-end="256.88" title="4:10">Performing a chest extra post-insertion to ensure appropriate catheter tip position may reduce </span><span class="segment" data-start="256.88" data-end="263.76" title="4:16">the risk of thrombosis and also the risk of cardiac tampernard. One should avoid threading the </span><span class="segment" data-start="263.76" data-end="270.32" title="4:23">guidewire into the right atrium and have continuous ECG monitoring available to detect arrhythmias, </span><span class="segment" data-start="271.28" data-end="274.64" title="4:31">with drawing the guidewire should arrhythmias occur. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="275.6"><span class="t-timestamp">4:35</span></div>
+  <div class="t-body"><span class="segment" data-start="275.6" data-end="280.4" title="4:35">Position the patient head down to reduce the risk of air embolism. </span><span class="segment" data-start="280.72" data-end="284.0" title="4:40">How can the risk of infection be minimized? </span><span class="segment" data-start="286.0" data-end="290.8" title="4:46">Some clavian vein cannulations are associated with a lower risk of infection. </span><span class="segment" data-start="291.76" data-end="298.24" title="4:51">A full aseptic technique with sterar gown, gloves, hat, mask and drapes should be used. </span><span class="segment" data-start="299.04" data-end="304.4" title="4:59">The chosen site should be prepared with a 2% aqueouschlorhexidine gluconate solution. </span><span class="segment" data-start="305.6" data-end="310.96" title="5:05">It has been shown to have lower bloodstream infection rates compared with site preparation </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="310.96"><span class="t-timestamp">5:10</span></div>
+  <div class="t-body"><span class="segment" data-start="310.96" data-end="314.96" title="5:10">with 10% povodyneidine or 70% alcohol. </span><span class="segment" data-start="316.88" data-end="324.0" title="5:16">Teflon or polyurethane catheters have been associated with fewer infectious complications than </span><span class="segment" data-start="324.0" data-end="332.56" title="5:24">catheters made of polyvinyl chloride or polyethylene. Use a central venous catheter with the minimum </span><span class="segment" data-start="332.56" data-end="336.88" title="5:32">number of ports or lumens essential for the management of the patient. </span><span class="segment" data-start="338.72" data-end="346.08" title="5:38">Use an antimicrobial or antiseptic impregnated CVC in adults whose catheter is expected to remain </span><span class="segment" data-start="346.08" data-end="352.8" title="5:46">in place for greater than five days. The type of dressing used can be transparent or with </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="352.8"><span class="t-timestamp">5:52</span></div>
+  <div class="t-body"><span class="segment" data-start="352.8" data-end="359.44" title="5:52">gauze, however the site, dressing and need for central access should be reviewed daily and each </span><span class="segment" data-start="359.44" data-end="366.16" title="5:59">patient treated on an individual basis. Cap all stop-cocks were not in use and replaced </span><span class="segment" data-start="366.16" data-end="372.96" title="6:06">administration sets including secondary sets and add-on devices no more frequently than at 72 </span><span class="segment" data-start="372.96" data-end="381.12" title="6:12">hour intervals unless catheter related infection is suspected or documented. Replace tubing used </span><span class="segment" data-start="381.12" data-end="387.2" title="6:21">to administer blood, blood products or lipid emulsions within 24 hours of initiating the infusion. </span><span class="segment" data-start="387.92" data-end="394.96" title="6:27">There's no agreed time frame and routine for change of catheters and it's not recommended unless </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="394.96"><span class="t-timestamp">6:34</span></div>
+  <div class="t-body"><span class="segment" data-start="394.96" data-end="401.36" title="6:34">ongoing infection at the site or systemic sepsis is suspected or proven. There should be local </span><span class="segment" data-start="401.36" data-end="409.12" title="6:41">protocols and care pathways implementing the above together with staff education and monitoring of infection rates. </span></div>
+</div>
+</div>
+
+<div class="subtitle-bar">
+  <span class="subtitle-text empty" id="subtitle-text">Play audio to see live subtitles&#8230;</span>
+</div>
+
+<script>
+
+const audio    = document.getElementById('audio');
+const allSegs  = Array.from(document.querySelectorAll('.segment'));
+const allBlocks = Array.from(document.querySelectorAll('.t-block'));
+const subtitleEl = document.getElementById('subtitle-text');
+let activeSegEl   = null;
+let activeBlockEl = null;
+let searchMatches = [];
+let searchIdx     = 0;
+
+// Duration display
+audio.addEventListener('loadedmetadata', () => {
+  const m = Math.floor(audio.duration / 60);
+  const s = Math.floor(audio.duration %% 60).toString().padStart(2,'0');
+  document.getElementById('dur').textContent = m + ':' + s;
+});
+
+// Seek helper
+function seekTo(t) {
+  audio.currentTime = t;
+  audio.play();
+}
+
+// Block gutter click
+document.querySelectorAll('.t-gutter').forEach(g => {
+  g.addEventListener('click', () => seekTo(parseFloat(g.dataset.start)));
+});
+
+// Segment click
+allSegs.forEach(s => {
+  s.addEventListener('click', e => {
+    e.stopPropagation();
+    seekTo(parseFloat(s.dataset.start));
+  });
+});
+
+// Real-time tracking
+audio.addEventListener('timeupdate', () => {
+  const t = audio.currentTime;
+
+  // Find active segment (last one whose start <= t)
+  let found = null;
+  for (let i = allSegs.length - 1; i >= 0; i--) {
+    if (parseFloat(allSegs[i].dataset.start) <= t) { found = allSegs[i]; break; }
+  }
+
+  if (found && found !== activeSegEl) {
+    // Clear previous
+    if (activeSegEl) activeSegEl.classList.remove('active');
+    if (activeBlockEl) {
+      activeBlockEl.classList.remove('block-active');
+      const pg = activeBlockEl.querySelector('.t-gutter');
+      if (pg) pg.classList.remove('gutter-active');
+    }
+    // Set new
+    found.classList.add('active');
+    const block = found.closest('.t-block');
+    if (block) {
+      block.classList.add('block-active');
+      const g = block.querySelector('.t-gutter');
+      if (g) g.classList.add('gutter-active');
+      activeBlockEl = block;
+    }
+    activeSegEl = found;
+
+    // Update subtitle
+    subtitleEl.textContent = found.textContent.trim();
+    subtitleEl.classList.remove('empty');
+
+    // Auto-scroll (only when not searching)
+    if (!document.getElementById('search').value) {
+      found.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }
+});
+
+// Search
+const searchInput = document.getElementById('search');
+searchInput.addEventListener('input', runSearch);
+searchInput.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && searchMatches.length) {
+    searchMatches[searchIdx].classList.remove('search-current');
+    searchIdx = (searchIdx + 1) %% searchMatches.length;
+    const el = searchMatches[searchIdx];
+    el.classList.add('search-current');
+    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+});
+
+function runSearch() {
+  const q = searchInput.value.trim().toLowerCase();
+  allSegs.forEach(s => s.classList.remove('search-match','search-current'));
+  searchMatches = [];
+  if (!q) return;
+  allSegs.forEach(s => {
+    if (s.textContent.toLowerCase().includes(q)) {
+      s.classList.add('search-match');
+      searchMatches.push(s);
+    }
+  });
+  if (!searchMatches.length) return;
+  searchIdx = 0;
+  searchMatches[0].classList.add('search-current');
+  searchMatches[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+</script>
+</body>
+</html>

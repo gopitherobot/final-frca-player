@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Regional Anaesthesia — Caudal Block</title>
+<style>
+
+  :root {
+    --accent:    #2563eb;
+    --body-bg:   #f1f5f9;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: var(--body-bg);
+    color: #1e293b;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  /* ── Header ── */
+  .header {
+    background: #0f172a;
+    border-bottom: 3px solid var(--accent);
+    padding: 12px 20px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .header-left { flex: 1; min-width: 200px; }
+  .header h1 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #f1f5f9;
+    margin-bottom: 4px;
+    letter-spacing: 0.01em;
+  }
+  .header-sub {
+    font-size: 0.72rem;
+    color: #94a3b8;
+    font-style: italic;
+  }
+  audio {
+    height: 36px;
+    accent-color: var(--accent);
+    flex-shrink: 0;
+  }
+  .back-link {
+    font-size: 0.8rem;
+    color: #94a3b8;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .back-link:hover { color: #60a5fa; }
+
+  /* ── Toolbar ── */
+  .toolbar {
+    background: #1e293b;
+    padding: 7px 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-shrink: 0;
+    border-bottom: 1px solid #334155;
+  }
+  .toolbar input {
+    flex: 1;
+    max-width: 380px;
+    padding: 5px 11px;
+    border: 1px solid #475569;
+    border-radius: 6px;
+    background: #0f172a;
+    color: #e2e8f0;
+    font-size: 0.83rem;
+    outline: none;
+  }
+  .toolbar input:focus { border-color: var(--accent); }
+  .toolbar input::placeholder { color: #64748b; }
+  .stats {
+    font-size: 0.72rem;
+    color: #64748b;
+    white-space: nowrap;
+  }
+
+  /* ── Scroll area ── */
+  .scroll-area {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+  }
+  .scroll-area::-webkit-scrollbar { width: 6px; }
+  .scroll-area::-webkit-scrollbar-track { background: transparent; }
+  .scroll-area::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+
+  /* ── Subtitle bar ── */
+  .subtitle-bar {
+    background: #0f172a;
+    border-top: 2px solid var(--accent);
+    padding: 8px 20px;
+    flex-shrink: 0;
+    min-height: 42px;
+    display: flex;
+    align-items: center;
+  }
+  .subtitle-text {
+    font-size: 0.9rem;
+    color: #e2e8f0;
+    line-height: 1.5;
+    font-style: italic;
+  }
+  .subtitle-text.empty { color: #475569; }
+
+  /* ── Transcript blocks ── */
+  .t-block {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    margin-bottom: 14px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    display: flex;
+  }
+  .t-block.block-active {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px rgba(37,99,235,0.15);
+  }
+  .t-gutter {
+    background: #0f172a;
+    width: 52px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: 14px;
+    cursor: pointer;
+  }
+  .t-gutter:hover { background: #1e293b; }
+  .t-timestamp {
+    font-size: 0.7rem;
+    color: #64748b;
+    font-family: monospace;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+  .t-gutter.gutter-active .t-timestamp { color: var(--accent); }
+  .t-body {
+    flex: 1;
+    padding: 12px 16px;
+    line-height: 1.75;
+    font-size: 0.92rem;
+    color: #1e293b;
+  }
+
+  /* ── Segments ── */
+  .segment {
+    cursor: pointer;
+    border-radius: 3px;
+    transition: background 0.1s;
+  }
+  .segment:hover { background: #eff6ff; }
+  .segment.active {
+    background: #bfdbfe;
+    outline: 2px solid #3b82f6;
+    outline-offset: 1px;
+    border-radius: 3px;
+  }
+  .segment.search-match  { background: #fef9c3; }
+  .segment.search-current { background: #fde047; outline: 2px solid #ca8a04; }
+
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <h1>Regional Anaesthesia — Caudal Block</h1>
+    <div class="header-sub">Final FRCA &mdash; Exam Viva Simulation &mdash; Click any phrase to seek</div>
+  </div>
+  <audio id="audio" src="../FinalFRCARegional_Anaesthesia_Caudal_Block.mp3" controls preload="metadata"></audio>
+  <a class="back-link" href="index.html">&#8592; All Topics</a>
+</div>
+
+<div class="toolbar">
+  <input type="text" id="search" placeholder="Search transcript&#8230; (Enter = next match)">
+  <span class="stats" id="stats">128 segments &nbsp;|&nbsp; <span id="dur">loading&#8230;</span></span>
+</div>
+
+<div class="scroll-area" id="scroll-area">
+<div class="t-block">
+  <div class="t-gutter" data-start="0.0"><span class="t-timestamp">0:00</span></div>
+  <div class="t-body"><span class="segment" data-start="0.0" data-end="3.68" title="0:00">Codal block, adult compared to children. </span><span class="segment" data-start="3.68" data-end="6.52" title="0:03">Tell me about Codal analgesia. </span><span class="segment" data-start="7.52" data-end="11.28" title="0:07">Codal analgesia is produced by injection of local anaesthetic </span><span class="segment" data-start="11.28" data-end="16.6" title="0:11">into the Codal canal to block lumbar and sacral nerve roots. </span><span class="segment" data-start="16.6" data-end="19.72" title="0:16">It's mainly used in pediatric anesthesia. </span><span class="segment" data-start="19.72" data-end="21.72" title="0:19">Tell me about the anatomy. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="21.72"><span class="t-timestamp">0:21</span></div>
+  <div class="t-body"><span class="segment" data-start="21.72" data-end="24.72" title="0:21">Draw a sagittal section diagram. </span><span class="segment" data-start="25.52" data-end="28.56" title="0:25">The Codal space is the lowest part of the epidural space </span><span class="segment" data-start="28.56" data-end="31.08" title="0:28">contained by the sacrum. </span><span class="segment" data-start="31.08" data-end="35.28" title="0:31">The sacrum consists of five fused sacral vertebrae </span><span class="segment" data-start="35.28" data-end="39.64" title="0:35">and articulates with the fifth lumbar vertebrae superially, </span><span class="segment" data-start="39.64" data-end="45.44" title="0:39">but coxics inferiorly and the ilia, laterally. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="45.44"><span class="t-timestamp">0:45</span></div>
+  <div class="t-body"><span class="segment" data-start="45.44" data-end="48.72" title="0:45">The dorsal roof has a median crest in the midline </span><span class="segment" data-start="48.72" data-end="52.72" title="0:48">from fusion of the sacral spina's processes. </span><span class="segment" data-start="52.72" data-end="57.12" title="0:52">Failure of fusion of S5 and occasion S4 </span><span class="segment" data-start="57.16" data-end="61.04" title="0:57">leaves the defect called the sacral hiatus. </span><span class="segment" data-start="61.04" data-end="65.52" title="1:01">This is covered by the sacro-coxagule membrane. </span><span class="segment" data-start="65.52" data-end="71.0" title="1:05">On either side of the sacral hiatus are sacral corneua. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="71.0"><span class="t-timestamp">1:11</span></div>
+  <div class="t-body"><span class="segment" data-start="71.0" data-end="75.8" title="1:11">The sacral canal is accessed via the sacral hiatus. </span><span class="segment" data-start="75.8" data-end="79.8" title="1:15">What does the sacral canal contain? </span><span class="segment" data-start="79.8" data-end="82.4" title="1:19">The terminal part of the duressac, which </span><span class="segment" data-start="82.4" data-end="86.56" title="1:22">finishes at approximately S1 to 2 in adults </span><span class="segment" data-start="86.56" data-end="90.32" title="1:26">and S3 to 4 in infants. </span><span class="segment" data-start="90.32" data-end="96.16" title="1:30">The cordic quiny, which consists of five sacral and coxagule nerves, </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="96.16"><span class="t-timestamp">1:36</span></div>
+  <div class="t-body"><span class="segment" data-start="96.16" data-end="100.64" title="1:36">the phyllum terminale, the venous plexus, </span><span class="segment" data-start="100.64" data-end="102.68" title="1:40">and epidural fat. </span><span class="segment" data-start="102.68" data-end="108.04" title="1:42">What operations can cordal analgesia be used for? </span><span class="segment" data-start="108.08" data-end="110.92" title="1:48">In adults, cordals are mainly used for operations </span><span class="segment" data-start="110.92" data-end="112.8" title="1:50">on the perineum. </span><span class="segment" data-start="112.8" data-end="115.96" title="1:52">In children, it is used more extensively </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="115.96"><span class="t-timestamp">1:55</span></div>
+  <div class="t-body"><span class="segment" data-start="115.96" data-end="119.16" title="1:55">for operations below the umbilicus. </span><span class="segment" data-start="119.16" data-end="123.44" title="1:59">These include an urnia repair, hypospadius repair, </span><span class="segment" data-start="123.44" data-end="127.4" title="2:03">orchid pexy, and lower limb surgery. </span><span class="segment" data-start="127.4" data-end="133.08" title="2:07">Why is it used more extensively in children than in adults? </span><span class="segment" data-start="133.08" data-end="136.36" title="2:13">The fat within the sacral canal is loose in children, </span><span class="segment" data-start="136.36" data-end="138.4" title="2:16">allowing the spread of local anaesthetic </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="138.4"><span class="t-timestamp">2:18</span></div>
+  <div class="t-body"><span class="segment" data-start="138.4" data-end="141.68" title="2:18">making the block much more predictable. </span><span class="segment" data-start="141.68" data-end="145.16" title="2:21">In adults, the connective tissue forms a fibrus, </span><span class="segment" data-start="145.16" data-end="148.44" title="2:25">closed mesh, which leads to an unpredictable spread </span><span class="segment" data-start="148.44" data-end="150.76" title="2:28">of local anaesthetic. </span><span class="segment" data-start="150.76" data-end="156.4" title="2:30">The volume of the sacral canal also varies greatly in adults. </span><span class="segment" data-start="156.4" data-end="161.84" title="2:36">The sacral corneua are more easily identifiable in children. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="161.84"><span class="t-timestamp">2:41</span></div>
+  <div class="t-body"><span class="segment" data-start="161.84" data-end="164.16" title="2:41">Can you describe your technique? </span><span class="segment" data-start="164.16" data-end="166.12" title="2:44">The examiners would probably move on. </span><span class="segment" data-start="166.12" data-end="168.08" title="2:46">But don't forget consent. </span><span class="segment" data-start="168.08" data-end="169.88" title="2:48">Make sure you have done some cordal blocks </span><span class="segment" data-start="169.88" data-end="174.4" title="2:49">so you can speak convincingly about your own technique. </span><span class="segment" data-start="174.4" data-end="176.56" title="2:54">I would pre-optive assess the patient, </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="176.56"><span class="t-timestamp">2:56</span></div>
+  <div class="t-body"><span class="segment" data-start="176.56" data-end="180.8" title="2:56">gain consent, obtain intravenous access, and full monitoring. </span><span class="segment" data-start="180.8" data-end="183.2" title="3:00">I would ensure I had a trained assistant </span><span class="segment" data-start="183.2" data-end="186.92" title="3:03">and emergency drugs and equipment were available. </span><span class="segment" data-start="186.92" data-end="191.16" title="3:06">In children, I perform the block after induction of anaesthesia. </span><span class="segment" data-start="191.16" data-end="193.84" title="3:11">The patient is put into the left lateral position </span><span class="segment" data-start="193.84" data-end="195.96" title="3:13">with the knees flexed. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="195.96"><span class="t-timestamp">3:15</span></div>
+  <div class="t-body"><span class="segment" data-start="195.96" data-end="200.12" title="3:15">Identify the landmarks by finding the posterior, </span><span class="segment" data-start="200.12" data-end="204.0" title="3:20">superior ilax binds and put my left thumb </span><span class="segment" data-start="204.0" data-end="206.92" title="3:24">and index finger on them. </span><span class="segment" data-start="206.92" data-end="209.36" title="3:26">The sacral hiatus forms the third point </span><span class="segment" data-start="209.36" data-end="212.16" title="3:29">of an equilateral triangle. </span><span class="segment" data-start="212.16" data-end="216.36" title="3:32">It may not lie in the natal cleft. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="216.36"><span class="t-timestamp">3:36</span></div>
+  <div class="t-body"><span class="segment" data-start="216.36" data-end="218.68" title="3:36">The sacral corneua can then be palpated </span><span class="segment" data-start="218.68" data-end="221.64" title="3:38">by the left index finger. </span><span class="segment" data-start="221.64" data-end="225.52" title="3:41">The technique is aseptic. </span><span class="segment" data-start="225.52" data-end="227.68" title="3:45">I would wash my hands, </span><span class="segment" data-start="227.68" data-end="230.2" title="3:47">use sterile gloves, and clean with chlorhexidine </span><span class="segment" data-start="230.2" data-end="231.8" title="3:50">and wait to dry. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="231.8"><span class="t-timestamp">3:51</span></div>
+  <div class="t-body"><span class="segment" data-start="231.8" data-end="235.52" title="3:51">I would use a 20 or 22 gauge canula. </span><span class="segment" data-start="235.52" data-end="237.4" title="3:55">Feeling the sacral cornea, </span><span class="segment" data-start="237.4" data-end="240.68" title="3:57">I insert the canula at 45 degrees crannily </span><span class="segment" data-start="240.68" data-end="243.36" title="4:00">until a click is felt as the canula goes through </span><span class="segment" data-start="243.36" data-end="246.28" title="4:03">the sacro-coxagule membrane. </span><span class="segment" data-start="246.28" data-end="250.12" title="4:06">Then I advance the canula over the needle. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="250.12"><span class="t-timestamp">4:10</span></div>
+  <div class="t-body"><span class="segment" data-start="250.12" data-end="253.08" title="4:10">I then remove the needle and wait to exclude </span><span class="segment" data-start="253.08" data-end="257.24" title="4:13">the presence of blood or cerebrospinal fluid. </span><span class="segment" data-start="257.24" data-end="260.96" title="4:17">I gently aspirate and shouldn't do this too hard </span><span class="segment" data-start="260.96" data-end="262.92" title="4:20">as it may yield a negative aspiration </span><span class="segment" data-start="262.92" data-end="264.88" title="4:22">due to the collapse of a vein </span><span class="segment" data-start="264.88" data-end="268.64" title="4:24">if the canula happens to be intravenous. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="268.64"><span class="t-timestamp">4:28</span></div>
+  <div class="t-body"><span class="segment" data-start="268.64" data-end="271.12" title="4:28">I then slowly inject the local anaesthetic, </span><span class="segment" data-start="271.12" data-end="273.4" title="4:31">ensuring there is no resistance, </span><span class="segment" data-start="273.4" data-end="275.52" title="4:33">no subcutaneous swelling, </span><span class="segment" data-start="275.52" data-end="278.8" title="4:35">and intimately I would aspirate. </span><span class="segment" data-start="278.8" data-end="281.2" title="4:38">What dose of local anaesthetic do you use? </span><span class="segment" data-start="283.6" data-end="286.36" title="4:43">In adults, 20 to 30 mills of bupivocane, </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="286.36"><span class="t-timestamp">4:46</span></div>
+  <div class="t-body"><span class="segment" data-start="286.36" data-end="291.16" title="4:46">0.25 to 0.5%, depending on the size of the patient. </span><span class="segment" data-start="291.16" data-end="296.48" title="4:51">The volume of the sacral canal is normally 30 to 35 milliliters. </span><span class="segment" data-start="296.48" data-end="301.28" title="4:56">For children, the volume depends on the level of block required. </span><span class="segment" data-start="301.28" data-end="305.8" title="5:01">For a sacral block, use 0.5 mills per kilogram </span><span class="segment" data-start="305.8" data-end="308.92" title="5:05">of 0.25 percent bupivocane. </span><span class="segment" data-start="308.92" data-end="312.44" title="5:08">For a lumber block, use 1 mill per kilogram </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="312.44"><span class="t-timestamp">5:12</span></div>
+  <div class="t-body"><span class="segment" data-start="312.44" data-end="315.68" title="5:12">of 0.25 percent bupivocane. </span><span class="segment" data-start="315.68" data-end="317.6" title="5:15">Or for the racco lumber, </span><span class="segment" data-start="317.6" data-end="323.28" title="5:17">1.25 mills per kilogram of 0.19 percent bupivocane. </span><span class="segment" data-start="323.28" data-end="326.76" title="5:23">How do you get 0.19 percent bupivocane? </span><span class="segment" data-start="326.76" data-end="329.24" title="5:26">Don't give information about things that you do </span><span class="segment" data-start="329.24" data-end="332.88" title="5:29">without being able to back it up. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="332.88"><span class="t-timestamp">5:32</span></div>
+  <div class="t-body"><span class="segment" data-start="332.88" data-end="334.88" title="5:32">One part of normal saline, </span><span class="segment" data-start="334.88" data-end="339.52" title="5:34">to three parts of 0.25 percent bupivocane. </span><span class="segment" data-start="339.52" data-end="342.64" title="5:39">How long do cordal blocks generally last? </span><span class="segment" data-start="342.64" data-end="344.84" title="5:42">There's a lot of individual variety. </span><span class="segment" data-start="344.84" data-end="346.76" title="5:44">If you don't know, then guess. </span><span class="segment" data-start="346.76" data-end="348.64" title="5:46">Giving information about additives </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="348.64"><span class="t-timestamp">5:48</span></div>
+  <div class="t-body"><span class="segment" data-start="348.64" data-end="353.4" title="5:48">looks like you've thought about how to prolong your block. </span><span class="segment" data-start="353.4" data-end="355.52" title="5:53">They normally last four to eight hours. </span><span class="segment" data-start="355.52" data-end="358.28" title="5:55">They can be extended by using a catheter technique </span><span class="segment" data-start="358.28" data-end="360.24" title="5:58">or by using additives. </span><span class="segment" data-start="360.24" data-end="364.52" title="6:00">These include clonadine, 1 microgram per kilogram, </span><span class="segment" data-start="364.52" data-end="366.56" title="6:04">opioids such as diamorphine, </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="366.56"><span class="t-timestamp">6:06</span></div>
+  <div class="t-body"><span class="segment" data-start="366.56" data-end="369.84" title="6:06">at 30 micrograms per kilogram, </span><span class="segment" data-start="369.84" data-end="372.44" title="6:09">and preservative-free ketamine. </span><span class="segment" data-start="372.44" data-end="376.36" title="6:12">Any problems with these additives? </span><span class="segment" data-start="376.36" data-end="379.6" title="6:16">We must ensure that they are preservative-free </span><span class="segment" data-start="379.6" data-end="383.12" title="6:19">as preservatives may be neurotoxic. </span><span class="segment" data-start="383.12" data-end="386.52" title="6:23">Clonadine and opioids can cause sedation. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="386.52"><span class="t-timestamp">6:26</span></div>
+  <div class="t-body"><span class="segment" data-start="386.52" data-end="389.12" title="6:26">Opioids may cause respiratory depression </span><span class="segment" data-start="389.12" data-end="391.92" title="6:29">and urinary retention. </span><span class="segment" data-start="391.92" data-end="395.32" title="6:31">I don't use additives for day-case procedures. </span><span class="segment" data-start="395.32" data-end="397.4" title="6:35">What complications are there? </span><span class="segment" data-start="397.4" data-end="400.84" title="6:37">Give figures if you can. </span><span class="segment" data-start="400.84" data-end="405.24" title="6:40">Severe complications are rare using a single-shot technique. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="405.24"><span class="t-timestamp">6:45</span></div>
+  <div class="t-body"><span class="segment" data-start="405.24" data-end="408.44" title="6:45">Failure can occur due to incorrect placement, </span><span class="segment" data-start="408.44" data-end="411.76" title="6:48">particularly in the subcutaneous tissue. </span><span class="segment" data-start="411.76" data-end="413.84" title="6:51">Urinary retention, leg weakness, </span><span class="segment" data-start="413.84" data-end="417.48" title="6:53">and proprioception loss occur relatively frequently, </span><span class="segment" data-start="417.48" data-end="420.56" title="6:57">approximately 4 to 8 percent. </span><span class="segment" data-start="420.56" data-end="424.84" title="7:00">In adverting intravenous or intradural injection-maker, </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="424.84"><span class="t-timestamp">7:04</span></div>
+  <div class="t-body"><span class="segment" data-start="424.84" data-end="427.88" title="7:04">as well as epidural abscess and hematoma, </span><span class="segment" data-start="427.88" data-end="432.12" title="7:07">and the incidence of these at the order of one in 10,000. </span></div>
+</div>
+</div>
+
+<div class="subtitle-bar">
+  <span class="subtitle-text empty" id="subtitle-text">Play audio to see live subtitles&#8230;</span>
+</div>
+
+<script>
+
+const audio    = document.getElementById('audio');
+const allSegs  = Array.from(document.querySelectorAll('.segment'));
+const allBlocks = Array.from(document.querySelectorAll('.t-block'));
+const subtitleEl = document.getElementById('subtitle-text');
+let activeSegEl   = null;
+let activeBlockEl = null;
+let searchMatches = [];
+let searchIdx     = 0;
+
+// Duration display
+audio.addEventListener('loadedmetadata', () => {
+  const m = Math.floor(audio.duration / 60);
+  const s = Math.floor(audio.duration %% 60).toString().padStart(2,'0');
+  document.getElementById('dur').textContent = m + ':' + s;
+});
+
+// Seek helper
+function seekTo(t) {
+  audio.currentTime = t;
+  audio.play();
+}
+
+// Block gutter click
+document.querySelectorAll('.t-gutter').forEach(g => {
+  g.addEventListener('click', () => seekTo(parseFloat(g.dataset.start)));
+});
+
+// Segment click
+allSegs.forEach(s => {
+  s.addEventListener('click', e => {
+    e.stopPropagation();
+    seekTo(parseFloat(s.dataset.start));
+  });
+});
+
+// Real-time tracking
+audio.addEventListener('timeupdate', () => {
+  const t = audio.currentTime;
+
+  // Find active segment (last one whose start <= t)
+  let found = null;
+  for (let i = allSegs.length - 1; i >= 0; i--) {
+    if (parseFloat(allSegs[i].dataset.start) <= t) { found = allSegs[i]; break; }
+  }
+
+  if (found && found !== activeSegEl) {
+    // Clear previous
+    if (activeSegEl) activeSegEl.classList.remove('active');
+    if (activeBlockEl) {
+      activeBlockEl.classList.remove('block-active');
+      const pg = activeBlockEl.querySelector('.t-gutter');
+      if (pg) pg.classList.remove('gutter-active');
+    }
+    // Set new
+    found.classList.add('active');
+    const block = found.closest('.t-block');
+    if (block) {
+      block.classList.add('block-active');
+      const g = block.querySelector('.t-gutter');
+      if (g) g.classList.add('gutter-active');
+      activeBlockEl = block;
+    }
+    activeSegEl = found;
+
+    // Update subtitle
+    subtitleEl.textContent = found.textContent.trim();
+    subtitleEl.classList.remove('empty');
+
+    // Auto-scroll (only when not searching)
+    if (!document.getElementById('search').value) {
+      found.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }
+});
+
+// Search
+const searchInput = document.getElementById('search');
+searchInput.addEventListener('input', runSearch);
+searchInput.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && searchMatches.length) {
+    searchMatches[searchIdx].classList.remove('search-current');
+    searchIdx = (searchIdx + 1) %% searchMatches.length;
+    const el = searchMatches[searchIdx];
+    el.classList.add('search-current');
+    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+});
+
+function runSearch() {
+  const q = searchInput.value.trim().toLowerCase();
+  allSegs.forEach(s => s.classList.remove('search-match','search-current'));
+  searchMatches = [];
+  if (!q) return;
+  allSegs.forEach(s => {
+    if (s.textContent.toLowerCase().includes(q)) {
+      s.classList.add('search-match');
+      searchMatches.push(s);
+    }
+  });
+  if (!searchMatches.length) return;
+  searchIdx = 0;
+  searchMatches[0].classList.add('search-current');
+  searchMatches[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+</script>
+</body>
+</html>

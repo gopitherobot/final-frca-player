@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cardiac Anaesthesia — Hypertension</title>
+<style>
+
+  :root {
+    --accent:    #ef4444;
+    --body-bg:   #f1f5f9;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: var(--body-bg);
+    color: #1e293b;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  /* ── Header ── */
+  .header {
+    background: #0f172a;
+    border-bottom: 3px solid var(--accent);
+    padding: 12px 20px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .header-left { flex: 1; min-width: 200px; }
+  .header h1 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #f1f5f9;
+    margin-bottom: 4px;
+    letter-spacing: 0.01em;
+  }
+  .header-sub {
+    font-size: 0.72rem;
+    color: #94a3b8;
+    font-style: italic;
+  }
+  audio {
+    height: 36px;
+    accent-color: var(--accent);
+    flex-shrink: 0;
+  }
+  .back-link {
+    font-size: 0.8rem;
+    color: #94a3b8;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .back-link:hover { color: #60a5fa; }
+
+  /* ── Toolbar ── */
+  .toolbar {
+    background: #1e293b;
+    padding: 7px 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-shrink: 0;
+    border-bottom: 1px solid #334155;
+  }
+  .toolbar input {
+    flex: 1;
+    max-width: 380px;
+    padding: 5px 11px;
+    border: 1px solid #475569;
+    border-radius: 6px;
+    background: #0f172a;
+    color: #e2e8f0;
+    font-size: 0.83rem;
+    outline: none;
+  }
+  .toolbar input:focus { border-color: var(--accent); }
+  .toolbar input::placeholder { color: #64748b; }
+  .stats {
+    font-size: 0.72rem;
+    color: #64748b;
+    white-space: nowrap;
+  }
+
+  /* ── Scroll area ── */
+  .scroll-area {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+  }
+  .scroll-area::-webkit-scrollbar { width: 6px; }
+  .scroll-area::-webkit-scrollbar-track { background: transparent; }
+  .scroll-area::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+
+  /* ── Subtitle bar ── */
+  .subtitle-bar {
+    background: #0f172a;
+    border-top: 2px solid var(--accent);
+    padding: 8px 20px;
+    flex-shrink: 0;
+    min-height: 42px;
+    display: flex;
+    align-items: center;
+  }
+  .subtitle-text {
+    font-size: 0.9rem;
+    color: #e2e8f0;
+    line-height: 1.5;
+    font-style: italic;
+  }
+  .subtitle-text.empty { color: #475569; }
+
+  /* ── Transcript blocks ── */
+  .t-block {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    margin-bottom: 14px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    display: flex;
+  }
+  .t-block.block-active {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px rgba(37,99,235,0.15);
+  }
+  .t-gutter {
+    background: #0f172a;
+    width: 52px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: 14px;
+    cursor: pointer;
+  }
+  .t-gutter:hover { background: #1e293b; }
+  .t-timestamp {
+    font-size: 0.7rem;
+    color: #64748b;
+    font-family: monospace;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+  .t-gutter.gutter-active .t-timestamp { color: var(--accent); }
+  .t-body {
+    flex: 1;
+    padding: 12px 16px;
+    line-height: 1.75;
+    font-size: 0.92rem;
+    color: #1e293b;
+  }
+
+  /* ── Segments ── */
+  .segment {
+    cursor: pointer;
+    border-radius: 3px;
+    transition: background 0.1s;
+  }
+  .segment:hover { background: #eff6ff; }
+  .segment.active {
+    background: #bfdbfe;
+    outline: 2px solid #3b82f6;
+    outline-offset: 1px;
+    border-radius: 3px;
+  }
+  .segment.search-match  { background: #fef9c3; }
+  .segment.search-current { background: #fde047; outline: 2px solid #ca8a04; }
+
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <h1>Cardiac Anaesthesia — Hypertension</h1>
+    <div class="header-sub">Final FRCA &mdash; Exam Viva Simulation &mdash; Click any phrase to seek</div>
+  </div>
+  <audio id="audio" src="../FinalFRCACardiac_Anaesthesia_Hypertension.mp3" controls preload="metadata"></audio>
+  <a class="back-link" href="index.html">&#8592; All Topics</a>
+</div>
+
+<div class="toolbar">
+  <input type="text" id="search" placeholder="Search transcript&#8230; (Enter = next match)">
+  <span class="stats" id="stats">68 segments &nbsp;|&nbsp; <span id="dur">loading&#8230;</span></span>
+</div>
+
+<div class="scroll-area" id="scroll-area">
+<div class="t-block">
+  <div class="t-gutter" data-start="0.0"><span class="t-timestamp">0:00</span></div>
+  <div class="t-body"><span class="segment" data-start="0.0" data-end="6.36" title="0:00">hypertension. You've been asked to see a patient in the pre-operative assessment clinic prior </span><span class="segment" data-start="6.36" data-end="13.04" title="0:06">to surgery on a colonic tumour. The nurse reports their blood pressure is elevated at 170 </span><span class="segment" data-start="13.04" data-end="20.36" title="0:13">over 90. This is likely to be a question on the risks of hypertension and appropriate therapy. </span><span class="segment" data-start="20.36" data-end="28.08" title="0:20">What else would you like to know? I would like to take a full history from this gentleman, </span><span class="segment" data-start="28.08" data-end="35.12" title="0:28">including any previous medical history and medications. I would focus my history to look for any symptoms </span><span class="segment" data-start="35.12" data-end="42.72" title="0:35">of cardiac disease or if the patient had known hypertension. I would then perform a full examination </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="42.72"><span class="t-timestamp">0:42</span></div>
+  <div class="t-body"><span class="segment" data-start="42.72" data-end="49.24" title="0:42">and request appropriate tests. I'm looking for potential causes of hypertension and also </span><span class="segment" data-start="49.24" data-end="54.88" title="0:49">any evidence of end organ damage. What causes of hypertension are you looking for? </span><span class="segment" data-start="55.88" data-end="63.88" title="0:55">One of the commonest causes in a hospital clinic is white coat hypertension, which should be excluded. </span><span class="segment" data-start="63.88" data-end="70.88" title="1:03">Another common cause is essential hypertension. Prior to diagnosing essential hypertension, </span><span class="segment" data-start="70.88" data-end="78.88" title="1:10">it is important to exclude secondary causes of hypertension. Tell me what you mean by white coat hypertension. </span><span class="segment" data-start="79.88" data-end="86.88" title="1:19">White coat hypertension, which can be induced by both doctors and nurses, is defined as a </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="86.88"><span class="t-timestamp">1:26</span></div>
+  <div class="t-body"><span class="segment" data-start="86.88" data-end="92.88" title="1:26">persistently elevated clinical arterial pressure in combination with a normal ambulatory arterial </span><span class="segment" data-start="92.88" data-end="99.88" title="1:32">pressure. It is usually a benign condition. Before a diagnosis of hypertension is made, </span><span class="segment" data-start="99.88" data-end="106.88" title="1:39">patients should have several blood pressure readings at different times of the day. Obviously, </span><span class="segment" data-start="106.88" data-end="111.88" title="1:46">this is not always possible in the hospital clinic, but some efforts towards this, </span><span class="segment" data-start="111.88" data-end="115.88" title="1:51">such as repeated readings followed by some rest, are possible. </span><span class="segment" data-start="115.88" data-end="120.88" title="1:55">What are the possible causes of secondary hypertension? Is it common? </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="121.88"><span class="t-timestamp">2:01</span></div>
+  <div class="t-body"><span class="segment" data-start="121.88" data-end="128.88" title="2:01">Secondary hypertension is rare and is usually identifiable from the history. It can be split into </span><span class="segment" data-start="128.88" data-end="136.88" title="2:08">endocrine or renal causes. Common endocrine causes include cushing syndrome, cons syndrome, </span><span class="segment" data-start="136.88" data-end="145.88" title="2:16">hypothyroidism and fiochromocytoma. renal causes include renal artery stenosis, glomerulone </span><span class="segment" data-start="145.88" data-end="152.88" title="2:25">fritus and polycystic kidneys. If any of these diagnoses are suspected, refer </span><span class="segment" data-start="152.88" data-end="158.88" title="2:32">or to a specialist clinic would be advised. Assuming this patient has essential hypertension, </span><span class="segment" data-start="158.88" data-end="163.88" title="2:38">you state that you would look for signs of end organ damage. What do you mean by this? </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="165.88"><span class="t-timestamp">2:45</span></div>
+  <div class="t-body"><span class="segment" data-start="165.88" data-end="171.88" title="2:45">In many ways, the effects of hypertension on organs is more important than the hypertension </span><span class="segment" data-start="171.88" data-end="177.88" title="2:51">itself. The principal effect to concern ennecetists should be developing heart failure, </span><span class="segment" data-start="177.88" data-end="184.88" title="2:57">ischemic heart disease and renal failure. These have been associated with an increased </span><span class="segment" data-start="184.88" data-end="189.88" title="3:04">incidence of perioperative complications and form three of the components of </span><span class="segment" data-start="189.88" data-end="195.88" title="3:09">Lees revised cardiac risk index. How do you identify this damage? </span><span class="segment" data-start="197.88" data-end="202.88" title="3:17">Ischemic heart disease can be identified based on a history of angina that has </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="202.88"><span class="t-timestamp">3:22</span></div>
+  <div class="t-body"><span class="segment" data-start="202.88" data-end="209.88" title="3:22">hopefully been investigated using exercise tests and possibly and geography. It may also be </span><span class="segment" data-start="209.88" data-end="215.88" title="3:29">evident on a preoperative ECG. Heart failure can again be identified from the history, </span><span class="segment" data-start="215.88" data-end="222.88" title="3:35">but the gold standard test is an acochardogram. Renal failure is identified by history, </span><span class="segment" data-start="222.88" data-end="227.88" title="3:42">but also by elevated urea and creatinine on routine blood tests. </span><span class="segment" data-start="228.88" data-end="233.88" title="3:48">So are you willing to ennecetize this patient? What is your threshold of blood pressure that you </span><span class="segment" data-start="233.88" data-end="234.88" title="3:53">would accept? </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="235.88"><span class="t-timestamp">3:55</span></div>
+  <div class="t-body"><span class="segment" data-start="235.88" data-end="242.88" title="3:55">This is a controversial area and each decision should be based on a variety of factors relating to both </span><span class="segment" data-start="242.88" data-end="248.88" title="4:02">the patient, their condition and the urgency of the operation. There is little doubt that </span><span class="segment" data-start="248.88" data-end="254.88" title="4:08">this patient needs blood pressure control, but as this surgery is for cancer, I would proceed with the case. </span><span class="segment" data-start="255.88" data-end="260.88" title="4:15">The threshold I would accept for urgent surgery is a systolic blood pressure of less than </span><span class="segment" data-start="260.88" data-end="266.88" title="4:20">180 millimeters of mercury or a diastolic blood pressure of less than 110. </span><span class="segment" data-start="267.88" data-end="269.88" title="4:27">What if you base those figures on? </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="271.88"><span class="t-timestamp">4:31</span></div>
+  <div class="t-body"><span class="segment" data-start="271.88" data-end="276.88" title="4:31">The American Heart Association and American College of Cardiology have produced extensive </span><span class="segment" data-start="276.88" data-end="282.88" title="4:36">recommendations on the perioperative management of hypertension. They have suggested that a blood </span><span class="segment" data-start="282.88" data-end="289.88" title="4:42">pressure of less than 180 over 110 is not associated with an increased perioperative risk. </span><span class="segment" data-start="290.88" data-end="295.88" title="4:50">This finding is supported by a meta-analysis and review article published in the British </span><span class="segment" data-start="295.88" data-end="300.88" title="4:55">Journal of Anesthesia that suggests that whilst there may be a small increased risk with </span><span class="segment" data-start="300.88" data-end="306.88" title="5:00">hypertension of less than 180 over 110, it is not clinically significant. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="307.88"><span class="t-timestamp">5:07</span></div>
+  <div class="t-body"><span class="segment" data-start="307.88" data-end="313.88" title="5:07">Obviously, these numbers should not be used in isolation, but should form part of your </span><span class="segment" data-start="313.88" data-end="315.88" title="5:13">comprehensive preoperative assessment. </span><span class="segment" data-start="316.88" data-end="319.88" title="5:16">What problems are associated with hypertension and anesthesia? </span><span class="segment" data-start="321.88" data-end="325.88" title="5:21">The main risks are that of perioperative myocardial infarction. </span><span class="segment" data-start="326.88" data-end="330.88" title="5:26">These patients often show quite marked cardiovascular ability. </span><span class="segment" data-start="331.88" data-end="336.88" title="5:31">Several authors have shown that the vasodilitation of anesthesia will drop the patient's </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="336.88"><span class="t-timestamp">5:36</span></div>
+  <div class="t-body"><span class="segment" data-start="336.88" data-end="340.88" title="5:36">blood pressure to the same level as a non-hypertensive patient. </span><span class="segment" data-start="341.88" data-end="349.88" title="5:41">For example, a normal intensive patient's blood pressure falls from 120 over 70 to 90 over 40, </span><span class="segment" data-start="350.88" data-end="356.88" title="5:50">whereas a hyper-attensive patient's blood pressure falls from 180 over 90 to 90 over 40, </span><span class="segment" data-start="356.88" data-end="358.88" title="5:56">which is a much wider range. </span><span class="segment" data-start="359.88" data-end="362.88" title="5:59">This leads to what has been described as alpine anesthesia. </span><span class="segment" data-start="363.88" data-end="367.88" title="6:03">If this patient was undergoing non-urgent surgery, what would you do? </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="369.88"><span class="t-timestamp">6:09</span></div>
+  <div class="t-body"><span class="segment" data-start="369.88" data-end="375.88" title="6:09">In that situation, the patient has a blood pressure of greater than 140 over 90, </span><span class="segment" data-start="375.88" data-end="380.88" title="6:15">and this has been considered hypertension requiring treatment by nice. </span><span class="segment" data-start="381.88" data-end="386.88" title="6:21">It should be confirmed on a minimum of two occasions, and lifestyle advice should be </span><span class="segment" data-start="386.88" data-end="390.88" title="6:26">given to the patient regarding diet and smoking cessation. </span><span class="segment" data-start="391.88" data-end="395.88" title="6:31">If this is unsuccessful, drug therapy should then be started. </span><span class="segment" data-start="396.88" data-end="398.88" title="6:36">What drug therapy should be used? </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="400.88"><span class="t-timestamp">6:40</span></div>
+  <div class="t-body"><span class="segment" data-start="400.88" data-end="404.88" title="6:40">Nice recommend an ACE inhibitor if less than 55 years old, </span><span class="segment" data-start="404.88" data-end="410.88" title="6:44">and if they are older than 55, they recommend a thioside diuretic or calcium channel blocker. </span></div>
+</div>
+</div>
+
+<div class="subtitle-bar">
+  <span class="subtitle-text empty" id="subtitle-text">Play audio to see live subtitles&#8230;</span>
+</div>
+
+<script>
+
+const audio    = document.getElementById('audio');
+const allSegs  = Array.from(document.querySelectorAll('.segment'));
+const allBlocks = Array.from(document.querySelectorAll('.t-block'));
+const subtitleEl = document.getElementById('subtitle-text');
+let activeSegEl   = null;
+let activeBlockEl = null;
+let searchMatches = [];
+let searchIdx     = 0;
+
+// Duration display
+audio.addEventListener('loadedmetadata', () => {
+  const m = Math.floor(audio.duration / 60);
+  const s = Math.floor(audio.duration %% 60).toString().padStart(2,'0');
+  document.getElementById('dur').textContent = m + ':' + s;
+});
+
+// Seek helper
+function seekTo(t) {
+  audio.currentTime = t;
+  audio.play();
+}
+
+// Block gutter click
+document.querySelectorAll('.t-gutter').forEach(g => {
+  g.addEventListener('click', () => seekTo(parseFloat(g.dataset.start)));
+});
+
+// Segment click
+allSegs.forEach(s => {
+  s.addEventListener('click', e => {
+    e.stopPropagation();
+    seekTo(parseFloat(s.dataset.start));
+  });
+});
+
+// Real-time tracking
+audio.addEventListener('timeupdate', () => {
+  const t = audio.currentTime;
+
+  // Find active segment (last one whose start <= t)
+  let found = null;
+  for (let i = allSegs.length - 1; i >= 0; i--) {
+    if (parseFloat(allSegs[i].dataset.start) <= t) { found = allSegs[i]; break; }
+  }
+
+  if (found && found !== activeSegEl) {
+    // Clear previous
+    if (activeSegEl) activeSegEl.classList.remove('active');
+    if (activeBlockEl) {
+      activeBlockEl.classList.remove('block-active');
+      const pg = activeBlockEl.querySelector('.t-gutter');
+      if (pg) pg.classList.remove('gutter-active');
+    }
+    // Set new
+    found.classList.add('active');
+    const block = found.closest('.t-block');
+    if (block) {
+      block.classList.add('block-active');
+      const g = block.querySelector('.t-gutter');
+      if (g) g.classList.add('gutter-active');
+      activeBlockEl = block;
+    }
+    activeSegEl = found;
+
+    // Update subtitle
+    subtitleEl.textContent = found.textContent.trim();
+    subtitleEl.classList.remove('empty');
+
+    // Auto-scroll (only when not searching)
+    if (!document.getElementById('search').value) {
+      found.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }
+});
+
+// Search
+const searchInput = document.getElementById('search');
+searchInput.addEventListener('input', runSearch);
+searchInput.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && searchMatches.length) {
+    searchMatches[searchIdx].classList.remove('search-current');
+    searchIdx = (searchIdx + 1) %% searchMatches.length;
+    const el = searchMatches[searchIdx];
+    el.classList.add('search-current');
+    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+});
+
+function runSearch() {
+  const q = searchInput.value.trim().toLowerCase();
+  allSegs.forEach(s => s.classList.remove('search-match','search-current'));
+  searchMatches = [];
+  if (!q) return;
+  allSegs.forEach(s => {
+    if (s.textContent.toLowerCase().includes(q)) {
+      s.classList.add('search-match');
+      searchMatches.push(s);
+    }
+  });
+  if (!searchMatches.length) return;
+  searchIdx = 0;
+  searchMatches[0].classList.add('search-current');
+  searchMatches[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+</script>
+</body>
+</html>

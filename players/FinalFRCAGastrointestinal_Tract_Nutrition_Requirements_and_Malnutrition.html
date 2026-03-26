@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gastrointestinal Tract — Nutrition Requirements and Malnutrition</title>
+<style>
+
+  :root {
+    --accent:    #f97316;
+    --body-bg:   #f1f5f9;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: var(--body-bg);
+    color: #1e293b;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  /* ── Header ── */
+  .header {
+    background: #0f172a;
+    border-bottom: 3px solid var(--accent);
+    padding: 12px 20px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .header-left { flex: 1; min-width: 200px; }
+  .header h1 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #f1f5f9;
+    margin-bottom: 4px;
+    letter-spacing: 0.01em;
+  }
+  .header-sub {
+    font-size: 0.72rem;
+    color: #94a3b8;
+    font-style: italic;
+  }
+  audio {
+    height: 36px;
+    accent-color: var(--accent);
+    flex-shrink: 0;
+  }
+  .back-link {
+    font-size: 0.8rem;
+    color: #94a3b8;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .back-link:hover { color: #60a5fa; }
+
+  /* ── Toolbar ── */
+  .toolbar {
+    background: #1e293b;
+    padding: 7px 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-shrink: 0;
+    border-bottom: 1px solid #334155;
+  }
+  .toolbar input {
+    flex: 1;
+    max-width: 380px;
+    padding: 5px 11px;
+    border: 1px solid #475569;
+    border-radius: 6px;
+    background: #0f172a;
+    color: #e2e8f0;
+    font-size: 0.83rem;
+    outline: none;
+  }
+  .toolbar input:focus { border-color: var(--accent); }
+  .toolbar input::placeholder { color: #64748b; }
+  .stats {
+    font-size: 0.72rem;
+    color: #64748b;
+    white-space: nowrap;
+  }
+
+  /* ── Scroll area ── */
+  .scroll-area {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+  }
+  .scroll-area::-webkit-scrollbar { width: 6px; }
+  .scroll-area::-webkit-scrollbar-track { background: transparent; }
+  .scroll-area::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+
+  /* ── Subtitle bar ── */
+  .subtitle-bar {
+    background: #0f172a;
+    border-top: 2px solid var(--accent);
+    padding: 8px 20px;
+    flex-shrink: 0;
+    min-height: 42px;
+    display: flex;
+    align-items: center;
+  }
+  .subtitle-text {
+    font-size: 0.9rem;
+    color: #e2e8f0;
+    line-height: 1.5;
+    font-style: italic;
+  }
+  .subtitle-text.empty { color: #475569; }
+
+  /* ── Transcript blocks ── */
+  .t-block {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    margin-bottom: 14px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    display: flex;
+  }
+  .t-block.block-active {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px rgba(37,99,235,0.15);
+  }
+  .t-gutter {
+    background: #0f172a;
+    width: 52px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: 14px;
+    cursor: pointer;
+  }
+  .t-gutter:hover { background: #1e293b; }
+  .t-timestamp {
+    font-size: 0.7rem;
+    color: #64748b;
+    font-family: monospace;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+  .t-gutter.gutter-active .t-timestamp { color: var(--accent); }
+  .t-body {
+    flex: 1;
+    padding: 12px 16px;
+    line-height: 1.75;
+    font-size: 0.92rem;
+    color: #1e293b;
+  }
+
+  /* ── Segments ── */
+  .segment {
+    cursor: pointer;
+    border-radius: 3px;
+    transition: background 0.1s;
+  }
+  .segment:hover { background: #eff6ff; }
+  .segment.active {
+    background: #bfdbfe;
+    outline: 2px solid #3b82f6;
+    outline-offset: 1px;
+    border-radius: 3px;
+  }
+  .segment.search-match  { background: #fef9c3; }
+  .segment.search-current { background: #fde047; outline: 2px solid #ca8a04; }
+
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <h1>Gastrointestinal Tract — Nutrition Requirements and Malnutrition</h1>
+    <div class="header-sub">Final FRCA &mdash; Exam Viva Simulation &mdash; Click any phrase to seek</div>
+  </div>
+  <audio id="audio" src="../FinalFRCAGastrointestinal_Tract_Nutrition_Requirements_and_Malnutrition.mp3" controls preload="metadata"></audio>
+  <a class="back-link" href="index.html">&#8592; All Topics</a>
+</div>
+
+<div class="toolbar">
+  <input type="text" id="search" placeholder="Search transcript&#8230; (Enter = next match)">
+  <span class="stats" id="stats">60 segments &nbsp;|&nbsp; <span id="dur">loading&#8230;</span></span>
+</div>
+
+<div class="scroll-area" id="scroll-area">
+<div class="t-block">
+  <div class="t-gutter" data-start="0.0"><span class="t-timestamp">0:00</span></div>
+  <div class="t-body"><span class="segment" data-start="0.0" data-end="5.0" title="0:00">Nutritional requirements and malnutrition. </span><span class="segment" data-start="5.0" data-end="9.0" title="0:05">What is the prevalence of malnutrition? </span><span class="segment" data-start="9.0" data-end="13.0" title="0:09">Malnutrition in the developed world is unexpectedly high. </span><span class="segment" data-start="13.0" data-end="19.0" title="0:13">10% of patients at home with cancer or chronic diseases are malnourished. </span><span class="segment" data-start="19.0" data-end="25.0" title="0:19">This figure rises to between 30 and 60% for hospital inpatients, </span><span class="segment" data-start="25.0" data-end="28.0" title="0:25">wearing up to a quarter of cases it is severe. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="28.0"><span class="t-timestamp">0:28</span></div>
+  <div class="t-body"><span class="segment" data-start="28.0" data-end="33.0" title="0:28">In most cases malnutrition progressively worsens during hospitalisation. </span><span class="segment" data-start="33.0" data-end="39.0" title="0:33">Medical staff therefore must know how to recognise and treat it promptly. </span><span class="segment" data-start="39.0" data-end="43.0" title="0:39">Which patients are most at risk of malnutrition? </span><span class="segment" data-start="43.0" data-end="51.0" title="0:43">The elderly, patients with respiratory disease, inflammatory bowel disease and malignancy, </span><span class="segment" data-start="51.0" data-end="54.0" title="0:51">are at most risk of chronic malnutrition. </span><span class="segment" data-start="54.0" data-end="63.0" title="0:54">In the critical care setting, trauma patients and patients with sepsis are also at a high risk of malnutrition. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="63.0"><span class="t-timestamp">1:03</span></div>
+  <div class="t-body"><span class="segment" data-start="63.0" data-end="71.0" title="1:03">Various factors can cause malnutrition, a reduced appetite due to generalized malaise or nausea </span><span class="segment" data-start="71.0" data-end="76.0" title="1:11">and impaired gut metility, absorption and digestion of food. </span><span class="segment" data-start="76.0" data-end="83.0" title="1:16">Increased protein losses from wounds, for example from fisturally, may also contribute. </span><span class="segment" data-start="83.0" data-end="87.0" title="1:23">How can nutritional status be assessed? </span><span class="segment" data-start="87.0" data-end="94.0" title="1:27">Nutritional status is a multi-dimensional phenomenon that requires several methods of assessment </span><span class="segment" data-start="94.0" data-end="99.0" title="1:34">as there are no tests that have both a high specificity and sensitivity. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="99.0"><span class="t-timestamp">1:39</span></div>
+  <div class="t-body"><span class="segment" data-start="99.0" data-end="108.0" title="1:39">Anthropometric measures are most commonly used as they are non-invasive and easy to obtain in mobile patients. </span><span class="segment" data-start="108.0" data-end="117.0" title="1:48">Height and weight measurements are used to calculate body mass index, providing an amount in kilograms per meter squared. </span><span class="segment" data-start="117.0" data-end="126.0" title="1:57">A normal BMI is considered to be between 18.5 and 25 kilograms per meter squared. </span><span class="segment" data-start="126.0" data-end="137.0" title="2:06">Other anthropometric measures such as mid-arm circumference and thickness of subcutaneous skin folds can also be used to estimate fat and muscle mass. </span><span class="segment" data-start="138.0" data-end="143.0" title="2:18">The general appearance of the patient can also help in assessing adequate nutrition. </span><span class="segment" data-start="143.0" data-end="152.0" title="2:23">Muscle function tests such as hand grip, dynomometry and respiratory muscle strength can also be used. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="152.0"><span class="t-timestamp">2:32</span></div>
+  <div class="t-body"><span class="segment" data-start="152.0" data-end="161.0" title="2:32">Anthropometric measurements are rarely useful in critically ill patients as it is difficult to weigh a patient with poor mobility. </span><span class="segment" data-start="162.0" data-end="170.0" title="2:42">In addition, low protein states are common and lead to a dimmer and water retention causing measurements to be misleading. </span><span class="segment" data-start="170.0" data-end="178.0" title="2:50">Biochemical markers are often used to assess nutritional status but can also be misleading. </span><span class="segment" data-start="178.0" data-end="186.0" title="2:58">The most common measure of protein nutritional status in critically ill patients is the serum level of albumin. </span><span class="segment" data-start="187.0" data-end="200.0" title="3:07">Other biochemical markers linked to nutritional status include pre-albumin, hemoglobin, transferin, complement, serum folate, magnesium and phosphorus. </span><span class="segment" data-start="200.0" data-end="215.0" title="3:20">Low levels of albumin in critically ill patients are likely to reflect prolonged physiological stress as well as nutritional status and may advocate that albumin should be predominantly considered </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="215.0"><span class="t-timestamp">3:35</span></div>
+  <div class="t-body"><span class="segment" data-start="215.0" data-end="222.0" title="3:35">as an indicator of severity of illness rather than an indicator of protein nutritional status. </span><span class="segment" data-start="222.0" data-end="229.0" title="3:42">Decreases in the concentration of pre-albumin are mediated by the same mechanism as albumin. </span><span class="segment" data-start="229.0" data-end="241.0" title="3:49">Pre-albumin has a half-life of five days and is thus a more immediate indicator of physiological stress and nutrition during hospitalization than albumin. </span><span class="segment" data-start="241.0" data-end="246.0" title="4:01">There may therefore be a role for routine monitoring of pre-albumin. </span><span class="segment" data-start="246.0" data-end="251.0" title="4:06">How can the adequacy of nutritional intake be assessed on critical care? </span><span class="segment" data-start="251.0" data-end="256.0" title="4:11">Nutritional adequacy on intensive care is difficult to assess. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="256.0"><span class="t-timestamp">4:16</span></div>
+  <div class="t-body"><span class="segment" data-start="256.0" data-end="268.0" title="4:16">One method uses the energy intake which is usually taken as the kilocalories received on the basis of dietician prescription divided by the resting energy expenditure. </span><span class="segment" data-start="268.0" data-end="286.0" title="4:28">The latter is best measured by indirect calorie symmetry in critically ill patients, whereby oxygen consumption and carbon dioxide production are measured directly and the values used in a standard equation to yield energy expenditure in kilocalories. </span><span class="segment" data-start="286.0" data-end="291.0" title="4:46">Why is nutrition important in critical care? </span><span class="segment" data-start="291.0" data-end="298.0" title="4:51">The nutrition in critically ill patients is associated with increased morbidity and mortality. </span><span class="segment" data-start="298.0" data-end="306.0" title="4:58">In patients receiving mechanical ventilation, it has an adverse effect on all physiological processes. </span><span class="segment" data-start="306.0" data-end="320.0" title="5:06">It increases the risk for infection and pulmonary edema, decreases the phosphorus levels needed for cellular energy production, reduces ventilator redrive and impairs production of surfactant. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="320.0"><span class="t-timestamp">5:20</span></div>
+  <div class="t-body"><span class="segment" data-start="320.0" data-end="333.0" title="5:20">Patients who are undernourished are prone to the complications of a prolonged and difficult course of weaning because of muscle fatigue caused by diaphragmatic and skeletal muscle weakness. </span><span class="segment" data-start="333.0" data-end="342.0" title="5:33">Randomised control trials show that length of stay is reduced if a source of nutrition is established in critically ill patients. </span><span class="segment" data-start="342.0" data-end="350.0" title="5:42">There is also evidence of poorer outcomes in critically ill patients who have limited nutritional reserves prior to admission. </span><span class="segment" data-start="350.0" data-end="368.0" title="5:50">Conversely, some studies have shown that both enteral and parental feeding have been associated with decreased survival in patients with adult respiratory failure or multi-organ system failure with sepsis, but this is yet to be proven. </span><span class="segment" data-start="368.0" data-end="377.0" title="6:08">Overall, however, it is well accepted that nutritional support is a vital part of patient management in critical care units. </span><span class="segment" data-start="377.0" data-end="382.0" title="6:17">What are the nutritional requirements of critically ill patients? </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="382.0"><span class="t-timestamp">6:22</span></div>
+  <div class="t-body"><span class="segment" data-start="382.0" data-end="390.0" title="6:22">An average adult weighing 70 kilos requires about 2000 kilocalories per day. </span><span class="segment" data-start="390.0" data-end="398.0" title="6:30">However, the nutritional requirements of critically ill patients vary widely and are difficult to estimate. </span><span class="segment" data-start="398.0" data-end="407.0" title="6:38">This group of patients usually have an increased basal metabolic rate but are often sedated immobile and ventilated. </span><span class="segment" data-start="407.0" data-end="424.0" title="6:47">The requirements are usually worked out using a variety of guidelines and formulae which take into account multiple factors including age, sex and body size as well as disease state and mechanical ventilation. </span><span class="segment" data-start="424.0" data-end="429.0" title="7:04">Specialised formulae exists for trauma and burns patients. </span><span class="segment" data-start="429.0" data-end="441.0" title="7:09">An early referral to a dietician with critical care experience is vital in managing patients on critical care and ideally feeding regimes should be reviewed daily. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="441.0"><span class="t-timestamp">7:21</span></div>
+  <div class="t-body"><span class="segment" data-start="441.0" data-end="447.0" title="7:21">What happens to the basal metabolic rate in major surgery, burns trauma? </span><span class="segment" data-start="448.0" data-end="461.0" title="7:28">Following major trauma, burns and major surgery, a hypermetabolic response to the injury occurs and energy requirements can initially increase by up to 30%. </span><span class="segment" data-start="461.0" data-end="471.0" title="7:41">This results in a loss of lean body mass, a compromised immune system, delayed wound healing and loss of muscle strength. </span><span class="segment" data-start="471.0" data-end="476.0" title="7:51">Resistance to insulin can develop causing deranged blood sugar control. </span><span class="segment" data-start="476.0" data-end="489.0" title="7:56">Massive fluid shifts due to loss of fluid and electrolytes caused by diarrhea, vomiting, nasogastric drainage and stoma losses, leaky membranes and third space losses. </span><span class="segment" data-start="489.0" data-end="496.0" title="8:09">Catercol amine and cortisol levels are also altered further affecting metabolism. </span></div>
+</div>
+</div>
+
+<div class="subtitle-bar">
+  <span class="subtitle-text empty" id="subtitle-text">Play audio to see live subtitles&#8230;</span>
+</div>
+
+<script>
+
+const audio    = document.getElementById('audio');
+const allSegs  = Array.from(document.querySelectorAll('.segment'));
+const allBlocks = Array.from(document.querySelectorAll('.t-block'));
+const subtitleEl = document.getElementById('subtitle-text');
+let activeSegEl   = null;
+let activeBlockEl = null;
+let searchMatches = [];
+let searchIdx     = 0;
+
+// Duration display
+audio.addEventListener('loadedmetadata', () => {
+  const m = Math.floor(audio.duration / 60);
+  const s = Math.floor(audio.duration %% 60).toString().padStart(2,'0');
+  document.getElementById('dur').textContent = m + ':' + s;
+});
+
+// Seek helper
+function seekTo(t) {
+  audio.currentTime = t;
+  audio.play();
+}
+
+// Block gutter click
+document.querySelectorAll('.t-gutter').forEach(g => {
+  g.addEventListener('click', () => seekTo(parseFloat(g.dataset.start)));
+});
+
+// Segment click
+allSegs.forEach(s => {
+  s.addEventListener('click', e => {
+    e.stopPropagation();
+    seekTo(parseFloat(s.dataset.start));
+  });
+});
+
+// Real-time tracking
+audio.addEventListener('timeupdate', () => {
+  const t = audio.currentTime;
+
+  // Find active segment (last one whose start <= t)
+  let found = null;
+  for (let i = allSegs.length - 1; i >= 0; i--) {
+    if (parseFloat(allSegs[i].dataset.start) <= t) { found = allSegs[i]; break; }
+  }
+
+  if (found && found !== activeSegEl) {
+    // Clear previous
+    if (activeSegEl) activeSegEl.classList.remove('active');
+    if (activeBlockEl) {
+      activeBlockEl.classList.remove('block-active');
+      const pg = activeBlockEl.querySelector('.t-gutter');
+      if (pg) pg.classList.remove('gutter-active');
+    }
+    // Set new
+    found.classList.add('active');
+    const block = found.closest('.t-block');
+    if (block) {
+      block.classList.add('block-active');
+      const g = block.querySelector('.t-gutter');
+      if (g) g.classList.add('gutter-active');
+      activeBlockEl = block;
+    }
+    activeSegEl = found;
+
+    // Update subtitle
+    subtitleEl.textContent = found.textContent.trim();
+    subtitleEl.classList.remove('empty');
+
+    // Auto-scroll (only when not searching)
+    if (!document.getElementById('search').value) {
+      found.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }
+});
+
+// Search
+const searchInput = document.getElementById('search');
+searchInput.addEventListener('input', runSearch);
+searchInput.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && searchMatches.length) {
+    searchMatches[searchIdx].classList.remove('search-current');
+    searchIdx = (searchIdx + 1) %% searchMatches.length;
+    const el = searchMatches[searchIdx];
+    el.classList.add('search-current');
+    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+});
+
+function runSearch() {
+  const q = searchInput.value.trim().toLowerCase();
+  allSegs.forEach(s => s.classList.remove('search-match','search-current'));
+  searchMatches = [];
+  if (!q) return;
+  allSegs.forEach(s => {
+    if (s.textContent.toLowerCase().includes(q)) {
+      s.classList.add('search-match');
+      searchMatches.push(s);
+    }
+  });
+  if (!searchMatches.length) return;
+  searchIdx = 0;
+  searchMatches[0].classList.add('search-current');
+  searchMatches[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+</script>
+</body>
+</html>

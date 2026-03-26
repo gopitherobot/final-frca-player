@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Regional Anaesthesia — Ulnar Median and Radial Nerve Blocks</title>
+<style>
+
+  :root {
+    --accent:    #2563eb;
+    --body-bg:   #f1f5f9;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: var(--body-bg);
+    color: #1e293b;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  /* ── Header ── */
+  .header {
+    background: #0f172a;
+    border-bottom: 3px solid var(--accent);
+    padding: 12px 20px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .header-left { flex: 1; min-width: 200px; }
+  .header h1 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #f1f5f9;
+    margin-bottom: 4px;
+    letter-spacing: 0.01em;
+  }
+  .header-sub {
+    font-size: 0.72rem;
+    color: #94a3b8;
+    font-style: italic;
+  }
+  audio {
+    height: 36px;
+    accent-color: var(--accent);
+    flex-shrink: 0;
+  }
+  .back-link {
+    font-size: 0.8rem;
+    color: #94a3b8;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .back-link:hover { color: #60a5fa; }
+
+  /* ── Toolbar ── */
+  .toolbar {
+    background: #1e293b;
+    padding: 7px 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-shrink: 0;
+    border-bottom: 1px solid #334155;
+  }
+  .toolbar input {
+    flex: 1;
+    max-width: 380px;
+    padding: 5px 11px;
+    border: 1px solid #475569;
+    border-radius: 6px;
+    background: #0f172a;
+    color: #e2e8f0;
+    font-size: 0.83rem;
+    outline: none;
+  }
+  .toolbar input:focus { border-color: var(--accent); }
+  .toolbar input::placeholder { color: #64748b; }
+  .stats {
+    font-size: 0.72rem;
+    color: #64748b;
+    white-space: nowrap;
+  }
+
+  /* ── Scroll area ── */
+  .scroll-area {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+  }
+  .scroll-area::-webkit-scrollbar { width: 6px; }
+  .scroll-area::-webkit-scrollbar-track { background: transparent; }
+  .scroll-area::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+
+  /* ── Subtitle bar ── */
+  .subtitle-bar {
+    background: #0f172a;
+    border-top: 2px solid var(--accent);
+    padding: 8px 20px;
+    flex-shrink: 0;
+    min-height: 42px;
+    display: flex;
+    align-items: center;
+  }
+  .subtitle-text {
+    font-size: 0.9rem;
+    color: #e2e8f0;
+    line-height: 1.5;
+    font-style: italic;
+  }
+  .subtitle-text.empty { color: #475569; }
+
+  /* ── Transcript blocks ── */
+  .t-block {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    margin-bottom: 14px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    display: flex;
+  }
+  .t-block.block-active {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px rgba(37,99,235,0.15);
+  }
+  .t-gutter {
+    background: #0f172a;
+    width: 52px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: 14px;
+    cursor: pointer;
+  }
+  .t-gutter:hover { background: #1e293b; }
+  .t-timestamp {
+    font-size: 0.7rem;
+    color: #64748b;
+    font-family: monospace;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+  .t-gutter.gutter-active .t-timestamp { color: var(--accent); }
+  .t-body {
+    flex: 1;
+    padding: 12px 16px;
+    line-height: 1.75;
+    font-size: 0.92rem;
+    color: #1e293b;
+  }
+
+  /* ── Segments ── */
+  .segment {
+    cursor: pointer;
+    border-radius: 3px;
+    transition: background 0.1s;
+  }
+  .segment:hover { background: #eff6ff; }
+  .segment.active {
+    background: #bfdbfe;
+    outline: 2px solid #3b82f6;
+    outline-offset: 1px;
+    border-radius: 3px;
+  }
+  .segment.search-match  { background: #fef9c3; }
+  .segment.search-current { background: #fde047; outline: 2px solid #ca8a04; }
+
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <h1>Regional Anaesthesia — Ulnar Median and Radial Nerve Blocks</h1>
+    <div class="header-sub">Final FRCA &mdash; Exam Viva Simulation &mdash; Click any phrase to seek</div>
+  </div>
+  <audio id="audio" src="../FinalFRCARegional_Anaesthesia_Ulnar_Median_and_Radial_Nerve_Blocks.mp3" controls preload="metadata"></audio>
+  <a class="back-link" href="index.html">&#8592; All Topics</a>
+</div>
+
+<div class="toolbar">
+  <input type="text" id="search" placeholder="Search transcript&#8230; (Enter = next match)">
+  <span class="stats" id="stats">90 segments &nbsp;|&nbsp; <span id="dur">loading&#8230;</span></span>
+</div>
+
+<div class="scroll-area" id="scroll-area">
+<div class="t-block">
+  <div class="t-gutter" data-start="0.0"><span class="t-timestamp">0:00</span></div>
+  <div class="t-body"><span class="segment" data-start="0.0" data-end="2.4" title="0:00">ulnar, median and radial nerve blocks. </span><span class="segment" data-start="4.28" data-end="9.88" title="0:04">The nerves of the arm can be blocked at a number of sites distal to the brachial plexus. </span><span class="segment" data-start="10.36" data-end="15.28" title="0:10">This podcast describes mid-humoral, elbow and wrist blocks. </span><span class="segment" data-start="15.68" data-end="19.64" title="0:15">Brachial plexus blocks are available as a separate podcast. </span><span class="segment" data-start="20.52" data-end="24.12" title="0:20">What are the safety considerations for performing all upper limb blocks? </span><span class="segment" data-start="24.4" data-end="28.2" title="0:24">These are relevant to all the blocks which are described in this podcast. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="29.16"><span class="t-timestamp">0:29</span></div>
+  <div class="t-body"><span class="segment" data-start="29.16" data-end="32.32" title="0:29">You should start by answering any regional block question </span><span class="segment" data-start="32.32" data-end="35.8" title="0:32">with some version of the safety considerations detailed below. </span><span class="segment" data-start="36.92" data-end="41.56" title="0:36">There are general safety measures which I adhere to for all regional techniques. </span><span class="segment" data-start="42.08" data-end="45.96" title="0:42">These include a relevant medical and anesthetic history, </span><span class="segment" data-start="46.16" data-end="52.04" title="0:46">including any drug allergies, patient and surgical consent to the block is required. </span><span class="segment" data-start="52.72" data-end="58.76" title="0:52">A history of infection at the site of injection or recent anti-coagulant use </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="58.76"><span class="t-timestamp">0:58</span></div>
+  <div class="t-body"><span class="segment" data-start="58.76" data-end="64.12" title="0:58">may be a relative or absolute contraindication to the use of regional anesthesia </span><span class="segment" data-start="64.12" data-end="69.52" title="1:04">depending upon other patient factors, for example, other severe comorbidity. </span><span class="segment" data-start="70.28" data-end="74.08" title="1:10">Intravenous access is required in the contralateral arm </span><span class="segment" data-start="74.08" data-end="78.52" title="1:14">and full airway and resuscitation equipment must be available. </span><span class="segment" data-start="79.32" data-end="84.24" title="1:19">Minimum AAGBI standard monitoring should always be attached. </span><span class="segment" data-start="85.4" data-end="87.24" title="1:25">How would you perform a mid-humoral block? </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="89.28"><span class="t-timestamp">1:29</span></div>
+  <div class="t-body"><span class="segment" data-start="89.28" data-end="95.12" title="1:29">The mid-humoral block can be used for elbow, forearm or hand surgery. </span><span class="segment" data-start="95.8" data-end="99.6" title="1:35">All four nerves can be blocked using a single puncture site. </span><span class="segment" data-start="100.44" data-end="104.08" title="1:40">The patient is positioned supine or semi-recombant </span><span class="segment" data-start="104.36" data-end="107.32" title="1:44">with the arm to be blocked flexed at the elbow </span><span class="segment" data-start="107.48" data-end="110.52" title="1:47">and the shoulder abducted to 90 degrees. </span><span class="segment" data-start="111.08" data-end="116.76" title="1:51">I ask the patient to touch their head and then relax their arm back onto their pillow. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="118.44"><span class="t-timestamp">1:58</span></div>
+  <div class="t-body"><span class="segment" data-start="118.44" data-end="122.84" title="1:58">The anatomical landmarks for this block are the brachial artery </span><span class="segment" data-start="123.0" data-end="127.48" title="2:03">and the bicipetal groove at the level of the deltoid muscle insertion. </span><span class="segment" data-start="128.2" data-end="132.32" title="2:08">I find it helpful to draw a line across the artery at this level. </span><span class="segment" data-start="133.12" data-end="137.68" title="2:13">I use a 50-millimeter short beveled, insulated needle, </span><span class="segment" data-start="137.68" data-end="141.04" title="2:17">a nerve stimulator and an aseptic technique. </span><span class="segment" data-start="142.32" data-end="147.12" title="2:22">The median and ulnar nerves lie close to the brachial artery at this level </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="147.12"><span class="t-timestamp">2:27</span></div>
+  <div class="t-body"><span class="segment" data-start="147.12" data-end="151.44" title="2:27">and more superficially than the radial and muscular cutaneous nerves. </span><span class="segment" data-start="152.4" data-end="155.04" title="2:32">My approach to the four nerves is as follows. </span><span class="segment" data-start="155.84" data-end="161.84" title="2:35">The median nerve, stimulation of the median nerve causes flexion of the fingers, </span><span class="segment" data-start="162.48" data-end="167.92" title="2:42">this may be elicited by inserting the needle above and parallel to the artery </span><span class="segment" data-start="167.92" data-end="170.08" title="2:47">and then directing it proximally. </span><span class="segment" data-start="171.28" data-end="177.52" title="2:51">The muscular cutaneous nerve is blocked by advancing the needle deep to the median nerve </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="177.52"><span class="t-timestamp">2:57</span></div>
+  <div class="t-body"><span class="segment" data-start="177.52" data-end="182.48" title="2:57">over the superior border of the humerus until elbow flexion is elicited. </span><span class="segment" data-start="183.76" data-end="187.76" title="3:03">The ulnar nerve can be stimulated by withdrawing the needle </span><span class="segment" data-start="187.76" data-end="190.72" title="3:07">and redirecting inferior to the artery. </span><span class="segment" data-start="191.36" data-end="196.16" title="3:11">Thumb-adduction and wrist flexion indicate ulnar nerve stimulation. </span><span class="segment" data-start="197.52" data-end="203.68" title="3:17">The radial nerve lies deep to the ulnar and is found by advancing the needle around the </span><span class="segment" data-start="203.68" data-end="208.88" title="3:23">inferior border of the humerus and eliciting finger and thumb extension. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="210.4"><span class="t-timestamp">3:30</span></div>
+  <div class="t-body"><span class="segment" data-start="210.4" data-end="214.96" title="3:30">Six to ten mils of local anaesthetic can be used to block each nerve. </span><span class="segment" data-start="215.76" data-end="220.4" title="3:35">Postoperative analgesia can be provided by using a more concentrated </span><span class="segment" data-start="220.4" data-end="224.96" title="3:40">local anaesthetic solution to block the nerve, covering most of the operation site. </span><span class="segment" data-start="225.84" data-end="231.2" title="3:45">The most common complication of mid-humeral block is brachial artery puncture. </span><span class="segment" data-start="232.0" data-end="233.44" title="3:52">How would you perform an elbow block? </span><span class="segment" data-start="235.84" data-end="241.92" title="3:55">I position the patient supine or semi-recombant with their arm by their side, </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="241.92"><span class="t-timestamp">4:01</span></div>
+  <div class="t-body"><span class="segment" data-start="241.92" data-end="247.36" title="4:01">slightly abducted and supinated, i.e. with their palm uppermost. </span><span class="segment" data-start="248.08" data-end="253.6" title="4:08">This is after I have completed the safety measures I follow for all patients having a regional block. </span><span class="segment" data-start="254.64" data-end="261.36" title="4:14">The elbow block is most commonly used for forearm and hand surgery and to supplement a patchy </span><span class="segment" data-start="261.36" data-end="268.48" title="4:21">brachial plexus block. The landmarks I use to perform an elbow block are the flexion crease of </span><span class="segment" data-start="268.48" data-end="275.92" title="4:28">the elbow, the brachial artery, biceps tendon and the medial and lateral epicondiles. </span><span class="segment" data-start="277.36" data-end="285.76" title="4:37">My approach to the elbow block uses a nerve stimulator, a 22 gauge, 50 mm insulated needle </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="285.76"><span class="t-timestamp">4:45</span></div>
+  <div class="t-body"><span class="segment" data-start="285.76" data-end="293.04" title="4:45">and an aceptic technique. Five to eight mils of an appropriate local anaesthetic should be injected </span><span class="segment" data-start="293.04" data-end="301.6" title="4:53">around each nerve. To find the median nerve, I palpate the brachial artery and insert the needle </span><span class="segment" data-start="301.6" data-end="307.44" title="5:01">just medial to it. You may feel a click as the needle passes through the deep fascia. </span><span class="segment" data-start="308.24" data-end="314.08" title="5:08">Finger flexion and thumb opposition indicate that the median nerve has been stimulated. </span><span class="segment" data-start="315.28" data-end="322.4" title="5:15">The medial cutaneous nerve of the forearm, which supplies the skin on the medial aspect of the forearm, </span><span class="segment" data-start="322.4" data-end="328.88" title="5:22">is blocked by infiltrating subcutaneously along the medial border of the biceps tendon </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="328.88"><span class="t-timestamp">5:28</span></div>
+  <div class="t-body"><span class="segment" data-start="328.88" data-end="336.48" title="5:28">after median nerve blockade. To block the radial nerve, I palpate the groove between biceps </span><span class="segment" data-start="336.48" data-end="343.04" title="5:36">and brachial radialis tendons and insert my needle two centimeters above the flexion crease. </span><span class="segment" data-start="343.92" data-end="349.6" title="5:43">The needle is directed towards the lateral epicondile and thumb extension elicited. </span><span class="segment" data-start="351.6" data-end="357.04" title="5:51">The lateral cutaneous nerve of the forearm is blocked in a similar way to the medial, </span><span class="segment" data-start="357.6" data-end="364.24" title="5:57">on withdrawal from the radial nerve block, I infiltrate along the lateral border of the biceps tendon. </span><span class="segment" data-start="365.6" data-end="372.16" title="6:05">Finally, to block the ulnar nerve, the arm should be flexed at the elbow and positioned across </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="372.16"><span class="t-timestamp">6:12</span></div>
+  <div class="t-body"><span class="segment" data-start="372.16" data-end="378.72" title="6:12">the patient's body. The ulnar groove is palpated and the needle inserted one to two </span><span class="segment" data-start="378.72" data-end="386.24" title="6:18">centimeters proximal to the medial epicondile and in line with the ulnar groove. A motor response </span><span class="segment" data-start="386.24" data-end="392.96" title="6:26">or parathesia are adequate for identification of the nerve, only five mills of local anesthetic </span><span class="segment" data-start="392.96" data-end="401.28" title="6:32">is then injected. The posterior cutaneous nerve of the forearm can then be blocked by subcutaneous </span><span class="segment" data-start="401.28" data-end="407.76" title="6:41">infiltration between the electron on and lateral epicondile. How do you perform a wrist block? </span><span class="segment" data-start="408.08" data-end="417.12" title="6:48">wrist blocks can be used with wrist tornocase to perform hand surgery. They are more commonly </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="417.12"><span class="t-timestamp">6:57</span></div>
+  <div class="t-body"><span class="segment" data-start="417.12" data-end="424.8" title="6:57">used to supplement patchy auxiliary blocks as a supplement to general anesthesia and to provide </span><span class="segment" data-start="424.8" data-end="432.56" title="7:04">postoperative analgesia. The arm is positioned as for an elbow block, the arm is abducted and the </span><span class="segment" data-start="432.56" data-end="439.36" title="7:12">hand supernated. The same safety considerations apply as for mid-humeral and elbow blocks. </span><span class="segment" data-start="440.4" data-end="448.48" title="7:20">A nerve stimulator is not normally used. A 25 gauge 25 millimeter needle is used rather than a </span><span class="segment" data-start="448.48" data-end="456.96" title="7:28">regional block needle. To block the medial nerve, I insert a 25 gauge 25 millimeter needle </span><span class="segment" data-start="457.04" data-end="463.92" title="7:37">in between the tendons of parmaris longus and flexor-carpeuradiolus at the level of the parma </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="463.92"><span class="t-timestamp">7:43</span></div>
+  <div class="t-body"><span class="segment" data-start="463.92" data-end="470.24" title="7:43">crease. If parmaris longus is not present, then I would insert the needle 5 millimeters </span><span class="segment" data-start="470.24" data-end="478.0" title="7:50">medial to flexor-carpeuradiolus. As you pass through the flexor retinaculum, you feel a loss of </span><span class="segment" data-start="478.0" data-end="485.68" title="7:58">resistance. At this point, three to five mills of local anesthetic is injected. The parma </span><span class="segment" data-start="485.68" data-end="491.52" title="8:05">cutaneous branch of the median nerve can be blocked by injecting a further 2 to 3 mills of </span><span class="segment" data-start="491.52" data-end="499.28" title="8:11">local anesthetic as the needle is withdrawn. The ulnar nerve is blocked by inserting the same needle </span><span class="segment" data-start="499.28" data-end="506.08" title="8:19">on the medial aspect of the wrist, underneath the tendon of flexor-carpeuradiolus in a lateral </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="506.08"><span class="t-timestamp">8:26</span></div>
+  <div class="t-body"><span class="segment" data-start="506.08" data-end="513.52" title="8:26">direction. Three mills of local anesthetic should be injected at a depth of approximately 1 centimeter. </span><span class="segment" data-start="514.24" data-end="520.16" title="8:34">Further subcutaneous infiltration around the ulnar aspect of the wrist will block the </span><span class="segment" data-start="520.16" data-end="527.12" title="8:40">dorsal cutaneous branch of the ulnar nerve. The radial nerve has no motor function at the level </span><span class="segment" data-start="527.12" data-end="534.16" title="8:47">of the wrist. A field block of the terminal branches can be achieved by infiltrating 5 to 8 </span><span class="segment" data-start="534.16" data-end="541.44" title="8:54">mills of local anesthetic over the radial aspect of the wrist. The arm should be abducted and the </span><span class="segment" data-start="541.44" data-end="544.88" title="9:01">hand slightly pronated. </span></div>
+</div>
+</div>
+
+<div class="subtitle-bar">
+  <span class="subtitle-text empty" id="subtitle-text">Play audio to see live subtitles&#8230;</span>
+</div>
+
+<script>
+
+const audio    = document.getElementById('audio');
+const allSegs  = Array.from(document.querySelectorAll('.segment'));
+const allBlocks = Array.from(document.querySelectorAll('.t-block'));
+const subtitleEl = document.getElementById('subtitle-text');
+let activeSegEl   = null;
+let activeBlockEl = null;
+let searchMatches = [];
+let searchIdx     = 0;
+
+// Duration display
+audio.addEventListener('loadedmetadata', () => {
+  const m = Math.floor(audio.duration / 60);
+  const s = Math.floor(audio.duration %% 60).toString().padStart(2,'0');
+  document.getElementById('dur').textContent = m + ':' + s;
+});
+
+// Seek helper
+function seekTo(t) {
+  audio.currentTime = t;
+  audio.play();
+}
+
+// Block gutter click
+document.querySelectorAll('.t-gutter').forEach(g => {
+  g.addEventListener('click', () => seekTo(parseFloat(g.dataset.start)));
+});
+
+// Segment click
+allSegs.forEach(s => {
+  s.addEventListener('click', e => {
+    e.stopPropagation();
+    seekTo(parseFloat(s.dataset.start));
+  });
+});
+
+// Real-time tracking
+audio.addEventListener('timeupdate', () => {
+  const t = audio.currentTime;
+
+  // Find active segment (last one whose start <= t)
+  let found = null;
+  for (let i = allSegs.length - 1; i >= 0; i--) {
+    if (parseFloat(allSegs[i].dataset.start) <= t) { found = allSegs[i]; break; }
+  }
+
+  if (found && found !== activeSegEl) {
+    // Clear previous
+    if (activeSegEl) activeSegEl.classList.remove('active');
+    if (activeBlockEl) {
+      activeBlockEl.classList.remove('block-active');
+      const pg = activeBlockEl.querySelector('.t-gutter');
+      if (pg) pg.classList.remove('gutter-active');
+    }
+    // Set new
+    found.classList.add('active');
+    const block = found.closest('.t-block');
+    if (block) {
+      block.classList.add('block-active');
+      const g = block.querySelector('.t-gutter');
+      if (g) g.classList.add('gutter-active');
+      activeBlockEl = block;
+    }
+    activeSegEl = found;
+
+    // Update subtitle
+    subtitleEl.textContent = found.textContent.trim();
+    subtitleEl.classList.remove('empty');
+
+    // Auto-scroll (only when not searching)
+    if (!document.getElementById('search').value) {
+      found.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }
+});
+
+// Search
+const searchInput = document.getElementById('search');
+searchInput.addEventListener('input', runSearch);
+searchInput.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && searchMatches.length) {
+    searchMatches[searchIdx].classList.remove('search-current');
+    searchIdx = (searchIdx + 1) %% searchMatches.length;
+    const el = searchMatches[searchIdx];
+    el.classList.add('search-current');
+    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+});
+
+function runSearch() {
+  const q = searchInput.value.trim().toLowerCase();
+  allSegs.forEach(s => s.classList.remove('search-match','search-current'));
+  searchMatches = [];
+  if (!q) return;
+  allSegs.forEach(s => {
+    if (s.textContent.toLowerCase().includes(q)) {
+      s.classList.add('search-match');
+      searchMatches.push(s);
+    }
+  });
+  if (!searchMatches.length) return;
+  searchIdx = 0;
+  searchMatches[0].classList.add('search-current');
+  searchMatches[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+</script>
+</body>
+</html>

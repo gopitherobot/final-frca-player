@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cardiac Anaesthesia — Post-operative Management of MI</title>
+<style>
+
+  :root {
+    --accent:    #ef4444;
+    --body-bg:   #f1f5f9;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: var(--body-bg);
+    color: #1e293b;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  /* ── Header ── */
+  .header {
+    background: #0f172a;
+    border-bottom: 3px solid var(--accent);
+    padding: 12px 20px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .header-left { flex: 1; min-width: 200px; }
+  .header h1 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #f1f5f9;
+    margin-bottom: 4px;
+    letter-spacing: 0.01em;
+  }
+  .header-sub {
+    font-size: 0.72rem;
+    color: #94a3b8;
+    font-style: italic;
+  }
+  audio {
+    height: 36px;
+    accent-color: var(--accent);
+    flex-shrink: 0;
+  }
+  .back-link {
+    font-size: 0.8rem;
+    color: #94a3b8;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .back-link:hover { color: #60a5fa; }
+
+  /* ── Toolbar ── */
+  .toolbar {
+    background: #1e293b;
+    padding: 7px 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-shrink: 0;
+    border-bottom: 1px solid #334155;
+  }
+  .toolbar input {
+    flex: 1;
+    max-width: 380px;
+    padding: 5px 11px;
+    border: 1px solid #475569;
+    border-radius: 6px;
+    background: #0f172a;
+    color: #e2e8f0;
+    font-size: 0.83rem;
+    outline: none;
+  }
+  .toolbar input:focus { border-color: var(--accent); }
+  .toolbar input::placeholder { color: #64748b; }
+  .stats {
+    font-size: 0.72rem;
+    color: #64748b;
+    white-space: nowrap;
+  }
+
+  /* ── Scroll area ── */
+  .scroll-area {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+  }
+  .scroll-area::-webkit-scrollbar { width: 6px; }
+  .scroll-area::-webkit-scrollbar-track { background: transparent; }
+  .scroll-area::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+
+  /* ── Subtitle bar ── */
+  .subtitle-bar {
+    background: #0f172a;
+    border-top: 2px solid var(--accent);
+    padding: 8px 20px;
+    flex-shrink: 0;
+    min-height: 42px;
+    display: flex;
+    align-items: center;
+  }
+  .subtitle-text {
+    font-size: 0.9rem;
+    color: #e2e8f0;
+    line-height: 1.5;
+    font-style: italic;
+  }
+  .subtitle-text.empty { color: #475569; }
+
+  /* ── Transcript blocks ── */
+  .t-block {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    margin-bottom: 14px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    display: flex;
+  }
+  .t-block.block-active {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px rgba(37,99,235,0.15);
+  }
+  .t-gutter {
+    background: #0f172a;
+    width: 52px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: 14px;
+    cursor: pointer;
+  }
+  .t-gutter:hover { background: #1e293b; }
+  .t-timestamp {
+    font-size: 0.7rem;
+    color: #64748b;
+    font-family: monospace;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+  .t-gutter.gutter-active .t-timestamp { color: var(--accent); }
+  .t-body {
+    flex: 1;
+    padding: 12px 16px;
+    line-height: 1.75;
+    font-size: 0.92rem;
+    color: #1e293b;
+  }
+
+  /* ── Segments ── */
+  .segment {
+    cursor: pointer;
+    border-radius: 3px;
+    transition: background 0.1s;
+  }
+  .segment:hover { background: #eff6ff; }
+  .segment.active {
+    background: #bfdbfe;
+    outline: 2px solid #3b82f6;
+    outline-offset: 1px;
+    border-radius: 3px;
+  }
+  .segment.search-match  { background: #fef9c3; }
+  .segment.search-current { background: #fde047; outline: 2px solid #ca8a04; }
+
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <h1>Cardiac Anaesthesia — Post-operative Management of MI</h1>
+    <div class="header-sub">Final FRCA &mdash; Exam Viva Simulation &mdash; Click any phrase to seek</div>
+  </div>
+  <audio id="audio" src="../FinalFRCACardiac_Anaesthesia_Post-operative_Management_of_MI.mp3" controls preload="metadata"></audio>
+  <a class="back-link" href="index.html">&#8592; All Topics</a>
+</div>
+
+<div class="toolbar">
+  <input type="text" id="search" placeholder="Search transcript&#8230; (Enter = next match)">
+  <span class="stats" id="stats">88 segments &nbsp;|&nbsp; <span id="dur">loading&#8230;</span></span>
+</div>
+
+<div class="scroll-area" id="scroll-area">
+<div class="t-block">
+  <div class="t-gutter" data-start="0.0"><span class="t-timestamp">0:00</span></div>
+  <div class="t-body"><span class="segment" data-start="0.0" data-end="6.44" title="0:00">Post-operative management of MI. A 46-year-old man who has no past medical history is having </span><span class="segment" data-start="6.44" data-end="11.24" title="0:06">a routine knee arthroscopy. He is fit and active and injured his knee while running a </span><span class="segment" data-start="11.24" data-end="18.32" title="0:11">half marathon. During the procedure, you notice a change in his ECG and he now has T-Wave </span><span class="segment" data-start="18.32" data-end="25.4" title="0:18">and version on the monitor. He has not had a 12-lead ECG prior to surgery. </span><span class="segment" data-start="25.4" data-end="31.24" title="0:25">What do you do? Start with the ABC approach. </span><span class="segment" data-start="31.24" data-end="37.52" title="0:31">My first move would be to assess his airway and breathing. I would increase his FIO2. If </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="37.52"><span class="t-timestamp">0:37</span></div>
+  <div class="t-body"><span class="segment" data-start="37.52" data-end="43.52" title="0:37">he is breathing spontaneously through an LMA, I would ensure his airway was still patent </span><span class="segment" data-start="43.52" data-end="49.4" title="0:43">and I would check his oxygen saturation and expired carbon dioxide levels. If there </span><span class="segment" data-start="49.4" data-end="55.28" title="0:49">were any suggestion that his ventilation was inadequate, I would elect to ventilate him. </span><span class="segment" data-start="55.28" data-end="59.84" title="0:55">I would then check his pulse rate and blood pressure. I would aim to keep his pulse rate </span><span class="segment" data-start="59.84" data-end="66.24" title="0:59">to less than 100 and keep his blood pressure normotensive for him. I would ensure adequate </span><span class="segment" data-start="66.24" data-end="71.24" title="1:06">analgesia and inform the surgeons that there is a problem with a patient and that they </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="71.24"><span class="t-timestamp">1:11</span></div>
+  <div class="t-body"><span class="segment" data-start="71.24" data-end="75.48" title="1:11">should aim to finish the surgery as soon as he is practical. </span><span class="segment" data-start="75.48" data-end="81.08" title="1:15">What factors are associated with postoperative myocardial ischemia? </span><span class="segment" data-start="81.08" data-end="86.32" title="1:21">There are three factors that are associated with myocardial ischemia in the postoperative </span><span class="segment" data-start="86.32" data-end="95.52" title="1:26">period and these are pain, hypothermia and anemia. All of these will increase the heart rate, </span><span class="segment" data-start="95.52" data-end="102.48" title="1:35">activate sympathetic tone and increase myocardial oxygen consumption in the presence of decreased </span><span class="segment" data-start="102.48" data-end="104.48" title="1:42">oxygen delivery. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="104.48"><span class="t-timestamp">1:44</span></div>
+  <div class="t-body"><span class="segment" data-start="104.48" data-end="107.88" title="1:44">What would you ask for when the patient is in recovery? </span><span class="segment" data-start="107.88" data-end="114.52" title="1:47">Start with the usual handover and then move on to the specifics for this patient. </span><span class="segment" data-start="114.52" data-end="120.68" title="1:54">I would ask for full monitoring of this patient in recovery, comprising ECG, blood pressure </span><span class="segment" data-start="120.68" data-end="126.88" title="2:00">and oxygen saturation. I would inform the recovery staff of the events occurring in theatre </span><span class="segment" data-start="126.88" data-end="132.6" title="2:06">and ask for a 12 lead ECG to be obtained. I would continue to ensure that he was not </span><span class="segment" data-start="132.6" data-end="138.08" title="2:12">tacky cardic by ensuring good analgesia and I would keep his blood pressure within normal </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="138.08"><span class="t-timestamp">2:18</span></div>
+  <div class="t-body"><span class="segment" data-start="138.08" data-end="144.84" title="2:18">limits for him. When the patient is able to cooperate, I would ask the patient specifically </span><span class="segment" data-start="144.84" data-end="150.94" title="2:24">about the presence of chest pain or dyspnea. I would also check a tropone in level and </span><span class="segment" data-start="150.94" data-end="153.04" title="2:30">a full blood count. </span><span class="segment" data-start="153.04" data-end="158.16" title="2:33">How do you diagnose postoperative myocardial infarction? </span><span class="segment" data-start="158.16" data-end="164.68" title="2:38">Postoperative myocardial infarction is diagnosed by a rise in troponing levels plus one or more </span><span class="segment" data-start="164.68" data-end="170.88" title="2:44">other signs such as new ischemic symptoms such as chest pain or shortness of breath, new </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="170.88"><span class="t-timestamp">2:50</span></div>
+  <div class="t-body"><span class="segment" data-start="170.88" data-end="177.8" title="2:50">pathological cue waves on the ECG, new wall motion abnormality seen on echo or myocardial </span><span class="segment" data-start="177.8" data-end="181.96" title="2:57">perfusion imaging or need for coronary intervention. </span><span class="segment" data-start="181.96" data-end="186.6" title="3:01">The 12 lead ECG obtained in recovery shows deep tea wave and version across the anterior </span><span class="segment" data-start="186.6" data-end="189.88" title="3:06">chest leads. What would you do next? </span><span class="segment" data-start="189.88" data-end="195.32" title="3:09">Think about where he should be managed, who by and how. </span><span class="segment" data-start="195.32" data-end="201.72" title="3:15">This is an abnormal ECG consistent with acute myocardial ischemia, so this patient will </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="201.72"><span class="t-timestamp">3:21</span></div>
+  <div class="t-body"><span class="segment" data-start="201.72" data-end="208.16" title="3:21">need further assessment and treatment. I would contact the cardiologist on call and arrange </span><span class="segment" data-start="208.16" data-end="214.0" title="3:28">for this patient to be admitted to a medical area where ECG monitoring could be continued. </span><span class="segment" data-start="214.0" data-end="219.16" title="3:34">He will need serial ECGs and serial troponins. </span><span class="segment" data-start="219.16" data-end="226.2" title="3:39">Generally, the medical management of a non-ST elevation MI involves medical stabilization and </span><span class="segment" data-start="226.2" data-end="234.44" title="3:46">risk stratification, whereas ST elevation MI requires repofusion therapy with antifibrinalytics </span><span class="segment" data-start="234.44" data-end="241.12" title="3:54">or percutaneous coronary intervention. Treatment options in the early postoperative period may </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="241.12"><span class="t-timestamp">4:01</span></div>
+  <div class="t-body"><span class="segment" data-start="241.12" data-end="244.88" title="4:01">be limited by the risk of surgical site bleeding. </span><span class="segment" data-start="244.88" data-end="250.08" title="4:04">Can you tell me about the revised Goldman cardiac risk index? </span><span class="segment" data-start="250.08" data-end="256.84" title="4:10">The revised Goldman cardiac risk index is a combination of six independent predictors </span><span class="segment" data-start="256.84" data-end="262.56" title="4:16">that are used to stratify a patient's risk of major cardiovascular complications following </span><span class="segment" data-start="262.56" data-end="269.92" title="4:22">non-cardiac surgery. The independent predictors are high risk surgery, a history of a schema </span><span class="segment" data-start="269.92" data-end="277.08" title="4:29">heart disease, a history of heart failure, a history of cerebral vascular disease, diabetics </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="277.08"><span class="t-timestamp">4:37</span></div>
+  <div class="t-body"><span class="segment" data-start="277.08" data-end="282.92" title="4:37">requiring insulin and a raised pre-operative serum creatinine. </span><span class="segment" data-start="282.92" data-end="289.8" title="4:42">With no risk factors, the risk of cardiovascular complications is less than 1%. With one risk </span><span class="segment" data-start="289.8" data-end="297.36" title="4:49">factor, the risk is about 1%, with two risk factors, it jumps to 7%, and with three or </span><span class="segment" data-start="297.36" data-end="302.72" title="4:57">more, the risk is 11%. What factors would suggest this man may need urgent </span><span class="segment" data-start="302.72" data-end="304.04" title="5:02">PCI? </span><span class="segment" data-start="304.04" data-end="308.2" title="5:04">This is asking about patient factors that would urge you to call for urgent help from the </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="308.2"><span class="t-timestamp">5:08</span></div>
+  <div class="t-body"><span class="segment" data-start="308.2" data-end="311.64" title="5:08">cardiologist. </span><span class="segment" data-start="311.64" data-end="318.64" title="5:11">If he were hemodynamically unstable or showed signs of cardiogenic shock, then urgent percutaneous </span><span class="segment" data-start="318.64" data-end="324.72" title="5:18">coronary intervention would be warranted. In the absence of these signs, ongoing ischemia </span><span class="segment" data-start="324.72" data-end="331.0" title="5:24">on the ECG, despite medical management, would also prompt more urgent intervention. </span><span class="segment" data-start="331.0" data-end="335.84" title="5:31">Are there any drugs that you could give him recovery that may improve outcome? </span><span class="segment" data-start="335.84" data-end="341.52" title="5:35">Asprin has been shown to reduce cardiac events in patients with acute coronary syndromes. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="341.52"><span class="t-timestamp">5:41</span></div>
+  <div class="t-body"><span class="segment" data-start="341.52" data-end="347.04" title="5:41">It also has an anti-inflammatory action, which in addition to its anti-platelet effect, </span><span class="segment" data-start="347.04" data-end="352.88" title="5:47">may be beneficial in patients with unstable plaques in the coronary arteries. Beta blockers </span><span class="segment" data-start="352.88" data-end="359.0" title="5:52">can also be given. The effect of beta blockers is to reduce the heart rate, blood pressure, </span><span class="segment" data-start="359.0" data-end="365.64" title="5:59">and myocardial contractility. This may help to improve myocardial oxygen balance, and </span><span class="segment" data-start="365.64" data-end="372.88" title="6:05">may reduce the likelihood of plaque disruption. Beta blockers also have anti-aridmic properties. </span><span class="segment" data-start="372.88" data-end="380.52" title="6:12">A GTN infusion can be started, titrated to the patient's blood pressure. Vaiso dilatation </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="380.52"><span class="t-timestamp">6:20</span></div>
+  <div class="t-body"><span class="segment" data-start="380.52" data-end="385.2" title="6:20">will improve the blood flow to the ischemic part of the macardium, and may limit the </span><span class="segment" data-start="385.2" data-end="391.68" title="6:25">damage that occurs. There has been no proven survival benefit for using nitroglycerin, </span><span class="segment" data-start="391.68" data-end="397.28" title="6:31">but it may be helpful for symptomatic relief if the patient has chest pain, and may resolve </span><span class="segment" data-start="397.28" data-end="402.84" title="6:37">ongoing ST changes on the ECG. Anti-calculation with unfractionated </span><span class="segment" data-start="402.84" data-end="408.88" title="6:42">heparin is indicated as the risk of plaque rupture is high, and the bleeding risks are acceptable </span><span class="segment" data-start="408.88" data-end="415.08" title="6:48">at the surgical site. In patients following neurosurgery, for example, heparin would </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="415.08"><span class="t-timestamp">6:55</span></div>
+  <div class="t-body"><span class="segment" data-start="415.08" data-end="420.92" title="6:55">be absolutely contraindicated, whereas following our throscopy, the risks and consequences </span><span class="segment" data-start="420.92" data-end="427.36" title="7:00">of bleeding are significantly less. During an acute MI, there is plaque instability, which </span><span class="segment" data-start="427.36" data-end="434.2" title="7:07">leads to tissue factor expression and subsequent thrombin generation. Unfractionated heparin binds </span><span class="segment" data-start="434.2" data-end="440.0" title="7:14">to anti-thrombin 3 and thus acts as an indirect thrombin inhibitor. </span><span class="segment" data-start="440.0" data-end="444.52" title="7:20">How common is postoperative macardium fraction? </span><span class="segment" data-start="444.52" data-end="450.4" title="7:24">In low-risk patients, without a history of coronary artery disease, the incidence of perioperative </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="450.4"><span class="t-timestamp">7:30</span></div>
+  <div class="t-body"><span class="segment" data-start="450.4" data-end="458.36" title="7:30">macardial infarction is about 1%. In high-risk patients with a history of coronary artery disease, </span><span class="segment" data-start="458.36" data-end="465.04" title="7:38">the risk is reported to be as high as 35%. As the population ages, and more complex </span><span class="segment" data-start="465.04" data-end="471.72" title="7:45">surgery is performed on increasingly high-risk patients, the incidence is likely to increase. </span><span class="segment" data-start="471.72" data-end="476.84" title="7:51">When is the risk of postoperative MI the greatest? </span><span class="segment" data-start="476.84" data-end="483.36" title="7:56">The incidence of postoperative MI is highest in the first 72 hours postoperatively, when </span><span class="segment" data-start="483.36" data-end="488.44" title="8:03">the patient is mobilizing fluid given during the operation and when the thrombotic risk </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="488.44"><span class="t-timestamp">8:08</span></div>
+  <div class="t-body"><span class="segment" data-start="488.44" data-end="494.72" title="8:08">is highest. Many postoperative MIs occur at the end of surgery during emergence from </span><span class="segment" data-start="494.72" data-end="501.52" title="8:14">anesthesia. It is usually seen as ST segment depression on the ECG and is often accompanied </span><span class="segment" data-start="501.52" data-end="507.28" title="8:21">by an increase in cardiac troponin levels. The majority of postoperative MIs are not </span><span class="segment" data-start="507.28" data-end="508.76" title="8:27">accompanied by chest pain. </span></div>
+</div>
+</div>
+
+<div class="subtitle-bar">
+  <span class="subtitle-text empty" id="subtitle-text">Play audio to see live subtitles&#8230;</span>
+</div>
+
+<script>
+
+const audio    = document.getElementById('audio');
+const allSegs  = Array.from(document.querySelectorAll('.segment'));
+const allBlocks = Array.from(document.querySelectorAll('.t-block'));
+const subtitleEl = document.getElementById('subtitle-text');
+let activeSegEl   = null;
+let activeBlockEl = null;
+let searchMatches = [];
+let searchIdx     = 0;
+
+// Duration display
+audio.addEventListener('loadedmetadata', () => {
+  const m = Math.floor(audio.duration / 60);
+  const s = Math.floor(audio.duration %% 60).toString().padStart(2,'0');
+  document.getElementById('dur').textContent = m + ':' + s;
+});
+
+// Seek helper
+function seekTo(t) {
+  audio.currentTime = t;
+  audio.play();
+}
+
+// Block gutter click
+document.querySelectorAll('.t-gutter').forEach(g => {
+  g.addEventListener('click', () => seekTo(parseFloat(g.dataset.start)));
+});
+
+// Segment click
+allSegs.forEach(s => {
+  s.addEventListener('click', e => {
+    e.stopPropagation();
+    seekTo(parseFloat(s.dataset.start));
+  });
+});
+
+// Real-time tracking
+audio.addEventListener('timeupdate', () => {
+  const t = audio.currentTime;
+
+  // Find active segment (last one whose start <= t)
+  let found = null;
+  for (let i = allSegs.length - 1; i >= 0; i--) {
+    if (parseFloat(allSegs[i].dataset.start) <= t) { found = allSegs[i]; break; }
+  }
+
+  if (found && found !== activeSegEl) {
+    // Clear previous
+    if (activeSegEl) activeSegEl.classList.remove('active');
+    if (activeBlockEl) {
+      activeBlockEl.classList.remove('block-active');
+      const pg = activeBlockEl.querySelector('.t-gutter');
+      if (pg) pg.classList.remove('gutter-active');
+    }
+    // Set new
+    found.classList.add('active');
+    const block = found.closest('.t-block');
+    if (block) {
+      block.classList.add('block-active');
+      const g = block.querySelector('.t-gutter');
+      if (g) g.classList.add('gutter-active');
+      activeBlockEl = block;
+    }
+    activeSegEl = found;
+
+    // Update subtitle
+    subtitleEl.textContent = found.textContent.trim();
+    subtitleEl.classList.remove('empty');
+
+    // Auto-scroll (only when not searching)
+    if (!document.getElementById('search').value) {
+      found.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }
+});
+
+// Search
+const searchInput = document.getElementById('search');
+searchInput.addEventListener('input', runSearch);
+searchInput.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && searchMatches.length) {
+    searchMatches[searchIdx].classList.remove('search-current');
+    searchIdx = (searchIdx + 1) %% searchMatches.length;
+    const el = searchMatches[searchIdx];
+    el.classList.add('search-current');
+    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+});
+
+function runSearch() {
+  const q = searchInput.value.trim().toLowerCase();
+  allSegs.forEach(s => s.classList.remove('search-match','search-current'));
+  searchMatches = [];
+  if (!q) return;
+  allSegs.forEach(s => {
+    if (s.textContent.toLowerCase().includes(q)) {
+      s.classList.add('search-match');
+      searchMatches.push(s);
+    }
+  });
+  if (!searchMatches.length) return;
+  searchIdx = 0;
+  searchMatches[0].classList.add('search-current');
+  searchMatches[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+</script>
+</body>
+</html>

@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ophthalmic — Control of Intraocular Pressure</title>
+<style>
+
+  :root {
+    --accent:    #059669;
+    --body-bg:   #f1f5f9;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: var(--body-bg);
+    color: #1e293b;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  /* ── Header ── */
+  .header {
+    background: #0f172a;
+    border-bottom: 3px solid var(--accent);
+    padding: 12px 20px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .header-left { flex: 1; min-width: 200px; }
+  .header h1 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #f1f5f9;
+    margin-bottom: 4px;
+    letter-spacing: 0.01em;
+  }
+  .header-sub {
+    font-size: 0.72rem;
+    color: #94a3b8;
+    font-style: italic;
+  }
+  audio {
+    height: 36px;
+    accent-color: var(--accent);
+    flex-shrink: 0;
+  }
+  .back-link {
+    font-size: 0.8rem;
+    color: #94a3b8;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .back-link:hover { color: #60a5fa; }
+
+  /* ── Toolbar ── */
+  .toolbar {
+    background: #1e293b;
+    padding: 7px 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-shrink: 0;
+    border-bottom: 1px solid #334155;
+  }
+  .toolbar input {
+    flex: 1;
+    max-width: 380px;
+    padding: 5px 11px;
+    border: 1px solid #475569;
+    border-radius: 6px;
+    background: #0f172a;
+    color: #e2e8f0;
+    font-size: 0.83rem;
+    outline: none;
+  }
+  .toolbar input:focus { border-color: var(--accent); }
+  .toolbar input::placeholder { color: #64748b; }
+  .stats {
+    font-size: 0.72rem;
+    color: #64748b;
+    white-space: nowrap;
+  }
+
+  /* ── Scroll area ── */
+  .scroll-area {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+  }
+  .scroll-area::-webkit-scrollbar { width: 6px; }
+  .scroll-area::-webkit-scrollbar-track { background: transparent; }
+  .scroll-area::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+
+  /* ── Subtitle bar ── */
+  .subtitle-bar {
+    background: #0f172a;
+    border-top: 2px solid var(--accent);
+    padding: 8px 20px;
+    flex-shrink: 0;
+    min-height: 42px;
+    display: flex;
+    align-items: center;
+  }
+  .subtitle-text {
+    font-size: 0.9rem;
+    color: #e2e8f0;
+    line-height: 1.5;
+    font-style: italic;
+  }
+  .subtitle-text.empty { color: #475569; }
+
+  /* ── Transcript blocks ── */
+  .t-block {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    margin-bottom: 14px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    display: flex;
+  }
+  .t-block.block-active {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px rgba(37,99,235,0.15);
+  }
+  .t-gutter {
+    background: #0f172a;
+    width: 52px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: 14px;
+    cursor: pointer;
+  }
+  .t-gutter:hover { background: #1e293b; }
+  .t-timestamp {
+    font-size: 0.7rem;
+    color: #64748b;
+    font-family: monospace;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+  .t-gutter.gutter-active .t-timestamp { color: var(--accent); }
+  .t-body {
+    flex: 1;
+    padding: 12px 16px;
+    line-height: 1.75;
+    font-size: 0.92rem;
+    color: #1e293b;
+  }
+
+  /* ── Segments ── */
+  .segment {
+    cursor: pointer;
+    border-radius: 3px;
+    transition: background 0.1s;
+  }
+  .segment:hover { background: #eff6ff; }
+  .segment.active {
+    background: #bfdbfe;
+    outline: 2px solid #3b82f6;
+    outline-offset: 1px;
+    border-radius: 3px;
+  }
+  .segment.search-match  { background: #fef9c3; }
+  .segment.search-current { background: #fde047; outline: 2px solid #ca8a04; }
+
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <h1>Ophthalmic — Control of Intraocular Pressure</h1>
+    <div class="header-sub">Final FRCA &mdash; Exam Viva Simulation &mdash; Click any phrase to seek</div>
+  </div>
+  <audio id="audio" src="../FinalFRCAOphthalmic_Control_of_Intraocular_Pressure.mp3" controls preload="metadata"></audio>
+  <a class="back-link" href="index.html">&#8592; All Topics</a>
+</div>
+
+<div class="toolbar">
+  <input type="text" id="search" placeholder="Search transcript&#8230; (Enter = next match)">
+  <span class="stats" id="stats">107 segments &nbsp;|&nbsp; <span id="dur">loading&#8230;</span></span>
+</div>
+
+<div class="scroll-area" id="scroll-area">
+<div class="t-block">
+  <div class="t-gutter" data-start="0.0"><span class="t-timestamp">0:00</span></div>
+  <div class="t-body"><span class="segment" data-start="0.0" data-end="2.4" title="0:00">Control of intraocular pressure. </span><span class="segment" data-start="2.4" data-end="7.36" title="0:02">This is a common topic since understanding of intraocular pressure has implications for </span><span class="segment" data-start="7.36" data-end="12.0" title="0:07">ophthalmic anesthesia, in particular penetrating eye injury. </span><span class="segment" data-start="12.0" data-end="14.32" title="0:12">What is a normal IOP? </span><span class="segment" data-start="14.32" data-end="18.44" title="0:14">It looks good if you can define what they are asking for and then give a range of normal </span><span class="segment" data-start="18.44" data-end="20.92" title="0:18">values. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="20.92"><span class="t-timestamp">0:20</span></div>
+  <div class="t-body"><span class="segment" data-start="20.92" data-end="26.8" title="0:20">Intraocular pressure is the tissue pressure of the globe contents on the scleror. </span><span class="segment" data-start="26.8" data-end="30.92" title="0:26">The normal range is 10 to 20mm of mercury. </span><span class="segment" data-start="30.92" data-end="33.52" title="0:30">What determines intraocular pressure? </span><span class="segment" data-start="33.52" data-end="38.12" title="0:33">As ever, classify your answer. </span><span class="segment" data-start="38.12" data-end="43.92" title="0:38">Intraocular pressure is determined by the contents of the globe, scleror rigidity and </span><span class="segment" data-start="43.92" data-end="46.52" title="0:43">external pressure. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="46.52"><span class="t-timestamp">0:46</span></div>
+  <div class="t-body"><span class="segment" data-start="46.52" data-end="52.96" title="0:46">The globe contents are determined by aqueous humor production and drainage, blood volume, </span><span class="segment" data-start="52.96" data-end="57.16" title="0:52">both arterial and venous and vitrious humor. </span><span class="segment" data-start="57.16" data-end="62.44" title="0:57">The vitrious humor volume is relatively fixed, so does not normally affect intraocular </span><span class="segment" data-start="62.44" data-end="63.92" title="1:02">pressure. </span><span class="segment" data-start="63.92" data-end="69.76" title="1:03">Other factors may increase intraocular pressure from within the globe, such as tumour, hemorrhage </span><span class="segment" data-start="69.76" data-end="72.0" title="1:09">or a foreign body. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="72.0"><span class="t-timestamp">1:12</span></div>
+  <div class="t-body"><span class="segment" data-start="72.0" data-end="77.28" title="1:12">The scleror becomes more rigid with age and is therefore less compliant to changes in </span><span class="segment" data-start="77.28" data-end="80.28" title="1:17">globe contents. </span><span class="segment" data-start="80.28" data-end="88.12" title="1:20">The global factors include extra-global muscle tone, retro-bulber hematoma, abscess, tumour </span><span class="segment" data-start="88.12" data-end="90.52" title="1:28">or anesthetic block. </span><span class="segment" data-start="90.52" data-end="96.48" title="1:30">There may also be external pressure from face masks, position, for example, in the prone </span><span class="segment" data-start="96.48" data-end="100.16" title="1:36">or lateral positions or from the surgeon. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="100.16"><span class="t-timestamp">1:40</span></div>
+  <div class="t-body"><span class="segment" data-start="100.16" data-end="103.28" title="1:40">How is intraocular pressure normally regulated? </span><span class="segment" data-start="103.28" data-end="108.8" title="1:43">It would be worth drawing a diagram to show the flow of aqueous humor. </span><span class="segment" data-start="108.8" data-end="112.36" title="1:48">It is normally regulated by aqueous humor volume. </span><span class="segment" data-start="112.36" data-end="116.32" title="1:52">The aqueous humor is produced in the silvery bodies. </span><span class="segment" data-start="116.32" data-end="120.8" title="1:56">This is mainly by active secretion, which is fairly constant. </span><span class="segment" data-start="120.8" data-end="125.64" title="2:00">There is also some ultra-filtration, which will be reduced if intraocular pressure is </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="125.64"><span class="t-timestamp">2:05</span></div>
+  <div class="t-body"><span class="segment" data-start="125.64" data-end="126.92" title="2:05">high. </span><span class="segment" data-start="126.92" data-end="133.48" title="2:06">The fluid then flows from the posterior chamber through the iris into the anterior chamber. </span><span class="segment" data-start="133.48" data-end="138.12" title="2:13">It is then reabsorbed through the canal of Schlem, which is in the angle between the </span><span class="segment" data-start="138.12" data-end="140.36" title="2:18">iris and cornea. </span><span class="segment" data-start="140.36" data-end="143.72" title="2:20">This canal drains into the episcleral veins. </span><span class="segment" data-start="143.72" data-end="149.32" title="2:23">If intraocular pressure rises, the rate of absorption will increase. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="149.32"><span class="t-timestamp">2:29</span></div>
+  <div class="t-body"><span class="segment" data-start="149.32" data-end="155.56" title="2:29">If the reabsorption is blocked, or episcleroviness pressure is increased, then intraocular pressure </span><span class="segment" data-start="155.56" data-end="156.88" title="2:35">will increase. </span><span class="segment" data-start="156.88" data-end="162.76" title="2:36">An alternative, less important route of drainage, is via the UV-l-tracked route. </span><span class="segment" data-start="162.76" data-end="166.56" title="2:42">Why don't these tests need to know about intraocular pressure? </span><span class="segment" data-start="166.56" data-end="171.44" title="2:46">Remember, it's not only about penetrating eye injury. </span><span class="segment" data-start="171.44" data-end="177.32" title="2:51">It's important in penetrating eye injury, as an increase in intraocular pressure can cause </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="177.32"><span class="t-timestamp">2:57</span></div>
+  <div class="t-body"><span class="segment" data-start="177.32" data-end="180.28" title="2:57">expulsion of globe contents. </span><span class="segment" data-start="180.28" data-end="185.84" title="3:00">Also, patients with acute or chronically raised intraocular pressure may present for non-upthalmic </span><span class="segment" data-start="185.84" data-end="186.84" title="3:05">surgery. </span><span class="segment" data-start="186.84" data-end="192.64" title="3:06">Anesthetic drugs and procedures have effects on intraocular pressure. </span><span class="segment" data-start="192.64" data-end="195.96" title="3:12">Tell me how blood volume affects IOP. </span><span class="segment" data-start="195.96" data-end="200.28" title="3:15">I would like to see you applying basic physiology to clinical applications. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="200.28"><span class="t-timestamp">3:20</span></div>
+  <div class="t-body"><span class="segment" data-start="200.28" data-end="203.48" title="3:20">Don't wait to be asked. </span><span class="segment" data-start="203.48" data-end="207.28" title="3:23">The most important factor is venous pressure. </span><span class="segment" data-start="207.28" data-end="211.96" title="3:27">The coroidal venous plexus drains into the episcleral veins. </span><span class="segment" data-start="211.96" data-end="217.32" title="3:31">The pressure within these episcleral veins is determined by central venous pressure. </span><span class="segment" data-start="217.32" data-end="223.08" title="3:37">If the central venous pressure is high, draining is reduced, and intraocular blood volume and </span><span class="segment" data-start="223.08" data-end="225.08" title="3:43">pressure will increase. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="225.08"><span class="t-timestamp">3:45</span></div>
+  <div class="t-body"><span class="segment" data-start="225.08" data-end="230.48" title="3:45">If you are trying to control intraocular pressure, then a head up tilt, avoidance of neck </span><span class="segment" data-start="230.48" data-end="237.76" title="3:50">ties, a head in the neutral position, and avoidance of coughing and straining will help. </span><span class="segment" data-start="237.76" data-end="242.12" title="3:57">Artereal blood flow is determined in the same way as cerebral blood flow. </span><span class="segment" data-start="242.12" data-end="248.44" title="4:02">It increases linearly with arterial carbon dioxide tension, increases in hypoxia and high </span><span class="segment" data-start="248.44" data-end="250.08" title="4:08">blood pressure. </span><span class="segment" data-start="250.08" data-end="253.36" title="4:10">How do anaesthetic drugs affect IOP? </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="253.36"><span class="t-timestamp">4:13</span></div>
+  <div class="t-body"><span class="segment" data-start="253.36" data-end="256.16" title="4:13">Try to not come out with a random selection. </span><span class="segment" data-start="256.16" data-end="261.16" title="4:16">One way to classify them is in the order that you use them. </span><span class="segment" data-start="261.16" data-end="266.72" title="4:21">All of the induction agents accept ketamine reduce intraocular pressure. </span><span class="segment" data-start="266.72" data-end="270.12" title="4:26">Prophefall reduces intraocular pressure the most. </span><span class="segment" data-start="270.12" data-end="276.32" title="4:30">Non-depolarizing muscular blockers decrease extrocular muscle tone and decrease intraocular </span><span class="segment" data-start="276.32" data-end="277.84" title="4:36">pressure. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="277.84"><span class="t-timestamp">4:37</span></div>
+  <div class="t-body"><span class="segment" data-start="277.84" data-end="281.88" title="4:37">Succemethonium transiently increases intraocular pressure. </span><span class="segment" data-start="281.88" data-end="286.84" title="4:41">Initially this was thought to be due to extrocular muscle for circulation, but in fact occurs </span><span class="segment" data-start="286.84" data-end="290.0" title="4:46">even if these muscles have been detached. </span><span class="segment" data-start="290.0" data-end="295.96" title="4:50">Succemethonium provides the best and quickest intubating conditions for rapid sequence induction </span><span class="segment" data-start="295.96" data-end="298.04" title="4:55">in penetrating eye injury. </span><span class="segment" data-start="298.04" data-end="303.04" title="4:58">It is normally given after an induction agent which decreases intraocular pressure and </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="303.04"><span class="t-timestamp">5:03</span></div>
+  <div class="t-body"><span class="segment" data-start="303.04" data-end="308.8" title="5:03">prevents coughing which may accompany early intubation, which may occur after a non-depolarizing </span><span class="segment" data-start="308.8" data-end="310.56" title="5:08">blocker has been given. </span><span class="segment" data-start="310.56" data-end="315.0" title="5:10">This may increase intraocular pressure to an even greater extent. </span><span class="segment" data-start="315.0" data-end="319.04" title="5:15">What about volatile agents? </span><span class="segment" data-start="319.04" data-end="323.8" title="5:19">All of the volatile anaesthetic agents decrease intraocular pressure. </span><span class="segment" data-start="323.8" data-end="328.28" title="5:23">What about nitrous oxide? </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="328.28"><span class="t-timestamp">5:28</span></div>
+  <div class="t-body"><span class="segment" data-start="328.28" data-end="334.18" title="5:28">Nitrous oxide has little direct effect on intraocular pressure, however it should be avoided if other </span><span class="segment" data-start="334.18" data-end="338.52" title="5:34">gases are being injected into the eye by the ophthalmic surgeons. </span><span class="segment" data-start="338.52" data-end="344.44" title="5:38">For example, sulfur hexafluoride may be injected in retinal detachment surgery. </span><span class="segment" data-start="344.44" data-end="350.52" title="5:44">If nitrous oxide is used, it will diffuse in more easily than nitrogen diffuses out, making </span><span class="segment" data-start="350.52" data-end="352.6" title="5:50">the gas bubble bigger. </span><span class="segment" data-start="352.6" data-end="357.76" title="5:52">On stopping anaesthesia, the nitrous oxide will diffuse out more quickly than nitrogen </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="357.76"><span class="t-timestamp">5:57</span></div>
+  <div class="t-body"><span class="segment" data-start="357.76" data-end="362.44" title="5:57">diffuses in and the retina may again become detached. </span><span class="segment" data-start="362.44" data-end="365.2" title="6:02">What about opioids? </span><span class="segment" data-start="366.08" data-end="371.68" title="6:06">Opioids have little direct effect on intraocular pressure but can decrease the hypertensive </span><span class="segment" data-start="371.68" data-end="377.96" title="6:11">response to intubation along with lidocane, beta blockers and clonidine. </span><span class="segment" data-start="377.96" data-end="380.84" title="6:17">What can be done to reduce IOP acutely? </span><span class="segment" data-start="380.84" data-end="384.84" title="6:20">For example, if the surgeon says there is protrusion of the orbital contents. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="384.84"><span class="t-timestamp">6:24</span></div>
+  <div class="t-body"><span class="segment" data-start="384.84" data-end="388.64" title="6:24">Make sure you emphasize that you know this is an emergency. </span><span class="segment" data-start="388.64" data-end="390.32" title="6:28">Don't go straight for a manitone. </span><span class="segment" data-start="390.32" data-end="394.08" title="6:30">Remember A, B, C. </span><span class="segment" data-start="394.08" data-end="395.72" title="6:34">This is an emergency. </span><span class="segment" data-start="395.72" data-end="402.16" title="6:35">First, I need to ensure there are normal physiological variables, the patient is well-oxygenated, </span><span class="segment" data-start="402.16" data-end="405.92" title="6:42">is normal-capnic and is normal-tensive. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="405.92"><span class="t-timestamp">6:45</span></div>
+  <div class="t-body"><span class="segment" data-start="405.92" data-end="411.08" title="6:45">I would ensure that venous pressure is not raised by making sure there are no ties around </span><span class="segment" data-start="411.08" data-end="416.28" title="6:51">the neck, impeding venous drainage and that the head is in the neutral position. </span><span class="segment" data-start="416.28" data-end="420.92" title="6:56">I would also ensure that the patient is not coughing or straining with adequate depth </span><span class="segment" data-start="420.92" data-end="424.56" title="7:00">of anesthesia and paralyzing the patient. </span><span class="segment" data-start="424.56" data-end="431.48" title="7:04">In the emergency situation, intravenous propyl can be given to reduce the intracular pressure. </span><span class="segment" data-start="431.48" data-end="437.4" title="7:11">Propyl is also useful whilst waiting for other agents or techniques to work. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="437.4"><span class="t-timestamp">7:17</span></div>
+  <div class="t-body"><span class="segment" data-start="437.4" data-end="443.72" title="7:17">Other drugs used in the management of intracular pressure include manitol and acetazolamide. </span><span class="segment" data-start="443.72" data-end="449.24" title="7:23">It is important to remember the rebound side effects that manitol may have on the circulation </span><span class="segment" data-start="449.24" data-end="455.32" title="7:29">postoperatively and to the electrolyte arrangements which may occur with acetazolamide, especially </span><span class="segment" data-start="455.32" data-end="457.32" title="7:35">in the elderly. </span><span class="segment" data-start="457.32" data-end="461.4" title="7:37">Regular electrolytes will need to be done if acetazolamide has been given. </span></div>
+</div>
+</div>
+
+<div class="subtitle-bar">
+  <span class="subtitle-text empty" id="subtitle-text">Play audio to see live subtitles&#8230;</span>
+</div>
+
+<script>
+
+const audio    = document.getElementById('audio');
+const allSegs  = Array.from(document.querySelectorAll('.segment'));
+const allBlocks = Array.from(document.querySelectorAll('.t-block'));
+const subtitleEl = document.getElementById('subtitle-text');
+let activeSegEl   = null;
+let activeBlockEl = null;
+let searchMatches = [];
+let searchIdx     = 0;
+
+// Duration display
+audio.addEventListener('loadedmetadata', () => {
+  const m = Math.floor(audio.duration / 60);
+  const s = Math.floor(audio.duration %% 60).toString().padStart(2,'0');
+  document.getElementById('dur').textContent = m + ':' + s;
+});
+
+// Seek helper
+function seekTo(t) {
+  audio.currentTime = t;
+  audio.play();
+}
+
+// Block gutter click
+document.querySelectorAll('.t-gutter').forEach(g => {
+  g.addEventListener('click', () => seekTo(parseFloat(g.dataset.start)));
+});
+
+// Segment click
+allSegs.forEach(s => {
+  s.addEventListener('click', e => {
+    e.stopPropagation();
+    seekTo(parseFloat(s.dataset.start));
+  });
+});
+
+// Real-time tracking
+audio.addEventListener('timeupdate', () => {
+  const t = audio.currentTime;
+
+  // Find active segment (last one whose start <= t)
+  let found = null;
+  for (let i = allSegs.length - 1; i >= 0; i--) {
+    if (parseFloat(allSegs[i].dataset.start) <= t) { found = allSegs[i]; break; }
+  }
+
+  if (found && found !== activeSegEl) {
+    // Clear previous
+    if (activeSegEl) activeSegEl.classList.remove('active');
+    if (activeBlockEl) {
+      activeBlockEl.classList.remove('block-active');
+      const pg = activeBlockEl.querySelector('.t-gutter');
+      if (pg) pg.classList.remove('gutter-active');
+    }
+    // Set new
+    found.classList.add('active');
+    const block = found.closest('.t-block');
+    if (block) {
+      block.classList.add('block-active');
+      const g = block.querySelector('.t-gutter');
+      if (g) g.classList.add('gutter-active');
+      activeBlockEl = block;
+    }
+    activeSegEl = found;
+
+    // Update subtitle
+    subtitleEl.textContent = found.textContent.trim();
+    subtitleEl.classList.remove('empty');
+
+    // Auto-scroll (only when not searching)
+    if (!document.getElementById('search').value) {
+      found.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }
+});
+
+// Search
+const searchInput = document.getElementById('search');
+searchInput.addEventListener('input', runSearch);
+searchInput.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && searchMatches.length) {
+    searchMatches[searchIdx].classList.remove('search-current');
+    searchIdx = (searchIdx + 1) %% searchMatches.length;
+    const el = searchMatches[searchIdx];
+    el.classList.add('search-current');
+    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+});
+
+function runSearch() {
+  const q = searchInput.value.trim().toLowerCase();
+  allSegs.forEach(s => s.classList.remove('search-match','search-current'));
+  searchMatches = [];
+  if (!q) return;
+  allSegs.forEach(s => {
+    if (s.textContent.toLowerCase().includes(q)) {
+      s.classList.add('search-match');
+      searchMatches.push(s);
+    }
+  });
+  if (!searchMatches.length) return;
+  searchIdx = 0;
+  searchMatches[0].classList.add('search-current');
+  searchMatches[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+</script>
+</body>
+</html>

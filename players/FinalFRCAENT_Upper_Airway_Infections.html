@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ENT — Upper Airway Infections</title>
+<style>
+
+  :root {
+    --accent:    #f59e0b;
+    --body-bg:   #f1f5f9;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: var(--body-bg);
+    color: #1e293b;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  /* ── Header ── */
+  .header {
+    background: #0f172a;
+    border-bottom: 3px solid var(--accent);
+    padding: 12px 20px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .header-left { flex: 1; min-width: 200px; }
+  .header h1 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #f1f5f9;
+    margin-bottom: 4px;
+    letter-spacing: 0.01em;
+  }
+  .header-sub {
+    font-size: 0.72rem;
+    color: #94a3b8;
+    font-style: italic;
+  }
+  audio {
+    height: 36px;
+    accent-color: var(--accent);
+    flex-shrink: 0;
+  }
+  .back-link {
+    font-size: 0.8rem;
+    color: #94a3b8;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .back-link:hover { color: #60a5fa; }
+
+  /* ── Toolbar ── */
+  .toolbar {
+    background: #1e293b;
+    padding: 7px 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-shrink: 0;
+    border-bottom: 1px solid #334155;
+  }
+  .toolbar input {
+    flex: 1;
+    max-width: 380px;
+    padding: 5px 11px;
+    border: 1px solid #475569;
+    border-radius: 6px;
+    background: #0f172a;
+    color: #e2e8f0;
+    font-size: 0.83rem;
+    outline: none;
+  }
+  .toolbar input:focus { border-color: var(--accent); }
+  .toolbar input::placeholder { color: #64748b; }
+  .stats {
+    font-size: 0.72rem;
+    color: #64748b;
+    white-space: nowrap;
+  }
+
+  /* ── Scroll area ── */
+  .scroll-area {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+  }
+  .scroll-area::-webkit-scrollbar { width: 6px; }
+  .scroll-area::-webkit-scrollbar-track { background: transparent; }
+  .scroll-area::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+
+  /* ── Subtitle bar ── */
+  .subtitle-bar {
+    background: #0f172a;
+    border-top: 2px solid var(--accent);
+    padding: 8px 20px;
+    flex-shrink: 0;
+    min-height: 42px;
+    display: flex;
+    align-items: center;
+  }
+  .subtitle-text {
+    font-size: 0.9rem;
+    color: #e2e8f0;
+    line-height: 1.5;
+    font-style: italic;
+  }
+  .subtitle-text.empty { color: #475569; }
+
+  /* ── Transcript blocks ── */
+  .t-block {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    margin-bottom: 14px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    display: flex;
+  }
+  .t-block.block-active {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px rgba(37,99,235,0.15);
+  }
+  .t-gutter {
+    background: #0f172a;
+    width: 52px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: 14px;
+    cursor: pointer;
+  }
+  .t-gutter:hover { background: #1e293b; }
+  .t-timestamp {
+    font-size: 0.7rem;
+    color: #64748b;
+    font-family: monospace;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+  .t-gutter.gutter-active .t-timestamp { color: var(--accent); }
+  .t-body {
+    flex: 1;
+    padding: 12px 16px;
+    line-height: 1.75;
+    font-size: 0.92rem;
+    color: #1e293b;
+  }
+
+  /* ── Segments ── */
+  .segment {
+    cursor: pointer;
+    border-radius: 3px;
+    transition: background 0.1s;
+  }
+  .segment:hover { background: #eff6ff; }
+  .segment.active {
+    background: #bfdbfe;
+    outline: 2px solid #3b82f6;
+    outline-offset: 1px;
+    border-radius: 3px;
+  }
+  .segment.search-match  { background: #fef9c3; }
+  .segment.search-current { background: #fde047; outline: 2px solid #ca8a04; }
+
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <h1>ENT — Upper Airway Infections</h1>
+    <div class="header-sub">Final FRCA &mdash; Exam Viva Simulation &mdash; Click any phrase to seek</div>
+  </div>
+  <audio id="audio" src="../FinalFRCAENT_Upper_Airway_Infections.mp3" controls preload="metadata"></audio>
+  <a class="back-link" href="index.html">&#8592; All Topics</a>
+</div>
+
+<div class="toolbar">
+  <input type="text" id="search" placeholder="Search transcript&#8230; (Enter = next match)">
+  <span class="stats" id="stats">154 segments &nbsp;|&nbsp; <span id="dur">loading&#8230;</span></span>
+</div>
+
+<div class="scroll-area" id="scroll-area">
+<div class="t-block">
+  <div class="t-gutter" data-start="0.0"><span class="t-timestamp">0:00</span></div>
+  <div class="t-body"><span class="segment" data-start="0.0" data-end="5.2" title="0:00">upper airway infections. This topic would normally feature in the clinical </span><span class="segment" data-start="5.2" data-end="9.28" title="0:05">viber. The examiners want to know that you are safe and have a structured </span><span class="segment" data-start="9.28" data-end="14.16" title="0:09">approach to managing a potential airway emergency. You are called to the </span><span class="segment" data-start="14.16" data-end="19.12" title="0:14">resuscitation room in casualty to see a three-year-old boy with strider. His </span><span class="segment" data-start="19.12" data-end="26.4" title="0:19">oxygen saturation is 92% on air. His respiratory rate is 40 and he has audible strider. </span><span class="segment" data-start="27.28" data-end="33.84" title="0:27">So what is strider? The examiners might ask an unexpected question to start with. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="33.84"><span class="t-timestamp">0:33</span></div>
+  <div class="t-body"><span class="segment" data-start="33.84" data-end="36.56" title="0:33">Try and stick to what you know and answer the question. </span><span class="segment" data-start="38.48" data-end="43.36" title="0:38">This is the harsh vibratory sound produced when the airway becomes partially </span><span class="segment" data-start="43.36" data-end="48.32" title="0:43">obstructed. It is caused by turbulent flow within the respiratory system. </span><span class="segment" data-start="49.04" data-end="53.68" title="0:49">The volume of the strider does not relate to the degree of airway narrowing. </span><span class="segment" data-start="54.64" data-end="57.6" title="0:54">Can you explain to me why children are more likely to develop strider? </span><span class="segment" data-start="59.84" data-end="66.88" title="0:59">Pediatric patients have small diameter upper and lower airways. A small reduction in the airway </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="66.88"><span class="t-timestamp">1:06</span></div>
+  <div class="t-body"><span class="segment" data-start="66.88" data-end="72.96" title="1:06">causes a marked increase in resistance to flow as described by the Hagen-Poussai equation. </span><span class="segment" data-start="73.84" data-end="75.92" title="1:13">How would you assess this child with strider? </span><span class="segment" data-start="76.88" data-end="82.16" title="1:16">Describe your assessments as though you are performing it in real life. This will reassure </span><span class="segment" data-start="82.16" data-end="86.64" title="1:22">the examiner that you have seen or thought carefully about this type of situation before </span><span class="segment" data-start="87.2" data-end="90.56" title="1:27">and that you appreciate the important considerations in this case. </span><span class="segment" data-start="92.96" data-end="98.96" title="1:32">I would take a history from the parents, examine the patient and initiate interventions as </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="98.96"><span class="t-timestamp">1:38</span></div>
+  <div class="t-body"><span class="segment" data-start="98.96" data-end="104.96" title="1:38">appropriate. The speed of my actions would depend on the severity of the respiratory compromise </span><span class="segment" data-start="104.96" data-end="111.92" title="1:44">of the child. The key to assessment is to disturb the child as little as possible </span><span class="segment" data-start="111.92" data-end="116.56" title="1:51">since crying or agitation may precipitate complete airway obstruction. </span><span class="segment" data-start="117.6" data-end="122.8" title="1:57">I would allow the parents to comfort the child to minimize anxiety and stress. </span><span class="segment" data-start="123.84" data-end="129.36" title="2:03">My history would focus on the presenting complaint. Specifically, I would want to know the </span><span class="segment" data-start="129.36" data-end="134.88" title="2:09">duration and onset of symptoms, whether any previous treatment had been commenced, </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="135.44"><span class="t-timestamp">2:15</span></div>
+  <div class="t-body"><span class="segment" data-start="135.44" data-end="138.4" title="2:15">and whether the child had had any previous episodes. </span><span class="segment" data-start="139.28" data-end="145.6" title="2:19">Generally, I would inquire about the past medical history, drug history, allergies and </span><span class="segment" data-start="145.6" data-end="151.6" title="2:25">anaesthetic history. I would also want to know when the child last ate and drank. </span><span class="segment" data-start="153.36" data-end="159.04" title="2:33">In my examination, I would assess the child by observing the airway and respiratory system. </span><span class="segment" data-start="159.76" data-end="165.76" title="2:39">I would look to see that the airway was patent and clear and to listen to any airway sounds </span><span class="segment" data-start="165.76" data-end="173.36" title="2:45">such as stride or wheeze, grunting or gurgling. I would assess the work of breathing by looking </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="173.36"><span class="t-timestamp">2:53</span></div>
+  <div class="t-body"><span class="segment" data-start="173.36" data-end="179.84" title="2:53">at the respiratory rate, whether there was any head bobbing, nasal flaring, sub or intercostal </span><span class="segment" data-start="179.84" data-end="186.32" title="2:59">recession or tracheal tug. I would note the position of the child and whether it preferred a </span><span class="segment" data-start="186.32" data-end="192.96" title="3:06">sitting position. I would not attempt to lay the child flat. If tolerated, I would attach a </span><span class="segment" data-start="192.96" data-end="199.92" title="3:12">pole sock symitre. What would be your initial actions? Again, picture yourself in A&E </span><span class="segment" data-start="199.92" data-end="208.08" title="3:19">actually in this situation. I would attempt to give the child supplementary oxygen via </span><span class="segment" data-start="208.08" data-end="215.12" title="3:28">face mask or tubing held near the child, depending on what was tolerated. I would manage the child </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="215.12"><span class="t-timestamp">3:35</span></div>
+  <div class="t-body"><span class="segment" data-start="215.12" data-end="221.52" title="3:35">in a quiet, calm environment with its parents. I would assess the severity of the respiratory </span><span class="segment" data-start="221.6" data-end="229.2" title="3:41">compromise by observing the respiratory rate, oxygen saturation, respiratory effort of the child </span><span class="segment" data-start="229.2" data-end="235.68" title="3:49">and its conscious level. Importantly, I would be looking to see whether these parameters improved </span><span class="segment" data-start="235.68" data-end="242.32" title="3:55">with my interventions. I would take a full history from the parents in order to try and formulate </span><span class="segment" data-start="242.32" data-end="250.72" title="4:02">a possible diagnosis. I would administer Nebulized adrenaline if tolerated and call for senior ENT </span><span class="segment" data-start="250.72" data-end="258.32" title="4:10">and anesthetic assistance. I would consider obtaining IV access and a baseline temperature reading, </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="258.32"><span class="t-timestamp">4:18</span></div>
+  <div class="t-body"><span class="segment" data-start="258.32" data-end="263.52" title="4:18">but this would depend on the individual child's temperament and the severity of the illness. </span><span class="segment" data-start="264.72" data-end="270.08" title="4:24">It is crucial to avoid further upsetting the patient and worsening the respiratory </span><span class="segment" data-start="270.08" data-end="276.96" title="4:30">compromise. I would aim to transfer the child to the theatre suite if no improvement were observed. </span><span class="segment" data-start="277.76" data-end="281.28" title="4:37">So what would be your differential diagnosis for a patient with strider? </span><span class="segment" data-start="283.44" data-end="288.56" title="4:43">The patient may be suffering from an infection. This may be viral in the case of </span><span class="segment" data-start="288.56" data-end="295.92" title="4:48">CROPE or Bacterial in the case of Epiclotitis or Diptheria. The patient may have a pharyngeal </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="295.92"><span class="t-timestamp">4:55</span></div>
+  <div class="t-body"><span class="segment" data-start="295.92" data-end="303.12" title="4:55">or peritonsular abscess. The problem may be due to trauma from burns or prior intubations, </span><span class="segment" data-start="303.12" data-end="309.92" title="5:03">or there may be a foreign body in the airway. Allergy, including anaphylaxis and angioneurotic </span><span class="segment" data-start="309.92" data-end="317.68" title="5:09">edema, may also cause strider, as may congenital luringo malacia. Can you tell me more about CROPE? </span><span class="segment" data-start="319.76" data-end="328.56" title="5:19">CROPE is also known as luringo trachyobroncitis. It is the cause of 80% of child strider and is due </span><span class="segment" data-start="328.64" data-end="337.36" title="5:28">to parroinfluenza virus, influenza, respiratory sensitial virus, or rhinovirus. The condition </span><span class="segment" data-start="337.36" data-end="344.32" title="5:37">occurs in children of between six months and three years. Only one percent of cases admitted </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="344.32"><span class="t-timestamp">5:44</span></div>
+  <div class="t-body"><span class="segment" data-start="344.32" data-end="352.48" title="5:44">each year require intubation. The infection causes subglotic and tracheal wall swelling, </span><span class="segment" data-start="352.56" data-end="359.12" title="5:52">which can progress to respiratory obstruction. It is typically seen a couple of days after an </span><span class="segment" data-start="359.12" data-end="366.4" title="5:59">upper respiratory tract infection. The child may present with a barking cough, low-grade fever, </span><span class="segment" data-start="366.4" data-end="372.56" title="6:06">and increased respiratory effort. There may also be superimposed bacterial infection. </span><span class="segment" data-start="373.52" data-end="378.48" title="6:13">How would you treat CROPE? Try and describe treatment in terms of conservative and </span><span class="segment" data-start="378.48" data-end="386.08" title="6:18">insurgical intervention. The treatment is initially conservative and depends upon the progress of </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="386.08"><span class="t-timestamp">6:26</span></div>
+  <div class="t-body"><span class="segment" data-start="386.08" data-end="393.36" title="6:26">the condition. Occasionally, definitive airway management is required. I would commence therapy with </span><span class="segment" data-start="393.36" data-end="401.04" title="6:33">humidified oxygen, nebulized adrenaline, five mills of one in one thousand, and consider steroids. </span><span class="segment" data-start="401.84" data-end="409.76" title="6:41">The child might need fluid rehydration, antipyretic medication, and antibiotics if superimposed </span><span class="segment" data-start="409.76" data-end="416.4" title="6:49">bacterial infection is suspected. If he needs to intubate a child with CROPE, how would you go about it? </span><span class="segment" data-start="417.12" data-end="421.36" title="6:57">Again, think of yourself in the situation so that you don't forget anything. </span><span class="segment" data-start="423.84" data-end="429.6" title="7:03">Ideally, I would intubate the child in theatre with an experienced anesthetic team </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="429.68"><span class="t-timestamp">7:09</span></div>
+  <div class="t-body"><span class="segment" data-start="429.68" data-end="436.24" title="7:09">and an ENT surgeon present, since there is always the possibility of a can't intubate, </span><span class="segment" data-start="436.24" data-end="442.8" title="7:16">can't ventilate scenario. The parents should be with the child until induction of anesthesia. </span><span class="segment" data-start="443.68" data-end="450.16" title="7:23">I would require a range of airway equipment, including different sized tubes and bougies </span><span class="segment" data-start="450.16" data-end="456.24" title="7:30">in preparation for a difficult intubation. I would have oxygen saturation monitoring and </span><span class="segment" data-start="456.24" data-end="463.12" title="7:36">perform a gas induction with sever fluorane and oxygen. Why would you use sever fluorane rather than </span><span class="segment" data-start="463.12" data-end="471.2" title="7:43">halethane? I have seen inductions using halethane, which is favored by some anesthetists, </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="471.2"><span class="t-timestamp">7:51</span></div>
+  <div class="t-body"><span class="segment" data-start="471.2" data-end="477.2" title="7:51">but since I have more practical experience using sever fluorane, I would use this inhalational agent. </span><span class="segment" data-start="478.16" data-end="484.32" title="7:58">Both agents have negligible pungency and minimal effects on airway reactivity, </span><span class="segment" data-start="484.32" data-end="490.64" title="8:04">making them favourable for gas induction. An induction with halethane will take longer, </span><span class="segment" data-start="490.64" data-end="496.48" title="8:10">but once the patient is deep, the longer offset time of this agent gives potentially more time </span><span class="segment" data-start="496.48" data-end="502.72" title="8:16">for airway manipulation before lightening of the plane of anesthesia. A further consideration </span><span class="segment" data-start="502.72" data-end="508.48" title="8:22">with halethane is its effect on the cardiovascular system, with the potential for aridmias and </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="508.56"><span class="t-timestamp">8:28</span></div>
+  <div class="t-body"><span class="segment" data-start="508.56" data-end="514.0" title="8:28">bradycardias. Okay, let's go back to your gas induction that you were just about to start. </span><span class="segment" data-start="516.32" data-end="521.52" title="8:36">Induction may take longer than expected due to the reduced alveolaventilation. </span><span class="segment" data-start="522.4" data-end="528.64" title="8:42">I would maintain spontaneous ventilation throughout induction, but give CPAP to help splint open </span><span class="segment" data-start="528.64" data-end="536.56" title="8:48">the airways. Once the patient has lost consciousness, I would ask the parents to leave and obtain ivy </span><span class="segment" data-start="536.56" data-end="543.44" title="8:56">access. When the patient has reached a deep plane of anesthesia, with the pupils small and </span><span class="segment" data-start="543.44" data-end="549.6" title="9:03">central, I would then wait a further few minutes before attempting to intubate with a smaller </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="549.6"><span class="t-timestamp">9:09</span></div>
+  <div class="t-body"><span class="segment" data-start="549.6" data-end="557.2" title="9:09">than predicted oral tracheal tube. I would aim to keep the patient spontaneously ventilating </span><span class="segment" data-start="557.2" data-end="562.56" title="9:17">with CPAP and sedation until the leak developed around the end tracheal tube. </span><span class="segment" data-start="563.52" data-end="568.32" title="9:23">Antibiotic therapy might be required depending on the clinical situation. </span><span class="segment" data-start="569.2" data-end="575.84" title="9:29">Sometimes, the oral tube is changed for an esotracheal one if the patient spends a long time on </span><span class="segment" data-start="575.84" data-end="579.84" title="9:35">the intensive care unit. And where would you care for this child? </span><span class="segment" data-start="582.16" data-end="588.8" title="9:42">Ideally, the child should be managed on a pediatric intensive care unit. If I were in a district </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="588.8"><span class="t-timestamp">9:48</span></div>
+  <div class="t-body"><span class="segment" data-start="588.8" data-end="595.2" title="9:48">general hospital, I would contact the regional centre to arrange a transfer via retrieval team. </span><span class="segment" data-start="600.56" data-end="608.0" title="10:00">Yes, epiglottitis is a bacterial infection caused predominantly by hemophilus influenza IB, </span><span class="segment" data-start="608.0" data-end="613.76" title="10:08">but also by beta-hemolytic streptococcus, staphlococcus and anumococci. </span><span class="segment" data-start="614.72" data-end="619.36" title="10:14">The disease has reduced in incidence since the introduction of the hyb vaccine. </span><span class="segment" data-start="620.4" data-end="625.44" title="10:20">The bacteria infect the epiglottis, ariepiglottis and irretinoids. </span><span class="segment" data-start="626.24" data-end="630.72" title="10:26">Epiglottitis tends to affect children aged 2 to 6 years. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="634.72"><span class="t-timestamp">10:34</span></div>
+  <div class="t-body"><span class="segment" data-start="634.72" data-end="638.64" title="10:34">Try and identify the key features that differentiate this from CROPE. </span><span class="segment" data-start="638.88" data-end="647.76" title="10:38">The child would have an abrupt onset of high fever and sore throat. They would look extremely </span><span class="segment" data-start="647.76" data-end="653.76" title="10:47">unwell. Classically, the child would have stride or and would be sat forward drooling. </span><span class="segment" data-start="654.32" data-end="659.84" title="10:54">They might also have dysphagia and loss of a spontaneous cough with muffled speech. </span><span class="segment" data-start="660.72" data-end="664.64" title="11:00">The condition might be transiently relieved by nebulized adrenaline. </span><span class="segment" data-start="665.76" data-end="667.68" title="11:05">How would you manage a child with epiglottitis? </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="669.2"><span class="t-timestamp">11:09</span></div>
+  <div class="t-body"><span class="segment" data-start="669.2" data-end="677.04" title="11:09">Epiglottitis is an infective condition that may lead to rapid loss of the airway with coexisting </span><span class="segment" data-start="677.04" data-end="684.96" title="11:17">septic shock. I would perform my initial assessment at the same time as starting initial treatments. </span><span class="segment" data-start="685.68" data-end="690.88" title="11:25">I would also delegate a member of the team to contact the anesthetic consultant on call </span><span class="segment" data-start="691.44" data-end="695.44" title="11:31">and the ENT surgeon on call to alert them of the patient. </span><span class="segment" data-start="695.68" data-end="701.92" title="11:35">My assessment would include a general history and specific to the presenting condition. </span><span class="segment" data-start="702.88" data-end="708.88" title="11:42">I would also examine the child looking at the respiratory rate, oxygen saturation, </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="708.88"><span class="t-timestamp">11:48</span></div>
+  <div class="t-body"><span class="segment" data-start="708.88" data-end="716.56" title="11:48">respiratory effort and evidence of dehydration. Depending on the severity of the child's condition, </span><span class="segment" data-start="716.56" data-end="720.08" title="11:56">the management can be either conservative or surgical. </span><span class="segment" data-start="720.64" data-end="726.68" title="12:00">Initial conservative treatment would include oxygen via face mask and </span><span class="segment" data-start="726.68" data-end="733.28" title="12:06">nebulized adrenaline if tolerated. Fluid resuscitation and antibiotics are required, </span><span class="segment" data-start="733.28" data-end="739.36" title="12:13">but may not be initially administered since complete airway obstruction may occur if the child is stressed. </span><span class="segment" data-start="740.48" data-end="745.52" title="12:20">The child should be nursed with its parents in an attempt to alleviate anxiety. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="745.84"><span class="t-timestamp">12:25</span></div>
+  <div class="t-body"><span class="segment" data-start="745.84" data-end="752.4" title="12:25">If there is no improvement with conservative measures, then the patient should be transferred to </span><span class="segment" data-start="752.4" data-end="757.68" title="12:32">theatre for intubation. Now let's say you've transferred the child to theatre uneventfully. </span><span class="segment" data-start="758.48" data-end="763.6" title="12:38">You are fully prepared for a gas induction and have a consultant anesthetist and ENT surgeon with </span><span class="segment" data-start="763.6" data-end="769.12" title="12:43">you in theatre. What are the potential problems that might occur and how might these differ from </span><span class="segment" data-start="769.28" data-end="776.88" title="12:49">the child with a group? As with the group patient, the induction of anesthesia and intubation may </span><span class="segment" data-start="776.88" data-end="782.32" title="12:56">be difficult with the risk of developing into a can't intubate, can't ventilate a scenario. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="783.36"><span class="t-timestamp">13:03</span></div>
+  <div class="t-body"><span class="segment" data-start="783.36" data-end="790.8" title="13:03">In epiglottitis, the deterioration of the child may be more rapid. Furthermore, on larynxoscopy, </span><span class="segment" data-start="790.8" data-end="796.64" title="13:10">a cherry-red epiglottis may be seen and the glotic opening may be extremely difficult to visualize. </span><span class="segment" data-start="797.52" data-end="804.0" title="13:17">Asking an assistant to press on the chest and looking for bubbles may guide tracheal tube placement. </span><span class="segment" data-start="805.36" data-end="812.16" title="13:25">The child with epiglottitis may develop severe septic shock with cardiovascular instability, </span><span class="segment" data-start="812.16" data-end="818.0" title="13:32">requiring aggressive fluid resuscitation and even vasopressor or ionotropic support. </span><span class="segment" data-start="818.72" data-end="824.96" title="13:38">This is less likely in a child with a group that coexisting bacterial infection can occur </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="824.96"><span class="t-timestamp">13:44</span></div>
+  <div class="t-body"><span class="segment" data-start="824.96" data-end="831.44" title="13:44">and therefore lead to similar complications. Or be your further management once the airway was secured. </span><span class="segment" data-start="833.84" data-end="839.52" title="13:53">Blood cultures would need to be sent to confirm the organism and broad spectrum antibiotics </span><span class="segment" data-start="839.52" data-end="845.36" title="13:59">should be commenced as soon as possible. The child would need to be nursed in an intensive care </span><span class="segment" data-start="845.36" data-end="851.76" title="14:05">environment until a leak around the tube indicated recovery. This would be expected to occur </span><span class="segment" data-start="851.76" data-end="860.08" title="14:11">approximately 48 hours after starting antibiotics. Fluid resuscitation may be required depending on </span><span class="segment" data-start="860.08" data-end="865.36" title="14:20">the severity of the sepsis. Can you tell me anything about bacterial tracheitis? </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="867.76"><span class="t-timestamp">14:27</span></div>
+  <div class="t-body"><span class="segment" data-start="867.76" data-end="874.88" title="14:27">Bacterial tracheitis is usually caused by staphlerococcus, hemophilus, streptococcus, </span><span class="segment" data-start="874.88" data-end="882.16" title="14:34">or neceria. A proceeding upper respiratory infection may occur. The patient would present </span><span class="segment" data-start="882.16" data-end="888.4" title="14:42">with a rapid onset of serious illness characterized by fever and respiratory distress. </span><span class="segment" data-start="889.36" data-end="896.72" title="14:49">Coffing produces copious tracheal secretions and retrasternal pain. The patient would not usually </span><span class="segment" data-start="896.72" data-end="903.6" title="14:56">drool but stride or under horse voice our features. The treatment would be similar for </span><span class="segment" data-start="903.6" data-end="910.0" title="15:03">epiglottitis but initial intubation may lead to complete obstruction due to a pus in the end </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="910.0"><span class="t-timestamp">15:10</span></div>
+  <div class="t-body"><span class="segment" data-start="910.0" data-end="917.12" title="15:10">of tracheal tube, forcing the clinician to change the tube. Regular suction will be required and </span><span class="segment" data-start="917.12" data-end="923.76" title="15:17">possibly bronchoscopy to remove curulent debris from the trachea. The patient may require </span><span class="segment" data-start="923.76" data-end="928.88" title="15:23">intubation for a week under prolonged course of antibiotics such as kephiroxine. </span><span class="segment" data-start="929.84" data-end="936.88" title="15:29">Tracheal stenosis is a late complication. Finally, what do you know about retrofarangial abscesses? </span><span class="segment" data-start="939.04" data-end="945.92" title="15:39">A retrofarangial abscess is a collection of pus in the space between the posterior farangial wall </span><span class="segment" data-start="945.92" data-end="952.88" title="15:45">and prevertible fascia from lymphatic spread of infection from the sinuses teeth or middle ear. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="953.76"><span class="t-timestamp">15:53</span></div>
+  <div class="t-body"><span class="segment" data-start="953.76" data-end="960.4" title="15:53">The effective organism is usually a staph lacocus or streptococcus. Children under six </span><span class="segment" data-start="960.4" data-end="965.2" title="16:00">years old tend to be affected but adults may also develop this condition. </span><span class="segment" data-start="966.24" data-end="969.44" title="16:06">What would be the clinical features investigations and management? </span><span class="segment" data-start="971.76" data-end="977.76" title="16:11">The patient may complain of neck swelling, pain and reduced movement. They would have </span><span class="segment" data-start="977.76" data-end="985.6" title="16:17">trismis, drooling and usually fever. A lateral neck x-ray may reveal retrofarangial thickening. </span><span class="segment" data-start="987.12" data-end="992.32" title="16:27">Surgical drainage is usually required but intubation may be extremely difficult. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="993.12"><span class="t-timestamp">16:33</span></div>
+  <div class="t-body"><span class="segment" data-start="993.12" data-end="999.12" title="16:33">An ENT surgeon should be on standby during induction and I would be prepared for a difficult </span><span class="segment" data-start="999.12" data-end="1006.8" title="16:39">intubation. A gas induction may be suitable in a child or awake fiber optic intubation in an </span><span class="segment" data-start="1006.8" data-end="1013.52" title="16:46">adult patient. Care should be taken not to rupture the abscess during intubation since the patient </span><span class="segment" data-start="1013.52" data-end="1021.36" title="16:53">is then at risk of aspirating plus. Antibiotics will be needed along with fluids and antipyretics. </span></div>
+</div>
+</div>
+
+<div class="subtitle-bar">
+  <span class="subtitle-text empty" id="subtitle-text">Play audio to see live subtitles&#8230;</span>
+</div>
+
+<script>
+
+const audio    = document.getElementById('audio');
+const allSegs  = Array.from(document.querySelectorAll('.segment'));
+const allBlocks = Array.from(document.querySelectorAll('.t-block'));
+const subtitleEl = document.getElementById('subtitle-text');
+let activeSegEl   = null;
+let activeBlockEl = null;
+let searchMatches = [];
+let searchIdx     = 0;
+
+// Duration display
+audio.addEventListener('loadedmetadata', () => {
+  const m = Math.floor(audio.duration / 60);
+  const s = Math.floor(audio.duration %% 60).toString().padStart(2,'0');
+  document.getElementById('dur').textContent = m + ':' + s;
+});
+
+// Seek helper
+function seekTo(t) {
+  audio.currentTime = t;
+  audio.play();
+}
+
+// Block gutter click
+document.querySelectorAll('.t-gutter').forEach(g => {
+  g.addEventListener('click', () => seekTo(parseFloat(g.dataset.start)));
+});
+
+// Segment click
+allSegs.forEach(s => {
+  s.addEventListener('click', e => {
+    e.stopPropagation();
+    seekTo(parseFloat(s.dataset.start));
+  });
+});
+
+// Real-time tracking
+audio.addEventListener('timeupdate', () => {
+  const t = audio.currentTime;
+
+  // Find active segment (last one whose start <= t)
+  let found = null;
+  for (let i = allSegs.length - 1; i >= 0; i--) {
+    if (parseFloat(allSegs[i].dataset.start) <= t) { found = allSegs[i]; break; }
+  }
+
+  if (found && found !== activeSegEl) {
+    // Clear previous
+    if (activeSegEl) activeSegEl.classList.remove('active');
+    if (activeBlockEl) {
+      activeBlockEl.classList.remove('block-active');
+      const pg = activeBlockEl.querySelector('.t-gutter');
+      if (pg) pg.classList.remove('gutter-active');
+    }
+    // Set new
+    found.classList.add('active');
+    const block = found.closest('.t-block');
+    if (block) {
+      block.classList.add('block-active');
+      const g = block.querySelector('.t-gutter');
+      if (g) g.classList.add('gutter-active');
+      activeBlockEl = block;
+    }
+    activeSegEl = found;
+
+    // Update subtitle
+    subtitleEl.textContent = found.textContent.trim();
+    subtitleEl.classList.remove('empty');
+
+    // Auto-scroll (only when not searching)
+    if (!document.getElementById('search').value) {
+      found.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }
+});
+
+// Search
+const searchInput = document.getElementById('search');
+searchInput.addEventListener('input', runSearch);
+searchInput.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && searchMatches.length) {
+    searchMatches[searchIdx].classList.remove('search-current');
+    searchIdx = (searchIdx + 1) %% searchMatches.length;
+    const el = searchMatches[searchIdx];
+    el.classList.add('search-current');
+    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+});
+
+function runSearch() {
+  const q = searchInput.value.trim().toLowerCase();
+  allSegs.forEach(s => s.classList.remove('search-match','search-current'));
+  searchMatches = [];
+  if (!q) return;
+  allSegs.forEach(s => {
+    if (s.textContent.toLowerCase().includes(q)) {
+      s.classList.add('search-match');
+      searchMatches.push(s);
+    }
+  });
+  if (!searchMatches.length) return;
+  searchIdx = 0;
+  searchMatches[0].classList.add('search-current');
+  searchMatches[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+</script>
+</body>
+</html>

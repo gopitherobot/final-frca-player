@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cardiac Anaesthesia — Anaesthesia of Cardiac Patient for Non-cardiac Surgery</title>
+<style>
+
+  :root {
+    --accent:    #ef4444;
+    --body-bg:   #f1f5f9;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: var(--body-bg);
+    color: #1e293b;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  /* ── Header ── */
+  .header {
+    background: #0f172a;
+    border-bottom: 3px solid var(--accent);
+    padding: 12px 20px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .header-left { flex: 1; min-width: 200px; }
+  .header h1 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #f1f5f9;
+    margin-bottom: 4px;
+    letter-spacing: 0.01em;
+  }
+  .header-sub {
+    font-size: 0.72rem;
+    color: #94a3b8;
+    font-style: italic;
+  }
+  audio {
+    height: 36px;
+    accent-color: var(--accent);
+    flex-shrink: 0;
+  }
+  .back-link {
+    font-size: 0.8rem;
+    color: #94a3b8;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .back-link:hover { color: #60a5fa; }
+
+  /* ── Toolbar ── */
+  .toolbar {
+    background: #1e293b;
+    padding: 7px 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-shrink: 0;
+    border-bottom: 1px solid #334155;
+  }
+  .toolbar input {
+    flex: 1;
+    max-width: 380px;
+    padding: 5px 11px;
+    border: 1px solid #475569;
+    border-radius: 6px;
+    background: #0f172a;
+    color: #e2e8f0;
+    font-size: 0.83rem;
+    outline: none;
+  }
+  .toolbar input:focus { border-color: var(--accent); }
+  .toolbar input::placeholder { color: #64748b; }
+  .stats {
+    font-size: 0.72rem;
+    color: #64748b;
+    white-space: nowrap;
+  }
+
+  /* ── Scroll area ── */
+  .scroll-area {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+  }
+  .scroll-area::-webkit-scrollbar { width: 6px; }
+  .scroll-area::-webkit-scrollbar-track { background: transparent; }
+  .scroll-area::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+
+  /* ── Subtitle bar ── */
+  .subtitle-bar {
+    background: #0f172a;
+    border-top: 2px solid var(--accent);
+    padding: 8px 20px;
+    flex-shrink: 0;
+    min-height: 42px;
+    display: flex;
+    align-items: center;
+  }
+  .subtitle-text {
+    font-size: 0.9rem;
+    color: #e2e8f0;
+    line-height: 1.5;
+    font-style: italic;
+  }
+  .subtitle-text.empty { color: #475569; }
+
+  /* ── Transcript blocks ── */
+  .t-block {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    margin-bottom: 14px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    display: flex;
+  }
+  .t-block.block-active {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px rgba(37,99,235,0.15);
+  }
+  .t-gutter {
+    background: #0f172a;
+    width: 52px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: 14px;
+    cursor: pointer;
+  }
+  .t-gutter:hover { background: #1e293b; }
+  .t-timestamp {
+    font-size: 0.7rem;
+    color: #64748b;
+    font-family: monospace;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+  .t-gutter.gutter-active .t-timestamp { color: var(--accent); }
+  .t-body {
+    flex: 1;
+    padding: 12px 16px;
+    line-height: 1.75;
+    font-size: 0.92rem;
+    color: #1e293b;
+  }
+
+  /* ── Segments ── */
+  .segment {
+    cursor: pointer;
+    border-radius: 3px;
+    transition: background 0.1s;
+  }
+  .segment:hover { background: #eff6ff; }
+  .segment.active {
+    background: #bfdbfe;
+    outline: 2px solid #3b82f6;
+    outline-offset: 1px;
+    border-radius: 3px;
+  }
+  .segment.search-match  { background: #fef9c3; }
+  .segment.search-current { background: #fde047; outline: 2px solid #ca8a04; }
+
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <h1>Cardiac Anaesthesia — Anaesthesia of Cardiac Patient for Non-cardiac Surgery</h1>
+    <div class="header-sub">Final FRCA &mdash; Exam Viva Simulation &mdash; Click any phrase to seek</div>
+  </div>
+  <audio id="audio" src="../FinalFRCACardiac_Anaesthesia_Anaesthesia_of_Cardiac_Patient_for_Non-cardiac_Surgery.mp3" controls preload="metadata"></audio>
+  <a class="back-link" href="index.html">&#8592; All Topics</a>
+</div>
+
+<div class="toolbar">
+  <input type="text" id="search" placeholder="Search transcript&#8230; (Enter = next match)">
+  <span class="stats" id="stats">159 segments &nbsp;|&nbsp; <span id="dur">loading&#8230;</span></span>
+</div>
+
+<div class="scroll-area" id="scroll-area">
+<div class="t-block">
+  <div class="t-gutter" data-start="0.0"><span class="t-timestamp">0:00</span></div>
+  <div class="t-body"><span class="segment" data-start="0.0" data-end="4.8" title="0:00">Anathes easier of cardiac patients for non-cardiac surgery. </span><span class="segment" data-start="4.8" data-end="10.24" title="0:04">A 75-year-old man presents on the general surgical list for an AP resection for invasive </span><span class="segment" data-start="10.24" data-end="12.52" title="0:10">sigmoid tumour. </span><span class="segment" data-start="12.52" data-end="18.68" title="0:12">He had an MI two years ago and has since had a coronary artery bypass graft. </span><span class="segment" data-start="18.68" data-end="23.76" title="0:18">He gets angina on severe exertion and a recent coronary angiogram showed us the notice </span><span class="segment" data-start="23.76" data-end="29.92" title="0:23">of one of the diagonal arteries, not amenable for stenting or surgical treatment. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="29.92"><span class="t-timestamp">0:29</span></div>
+  <div class="t-body"><span class="segment" data-start="29.92" data-end="34.08" title="0:29">He is hypertensive for which he takes an ACE inhibitor. </span><span class="segment" data-start="34.08" data-end="38.92" title="0:34">He is also in atrial fibrillation, which is rate control with the joxen and is taking </span><span class="segment" data-start="38.92" data-end="40.92" title="0:38">warfarin. </span><span class="segment" data-start="40.92" data-end="43.92" title="0:40">What are the main issues that concern you with as gentlemen? </span><span class="segment" data-start="43.92" data-end="50.04" title="0:43">You need to summarize the salient points from the history here. </span><span class="segment" data-start="50.04" data-end="55.32" title="0:50">This is an elderly gentleman with significant cardiac disease who needs a major laparotomy </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="55.32"><span class="t-timestamp">0:55</span></div>
+  <div class="t-body"><span class="segment" data-start="55.32" data-end="56.84" title="0:55">for a cancer. </span><span class="segment" data-start="56.84" data-end="62.68" title="0:56">He has other comorbidities which increase his perioperative risk and is taking medications </span><span class="segment" data-start="62.68" data-end="68.6" title="1:02">that will need to be managed in the perioperative period. </span><span class="segment" data-start="68.6" data-end="71.68" title="1:08">What would be your anaesthetic plan? </span><span class="segment" data-start="71.68" data-end="77.44" title="1:11">I would start off with pre-op assessment, then formulate an intraoperative management plan </span><span class="segment" data-start="77.44" data-end="81.84" title="1:17">and then plan for appropriate post-operative care. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="81.84"><span class="t-timestamp">1:21</span></div>
+  <div class="t-body"><span class="segment" data-start="81.84" data-end="84.52" title="1:21">What would you look for in your pre-operative assessment? </span><span class="segment" data-start="84.52" data-end="89.64" title="1:24">This is asking about pre-operassessments for any high risk patients. </span><span class="segment" data-start="89.64" data-end="94.32" title="1:29">My pre-operative assessment would be concerned with assessing the risk of anaesthesia and </span><span class="segment" data-start="94.32" data-end="97.68" title="1:34">surgery for this particular patient. </span><span class="segment" data-start="97.68" data-end="102.4" title="1:37">Assessing if the patient's condition can be optimised prior to surgery, formulating </span><span class="segment" data-start="102.4" data-end="108.08" title="1:42">a plan for intraoperative management to minimise the risk of an adverse outcome and planning </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="108.08"><span class="t-timestamp">1:48</span></div>
+  <div class="t-body"><span class="segment" data-start="108.08" data-end="110.32" title="1:48">for post-operative care. </span><span class="segment" data-start="110.32" data-end="115.24" title="1:50">I would also like to take the opportunity to discuss the anaesthetic plan with the patient </span><span class="segment" data-start="115.24" data-end="118.96" title="1:55">and inform him of the particular risks he is facing. </span><span class="segment" data-start="118.96" data-end="122.84" title="1:58">What factors are involved in this particular case, they will put the patient at increased </span><span class="segment" data-start="122.84" data-end="124.16" title="2:02">clinical risk? </span><span class="segment" data-start="124.16" data-end="128.6" title="2:04">Try and classify your answer here. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="128.6"><span class="t-timestamp">2:08</span></div>
+  <div class="t-body"><span class="segment" data-start="128.6" data-end="135.68" title="2:08">Predictors for clinical risk can be divided into patient factors and surgical factors. </span><span class="segment" data-start="135.88" data-end="141.88" title="2:15">This patient can be classified as major, intermediate and minor. </span><span class="segment" data-start="141.88" data-end="148.2" title="2:21">This patient does not have any major factors which would include unstable coronary syndromes, </span><span class="segment" data-start="148.2" data-end="155.24" title="2:28">a myocardial infarction or coronary intervention within the last six weeks, unstable angina, </span><span class="segment" data-start="155.24" data-end="162.52" title="2:35">decompensated congestive cardiac failure, symptomatic arrhythmias or severe valuular disease. </span><span class="segment" data-start="162.52" data-end="168.44" title="2:42">He does have some intermediate risk factors, he has stable angina and he has had a previous </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="168.44"><span class="t-timestamp">2:48</span></div>
+  <div class="t-body"><span class="segment" data-start="168.44" data-end="175.52" title="2:48">MI based on his history, he does not have congestive cardiac failure or diabetes. </span><span class="segment" data-start="175.52" data-end="182.2" title="2:55">This patient also has some minor risk factors, including his age of greater than 70 years. </span><span class="segment" data-start="182.2" data-end="188.64" title="3:02">He has an abnormal heart rhythm in that he is in atrial fibrillation and he is hypertensive. </span><span class="segment" data-start="188.64" data-end="195.64" title="3:08">He does not have a history of stroke, hyperliperdemia or renal insufficiency and he is a non-smoker. </span><span class="segment" data-start="195.64" data-end="201.08" title="3:15">I would also make an assessment of his functional capacity as reduced functional capacity is another </span><span class="segment" data-start="201.08" data-end="202.8" title="3:21">minor risk factor. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="202.8"><span class="t-timestamp">3:22</span></div>
+  <div class="t-body"><span class="segment" data-start="202.8" data-end="208.32" title="3:22">The surgical risk factors are based on the type of surgery and again are divided into high </span><span class="segment" data-start="208.32" data-end="214.64" title="3:28">risk procedures with a complication rate of more than 5% into immediate risk procedures </span><span class="segment" data-start="214.64" data-end="220.84" title="3:34">with a complication rate of 1% to 5% and low risk procedures with a complication rate </span><span class="segment" data-start="220.84" data-end="223.4" title="3:40">of less than 1%. </span><span class="segment" data-start="223.4" data-end="230.24" title="3:43">High risk procedures are emergency procedures, aortic and major vascular procedures, long </span><span class="segment" data-start="230.24" data-end="237.36" title="3:50">operations and those which produce large fluid shifts or hemodynamic instability. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="237.36"><span class="t-timestamp">3:57</span></div>
+  <div class="t-body"><span class="segment" data-start="237.36" data-end="243.68" title="3:57">Intermediate procedures are minor vascular procedures, orthopedic surgery, head and neck </span><span class="segment" data-start="243.68" data-end="251.44" title="4:03">surgery, prostate surgery and intraparitoneal and intratheracic procedures. </span><span class="segment" data-start="251.44" data-end="258.48" title="4:11">Low risk procedures are endoscopic procedures, superficial surgery, plastic and reconstructive </span><span class="segment" data-start="258.48" data-end="263.6" title="4:18">surgery, breast surgery and eye surgery. </span><span class="segment" data-start="263.6" data-end="265.56" title="4:23">How would you assess his functional capacity? </span><span class="segment" data-start="267.44" data-end="274.12" title="4:27">Functional capacity is based on exercise tolerance and can be assessed by history. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="274.12"><span class="t-timestamp">4:34</span></div>
+  <div class="t-body"><span class="segment" data-start="274.12" data-end="281.0" title="4:34">The patient's maximal oxygen consumption is estimated and expressed in metabolic equivalence </span><span class="segment" data-start="281.0" data-end="289.12" title="4:41">or METS, where 1 METS is equal to approximately 3 mils of oxygen per kilo per minute. </span><span class="segment" data-start="289.12" data-end="294.68" title="4:49">Poor functional capacity would be between 1 and 4 METS and the patient's activities </span><span class="segment" data-start="294.68" data-end="300.92" title="4:54">would be limited to lighthouse work, walking slowly on the flat and taking care of themselves </span><span class="segment" data-start="300.92" data-end="304.2" title="5:00">for example, showering or dressing. </span><span class="segment" data-start="304.2" data-end="310.6" title="5:04">Moderate functional capacity is between 4 and 7 METS and the kind of activities required </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="310.6"><span class="t-timestamp">5:10</span></div>
+  <div class="t-body"><span class="segment" data-start="310.6" data-end="316.0" title="5:10">to produce this are climbing a flight of stairs without stopping, walking briskly on the </span><span class="segment" data-start="316.0" data-end="319.72" title="5:16">flat or light gardening. </span><span class="segment" data-start="319.8" data-end="326.12" title="5:19">More than 7 METS represents excellent functional capacity and this would include activities </span><span class="segment" data-start="326.12" data-end="333.44" title="5:26">such as digging in the garden, lifting heavy furniture or more strenuous sporting activities. </span><span class="segment" data-start="333.44" data-end="338.4" title="5:33">Patients with poor functional capacity and patients who are limited by other conditions </span><span class="segment" data-start="338.4" data-end="343.6" title="5:38">should have more detailed investigations prior to surgery. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="343.6"><span class="t-timestamp">5:43</span></div>
+  <div class="t-body"><span class="segment" data-start="343.6" data-end="346.68" title="5:43">Can you describe cardio pulmonary exercise testing? </span><span class="segment" data-start="346.68" data-end="353.56" title="5:46">The examiners want a basic description of the test and important findings. </span><span class="segment" data-start="353.56" data-end="360.28" title="5:53">Cardiopulmonary exercise testing is a non-invasive technique that allows maximal oxygen consumption </span><span class="segment" data-start="360.28" data-end="362.2" title="6:00">to be calculated. </span><span class="segment" data-start="362.2" data-end="368.0" title="6:02">The patients are asked to exercise on a treadmill or bicycle with continuous ECG monitoring </span><span class="segment" data-start="368.0" data-end="374.32" title="6:08">and breath-to-breath determination of oxygen uptake and carbon dioxide consumption. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="374.32"><span class="t-timestamp">6:14</span></div>
+  <div class="t-body"><span class="segment" data-start="374.32" data-end="378.92" title="6:14">This allows calculation of the anaerobic threshold which is the amount of oxygen being </span><span class="segment" data-start="378.92" data-end="384.2" title="6:18">consumed at the point where aerobic metabolism starts to be supplemented with anaerobic </span><span class="segment" data-start="384.2" data-end="385.68" title="6:24">metabolism. </span><span class="segment" data-start="385.68" data-end="391.32" title="6:25">An anaerobic threshold of 11 mls per kilo per minute or more tends to be associated with </span><span class="segment" data-start="391.32" data-end="395.0" title="6:31">a good outcome following surgery. </span><span class="segment" data-start="395.0" data-end="397.72" title="6:35">How would you work this patient up for surgery? </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="397.72"><span class="t-timestamp">6:37</span></div>
+  <div class="t-body"><span class="segment" data-start="397.72" data-end="403.92" title="6:37">Start with basic assessments and then think of more specific investigations. </span><span class="segment" data-start="403.92" data-end="410.0" title="6:43">Given the pre-optive workup for this patient would be a full history and clinical examination, </span><span class="segment" data-start="410.0" data-end="416.88" title="6:50">baseline investigations such as a 12 lead ECG, chest x-ray and blood tests including a full </span><span class="segment" data-start="416.88" data-end="421.56" title="6:56">blood count, urea and electrolytes and a clotting sample. </span><span class="segment" data-start="421.56" data-end="425.64" title="7:01">More specialist investigations can be considered at this stage. </span><span class="segment" data-start="425.64" data-end="430.84" title="7:05">This gentleman has a history of coronary artery disease and has had angiography recently </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="430.84"><span class="t-timestamp">7:10</span></div>
+  <div class="t-body"><span class="segment" data-start="430.84" data-end="433.96" title="7:10">that does not suggest any reversible lesion. </span><span class="segment" data-start="433.96" data-end="438.96" title="7:13">His angiogram would also have an estimate of his left ventricular function, so further </span><span class="segment" data-start="438.96" data-end="443.72" title="7:18">echo or angiographic studies are not warranted. </span><span class="segment" data-start="443.72" data-end="448.8" title="7:23">What advice would you give him regarding his medications? </span><span class="segment" data-start="448.8" data-end="453.84" title="7:28">His medications should be reviewed and he should be advised to omit his 8 inhibitor for </span><span class="segment" data-start="453.84" data-end="456.6" title="7:33">24 hours prior to surgery. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="456.6"><span class="t-timestamp">7:36</span></div>
+  <div class="t-body"><span class="segment" data-start="456.6" data-end="462.44" title="7:36">His warfarin will need to be stopped in sufficient time for the iron-art to return to one. </span><span class="segment" data-start="462.44" data-end="468.04" title="7:42">As he is taking warfarin for atrial fibrillation, he may not need heparin perioperatively, but </span><span class="segment" data-start="468.04" data-end="472.52" title="7:48">this should be discussed with his cardiologist. </span><span class="segment" data-start="472.52" data-end="475.28" title="7:52">Are there any other optimisation strategies you're aware of? </span><span class="segment" data-start="475.28" data-end="479.88" title="7:55">This is testing your awareness of the literature and may provoke some debate as there are no </span><span class="segment" data-start="479.88" data-end="482.88" title="7:59">right answers. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="482.88"><span class="t-timestamp">8:02</span></div>
+  <div class="t-body"><span class="segment" data-start="482.88" data-end="486.84" title="8:02">The problem with the optimization strategies have been discussed in the literature targeting </span><span class="segment" data-start="486.84" data-end="489.72" title="8:06">tissue oxygen delivery. </span><span class="segment" data-start="489.72" data-end="494.28" title="8:09">Patients are admitted to the intensive care unit preoperatively, arterial and central </span><span class="segment" data-start="494.28" data-end="498.8" title="8:14">lines are inserted and are means of measuring cardiac output. </span><span class="segment" data-start="498.8" data-end="505.04" title="8:18">Fluid therapy and dopexamine are titrated to achieve a tissue oxygen delivery of 600 </span><span class="segment" data-start="505.04" data-end="509.08" title="8:25">mil per minute per meter square of body surface area. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="509.08"><span class="t-timestamp">8:29</span></div>
+  <div class="t-body"><span class="segment" data-start="509.08" data-end="514.56" title="8:29">Unfortunately, the studies to date have not shown a survival benefit from this strategy </span><span class="segment" data-start="514.56" data-end="517.96" title="8:34">and it is costly in terms of resources. </span><span class="segment" data-start="517.96" data-end="522.04" title="8:37">There has also been some discussion in the literature about the use of beta blockers </span><span class="segment" data-start="522.04" data-end="525.32" title="8:42">and statins in the perioperative period. </span><span class="segment" data-start="525.32" data-end="532.8" title="8:45">The Pauise study looked at the use of metoprolol 2-4 hours before surgery, continuing for 30 days </span><span class="segment" data-start="532.8" data-end="539.04" title="8:52">afterwards, and they found that although the risk of cardiovascular complications was reduced, </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="539.04"><span class="t-timestamp">8:59</span></div>
+  <div class="t-body"><span class="segment" data-start="539.04" data-end="545.12" title="8:59">the risk of death, stroke and significant hypotension were increased. </span><span class="segment" data-start="545.12" data-end="550.48" title="9:05">Until more studies are done looking at the types of beta blocker and duration of use, </span><span class="segment" data-start="550.48" data-end="555.92" title="9:10">their routine use in high risk patients cannot be recommended, there is a growing body of </span><span class="segment" data-start="555.92" data-end="561.28" title="9:15">evidence that suggests that patients who are taking statins prior to major surgery have </span><span class="segment" data-start="561.28" data-end="563.52" title="9:21">better outcomes. </span><span class="segment" data-start="563.6" data-end="568.6" title="9:23">There are also suggestions that stopping statins in patients who are taking them can </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="568.6"><span class="t-timestamp">9:28</span></div>
+  <div class="t-body"><span class="segment" data-start="568.6" data-end="570.6" title="9:28">worsen outcome. </span><span class="segment" data-start="570.6" data-end="575.96" title="9:30">There is no data however on whether starting a statin in a patient in the perioperative period </span><span class="segment" data-start="575.96" data-end="579.8" title="9:35">will improve the outcome for that particular patient. </span><span class="segment" data-start="579.8" data-end="585.16" title="9:39">There are also potentially serious side effects such as rabdo-myelisis associated with statin </span><span class="segment" data-start="585.16" data-end="591.64" title="9:45">use, so their routine use in high risk patients is not without risk. </span><span class="segment" data-start="591.64" data-end="597.0" title="9:51">Until further evidence is available, patients on statins should continue them in the perioperative </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="597.0"><span class="t-timestamp">9:57</span></div>
+  <div class="t-body"><span class="segment" data-start="597.0" data-end="603.0" title="9:57">period, but patients should not be started on statins day-novo. </span><span class="segment" data-start="603.0" data-end="605.68" title="10:03">How would you manage this man's anaesthetic? </span><span class="segment" data-start="605.68" data-end="613.32" title="10:05">Try and present this one in a logical order, so monitoring, induction, maintenance, etc. </span><span class="segment" data-start="613.32" data-end="620.12" title="10:13">I would ensure I had full AAGBI monitoring in place, including a five lead ECG in order </span><span class="segment" data-start="620.12" data-end="624.08" title="10:20">to detect myocardial ischemia in the introspective period. </span><span class="segment" data-start="624.08" data-end="629.6" title="10:24">I would put in an arterial line to monitor blood pressure and a central line to guide fluid </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="629.6"><span class="t-timestamp">10:29</span></div>
+  <div class="t-body"><span class="segment" data-start="629.6" data-end="630.6" title="10:29">use. </span><span class="segment" data-start="630.6" data-end="636.12" title="10:30">Ideally, I would have a transosophageal echo available during the procedure to monitor </span><span class="segment" data-start="636.12" data-end="639.32" title="10:36">fluid status and cardiac performance. </span><span class="segment" data-start="639.32" data-end="644.56" title="10:39">I would cite a low thoracic epidural for pain relief both during the procedure and in </span><span class="segment" data-start="644.56" data-end="646.68" title="10:44">the post-operative period. </span><span class="segment" data-start="646.68" data-end="651.12" title="10:46">They may also be in attenuation of the stress response using an epidural. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="651.12"><span class="t-timestamp">10:51</span></div>
+  <div class="t-body"><span class="segment" data-start="651.12" data-end="657.24" title="10:51">There is, however, a significant risk of hypotension, so I would have a metraminal infusion running </span><span class="segment" data-start="657.24" data-end="661.28" title="10:57">in order to maintain coronary perfusion pressure. </span><span class="segment" data-start="661.28" data-end="666.56" title="11:01">I would induce the patient with propofol and a large dose of opiate to attenuate the </span><span class="segment" data-start="666.56" data-end="672.32" title="11:06">hypotensive response to intubation, and I would maintain anesthesia with a volatile anaesthetic </span><span class="segment" data-start="672.32" data-end="673.92" title="11:12">agent. </span><span class="segment" data-start="673.92" data-end="679.08" title="11:13">If an epidural were impossible to cite in this patient, I would run a remyfentinal infusion </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="679.08"><span class="t-timestamp">11:19</span></div>
+  <div class="t-body"><span class="segment" data-start="679.08" data-end="685.4" title="11:19">intra-optively, again, to attenuate the stress response to surgery and to maintain hemodynamic </span><span class="segment" data-start="685.4" data-end="687.4" title="11:25">stability. </span><span class="segment" data-start="687.4" data-end="690.12" title="11:27">Are there any other considerations during surgery? </span><span class="segment" data-start="690.12" data-end="693.24" title="11:30">This one is for bonus marks. </span><span class="segment" data-start="693.24" data-end="699.4" title="11:33">Other factors I would want to pay attention to are temperature control and glucose control. </span><span class="segment" data-start="699.4" data-end="704.48" title="11:39">I would aim to maintain normal thermia during the procedure, as there is a higher instance </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="704.48"><span class="t-timestamp">11:44</span></div>
+  <div class="t-body"><span class="segment" data-start="704.48" data-end="709.04" title="11:44">of cardiac morbidity in patients who become hypothermic. </span><span class="segment" data-start="709.04" data-end="715.56" title="11:49">I would keep the patient warm using warmed IV fluids, a warm air blanket, and by wrapping </span><span class="segment" data-start="715.56" data-end="719.04" title="11:55">the patient's head to minimize heat loss. </span><span class="segment" data-start="719.04" data-end="724.64" title="11:59">Tight glucose control is associated with a reduced morbidity and mortality, so I would </span><span class="segment" data-start="724.64" data-end="729.76" title="12:04">check a B.M. at the start of the case and every hour during the procedure. </span><span class="segment" data-start="729.76" data-end="735.2" title="12:09">If the blood sugar starts to rise, I would run an insulin infusion. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="735.2"><span class="t-timestamp">12:15</span></div>
+  <div class="t-body"><span class="segment" data-start="735.2" data-end="738.6" title="12:15">How would you manage the patient in the post-operative period? </span><span class="segment" data-start="738.6" data-end="744.24" title="12:18">Think about why, where, and how to manage the patient. </span><span class="segment" data-start="744.24" data-end="750.36" title="12:24">The 72 hours following surgery is when most perioperative infarcts occur, as the period </span><span class="segment" data-start="750.36" data-end="757.44" title="12:30">after surgery is associated with a hyper-coagulable state and increased circulating cataclylamine </span><span class="segment" data-start="757.44" data-end="759.0" title="12:37">levels. </span><span class="segment" data-start="759.0" data-end="764.24" title="12:39">This patient would be best managed in a high dependency area post-operatively. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="764.24"><span class="t-timestamp">12:44</span></div>
+  <div class="t-body"><span class="segment" data-start="764.24" data-end="770.76" title="12:44">He should have humidified oxygen for 48-72 hours, and his analgesia well managed. </span><span class="segment" data-start="770.76" data-end="775.2" title="12:50">He will need thrombo-prosylaxis and anemia should be avoided. </span><span class="segment" data-start="775.2" data-end="779.64" title="12:55">His normal cardiac medications should be restarted as soon as possible. </span></div>
+</div>
+</div>
+
+<div class="subtitle-bar">
+  <span class="subtitle-text empty" id="subtitle-text">Play audio to see live subtitles&#8230;</span>
+</div>
+
+<script>
+
+const audio    = document.getElementById('audio');
+const allSegs  = Array.from(document.querySelectorAll('.segment'));
+const allBlocks = Array.from(document.querySelectorAll('.t-block'));
+const subtitleEl = document.getElementById('subtitle-text');
+let activeSegEl   = null;
+let activeBlockEl = null;
+let searchMatches = [];
+let searchIdx     = 0;
+
+// Duration display
+audio.addEventListener('loadedmetadata', () => {
+  const m = Math.floor(audio.duration / 60);
+  const s = Math.floor(audio.duration %% 60).toString().padStart(2,'0');
+  document.getElementById('dur').textContent = m + ':' + s;
+});
+
+// Seek helper
+function seekTo(t) {
+  audio.currentTime = t;
+  audio.play();
+}
+
+// Block gutter click
+document.querySelectorAll('.t-gutter').forEach(g => {
+  g.addEventListener('click', () => seekTo(parseFloat(g.dataset.start)));
+});
+
+// Segment click
+allSegs.forEach(s => {
+  s.addEventListener('click', e => {
+    e.stopPropagation();
+    seekTo(parseFloat(s.dataset.start));
+  });
+});
+
+// Real-time tracking
+audio.addEventListener('timeupdate', () => {
+  const t = audio.currentTime;
+
+  // Find active segment (last one whose start <= t)
+  let found = null;
+  for (let i = allSegs.length - 1; i >= 0; i--) {
+    if (parseFloat(allSegs[i].dataset.start) <= t) { found = allSegs[i]; break; }
+  }
+
+  if (found && found !== activeSegEl) {
+    // Clear previous
+    if (activeSegEl) activeSegEl.classList.remove('active');
+    if (activeBlockEl) {
+      activeBlockEl.classList.remove('block-active');
+      const pg = activeBlockEl.querySelector('.t-gutter');
+      if (pg) pg.classList.remove('gutter-active');
+    }
+    // Set new
+    found.classList.add('active');
+    const block = found.closest('.t-block');
+    if (block) {
+      block.classList.add('block-active');
+      const g = block.querySelector('.t-gutter');
+      if (g) g.classList.add('gutter-active');
+      activeBlockEl = block;
+    }
+    activeSegEl = found;
+
+    // Update subtitle
+    subtitleEl.textContent = found.textContent.trim();
+    subtitleEl.classList.remove('empty');
+
+    // Auto-scroll (only when not searching)
+    if (!document.getElementById('search').value) {
+      found.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }
+});
+
+// Search
+const searchInput = document.getElementById('search');
+searchInput.addEventListener('input', runSearch);
+searchInput.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && searchMatches.length) {
+    searchMatches[searchIdx].classList.remove('search-current');
+    searchIdx = (searchIdx + 1) %% searchMatches.length;
+    const el = searchMatches[searchIdx];
+    el.classList.add('search-current');
+    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+});
+
+function runSearch() {
+  const q = searchInput.value.trim().toLowerCase();
+  allSegs.forEach(s => s.classList.remove('search-match','search-current'));
+  searchMatches = [];
+  if (!q) return;
+  allSegs.forEach(s => {
+    if (s.textContent.toLowerCase().includes(q)) {
+      s.classList.add('search-match');
+      searchMatches.push(s);
+    }
+  });
+  if (!searchMatches.length) return;
+  searchIdx = 0;
+  searchMatches[0].classList.add('search-current');
+  searchMatches[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+</script>
+</body>
+</html>

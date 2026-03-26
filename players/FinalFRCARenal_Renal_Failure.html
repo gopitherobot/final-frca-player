@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Renal — Renal Failure</title>
+<style>
+
+  :root {
+    --accent:    #0891b2;
+    --body-bg:   #f1f5f9;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: var(--body-bg);
+    color: #1e293b;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  /* ── Header ── */
+  .header {
+    background: #0f172a;
+    border-bottom: 3px solid var(--accent);
+    padding: 12px 20px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .header-left { flex: 1; min-width: 200px; }
+  .header h1 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #f1f5f9;
+    margin-bottom: 4px;
+    letter-spacing: 0.01em;
+  }
+  .header-sub {
+    font-size: 0.72rem;
+    color: #94a3b8;
+    font-style: italic;
+  }
+  audio {
+    height: 36px;
+    accent-color: var(--accent);
+    flex-shrink: 0;
+  }
+  .back-link {
+    font-size: 0.8rem;
+    color: #94a3b8;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .back-link:hover { color: #60a5fa; }
+
+  /* ── Toolbar ── */
+  .toolbar {
+    background: #1e293b;
+    padding: 7px 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-shrink: 0;
+    border-bottom: 1px solid #334155;
+  }
+  .toolbar input {
+    flex: 1;
+    max-width: 380px;
+    padding: 5px 11px;
+    border: 1px solid #475569;
+    border-radius: 6px;
+    background: #0f172a;
+    color: #e2e8f0;
+    font-size: 0.83rem;
+    outline: none;
+  }
+  .toolbar input:focus { border-color: var(--accent); }
+  .toolbar input::placeholder { color: #64748b; }
+  .stats {
+    font-size: 0.72rem;
+    color: #64748b;
+    white-space: nowrap;
+  }
+
+  /* ── Scroll area ── */
+  .scroll-area {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+  }
+  .scroll-area::-webkit-scrollbar { width: 6px; }
+  .scroll-area::-webkit-scrollbar-track { background: transparent; }
+  .scroll-area::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+
+  /* ── Subtitle bar ── */
+  .subtitle-bar {
+    background: #0f172a;
+    border-top: 2px solid var(--accent);
+    padding: 8px 20px;
+    flex-shrink: 0;
+    min-height: 42px;
+    display: flex;
+    align-items: center;
+  }
+  .subtitle-text {
+    font-size: 0.9rem;
+    color: #e2e8f0;
+    line-height: 1.5;
+    font-style: italic;
+  }
+  .subtitle-text.empty { color: #475569; }
+
+  /* ── Transcript blocks ── */
+  .t-block {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    margin-bottom: 14px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    display: flex;
+  }
+  .t-block.block-active {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px rgba(37,99,235,0.15);
+  }
+  .t-gutter {
+    background: #0f172a;
+    width: 52px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: 14px;
+    cursor: pointer;
+  }
+  .t-gutter:hover { background: #1e293b; }
+  .t-timestamp {
+    font-size: 0.7rem;
+    color: #64748b;
+    font-family: monospace;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+  .t-gutter.gutter-active .t-timestamp { color: var(--accent); }
+  .t-body {
+    flex: 1;
+    padding: 12px 16px;
+    line-height: 1.75;
+    font-size: 0.92rem;
+    color: #1e293b;
+  }
+
+  /* ── Segments ── */
+  .segment {
+    cursor: pointer;
+    border-radius: 3px;
+    transition: background 0.1s;
+  }
+  .segment:hover { background: #eff6ff; }
+  .segment.active {
+    background: #bfdbfe;
+    outline: 2px solid #3b82f6;
+    outline-offset: 1px;
+    border-radius: 3px;
+  }
+  .segment.search-match  { background: #fef9c3; }
+  .segment.search-current { background: #fde047; outline: 2px solid #ca8a04; }
+
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <h1>Renal — Renal Failure</h1>
+    <div class="header-sub">Final FRCA &mdash; Exam Viva Simulation &mdash; Click any phrase to seek</div>
+  </div>
+  <audio id="audio" src="../FinalFRCARenal_Renal_Failure.mp3" controls preload="metadata"></audio>
+  <a class="back-link" href="index.html">&#8592; All Topics</a>
+</div>
+
+<div class="toolbar">
+  <input type="text" id="search" placeholder="Search transcript&#8230; (Enter = next match)">
+  <span class="stats" id="stats">111 segments &nbsp;|&nbsp; <span id="dur">loading&#8230;</span></span>
+</div>
+
+<div class="scroll-area" id="scroll-area">
+<div class="t-block">
+  <div class="t-gutter" data-start="0.0"><span class="t-timestamp">0:00</span></div>
+  <div class="t-body"><span class="segment" data-start="0.0" data-end="5.28" title="0:00">Renal failure. A 40-year-old woman presents for formation of an </span><span class="segment" data-start="5.28" data-end="10.64" title="0:05">Arteovina's fistula to allow dialysis. She has established end-stage </span><span class="segment" data-start="10.64" data-end="16.76" title="0:10">renal failure, secondary to diabetes. Describe your approach to the management of </span><span class="segment" data-start="16.76" data-end="23.2" title="0:16">this patient. A structured approach is essential. Start off with an opening </span><span class="segment" data-start="23.2" data-end="27.12" title="0:23">statement about the condition and then introduce how you are going to divide </span><span class="segment" data-start="27.12" data-end="34.8" title="0:27">it up. Patients with renal failure have a spectrum of problems affecting all </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="34.8"><span class="t-timestamp">0:34</span></div>
+  <div class="t-body"><span class="segment" data-start="34.8" data-end="40.6" title="0:34">of their body systems. Renal failure can significantly affect the patient's </span><span class="segment" data-start="40.6" data-end="45.4" title="0:40">fitness for surgery and there are some significant problems that need to be </span><span class="segment" data-start="45.4" data-end="51.0" title="0:45">considered to keep a patient safe. A full preoperative assessment must be made </span><span class="segment" data-start="51.0" data-end="57.2" title="0:51">with particular attention to comorbidities and biochemical state. The </span><span class="segment" data-start="57.2" data-end="61.2" title="0:57">preoperative assessment and knowledge of the effects of renal failure may </span><span class="segment" data-start="61.2" data-end="68.36" title="1:01">alter induction, maintenance of anesthesia and postoperative care. What medical </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="68.36"><span class="t-timestamp">1:08</span></div>
+  <div class="t-body"><span class="segment" data-start="68.36" data-end="74.44" title="1:08">conditions are associated with renal failure? There are the conditions that may </span><span class="segment" data-start="74.44" data-end="80.24" title="1:14">precipitate renal failure and those that are a result of renal failure. Often the </span><span class="segment" data-start="80.24" data-end="85.64" title="1:20">underlying causes are known. The causes of renal failure may be classified </span><span class="segment" data-start="85.64" data-end="92.6" title="1:25">into pre-renal, renal and post-renal. Post-renal causes include mechanical </span><span class="segment" data-start="92.6" data-end="98.08" title="1:32">obstructions such as prostitism, blocked catheters and raised intraabdominal </span><span class="segment" data-start="98.08" data-end="104.56" title="1:38">pressure. Renal causes are acute tubular necrosis and glomerulonephritis. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="104.56"><span class="t-timestamp">1:44</span></div>
+  <div class="t-body"><span class="segment" data-start="104.56" data-end="111.24" title="1:44">Pre-renal causes include hypovolemia, inadequate renal blood flow and low </span><span class="segment" data-start="111.24" data-end="117.0" title="1:51">cardiac output states. Conditions associated with established renal failure are </span><span class="segment" data-start="117.0" data-end="123.48" title="1:57">ischemic heart disease, hypertension, pericarditis, pulmonary edema, </span><span class="segment" data-start="123.48" data-end="130.04" title="2:03">parathyroid dysfunction, impaired immunity and infections, gastric reflux and </span><span class="segment" data-start="130.04" data-end="138.8" title="2:10">coagulopathy. What are the surgical considerations? Patients with renal </span><span class="segment" data-start="138.8" data-end="143.8" title="2:18">failure present frequently for fistular formation and for insertion of </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="143.8"><span class="t-timestamp">2:23</span></div>
+  <div class="t-body"><span class="segment" data-start="143.8" data-end="149.48" title="2:23">peritoneal dialysis catheters. For fistular formation it is important that </span><span class="segment" data-start="149.48" data-end="154.36" title="2:29">blood pressure is kept as near normal as possible to maintain limperfusion. </span><span class="segment" data-start="154.36" data-end="160.0" title="2:34">The possibilities of a regional or local infiltration technique may avoid the </span><span class="segment" data-start="160.0" data-end="165.04" title="2:40">risks of general anesthesia while providing good analgesia and maintaining </span><span class="segment" data-start="165.04" data-end="171.52" title="2:45">perfusion. However this may be affected by surgical preference. Wound healing is </span><span class="segment" data-start="171.52" data-end="176.92" title="2:51">impaired and coagulation may also be affected by renal failure with resulting </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="176.92"><span class="t-timestamp">2:56</span></div>
+  <div class="t-body"><span class="segment" data-start="176.92" data-end="184.92" title="2:56">surgical complications. What examination findings are of particular importance? </span><span class="segment" data-start="185.16" data-end="191.0" title="3:05">Fluid status, particularly fluid overload with pulmonary edema and diffusions. </span><span class="segment" data-start="191.0" data-end="196.24" title="3:11">The stress response to surgery will add to pre-existing fluid overload. </span><span class="segment" data-start="196.24" data-end="202.24" title="3:16">Assessment of fluid status is important by looking at heart rate, blood pressure, </span><span class="segment" data-start="202.24" data-end="209.08" title="3:22">central venous pressure or JVP, edema and the assessment of its extent and weight </span><span class="segment" data-start="209.08" data-end="211.32" title="3:29">trends. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="211.88"><span class="t-timestamp">3:31</span></div>
+  <div class="t-body"><span class="segment" data-start="211.88" data-end="217.28" title="3:31">What investigations are important? Here is a goal that opportunity folks to show </span><span class="segment" data-start="217.28" data-end="223.48" title="3:37">you are safe which is an important fact to convey in any anesthetic exam. </span><span class="segment" data-start="223.48" data-end="228.8" title="3:43">Of particular relevance to renal failure I will check the most recent </span><span class="segment" data-start="228.8" data-end="233.2" title="3:48">potassium level. If there has been absent or inadequate dialysis and renal </span><span class="segment" data-start="233.2" data-end="238.2" title="3:53">function this isn't likely to be raised. This may result in significant </span><span class="segment" data-start="238.2" data-end="243.0" title="3:58">arrhythmias perioperatively. A potassium of greater than 6 millimoles </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="243.0"><span class="t-timestamp">4:03</span></div>
+  <div class="t-body"><span class="segment" data-start="243.0" data-end="248.72" title="4:03">per liter should be treated prior to surgery. Also if it's raised, </span><span class="segment" data-start="248.72" data-end="253.24" title="4:08">succcemethanium should be avoided and should always be used with caution in </span><span class="segment" data-start="253.24" data-end="259.16" title="4:13">these patients as its use will result in a rise in serum potassium. A single </span><span class="segment" data-start="259.16" data-end="265.28" title="4:19">dose of succcemethanium may raise the potassium by 0.5 to 1 millimole per liter. </span><span class="segment" data-start="265.68" data-end="269.92" title="4:25">A thorbulid count may reveal anemia which is normachromic and </span><span class="segment" data-start="269.92" data-end="276.0" title="4:29">normacitic and secondary to decreased arithropoetinsicreation. A hemoglobin </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="276.0"><span class="t-timestamp">4:36</span></div>
+  <div class="t-body"><span class="segment" data-start="276.0" data-end="281.76" title="4:36">concentration of 8 grams per liter is certainly safe and many people accept </span><span class="segment" data-start="281.76" data-end="288.64" title="4:41">6 as there will be a raised 2-3 DPG concentration in chronic anemia. </span><span class="segment" data-start="288.64" data-end="292.32" title="4:48">Plaitlet count and function may be impaired and there may be a </span><span class="segment" data-start="292.32" data-end="298.16" title="4:52">coagulopathy secondary to euremia. Significant disturbance should be corrected </span><span class="segment" data-start="298.16" data-end="304.64" title="4:58">preoperatively. The severity of euremia is important and this has multi-system </span><span class="segment" data-start="304.64" data-end="310.4" title="5:04">effects. Magnesium levels may be high or low depending on the adequacy of </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="310.4"><span class="t-timestamp">5:10</span></div>
+  <div class="t-body"><span class="segment" data-start="310.4" data-end="316.32" title="5:10">filtration and this may cause arrhythmias. The need for a recent echocardiogram </span><span class="segment" data-start="316.32" data-end="321.2" title="5:16">should be considered as a vascular dysfunction if fusion's and ventricular </span><span class="segment" data-start="321.2" data-end="326.0" title="5:21">dysfunction are common. What other pre-operative details are of </span><span class="segment" data-start="326.0" data-end="333.2" title="5:26">importance? The timing of dialysis will particularly affect potassium and fluid </span><span class="segment" data-start="333.2" data-end="338.0" title="5:33">status. Many centers favor 24 hours post dialysis </span><span class="segment" data-start="338.0" data-end="344.32" title="5:38">as the optimal time for surgery. What are the practical factors that affect your </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="344.32"><span class="t-timestamp">5:44</span></div>
+  <div class="t-body"><span class="segment" data-start="344.32" data-end="350.0" title="5:44">choice of anesthetic? At this point try to visualize this patient in your </span><span class="segment" data-start="350.0" data-end="354.72" title="5:50">anesthetic room and what your normal options include. </span><span class="segment" data-start="355.68" data-end="360.96" title="5:55">Depending on the site of surgery and surgical preference, regional anesthesia </span><span class="segment" data-start="360.96" data-end="365.6" title="6:00">may be offered to the patient. This reduces the risks associated with general </span><span class="segment" data-start="365.6" data-end="369.76" title="6:05">anesthesia. Vascular access may be limited due to </span><span class="segment" data-start="369.76" data-end="374.48" title="6:09">multiple previous access sites and a frail general condition. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="374.56"><span class="t-timestamp">6:14</span></div>
+  <div class="t-body"><span class="segment" data-start="374.56" data-end="379.2" title="6:14">Induction may need to be via a pre-existing permacath with care taken to </span><span class="segment" data-start="379.2" data-end="384.4" title="6:19">aspirate back the heprin in the line. If there is significant reflux, </span><span class="segment" data-start="384.4" data-end="389.84" title="6:24">a rapid sequence may be advisable. A gas induction may be considered for </span><span class="segment" data-start="389.84" data-end="395.52" title="6:29">hemodynamic stability but may be less safe overall than a cautious intravenous </span><span class="segment" data-start="395.52" data-end="403.04" title="6:35">induction due to the risk of reflux. What facts affect your choice of drugs? </span><span class="segment" data-start="404.88" data-end="409.44" title="6:44">Drugs that are renaly excreted will have a prolonged duration of action, </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="409.44"><span class="t-timestamp">6:49</span></div>
+  <div class="t-body"><span class="segment" data-start="409.44" data-end="416.56" title="6:49">for example morphine. Morphine is metabolised in the liver and not excreted unchanged to any </span><span class="segment" data-start="416.56" data-end="424.32" title="6:56">significant extent, either in urine or bile. The metabolites morphine glucuronide and morphine </span><span class="segment" data-start="424.32" data-end="430.8" title="7:04">sulfate are renaly excreted. Small single doses are safe but the dosing interval needs to be </span><span class="segment" data-start="430.8" data-end="436.4" title="7:10">increased. Take care with the dose in the frail and with low binding proteins. </span><span class="segment" data-start="437.36" data-end="442.32" title="7:17">This may mean a reduced dose is administered rather than avoiding the drug altogether. </span><span class="segment" data-start="443.52" data-end="449.84" title="7:23">Many muscle relaxants have renal excretion and atrocurium is a good choice as it is unaffected. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="450.56"><span class="t-timestamp">7:30</span></div>
+  <div class="t-body"><span class="segment" data-start="450.56" data-end="456.24" title="7:30">The action of muscle relaxants is generally terminated by redistribution and then excretion. </span><span class="segment" data-start="456.96" data-end="463.2" title="7:36">The drugs may accumulate with repeated doses but excretion will only be a problem if the drug is </span><span class="segment" data-start="463.2" data-end="471.28" title="7:43">wholly renaly excreted or nearly wholly renaly excreted. Non-steeroidal anti-inflammatory drugs </span><span class="segment" data-start="471.28" data-end="477.36" title="7:51">should be avoided as they inhibit prostaglandinmediated intrinsic renal vasodilitation. </span><span class="segment" data-start="478.4" data-end="484.24" title="7:58">Anesthetic agents will cause decreased systemic vascular resistance and some depression of </span><span class="segment" data-start="484.24" data-end="490.96" title="8:04">mycardial function. This results in reduced blood pressure and also reduced renal blood flow and </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="490.96"><span class="t-timestamp">8:10</span></div>
+  <div class="t-body"><span class="segment" data-start="490.96" data-end="497.68" title="8:10">glomerular filtration rate. It is therefore important to administer intravenous anesthetic agents </span><span class="segment" data-start="497.68" data-end="504.88" title="8:17">cautiously to minimize these effects. Some inhalational agents with fluoride groups have been </span><span class="segment" data-start="504.88" data-end="510.72" title="8:24">experimentally shown to be nephrotoxic but the significance of this in practice is minimal. </span><span class="segment" data-start="511.36" data-end="518.48" title="8:31">Renor failure affects protein binding which will increase the free fraction of available drug </span><span class="segment" data-start="518.48" data-end="525.76" title="8:38">and also prolong the duration of drug action. Low albumin and reduced levels of glycoproteins </span><span class="segment" data-start="525.76" data-end="533.2" title="8:45">affect the free fraction due to a reduced binding capacity. The loading dose of a drug will be </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="533.2"><span class="t-timestamp">8:53</span></div>
+  <div class="t-body"><span class="segment" data-start="533.2" data-end="540.64" title="8:53">unchanged but maintenance doses are normally reduced. Overall, a balanced anesthetic should be given </span><span class="segment" data-start="540.96" data-end="547.28" title="9:00">using a combination of short acting and non-cumulative opioids, simple analgesia, </span><span class="segment" data-start="547.28" data-end="552.32" title="9:07">local anaesthetics and cautious use of intravenous and inhaled agents. </span><span class="segment" data-start="553.2" data-end="558.96" title="9:13">Remi fentanyl is a good analgesic because it is estahedralized in the plasma and does not </span><span class="segment" data-start="558.96" data-end="566.48" title="9:18">therefore display context sensitivity. What complications may occur perioperatively? </span><span class="segment" data-start="566.88" data-end="575.6" title="9:26">Cardiovascular instability is a common complication, particularly arrhythmias and hypotension. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="576.48"><span class="t-timestamp">9:36</span></div>
+  <div class="t-body"><span class="segment" data-start="576.48" data-end="583.12" title="9:36">Hypotension should be treated with fluid therapy but cautiously and also with careful use of </span><span class="segment" data-start="583.12" data-end="590.08" title="9:43">anaesthetic agents. Alpha agonists may cause renal shutdown but effordrin is well tolerated in </span><span class="segment" data-start="590.16" data-end="595.68" title="9:50">combination with small fluid challenges. High-potensive surges may also occur. </span><span class="segment" data-start="596.64" data-end="603.28" title="9:56">Hypoxia should be rapidly corrected with increased fraction of inspired oxygen and use of positive </span><span class="segment" data-start="603.28" data-end="608.8" title="10:03">end-experitory pressure in the first instance. Other causes, including reduced oxygen </span><span class="segment" data-start="608.8" data-end="612.8" title="10:08">carriage due to anemia, should be assessed and corrected if needed. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="613.2"><span class="t-timestamp">10:13</span></div>
+  <div class="t-body"><span class="segment" data-start="613.2" data-end="615.92" title="10:13">What will she need postoperatively? </span><span class="segment" data-start="617.92" data-end="623.52" title="10:17">The normal safety measures for postoperative care should be followed, but high-level care should </span><span class="segment" data-start="623.52" data-end="630.96" title="10:23">be considered such as HDU or other level 2 areas. Balance analgesia, including multi-mode </span><span class="segment" data-start="630.96" data-end="636.48" title="10:30">agents such as local anaesthetics and paracetamol should be given, avoiding non-steroid </span><span class="segment" data-start="636.48" data-end="641.2" title="10:36">lantian flammate trees but with regional and carefully titrated opioids. </span><span class="segment" data-start="641.84" data-end="647.28" title="10:41">Fluid balance should be monitored and biochemistry samples need to be sent postoperatively </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="647.28"><span class="t-timestamp">10:47</span></div>
+  <div class="t-body"><span class="segment" data-start="647.28" data-end="653.92" title="10:47">to monitor electrolytes. A hemicube provides useful bedside estimation of hemoglobin </span><span class="segment" data-start="653.92" data-end="659.12" title="10:53">and there should be a low threshold for its use in recovery as the coagulopathy associated </span><span class="segment" data-start="659.12" data-end="669.12" title="10:59">with renal failure may result in significant blood loss. </span></div>
+</div>
+</div>
+
+<div class="subtitle-bar">
+  <span class="subtitle-text empty" id="subtitle-text">Play audio to see live subtitles&#8230;</span>
+</div>
+
+<script>
+
+const audio    = document.getElementById('audio');
+const allSegs  = Array.from(document.querySelectorAll('.segment'));
+const allBlocks = Array.from(document.querySelectorAll('.t-block'));
+const subtitleEl = document.getElementById('subtitle-text');
+let activeSegEl   = null;
+let activeBlockEl = null;
+let searchMatches = [];
+let searchIdx     = 0;
+
+// Duration display
+audio.addEventListener('loadedmetadata', () => {
+  const m = Math.floor(audio.duration / 60);
+  const s = Math.floor(audio.duration %% 60).toString().padStart(2,'0');
+  document.getElementById('dur').textContent = m + ':' + s;
+});
+
+// Seek helper
+function seekTo(t) {
+  audio.currentTime = t;
+  audio.play();
+}
+
+// Block gutter click
+document.querySelectorAll('.t-gutter').forEach(g => {
+  g.addEventListener('click', () => seekTo(parseFloat(g.dataset.start)));
+});
+
+// Segment click
+allSegs.forEach(s => {
+  s.addEventListener('click', e => {
+    e.stopPropagation();
+    seekTo(parseFloat(s.dataset.start));
+  });
+});
+
+// Real-time tracking
+audio.addEventListener('timeupdate', () => {
+  const t = audio.currentTime;
+
+  // Find active segment (last one whose start <= t)
+  let found = null;
+  for (let i = allSegs.length - 1; i >= 0; i--) {
+    if (parseFloat(allSegs[i].dataset.start) <= t) { found = allSegs[i]; break; }
+  }
+
+  if (found && found !== activeSegEl) {
+    // Clear previous
+    if (activeSegEl) activeSegEl.classList.remove('active');
+    if (activeBlockEl) {
+      activeBlockEl.classList.remove('block-active');
+      const pg = activeBlockEl.querySelector('.t-gutter');
+      if (pg) pg.classList.remove('gutter-active');
+    }
+    // Set new
+    found.classList.add('active');
+    const block = found.closest('.t-block');
+    if (block) {
+      block.classList.add('block-active');
+      const g = block.querySelector('.t-gutter');
+      if (g) g.classList.add('gutter-active');
+      activeBlockEl = block;
+    }
+    activeSegEl = found;
+
+    // Update subtitle
+    subtitleEl.textContent = found.textContent.trim();
+    subtitleEl.classList.remove('empty');
+
+    // Auto-scroll (only when not searching)
+    if (!document.getElementById('search').value) {
+      found.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }
+});
+
+// Search
+const searchInput = document.getElementById('search');
+searchInput.addEventListener('input', runSearch);
+searchInput.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && searchMatches.length) {
+    searchMatches[searchIdx].classList.remove('search-current');
+    searchIdx = (searchIdx + 1) %% searchMatches.length;
+    const el = searchMatches[searchIdx];
+    el.classList.add('search-current');
+    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+});
+
+function runSearch() {
+  const q = searchInput.value.trim().toLowerCase();
+  allSegs.forEach(s => s.classList.remove('search-match','search-current'));
+  searchMatches = [];
+  if (!q) return;
+  allSegs.forEach(s => {
+    if (s.textContent.toLowerCase().includes(q)) {
+      s.classList.add('search-match');
+      searchMatches.push(s);
+    }
+  });
+  if (!searchMatches.length) return;
+  searchIdx = 0;
+  searchMatches[0].classList.add('search-current');
+  searchMatches[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+</script>
+</body>
+</html>

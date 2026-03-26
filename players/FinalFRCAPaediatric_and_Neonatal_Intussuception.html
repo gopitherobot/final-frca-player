@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Paediatric & Neonatal — Intussuception</title>
+<style>
+
+  :root {
+    --accent:    #fbbf24;
+    --body-bg:   #f1f5f9;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: var(--body-bg);
+    color: #1e293b;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  /* ── Header ── */
+  .header {
+    background: #0f172a;
+    border-bottom: 3px solid var(--accent);
+    padding: 12px 20px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .header-left { flex: 1; min-width: 200px; }
+  .header h1 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #f1f5f9;
+    margin-bottom: 4px;
+    letter-spacing: 0.01em;
+  }
+  .header-sub {
+    font-size: 0.72rem;
+    color: #94a3b8;
+    font-style: italic;
+  }
+  audio {
+    height: 36px;
+    accent-color: var(--accent);
+    flex-shrink: 0;
+  }
+  .back-link {
+    font-size: 0.8rem;
+    color: #94a3b8;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .back-link:hover { color: #60a5fa; }
+
+  /* ── Toolbar ── */
+  .toolbar {
+    background: #1e293b;
+    padding: 7px 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-shrink: 0;
+    border-bottom: 1px solid #334155;
+  }
+  .toolbar input {
+    flex: 1;
+    max-width: 380px;
+    padding: 5px 11px;
+    border: 1px solid #475569;
+    border-radius: 6px;
+    background: #0f172a;
+    color: #e2e8f0;
+    font-size: 0.83rem;
+    outline: none;
+  }
+  .toolbar input:focus { border-color: var(--accent); }
+  .toolbar input::placeholder { color: #64748b; }
+  .stats {
+    font-size: 0.72rem;
+    color: #64748b;
+    white-space: nowrap;
+  }
+
+  /* ── Scroll area ── */
+  .scroll-area {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+  }
+  .scroll-area::-webkit-scrollbar { width: 6px; }
+  .scroll-area::-webkit-scrollbar-track { background: transparent; }
+  .scroll-area::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+
+  /* ── Subtitle bar ── */
+  .subtitle-bar {
+    background: #0f172a;
+    border-top: 2px solid var(--accent);
+    padding: 8px 20px;
+    flex-shrink: 0;
+    min-height: 42px;
+    display: flex;
+    align-items: center;
+  }
+  .subtitle-text {
+    font-size: 0.9rem;
+    color: #e2e8f0;
+    line-height: 1.5;
+    font-style: italic;
+  }
+  .subtitle-text.empty { color: #475569; }
+
+  /* ── Transcript blocks ── */
+  .t-block {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    margin-bottom: 14px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    display: flex;
+  }
+  .t-block.block-active {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px rgba(37,99,235,0.15);
+  }
+  .t-gutter {
+    background: #0f172a;
+    width: 52px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: 14px;
+    cursor: pointer;
+  }
+  .t-gutter:hover { background: #1e293b; }
+  .t-timestamp {
+    font-size: 0.7rem;
+    color: #64748b;
+    font-family: monospace;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+  .t-gutter.gutter-active .t-timestamp { color: var(--accent); }
+  .t-body {
+    flex: 1;
+    padding: 12px 16px;
+    line-height: 1.75;
+    font-size: 0.92rem;
+    color: #1e293b;
+  }
+
+  /* ── Segments ── */
+  .segment {
+    cursor: pointer;
+    border-radius: 3px;
+    transition: background 0.1s;
+  }
+  .segment:hover { background: #eff6ff; }
+  .segment.active {
+    background: #bfdbfe;
+    outline: 2px solid #3b82f6;
+    outline-offset: 1px;
+    border-radius: 3px;
+  }
+  .segment.search-match  { background: #fef9c3; }
+  .segment.search-current { background: #fde047; outline: 2px solid #ca8a04; }
+
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <h1>Paediatric & Neonatal — Intussuception</h1>
+    <div class="header-sub">Final FRCA &mdash; Exam Viva Simulation &mdash; Click any phrase to seek</div>
+  </div>
+  <audio id="audio" src="../FinalFRCAPaediatric_and_Neonatal_Intussuception.mp3" controls preload="metadata"></audio>
+  <a class="back-link" href="index.html">&#8592; All Topics</a>
+</div>
+
+<div class="toolbar">
+  <input type="text" id="search" placeholder="Search transcript&#8230; (Enter = next match)">
+  <span class="stats" id="stats">135 segments &nbsp;|&nbsp; <span id="dur">loading&#8230;</span></span>
+</div>
+
+<div class="scroll-area" id="scroll-area">
+<div class="t-block">
+  <div class="t-gutter" data-start="0.0"><span class="t-timestamp">0:00</span></div>
+  <div class="t-body"><span class="segment" data-start="0.0" data-end="4.0" title="0:00">Intusception. What is intusception? </span><span class="segment" data-start="6.0" data-end="13.0" title="0:06">Intusception is caused by the small bowel telescoping as if it was swallowing itself. </span><span class="segment" data-start="13.0" data-end="17.0" title="0:13">This usually occurs at the Ileocicle junction. </span><span class="segment" data-start="17.0" data-end="25.0" title="0:17">Intusception can lead to venous congestion, bowel edema and intestinal obstruction. </span><span class="segment" data-start="25.0" data-end="29.0" title="0:25">What age group tend to present with this condition? </span><span class="segment" data-start="29.0" data-end="35.0" title="0:29">Intusception occurs predominantly in infants and young children. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="35.0"><span class="t-timestamp">0:35</span></div>
+  <div class="t-body"><span class="segment" data-start="35.0" data-end="43.0" title="0:35">50% of cases occur in infants and only 10% of cases occur in children older than 5. </span><span class="segment" data-start="43.0" data-end="47.0" title="0:43">Is intusception seen more in boys or girls? </span><span class="segment" data-start="47.0" data-end="52.0" title="0:47">The condition is seen more often in boys. </span><span class="segment" data-start="52.0" data-end="56.0" title="0:52">What are the causes of intusception? </span><span class="segment" data-start="56.0" data-end="60.0" title="0:56">90% of cases are idiopathic. </span><span class="segment" data-start="60.0" data-end="66.0" title="1:00">Intusception is the most common cause of intestinal obstruction in the first year of life. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="66.0"><span class="t-timestamp">1:06</span></div>
+  <div class="t-body"><span class="segment" data-start="66.0" data-end="73.0" title="1:06">In children over one, intusception may be the first presentation for a number of pathologies, </span><span class="segment" data-start="73.0" data-end="82.0" title="1:13">such as Mechel's diverticulum, intestinal polyp, lymphoma, hemalitic uremic syndrome, </span><span class="segment" data-start="82.0" data-end="87.0" title="1:22">an oxygen line preparer or poidsiega's syndrome. </span><span class="segment" data-start="87.0" data-end="91.0" title="1:27">Can intusception recur? </span><span class="segment" data-start="91.0" data-end="95.0" title="1:31">Yes, the recurrence rate is 5%. </span><span class="segment" data-start="95.0" data-end="97.0" title="1:35">Now let's review a case. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="97.0"><span class="t-timestamp">1:37</span></div>
+  <div class="t-body"><span class="segment" data-start="97.0" data-end="101.0" title="1:37">An 8 month old boy has been admitted to your hospital. </span><span class="segment" data-start="101.0" data-end="107.0" title="1:41">His mother says that he has been intimately crying and pulling his legs up to his chest for the past two days. </span><span class="segment" data-start="107.0" data-end="111.0" title="1:47">She found a red-current jelly-like stool in his last nappy. </span><span class="segment" data-start="111.0" data-end="117.0" title="1:51">He is vomit-occasionally and his notices nappies have not been wet the last few times she changed them. </span><span class="segment" data-start="117.0" data-end="121.0" title="1:57">Your examination reveals a quiet, pale baby. </span><span class="segment" data-start="121.0" data-end="127.0" title="2:01">His heart rate is 150 beats per minute and capillary refill time is 4 seconds. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="127.0"><span class="t-timestamp">2:07</span></div>
+  <div class="t-body"><span class="segment" data-start="127.0" data-end="132.0" title="2:07">His abdomen appears to standard and the infant cries when you examine it. </span><span class="segment" data-start="132.0" data-end="137.0" title="2:12">How might an infant with intusception present? </span><span class="segment" data-start="137.0" data-end="144.0" title="2:17">The classical features are of paroxysmal abdominal pain and blood and mucus in the stool. </span><span class="segment" data-start="144.0" data-end="149.0" title="2:24">This is sometimes described as having red-current jelly appearance. </span><span class="segment" data-start="149.0" data-end="155.0" title="2:29">The infant has episodes of inconsolable crying and drawing up its legs. </span><span class="segment" data-start="155.0" data-end="161.0" title="2:35">Vomiting and dehydration may be evident, potentially leading to shock. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="161.0"><span class="t-timestamp">2:41</span></div>
+  <div class="t-body"><span class="segment" data-start="161.0" data-end="166.0" title="2:41">Abaddominal distension can cause respiratory compromise. </span><span class="segment" data-start="166.0" data-end="173.0" title="2:46">Infection, bowel infarction, bleeding and perforation may all occur. </span><span class="segment" data-start="173.0" data-end="179.0" title="2:53">On examination, a sausage-shaped mass may be palpable in the right side of the abdomen. </span><span class="segment" data-start="179.0" data-end="183.0" title="2:59">The abdomen may be distended with guarding or rigidity. </span><span class="segment" data-start="183.0" data-end="186.0" title="3:03">The child may be profoundly shocked. </span><span class="segment" data-start="186.0" data-end="191.0" title="3:06">What would be your differential diagnosis for this history? </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="192.0"><span class="t-timestamp">3:12</span></div>
+  <div class="t-body"><span class="segment" data-start="192.0" data-end="197.0" title="3:12">The infant is most likely to be suffering from a gastrointestinal condition </span><span class="segment" data-start="197.0" data-end="203.0" title="3:17">intersception with dehydration and possible sepsis would be my main diagnosis. </span><span class="segment" data-start="203.0" data-end="207.0" title="3:23">I would also consider gastroenteritis. </span><span class="segment" data-start="207.0" data-end="211.0" title="3:27">How do diagnosed interception? </span><span class="segment" data-start="211.0" data-end="217.0" title="3:31">Diagnosis is made from the history and examination and then investigations. </span><span class="segment" data-start="217.0" data-end="221.0" title="3:37">The investigation of choice is an abdominal ultrasound. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="221.0"><span class="t-timestamp">3:41</span></div>
+  <div class="t-body"><span class="segment" data-start="221.0" data-end="228.0" title="3:41">An air-enema can be diagnostic as well as curative in up to 70% of cases. </span><span class="segment" data-start="228.0" data-end="236.0" title="3:48">This intervention is contraindicated if a patient is in shock or has peritonitis or has perforated. </span><span class="segment" data-start="236.0" data-end="244.0" title="3:56">An abdominal X-ray may aid the confirmation of bowel obstruction and possible perforation. </span><span class="segment" data-start="244.0" data-end="249.0" title="4:04">How would you treat interception of air-enema has failed? </span><span class="segment" data-start="249.0" data-end="254.0" title="4:09">The patient will need either a laparotomy or laparoscopy. </span><span class="segment" data-start="254.0" data-end="258.0" title="4:14">Any necrotic bowel found will need to be removed. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="258.0"><span class="t-timestamp">4:18</span></div>
+  <div class="t-body"><span class="segment" data-start="258.0" data-end="263.0" title="4:18">Would you advise air-enema or surgical intervention in this case? </span><span class="segment" data-start="263.0" data-end="270.0" title="4:23">This infant has evidence of shock because he has tachycardia, increased capillary refill time </span><span class="segment" data-start="270.0" data-end="274.0" title="4:30">and reduced urine output and conscious level. </span><span class="segment" data-start="274.0" data-end="282.0" title="4:34">The infant should be resuscitated as a matter of urgency and an emergency laparotomy should then be performed. </span><span class="segment" data-start="282.0" data-end="286.0" title="4:42">How would you resuscitate this infant and prepare them for theatre? </span><span class="segment" data-start="286.0" data-end="290.0" title="4:46">Try and describe the resuscitation as you would actually do it. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="290.0"><span class="t-timestamp">4:50</span></div>
+  <div class="t-body"><span class="segment" data-start="290.0" data-end="294.0" title="4:50">This will hopefully help you remember everything. </span><span class="segment" data-start="295.0" data-end="304.0" title="4:55">Resuscitation should either be performed in a high dependency unit or in the anesthetic room or recovery area prior to theatre. </span><span class="segment" data-start="304.0" data-end="314.0" title="5:04">I would obtain intravenous access and send bloods for full blood count, urea and electrolytes, liver function tests and cross-match. </span><span class="segment" data-start="314.0" data-end="329.0" title="5:14">I would regularly monitor the vital signs of the infant, including the respiratory rate, oxygen saturation, heart rate, blood pressure, capillary refill, urine output and conscious level. </span><span class="segment" data-start="329.0" data-end="332.0" title="5:29">Fluid resuscitation is vital. </span><span class="segment" data-start="332.0" data-end="341.0" title="5:32">I would give fluid boluses of normal saline, 20 ml per kilo body weight to restore the circulating volume. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="341.0"><span class="t-timestamp">5:41</span></div>
+  <div class="t-body"><span class="segment" data-start="341.0" data-end="348.0" title="5:41">After each bolus, I would reassess the infant to see whether further fluid was required. </span><span class="segment" data-start="348.0" data-end="357.0" title="5:48">My reassessment would consist of reviewing the observations of the infant and looking at the capillary refill time and conscious level. </span><span class="segment" data-start="357.0" data-end="363.0" title="5:57">The blood pressure might be maintained due to tachycardia and coexisting pain. </span><span class="segment" data-start="363.0" data-end="371.0" title="6:03">In addition to resuscitation fluids, I would give maintenance fluids calculated from the weight of the patient. </span><span class="segment" data-start="371.0" data-end="374.0" title="6:11">Heartmon solution can be used to provide this. </span><span class="segment" data-start="374.0" data-end="384.0" title="6:14">If the blood results revealed any severe abnormalities in the urea and electrolytes, then I would start correcting these prior to theatre. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="384.0"><span class="t-timestamp">6:24</span></div>
+  <div class="t-body"><span class="segment" data-start="384.0" data-end="392.0" title="6:24">I would place a nasogastric tube, aspirate the stomach contents and then place the tube on free drainage. </span><span class="segment" data-start="392.0" data-end="406.0" title="6:32">If the infant's respiration was inadequate due to either the diaphragmatic splinting from abdominal distension or the effects of severe shock, I would consider intubating and ventilating the infant. </span><span class="segment" data-start="406.0" data-end="409.0" title="6:46">This could be done in theatre. </span><span class="segment" data-start="409.0" data-end="414.0" title="6:49">How would you induce anesthesia in this infant? </span><span class="segment" data-start="414.0" data-end="420.0" title="6:54">I would ennecetatize this infant with the support of a consultant pediatric anesthetist. </span><span class="segment" data-start="420.0" data-end="426.0" title="7:00">A general anesthetic with endotracheal intubation and deventilation is required. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="426.0"><span class="t-timestamp">7:06</span></div>
+  <div class="t-body"><span class="segment" data-start="426.0" data-end="432.0" title="7:06">Prior to induction, I would ensure that the infant has been adequately resuscitated. </span><span class="segment" data-start="432.0" data-end="437.0" title="7:12">I would suction the NG tube and preoxygenate the infant. </span><span class="segment" data-start="437.0" data-end="448.0" title="7:17">I would obtain monitoring as per the AAGBI standards and have all of my drugs for resuscitation and induction immediately available. </span><span class="segment" data-start="449.0" data-end="455.0" title="7:29">The options for induction of general anesthesia are a gas or intravenous induction. </span><span class="segment" data-start="455.0" data-end="460.0" title="7:35">I would prefer a rapid sequence induction with crycoid pressure. </span><span class="segment" data-start="460.0" data-end="466.0" title="7:40">I would use thio pentone to induce the infant and then give muscle relaxant. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="466.0"><span class="t-timestamp">7:46</span></div>
+  <div class="t-body"><span class="segment" data-start="466.0" data-end="474.0" title="7:46">This could be either succumbethonium or an adequate dose of non-depolarizing muscle relaxant such as rockeronium. </span><span class="segment" data-start="474.0" data-end="482.0" title="7:54">I would then intubate the infant with a straight blade and pass an uncuffed endotracheal tube. </span><span class="segment" data-start="482.0" data-end="491.0" title="8:02">I would check the position of the tube by osculating the chest, observing the capnography trace and checking the length at the lips. </span><span class="segment" data-start="491.0" data-end="499.0" title="8:11">Provided the tube was inserted easily and not too tight, I would not require a leak around the tube. </span><span class="segment" data-start="499.0" data-end="505.0" title="8:19">I would then allow crycoid pressure to be released and secure the tube in place. </span><span class="segment" data-start="505.0" data-end="508.0" title="8:25">What about maintenance? </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="508.0"><span class="t-timestamp">8:28</span></div>
+  <div class="t-body"><span class="segment" data-start="508.0" data-end="513.0" title="8:28">I would maintain anesthesia using an inhalational agent. </span><span class="segment" data-start="513.0" data-end="516.0" title="8:33">Personally, I would use CIVA fluorane. </span><span class="segment" data-start="516.0" data-end="527.0" title="8:36">I would then hand ventilate the infant before connecting to either an air's T-piece or a pediatric circle system using pressure-controlled ventilation. </span><span class="segment" data-start="527.0" data-end="539.0" title="8:47">Hand ventilation throughout the operation would not be ideal as it is difficult to maintain regular ventilation with stable blood gases and capnography is unreliable. </span><span class="segment" data-start="539.0" data-end="543.0" title="8:59">What would you give for pain relief? </span><span class="segment" data-start="543.0" data-end="551.0" title="9:03">I would give a combination of paracetamol, local anaesthetic techniques and opioids for analgesia. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="551.0"><span class="t-timestamp">9:11</span></div>
+  <div class="t-body"><span class="segment" data-start="551.0" data-end="555.0" title="9:11">Paracetamol can be given intravenously and rectally. </span><span class="segment" data-start="555.0" data-end="569.0" title="9:15">The intravenous doses for an infant under 10 kilos are 7.5 mg per kilogram, 4 to 6 hourly, up to a total of 30 mg per kilogram per day. </span><span class="segment" data-start="569.0" data-end="583.0" title="9:29">The rectal doses are 40 mg per kilogram loading dose, followed by 20 mg per kilogram, 4 to 6 hourly, to a maximum of 90 mg per kilogram per day. </span><span class="segment" data-start="583.0" data-end="592.0" title="9:43">Oral paracetamol, 20 mg, 6 hourly, may be commenced once or all fluids are tolerated. </span><span class="segment" data-start="592.0" data-end="604.0" title="9:52">Non-steroidal anti-inflammatories may be an option provided the infant is adequately hydrated with good renal perfusion and no evidence of sepsis. </span><span class="segment" data-start="604.0" data-end="610.0" title="10:04">The dose of oral ibuprofen is 5 mg per kilogram, 4 times a day. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="610.0"><span class="t-timestamp">10:10</span></div>
+  <div class="t-body"><span class="segment" data-start="610.0" data-end="622.0" title="10:10">Dioclet phenac may be given orally or rectally at a dose of 1 mg per kilogram, 3 times daily, to a maximum of 150 mg per day. </span><span class="segment" data-start="622.0" data-end="631.0" title="10:22">Opioids can be used intra and postoperatively. Morphine can be used in judicious boluses or by infusion. </span><span class="segment" data-start="631.0" data-end="642.0" title="10:31">It is preferable to fentanyl due to its greater water solubility. It is less lipid soluble and so less cumulative and more predictable. </span><span class="segment" data-start="642.0" data-end="649.0" title="10:42">Due to the risk of postoperative respiratory depression, the infant should be carefully monitored. </span><span class="segment" data-start="649.0" data-end="658.0" title="10:49">Local anaesthetic techniques such as wound infiltration, epidural or spinal anaesthesia may be used. </span><span class="segment" data-start="658.0" data-end="666.0" title="10:58">Wound infiltration is effective and often used. The dose of bupivocane is 2 mg per kilogram. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="666.0"><span class="t-timestamp">11:06</span></div>
+  <div class="t-body"><span class="segment" data-start="666.0" data-end="680.0" title="11:06">I would also consider a regional technique. Epidural or spinal blockade may be performed but they may be difficult to insert and require expertise in their postoperative management on the ward. </span><span class="segment" data-start="680.0" data-end="691.0" title="11:20">A spinal would also be relatively short acting. Contra indications to regional techniques include sepsis and coagulopathy. </span><span class="segment" data-start="691.0" data-end="695.0" title="11:31">What are your concerns during the operation? </span><span class="segment" data-start="695.0" data-end="706.0" title="11:35">My main concerns during the operation can be divided into general considerations for pediatric patients and specific concerns regarding the laparotomy. </span><span class="segment" data-start="706.0" data-end="716.0" title="11:46">Specifically, I would be vigilant of any surgical complications or hemorrhage. I would aim to maintain good communication with the surgeon. </span><span class="segment" data-start="716.0" data-end="732.0" title="11:56">Generally, I would want to closely monitor the infant and avoid excessive heat loss, give adequate doses of analgesics and anaesthetic agents and give appropriate fluids taking into account the fluid losses during surgery. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="732.0"><span class="t-timestamp">12:12</span></div>
+  <div class="t-body"><span class="segment" data-start="732.0" data-end="747.0" title="12:12">I would aim to maintain the oxygen saturation and tidal carbon dioxide, heart rate, blood pressure, temperature and urine output all within normal levels throughout the operation. </span><span class="segment" data-start="747.0" data-end="754.0" title="12:27">I would also check the blood sugar levels of the infant to avoid hypoglycemia. </span><span class="segment" data-start="754.0" data-end="766.0" title="12:34">This infant is at risk of hypothermia during the operation due to heat loss from the skin, aided by peripheral vasodilitation and the surgical site. </span><span class="segment" data-start="766.0" data-end="776.0" title="12:46">I would aim to increase the ambient temperature of the operating and anaesthetic rooms prior to and during surgery. I would use a heated mattress. </span><span class="segment" data-start="776.0" data-end="784.0" title="12:56">I would use a bear hugger and cover the infant's head in order to avoid further heat loss from the skin. </span><span class="segment" data-start="784.0" data-end="798.0" title="13:04">Bubble wrap and plastic drapes can also be used. I would warm the fluids given to the patient and use a heat and moisture exchanger to reduce the heat loss from the respiratory system. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="798.0"><span class="t-timestamp">13:18</span></div>
+  <div class="t-body"><span class="segment" data-start="798.0" data-end="808.0" title="13:18">Use of a circle system also provides warm, fully humidified gas and is therefore superior to a T.P. system. </span><span class="segment" data-start="808.0" data-end="812.0" title="13:28">How would you approach intraoperative fluid management? </span><span class="segment" data-start="812.0" data-end="822.0" title="13:32">I would try and consider fluids in terms of pre-existing deficits, maintenance requirements and ongoing losses. </span><span class="segment" data-start="822.0" data-end="830.0" title="13:42">I would resuscitate the infant prior to induction of anaesthesia thus addressing the pre-existing deficit. </span><span class="segment" data-start="830.0" data-end="836.0" title="13:50">With regards to maintenance fluids, I would calculate this from the weight of the infant. </span><span class="segment" data-start="836.0" data-end="852.0" title="13:56">4 mils per kilo is given for the first 10 kilos of body weight of the infant, followed by 2 mils per kilo for the second 10 kilo body weight and then 1 mil per kilo for each following 10 kilos. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="852.0"><span class="t-timestamp">14:12</span></div>
+  <div class="t-body"><span class="segment" data-start="852.0" data-end="862.0" title="14:12">I would use Hartman's solution as a continuous infusion, although this may need to be changed depending upon the blood results. </span><span class="segment" data-start="862.0" data-end="868.0" title="14:22">A glucose solution may also be required depending on the blood sugar measurements. </span><span class="segment" data-start="868.0" data-end="876.0" title="14:28">The ongoing losses would be mainly due to the operation. Blood loss should be closely monitored. </span><span class="segment" data-start="876.0" data-end="886.0" title="14:36">As a general guide, approximately 10 mils per kilo per hour of fluid will be required to compensate for evaporation during a laparotomy. </span><span class="segment" data-start="886.0" data-end="893.0" title="14:46">This can be replaced as 0.9% saline or Hartman's solution. </span><span class="segment" data-start="893.0" data-end="898.0" title="14:53">Colloid may also be required during fluid therapy due to capillary leak. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="898.0"><span class="t-timestamp">14:58</span></div>
+  <div class="t-body"><span class="segment" data-start="898.0" data-end="905.0" title="14:58">If the infant is septic, bolus is totaling 40 mils per kilo are not unusual. </span><span class="segment" data-start="905.0" data-end="914.0" title="15:05">If significant blood loss occurs, then I would give blood and consider the need for clotting factors or fresh frozen plasma. </span><span class="segment" data-start="915.0" data-end="919.0" title="15:15">Or be a post-operative plan for this patient. </span><span class="segment" data-start="919.0" data-end="934.0" title="15:19">If the infant requires ongoing ventilation due to respiratory compromise, septic shock, blood loss or surgical complications, then they will need to be nursed in a pediatric intensive care unit. </span><span class="segment" data-start="934.0" data-end="944.0" title="15:34">Otherwise, I would want the patient to be nursed on a high dependency unit in order to closely monitor the vital signs and pain levels of the infant. </span><span class="segment" data-start="944.0" data-end="951.0" title="15:44">Respiratory depression may occur due to the effects of opioid analgesics. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="951.0"><span class="t-timestamp">15:51</span></div>
+  <div class="t-body"><span class="segment" data-start="951.0" data-end="957.0" title="15:51">Regular blood tests will be necessary to check the full blood count and urea and electrolytes. </span><span class="segment" data-start="957.0" data-end="962.0" title="15:57">Intravenous fluids should be continued until the infant is able to feed. </span><span class="segment" data-start="962.0" data-end="967.0" title="16:02">Blood transfusion may also be required. </span></div>
+</div>
+</div>
+
+<div class="subtitle-bar">
+  <span class="subtitle-text empty" id="subtitle-text">Play audio to see live subtitles&#8230;</span>
+</div>
+
+<script>
+
+const audio    = document.getElementById('audio');
+const allSegs  = Array.from(document.querySelectorAll('.segment'));
+const allBlocks = Array.from(document.querySelectorAll('.t-block'));
+const subtitleEl = document.getElementById('subtitle-text');
+let activeSegEl   = null;
+let activeBlockEl = null;
+let searchMatches = [];
+let searchIdx     = 0;
+
+// Duration display
+audio.addEventListener('loadedmetadata', () => {
+  const m = Math.floor(audio.duration / 60);
+  const s = Math.floor(audio.duration %% 60).toString().padStart(2,'0');
+  document.getElementById('dur').textContent = m + ':' + s;
+});
+
+// Seek helper
+function seekTo(t) {
+  audio.currentTime = t;
+  audio.play();
+}
+
+// Block gutter click
+document.querySelectorAll('.t-gutter').forEach(g => {
+  g.addEventListener('click', () => seekTo(parseFloat(g.dataset.start)));
+});
+
+// Segment click
+allSegs.forEach(s => {
+  s.addEventListener('click', e => {
+    e.stopPropagation();
+    seekTo(parseFloat(s.dataset.start));
+  });
+});
+
+// Real-time tracking
+audio.addEventListener('timeupdate', () => {
+  const t = audio.currentTime;
+
+  // Find active segment (last one whose start <= t)
+  let found = null;
+  for (let i = allSegs.length - 1; i >= 0; i--) {
+    if (parseFloat(allSegs[i].dataset.start) <= t) { found = allSegs[i]; break; }
+  }
+
+  if (found && found !== activeSegEl) {
+    // Clear previous
+    if (activeSegEl) activeSegEl.classList.remove('active');
+    if (activeBlockEl) {
+      activeBlockEl.classList.remove('block-active');
+      const pg = activeBlockEl.querySelector('.t-gutter');
+      if (pg) pg.classList.remove('gutter-active');
+    }
+    // Set new
+    found.classList.add('active');
+    const block = found.closest('.t-block');
+    if (block) {
+      block.classList.add('block-active');
+      const g = block.querySelector('.t-gutter');
+      if (g) g.classList.add('gutter-active');
+      activeBlockEl = block;
+    }
+    activeSegEl = found;
+
+    // Update subtitle
+    subtitleEl.textContent = found.textContent.trim();
+    subtitleEl.classList.remove('empty');
+
+    // Auto-scroll (only when not searching)
+    if (!document.getElementById('search').value) {
+      found.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }
+});
+
+// Search
+const searchInput = document.getElementById('search');
+searchInput.addEventListener('input', runSearch);
+searchInput.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && searchMatches.length) {
+    searchMatches[searchIdx].classList.remove('search-current');
+    searchIdx = (searchIdx + 1) %% searchMatches.length;
+    const el = searchMatches[searchIdx];
+    el.classList.add('search-current');
+    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+});
+
+function runSearch() {
+  const q = searchInput.value.trim().toLowerCase();
+  allSegs.forEach(s => s.classList.remove('search-match','search-current'));
+  searchMatches = [];
+  if (!q) return;
+  allSegs.forEach(s => {
+    if (s.textContent.toLowerCase().includes(q)) {
+      s.classList.add('search-match');
+      searchMatches.push(s);
+    }
+  });
+  if (!searchMatches.length) return;
+  searchIdx = 0;
+  searchMatches[0].classList.add('search-current');
+  searchMatches[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+</script>
+</body>
+</html>

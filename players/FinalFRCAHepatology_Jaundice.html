@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hepatology — Jaundice</title>
+<style>
+
+  :root {
+    --accent:    #b45309;
+    --body-bg:   #f1f5f9;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: var(--body-bg);
+    color: #1e293b;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  /* ── Header ── */
+  .header {
+    background: #0f172a;
+    border-bottom: 3px solid var(--accent);
+    padding: 12px 20px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .header-left { flex: 1; min-width: 200px; }
+  .header h1 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #f1f5f9;
+    margin-bottom: 4px;
+    letter-spacing: 0.01em;
+  }
+  .header-sub {
+    font-size: 0.72rem;
+    color: #94a3b8;
+    font-style: italic;
+  }
+  audio {
+    height: 36px;
+    accent-color: var(--accent);
+    flex-shrink: 0;
+  }
+  .back-link {
+    font-size: 0.8rem;
+    color: #94a3b8;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .back-link:hover { color: #60a5fa; }
+
+  /* ── Toolbar ── */
+  .toolbar {
+    background: #1e293b;
+    padding: 7px 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-shrink: 0;
+    border-bottom: 1px solid #334155;
+  }
+  .toolbar input {
+    flex: 1;
+    max-width: 380px;
+    padding: 5px 11px;
+    border: 1px solid #475569;
+    border-radius: 6px;
+    background: #0f172a;
+    color: #e2e8f0;
+    font-size: 0.83rem;
+    outline: none;
+  }
+  .toolbar input:focus { border-color: var(--accent); }
+  .toolbar input::placeholder { color: #64748b; }
+  .stats {
+    font-size: 0.72rem;
+    color: #64748b;
+    white-space: nowrap;
+  }
+
+  /* ── Scroll area ── */
+  .scroll-area {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+  }
+  .scroll-area::-webkit-scrollbar { width: 6px; }
+  .scroll-area::-webkit-scrollbar-track { background: transparent; }
+  .scroll-area::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+
+  /* ── Subtitle bar ── */
+  .subtitle-bar {
+    background: #0f172a;
+    border-top: 2px solid var(--accent);
+    padding: 8px 20px;
+    flex-shrink: 0;
+    min-height: 42px;
+    display: flex;
+    align-items: center;
+  }
+  .subtitle-text {
+    font-size: 0.9rem;
+    color: #e2e8f0;
+    line-height: 1.5;
+    font-style: italic;
+  }
+  .subtitle-text.empty { color: #475569; }
+
+  /* ── Transcript blocks ── */
+  .t-block {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    margin-bottom: 14px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    display: flex;
+  }
+  .t-block.block-active {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px rgba(37,99,235,0.15);
+  }
+  .t-gutter {
+    background: #0f172a;
+    width: 52px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: 14px;
+    cursor: pointer;
+  }
+  .t-gutter:hover { background: #1e293b; }
+  .t-timestamp {
+    font-size: 0.7rem;
+    color: #64748b;
+    font-family: monospace;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+  .t-gutter.gutter-active .t-timestamp { color: var(--accent); }
+  .t-body {
+    flex: 1;
+    padding: 12px 16px;
+    line-height: 1.75;
+    font-size: 0.92rem;
+    color: #1e293b;
+  }
+
+  /* ── Segments ── */
+  .segment {
+    cursor: pointer;
+    border-radius: 3px;
+    transition: background 0.1s;
+  }
+  .segment:hover { background: #eff6ff; }
+  .segment.active {
+    background: #bfdbfe;
+    outline: 2px solid #3b82f6;
+    outline-offset: 1px;
+    border-radius: 3px;
+  }
+  .segment.search-match  { background: #fef9c3; }
+  .segment.search-current { background: #fde047; outline: 2px solid #ca8a04; }
+
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <h1>Hepatology — Jaundice</h1>
+    <div class="header-sub">Final FRCA &mdash; Exam Viva Simulation &mdash; Click any phrase to seek</div>
+  </div>
+  <audio id="audio" src="../FinalFRCAHepatology_Jaundice.mp3" controls preload="metadata"></audio>
+  <a class="back-link" href="index.html">&#8592; All Topics</a>
+</div>
+
+<div class="toolbar">
+  <input type="text" id="search" placeholder="Search transcript&#8230; (Enter = next match)">
+  <span class="stats" id="stats">85 segments &nbsp;|&nbsp; <span id="dur">loading&#8230;</span></span>
+</div>
+
+<div class="scroll-area" id="scroll-area">
+<div class="t-block">
+  <div class="t-gutter" data-start="0.0"><span class="t-timestamp">0:00</span></div>
+  <div class="t-body"><span class="segment" data-start="0.0" data-end="5.28" title="0:00">Jondis, define Jondis. What are the causes of Jondis? </span><span class="segment" data-start="6.0" data-end="10.16" title="0:06">Use a short definition followed by a systematic classification. </span><span class="segment" data-start="12.24" data-end="17.76" title="0:12">Jondis is a yellowish discoloration of the sclerone and skin due to subcutaneous deposition of </span><span class="segment" data-start="17.76" data-end="25.12" title="0:17">bilirubin. Normal bilirubin levels are exceeded and at greater than 60 micromole per liter, </span><span class="segment" data-start="25.12" data-end="32.8" title="0:25">the yellowish discoloration becomes apparent. Jondis can be pre-hypatic, hepatic, or post-hypatic. </span><span class="segment" data-start="33.68" data-end="39.44" title="0:33">The pre-hypatic causes could be because of impaired excretion of bilirubin, for example in </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="39.44"><span class="t-timestamp">0:39</span></div>
+  <div class="t-body"><span class="segment" data-start="39.44" data-end="48.56" title="0:39">dubin Johnson syndrome, defective conjugation due to abnormal enzymes or hemolysis either congenital </span><span class="segment" data-start="48.56" data-end="56.16" title="0:48">or acquired. Viral hepatitis, alcohol, drugs, autoimmune hepatitis, </span><span class="segment" data-start="56.72" data-end="67.28" title="0:56">hemochromatosis, primary biliracerosis, bacterial sepsis, budkiaris syndrome, malignant infiltration, </span><span class="segment" data-start="67.28" data-end="72.56" title="1:07">and leptospirosis are some of the hepatocelular causes of Jondis. </span><span class="segment" data-start="73.2" data-end="81.12" title="1:13">The post-epatic causes are biliretractstones, extrinsic biliric compression, </span><span class="segment" data-start="82.0" data-end="87.44" title="1:22">primary sclerosin colangitis, acute orchronic pancreatitis, </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="88.24"><span class="t-timestamp">1:28</span></div>
+  <div class="t-body"><span class="segment" data-start="88.24" data-end="92.08" title="1:28">colangio-carsanoma, and pancreatic carcinoma. </span><span class="segment" data-start="93.28" data-end="95.44" title="1:33">How is bilirubin metabolized in the body? </span><span class="segment" data-start="95.76" data-end="102.64" title="1:35">Bilirubin is a byproduct of the breakdown of hemoglobin in the tissues. </span><span class="segment" data-start="103.52" data-end="109.84" title="1:43">It is transported to the liver bound to albumin. It dissociates in the liver and is bound to </span><span class="segment" data-start="109.84" data-end="116.08" title="1:49">cytoplasmic proteins. It gets conjugated to form bilirubin di-glucuronoid. </span><span class="segment" data-start="117.36" data-end="124.24" title="1:57">This water soluble form of bilirubin is then transported via the bile canicule eventually to </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="124.24"><span class="t-timestamp">2:04</span></div>
+  <div class="t-body"><span class="segment" data-start="124.24" data-end="130.96" title="2:04">the bile ducts and secreted into the intestine. Due to the action of colonic bacteria, </span><span class="segment" data-start="131.76" data-end="137.68" title="2:11">it is further metabolized to Euro-Biliner Gen and then to Sturco-Bilin. </span><span class="segment" data-start="139.2" data-end="144.56" title="2:19">Some of the Euro-Biliner Gen is reabsorbed and undergoes entrohapatic resurculation. </span><span class="segment" data-start="145.84" data-end="151.04" title="2:25">A small amount is absorbed into the general circulation and is excreted in the urine </span><span class="segment" data-start="151.04" data-end="158.56" title="2:31">giving it the characteristic straw colour. The Sturco-Bilin gives feces its brown colour. </span><span class="segment" data-start="159.76" data-end="163.12" title="2:39">What are the pathophysiological changes associated with liver disease? </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="165.52"><span class="t-timestamp">2:45</span></div>
+  <div class="t-body"><span class="segment" data-start="165.52" data-end="171.12" title="2:45">A large number of patients will have acytes leading to spinting of the diaphragm and decrease </span><span class="segment" data-start="171.12" data-end="175.92" title="2:51">in functional residual capacity and difficult intraoperative ventilation. </span><span class="segment" data-start="176.56" data-end="181.12" title="2:56">They may also have plural effusions and intra-pulmonary shunting. </span><span class="segment" data-start="181.12" data-end="187.04" title="3:01">There is also decreased immunity and susceptibility to infection. </span><span class="segment" data-start="187.04" data-end="193.76" title="3:07">The development of porto-systemic shunts leads to an increase in cardiac output. </span><span class="segment" data-start="193.76" data-end="201.44" title="3:13">These patients have an active renein and jittenzin system leading to increase in the extracellular fluid levels. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="201.92"><span class="t-timestamp">3:21</span></div>
+  <div class="t-body"><span class="segment" data-start="201.92" data-end="205.52" title="3:21">There is an increase in intra-abdominal pressure. </span><span class="segment" data-start="206.56" data-end="212.56" title="3:26">Increased incidence of gastro-softwaju or reflux and acytes which may require paracentesis </span><span class="segment" data-start="212.56" data-end="219.12" title="3:32">preoperatively. They often have varices and are prone to upper gastroenterstinal tract bleeding. </span><span class="segment" data-start="220.72" data-end="225.2" title="3:40">Hypoglycemia can occur due to deranged storage functions of the liver. </span><span class="segment" data-start="225.68" data-end="232.88" title="3:45">Renalthalia may occur due to pre-renal causes and increase reneavascular resistance, </span><span class="segment" data-start="233.76" data-end="237.52" title="3:53">impaired tubular function due to sepsis or nephotoxic drugs. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="238.72"><span class="t-timestamp">3:58</span></div>
+  <div class="t-body"><span class="segment" data-start="238.72" data-end="244.88" title="3:58">Ultimately, hepatorenal syndrome can occur which is associated with a very high mortality rate. </span><span class="segment" data-start="246.72" data-end="250.48" title="4:06">Plotting is deranged due to inadequate synthetic function of the liver. </span><span class="segment" data-start="251.28" data-end="257.92" title="4:11">Prodthombin time is prolonged. There is a qualitative and quantitative defect in platelets. </span><span class="segment" data-start="259.36" data-end="264.48" title="4:19">There is a derangement in the metabolism of amino acids leading to the accumulation of ammonia. </span><span class="segment" data-start="265.52" data-end="268.8" title="4:25">This leads to cerebral edema causing encephalopathy. </span><span class="segment" data-start="269.68" data-end="272.24" title="4:29">How does liver failure affect pharmacokinetics? </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="272.88"><span class="t-timestamp">4:32</span></div>
+  <div class="t-body"><span class="segment" data-start="272.88" data-end="280.32" title="4:32">Liver failure is associated with decrease in liver blood flow and this will decrease the first </span><span class="segment" data-start="280.32" data-end="288.32" title="4:40">past metabolism of drugs. This is further compounded by hypoalbumemia which increases the </span><span class="segment" data-start="288.32" data-end="295.2" title="4:48">amount of free drug present in the plasma. The active renein and jatensen system causes </span><span class="segment" data-start="295.2" data-end="300.56" title="4:55">retention of sodium and water. This increases the volume of distribution of drugs. </span><span class="segment" data-start="301.68" data-end="307.44" title="5:01">In early liver disease enzymes are induced and drugs metabolized more rapidly. </span><span class="segment" data-start="308.48" data-end="313.6" title="5:08">However, in advanced liver disease enzyme inhibition occurs </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="313.6"><span class="t-timestamp">5:13</span></div>
+  <div class="t-body"><span class="segment" data-start="313.6" data-end="322.72" title="5:13">the effect of drugs thus ensues. Due to pre-existing encephalopathy there is an increased </span><span class="segment" data-start="322.72" data-end="330.96" title="5:22">sensitivity to sedative drugs. Many liver failure patients are on diuretics and this may lead to </span><span class="segment" data-start="330.96" data-end="337.28" title="5:30">electrolyte imbalances which may cause arrhythmias and potentially neuromuscular placade. </span><span class="segment" data-start="338.32" data-end="341.2" title="5:38">Describe the preoperative assessment of a patient with jaundice. </span><span class="segment" data-start="341.92" data-end="347.92" title="5:41">Preoperative assessment should always include history, examination and a review of the investigation. </span><span class="segment" data-start="347.92" data-end="355.68" title="5:47">A good history is paramount to ascertain the cause of jaundice. Younger patients are likely to have </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="355.68"><span class="t-timestamp">5:55</span></div>
+  <div class="t-body"><span class="segment" data-start="355.68" data-end="363.68" title="5:55">viral, drug or alcohol induced hepatitis. Older patients have mechanical obstruction to the flow of </span><span class="segment" data-start="363.68" data-end="371.6" title="6:03">bile either due to gallstones or tumour. Rapid onset associated with nausea and anorexia is likely </span><span class="segment" data-start="371.6" data-end="380.64" title="6:11">to be due to viral hepatitis. Slow insidious onset with preritus is usually colostatic. </span><span class="segment" data-start="381.84" data-end="388.4" title="6:21">Associated symptoms of fever and rygores would suggest colangitis, whereas severe pain </span><span class="segment" data-start="389.44" data-end="395.2" title="6:29">could suggest acute pancreatitis either alcohol or gallstone related. </span><span class="segment" data-start="396.16" data-end="399.52" title="6:36">A history of hemolytic inherited blood disorders, </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="400.48"><span class="t-timestamp">6:40</span></div>
+  <div class="t-body"><span class="segment" data-start="400.48" data-end="405.92" title="6:40">social history including history of alcohol consumption, sexual contacts, drug abuse, </span><span class="segment" data-start="405.92" data-end="411.04" title="6:45">history of recent travel and history of chemical or rodent exposure should also be elicited. </span><span class="segment" data-start="413.04" data-end="419.36" title="6:53">On examination look for signs of chronic liver disease. These are scratch marks, clubbing, </span><span class="segment" data-start="419.36" data-end="426.72" title="6:59">purer, bruising, palma erothema, leukonicia, spider-nevi, muscle wasting, </span><span class="segment" data-start="426.72" data-end="433.44" title="7:06">dupertrons contractor, loss of pubic and auxiliary hair, adema and testicular atrophy. </span><span class="segment" data-start="435.12" data-end="443.36" title="7:15">Signs of decompensation are fetal hepaticus, hepatic flap and confusion, which would suggest </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="443.36"><span class="t-timestamp">7:23</span></div>
+  <div class="t-body"><span class="segment" data-start="443.36" data-end="449.76" title="7:23">hepatic encephalopathy. Also look for signs of portal hypertension like acytes, </span><span class="segment" data-start="449.76" data-end="457.52" title="7:29">spenomegaly and caput meduzai. The investigations that should be carried out include </span><span class="segment" data-start="457.52" data-end="464.0" title="7:37">a full blood count which may show anemia secondary to himolosis. A high leukocyte count </span><span class="segment" data-start="464.0" data-end="470.16" title="7:44">with predominantly polymorphs occurs in viral hepatitis, alcoholic hepatitis and colangitis. </span><span class="segment" data-start="470.56" data-end="476.64" title="7:50">Coagulation is likely to be abnormal with a prolonged pro thrombin time and INR. </span><span class="segment" data-start="476.64" data-end="482.64" title="7:56">Pro thrombin time is a good indicator of liver synthetic function. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="482.64"><span class="t-timestamp">8:02</span></div>
+  <div class="t-body"><span class="segment" data-start="482.64" data-end="488.88" title="8:02">Eurea and electrolytes will often show low urea due to impaired production </span><span class="segment" data-start="488.88" data-end="497.12" title="8:08">and abnormal electrolytes due to diuretics. Glucose levels can be low due to impaired storage </span><span class="segment" data-start="497.28" data-end="504.56" title="8:17">and utilization of glucose. Arterial blood gases may show hypoxia secondary to interpulmonary </span><span class="segment" data-start="504.56" data-end="512.56" title="8:24">shunting. Billet rubin levels may be high. Alkaline phosphatase is raised to three times the </span><span class="segment" data-start="512.56" data-end="518.48" title="8:32">normal level. In the absence of pageants disease, this strongly suggests cholestasis. </span><span class="segment" data-start="519.44" data-end="528.24" title="8:39">Alonine amino transferase and the spartate amino transferase are non-specific and can be elevated </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="528.24"><span class="t-timestamp">8:48</span></div>
+  <div class="t-body"><span class="segment" data-start="528.24" data-end="536.96" title="8:48">in hepaticellular injury. Gamma glutamyle transpeptidase is non-specific and is elevated in </span><span class="segment" data-start="536.96" data-end="545.68" title="8:56">colistasis and hepaticellular jaundice. Albune levels are decreased with a normal or raised </span><span class="segment" data-start="545.68" data-end="552.32" title="9:05">globuline level in patients with chronic liver disease. Hepatitis screen, which includes viral </span><span class="segment" data-start="552.32" data-end="560.24" title="9:12">markers, serum ferritin levels, serum seruloplasmine levels, autoimmune profile and alpha-feeta </span><span class="segment" data-start="560.24" data-end="566.24" title="9:20">proton levels should all be measured. Abdominal ultrasound may be used to distinguish between </span><span class="segment" data-start="566.24" data-end="574.96" title="9:26">obstructive and non-obstructive jaundice. Endoscopic retrograde, Kalangio pancreatography </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="574.96"><span class="t-timestamp">9:34</span></div>
+  <div class="t-body"><span class="segment" data-start="574.96" data-end="584.08" title="9:34">is commonly used to investigate obstructive jaundice. </span></div>
+</div>
+</div>
+
+<div class="subtitle-bar">
+  <span class="subtitle-text empty" id="subtitle-text">Play audio to see live subtitles&#8230;</span>
+</div>
+
+<script>
+
+const audio    = document.getElementById('audio');
+const allSegs  = Array.from(document.querySelectorAll('.segment'));
+const allBlocks = Array.from(document.querySelectorAll('.t-block'));
+const subtitleEl = document.getElementById('subtitle-text');
+let activeSegEl   = null;
+let activeBlockEl = null;
+let searchMatches = [];
+let searchIdx     = 0;
+
+// Duration display
+audio.addEventListener('loadedmetadata', () => {
+  const m = Math.floor(audio.duration / 60);
+  const s = Math.floor(audio.duration %% 60).toString().padStart(2,'0');
+  document.getElementById('dur').textContent = m + ':' + s;
+});
+
+// Seek helper
+function seekTo(t) {
+  audio.currentTime = t;
+  audio.play();
+}
+
+// Block gutter click
+document.querySelectorAll('.t-gutter').forEach(g => {
+  g.addEventListener('click', () => seekTo(parseFloat(g.dataset.start)));
+});
+
+// Segment click
+allSegs.forEach(s => {
+  s.addEventListener('click', e => {
+    e.stopPropagation();
+    seekTo(parseFloat(s.dataset.start));
+  });
+});
+
+// Real-time tracking
+audio.addEventListener('timeupdate', () => {
+  const t = audio.currentTime;
+
+  // Find active segment (last one whose start <= t)
+  let found = null;
+  for (let i = allSegs.length - 1; i >= 0; i--) {
+    if (parseFloat(allSegs[i].dataset.start) <= t) { found = allSegs[i]; break; }
+  }
+
+  if (found && found !== activeSegEl) {
+    // Clear previous
+    if (activeSegEl) activeSegEl.classList.remove('active');
+    if (activeBlockEl) {
+      activeBlockEl.classList.remove('block-active');
+      const pg = activeBlockEl.querySelector('.t-gutter');
+      if (pg) pg.classList.remove('gutter-active');
+    }
+    // Set new
+    found.classList.add('active');
+    const block = found.closest('.t-block');
+    if (block) {
+      block.classList.add('block-active');
+      const g = block.querySelector('.t-gutter');
+      if (g) g.classList.add('gutter-active');
+      activeBlockEl = block;
+    }
+    activeSegEl = found;
+
+    // Update subtitle
+    subtitleEl.textContent = found.textContent.trim();
+    subtitleEl.classList.remove('empty');
+
+    // Auto-scroll (only when not searching)
+    if (!document.getElementById('search').value) {
+      found.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }
+});
+
+// Search
+const searchInput = document.getElementById('search');
+searchInput.addEventListener('input', runSearch);
+searchInput.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && searchMatches.length) {
+    searchMatches[searchIdx].classList.remove('search-current');
+    searchIdx = (searchIdx + 1) %% searchMatches.length;
+    const el = searchMatches[searchIdx];
+    el.classList.add('search-current');
+    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+});
+
+function runSearch() {
+  const q = searchInput.value.trim().toLowerCase();
+  allSegs.forEach(s => s.classList.remove('search-match','search-current'));
+  searchMatches = [];
+  if (!q) return;
+  allSegs.forEach(s => {
+    if (s.textContent.toLowerCase().includes(q)) {
+      s.classList.add('search-match');
+      searchMatches.push(s);
+    }
+  });
+  if (!searchMatches.length) return;
+  searchIdx = 0;
+  searchMatches[0].classList.add('search-current');
+  searchMatches[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+</script>
+</body>
+</html>

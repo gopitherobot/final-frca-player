@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ophthalmic — Penetrating Eye Injury</title>
+<style>
+
+  :root {
+    --accent:    #059669;
+    --body-bg:   #f1f5f9;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: var(--body-bg);
+    color: #1e293b;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  /* ── Header ── */
+  .header {
+    background: #0f172a;
+    border-bottom: 3px solid var(--accent);
+    padding: 12px 20px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .header-left { flex: 1; min-width: 200px; }
+  .header h1 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #f1f5f9;
+    margin-bottom: 4px;
+    letter-spacing: 0.01em;
+  }
+  .header-sub {
+    font-size: 0.72rem;
+    color: #94a3b8;
+    font-style: italic;
+  }
+  audio {
+    height: 36px;
+    accent-color: var(--accent);
+    flex-shrink: 0;
+  }
+  .back-link {
+    font-size: 0.8rem;
+    color: #94a3b8;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .back-link:hover { color: #60a5fa; }
+
+  /* ── Toolbar ── */
+  .toolbar {
+    background: #1e293b;
+    padding: 7px 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-shrink: 0;
+    border-bottom: 1px solid #334155;
+  }
+  .toolbar input {
+    flex: 1;
+    max-width: 380px;
+    padding: 5px 11px;
+    border: 1px solid #475569;
+    border-radius: 6px;
+    background: #0f172a;
+    color: #e2e8f0;
+    font-size: 0.83rem;
+    outline: none;
+  }
+  .toolbar input:focus { border-color: var(--accent); }
+  .toolbar input::placeholder { color: #64748b; }
+  .stats {
+    font-size: 0.72rem;
+    color: #64748b;
+    white-space: nowrap;
+  }
+
+  /* ── Scroll area ── */
+  .scroll-area {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+  }
+  .scroll-area::-webkit-scrollbar { width: 6px; }
+  .scroll-area::-webkit-scrollbar-track { background: transparent; }
+  .scroll-area::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+
+  /* ── Subtitle bar ── */
+  .subtitle-bar {
+    background: #0f172a;
+    border-top: 2px solid var(--accent);
+    padding: 8px 20px;
+    flex-shrink: 0;
+    min-height: 42px;
+    display: flex;
+    align-items: center;
+  }
+  .subtitle-text {
+    font-size: 0.9rem;
+    color: #e2e8f0;
+    line-height: 1.5;
+    font-style: italic;
+  }
+  .subtitle-text.empty { color: #475569; }
+
+  /* ── Transcript blocks ── */
+  .t-block {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    margin-bottom: 14px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    display: flex;
+  }
+  .t-block.block-active {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px rgba(37,99,235,0.15);
+  }
+  .t-gutter {
+    background: #0f172a;
+    width: 52px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: 14px;
+    cursor: pointer;
+  }
+  .t-gutter:hover { background: #1e293b; }
+  .t-timestamp {
+    font-size: 0.7rem;
+    color: #64748b;
+    font-family: monospace;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+  .t-gutter.gutter-active .t-timestamp { color: var(--accent); }
+  .t-body {
+    flex: 1;
+    padding: 12px 16px;
+    line-height: 1.75;
+    font-size: 0.92rem;
+    color: #1e293b;
+  }
+
+  /* ── Segments ── */
+  .segment {
+    cursor: pointer;
+    border-radius: 3px;
+    transition: background 0.1s;
+  }
+  .segment:hover { background: #eff6ff; }
+  .segment.active {
+    background: #bfdbfe;
+    outline: 2px solid #3b82f6;
+    outline-offset: 1px;
+    border-radius: 3px;
+  }
+  .segment.search-match  { background: #fef9c3; }
+  .segment.search-current { background: #fde047; outline: 2px solid #ca8a04; }
+
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <h1>Ophthalmic — Penetrating Eye Injury</h1>
+    <div class="header-sub">Final FRCA &mdash; Exam Viva Simulation &mdash; Click any phrase to seek</div>
+  </div>
+  <audio id="audio" src="../FinalFRCAOphthalmic_Penetrating_Eye_Injury.mp3" controls preload="metadata"></audio>
+  <a class="back-link" href="index.html">&#8592; All Topics</a>
+</div>
+
+<div class="toolbar">
+  <input type="text" id="search" placeholder="Search transcript&#8230; (Enter = next match)">
+  <span class="stats" id="stats">135 segments &nbsp;|&nbsp; <span id="dur">loading&#8230;</span></span>
+</div>
+
+<div class="scroll-area" id="scroll-area">
+<div class="t-block">
+  <div class="t-gutter" data-start="0.0"><span class="t-timestamp">0:00</span></div>
+  <div class="t-body"><span class="segment" data-start="0.0" data-end="2.0" title="0:00">penetrating eye injury. </span><span class="segment" data-start="2.0" data-end="5.0" title="0:02">This is a topic that has come up many times. </span><span class="segment" data-start="5.0" data-end="10.0" title="0:05">It is a question that can be used to test the number of different areas including </span><span class="segment" data-start="10.0" data-end="13.0" title="0:10">your physiological and pharmacological knowledge, </span><span class="segment" data-start="13.0" data-end="17.0" title="0:13">your ability to weigh up the pros and cons of immediate surgical intervention </span><span class="segment" data-start="17.0" data-end="19.0" title="0:17">versus the risk of aspiration, </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="19.0"><span class="t-timestamp">0:19</span></div>
+  <div class="t-body"><span class="segment" data-start="19.0" data-end="24.0" title="0:19">and your appreciation of the importance of communication with the rest of the surgical team. </span><span class="segment" data-start="24.0" data-end="29.0" title="0:24">It is vital to indicate to the examiner that you have a solid knowledge base </span><span class="segment" data-start="29.0" data-end="32.0" title="0:29">and appreciation of all these problems. </span><span class="segment" data-start="32.0" data-end="39.0" title="0:32">Please listen to this podcast in conjunction with the regulation of interocular pressure podcast. </span><span class="segment" data-start="39.0" data-end="44.0" title="0:39">You are the anesthetic registrar on call and have been called to the accident and emergency department </span><span class="segment" data-start="44.0" data-end="46.0" title="0:44">to see a 20-year-old male patient. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="46.0"><span class="t-timestamp">0:46</span></div>
+  <div class="t-body"><span class="segment" data-start="46.0" data-end="51.0" title="0:46">He has been brought in by ambulance having sustained significant facial injuries </span><span class="segment" data-start="51.0" data-end="54.0" title="0:51">after being involved in a fight outside a pub. </span><span class="segment" data-start="54.0" data-end="57.0" title="0:54">Or be your initial actions. </span><span class="segment" data-start="57.0" data-end="60.0" title="0:57">Remember to try and picture yourself in this situation. </span><span class="segment" data-start="60.0" data-end="64.0" title="1:00">There may be more going on than just facial trauma. </span><span class="segment" data-start="64.0" data-end="71.0" title="1:04">It may be worth making an initial statement to show the examiner that you appreciate this. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="71.0"><span class="t-timestamp">1:11</span></div>
+  <div class="t-body"><span class="segment" data-start="71.0" data-end="76.0" title="1:11">I would attempt to assess and start treatments in parallel. </span><span class="segment" data-start="76.0" data-end="81.0" title="1:16">My assessment would follow a structured airway breathing circulation approach. </span><span class="segment" data-start="81.0" data-end="85.0" title="1:21">If there were other members of the emergency department available, </span><span class="segment" data-start="85.0" data-end="91.0" title="1:25">I would ask them to assist me in obtaining baseline observations and obtaining intravenous access. </span><span class="segment" data-start="91.0" data-end="97.0" title="1:31">Given the history, I would be considering the possibility of airway and breathing complications, </span><span class="segment" data-start="97.0" data-end="104.0" title="1:37">circulatory compromise due to hemorrhage, neurological change due to possible head injury, </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="104.0"><span class="t-timestamp">1:44</span></div>
+  <div class="t-body"><span class="segment" data-start="104.0" data-end="108.0" title="1:44">alcohol or drugs and hypothermia. </span><span class="segment" data-start="108.0" data-end="114.0" title="1:48">It is important to remember that there may be more injuries than just the facial trauma. </span><span class="segment" data-start="114.0" data-end="118.0" title="1:54">My assessment of the airway would involve talking to the patient, </span><span class="segment" data-start="118.0" data-end="123.0" title="1:58">looking and listening for sounds of airway obstruction or compromise. </span><span class="segment" data-start="123.0" data-end="126.0" title="2:03">If the patient were experiencing difficulties, </span><span class="segment" data-start="126.0" data-end="133.0" title="2:06">I would consider further interventions including suction, airway adjuncts and intubation. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="133.0"><span class="t-timestamp">2:13</span></div>
+  <div class="t-body"><span class="segment" data-start="133.0" data-end="136.0" title="2:13">I would apply oxygen to the patient. </span><span class="segment" data-start="136.0" data-end="139.0" title="2:16">Next, I would examine the respiratory system, </span><span class="segment" data-start="139.0" data-end="147.0" title="2:19">looking at the respiratory rate, oxygen saturations, observing and ascultating the chest. </span><span class="segment" data-start="147.0" data-end="153.0" title="2:27">My circulation assessment would include measurement of the heart rate and blood pressure. </span><span class="segment" data-start="153.0" data-end="159.0" title="2:33">I would attempt to identify any major sources of bleeding which might be facial in this patient </span><span class="segment" data-start="159.0" data-end="163.0" title="2:39">and try to reduce hemorrhage where appropriate. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="163.0"><span class="t-timestamp">2:43</span></div>
+  <div class="t-body"><span class="segment" data-start="163.0" data-end="166.0" title="2:43">I would examine the abdomen and long bones. </span><span class="segment" data-start="166.0" data-end="175.0" title="2:46">My neurological assessment would include the Glasgow coma scale and a brief general assessment of the peripheral neurology. </span><span class="segment" data-start="175.0" data-end="180.0" title="2:55">If possible, I would assess the response of the pupils to light. </span><span class="segment" data-start="180.0" data-end="185.0" title="3:00">Depending on the state of the patient, I would then check the glucose and temperature </span><span class="segment" data-start="185.0" data-end="188.0" title="3:05">and consider a secondary survey. </span><span class="segment" data-start="188.0" data-end="193.0" title="3:08">Good. You find there are numerous bleeding facial lacerations. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="193.0"><span class="t-timestamp">3:13</span></div>
+  <div class="t-body"><span class="segment" data-start="193.0" data-end="197.0" title="3:13">The patient's left eye has been damaged by a glass bottle. </span><span class="segment" data-start="197.0" data-end="202.0" title="3:17">You cannot find any other injuries and the patient is fully conscious and cooperative. </span><span class="segment" data-start="202.0" data-end="206.0" title="3:22">What would be your next steps? </span><span class="segment" data-start="206.0" data-end="211.0" title="3:26">My priorities would still be the airway, breathing and circulation. </span><span class="segment" data-start="211.0" data-end="216.0" title="3:31">From your description, the airway and breathing are stable at present </span><span class="segment" data-start="216.0" data-end="221.0" title="3:36">and so I would concentrate on the circulation and attempt to halt the bleeding. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="221.0"><span class="t-timestamp">3:41</span></div>
+  <div class="t-body"><span class="segment" data-start="221.0" data-end="226.0" title="3:41">I would ask one of the accident and emergency staff to exert pressure to the wounds </span><span class="segment" data-start="226.0" data-end="230.0" title="3:46">and possibly suture the lacerations or bleeding points. </span><span class="segment" data-start="230.0" data-end="235.0" title="3:50">I would obtain intravenous access and send off baseline bloods. </span><span class="segment" data-start="235.0" data-end="240.0" title="3:55">Analgesia, tetanus and antibiotics may be required. </span><span class="segment" data-start="240.0" data-end="247.0" title="4:00">I would contact the ophthalmologist on call to come and urgently review the eye injury. </span><span class="segment" data-start="247.0" data-end="256.0" title="4:07">Depending on the extent of the facial lacerations, I may also need to contact a plastic, general or maxillofacial surgeon </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="256.0"><span class="t-timestamp">4:16</span></div>
+  <div class="t-body"><span class="segment" data-start="256.0" data-end="262.0" title="4:16">although it may be possible to simply suture them in the accident and emergency department. </span><span class="segment" data-start="262.0" data-end="268.0" title="4:22">The ophthalmology registrar attends promptly and is extremely keen to take the patient's theatre urgently </span><span class="segment" data-start="268.0" data-end="270.0" title="4:28">because he has a penetrating eye injury. </span><span class="segment" data-start="270.0" data-end="276.0" title="4:30">What further information would you want to know from the patient before proceeding to theatre? </span><span class="segment" data-start="276.0" data-end="286.0" title="4:36">I would need to ensure that the patient was hemodynamically stable and that their airway and breathing did not require assistance. </span><span class="segment" data-start="286.0" data-end="290.0" title="4:46">I would also want to take a full history from the patient. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="290.0"><span class="t-timestamp">4:50</span></div>
+  <div class="t-body"><span class="segment" data-start="290.0" data-end="298.0" title="4:50">Specifically, I would want to know the details surrounding the incident, whether a head injury could still be a possibility, </span><span class="segment" data-start="298.0" data-end="306.0" title="4:58">whether the patient had consumed any alcohol or other substance and whether they had sustained any other injuries. </span><span class="segment" data-start="306.0" data-end="317.0" title="5:06">I would also want to take a general history of the patient's past medical conditions, drug history, allergies, starvation history and dentition. </span><span class="segment" data-start="317.0" data-end="321.0" title="5:17">I would want to assess the airway for intubation. </span><span class="segment" data-start="321.0" data-end="327.0" title="5:21">Finally, I would discuss the case with the surgeon and then the consultant and ecsthetist on call. </span><span class="segment" data-start="327.0" data-end="334.0" title="5:27">I would want to know the planned operative procedure, the indication for emergency surgical intervention, </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="334.0"><span class="t-timestamp">5:34</span></div>
+  <div class="t-body"><span class="segment" data-start="334.0" data-end="342.0" title="5:34">and whether this outweighed the aspiration risk posed by the patient with a potentially full stomach. </span><span class="segment" data-start="342.0" data-end="348.0" title="5:42">The ophthalmologist wants to take the patient to theatre to remove a piece of glass as lodged in the patient's left eye. </span><span class="segment" data-start="348.0" data-end="356.0" title="5:48">The maxillofacial surgeon is happy to then proceed to suture the facial lacerations and is confident there are no facial fractures present. </span><span class="segment" data-start="356.0" data-end="361.0" title="5:56">Is there anything else that you might consider before theatre? </span><span class="segment" data-start="361.0" data-end="370.0" title="6:01">I would discuss whether a CT head might be required to assess whether the glass had migrated intracranially. </span><span class="segment" data-start="370.0" data-end="378.0" title="6:10">Furthermore, I would want to pre-medicate the patient with a pro-canetic, such as 10mg of metaclopromide given intravenously. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="378.0"><span class="t-timestamp">6:18</span></div>
+  <div class="t-body"><span class="segment" data-start="378.0" data-end="393.0" title="6:18">A drug to reduce gastric acidity, such as 50mg of renitidine intravenously, and an acid neutralising medication, such as 30mg of 0.3mol sodium citrate taken orally. </span><span class="segment" data-start="393.0" data-end="401.0" title="6:33">Let's think about some of the physiological considerations in this case. Can you tell me the normal range for intraocular pressure? </span><span class="segment" data-start="401.0" data-end="406.0" title="6:41">Yes, this is 10 to 20mm of mercury. </span><span class="segment" data-start="406.0" data-end="410.0" title="6:46">What determines intraocular pressure? </span><span class="segment" data-start="410.0" data-end="424.0" title="6:50">The globe is basically a non-compliant sphere within a rigid bony box. The intraocular pressure will therefore change if pressure is exerted on the eyeball itself or if the volume of the contents of the orbit changes. </span><span class="segment" data-start="424.0" data-end="429.0" title="7:04">How is intraocular pressure normally regulated? </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="429.0"><span class="t-timestamp">7:09</span></div>
+  <div class="t-body"><span class="segment" data-start="429.0" data-end="443.0" title="7:09">The main regulation is from the volume of aqueous humour in the anterior chamber. The vitrious humour in the posterior chamber has a relatively fixed volume and so plays a minimal role in regulation of intraocular pressure. </span><span class="segment" data-start="443.0" data-end="449.0" title="7:23">How is aqueous humour produced and where does it get reabsorbed? </span><span class="segment" data-start="449.0" data-end="456.0" title="7:29">Aqueous humour is produced by the silery body to supply glucose and oxygen to the lens and cornea. </span><span class="segment" data-start="456.0" data-end="465.0" title="7:36">It flows from the posterior chamber to the lens, iris and is then reabsorbed in the anterior chamber via two routes. </span><span class="segment" data-start="465.0" data-end="474.0" title="7:45">The main route is the trabecula network and the canal of Schlen in the angle between the iris and the cornea. </span><span class="segment" data-start="474.0" data-end="483.0" title="7:54">The fluid then drains into the episcleral veins and so drainage is dependent on the pressure gradient between the chamber and the veins. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="483.0"><span class="t-timestamp">8:03</span></div>
+  <div class="t-body"><span class="segment" data-start="483.0" data-end="487.0" title="8:03">How is intraocular pressure increased? </span><span class="segment" data-start="487.0" data-end="496.0" title="8:07">Intraocular pressure may be affected by aqueous humour drainage, the arterial blood supply to the eye and certain drugs. </span><span class="segment" data-start="496.0" data-end="511.0" title="8:16">Intraocular pressure is increased if drainage of aqueous humour is reduced either by a reduction in the drainage system, for example, glaucoma or an increase in venous pressure. </span><span class="segment" data-start="511.0" data-end="519.0" title="8:31">Coroidal arteries differ to retinal arteries in that they do not have myogenic auto-regulation. </span><span class="segment" data-start="519.0" data-end="526.0" title="8:39">They will dilate in response to increased perfusion pressure, hypercarbure or hypoxia. </span><span class="segment" data-start="526.0" data-end="533.0" title="8:46">Straining, vomiting and coughing will increase blood pressure and thus perfusion pressure. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="533.0"><span class="t-timestamp">8:53</span></div>
+  <div class="t-body"><span class="segment" data-start="533.0" data-end="539.0" title="8:53">All of these factors will therefore cause an increase in intraocular pressure. </span><span class="segment" data-start="539.0" data-end="550.0" title="8:59">Drugs such as ketamine and succcemethonium are known to transiently increase the intraocular pressure, although this is only for 15 to 20 minutes duration. </span><span class="segment" data-start="550.0" data-end="556.0" title="9:10">Why is it important to avoid increases in intraocular pressure in this patient? </span><span class="segment" data-start="556.0" data-end="564.0" title="9:16">An increase in intraocular pressure may lead to expulsion of the global contents via the traumatic opening. </span><span class="segment" data-start="564.0" data-end="567.0" title="9:24">This will further injure the eye. </span><span class="segment" data-start="567.0" data-end="575.0" title="9:27">It is therefore important to understand the mechanisms for increased ocular pressure so that they can be avoided. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="575.0"><span class="t-timestamp">9:35</span></div>
+  <div class="t-body"><span class="segment" data-start="575.0" data-end="578.0" title="9:35">So let's now return to our case history. </span><span class="segment" data-start="578.0" data-end="586.0" title="9:38">You've agreed to anesthetize this man for emergency ophthalmic operation. His facial assurations have been temporarily dressed and have stopped bleeding. </span><span class="segment" data-start="586.0" data-end="591.0" title="9:46">He's in the anesthetic room and has had pre-medication as discussed. </span><span class="segment" data-start="591.0" data-end="598.0" title="9:51">Can you describe to me how you would induce anesthesia and the potential pitfalls that might be encountered? </span><span class="segment" data-start="598.0" data-end="610.0" title="9:58">The ideal induction would avoid hypoxia, hypercarbure, hypertension, coughing, vomiting and straining as these will all increase intraocular pressure. </span><span class="segment" data-start="610.0" data-end="622.0" title="10:10">The risk of aspiration needs to be considered as does the need for endotracheal intubation since laryngoscopy may also increase intraocular pressure. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="622.0"><span class="t-timestamp">10:22</span></div>
+  <div class="t-body"><span class="segment" data-start="622.0" data-end="631.0" title="10:22">The patient potentially has a false stomach. Their gastric emptying may also be delayed by pain and opioid allergies. </span><span class="segment" data-start="631.0" data-end="638.0" title="10:31">I would therefore use a rapid sequence technique and secure the airway with an endotracheal tube. </span><span class="segment" data-start="638.0" data-end="654.0" title="10:38">Prior to inducing anesthesia, I would ensure that I had resuscitation equipment and drugs available. A trained assistant, I would check the anesthetic machine as per the association of anesthetist guidelines and I would have a tilting trolley. </span><span class="segment" data-start="654.0" data-end="664.0" title="10:54">I would pre-oxygenate the patient for three minutes with a tight fitting face mask. I would have suction and difficult airway equipment available. </span><span class="segment" data-start="664.0" data-end="677.0" title="11:04">Once my assistant had placed cryoid pressure, I would induce anesthesia with fire pentone 5mg per kilogram and suction athonium 1-2mg per kilogram. </span><span class="segment" data-start="677.0" data-end="687.0" title="11:17">I would expect the reduction in cardiac output due to the induction agent to offset the increase in intraocular pressure caused by the suction athonium. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="687.0"><span class="t-timestamp">11:27</span></div>
+  <div class="t-body"><span class="segment" data-start="687.0" data-end="693.0" title="11:27">I would therefore aim to maintain a normal intraocular pressure during induction. </span><span class="segment" data-start="693.0" data-end="698.0" title="11:33">I would not use ketamine because it would increase intraocular pressure. </span><span class="segment" data-start="698.0" data-end="704.0" title="11:38">Could you use a total intravenous technique for induction and maintenance of anesthesia? </span><span class="segment" data-start="704.0" data-end="712.0" title="11:44">Yes, you could use an intravenous, propyl infusion to induce and or maintain anesthesia. </span><span class="segment" data-start="712.0" data-end="717.0" title="11:52">This might be advantageous due to its anti-emetic properties. </span><span class="segment" data-start="717.0" data-end="724.0" title="11:57">I would still use cryoid pressure and suction athonium as part of a modified rapid sequence with this technique. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="724.0"><span class="t-timestamp">12:04</span></div>
+  <div class="t-body"><span class="segment" data-start="724.0" data-end="731.0" title="12:04">What drugs might you consider to reduce the increase in intraocular pressure during induction? </span><span class="segment" data-start="731.0" data-end="740.0" title="12:11">The increase in intraocular pressure might be reduced by a beta blocker or short acting opioid such as alfentinal. </span><span class="segment" data-start="740.0" data-end="753.0" title="12:20">Rapid reduction of intraocular pressure might be achieved by acetazolemide which reduces aqueous humor production or manitol which acts as an osmotic diuretic. </span><span class="segment" data-start="753.0" data-end="757.0" title="12:33">How would you manage the patient intraoperatively? </span><span class="segment" data-start="757.0" data-end="762.0" title="12:37">I would aim to maintain normal oxygen and carbon dioxide levels. </span><span class="segment" data-start="762.0" data-end="766.0" title="12:42">I would keep the blood pressure and temperature within normal limits. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="766.0"><span class="t-timestamp">12:46</span></div>
+  <div class="t-body"><span class="segment" data-start="766.0" data-end="777.0" title="12:46">I would administer a combination of antiometics such as on dansatron and dexamethasone in order to try and reduce the risk of nausea and vomiting postoperatively. </span><span class="segment" data-start="777.0" data-end="784.0" title="12:57">I would also administer analgesics titrated to the expected pain caused by the operation. </span><span class="segment" data-start="784.0" data-end="794.0" title="13:04">I would position the patient's supine or slightly head up and avoid tight neck ties to optimize venous drainage. </span><span class="segment" data-start="794.0" data-end="798.0" title="13:14">How would you extubate the patient? </span><span class="segment" data-start="798.0" data-end="806.0" title="13:18">The extubation poses further risk of raising intraocular pressure due to coughing, straining or vomiting. </span><span class="segment" data-start="806.0" data-end="816.0" title="13:26">This may not be a problem if the eye has been closed unless the insult has the potential to cause elevated pressures postoperatively. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="816.0"><span class="t-timestamp">13:36</span></div>
+  <div class="t-body"><span class="segment" data-start="816.0" data-end="825.0" title="13:36">The effect of an elevation in intraocular pressure needs to be balanced against the potential risk of aspiration. </span><span class="segment" data-start="825.0" data-end="831.0" title="13:45">I would aim to achieve a smooth emergence with no coughing, straining or vomiting. </span><span class="segment" data-start="831.0" data-end="843.0" title="13:51">This might be performed by extubating the patient deep or exchanging the endotracheal tube for a laryngeal mask airway, also whilst deep. </span><span class="segment" data-start="843.0" data-end="851.0" title="14:03">Alternatively, beta blockers or lignacane could be given intravenously to reduce the hypertensive response. </span><span class="segment" data-start="851.0" data-end="862.0" title="14:11">Personally, I would extubate the patient wide awake in a semi-recombant position if I considered the aspiration risk to be significant. </span><span class="segment" data-start="862.0" data-end="867.0" title="14:22">Put a local anaesthetic technique be possible for this operation. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="867.0"><span class="t-timestamp">14:27</span></div>
+  <div class="t-body"><span class="segment" data-start="867.0" data-end="874.0" title="14:27">Penetrating eye injuries are almost never suitable to be done under local anaesthesia. </span><span class="segment" data-start="874.0" data-end="889.0" title="14:34">This is due to the nature and duration of the surgery. Furthermore, local anaesthetic techniques can cause additional rises in intraocular pressure and actual spread of the solution might be unreliable. </span><span class="segment" data-start="889.0" data-end="899.0" title="14:49">A potential advantage of a local anaesthetic technique is that it would considerably reduce the risk of aspiration. </span></div>
+</div>
+</div>
+
+<div class="subtitle-bar">
+  <span class="subtitle-text empty" id="subtitle-text">Play audio to see live subtitles&#8230;</span>
+</div>
+
+<script>
+
+const audio    = document.getElementById('audio');
+const allSegs  = Array.from(document.querySelectorAll('.segment'));
+const allBlocks = Array.from(document.querySelectorAll('.t-block'));
+const subtitleEl = document.getElementById('subtitle-text');
+let activeSegEl   = null;
+let activeBlockEl = null;
+let searchMatches = [];
+let searchIdx     = 0;
+
+// Duration display
+audio.addEventListener('loadedmetadata', () => {
+  const m = Math.floor(audio.duration / 60);
+  const s = Math.floor(audio.duration %% 60).toString().padStart(2,'0');
+  document.getElementById('dur').textContent = m + ':' + s;
+});
+
+// Seek helper
+function seekTo(t) {
+  audio.currentTime = t;
+  audio.play();
+}
+
+// Block gutter click
+document.querySelectorAll('.t-gutter').forEach(g => {
+  g.addEventListener('click', () => seekTo(parseFloat(g.dataset.start)));
+});
+
+// Segment click
+allSegs.forEach(s => {
+  s.addEventListener('click', e => {
+    e.stopPropagation();
+    seekTo(parseFloat(s.dataset.start));
+  });
+});
+
+// Real-time tracking
+audio.addEventListener('timeupdate', () => {
+  const t = audio.currentTime;
+
+  // Find active segment (last one whose start <= t)
+  let found = null;
+  for (let i = allSegs.length - 1; i >= 0; i--) {
+    if (parseFloat(allSegs[i].dataset.start) <= t) { found = allSegs[i]; break; }
+  }
+
+  if (found && found !== activeSegEl) {
+    // Clear previous
+    if (activeSegEl) activeSegEl.classList.remove('active');
+    if (activeBlockEl) {
+      activeBlockEl.classList.remove('block-active');
+      const pg = activeBlockEl.querySelector('.t-gutter');
+      if (pg) pg.classList.remove('gutter-active');
+    }
+    // Set new
+    found.classList.add('active');
+    const block = found.closest('.t-block');
+    if (block) {
+      block.classList.add('block-active');
+      const g = block.querySelector('.t-gutter');
+      if (g) g.classList.add('gutter-active');
+      activeBlockEl = block;
+    }
+    activeSegEl = found;
+
+    // Update subtitle
+    subtitleEl.textContent = found.textContent.trim();
+    subtitleEl.classList.remove('empty');
+
+    // Auto-scroll (only when not searching)
+    if (!document.getElementById('search').value) {
+      found.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }
+});
+
+// Search
+const searchInput = document.getElementById('search');
+searchInput.addEventListener('input', runSearch);
+searchInput.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && searchMatches.length) {
+    searchMatches[searchIdx].classList.remove('search-current');
+    searchIdx = (searchIdx + 1) %% searchMatches.length;
+    const el = searchMatches[searchIdx];
+    el.classList.add('search-current');
+    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+});
+
+function runSearch() {
+  const q = searchInput.value.trim().toLowerCase();
+  allSegs.forEach(s => s.classList.remove('search-match','search-current'));
+  searchMatches = [];
+  if (!q) return;
+  allSegs.forEach(s => {
+    if (s.textContent.toLowerCase().includes(q)) {
+      s.classList.add('search-match');
+      searchMatches.push(s);
+    }
+  });
+  if (!searchMatches.length) return;
+  searchIdx = 0;
+  searchMatches[0].classList.add('search-current');
+  searchMatches[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+</script>
+</body>
+</html>

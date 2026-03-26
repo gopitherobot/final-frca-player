@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Haematological — Anticoagulant Agents</title>
+<style>
+
+  :root {
+    --accent:    #ec4899;
+    --body-bg:   #f1f5f9;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: var(--body-bg);
+    color: #1e293b;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  /* ── Header ── */
+  .header {
+    background: #0f172a;
+    border-bottom: 3px solid var(--accent);
+    padding: 12px 20px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .header-left { flex: 1; min-width: 200px; }
+  .header h1 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #f1f5f9;
+    margin-bottom: 4px;
+    letter-spacing: 0.01em;
+  }
+  .header-sub {
+    font-size: 0.72rem;
+    color: #94a3b8;
+    font-style: italic;
+  }
+  audio {
+    height: 36px;
+    accent-color: var(--accent);
+    flex-shrink: 0;
+  }
+  .back-link {
+    font-size: 0.8rem;
+    color: #94a3b8;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .back-link:hover { color: #60a5fa; }
+
+  /* ── Toolbar ── */
+  .toolbar {
+    background: #1e293b;
+    padding: 7px 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-shrink: 0;
+    border-bottom: 1px solid #334155;
+  }
+  .toolbar input {
+    flex: 1;
+    max-width: 380px;
+    padding: 5px 11px;
+    border: 1px solid #475569;
+    border-radius: 6px;
+    background: #0f172a;
+    color: #e2e8f0;
+    font-size: 0.83rem;
+    outline: none;
+  }
+  .toolbar input:focus { border-color: var(--accent); }
+  .toolbar input::placeholder { color: #64748b; }
+  .stats {
+    font-size: 0.72rem;
+    color: #64748b;
+    white-space: nowrap;
+  }
+
+  /* ── Scroll area ── */
+  .scroll-area {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+  }
+  .scroll-area::-webkit-scrollbar { width: 6px; }
+  .scroll-area::-webkit-scrollbar-track { background: transparent; }
+  .scroll-area::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+
+  /* ── Subtitle bar ── */
+  .subtitle-bar {
+    background: #0f172a;
+    border-top: 2px solid var(--accent);
+    padding: 8px 20px;
+    flex-shrink: 0;
+    min-height: 42px;
+    display: flex;
+    align-items: center;
+  }
+  .subtitle-text {
+    font-size: 0.9rem;
+    color: #e2e8f0;
+    line-height: 1.5;
+    font-style: italic;
+  }
+  .subtitle-text.empty { color: #475569; }
+
+  /* ── Transcript blocks ── */
+  .t-block {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    margin-bottom: 14px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    display: flex;
+  }
+  .t-block.block-active {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px rgba(37,99,235,0.15);
+  }
+  .t-gutter {
+    background: #0f172a;
+    width: 52px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: 14px;
+    cursor: pointer;
+  }
+  .t-gutter:hover { background: #1e293b; }
+  .t-timestamp {
+    font-size: 0.7rem;
+    color: #64748b;
+    font-family: monospace;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+  .t-gutter.gutter-active .t-timestamp { color: var(--accent); }
+  .t-body {
+    flex: 1;
+    padding: 12px 16px;
+    line-height: 1.75;
+    font-size: 0.92rem;
+    color: #1e293b;
+  }
+
+  /* ── Segments ── */
+  .segment {
+    cursor: pointer;
+    border-radius: 3px;
+    transition: background 0.1s;
+  }
+  .segment:hover { background: #eff6ff; }
+  .segment.active {
+    background: #bfdbfe;
+    outline: 2px solid #3b82f6;
+    outline-offset: 1px;
+    border-radius: 3px;
+  }
+  .segment.search-match  { background: #fef9c3; }
+  .segment.search-current { background: #fde047; outline: 2px solid #ca8a04; }
+
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <h1>Haematological — Anticoagulant Agents</h1>
+    <div class="header-sub">Final FRCA &mdash; Exam Viva Simulation &mdash; Click any phrase to seek</div>
+  </div>
+  <audio id="audio" src="../FinalFRCAHaematological_Anticoagulant_Agents.mp3" controls preload="metadata"></audio>
+  <a class="back-link" href="index.html">&#8592; All Topics</a>
+</div>
+
+<div class="toolbar">
+  <input type="text" id="search" placeholder="Search transcript&#8230; (Enter = next match)">
+  <span class="stats" id="stats">151 segments &nbsp;|&nbsp; <span id="dur">loading&#8230;</span></span>
+</div>
+
+<div class="scroll-area" id="scroll-area">
+<div class="t-block">
+  <div class="t-gutter" data-start="0.0"><span class="t-timestamp">0:00</span></div>
+  <div class="t-body"><span class="segment" data-start="0.0" data-end="2.16" title="0:00">Anticoagulant agents. </span><span class="segment" data-start="2.76" data-end="5.2" title="0:02">Can you classify anticoagulants? </span><span class="segment" data-start="5.52" data-end="8.04" title="0:05">Remember, as with everything, </span><span class="segment" data-start="8.04" data-end="10.44" title="0:08">you should classify the drugs if possible </span><span class="segment" data-start="10.44" data-end="12.8" title="0:10">as you'll be less likely to forget any. </span><span class="segment" data-start="14.16" data-end="16.72" title="0:14">Anticoagulant drugs can be classified </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="16.72"><span class="t-timestamp">0:16</span></div>
+  <div class="t-body"><span class="segment" data-start="16.72" data-end="19.4" title="0:16">into those that inhibit platelet function, </span><span class="segment" data-start="19.4" data-end="21.84" title="0:19">those that affect the clotting cascade, </span><span class="segment" data-start="21.84" data-end="26.08" title="0:21">and those that lead to the breakdown of a clot once it has formed. </span><span class="segment" data-start="26.28" data-end="28.48" title="0:26">Can you now tell me about the drug's exerted effect </span><span class="segment" data-start="28.48" data-end="32.28" title="0:28">on the clotting cascade that you mentioned in your initial classification? </span><span class="segment" data-start="32.8" data-end="35.52" title="0:32">Once again, guys, it's easier to understand </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="35.52"><span class="t-timestamp">0:35</span></div>
+  <div class="t-body"><span class="segment" data-start="35.52" data-end="39.56" title="0:35">how these drugs work by having an understanding of the clotting cascade. </span><span class="segment" data-start="39.96" data-end="42.16" title="0:39">Try and describe the clotting cascade </span><span class="segment" data-start="42.16" data-end="45.96" title="0:42">and then relate the drugs to this when discussing how they work. </span><span class="segment" data-start="47.48" data-end="50.68" title="0:47">The classical description of the clotting cascade </span><span class="segment" data-start="50.68" data-end="53.04" title="0:50">consists of a series of clotting factors </span><span class="segment" data-start="53.04" data-end="56.8" title="0:53">that are present within the plasma in an inactive state. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="57.44"><span class="t-timestamp">0:57</span></div>
+  <div class="t-body"><span class="segment" data-start="57.44" data-end="62.4" title="0:57">Activation of one leads to activation of the next in a cascade fashion. </span><span class="segment" data-start="63.08" data-end="67.24" title="1:03">Various cofactors are required at certain stages of the pathway. </span><span class="segment" data-start="67.64" data-end="70.92" title="1:07">The purpose of the cascade is to produce thrombin </span><span class="segment" data-start="70.92" data-end="75.48" title="1:10">which can convert soluble fibroinogen to insoluble fibrin, </span><span class="segment" data-start="75.48" data-end="77.44" title="1:15">leading to clot formation. </span><span class="segment" data-start="77.96" data-end="82.56" title="1:17">The clotting cascade is classically quoted as having two limbs, </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="82.56"><span class="t-timestamp">1:22</span></div>
+  <div class="t-body"><span class="segment" data-start="82.56" data-end="86.04" title="1:22">the intrinsic pathway and the extrinsic pathway. </span><span class="segment" data-start="86.52" data-end="89.96" title="1:26">These then converge to form the final common pathway. </span><span class="segment" data-start="90.84" data-end="96.2" title="1:30">The intrinsic pathway consists of factors 12, 11 and 9 </span><span class="segment" data-start="96.48" data-end="99.56" title="1:36">and is activated by blood coming into contact </span><span class="segment" data-start="99.8" data-end="102.52" title="1:39">with subendothelial connective tissues. </span><span class="segment" data-start="103.36" data-end="107.52" title="1:43">The extrinsic pathway consists of factors 3 and 7 </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="107.8"><span class="t-timestamp">1:47</span></div>
+  <div class="t-body"><span class="segment" data-start="107.8" data-end="112.88" title="1:47">and is activated by tissue damage much more rapidly than the intrinsic pathway. </span><span class="segment" data-start="113.52" data-end="117.92" title="1:53">Its purpose is to help promote activation of the intrinsic pathway. </span><span class="segment" data-start="118.8" data-end="123.12" title="1:58">The final common pathway starts by activation of factor 10 </span><span class="segment" data-start="123.4" data-end="126.72" title="2:03">which occurs as the end result of both pathways. </span><span class="segment" data-start="127.36" data-end="131.64" title="2:07">Activated factor 10 converts pro thrombin to thrombin </span><span class="segment" data-start="131.88" data-end="136.76" title="2:11">which in turn converts fibroinogen to fibrin, as already mentioned. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="138.08"><span class="t-timestamp">2:18</span></div>
+  <div class="t-body"><span class="segment" data-start="138.08" data-end="142.44" title="2:18">Drugs that affect the clotting cascade can be classified into </span><span class="segment" data-start="143.36" data-end="150.16" title="2:23">A, vitamin K antagonists which would include warfarin and phenin dion. </span><span class="segment" data-start="151.28" data-end="157.0" title="2:31">B, factor 10 A inhibitors which can be subdivided into one </span><span class="segment" data-start="157.24" data-end="163.8" title="2:37">unfractionated heparin, two low molecular weight heparins such as inoxoparin, </span><span class="segment" data-start="164.68" data-end="169.36" title="2:44">three oligosaccharides such as fondreparinux, </span><span class="segment" data-start="169.36" data-end="176.24" title="2:49">four heparin oids such as danaperoid sodium. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="177.92"><span class="t-timestamp">2:57</span></div>
+  <div class="t-body"><span class="segment" data-start="177.92" data-end="183.4" title="2:57">C, direct thrombin inhibitors which can be subdivided into one </span><span class="segment" data-start="183.8" data-end="193.76" title="3:03">by valent compounds such as lepyrudin, two univalent compounds such as argatraban, </span><span class="segment" data-start="194.76" data-end="196.76" title="3:14">D, others. </span><span class="segment" data-start="197.28" data-end="204.08" title="3:17">For completeness we should also include activated protein C as a drug that may affect the clotting cascade. </span><span class="segment" data-start="204.48" data-end="208.12" title="3:24">This is a naturally occurring inhibitor of the clotting cascade. </span><span class="segment" data-start="208.56" data-end="216.56" title="3:28">More recently it has been used in the intensive care setting for its potential role in treating patients with severe sepsis. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="217.44"><span class="t-timestamp">3:37</span></div>
+  <div class="t-body"><span class="segment" data-start="217.44" data-end="219.12" title="3:37">Tell me how warfarin works. </span><span class="segment" data-start="219.12" data-end="225.08" title="3:39">Warfarin and phenin dion are both cumerin derivatives. </span><span class="segment" data-start="225.08" data-end="234.08" title="3:45">Cumerin is a naturally occurring compound found in some plants that is toxic and was noted to have antichyagolant properties. </span><span class="segment" data-start="236.08" data-end="248.16" title="3:56">Warfarin works by inhibiting the reduction of vitamin K. Vitamin K is required in its active reduced form as a cofactor in the carboxylation of glutamic acid residues </span><span class="segment" data-start="248.16" data-end="253.72" title="4:08">in the production of factors 2, 7, 9 and 10 in the liver. </span><span class="segment" data-start="253.72" data-end="260.92" title="4:13">Inhibition of vitamin K reduction therefore leads to an inhibition of clotting factor production. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="260.92"><span class="t-timestamp">4:20</span></div>
+  <div class="t-body"><span class="segment" data-start="260.92" data-end="265.88" title="4:20">Since this process requires the inhibition of synthesis of new factors, </span><span class="segment" data-start="265.88" data-end="271.44" title="4:25">warfarin may take up to 72 hours to have a full effect on the clotting cascade. </span><span class="segment" data-start="272.4" data-end="283.6" title="4:32">The effects of warfarin need to be carefully monitored on a regular basis by checking a patient's pro-thombin time or INR, international normalized ratio. </span><span class="segment" data-start="283.6" data-end="295.4" title="4:43">It is important to note that since warfarin is metabolized by the liver, factors leading to liver enzyme induction or inhibition will have an effect on the levels of warfarin. </span><span class="segment" data-start="295.44" data-end="305.84" title="4:55">For example, alcohol and some antibiotics such as erythromycin lead to an inhibition of metabolism and therefore an increase in warfarin levels. </span><span class="segment" data-start="305.84" data-end="315.12" title="5:05">Conversely drugs as the barbiturates and carbamazepine induce liver enzymes and therefore reduce the levels of warfarin. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="315.12"><span class="t-timestamp">5:15</span></div>
+  <div class="t-body"><span class="segment" data-start="315.12" data-end="317.12" title="5:15">How does heparin work? </span><span class="segment" data-start="317.12" data-end="322.52" title="5:17">What is the difference between unfractionate heparin and low molecular weight heparin? </span><span class="segment" data-start="323.52" data-end="333.96" title="5:23">Heparin is a naturally occurring sulfated glycosaminoglycan, which has been found in various sizes within mast cells and liver cells. </span><span class="segment" data-start="333.96" data-end="345.48" title="5:33">Heparin has its effect by increasing the activity of antithrombin-3, a naturally occurring inhibitor of the clotting cascade by up to a thousand times. </span><span class="segment" data-start="345.48" data-end="360.44" title="5:45">When antithrombin-3 binds to thrombin and inactive complex forms, antithrombin-3 also in activates other factors, including 2, 9, 10, 11 and 12. </span><span class="segment" data-start="360.44" data-end="371.44" title="6:00">Unfractionated heparin inhibits factor 10a at low concentrations but will also inhibit these other factors as blood concentrations rise. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="371.92"><span class="t-timestamp">6:11</span></div>
+  <div class="t-body"><span class="segment" data-start="371.92" data-end="382.4" title="6:11">It has to be administered as a continuous infusion to achieve therapeutic blood levels and its effects wear off within about 4 hours of stopping the infusion. </span><span class="segment" data-start="382.4" data-end="391.0" title="6:22">Monitoring of the activated partial thromboplastin time or aptt is required to adjust the infusion rate. </span><span class="segment" data-start="391.0" data-end="395.88" title="6:31">This is a measure of the intrinsic clotting cascade. </span><span class="segment" data-start="396.0" data-end="408.84" title="6:36">Low molecular weight heparins such as inoxoparin and tinzoparin are the smaller weight fractions ranging from 2000 to 8000 doltons of the heparin. </span><span class="segment" data-start="408.84" data-end="417.84" title="6:48">Compared with unfractionated heparin, they are more effective at inhibiting factor 10a and have minimal effect on the other factors. </span><span class="segment" data-start="417.84" data-end="428.32" title="6:57">For this reason, their effectiveness cannot be measured using the aptt. Levels of factor 10a can be measured, although this is not routinely done. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="428.32"><span class="t-timestamp">7:08</span></div>
+  <div class="t-body"><span class="segment" data-start="428.32" data-end="436.8" title="7:08">They have the benefit over unfractionated heparin of having a longer half-life so they can be given as a once daily injection. </span><span class="segment" data-start="436.8" data-end="440.8" title="7:16">What can you tell me about heparin-induced thrombocytopenia? </span><span class="segment" data-start="440.8" data-end="444.8" title="7:20">If you're asked about this, what are you doing well? </span><span class="segment" data-start="445.04" data-end="455.04" title="7:25">There are two causes of thrombocytopenia related to the use of heparin. These can be divided into type 1 and type 2. </span><span class="segment" data-start="455.04" data-end="462.32" title="7:35">Type 1 is a non-immune mediated thrombocytopenia, which is reasonably common following the use of heparin. </span><span class="segment" data-start="462.32" data-end="471.28" title="7:42">It does not usually cause any problems and the platelet count usually recovers quickly even when the heparin isn't stopped. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="471.36"><span class="t-timestamp">7:51</span></div>
+  <div class="t-body"><span class="segment" data-start="471.36" data-end="477.44" title="7:51">Type 2, however, is an immune mediated process with much more serious consequences. </span><span class="segment" data-start="477.44" data-end="486.64" title="7:57">It usually occurs after exposure to unfractionated heparin, although it may also be associated with use of low molecular weight heparin. </span><span class="segment" data-start="486.64" data-end="495.84" title="8:06">It occurs when heparin complexes with platelet factor 4 forming antigenic material to which antibodies form. </span><span class="segment" data-start="495.92" data-end="502.48" title="8:15">This leads to platelet activation, generation of thrombus and then a thrombocytopenia. </span><span class="segment" data-start="502.48" data-end="510.0" title="8:22">This therefore causes a pro-thrombotic state. Patients are therefore at risk of severe thrombotic events, </span><span class="segment" data-start="510.0" data-end="516.48" title="8:30">such as stroke, pulmonary embolus, myocardial infarction, and lymischemia. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="516.48"><span class="t-timestamp">8:36</span></div>
+  <div class="t-body"><span class="segment" data-start="516.48" data-end="522.88" title="8:36">The platelet count rarely drops very low and therefore patients are less at risk of bleeding. </span><span class="segment" data-start="522.96" data-end="530.48" title="8:42">This condition may occur 5 to 15 days after heparin has been given, even if it is no longer being administered. </span><span class="segment" data-start="530.48" data-end="536.56" title="8:50">It is important to consider the condition in patients with an unexplained thrombocytopenia, </span><span class="segment" data-start="536.56" data-end="540.8" title="8:56">in patients with thrombosis associated with thrombocytopenia, </span><span class="segment" data-start="540.8" data-end="547.52" title="9:00">and in those with necrotic lesions at the site of previous heparin injections. </span><span class="segment" data-start="547.52" data-end="553.76" title="9:07">If a patient is suspected of having heparin-induced thrombocytopenia, HIT or HIT, </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="554.48"><span class="t-timestamp">9:14</span></div>
+  <div class="t-body"><span class="segment" data-start="554.48" data-end="561.6" title="9:14">a HIT screen can be sent to look for immune complexes. The result from this can take some days, </span><span class="segment" data-start="561.6" data-end="566.8" title="9:21">so in the meantime the patient should have any heparin or low molecular weight heparin stopped. </span><span class="segment" data-start="567.6" data-end="573.36" title="9:27">An alternative anticoagulant should be started, such as a direct thrombin inhibitor, </span><span class="segment" data-start="573.36" data-end="579.36" title="9:33">lepyrudin or argatraban, or an alternative factor 10A inhibitor, </span><span class="segment" data-start="580.0" data-end="588.08" title="9:40">danaperoid sodium, or fondaparinux. Once the platelet count has recovered to acceptable levels, </span><span class="segment" data-start="588.64" data-end="593.52" title="9:48">warfarin therapy can be considered for long term anticoagulation if required. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="594.72"><span class="t-timestamp">9:54</span></div>
+  <div class="t-body"><span class="segment" data-start="594.72" data-end="596.4" title="9:54">What is danaperoid sodium? </span><span class="segment" data-start="596.72" data-end="604.64" title="9:56">Danaperoid sodium is a low molecular weight heparinoid and is effective first line treatment </span><span class="segment" data-start="604.64" data-end="611.44" title="10:04">for heparin-induced thrombocytopenia. Unlike low molecular weight heparin, </span><span class="segment" data-start="611.44" data-end="617.92" title="10:11">danaperoid has a low cross-reactivity with heparin associated antiplatelet antibodies, </span><span class="segment" data-start="617.92" data-end="624.16" title="10:17">and so does not cause the HIT syndrome itself. Like low molecular weight heparin, </span><span class="segment" data-start="624.16" data-end="628.64" title="10:24">its activity can be monitored by measuring plasma factor 10A levels. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="629.6"><span class="t-timestamp">10:29</span></div>
+  <div class="t-body"><span class="segment" data-start="629.6" data-end="634.4" title="10:29">What recommendations do you know of regarding patients taking anticoagulant medications </span><span class="segment" data-start="634.4" data-end="636.64" title="10:34">and performing a central New York seal blockade? </span><span class="segment" data-start="638.96" data-end="644.8" title="10:38">It is relatively common for patients receiving some form of anticoagulation to require a central </span><span class="segment" data-start="644.8" data-end="650.8" title="10:44">New York seal blockade for surgery. Clearly a patient that is fully anticoagulated with any </span><span class="segment" data-start="650.8" data-end="657.52" title="10:50">form of anticoagulant should not receive a New York seal block as the risk of epidural hematoma </span><span class="segment" data-start="657.52" data-end="664.24" title="10:57">formation would be too great. For patients receiving warfarin, it is generally accepted </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="664.24"><span class="t-timestamp">11:04</span></div>
+  <div class="t-body"><span class="segment" data-start="664.24" data-end="668.8" title="11:04">that an epidural can be cited if the INR is less than 1.5. </span><span class="segment" data-start="670.4" data-end="676.24" title="11:10">For patients receiving unfractionated heparin as an infusion, at least four hours should have </span><span class="segment" data-start="676.24" data-end="680.56" title="11:16">elapsed between stopping the infusion and citing an epidural catheter. </span><span class="segment" data-start="681.76" data-end="687.28" title="11:21">For patients receiving low molecular weight heparin, at least 12 hours should have passed since </span><span class="segment" data-start="687.28" data-end="694.24" title="11:27">the last dose before inserting or removing an epidural catheter. Another two hours should pass </span><span class="segment" data-start="694.24" data-end="700.4" title="11:34">after inserting or removing an epidural catheter before giving the next dose of low molecular weight </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="700.56"><span class="t-timestamp">11:40</span></div>
+  <div class="t-body"><span class="segment" data-start="700.56" data-end="707.68" title="11:40">heparin. For surgery where large doses of heparin may be given intraoperatively, such as </span><span class="segment" data-start="707.68" data-end="714.64" title="11:47">vascular surgery, summoning the tests are cautious about citing an epidural catheter. However large </span><span class="segment" data-start="714.64" data-end="720.08" title="11:54">observational studies have shown no increased incidence of epidural hematoma formation. </span><span class="segment" data-start="721.36" data-end="727.52" title="12:01">Finally, many patients come into hospital taking antiplatelet agents. It is generally accepted </span><span class="segment" data-start="727.52" data-end="733.2" title="12:07">that a patient taking low dose aspirin can have an epidural cited without the need to stop </span><span class="segment" data-start="733.2" data-end="740.56" title="12:13">taking aspirin. However, there is more concern about the use of clopidagrol. Most anesthetists would </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="740.56"><span class="t-timestamp">12:20</span></div>
+  <div class="t-body"><span class="segment" data-start="740.56" data-end="747.6" title="12:20">agree that ongoing clopidagrol use would contraindicate the citing of an epidural. It should have been </span><span class="segment" data-start="747.6" data-end="753.76" title="12:27">stopped for at least seven days before attempting to cite a central niraxial block to minimize the </span><span class="segment" data-start="753.84" data-end="761.68" title="12:33">risk of epidural hematoma. In any patient with a degree of anti-cigulation, it is much safer to perform </span><span class="segment" data-start="761.68" data-end="768.64" title="12:41">a single shot spinal technique than a technique involving the much larger epidural needle. This should </span><span class="segment" data-start="768.64" data-end="773.68" title="12:48">be considered if it is appropriate. Are you aware of any methods available for checking a patient's </span><span class="segment" data-start="773.68" data-end="781.36" title="12:53">coagulation status? There are a multitude of tests that can be performed to assess a patient's </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="781.36"><span class="t-timestamp">13:01</span></div>
+  <div class="t-body"><span class="segment" data-start="781.36" data-end="788.4" title="13:01">coagulation status. These can be divided into lab-based tests and near-patient tests. </span><span class="segment" data-start="789.28" data-end="796.24" title="13:09">The lab-based tests would include one, INR. As already mentioned, this is a measure of the </span><span class="segment" data-start="796.24" data-end="803.84" title="13:16">extrinsic pathway and is used predominantly as a measure of warfarin activity. Two, APTR. </span><span class="segment" data-start="804.64" data-end="810.4" title="13:24">This has also been mentioned earlier and is a measure of the intrinsic pathway. It is used as a </span><span class="segment" data-start="810.4" data-end="818.48" title="13:30">measure of heprin activity. Three, thrombin time. This is a measure of the final common pathway. </span><span class="segment" data-start="818.48" data-end="825.6" title="13:38">It will be affected in patients with abnormal or deficient thrombin. Four, platelet count. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="826.64"><span class="t-timestamp">13:46</span></div>
+  <div class="t-body"><span class="segment" data-start="826.64" data-end="832.8" title="13:46">Coagulation may be deficient if a patient has a low platelet count. Preoperatively, we would </span><span class="segment" data-start="832.8" data-end="838.16" title="13:52">generally aim for a platelet count of greater than 100 million per mill of blood. </span><span class="segment" data-start="839.52" data-end="847.04" title="13:59">Five, platelet function assay. This checks the functioning of the platelets. Patients with a normal </span><span class="segment" data-start="847.04" data-end="852.16" title="14:07">platelet count can have abnormal clotting if their platelets are not functioning normally. </span><span class="segment" data-start="853.04" data-end="859.68" title="14:13">They may be affected by anti-platelet agents, by hereditary diseases affecting platelet function, </span><span class="segment" data-start="859.68" data-end="865.12" title="14:19">or by other factors affecting platelet function such as a very high serum urea. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="867.04"><span class="t-timestamp">14:27</span></div>
+  <div class="t-body"><span class="segment" data-start="867.04" data-end="875.04" title="14:27">The near-patient tests would include one, bleeding time. This is performed by making a standardized </span><span class="segment" data-start="875.04" data-end="881.36" title="14:35">incision and timing how long it takes for clot formation. This is predominantly an assessment of </span><span class="segment" data-start="881.36" data-end="889.84" title="14:41">platelet function. Two, activated clotting time or ACT. This is most commonly measured in </span><span class="segment" data-start="889.84" data-end="896.72" title="14:49">vascular and cardiac theatres. It is a quick assay of clotting that measures time for clot formation. </span><span class="segment" data-start="897.68" data-end="905.6" title="14:57">A normal result would be 100 to 150 seconds. Pralonged values may represent abnormal clotting as </span><span class="segment" data-start="905.6" data-end="914.4" title="15:05">a result of heprin given intraoperatively or a chirologypathy. Three, thromboelastogram or TEG. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="915.36"><span class="t-timestamp">15:15</span></div>
+  <div class="t-body"><span class="segment" data-start="915.36" data-end="920.64" title="15:15">This is another quick test that could be performed in theatre or on the intensive care unit </span><span class="segment" data-start="920.64" data-end="926.32" title="15:20">if the correct equipment is available. It gives an indication of time to clot activation, </span><span class="segment" data-start="926.72" data-end="932.56" title="15:26">which acts as a surrogate measure of clotting factors, strength of clot, which acts as a measure </span><span class="segment" data-start="932.56" data-end="939.44" title="15:32">of platelets and breakdown of clot, which may be more rapid than normal in conditions such as DIC. </span><span class="segment" data-start="940.48" data-end="946.88" title="15:40">This can therefore be used to tailor the chagulation factor replacement to the defect detected. </span><span class="segment" data-start="947.84" data-end="954.0" title="15:47">There are some newer reagents that are used with the TEG that can enable near-patient </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="954.0"><span class="t-timestamp">15:54</span></div>
+  <div class="t-body"><span class="segment" data-start="954.0" data-end="962.16" title="15:54">assessment of platelet dysfunction as a result of anti-platelet agent use. </span></div>
+</div>
+</div>
+
+<div class="subtitle-bar">
+  <span class="subtitle-text empty" id="subtitle-text">Play audio to see live subtitles&#8230;</span>
+</div>
+
+<script>
+
+const audio    = document.getElementById('audio');
+const allSegs  = Array.from(document.querySelectorAll('.segment'));
+const allBlocks = Array.from(document.querySelectorAll('.t-block'));
+const subtitleEl = document.getElementById('subtitle-text');
+let activeSegEl   = null;
+let activeBlockEl = null;
+let searchMatches = [];
+let searchIdx     = 0;
+
+// Duration display
+audio.addEventListener('loadedmetadata', () => {
+  const m = Math.floor(audio.duration / 60);
+  const s = Math.floor(audio.duration %% 60).toString().padStart(2,'0');
+  document.getElementById('dur').textContent = m + ':' + s;
+});
+
+// Seek helper
+function seekTo(t) {
+  audio.currentTime = t;
+  audio.play();
+}
+
+// Block gutter click
+document.querySelectorAll('.t-gutter').forEach(g => {
+  g.addEventListener('click', () => seekTo(parseFloat(g.dataset.start)));
+});
+
+// Segment click
+allSegs.forEach(s => {
+  s.addEventListener('click', e => {
+    e.stopPropagation();
+    seekTo(parseFloat(s.dataset.start));
+  });
+});
+
+// Real-time tracking
+audio.addEventListener('timeupdate', () => {
+  const t = audio.currentTime;
+
+  // Find active segment (last one whose start <= t)
+  let found = null;
+  for (let i = allSegs.length - 1; i >= 0; i--) {
+    if (parseFloat(allSegs[i].dataset.start) <= t) { found = allSegs[i]; break; }
+  }
+
+  if (found && found !== activeSegEl) {
+    // Clear previous
+    if (activeSegEl) activeSegEl.classList.remove('active');
+    if (activeBlockEl) {
+      activeBlockEl.classList.remove('block-active');
+      const pg = activeBlockEl.querySelector('.t-gutter');
+      if (pg) pg.classList.remove('gutter-active');
+    }
+    // Set new
+    found.classList.add('active');
+    const block = found.closest('.t-block');
+    if (block) {
+      block.classList.add('block-active');
+      const g = block.querySelector('.t-gutter');
+      if (g) g.classList.add('gutter-active');
+      activeBlockEl = block;
+    }
+    activeSegEl = found;
+
+    // Update subtitle
+    subtitleEl.textContent = found.textContent.trim();
+    subtitleEl.classList.remove('empty');
+
+    // Auto-scroll (only when not searching)
+    if (!document.getElementById('search').value) {
+      found.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }
+});
+
+// Search
+const searchInput = document.getElementById('search');
+searchInput.addEventListener('input', runSearch);
+searchInput.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && searchMatches.length) {
+    searchMatches[searchIdx].classList.remove('search-current');
+    searchIdx = (searchIdx + 1) %% searchMatches.length;
+    const el = searchMatches[searchIdx];
+    el.classList.add('search-current');
+    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+});
+
+function runSearch() {
+  const q = searchInput.value.trim().toLowerCase();
+  allSegs.forEach(s => s.classList.remove('search-match','search-current'));
+  searchMatches = [];
+  if (!q) return;
+  allSegs.forEach(s => {
+    if (s.textContent.toLowerCase().includes(q)) {
+      s.classList.add('search-match');
+      searchMatches.push(s);
+    }
+  });
+  if (!searchMatches.length) return;
+  searchIdx = 0;
+  searchMatches[0].classList.add('search-current');
+  searchMatches[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+</script>
+</body>
+</html>

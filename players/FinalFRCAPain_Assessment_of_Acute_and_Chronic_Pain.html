@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pain — Assessment of Acute and Chronic Pain</title>
+<style>
+
+  :root {
+    --accent:    #a855f7;
+    --body-bg:   #f1f5f9;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: var(--body-bg);
+    color: #1e293b;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  /* ── Header ── */
+  .header {
+    background: #0f172a;
+    border-bottom: 3px solid var(--accent);
+    padding: 12px 20px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .header-left { flex: 1; min-width: 200px; }
+  .header h1 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #f1f5f9;
+    margin-bottom: 4px;
+    letter-spacing: 0.01em;
+  }
+  .header-sub {
+    font-size: 0.72rem;
+    color: #94a3b8;
+    font-style: italic;
+  }
+  audio {
+    height: 36px;
+    accent-color: var(--accent);
+    flex-shrink: 0;
+  }
+  .back-link {
+    font-size: 0.8rem;
+    color: #94a3b8;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .back-link:hover { color: #60a5fa; }
+
+  /* ── Toolbar ── */
+  .toolbar {
+    background: #1e293b;
+    padding: 7px 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-shrink: 0;
+    border-bottom: 1px solid #334155;
+  }
+  .toolbar input {
+    flex: 1;
+    max-width: 380px;
+    padding: 5px 11px;
+    border: 1px solid #475569;
+    border-radius: 6px;
+    background: #0f172a;
+    color: #e2e8f0;
+    font-size: 0.83rem;
+    outline: none;
+  }
+  .toolbar input:focus { border-color: var(--accent); }
+  .toolbar input::placeholder { color: #64748b; }
+  .stats {
+    font-size: 0.72rem;
+    color: #64748b;
+    white-space: nowrap;
+  }
+
+  /* ── Scroll area ── */
+  .scroll-area {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+  }
+  .scroll-area::-webkit-scrollbar { width: 6px; }
+  .scroll-area::-webkit-scrollbar-track { background: transparent; }
+  .scroll-area::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+
+  /* ── Subtitle bar ── */
+  .subtitle-bar {
+    background: #0f172a;
+    border-top: 2px solid var(--accent);
+    padding: 8px 20px;
+    flex-shrink: 0;
+    min-height: 42px;
+    display: flex;
+    align-items: center;
+  }
+  .subtitle-text {
+    font-size: 0.9rem;
+    color: #e2e8f0;
+    line-height: 1.5;
+    font-style: italic;
+  }
+  .subtitle-text.empty { color: #475569; }
+
+  /* ── Transcript blocks ── */
+  .t-block {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    margin-bottom: 14px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    display: flex;
+  }
+  .t-block.block-active {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px rgba(37,99,235,0.15);
+  }
+  .t-gutter {
+    background: #0f172a;
+    width: 52px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: 14px;
+    cursor: pointer;
+  }
+  .t-gutter:hover { background: #1e293b; }
+  .t-timestamp {
+    font-size: 0.7rem;
+    color: #64748b;
+    font-family: monospace;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+  .t-gutter.gutter-active .t-timestamp { color: var(--accent); }
+  .t-body {
+    flex: 1;
+    padding: 12px 16px;
+    line-height: 1.75;
+    font-size: 0.92rem;
+    color: #1e293b;
+  }
+
+  /* ── Segments ── */
+  .segment {
+    cursor: pointer;
+    border-radius: 3px;
+    transition: background 0.1s;
+  }
+  .segment:hover { background: #eff6ff; }
+  .segment.active {
+    background: #bfdbfe;
+    outline: 2px solid #3b82f6;
+    outline-offset: 1px;
+    border-radius: 3px;
+  }
+  .segment.search-match  { background: #fef9c3; }
+  .segment.search-current { background: #fde047; outline: 2px solid #ca8a04; }
+
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <h1>Pain — Assessment of Acute and Chronic Pain</h1>
+    <div class="header-sub">Final FRCA &mdash; Exam Viva Simulation &mdash; Click any phrase to seek</div>
+  </div>
+  <audio id="audio" src="../FinalFRCAPain_Assessment_of_Acute_and_Chronic_Pain.mp3" controls preload="metadata"></audio>
+  <a class="back-link" href="index.html">&#8592; All Topics</a>
+</div>
+
+<div class="toolbar">
+  <input type="text" id="search" placeholder="Search transcript&#8230; (Enter = next match)">
+  <span class="stats" id="stats">103 segments &nbsp;|&nbsp; <span id="dur">loading&#8230;</span></span>
+</div>
+
+<div class="scroll-area" id="scroll-area">
+<div class="t-block">
+  <div class="t-gutter" data-start="0.0"><span class="t-timestamp">0:00</span></div>
+  <div class="t-body"><span class="segment" data-start="0.0" data-end="2.4" title="0:00">Assessment of acute and chronic pain. </span><span class="segment" data-start="2.4" data-end="7.0" title="0:02">This topic can be asked as part of the clinical sciences' viber. </span><span class="segment" data-start="7.0" data-end="11.6" title="0:07">This is a tricky question, but a structured answer can get you through. </span><span class="segment" data-start="11.6" data-end="14.8" title="0:11">What can you tell me about pain assessment? </span><span class="segment" data-start="15.8" data-end="21.0" title="0:15">The International Association for the Study of Pain Definition of Pain </span><span class="segment" data-start="21.0" data-end="25.5" title="0:21">is an unpleasant sensory and emotional experience </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="25.5"><span class="t-timestamp">0:25</span></div>
+  <div class="t-body"><span class="segment" data-start="25.5" data-end="29.6" title="0:25">associated with actual or potential tissue damage </span><span class="segment" data-start="29.6" data-end="32.6" title="0:29">and expressed in terms of such damage. </span><span class="segment" data-start="33.6" data-end="37.6" title="0:33">Pain is whatever the experiencing person says it is. </span><span class="segment" data-start="38.6" data-end="42.1" title="0:38">Pain is commonly measured by pain measurement scales, </span><span class="segment" data-start="42.1" data-end="48.6" title="0:42">which use aspects of a patient report that can yield reproducible data. </span><span class="segment" data-start="49.1" data-end="55.6" title="0:49">It should be easy to use and interpret over a wide variety of disease states and cultures. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="56.6"><span class="t-timestamp">0:56</span></div>
+  <div class="t-body"><span class="segment" data-start="56.6" data-end="59.1" title="0:56">What are the different methods of measuring pain that you know of? </span><span class="segment" data-start="59.6" data-end="65.1" title="0:59">A structured approach is vital to ensure that you do not forget any of the key points. </span><span class="segment" data-start="65.1" data-end="68.1" title="1:05">It may be worth making a classification. </span><span class="segment" data-start="70.1" data-end="74.1" title="1:10">Pain is measured mainly using pain measurement scales. </span><span class="segment" data-start="74.6" data-end="81.1" title="1:14">They can be broadly classified into simple pain scales used to assess acute pain </span><span class="segment" data-start="81.1" data-end="86.1" title="1:21">and multi-dimensional pain scales used to assess chronic pain. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="87.1"><span class="t-timestamp">1:27</span></div>
+  <div class="t-body"><span class="segment" data-start="87.1" data-end="90.6" title="1:27">What are simple pain scales and how do you interpret them? </span><span class="segment" data-start="92.1" data-end="99.1" title="1:32">Simple pain scales are widely used to measure acute pain intensity due to the ease of use. </span><span class="segment" data-start="99.1" data-end="108.6" title="1:39">The commonly used scales are verbal rating scale, numerical rating scale, and the visual analog scale. </span><span class="segment" data-start="109.6" data-end="111.6" title="1:49">What is the verbal rating scale? </span><span class="segment" data-start="112.6" data-end="118.1" title="1:52">The verbal rating scale has four points to describe pain. </span><span class="segment" data-start="118.1" data-end="124.6" title="1:58">These are no pain, mild pain, moderate pain, and severe pain. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="124.6"><span class="t-timestamp">2:04</span></div>
+  <div class="t-body"><span class="segment" data-start="124.6" data-end="132.6" title="2:04">The verbal rating scale is commonly used in post-operative recovery rooms because it is simple to use. </span><span class="segment" data-start="132.6" data-end="138.1" title="2:12">It is, however, insensitive to small changes in the patient's pain intensity. </span><span class="segment" data-start="139.1" data-end="142.6" title="2:19">What is the numerical rating scale or NRS? </span><span class="segment" data-start="144.1" data-end="152.1" title="2:24">The numeric rating scale takes two extremes of pain, no pain, and to the worst imaginable pain, </span><span class="segment" data-start="152.1" data-end="158.1" title="2:32">with numbers across the scale from 0 to 10, making an 11-point scale. </span><span class="segment" data-start="158.1" data-end="165.1" title="2:38">The patient is asked to translate their pain severity into a number where 0 is no pain, </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="165.1"><span class="t-timestamp">2:45</span></div>
+  <div class="t-body"><span class="segment" data-start="165.1" data-end="168.6" title="2:45">and 10 is the worst pain they can imagine. </span><span class="segment" data-start="168.6" data-end="175.1" title="2:48">The numeric rating scale is not very sensitive in measuring small changes in pain intensity, </span><span class="segment" data-start="175.1" data-end="180.1" title="2:55">but is simple to use and can be translated into different languages. </span><span class="segment" data-start="180.1" data-end="184.1" title="3:00">What is the visual analog scale of VAS? </span><span class="segment" data-start="185.1" data-end="192.1" title="3:05">The visual analog scale is a simple pain scale often used in research. </span><span class="segment" data-start="192.1" data-end="199.1" title="3:12">The patient is shown a 10-centimeter line with the anchor words no pain written at one end, </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="199.1"><span class="t-timestamp">3:19</span></div>
+  <div class="t-body"><span class="segment" data-start="199.1" data-end="203.1" title="3:19">and worst pain imaginable written at the other end. </span><span class="segment" data-start="203.1" data-end="209.1" title="3:23">The patient is asked to put a cross on the line that best describes their pain. </span><span class="segment" data-start="209.1" data-end="215.1" title="3:29">The distance from the no pain end is then measured in centimeters to give the pain score. </span><span class="segment" data-start="215.1" data-end="221.1" title="3:35">This continuous aspect of the scale differentiates it from discrete scales. </span><span class="segment" data-start="221.1" data-end="227.1" title="3:41">The visual analog scale is sensitive to small changes in patient's pain. </span><span class="segment" data-start="227.1" data-end="232.1" title="3:47">What are multi-dimensional pain scales? </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="232.1"><span class="t-timestamp">3:52</span></div>
+  <div class="t-body"><span class="segment" data-start="232.1" data-end="238.1" title="3:52">Simple pain scales do not separate the many factors associated with chronic pain. </span><span class="segment" data-start="238.1" data-end="246.1" title="3:58">Chronic pain is of longer duration, is difficult to treat, and often of unknown origin. </span><span class="segment" data-start="246.1" data-end="251.1" title="4:06">Psychosocial factors play a large part in the development of chronic pain, </span><span class="segment" data-start="251.1" data-end="259.1" title="4:11">and the patient and their family will show distress and fear about the effects on life, work, and money. </span><span class="segment" data-start="259.1" data-end="265.1" title="4:19">The multi-dimensional pain scales analyse chronic pain by specific inquiry, </span><span class="segment" data-start="265.1" data-end="270.1" title="4:25">and can establish problems that do not just include pain intensity. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="270.1"><span class="t-timestamp">4:30</span></div>
+  <div class="t-body"><span class="segment" data-start="270.1" data-end="279.1" title="4:30">The multi-dimensional pain scales include the McGill Pain Questionnaire, the Brief Pain Inventory, </span><span class="segment" data-start="279.1" data-end="286.1" title="4:39">the Neuropathic Pain Scale, and the Leeds Assessment of Neuropathic Symptoms and Signs. </span><span class="segment" data-start="286.1" data-end="291.1" title="4:46">Can you briefly describe the McGill Pain Questionnaire? </span><span class="segment" data-start="291.1" data-end="301.1" title="4:51">The McGill Pain Questionnaire consists of four major classes of word descriptors, sensory, effective, evaluative, and miscellaneous, </span><span class="segment" data-start="301.1" data-end="306.1" title="5:01">that are used by patients to specify subjective pain experience. </span><span class="segment" data-start="306.1" data-end="314.1" title="5:06">It also contains an intensity scale to determine the properties of pain experience. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="314.1"><span class="t-timestamp">5:14</span></div>
+  <div class="t-body"><span class="segment" data-start="314.1" data-end="320.1" title="5:14">The questionnaire was designed to provide quantitative measures of clinical pain. </span><span class="segment" data-start="320.1" data-end="330.1" title="5:20">The three major measures are the pain rating index based on two types of numerical values that can be assigned to each word descriptor, </span><span class="segment" data-start="330.1" data-end="340.1" title="5:30">the number of words chosen, and the present pain intensity based on a one to five intensity scale. </span><span class="segment" data-start="340.1" data-end="347.1" title="5:40">The McGill Pain Questionnaire provides quantitative information that can be treated statistically </span><span class="segment" data-start="347.1" data-end="353.1" title="5:47">and is sufficiently sensitive to detect differences among different methods to relieve pain. </span><span class="segment" data-start="353.1" data-end="361.1" title="5:53">It also has a shorter version with only 15 words, which is more commonly used nowadays. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="361.1"><span class="t-timestamp">6:01</span></div>
+  <div class="t-body"><span class="segment" data-start="361.1" data-end="365.1" title="6:01">Describe the short form McGill Pain Questionnaire. </span><span class="segment" data-start="365.1" data-end="377.1" title="6:05">The main component of the SF-MPQ consists of 15 descriptors, 11 of which are sensory and four effective, </span><span class="segment" data-start="377.1" data-end="389.1" title="6:17">which are rated on an intensity scale as 0 equals none, 1 equals mild, 2 equals moderate, or 3 equals severe. </span><span class="segment" data-start="389.1" data-end="400.1" title="6:29">Three pain scores are derived from the sum of the intensity rank values of the words chosen for sensory, effective, and total descriptors. </span><span class="segment" data-start="400.1" data-end="413.1" title="6:40">The SF-MPQ also includes the present pain intensity index of the standard McGill Pain Questionnaire and a visual analog scale. </span><span class="segment" data-start="413.1" data-end="417.1" title="6:53">Describe the brief pain inventory. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="417.1"><span class="t-timestamp">6:57</span></div>
+  <div class="t-body"><span class="segment" data-start="417.1" data-end="425.1" title="6:57">The brief pain inventory assesses pain intensity at its best and worst and at the time of the test. </span><span class="segment" data-start="425.1" data-end="434.1" title="7:05">It also assesses the percentage relief from medications and treatments for pain and the duration of relief. </span><span class="segment" data-start="434.1" data-end="444.1" title="7:14">There are specific questions about patient's beliefs regarding their pain and questions about how their pain interferes with their daily activities, </span><span class="segment" data-start="444.1" data-end="449.1" title="7:24">such as work, relationships, rest, and sleep. </span><span class="segment" data-start="449.1" data-end="453.1" title="7:29">Describe the neuropathic pain scale. </span><span class="segment" data-start="453.1" data-end="463.1" title="7:33">The neuropathic pain scale specifically assesses neuropathic pain. It has eight descriptors of pain quality. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="463.1"><span class="t-timestamp">7:43</span></div>
+  <div class="t-body"><span class="segment" data-start="463.1" data-end="475.1" title="7:43">These eight descriptors are sharp, hot, dull, cold, skin sensitivity, itching, surface, and deep pain. </span><span class="segment" data-start="475.1" data-end="481.1" title="7:55">It also measures the unpleasantness of pain on a scale of 0 to 10. </span><span class="segment" data-start="481.1" data-end="487.1" title="8:01">What is the lead assessment of neuropathic symptoms and signs or LANSS? </span><span class="segment" data-start="487.1" data-end="498.1" title="8:07">The lead assessment of neuropathic symptoms and signs system identifies patients in whom neuropathic pain is the dominating part of their pain. </span><span class="segment" data-start="498.1" data-end="505.1" title="8:18">It is based on five questions and a simple bedside examination of sensory dysfunction. </span><span class="segment" data-start="505.1" data-end="509.1" title="8:25">What are the adjunctive measurements of pain? </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="510.1"><span class="t-timestamp">8:30</span></div>
+  <div class="t-body"><span class="segment" data-start="510.1" data-end="517.1" title="8:30">In chronic pain, psychological distress and social function are important assessments. </span><span class="segment" data-start="517.1" data-end="525.1" title="8:37">These adjunctive measurements can be divided into assessment of mood and quality of life. </span><span class="segment" data-start="525.1" data-end="535.1" title="8:45">Assessment of mood enables clinicians to tailor treatments for individual patients and evaluative questionnaires are often used. </span><span class="segment" data-start="535.1" data-end="548.1" title="8:55">The commonly used ones are the Beck anxiety and depression inventories, hospital anxiety and depression score, and Zung self-related depression score. </span><span class="segment" data-start="548.1" data-end="555.1" title="9:08">Quality of life assessments aim to evaluate the impact of the disease on the patient's life. </span><span class="segment" data-start="555.1" data-end="560.1" title="9:15">The best known measure is the short Form 36 questionnaire. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="560.1"><span class="t-timestamp">9:20</span></div>
+  <div class="t-body"><span class="segment" data-start="560.1" data-end="564.1" title="9:20">How do you assess pain in children? </span><span class="segment" data-start="564.1" data-end="575.1" title="9:24">It is very difficult to assess pain in children. Scales for children must capture their imagination, be fun to use, and must be reproducible. </span><span class="segment" data-start="575.1" data-end="578.1" title="9:35">Up to three years? </span><span class="segment" data-start="578.1" data-end="584.1" title="9:38">Neonates can feel pain, contrary to old beliefs and theories. </span><span class="segment" data-start="584.1" data-end="596.1" title="9:44">Effective pain scoring systems must rely on behavioral variables such as facial expression and crying or variables like cardiovascular parameters. </span><span class="segment" data-start="596.1" data-end="603.1" title="9:56">The commonly used scales are the objective pain scale and the clinical scoring system. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="603.1"><span class="t-timestamp">10:03</span></div>
+  <div class="t-body"><span class="segment" data-start="603.1" data-end="606.1" title="10:03">Three to seven years? </span><span class="segment" data-start="606.1" data-end="613.1" title="10:06">Most of the children above three can report pain and its intensity effectively. </span><span class="segment" data-start="613.1" data-end="618.1" title="10:13">Thus a verbal rating scale or a faces scale can be used. </span><span class="segment" data-start="618.1" data-end="625.1" title="10:18">The faces scale is a series of cartoon faces that range from smiling to crying. </span><span class="segment" data-start="625.1" data-end="633.1" title="10:25">A more detailed form of this is the outer scale but it needs to be matched to cultural background. </span><span class="segment" data-start="633.1" data-end="644.1" title="10:33">Visual analog scales can also be used and better results can be obtained by using the color graduation system and making the line vertical. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="644.1"><span class="t-timestamp">10:44</span></div>
+  <div class="t-body"><span class="segment" data-start="644.1" data-end="647.1" title="10:44">Seven years plus. </span><span class="segment" data-start="647.1" data-end="651.1" title="10:47">Conventional visual analog scales can be used. </span><span class="segment" data-start="651.1" data-end="656.1" title="10:51">How can pain be assessed and the cognitively impaired? </span><span class="segment" data-start="656.1" data-end="661.1" title="10:56">The pain can be assessed using the behavioral pain assessment scale. </span><span class="segment" data-start="661.1" data-end="674.1" title="11:01">Pain is coded from zero to ten and is based on the face score, restlessness score, muscle tone score, vocalization score, and consolability score. </span><span class="segment" data-start="674.1" data-end="683.1" title="11:14">Zero equals no evidence of pain, mild pain is a scale of one to three, moderate pain of four to five, </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="683.1"><span class="t-timestamp">11:23</span></div>
+  <div class="t-body"><span class="segment" data-start="683.1" data-end="690.1" title="11:23">and severe uncontrolled pain is a score of greater than six. </span></div>
+</div>
+</div>
+
+<div class="subtitle-bar">
+  <span class="subtitle-text empty" id="subtitle-text">Play audio to see live subtitles&#8230;</span>
+</div>
+
+<script>
+
+const audio    = document.getElementById('audio');
+const allSegs  = Array.from(document.querySelectorAll('.segment'));
+const allBlocks = Array.from(document.querySelectorAll('.t-block'));
+const subtitleEl = document.getElementById('subtitle-text');
+let activeSegEl   = null;
+let activeBlockEl = null;
+let searchMatches = [];
+let searchIdx     = 0;
+
+// Duration display
+audio.addEventListener('loadedmetadata', () => {
+  const m = Math.floor(audio.duration / 60);
+  const s = Math.floor(audio.duration %% 60).toString().padStart(2,'0');
+  document.getElementById('dur').textContent = m + ':' + s;
+});
+
+// Seek helper
+function seekTo(t) {
+  audio.currentTime = t;
+  audio.play();
+}
+
+// Block gutter click
+document.querySelectorAll('.t-gutter').forEach(g => {
+  g.addEventListener('click', () => seekTo(parseFloat(g.dataset.start)));
+});
+
+// Segment click
+allSegs.forEach(s => {
+  s.addEventListener('click', e => {
+    e.stopPropagation();
+    seekTo(parseFloat(s.dataset.start));
+  });
+});
+
+// Real-time tracking
+audio.addEventListener('timeupdate', () => {
+  const t = audio.currentTime;
+
+  // Find active segment (last one whose start <= t)
+  let found = null;
+  for (let i = allSegs.length - 1; i >= 0; i--) {
+    if (parseFloat(allSegs[i].dataset.start) <= t) { found = allSegs[i]; break; }
+  }
+
+  if (found && found !== activeSegEl) {
+    // Clear previous
+    if (activeSegEl) activeSegEl.classList.remove('active');
+    if (activeBlockEl) {
+      activeBlockEl.classList.remove('block-active');
+      const pg = activeBlockEl.querySelector('.t-gutter');
+      if (pg) pg.classList.remove('gutter-active');
+    }
+    // Set new
+    found.classList.add('active');
+    const block = found.closest('.t-block');
+    if (block) {
+      block.classList.add('block-active');
+      const g = block.querySelector('.t-gutter');
+      if (g) g.classList.add('gutter-active');
+      activeBlockEl = block;
+    }
+    activeSegEl = found;
+
+    // Update subtitle
+    subtitleEl.textContent = found.textContent.trim();
+    subtitleEl.classList.remove('empty');
+
+    // Auto-scroll (only when not searching)
+    if (!document.getElementById('search').value) {
+      found.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }
+});
+
+// Search
+const searchInput = document.getElementById('search');
+searchInput.addEventListener('input', runSearch);
+searchInput.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && searchMatches.length) {
+    searchMatches[searchIdx].classList.remove('search-current');
+    searchIdx = (searchIdx + 1) %% searchMatches.length;
+    const el = searchMatches[searchIdx];
+    el.classList.add('search-current');
+    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+});
+
+function runSearch() {
+  const q = searchInput.value.trim().toLowerCase();
+  allSegs.forEach(s => s.classList.remove('search-match','search-current'));
+  searchMatches = [];
+  if (!q) return;
+  allSegs.forEach(s => {
+    if (s.textContent.toLowerCase().includes(q)) {
+      s.classList.add('search-match');
+      searchMatches.push(s);
+    }
+  });
+  if (!searchMatches.length) return;
+  searchIdx = 0;
+  searchMatches[0].classList.add('search-current');
+  searchMatches[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+</script>
+</body>
+</html>

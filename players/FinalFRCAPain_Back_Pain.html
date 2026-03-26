@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pain — Back Pain</title>
+<style>
+
+  :root {
+    --accent:    #a855f7;
+    --body-bg:   #f1f5f9;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: var(--body-bg);
+    color: #1e293b;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  /* ── Header ── */
+  .header {
+    background: #0f172a;
+    border-bottom: 3px solid var(--accent);
+    padding: 12px 20px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .header-left { flex: 1; min-width: 200px; }
+  .header h1 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #f1f5f9;
+    margin-bottom: 4px;
+    letter-spacing: 0.01em;
+  }
+  .header-sub {
+    font-size: 0.72rem;
+    color: #94a3b8;
+    font-style: italic;
+  }
+  audio {
+    height: 36px;
+    accent-color: var(--accent);
+    flex-shrink: 0;
+  }
+  .back-link {
+    font-size: 0.8rem;
+    color: #94a3b8;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .back-link:hover { color: #60a5fa; }
+
+  /* ── Toolbar ── */
+  .toolbar {
+    background: #1e293b;
+    padding: 7px 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-shrink: 0;
+    border-bottom: 1px solid #334155;
+  }
+  .toolbar input {
+    flex: 1;
+    max-width: 380px;
+    padding: 5px 11px;
+    border: 1px solid #475569;
+    border-radius: 6px;
+    background: #0f172a;
+    color: #e2e8f0;
+    font-size: 0.83rem;
+    outline: none;
+  }
+  .toolbar input:focus { border-color: var(--accent); }
+  .toolbar input::placeholder { color: #64748b; }
+  .stats {
+    font-size: 0.72rem;
+    color: #64748b;
+    white-space: nowrap;
+  }
+
+  /* ── Scroll area ── */
+  .scroll-area {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+  }
+  .scroll-area::-webkit-scrollbar { width: 6px; }
+  .scroll-area::-webkit-scrollbar-track { background: transparent; }
+  .scroll-area::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+
+  /* ── Subtitle bar ── */
+  .subtitle-bar {
+    background: #0f172a;
+    border-top: 2px solid var(--accent);
+    padding: 8px 20px;
+    flex-shrink: 0;
+    min-height: 42px;
+    display: flex;
+    align-items: center;
+  }
+  .subtitle-text {
+    font-size: 0.9rem;
+    color: #e2e8f0;
+    line-height: 1.5;
+    font-style: italic;
+  }
+  .subtitle-text.empty { color: #475569; }
+
+  /* ── Transcript blocks ── */
+  .t-block {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    margin-bottom: 14px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    display: flex;
+  }
+  .t-block.block-active {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px rgba(37,99,235,0.15);
+  }
+  .t-gutter {
+    background: #0f172a;
+    width: 52px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: 14px;
+    cursor: pointer;
+  }
+  .t-gutter:hover { background: #1e293b; }
+  .t-timestamp {
+    font-size: 0.7rem;
+    color: #64748b;
+    font-family: monospace;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+  .t-gutter.gutter-active .t-timestamp { color: var(--accent); }
+  .t-body {
+    flex: 1;
+    padding: 12px 16px;
+    line-height: 1.75;
+    font-size: 0.92rem;
+    color: #1e293b;
+  }
+
+  /* ── Segments ── */
+  .segment {
+    cursor: pointer;
+    border-radius: 3px;
+    transition: background 0.1s;
+  }
+  .segment:hover { background: #eff6ff; }
+  .segment.active {
+    background: #bfdbfe;
+    outline: 2px solid #3b82f6;
+    outline-offset: 1px;
+    border-radius: 3px;
+  }
+  .segment.search-match  { background: #fef9c3; }
+  .segment.search-current { background: #fde047; outline: 2px solid #ca8a04; }
+
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <h1>Pain — Back Pain</h1>
+    <div class="header-sub">Final FRCA &mdash; Exam Viva Simulation &mdash; Click any phrase to seek</div>
+  </div>
+  <audio id="audio" src="../FinalFRCAPain_Back_Pain.mp3" controls preload="metadata"></audio>
+  <a class="back-link" href="index.html">&#8592; All Topics</a>
+</div>
+
+<div class="toolbar">
+  <input type="text" id="search" placeholder="Search transcript&#8230; (Enter = next match)">
+  <span class="stats" id="stats">120 segments &nbsp;|&nbsp; <span id="dur">loading&#8230;</span></span>
+</div>
+
+<div class="scroll-area" id="scroll-area">
+<div class="t-block">
+  <div class="t-gutter" data-start="0.0"><span class="t-timestamp">0:00</span></div>
+  <div class="t-body"><span class="segment" data-start="0.0" data-end="2.0" title="0:00">Low back pain. </span><span class="segment" data-start="2.0" data-end="6.0" title="0:02">How can we classify low back pain? </span><span class="segment" data-start="6.0" data-end="14.0" title="0:06">Low back pain can be classified on the basis of duration of symptoms into acute and chronic. </span><span class="segment" data-start="14.0" data-end="24.0" title="0:14">It is defined as acute when symptoms have persisted for less than six weeks and chronic when symptoms last for longer than three months. </span><span class="segment" data-start="24.0" data-end="30.0" title="0:24">It can also be classified as specific and non-specific. </span><span class="segment" data-start="30.0" data-end="45.0" title="0:30">Specific low back pain is caused by specific pathophysiological mechanisms such as herniated disc, infection, tumor, osteoporosis, inflammation or fracture. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="45.0"><span class="t-timestamp">0:45</span></div>
+  <div class="t-body"><span class="segment" data-start="45.0" data-end="51.0" title="0:45">Non-specific low back pain refers to those cases where no specific cause is found. </span><span class="segment" data-start="51.0" data-end="57.0" title="0:51">Approximately 90% of all low back pain have non-specific low back pain. </span><span class="segment" data-start="57.0" data-end="60.0" title="0:57">What are the causes of low back pain? </span><span class="segment" data-start="60.0" data-end="68.0" title="1:00">Try to classify by thinking in terms of causes, AE, structural or inflammatory. </span><span class="segment" data-start="68.0" data-end="72.0" title="1:08">Low back pain can be classified in terms of causes. </span><span class="segment" data-start="72.0" data-end="99.0" title="1:12">Structural causes such as spondylosis or spondylisthesis, prolapsed introvertural disc, facet joint arthritis or spinal stenosis, neurogenic causes such as prolapsed disc, spinal stenosis or failed back surgery syndrome with arachnoiditis, epidural adhesions and recurrent herniations. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="99.0"><span class="t-timestamp">1:39</span></div>
+  <div class="t-body"><span class="segment" data-start="99.0" data-end="127.0" title="1:39">Inflammatory causes such as the spondyl oathropathes or sacro-aliotis, neoplasm, either primary or secondary neoplasm, infection such as osteomyelitis, discitis or abscess, metabolic causes such as osteoporosis, paje's disease, vitamin D deficiency or hyperparothyroidism. </span><span class="segment" data-start="127.0" data-end="144.0" title="2:07">Referred pain from visceral structures such as the pancreas or bowel, the aorta, referred pain from the hip or retroperitoneal structures, and other causes such as somatiform disorders or fibromyalgia. </span><span class="segment" data-start="144.0" data-end="147.0" title="2:24">How do you evaluate patients with low back pain? </span><span class="segment" data-start="147.0" data-end="156.0" title="2:27">Think in terms of aims of evaluation and targeted assessment or examination rather than head to toe examination. </span><span class="segment" data-start="157.0" data-end="173.0" title="2:37">The aims of evaluation include three things. Identification of red flags indicating serious pathology, identification of yellow flags for signs of chronicity and identification of source of pain. </span><span class="segment" data-start="173.0" data-end="191.0" title="2:53">Assessments should include focused history, including the nature of onset, duration, location of pain, radiation, neurological symptoms including bowel and bladder function, exacerbating factors and relieving factors. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="191.0"><span class="t-timestamp">3:11</span></div>
+  <div class="t-body"><span class="segment" data-start="191.0" data-end="200.0" title="3:11">Patients should also be specifically asked about rest pain and denied pain as well as any history of trauma. </span><span class="segment" data-start="200.0" data-end="212.0" title="3:20">Past medical history is very important, especially a history of malignancy, steroid use, immunosuppression and intravenous drug abuse. </span><span class="segment" data-start="212.0" data-end="222.0" title="3:32">Examination should assess gait, posture, range of movement, tenderness on palpation and the straight leg raise test. </span><span class="segment" data-start="222.0" data-end="232.0" title="3:42">Full neurological examination, including tone, power, reflexes and sensory examination should also be undertaken. </span><span class="segment" data-start="232.0" data-end="238.0" title="3:52">Examination of other systems may be necessary in cases of referred pain. </span><span class="segment" data-start="238.0" data-end="250.0" title="3:58">Investigations including blood tests, plane X-rays, MRI and bone scans should be undertaken as dictated by the history and examination. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="250.0"><span class="t-timestamp">4:10</span></div>
+  <div class="t-body"><span class="segment" data-start="250.0" data-end="256.0" title="4:10">Nnemonic worth remembering, OPQRST. </span><span class="segment" data-start="256.0" data-end="264.0" title="4:16">A useful pneumonic for remembering the evaluation of back pain should be OPQRST. </span><span class="segment" data-start="264.0" data-end="279.0" title="4:24">O for onset, either spontaneous or triggered, P for pattern, the location and timing of the pain, Q for the quality of pain, R for relieving and exacerbating factors, </span><span class="segment" data-start="279.0" data-end="285.0" title="4:39">S for severity and systemic symptoms and T for treatments. </span><span class="segment" data-start="285.0" data-end="289.0" title="4:45">What are red flags and yellow flags? </span><span class="segment" data-start="289.0" data-end="296.0" title="4:49">Red flag symptoms suggest serious underlying pathology or nerve root pathology. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="296.0"><span class="t-timestamp">4:56</span></div>
+  <div class="t-body"><span class="segment" data-start="296.0" data-end="304.0" title="4:56">Think in terms of red flag conditions rather than in symptoms. It is easier to remember and looks more impressive. </span><span class="segment" data-start="304.0" data-end="311.0" title="5:04">This is most likely to feature in SAQs and possibly MCQs. </span><span class="segment" data-start="311.0" data-end="315.0" title="5:11">There are numerous red flag conditions. </span><span class="segment" data-start="315.0" data-end="323.0" title="5:15">Cordura-quinus syndrome presents with motor weakness, numbness and progressive neurological deficit. </span><span class="segment" data-start="323.0" data-end="332.0" title="5:23">Sfink to disturbance may manifest as urinary retention or bowel and bladder incontinence and there will be saddle anesthesia. </span><span class="segment" data-start="332.0" data-end="339.0" title="5:32">Tumor infection is most likely in patients aged over 50 or under 17. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="339.0"><span class="t-timestamp">5:39</span></div>
+  <div class="t-body"><span class="segment" data-start="339.0" data-end="346.0" title="5:39">They will have severe pain at rest and nighttime pain. There will be acute localized bone pain. </span><span class="segment" data-start="346.0" data-end="352.0" title="5:46">They may have a history of unexplained weight loss, fever and night sweats. </span><span class="segment" data-start="352.0" data-end="360.0" title="5:52">In their previous medical history may be immunosuppression, a history of HIV or intravenous drug use. </span><span class="segment" data-start="360.0" data-end="368.0" title="6:00">Fracture. Fracture would be suggested by significant trauma or a history of osteoporosis. </span><span class="segment" data-start="368.0" data-end="376.0" title="6:08">Acute abdominal aneurysm would be heralded by the presence of a pulsatile abdominal mass. </span><span class="segment" data-start="376.0" data-end="384.0" title="6:16">Yellow flags are psychosocial barriers to recovery and indicate long-term chronicity and disability. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="384.0"><span class="t-timestamp">6:24</span></div>
+  <div class="t-body"><span class="segment" data-start="384.0" data-end="393.0" title="6:24">They include, belief that pain is damaging and activity is harmful, fear and avoidance behaviour, </span><span class="segment" data-start="393.0" data-end="399.0" title="6:33">low mood, depression and social withdrawal, sickness behaviour, </span><span class="segment" data-start="399.0" data-end="407.0" title="6:39">attendancy for seeking passive treatments, overprotective family or a lack of support, </span><span class="segment" data-start="407.0" data-end="411.0" title="6:47">problems at work and poor job satisfaction. </span><span class="segment" data-start="411.0" data-end="414.0" title="6:51">Are you aware of any other flags? </span><span class="segment" data-start="414.0" data-end="420.0" title="6:54">Blue flags refer to conditions in the workplace that may inhibit recovery. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="420.0"><span class="t-timestamp">7:00</span></div>
+  <div class="t-body"><span class="segment" data-start="420.0" data-end="425.0" title="7:00">These include high work demands, poor relationships with colleagues, </span><span class="segment" data-start="425.0" data-end="431.0" title="7:05">low degree of control, monotony and a lack of job satisfaction. </span><span class="segment" data-start="431.0" data-end="437.0" title="7:11">Black flags refer to organisational obstacles to returning to work. </span><span class="segment" data-start="437.0" data-end="444.0" title="7:17">These include social benefits, sickness policies and compensation claims. </span><span class="segment" data-start="444.0" data-end="450.0" title="7:24">Orange flags include serious mental health issues in conjunction with pain. </span><span class="segment" data-start="450.0" data-end="457.0" title="7:30">Examples include very high levels of distress, major personality disorders, </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="457.0"><span class="t-timestamp">7:37</span></div>
+  <div class="t-body"><span class="segment" data-start="457.0" data-end="463.0" title="7:37">post-traumatic stress disorder, substance abuse and clinical depression. </span><span class="segment" data-start="463.0" data-end="466.0" title="7:43">What is the Strait Leg Raising Test? </span><span class="segment" data-start="467.0" data-end="474.0" title="7:47">With the patient's lying soupine, the affected leg is raised with the knee fully extended. </span><span class="segment" data-start="474.0" data-end="483.0" title="7:54">A positive test reproduces the patient's leg pain at between 30 to 70 degrees of elevation. </span><span class="segment" data-start="483.0" data-end="490.2" title="8:03">The Strait Leg Raising Test tests the mobility of juarimata and the juaral sleeve of the lower </span><span class="segment" data-start="490.2" data-end="493.2" title="8:10">lower lumbar and sacral spinal nerves. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="493.2"><span class="t-timestamp">8:13</span></div>
+  <div class="t-body"><span class="segment" data-start="493.2" data-end="498.2" title="8:13">It has a high sensitivity for radiculopathy but low specificity. </span><span class="segment" data-start="498.2" data-end="503.2" title="8:18">What are signs of nerve root irritation? </span><span class="segment" data-start="503.2" data-end="510.2" title="8:23">Other signs of nerve root irritation include leg pain greater than back pain, </span><span class="segment" data-start="510.2" data-end="518.2" title="8:30">radiation into the foot or lower leg, numbness and parasthesias in a dermatomal distribution, </span><span class="segment" data-start="518.2" data-end="524.2" title="8:38">diminished leg reflexes, positive strait leg raising test, </span><span class="segment" data-start="524.2" data-end="533.2" title="8:44">positive femoral stretch test, leg pain exacerbated by coughing, sneezing or the valve salver maneuver. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="533.2"><span class="t-timestamp">8:53</span></div>
+  <div class="t-body"><span class="segment" data-start="533.2" data-end="536.2" title="8:53">What is Corda Aquinas Syndrome? </span><span class="segment" data-start="536.2" data-end="539.2" title="8:56">How does it present and hasht to be managed? </span><span class="segment" data-start="539.2" data-end="545.2" title="8:59">This is an important topic folks and could most likely pop up as an SAQ. </span><span class="segment" data-start="546.2" data-end="553.2" title="9:06">Corda Aquinas Syndrome may result from any lesion that compresses the Corda Aquinas nerve roots. </span><span class="segment" data-start="553.2" data-end="559.2" title="9:13">This causes dysfunction of sacral under lumbar nerve roots in the vertebral canal. </span><span class="segment" data-start="559.2" data-end="568.2" title="9:19">The syndrome is characterized by bladder, bowel or sexual dysfunction and perienal or sadlanesthesia. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="569.2"><span class="t-timestamp">9:29</span></div>
+  <div class="t-body"><span class="segment" data-start="569.2" data-end="577.2" title="9:29">Other clinical features include back pain, lower limb weakness, sensory changes in the lower limbs, </span><span class="segment" data-start="577.2" data-end="586.2" title="9:37">loss of or sluggish reflexes in the lower limbs and can present as unilateral or bilateral symptoms. </span><span class="segment" data-start="586.2" data-end="596.2" title="9:46">Patients can present either acutely as their first symptom of lumbar disc herniation or after a long history of chronic back pain. </span><span class="segment" data-start="597.2" data-end="604.2" title="9:57">It can also present insidiously with slow progression to numbness and urinary symptoms. </span><span class="segment" data-start="604.2" data-end="614.2" title="10:04">Features on examination include loss of perienal sensation, loss of anal tone, loss or diminished lower limb reflexes, </span><span class="segment" data-start="614.2" data-end="621.2" title="10:14">loss or diminished bobbocavanosis reflex and motor weakness in the lower limbs. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="622.2"><span class="t-timestamp">10:22</span></div>
+  <div class="t-body"><span class="segment" data-start="622.2" data-end="627.2" title="10:22">MRI is the investigation of choice for confirming Corda Aquinas syndrome. </span><span class="segment" data-start="627.2" data-end="633.2" title="10:27">Clinical diagnosis has high false positive rates even in experienced hands. </span><span class="segment" data-start="633.2" data-end="639.2" title="10:33">If MRI is unavailable, CT myelogram should be performed. </span><span class="segment" data-start="639.2" data-end="644.2" title="10:39">Surgical decompression is the treatment of choice for Corda Aquinas Syndrome. </span><span class="segment" data-start="644.2" data-end="655.2" title="10:44">The timing of surgery remains controversial, but retrospective analysis has shown that surgery within 24 hours is associated with a better outcome. </span><span class="segment" data-start="655.2" data-end="667.2" title="10:55">The clinical outcome is poor in patients with retention and the role of urgent surgery is less clear in these patients as shown by a recent meta-analysis. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="667.2"><span class="t-timestamp">11:07</span></div>
+  <div class="t-body"><span class="segment" data-start="667.2" data-end="672.2" title="11:07">What is the role of routine imaging in evaluation of low back pain? </span><span class="segment" data-start="673.2" data-end="678.2" title="11:13">There is no role for routine imaging in the evaluation of low back pain. </span><span class="segment" data-start="678.2" data-end="688.2" title="11:18">There is no evidence that routine plane radiography is associated with improvement in patient outcome in those with non-specific low back pain. </span><span class="segment" data-start="688.2" data-end="697.2" title="11:28">In addition, there is no evidence of causal relationship between radiographic findings and non-specific low back pain. </span><span class="segment" data-start="698.2" data-end="706.2" title="11:38">The amount of radiation from Lumber X-Ray is also of concern as it is more than having a chest X-Ray daily for a year. </span><span class="segment" data-start="706.2" data-end="715.2" title="11:46">Similarly, up to 30% of adults without low back pain have evidence of protruded disc on MRI scan. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="715.2"><span class="t-timestamp">11:55</span></div>
+  <div class="t-body"><span class="segment" data-start="715.2" data-end="724.2" title="11:55">Plane radiographs are recommended for initial evaluation of vertebral compression fracture in selected high-risk patients. </span><span class="segment" data-start="724.2" data-end="737.2" title="12:04">MRI scans or CT scans are recommended in patients with red flags, progressive neurological deficit, corduaryquinous syndrome, vertebral infection or cancer. </span><span class="segment" data-start="737.2" data-end="743.2" title="12:17">Scans are also recommended if surgery or invasive treatment is planned. </span><span class="segment" data-start="743.2" data-end="746.2" title="12:23">What are the risk factors for conicity in low back pain? </span><span class="segment" data-start="746.2" data-end="750.2" title="12:26">Always try to classify if possible. </span><span class="segment" data-start="751.2" data-end="756.2" title="12:31">Risk factors for conicity can be divided into three groups. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="756.2"><span class="t-timestamp">12:36</span></div>
+  <div class="t-body"><span class="segment" data-start="756.2" data-end="763.2" title="12:36">Individual factors, psychosocial factors and occupational factors. </span><span class="segment" data-start="763.2" data-end="773.2" title="12:43">Individual factors are obesity, low education level and high levels of pain and disability. </span><span class="segment" data-start="773.2" data-end="781.2" title="12:53">Psychosocial factors are distress, depressive mood and somatization. </span><span class="segment" data-start="781.2" data-end="791.2" title="13:01">Occupational factors are job dissatisfaction, heavy lifting or unavailability of light duties on return to work. </span><span class="segment" data-start="791.2" data-end="795.2" title="13:11">What treatment options are available for low back pain? </span><span class="segment" data-start="795.2" data-end="802.2" title="13:15">Try to answer this question by dividing treatments into specific groups, non-pharmacological treatments, </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="802.2"><span class="t-timestamp">13:22</span></div>
+  <div class="t-body"><span class="segment" data-start="802.2" data-end="808.2" title="13:22">pharmacological treatments, interventional therapies and surgery. </span><span class="segment" data-start="808.2" data-end="811.2" title="13:28">Non-pharmacological treatments. </span><span class="segment" data-start="811.2" data-end="813.2" title="13:31">Patient education. </span><span class="segment" data-start="813.2" data-end="824.2" title="13:33">By providing evidence-based information on low back pain, the expected course, advised to remain active and effective self-care options, </span><span class="segment" data-start="825.2" data-end="834.2" title="13:45">intensive multidisciplinary rehabilitation for pain management programs and backpack programs. </span><span class="segment" data-start="834.2" data-end="847.2" title="13:54">Exercise therapy, acupuncture, cognitive and behavioral therapy or a tense machine for which there is no proven benefit. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="847.2"><span class="t-timestamp">14:07</span></div>
+  <div class="t-body"><span class="segment" data-start="847.2" data-end="849.2" title="14:07">Pharmacological treatments. </span><span class="segment" data-start="849.2" data-end="860.2" title="14:09">Oral analgesics such as paracetamol, non-steeroidal anti-inflammatories, tramadol and strong opioids but their uses controversial. </span><span class="segment" data-start="860.2" data-end="870.2" title="14:20">Muscle relaxants which are indicated for short duration of treatment in acute back pain if there is significant muscle spasm present. </span><span class="segment" data-start="870.2" data-end="879.2" title="14:30">Anti-depressants such as tricyclics which in low-dases are more effective than a placebo in the treatment of low back pain. </span><span class="segment" data-start="879.2" data-end="887.2" title="14:39">SSRIs have not shown to be effective and the SNRI group of drugs have not been evaluated. </span><span class="segment" data-start="887.2" data-end="896.2" title="14:47">Gabber pentanoids such as Gabber pentin and pre-gablin which are useful for back pain associated with radiculopathy. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="896.2"><span class="t-timestamp">14:56</span></div>
+  <div class="t-body"><span class="segment" data-start="896.2" data-end="901.2" title="14:56">And systemic corticosteroids which are not recommended. </span><span class="segment" data-start="901.2" data-end="914.2" title="15:01">Interventional treatments such as epidural injection of steroids which show a short-term benefit in radicular pain but no long-term improvement in pain or function. </span><span class="segment" data-start="914.2" data-end="919.2" title="15:14">Facet joint injections for which there are no evidence. </span><span class="segment" data-start="919.2" data-end="933.2" title="15:19">Radio frequency denervation of facet joints which give better pain relief than sham interventions and spinal cord stimulators for failed back syndrome and radicular pain. </span><span class="segment" data-start="933.2" data-end="940.2" title="15:33">The final treatment option is surgery which is only shown to be useful in selected cases. </span><span class="segment" data-start="940.2" data-end="947.2" title="15:40">Surgeical options are discectomy or micro-discectomy, spinal fusion or spinal decompression. </span></div>
+</div>
+</div>
+
+<div class="subtitle-bar">
+  <span class="subtitle-text empty" id="subtitle-text">Play audio to see live subtitles&#8230;</span>
+</div>
+
+<script>
+
+const audio    = document.getElementById('audio');
+const allSegs  = Array.from(document.querySelectorAll('.segment'));
+const allBlocks = Array.from(document.querySelectorAll('.t-block'));
+const subtitleEl = document.getElementById('subtitle-text');
+let activeSegEl   = null;
+let activeBlockEl = null;
+let searchMatches = [];
+let searchIdx     = 0;
+
+// Duration display
+audio.addEventListener('loadedmetadata', () => {
+  const m = Math.floor(audio.duration / 60);
+  const s = Math.floor(audio.duration %% 60).toString().padStart(2,'0');
+  document.getElementById('dur').textContent = m + ':' + s;
+});
+
+// Seek helper
+function seekTo(t) {
+  audio.currentTime = t;
+  audio.play();
+}
+
+// Block gutter click
+document.querySelectorAll('.t-gutter').forEach(g => {
+  g.addEventListener('click', () => seekTo(parseFloat(g.dataset.start)));
+});
+
+// Segment click
+allSegs.forEach(s => {
+  s.addEventListener('click', e => {
+    e.stopPropagation();
+    seekTo(parseFloat(s.dataset.start));
+  });
+});
+
+// Real-time tracking
+audio.addEventListener('timeupdate', () => {
+  const t = audio.currentTime;
+
+  // Find active segment (last one whose start <= t)
+  let found = null;
+  for (let i = allSegs.length - 1; i >= 0; i--) {
+    if (parseFloat(allSegs[i].dataset.start) <= t) { found = allSegs[i]; break; }
+  }
+
+  if (found && found !== activeSegEl) {
+    // Clear previous
+    if (activeSegEl) activeSegEl.classList.remove('active');
+    if (activeBlockEl) {
+      activeBlockEl.classList.remove('block-active');
+      const pg = activeBlockEl.querySelector('.t-gutter');
+      if (pg) pg.classList.remove('gutter-active');
+    }
+    // Set new
+    found.classList.add('active');
+    const block = found.closest('.t-block');
+    if (block) {
+      block.classList.add('block-active');
+      const g = block.querySelector('.t-gutter');
+      if (g) g.classList.add('gutter-active');
+      activeBlockEl = block;
+    }
+    activeSegEl = found;
+
+    // Update subtitle
+    subtitleEl.textContent = found.textContent.trim();
+    subtitleEl.classList.remove('empty');
+
+    // Auto-scroll (only when not searching)
+    if (!document.getElementById('search').value) {
+      found.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }
+});
+
+// Search
+const searchInput = document.getElementById('search');
+searchInput.addEventListener('input', runSearch);
+searchInput.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && searchMatches.length) {
+    searchMatches[searchIdx].classList.remove('search-current');
+    searchIdx = (searchIdx + 1) %% searchMatches.length;
+    const el = searchMatches[searchIdx];
+    el.classList.add('search-current');
+    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+});
+
+function runSearch() {
+  const q = searchInput.value.trim().toLowerCase();
+  allSegs.forEach(s => s.classList.remove('search-match','search-current'));
+  searchMatches = [];
+  if (!q) return;
+  allSegs.forEach(s => {
+    if (s.textContent.toLowerCase().includes(q)) {
+      s.classList.add('search-match');
+      searchMatches.push(s);
+    }
+  });
+  if (!searchMatches.length) return;
+  searchIdx = 0;
+  searchMatches[0].classList.add('search-current');
+  searchMatches[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+</script>
+</body>
+</html>

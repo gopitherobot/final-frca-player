@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Intensive Care Medicine — High Risk Surgical Patient</title>
+<style>
+
+  :root {
+    --accent:    #0ea5e9;
+    --body-bg:   #f1f5f9;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: var(--body-bg);
+    color: #1e293b;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  /* ── Header ── */
+  .header {
+    background: #0f172a;
+    border-bottom: 3px solid var(--accent);
+    padding: 12px 20px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .header-left { flex: 1; min-width: 200px; }
+  .header h1 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #f1f5f9;
+    margin-bottom: 4px;
+    letter-spacing: 0.01em;
+  }
+  .header-sub {
+    font-size: 0.72rem;
+    color: #94a3b8;
+    font-style: italic;
+  }
+  audio {
+    height: 36px;
+    accent-color: var(--accent);
+    flex-shrink: 0;
+  }
+  .back-link {
+    font-size: 0.8rem;
+    color: #94a3b8;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .back-link:hover { color: #60a5fa; }
+
+  /* ── Toolbar ── */
+  .toolbar {
+    background: #1e293b;
+    padding: 7px 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-shrink: 0;
+    border-bottom: 1px solid #334155;
+  }
+  .toolbar input {
+    flex: 1;
+    max-width: 380px;
+    padding: 5px 11px;
+    border: 1px solid #475569;
+    border-radius: 6px;
+    background: #0f172a;
+    color: #e2e8f0;
+    font-size: 0.83rem;
+    outline: none;
+  }
+  .toolbar input:focus { border-color: var(--accent); }
+  .toolbar input::placeholder { color: #64748b; }
+  .stats {
+    font-size: 0.72rem;
+    color: #64748b;
+    white-space: nowrap;
+  }
+
+  /* ── Scroll area ── */
+  .scroll-area {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+  }
+  .scroll-area::-webkit-scrollbar { width: 6px; }
+  .scroll-area::-webkit-scrollbar-track { background: transparent; }
+  .scroll-area::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+
+  /* ── Subtitle bar ── */
+  .subtitle-bar {
+    background: #0f172a;
+    border-top: 2px solid var(--accent);
+    padding: 8px 20px;
+    flex-shrink: 0;
+    min-height: 42px;
+    display: flex;
+    align-items: center;
+  }
+  .subtitle-text {
+    font-size: 0.9rem;
+    color: #e2e8f0;
+    line-height: 1.5;
+    font-style: italic;
+  }
+  .subtitle-text.empty { color: #475569; }
+
+  /* ── Transcript blocks ── */
+  .t-block {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    margin-bottom: 14px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    display: flex;
+  }
+  .t-block.block-active {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px rgba(37,99,235,0.15);
+  }
+  .t-gutter {
+    background: #0f172a;
+    width: 52px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: 14px;
+    cursor: pointer;
+  }
+  .t-gutter:hover { background: #1e293b; }
+  .t-timestamp {
+    font-size: 0.7rem;
+    color: #64748b;
+    font-family: monospace;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+  .t-gutter.gutter-active .t-timestamp { color: var(--accent); }
+  .t-body {
+    flex: 1;
+    padding: 12px 16px;
+    line-height: 1.75;
+    font-size: 0.92rem;
+    color: #1e293b;
+  }
+
+  /* ── Segments ── */
+  .segment {
+    cursor: pointer;
+    border-radius: 3px;
+    transition: background 0.1s;
+  }
+  .segment:hover { background: #eff6ff; }
+  .segment.active {
+    background: #bfdbfe;
+    outline: 2px solid #3b82f6;
+    outline-offset: 1px;
+    border-radius: 3px;
+  }
+  .segment.search-match  { background: #fef9c3; }
+  .segment.search-current { background: #fde047; outline: 2px solid #ca8a04; }
+
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <h1>Intensive Care Medicine — High Risk Surgical Patient</h1>
+    <div class="header-sub">Final FRCA &mdash; Exam Viva Simulation &mdash; Click any phrase to seek</div>
+  </div>
+  <audio id="audio" src="../FinalFRCAIntensive_Care_Medicine_High_Risk_Surgical_Patient.mp3" controls preload="metadata"></audio>
+  <a class="back-link" href="index.html">&#8592; All Topics</a>
+</div>
+
+<div class="toolbar">
+  <input type="text" id="search" placeholder="Search transcript&#8230; (Enter = next match)">
+  <span class="stats" id="stats">160 segments &nbsp;|&nbsp; <span id="dur">loading&#8230;</span></span>
+</div>
+
+<div class="scroll-area" id="scroll-area">
+<div class="t-block">
+  <div class="t-gutter" data-start="0.0"><span class="t-timestamp">0:00</span></div>
+  <div class="t-body"><span class="segment" data-start="0.0" data-end="2.4" title="0:00">The high-risk surgical patient. </span><span class="segment" data-start="2.4" data-end="8.24" title="0:02">This topic would be most likely to appear as either a long or short clinical case, </span><span class="segment" data-start="8.24" data-end="12.88" title="0:08">as it allows ample opportunity to discuss common clinical problems. </span><span class="segment" data-start="12.88" data-end="16.08" title="0:12">It could follow on from some relevant basic science, </span><span class="segment" data-start="16.08" data-end="19.84" title="0:16">for example, the stress response to surgery. </span><span class="segment" data-start="19.84" data-end="24.24" title="0:19">Have you any idea of mortality rates after surgery in the UK? </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="25.2"><span class="t-timestamp">0:25</span></div>
+  <div class="t-body"><span class="segment" data-start="25.2" data-end="34.72" title="0:25">Data from NC Pod puts 30-day mortality somewhere between 0.7 and 1.7 percent for all operations. </span><span class="segment" data-start="35.52" data-end="45.2" title="0:35">Using a sample of over 4 million operations between 1999 and 2004 from ICNARC and CHKS, </span><span class="segment" data-start="45.76" data-end="54.4" title="0:45">overall 30-day mortality after elective surgery is approximately 0.5 percent and 5.5 percent after </span><span class="segment" data-start="54.4" data-end="61.68" title="0:54">emergency surgery. This data also showed that a small group of patients accounted for the majority </span><span class="segment" data-start="61.68" data-end="68.64" title="1:01">of deaths. About 1 in 8 patients were in this high-risk group that had a crude mortality rate </span><span class="segment" data-start="68.64" data-end="78.4" title="1:08">after all surgery of 12.5 percent. Interestingly, in absolute terms, this group accounted for over 80 </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="78.4"><span class="t-timestamp">1:18</span></div>
+  <div class="t-body"><span class="segment" data-start="78.4" data-end="85.04" title="1:18">percent of the total number of deaths, but fewer than 15 percent of them were admitted to an ICU. </span><span class="segment" data-start="86.16" data-end="88.88" title="1:26">Which groups of patients have higher mortality rates? </span><span class="segment" data-start="90.88" data-end="98.08" title="1:30">There are patient and surgery-related factors. NC Pod have shown that mortality increased </span><span class="segment" data-start="98.08" data-end="105.44" title="1:38">with age. Over 70s have a quarter of all operations, but suffer 3-4 of all deaths. </span><span class="segment" data-start="106.4" data-end="113.36" title="1:46">Comorbidity, especially heart failure and current physiological status are also important. </span><span class="segment" data-start="114.24" data-end="121.52" title="1:54">With regard to surgical factors, mortality increases with emergency surgery and with major </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="121.52"><span class="t-timestamp">2:01</span></div>
+  <div class="t-body"><span class="segment" data-start="121.52" data-end="128.96" title="2:01">and major plus procedures, laparotomies for example. These operations are generally longer </span><span class="segment" data-start="128.96" data-end="135.76" title="2:08">and result in more tissue damage. You could add anesthetic-related factors as there is data to </span><span class="segment" data-start="135.76" data-end="144.0" title="2:15">suggest that fluid management, location of post-operative care and even analgesic technique influences </span><span class="segment" data-start="144.0" data-end="149.04" title="2:24">mortality in high-risk patients. How would you define high-risk? </span><span class="segment" data-start="149.44" data-end="158.24" title="2:29">Risk is difficult to define and means different things to different people, so this is somewhat </span><span class="segment" data-start="158.24" data-end="166.64" title="2:38">subjective. Practically speaking, a common threshold is to consider a patient or procedure high-risk, </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="166.64"><span class="t-timestamp">2:46</span></div>
+  <div class="t-body"><span class="segment" data-start="166.64" data-end="174.32" title="2:46">if mortality is estimated at over 5 percent or twice the usual mortality associated with that </span><span class="segment" data-start="174.4" data-end="181.92" title="2:54">procedure. More NC Pod data shows that surgeons miss one in three high-risk patients, </span><span class="segment" data-start="181.92" data-end="188.0" title="3:01">if asked to identify them preoperatively. So how can these patients be identified beforehand? </span><span class="segment" data-start="189.28" data-end="196.32" title="3:09">Are any tests any better than surgeons? I don't know, but I think it unlikely that </span><span class="segment" data-start="196.32" data-end="202.48" title="3:16">anesthetists are much better than surgeons in this regard. It is probably better to use more </span><span class="segment" data-start="202.48" data-end="208.24" title="3:22">objective means of assessment than personal opinion, and there are a number of assessment and </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="208.24"><span class="t-timestamp">3:28</span></div>
+  <div class="t-body"><span class="segment" data-start="208.24" data-end="214.88" title="3:28">prediction tools that can be applied in the preoperative clinic or at the bedside to estimate risk. </span><span class="segment" data-start="215.84" data-end="222.48" title="3:35">Both patient risk and surgical risk need to be evaluated, but the latter should be easier </span><span class="segment" data-start="222.48" data-end="229.68" title="3:42">as more surgeon, unit and national data on complication rates, including mortality is available </span><span class="segment" data-start="229.68" data-end="234.48" title="3:49">to use as a benchmark. What assessment and prediction tools do you know? </span><span class="segment" data-start="236.96" data-end="244.4" title="3:56">There are checklists and scores based on a clinical history examination and simple lab tests, </span><span class="segment" data-start="244.4" data-end="250.64" title="4:04">and then there are those that involve more sophisticated investigation. The Goldman and </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="250.64"><span class="t-timestamp">4:10</span></div>
+  <div class="t-body"><span class="segment" data-start="250.64" data-end="258.08" title="4:10">Dezky scores each use slightly different factors weighted in slightly different ways to produce </span><span class="segment" data-start="258.08" data-end="263.36" title="4:18">estimates of the risk of cardiac death or cardiac complications postoperatively, </span><span class="segment" data-start="264.08" data-end="270.8" title="4:24">whereas the possum score estimates mortality and all not just cardiac morbidity. </span><span class="segment" data-start="271.92" data-end="277.2" title="4:31">Several authors have devised criteria for identifying high-risk patients, </span><span class="segment" data-start="277.2" data-end="284.16" title="4:37">but with less accurate estimates of risk. Moving on, cardiac investigations have dominated </span><span class="segment" data-start="284.16" data-end="291.04" title="4:44">the field of risk prediction in non-cardiac surgery, with the exception of thoracic surgery </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="291.04"><span class="t-timestamp">4:51</span></div>
+  <div class="t-body"><span class="segment" data-start="291.04" data-end="299.84" title="4:51">where lung function testing is well established. Echo, stress echo, nuclear investigations and even </span><span class="segment" data-start="299.84" data-end="306.64" title="4:59">angiography are all used, but these are tests for the presence or absence of cardiac disease </span><span class="segment" data-start="306.64" data-end="313.84" title="5:06">and are not preoperative screening tests. Recently, interest has grown in functional tests of the </span><span class="segment" data-start="313.84" data-end="320.4" title="5:13">cardiac respiratory system, such as quantification of activities of daily living, using metabolic </span><span class="segment" data-start="320.4" data-end="327.2" title="5:20">equivalents or METS, six-minute or shuttle walks or cardiopulmonary exercise testing. </span><span class="segment" data-start="328.16" data-end="336.24" title="5:28">Why is this? What is seen as more important is the functional ability of the heart, </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="336.24"><span class="t-timestamp">5:36</span></div>
+  <div class="t-body"><span class="segment" data-start="336.24" data-end="342.96" title="5:36">not merely the presence or absence of coronary artery disease. Even the Goldman index reflects </span><span class="segment" data-start="342.96" data-end="350.24" title="5:42">this as the highest weighting for any score is for heart failure. Individual patient risk </span><span class="segment" data-start="350.24" data-end="356.72" title="5:50">depends on individual physiological reserve and this cannot be assessed by history and clinical </span><span class="segment" data-start="356.72" data-end="366.0" title="5:56">examination alone. Why identify these patients preoperatively? First, so that the patient can be </span><span class="segment" data-start="366.0" data-end="372.8" title="6:06">given accurate information about the likely risks of the procedure, and second, so that the </span><span class="segment" data-start="372.8" data-end="378.8" title="6:12">additional resources can be used to reduce these risks and increase the chances of survival. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="379.6"><span class="t-timestamp">6:19</span></div>
+  <div class="t-body"><span class="segment" data-start="379.6" data-end="386.8" title="6:19">These resources, for example, intensive care beds are expensive and scarce, so must be used </span><span class="segment" data-start="386.8" data-end="392.88" title="6:26">to greatest effect. What you understand by the terms optimization and goal-directed therapy? </span><span class="segment" data-start="393.12" data-end="402.64" title="6:33">Goal-directed therapy is a term used widely in anesthesia and critical care that usually refers to </span><span class="segment" data-start="402.64" data-end="409.68" title="6:42">more or less protocolized care aimed at achieving a set of predominantly hemodynamic goals that have </span><span class="segment" data-start="409.68" data-end="416.8" title="6:49">been identified with improved outcome in a clearly defined group of patients. Optimization </span><span class="segment" data-start="416.88" data-end="421.76" title="6:56">refers more specifically to this process in the context of perioperative care. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="423.12"><span class="t-timestamp">7:03</span></div>
+  <div class="t-body"><span class="segment" data-start="423.12" data-end="425.6" title="7:03">What is the principle behind goal-directed therapy? </span><span class="segment" data-start="427.84" data-end="434.32" title="7:07">It was first noted over 40 years ago that patients who could not increase their cardiac output </span><span class="segment" data-start="434.32" data-end="442.32" title="7:14">postoperatively had a higher mortality, and in the 80s this observation was again made by Schumaker </span><span class="segment" data-start="442.32" data-end="450.08" title="7:22">in trauma patients. It was thought that cardiac ischemia and organ failure was caused by low </span><span class="segment" data-start="450.08" data-end="457.68" title="7:30">cardiac output and reduced oxygen delivery, so it was hypothesized that increasing cardiac output </span><span class="segment" data-start="457.68" data-end="463.84" title="7:37">and oxygen delivery to the levels attained by survivors would lead to reduced mortality. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="464.72"><span class="t-timestamp">7:44</span></div>
+  <div class="t-body"><span class="segment" data-start="464.72" data-end="471.76" title="7:44">In a landmark trial, he was able to show that achieving oxygen delivery goals with oxygen, </span><span class="segment" data-start="471.76" data-end="478.48" title="7:51">fluids and ionotropes mortality was reduced, but there are some methodological concerns. </span><span class="segment" data-start="479.44" data-end="486.32" title="7:59">The modern conception of goal-directed therapy also concentrates on oxygen supply demand </span><span class="segment" data-start="486.32" data-end="494.0" title="8:06">imbalance but less on cardiac ischemia. The stress response to surgery imposes the extra </span><span class="segment" data-start="494.0" data-end="501.68" title="8:14">oxygen demand for adequate mitochondrial generation of ATP required primarily for wound healing. </span><span class="segment" data-start="502.08" data-end="510.56" title="8:22">And the postoperative inflammatory response. This is met by increasing cardiac output and oxygen </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="510.56"><span class="t-timestamp">8:30</span></div>
+  <div class="t-body"><span class="segment" data-start="510.56" data-end="518.08" title="8:30">extraction. Patients with an inability to respond to this increase in demand are those who are at </span><span class="segment" data-start="518.08" data-end="525.28" title="8:38">risk of complications as mitochondrial function is affected by prolonged inadequate oxygen delivery. </span><span class="segment" data-start="526.16" data-end="533.44" title="8:46">On this view, complications other than cardiac ischemia and macadial infarction are accounted for </span><span class="segment" data-start="533.44" data-end="540.4" title="8:53">as mitochondrial dysfunction leads to immunosuppression and is thought to underline multi-organ failure. </span><span class="segment" data-start="541.12" data-end="545.2" title="9:01">It also explains why heart failure is so significant, </span><span class="segment" data-start="545.2" data-end="550.72" title="9:05">why lower central venous oxygen saturation identifies a high risk group, </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="550.8"><span class="t-timestamp">9:10</span></div>
+  <div class="t-body"><span class="segment" data-start="550.8" data-end="557.52" title="9:10">and why functional tests like CPX testing are good at predicting postoperative complications. </span><span class="segment" data-start="559.04" data-end="564.16" title="9:19">Practically speaking, how would you go about it? Let us say your face with an 81-year-old woman </span><span class="segment" data-start="564.16" data-end="570.56" title="9:24">presenting for elective AP resection with cardiomyopathy and COPD. Her cardiopulmonary test shows an </span><span class="segment" data-start="570.56" data-end="574.8" title="9:30">aerobic threshold of 10.5 ml per kilogram per minute without aschemia. </span><span class="segment" data-start="575.44" data-end="580.32" title="9:35">Remember to answer the question folks, you have been asked how you would actually go about </span><span class="segment" data-start="580.32" data-end="585.84" title="9:40">anaesthetizing this patient and not how it could be done in an ideal world. Focus on the </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="585.84"><span class="t-timestamp">9:45</span></div>
+  <div class="t-body"><span class="segment" data-start="585.84" data-end="590.24" title="9:45">gold-directed therapy aspect as this is the topic you are being examined on. </span><span class="segment" data-start="592.48" data-end="600.08" title="9:52">Both the operation and cardiopulmonary exercise results indicate a high risk procedure as an </span><span class="segment" data-start="600.08" data-end="607.12" title="10:00">anaerobic threshold of 11 is usually taken as the cutoff point. Prior to admission, </span><span class="segment" data-start="607.2" data-end="613.52" title="10:07">this patient's medical therapy should be reviewed by her consultant physician and optimised, </span><span class="segment" data-start="613.52" data-end="617.52" title="10:13">and an intensive care bed should be arranged for postoperative care. </span><span class="segment" data-start="618.32" data-end="624.88" title="10:18">I would plan to use gold-directed therapy, so I would use full hemodynamic monitoring, </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="624.88"><span class="t-timestamp">10:24</span></div>
+  <div class="t-body"><span class="segment" data-start="624.88" data-end="631.44" title="10:24">including cardiac output monitoring, as relying on menatereal pressure and central venous </span><span class="segment" data-start="631.44" data-end="638.56" title="10:31">pressure alone does not allow the calculation of oxygen delivery, and both may be normal when </span><span class="segment" data-start="638.56" data-end="645.76" title="10:38">cardiac output is insufficient. In an ideal world, the intensive care bed would be available </span><span class="segment" data-start="645.76" data-end="652.24" title="10:45">preoperatively so that the monitoring and therapy could be started in advance, but this is rarely </span><span class="segment" data-start="652.24" data-end="660.08" title="10:52">possible. In practice, most patients achieve the targets with fluid supplementation alone, </span><span class="segment" data-start="660.08" data-end="667.2" title="11:00">and a minority need ionotropes. The highest risk time for problems is intraoperatively, </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="667.2"><span class="t-timestamp">11:07</span></div>
+  <div class="t-body"><span class="segment" data-start="667.2" data-end="674.08" title="11:07">and within the first eight hours postoperatively. Although the stress response does go on longer than </span><span class="segment" data-start="674.08" data-end="680.08" title="11:14">this, effective therapy during this period prevents complications days after surgery. </span><span class="segment" data-start="680.48" data-end="683.12" title="11:20">What cardiac output monitoring would you use? </span><span class="segment" data-start="685.44" data-end="691.84" title="11:25">There is no evidence to suggest that one cardiac output monitor is any better than another, </span><span class="segment" data-start="691.84" data-end="697.2" title="11:31">so I would use whatever was available in my current hospital. Similarly, </span><span class="segment" data-start="697.2" data-end="703.12" title="11:37">debutamine, dopexamine, and adrenaline have all been used successfully, </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="703.12"><span class="t-timestamp">11:43</span></div>
+  <div class="t-body"><span class="segment" data-start="703.12" data-end="709.2" title="11:43">so I would probably use debutamine as an ionotrop, as it is the drug with which I'm most familiar </span><span class="segment" data-start="709.36" data-end="716.8" title="11:49">for that indication. What seems to be important is the achievement of appropriate targets before </span><span class="segment" data-start="716.8" data-end="724.4" title="11:56">organ failure can occur rather than how you do it. I agree. Now we could go into more detail about </span><span class="segment" data-start="724.4" data-end="728.8" title="12:04">the practical aspects. I'd be interested in your views of the use of blood, for example, </span><span class="segment" data-start="728.8" data-end="734.0" title="12:08">or whether you will need to start pre-op. But for now, tell me, are there any dangers associated with </span><span class="segment" data-start="734.0" data-end="742.32" title="12:14">gold-direct therapy? Yes. As with any intervention, there are risks and benefits. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="742.96"><span class="t-timestamp">12:22</span></div>
+  <div class="t-body"><span class="segment" data-start="742.96" data-end="747.84" title="12:22">There are risks associated with the insertion of intravascular catheters, </span><span class="segment" data-start="747.84" data-end="753.28" title="12:27">with the fluids and drugs used, and with the use of cardiac output monitoring. </span><span class="segment" data-start="754.08" data-end="761.44" title="12:34">The main problem seen with the drugs is tachycardia, which increases mycardial oxygen demand, </span><span class="segment" data-start="761.44" data-end="767.68" title="12:41">and this is a common reason for failure to achieve the goals. There is a danger with cardiac </span><span class="segment" data-start="767.68" data-end="773.76" title="12:47">output monitoring, particularly with the pulmonary artery catheter, that the measurement technique </span><span class="segment" data-start="773.76" data-end="778.88" title="12:53">and interpretation are done badly, so that the numbers produced are unreliable. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="780.32"><span class="t-timestamp">13:00</span></div>
+  <div class="t-body"><span class="segment" data-start="780.32" data-end="788.24" title="13:00">Now, what about beta blockers? Yes. There is considerable interest in beta blockers in high </span><span class="segment" data-start="788.24" data-end="794.4" title="13:08">risk patients, mainly because of their effects on reducing mycardial oxygen demand, </span><span class="segment" data-start="794.4" data-end="802.4" title="13:14">and increasing plaque stability. And the 2006 guidelines from the AHA recommend their use in </span><span class="segment" data-start="802.4" data-end="809.76" title="13:22">high risk patients, or high risk surgery. It must be said that none of these recommendations are </span><span class="segment" data-start="809.76" data-end="817.04" title="13:29">based on evidence from multiple randomized control trials, and the recent PoE study casts more </span><span class="segment" data-start="817.36" data-end="821.92" title="13:37">down on widespread use of beta blockers. What was the PoE's trial? </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="824.16"><span class="t-timestamp">13:44</span></div>
+  <div class="t-body"><span class="segment" data-start="824.16" data-end="832.88" title="13:44">PoE's randomized over 8,000 patients to 30 days of metoprolol or placebo started two to four </span><span class="segment" data-start="832.88" data-end="840.08" title="13:52">hours prior to surgery. Although fewer patients in the metoprolol group had a mycardial infarction, </span><span class="segment" data-start="840.08" data-end="845.76" title="14:00">more patients had strokes or died. So when do you think beta blockers should be used? </span><span class="segment" data-start="848.0" data-end="853.6" title="14:08">Patients who are already taking beta blockers should remain on them, and those with an </span><span class="segment" data-start="853.6" data-end="859.36" title="14:13">independent indication should start, preferably well in advance of their operation. </span><span class="segment" data-start="860.4" data-end="867.12" title="14:20">Those with a high risk of cardiac complications, or undergoing high risk surgery, are more difficult. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="867.84"><span class="t-timestamp">14:27</span></div>
+  <div class="t-body"><span class="segment" data-start="867.84" data-end="873.44" title="14:27">At present, there is not enough evidence to make firm recommendations, but there may well be </span><span class="segment" data-start="873.52" data-end="880.0" title="14:33">groups of patients who will benefit from beta blockers. In the emergency setting, a cause for </span><span class="segment" data-start="880.0" data-end="886.56" title="14:40">tachycardia should be sought and corrected before even cautious use of beta blockers is considered. </span><span class="segment" data-start="887.44" data-end="890.96" title="14:47">Could you combine beta blockers and gold-direct therapy? Should you? </span><span class="segment" data-start="893.2" data-end="899.04" title="14:53">There is a practical problem in that patients taking beta blockers will be less susceptible to </span><span class="segment" data-start="899.12" data-end="904.32" title="14:59">the effects of Ina tropes, although there may still be beneficial beta two effects. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="905.12"><span class="t-timestamp">15:05</span></div>
+  <div class="t-body"><span class="segment" data-start="905.12" data-end="910.16" title="15:05">There is no other reason why they could not be combined, and arguably they should, </span><span class="segment" data-start="910.16" data-end="916.16" title="15:10">as high risk patients may have multiple pathologies and benefit from multiple therapies. </span><span class="segment" data-start="917.2" data-end="921.6" title="15:17">Beta blockers are used for different indications than gold-directed therapy. </span><span class="segment" data-start="922.32" data-end="928.56" title="15:22">Withdrawal of beta blockers is also associated with significant morbidity and mortality. </span><span class="segment" data-start="929.76" data-end="936.64" title="15:29">For patients stable on beta blockers, the cardiac adaptation of increased stroke volumes at </span><span class="segment" data-start="936.64" data-end="944.0" title="15:36">lower heart rates are ideal for the perioperative period, where an increase in cardiac output </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="944.0"><span class="t-timestamp">15:44</span></div>
+  <div class="t-body"><span class="segment" data-start="944.0" data-end="950.8" title="15:44">by increased stroke volume is associated with less ischemia than by increased heart rate. </span><span class="segment" data-start="951.84" data-end="958.96" title="15:51">Overall, the risks and benefits are likely to be related to the hemodynamic effects of beta blockers </span><span class="segment" data-start="959.52" data-end="966.96" title="15:59">especially if used acutely. More fluid may be required and greater attention to detail, </span><span class="segment" data-start="966.96" data-end="972.96" title="16:06">but that is no bad thing. There could be a role for new Ina tropes like Livo's cemendum. </span><span class="segment" data-start="974.32" data-end="975.2" title="16:14">What about statins? </span><span class="segment" data-start="977.84" data-end="982.48" title="16:17">Statins have a number of effects, independent of their lipid lowering properties, </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="982.48"><span class="t-timestamp">16:22</span></div>
+  <div class="t-body"><span class="segment" data-start="982.48" data-end="987.84" title="16:22">that are advantageous in the perioperative period. They are anti-inflammatory, </span><span class="segment" data-start="988.4" data-end="996.88" title="16:28">they reduce thrombosis, endothelial activation, platelet activation, and ischemia re-perfusion injury, </span><span class="segment" data-start="996.88" data-end="1002.32" title="16:36">and enhance fibrolysis and vasodilitation in the micro-circulation. </span><span class="segment" data-start="1003.28" data-end="1010.08" title="16:43">Several cohort studies show increased cardiac morbidity and mortality risk if statins are </span><span class="segment" data-start="1010.08" data-end="1017.44" title="16:50">stopped perioperatively. A single small randomised control trial showed a reduction in death or </span><span class="segment" data-start="1017.44" data-end="1022.8" title="16:57">cardiac complications after vascular surgery in a group given a torver statin. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="1023.68"><span class="t-timestamp">17:03</span></div>
+  <div class="t-body"><span class="segment" data-start="1023.68" data-end="1030.4" title="17:03">Altogether, there is sufficient evidence to test the utility of statins in high risk patients, </span><span class="segment" data-start="1030.4" data-end="1034.88" title="17:10">but not enough yet to recommend initiation in those not already taking them. </span><span class="segment" data-start="1036.0" data-end="1038.56" title="17:16">Why do you think gold-duret therapy is not more widely practiced? </span><span class="segment" data-start="1040.8" data-end="1047.2" title="17:20">I think that there are three main reasons. First, there is confusion because of conflicting </span><span class="segment" data-start="1047.2" data-end="1054.64" title="17:27">trial evidence and some skepticism about positive trials relating to their methodology and generalise </span><span class="segment" data-start="1054.64" data-end="1062.16" title="17:34">ability. Second, there is a problem of a limited number of critical care beds, both intensive care </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="1062.16"><span class="t-timestamp">17:42</span></div>
+  <div class="t-body"><span class="segment" data-start="1062.16" data-end="1069.12" title="17:42">and high dependency care. Finally, there is a reluctance to use pulmonary artery catheters </span><span class="segment" data-start="1069.12" data-end="1074.96" title="17:49">or other cardiac output monitoring, which may also be affected by availability of </span><span class="segment" data-start="1075.04" data-end="1078.72" title="17:55">and familiarity with the appropriate equipment in theatres. </span><span class="segment" data-start="1080.16" data-end="1082.16" title="18:00">Thank you. We'll finish there. </span></div>
+</div>
+</div>
+
+<div class="subtitle-bar">
+  <span class="subtitle-text empty" id="subtitle-text">Play audio to see live subtitles&#8230;</span>
+</div>
+
+<script>
+
+const audio    = document.getElementById('audio');
+const allSegs  = Array.from(document.querySelectorAll('.segment'));
+const allBlocks = Array.from(document.querySelectorAll('.t-block'));
+const subtitleEl = document.getElementById('subtitle-text');
+let activeSegEl   = null;
+let activeBlockEl = null;
+let searchMatches = [];
+let searchIdx     = 0;
+
+// Duration display
+audio.addEventListener('loadedmetadata', () => {
+  const m = Math.floor(audio.duration / 60);
+  const s = Math.floor(audio.duration %% 60).toString().padStart(2,'0');
+  document.getElementById('dur').textContent = m + ':' + s;
+});
+
+// Seek helper
+function seekTo(t) {
+  audio.currentTime = t;
+  audio.play();
+}
+
+// Block gutter click
+document.querySelectorAll('.t-gutter').forEach(g => {
+  g.addEventListener('click', () => seekTo(parseFloat(g.dataset.start)));
+});
+
+// Segment click
+allSegs.forEach(s => {
+  s.addEventListener('click', e => {
+    e.stopPropagation();
+    seekTo(parseFloat(s.dataset.start));
+  });
+});
+
+// Real-time tracking
+audio.addEventListener('timeupdate', () => {
+  const t = audio.currentTime;
+
+  // Find active segment (last one whose start <= t)
+  let found = null;
+  for (let i = allSegs.length - 1; i >= 0; i--) {
+    if (parseFloat(allSegs[i].dataset.start) <= t) { found = allSegs[i]; break; }
+  }
+
+  if (found && found !== activeSegEl) {
+    // Clear previous
+    if (activeSegEl) activeSegEl.classList.remove('active');
+    if (activeBlockEl) {
+      activeBlockEl.classList.remove('block-active');
+      const pg = activeBlockEl.querySelector('.t-gutter');
+      if (pg) pg.classList.remove('gutter-active');
+    }
+    // Set new
+    found.classList.add('active');
+    const block = found.closest('.t-block');
+    if (block) {
+      block.classList.add('block-active');
+      const g = block.querySelector('.t-gutter');
+      if (g) g.classList.add('gutter-active');
+      activeBlockEl = block;
+    }
+    activeSegEl = found;
+
+    // Update subtitle
+    subtitleEl.textContent = found.textContent.trim();
+    subtitleEl.classList.remove('empty');
+
+    // Auto-scroll (only when not searching)
+    if (!document.getElementById('search').value) {
+      found.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }
+});
+
+// Search
+const searchInput = document.getElementById('search');
+searchInput.addEventListener('input', runSearch);
+searchInput.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && searchMatches.length) {
+    searchMatches[searchIdx].classList.remove('search-current');
+    searchIdx = (searchIdx + 1) %% searchMatches.length;
+    const el = searchMatches[searchIdx];
+    el.classList.add('search-current');
+    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+});
+
+function runSearch() {
+  const q = searchInput.value.trim().toLowerCase();
+  allSegs.forEach(s => s.classList.remove('search-match','search-current'));
+  searchMatches = [];
+  if (!q) return;
+  allSegs.forEach(s => {
+    if (s.textContent.toLowerCase().includes(q)) {
+      s.classList.add('search-match');
+      searchMatches.push(s);
+    }
+  });
+  if (!searchMatches.length) return;
+  searchIdx = 0;
+  searchMatches[0].classList.add('search-current');
+  searchMatches[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+</script>
+</body>
+</html>

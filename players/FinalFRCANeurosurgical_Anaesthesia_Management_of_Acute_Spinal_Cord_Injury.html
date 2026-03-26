@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Neurosurgical Anaesthesia — Management of Acute Spinal Cord Injury</title>
+<style>
+
+  :root {
+    --accent:    #6366f1;
+    --body-bg:   #f1f5f9;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: var(--body-bg);
+    color: #1e293b;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  /* ── Header ── */
+  .header {
+    background: #0f172a;
+    border-bottom: 3px solid var(--accent);
+    padding: 12px 20px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .header-left { flex: 1; min-width: 200px; }
+  .header h1 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #f1f5f9;
+    margin-bottom: 4px;
+    letter-spacing: 0.01em;
+  }
+  .header-sub {
+    font-size: 0.72rem;
+    color: #94a3b8;
+    font-style: italic;
+  }
+  audio {
+    height: 36px;
+    accent-color: var(--accent);
+    flex-shrink: 0;
+  }
+  .back-link {
+    font-size: 0.8rem;
+    color: #94a3b8;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .back-link:hover { color: #60a5fa; }
+
+  /* ── Toolbar ── */
+  .toolbar {
+    background: #1e293b;
+    padding: 7px 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-shrink: 0;
+    border-bottom: 1px solid #334155;
+  }
+  .toolbar input {
+    flex: 1;
+    max-width: 380px;
+    padding: 5px 11px;
+    border: 1px solid #475569;
+    border-radius: 6px;
+    background: #0f172a;
+    color: #e2e8f0;
+    font-size: 0.83rem;
+    outline: none;
+  }
+  .toolbar input:focus { border-color: var(--accent); }
+  .toolbar input::placeholder { color: #64748b; }
+  .stats {
+    font-size: 0.72rem;
+    color: #64748b;
+    white-space: nowrap;
+  }
+
+  /* ── Scroll area ── */
+  .scroll-area {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+  }
+  .scroll-area::-webkit-scrollbar { width: 6px; }
+  .scroll-area::-webkit-scrollbar-track { background: transparent; }
+  .scroll-area::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+
+  /* ── Subtitle bar ── */
+  .subtitle-bar {
+    background: #0f172a;
+    border-top: 2px solid var(--accent);
+    padding: 8px 20px;
+    flex-shrink: 0;
+    min-height: 42px;
+    display: flex;
+    align-items: center;
+  }
+  .subtitle-text {
+    font-size: 0.9rem;
+    color: #e2e8f0;
+    line-height: 1.5;
+    font-style: italic;
+  }
+  .subtitle-text.empty { color: #475569; }
+
+  /* ── Transcript blocks ── */
+  .t-block {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    margin-bottom: 14px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    display: flex;
+  }
+  .t-block.block-active {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px rgba(37,99,235,0.15);
+  }
+  .t-gutter {
+    background: #0f172a;
+    width: 52px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: 14px;
+    cursor: pointer;
+  }
+  .t-gutter:hover { background: #1e293b; }
+  .t-timestamp {
+    font-size: 0.7rem;
+    color: #64748b;
+    font-family: monospace;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+  .t-gutter.gutter-active .t-timestamp { color: var(--accent); }
+  .t-body {
+    flex: 1;
+    padding: 12px 16px;
+    line-height: 1.75;
+    font-size: 0.92rem;
+    color: #1e293b;
+  }
+
+  /* ── Segments ── */
+  .segment {
+    cursor: pointer;
+    border-radius: 3px;
+    transition: background 0.1s;
+  }
+  .segment:hover { background: #eff6ff; }
+  .segment.active {
+    background: #bfdbfe;
+    outline: 2px solid #3b82f6;
+    outline-offset: 1px;
+    border-radius: 3px;
+  }
+  .segment.search-match  { background: #fef9c3; }
+  .segment.search-current { background: #fde047; outline: 2px solid #ca8a04; }
+
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <h1>Neurosurgical Anaesthesia — Management of Acute Spinal Cord Injury</h1>
+    <div class="header-sub">Final FRCA &mdash; Exam Viva Simulation &mdash; Click any phrase to seek</div>
+  </div>
+  <audio id="audio" src="../FinalFRCANeurosurgical_Anaesthesia_Management_of_Acute_Spinal_Cord_Injury.mp3" controls preload="metadata"></audio>
+  <a class="back-link" href="index.html">&#8592; All Topics</a>
+</div>
+
+<div class="toolbar">
+  <input type="text" id="search" placeholder="Search transcript&#8230; (Enter = next match)">
+  <span class="stats" id="stats">100 segments &nbsp;|&nbsp; <span id="dur">loading&#8230;</span></span>
+</div>
+
+<div class="scroll-area" id="scroll-area">
+<div class="t-block">
+  <div class="t-gutter" data-start="0.0"><span class="t-timestamp">0:00</span></div>
+  <div class="t-body"><span class="segment" data-start="0.0" data-end="6.44" title="0:00">Management of acute spinal cord injury. A 24-year-old male motorcyclist is brought into the </span><span class="segment" data-start="6.44" data-end="12.28" title="0:06">emergency department after a high-speed traffic accident, with signs and symptoms compatible </span><span class="segment" data-start="12.28" data-end="16.16" title="0:12">with a spinal cord injury around C5. </span><span class="segment" data-start="16.16" data-end="18.92" title="0:16">Describe your initial management of this patient. </span><span class="segment" data-start="18.92" data-end="24.68" title="0:18">Potentially, there's a lot that could be said here, including the entire ATLS approach, </span><span class="segment" data-start="24.68" data-end="28.92" title="0:24">but clearly the spinal injury is going to be a focus of the viber. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="28.92"><span class="t-timestamp">0:28</span></div>
+  <div class="t-body"><span class="segment" data-start="28.92" data-end="34.68" title="0:28">By structuring your answer and signposting, you avoid wasting time. Your examinic can </span><span class="segment" data-start="34.68" data-end="40.4" title="0:34">indicate if they require more details in any area. Remember this top tip and you'll </span><span class="segment" data-start="40.4" data-end="43.48" title="0:40">be tip-top. </span><span class="segment" data-start="43.48" data-end="49.92" title="0:43">I will divide my answer into two parts, looking briefly at management of serious trauma in general </span><span class="segment" data-start="49.92" data-end="54.0" title="0:49">and then specific to the cervical cord injury. </span><span class="segment" data-start="54.0" data-end="60.2" title="0:54">For any major trauma, I would facilitate or lead a structured team approach seeking </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="60.2"><span class="t-timestamp">1:00</span></div>
+  <div class="t-body"><span class="segment" data-start="60.2" data-end="67.32" title="1:00">to identify and treat life-threatening injuries in a systematic manner. This would start with </span><span class="segment" data-start="67.32" data-end="74.28" title="1:07">the airway, with cervical spinal mobilisation to avoid exacerbating cord injury. His airway </span><span class="segment" data-start="74.28" data-end="81.32" title="1:14">might be threatened by a decreased level of consciousness or facial or laryngeal injuries. </span><span class="segment" data-start="81.32" data-end="86.64" title="1:21">I would ensure delivery of a high concentration of oxygen, initially via a face mask and </span><span class="segment" data-start="86.64" data-end="87.84" title="1:26">reservoir. </span><span class="segment" data-start="87.84" data-end="92.52" title="1:27">You might assume these basics are obvious, but if you don't mention them, the examiner </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="92.52"><span class="t-timestamp">1:32</span></div>
+  <div class="t-body"><span class="segment" data-start="92.52" data-end="95.72" title="1:32">may assume you wouldn't do it. </span><span class="segment" data-start="95.72" data-end="101.48" title="1:35">I would then move on to injuries threatening ventilation, such as pneumothoracies and move </span><span class="segment" data-start="101.48" data-end="108.0" title="1:41">rapidly onto circulation, securing large bore intravenous access, assessing circulatory </span><span class="segment" data-start="108.0" data-end="114.6" title="1:48">adequacy and identifying any major source of hemorrhage which may require surgical intervention, </span><span class="segment" data-start="114.6" data-end="119.4" title="1:54">for example, intra-abdominal or pelvic bleeding. </span><span class="segment" data-start="119.4" data-end="124.8" title="1:59">Followed by a neurological assessment, including the Glasgow Comascore and the level of any </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="124.8"><span class="t-timestamp">2:04</span></div>
+  <div class="t-body"><span class="segment" data-start="124.8" data-end="128.16" title="2:04">motor or sensory deficit. </span><span class="segment" data-start="128.16" data-end="133.12" title="2:08">With a well-organised team, these activities should happen concurrently, while gathering </span><span class="segment" data-start="133.12" data-end="138.8" title="2:13">any relevant history of the event and any medical conditions. Hopefully, that sort of </span><span class="segment" data-start="138.8" data-end="143.56" title="2:18">answer is sufficient to demonstrate that you have experience of major trauma and an overview </span><span class="segment" data-start="143.56" data-end="146.48" title="2:23">of the priorities. </span><span class="segment" data-start="146.48" data-end="152.24" title="2:26">To focus in on the spinal cord injury, almost certainly associated with a bony injury to </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="152.24"><span class="t-timestamp">2:32</span></div>
+  <div class="t-body"><span class="segment" data-start="152.24" data-end="157.52" title="2:32">this varkal spine, I will also look at the systems affected. </span><span class="segment" data-start="157.52" data-end="162.56" title="2:37">With any neck injury, there is a risk of hematoma and airway compression. I would have a </span><span class="segment" data-start="162.56" data-end="169.28" title="2:42">low threshold for early intubation with manual immobilisation. I would be wary of profound </span><span class="segment" data-start="169.28" data-end="173.92" title="2:49">bradycardia due to an unopposed vagal response. </span><span class="segment" data-start="173.92" data-end="180.2" title="2:53">A complete transaction of the cord at C5 should leave sufficient diaphragmatic function for </span><span class="segment" data-start="180.2" data-end="185.42" title="3:00">the patient to breathe in the long term. But with a loss of intercostals, as well as </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="185.42"><span class="t-timestamp">3:05</span></div>
+  <div class="t-body"><span class="segment" data-start="185.42" data-end="191.48" title="3:05">reduced diaphragmatic function, there will be a high risk of ventilatory compromise. It </span><span class="segment" data-start="191.48" data-end="197.16" title="3:11">is possible that the phrenic nerve itself could have been directly injured. This patient </span><span class="segment" data-start="197.16" data-end="203.44" title="3:17">is also at risk of neurogenic pulmonary edema due to either the spinal cord injury itself </span><span class="segment" data-start="203.44" data-end="209.04" title="3:23">or an associated head injury. I would monitor this clinically and with the use of arterial </span><span class="segment" data-start="209.04" data-end="215.04" title="3:29">blood gases, again with a low threshold for intubation and ventilation. And I would also </span><span class="segment" data-start="215.04" data-end="221.44" title="3:35">bear in mind that with hematoma and cordedema, the level of the amnesia may move crannily. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="222.44"><span class="t-timestamp">3:42</span></div>
+  <div class="t-body"><span class="segment" data-start="222.44" data-end="228.52" title="3:42">Finally, this patient is very likely to require a CT scan. If there were any concerns about </span><span class="segment" data-start="228.52" data-end="235.32" title="3:48">deterioration in his condition, I would consider elective tracheal intubation and ventilation. </span><span class="segment" data-start="235.32" data-end="241.96" title="3:55">This may also be necessary if we were uncooperative due to intoxication, cerebral irritation or </span><span class="segment" data-start="241.96" data-end="249.72" title="4:01">the effects of his other injuries. How would you intubate this patient if it became necessary? </span><span class="segment" data-start="249.72" data-end="255.2" title="4:09">This is likely to be a difficult intubation due to the combination of cervical immobilization </span><span class="segment" data-start="255.2" data-end="262.0" title="4:15">and any associated facial or laryngeal injuries. As part of my standard preparations, I would </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="262.0"><span class="t-timestamp">4:22</span></div>
+  <div class="t-body"><span class="segment" data-start="262.0" data-end="267.88" title="4:22">ensure a variety of airway equipment were available, including different luringoscopes, </span><span class="segment" data-start="267.88" data-end="273.56" title="4:27">gamelastic bougies, and the means to perform a cryothiodotomy. </span><span class="segment" data-start="273.56" data-end="279.56" title="4:33">My goal is to avoid secondary injury to the central nervous system by avoiding hypoxia </span><span class="segment" data-start="279.56" data-end="284.52" title="4:39">hyper or hypocarbia and maintaining an adequate perfusion pressure. </span><span class="segment" data-start="286.52" data-end="292.04" title="4:46">I would perform a rapid sequence induction with skilled assistants providing two-handed </span><span class="segment" data-start="292.04" data-end="298.48" title="4:52">cryoid pressure to minimize displacement of the cervical spine at C6 and manual inline </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="298.48"><span class="t-timestamp">4:58</span></div>
+  <div class="t-body"><span class="segment" data-start="298.48" data-end="303.4" title="4:58">immobilization and with vasopressas and atropine immediately available. </span><span class="segment" data-start="303.4" data-end="308.36" title="5:03">There are arguments that spinal injury is a contraindication to cryoid pressure. </span><span class="segment" data-start="309.16" data-end="311.72" title="5:09">Would you have any concerns using succcemethonium? </span><span class="segment" data-start="314.2" data-end="321.48" title="5:14">No, not with a new spinal cord injury. I would be concerned from 48 to 72 hours post-injury due to </span><span class="segment" data-start="321.48" data-end="326.12" title="5:21">the proliferation of astyle codine receptors and the risk of hyperkalemia. </span><span class="segment" data-start="327.4" data-end="331.56" title="5:27">Moving on to the cardiovascular system, there is a risk of arrhythmias, </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="331.56"><span class="t-timestamp">5:31</span></div>
+  <div class="t-body"><span class="segment" data-start="331.56" data-end="336.68" title="5:31">particularly at the time of the injury with the massive sympathetic response and alpha </span><span class="segment" data-start="336.68" data-end="342.76" title="5:36">receptor-mediated hyperattention. Subsequently, with this high spinal lesion, </span><span class="segment" data-start="342.76" data-end="345.4" title="5:42">I would also be concerned about spinal shock. </span><span class="segment" data-start="346.36" data-end="348.2" title="5:46">What do you mean by spinal shock? </span><span class="segment" data-start="350.52" data-end="357.48" title="5:50">Sometimes called neurogenic shock to differentiate it from flaccid paralysis and loss of motor reflexes </span><span class="segment" data-start="357.48" data-end="363.4" title="5:57">initially after cord injury. I mean the disruption of the sympathetic nervous system, </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="363.4"><span class="t-timestamp">6:03</span></div>
+  <div class="t-body"><span class="segment" data-start="363.4" data-end="370.84" title="6:03">leading to hypotension and bradycardia. In particular, I would want to avoid over-aggressive fluid </span><span class="segment" data-start="370.84" data-end="376.92" title="6:10">therapy that could lead to pulmonary edema and instead use vasopressas as required to maintain </span><span class="segment" data-start="376.92" data-end="383.08" title="6:16">sufficient blood pressure for seribration and renal perfusion. I've mentioned the increased </span><span class="segment" data-start="383.08" data-end="389.96" title="6:23">risk of bradycardias or even asisterly with vagal stimulating maneuvers such as intubation or </span><span class="segment" data-start="390.04" data-end="396.12" title="6:30">even suction of the tracheal tube. With which level spinal cord injury these problems associated? </span><span class="segment" data-start="398.44" data-end="406.92" title="6:38">Above T6 for hypotension and T1 for bradycardias, spinal shock can persist for up to eight weeks </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="406.92"><span class="t-timestamp">6:46</span></div>
+  <div class="t-body"><span class="segment" data-start="406.92" data-end="412.52" title="6:46">post injury. What other factors are important in the initial management of this patient? </span><span class="segment" data-start="412.6" data-end="420.6" title="6:52">In the assessment of disability it is important to remember the high risk of an associated head </span><span class="segment" data-start="420.6" data-end="427.0" title="7:00">injury which in turn would affect airway and ventilatory management. There is likely to be an </span><span class="segment" data-start="427.0" data-end="433.64" title="7:07">isleus so early placement of a gastric tube, temperature regulation will be affected so warming </span><span class="segment" data-start="433.64" data-end="440.28" title="7:13">may be required. Finally, I would suggest the trauma team liais with a spinal injury center, </span><span class="segment" data-start="440.28" data-end="445.88" title="7:20">whether or not to treat with high dose steroids. What reasons are there for or against this? </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="448.36"><span class="t-timestamp">7:28</span></div>
+  <div class="t-body"><span class="segment" data-start="448.36" data-end="454.28" title="7:28">There is evidence that high dose steroids within eight hours of the injury can reduce the extent </span><span class="segment" data-start="454.28" data-end="460.6" title="7:34">of impairment but the effect is small and there are all the risks of steroid use as well as the </span><span class="segment" data-start="460.6" data-end="466.44" title="7:40">worsening of outcome in head injured patients that were shown in the crash trial. Do you know which </span><span class="segment" data-start="466.44" data-end="474.84" title="7:46">steroid was recommended in the initial dose? Methyl prednisolone at an initial dose of 30 milligrams per </span><span class="segment" data-start="474.84" data-end="479.72" title="7:54">kilogram. Any other specific problems you anticipate with this patient in the coming months? </span><span class="segment" data-start="482.28" data-end="487.32" title="8:02">As well as the issues already discussed, he will be at risk of gastrointestinal stress </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="487.32"><span class="t-timestamp">8:07</span></div>
+  <div class="t-body"><span class="segment" data-start="487.32" data-end="494.04" title="8:07">ulceration, pressure sores and in the first few months in particular at risk of deep vein thrombosis </span><span class="segment" data-start="494.04" data-end="500.6" title="8:14">and pulmonary embolism. Your patient turns out to have an isolated unstable cervical spine injury </span><span class="segment" data-start="500.6" data-end="505.88" title="8:20">with a complete transection of the cord. His spinal injury is stabilized in the following </span><span class="segment" data-start="505.88" data-end="511.8" title="8:25">few days and he proceeds to rehabilitation. Can he describe the clinical effects of incomplete </span><span class="segment" data-start="511.8" data-end="515.88" title="8:31">transection of the spinal cord? For example, anterior spinal cord damage. </span><span class="segment" data-start="518.28" data-end="523.96" title="8:38">The neurological sequely will reflect the anatomy of the spinal cord and its neural tract. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="524.04"><span class="t-timestamp">8:44</span></div>
+  <div class="t-body"><span class="segment" data-start="524.04" data-end="530.76" title="8:44">Damage to the anterior cord will result in paralysis due to loss of motor pathways, </span><span class="segment" data-start="530.76" data-end="537.0" title="8:50">but proprioception, touch and vibration sense in the dorsal columns will be preserved. </span><span class="segment" data-start="537.0" data-end="543.32" title="8:57">This pattern may be seen with ischemic damage resulting from the loss of the anterior spinal artery </span><span class="segment" data-start="543.32" data-end="550.6" title="9:03">supply to the anterior two-thirds of the spinal cord. In a posterior cord injury, the opposite is </span><span class="segment" data-start="550.6" data-end="559.0" title="9:10">seen with preserved motor power but loss of touch, vibration and proprioception. A central </span><span class="segment" data-start="559.0" data-end="565.56" title="9:19">cord lesion causes greater motor loss of the upper limbs than lower with a variable sensory loss </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="565.56"><span class="t-timestamp">9:25</span></div>
+  <div class="t-body"><span class="segment" data-start="565.56" data-end="572.28" title="9:25">and sometimes preservation of bladder and bowel control. This pattern may result from a hyper extension </span><span class="segment" data-start="572.28" data-end="579.56" title="9:32">injury. And in a brown secard lesion with a hemisection of the cord, such as may result from a </span><span class="segment" data-start="579.56" data-end="586.52" title="9:39">penetrating injury, there is Ipsilateral paralysis with loss of proprioception, touch and vibration </span><span class="segment" data-start="586.52" data-end="594.12" title="9:46">sense and contralateral loss of pain and temperature sensation. </span></div>
+</div>
+</div>
+
+<div class="subtitle-bar">
+  <span class="subtitle-text empty" id="subtitle-text">Play audio to see live subtitles&#8230;</span>
+</div>
+
+<script>
+
+const audio    = document.getElementById('audio');
+const allSegs  = Array.from(document.querySelectorAll('.segment'));
+const allBlocks = Array.from(document.querySelectorAll('.t-block'));
+const subtitleEl = document.getElementById('subtitle-text');
+let activeSegEl   = null;
+let activeBlockEl = null;
+let searchMatches = [];
+let searchIdx     = 0;
+
+// Duration display
+audio.addEventListener('loadedmetadata', () => {
+  const m = Math.floor(audio.duration / 60);
+  const s = Math.floor(audio.duration %% 60).toString().padStart(2,'0');
+  document.getElementById('dur').textContent = m + ':' + s;
+});
+
+// Seek helper
+function seekTo(t) {
+  audio.currentTime = t;
+  audio.play();
+}
+
+// Block gutter click
+document.querySelectorAll('.t-gutter').forEach(g => {
+  g.addEventListener('click', () => seekTo(parseFloat(g.dataset.start)));
+});
+
+// Segment click
+allSegs.forEach(s => {
+  s.addEventListener('click', e => {
+    e.stopPropagation();
+    seekTo(parseFloat(s.dataset.start));
+  });
+});
+
+// Real-time tracking
+audio.addEventListener('timeupdate', () => {
+  const t = audio.currentTime;
+
+  // Find active segment (last one whose start <= t)
+  let found = null;
+  for (let i = allSegs.length - 1; i >= 0; i--) {
+    if (parseFloat(allSegs[i].dataset.start) <= t) { found = allSegs[i]; break; }
+  }
+
+  if (found && found !== activeSegEl) {
+    // Clear previous
+    if (activeSegEl) activeSegEl.classList.remove('active');
+    if (activeBlockEl) {
+      activeBlockEl.classList.remove('block-active');
+      const pg = activeBlockEl.querySelector('.t-gutter');
+      if (pg) pg.classList.remove('gutter-active');
+    }
+    // Set new
+    found.classList.add('active');
+    const block = found.closest('.t-block');
+    if (block) {
+      block.classList.add('block-active');
+      const g = block.querySelector('.t-gutter');
+      if (g) g.classList.add('gutter-active');
+      activeBlockEl = block;
+    }
+    activeSegEl = found;
+
+    // Update subtitle
+    subtitleEl.textContent = found.textContent.trim();
+    subtitleEl.classList.remove('empty');
+
+    // Auto-scroll (only when not searching)
+    if (!document.getElementById('search').value) {
+      found.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }
+});
+
+// Search
+const searchInput = document.getElementById('search');
+searchInput.addEventListener('input', runSearch);
+searchInput.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && searchMatches.length) {
+    searchMatches[searchIdx].classList.remove('search-current');
+    searchIdx = (searchIdx + 1) %% searchMatches.length;
+    const el = searchMatches[searchIdx];
+    el.classList.add('search-current');
+    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+});
+
+function runSearch() {
+  const q = searchInput.value.trim().toLowerCase();
+  allSegs.forEach(s => s.classList.remove('search-match','search-current'));
+  searchMatches = [];
+  if (!q) return;
+  allSegs.forEach(s => {
+    if (s.textContent.toLowerCase().includes(q)) {
+      s.classList.add('search-match');
+      searchMatches.push(s);
+    }
+  });
+  if (!searchMatches.length) return;
+  searchIdx = 0;
+  searchMatches[0].classList.add('search-current');
+  searchMatches[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+</script>
+</body>
+</html>

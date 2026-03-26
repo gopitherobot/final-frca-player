@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Thoracics — Oxygen Toxicity</title>
+<style>
+
+  :root {
+    --accent:    #7c3aed;
+    --body-bg:   #f1f5f9;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: var(--body-bg);
+    color: #1e293b;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  /* ── Header ── */
+  .header {
+    background: #0f172a;
+    border-bottom: 3px solid var(--accent);
+    padding: 12px 20px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .header-left { flex: 1; min-width: 200px; }
+  .header h1 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #f1f5f9;
+    margin-bottom: 4px;
+    letter-spacing: 0.01em;
+  }
+  .header-sub {
+    font-size: 0.72rem;
+    color: #94a3b8;
+    font-style: italic;
+  }
+  audio {
+    height: 36px;
+    accent-color: var(--accent);
+    flex-shrink: 0;
+  }
+  .back-link {
+    font-size: 0.8rem;
+    color: #94a3b8;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .back-link:hover { color: #60a5fa; }
+
+  /* ── Toolbar ── */
+  .toolbar {
+    background: #1e293b;
+    padding: 7px 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-shrink: 0;
+    border-bottom: 1px solid #334155;
+  }
+  .toolbar input {
+    flex: 1;
+    max-width: 380px;
+    padding: 5px 11px;
+    border: 1px solid #475569;
+    border-radius: 6px;
+    background: #0f172a;
+    color: #e2e8f0;
+    font-size: 0.83rem;
+    outline: none;
+  }
+  .toolbar input:focus { border-color: var(--accent); }
+  .toolbar input::placeholder { color: #64748b; }
+  .stats {
+    font-size: 0.72rem;
+    color: #64748b;
+    white-space: nowrap;
+  }
+
+  /* ── Scroll area ── */
+  .scroll-area {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+  }
+  .scroll-area::-webkit-scrollbar { width: 6px; }
+  .scroll-area::-webkit-scrollbar-track { background: transparent; }
+  .scroll-area::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+
+  /* ── Subtitle bar ── */
+  .subtitle-bar {
+    background: #0f172a;
+    border-top: 2px solid var(--accent);
+    padding: 8px 20px;
+    flex-shrink: 0;
+    min-height: 42px;
+    display: flex;
+    align-items: center;
+  }
+  .subtitle-text {
+    font-size: 0.9rem;
+    color: #e2e8f0;
+    line-height: 1.5;
+    font-style: italic;
+  }
+  .subtitle-text.empty { color: #475569; }
+
+  /* ── Transcript blocks ── */
+  .t-block {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    margin-bottom: 14px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    display: flex;
+  }
+  .t-block.block-active {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px rgba(37,99,235,0.15);
+  }
+  .t-gutter {
+    background: #0f172a;
+    width: 52px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: 14px;
+    cursor: pointer;
+  }
+  .t-gutter:hover { background: #1e293b; }
+  .t-timestamp {
+    font-size: 0.7rem;
+    color: #64748b;
+    font-family: monospace;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+  .t-gutter.gutter-active .t-timestamp { color: var(--accent); }
+  .t-body {
+    flex: 1;
+    padding: 12px 16px;
+    line-height: 1.75;
+    font-size: 0.92rem;
+    color: #1e293b;
+  }
+
+  /* ── Segments ── */
+  .segment {
+    cursor: pointer;
+    border-radius: 3px;
+    transition: background 0.1s;
+  }
+  .segment:hover { background: #eff6ff; }
+  .segment.active {
+    background: #bfdbfe;
+    outline: 2px solid #3b82f6;
+    outline-offset: 1px;
+    border-radius: 3px;
+  }
+  .segment.search-match  { background: #fef9c3; }
+  .segment.search-current { background: #fde047; outline: 2px solid #ca8a04; }
+
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <h1>Thoracics — Oxygen Toxicity</h1>
+    <div class="header-sub">Final FRCA &mdash; Exam Viva Simulation &mdash; Click any phrase to seek</div>
+  </div>
+  <audio id="audio" src="../FinalFRCAThoracics_Oxygen_Toxicity.mp3" controls preload="metadata"></audio>
+  <a class="back-link" href="index.html">&#8592; All Topics</a>
+</div>
+
+<div class="toolbar">
+  <input type="text" id="search" placeholder="Search transcript&#8230; (Enter = next match)">
+  <span class="stats" id="stats">127 segments &nbsp;|&nbsp; <span id="dur">loading&#8230;</span></span>
+</div>
+
+<div class="scroll-area" id="scroll-area">
+<div class="t-block">
+  <div class="t-gutter" data-start="0.0"><span class="t-timestamp">0:00</span></div>
+  <div class="t-body"><span class="segment" data-start="0.0" data-end="2.0" title="0:00">Oxygen toxicity. </span><span class="segment" data-start="2.0" data-end="7.0" title="0:02">As an ecsthetist, our most used drug is probably oxygen. </span><span class="segment" data-start="7.0" data-end="10.0" title="0:07">However, its use is not without problems, </span><span class="segment" data-start="10.0" data-end="13.0" title="0:10">and therefore you may have an SAQ or Viver </span><span class="segment" data-start="13.0" data-end="16.0" title="0:13">asking about the adverse effects of oxygen therapy </span><span class="segment" data-start="16.0" data-end="19.0" title="0:16">or more specifically about oxygen toxicity. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="19.0"><span class="t-timestamp">0:19</span></div>
+  <div class="t-body"><span class="segment" data-start="19.0" data-end="23.0" title="0:19">What are the potential problems associated with oxygen therapy? </span><span class="segment" data-start="23.0" data-end="26.0" title="0:23">Take your time here and gather your thoughts. </span><span class="segment" data-start="26.0" data-end="30.0" title="0:26">With a broad question like this, it is vital you classify your answer. </span><span class="segment" data-start="30.0" data-end="35.0" title="0:30">Don't rush into an answer about free radicals you may later regret. </span><span class="segment" data-start="35.0" data-end="39.0" title="0:35">If the examiner wants to know about the mechanisms of oxygen toxicity, </span><span class="segment" data-start="39.0" data-end="43.0" title="0:39">they will lead you down this path of questioning in due course. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="43.0"><span class="t-timestamp">0:43</span></div>
+  <div class="t-body"><span class="segment" data-start="43.0" data-end="45.0" title="0:43">It is important to show a logical approach </span><span class="segment" data-start="45.0" data-end="50.0" title="0:45">and mention the common problems first. </span><span class="segment" data-start="50.0" data-end="55.0" title="0:50">The problems with oxygen therapy can be divided into general problems </span><span class="segment" data-start="55.0" data-end="59.0" title="0:55">and the specifics of oxygen toxicity. </span><span class="segment" data-start="59.0" data-end="63.0" title="0:59">The general problems encountered with oxygen administration </span><span class="segment" data-start="63.0" data-end="69.0" title="1:03">include hypofentilation and absorption atelectasis. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="69.0"><span class="t-timestamp">1:09</span></div>
+  <div class="t-body"><span class="segment" data-start="69.0" data-end="76.0" title="1:09">The specific problems of oxygen toxicity include central nervous system toxicity, </span><span class="segment" data-start="76.0" data-end="82.0" title="1:16">pulmonary oxygen toxicity, and ocular conditions such as pediatric retro lentil, </span><span class="segment" data-start="82.0" data-end="85.0" title="1:22">fibroplacitis. </span><span class="segment" data-start="85.0" data-end="92.0" title="1:25">Tell me a little more about the problems of hypofentilation and absorption atelectasis. </span><span class="segment" data-start="92.0" data-end="96.0" title="1:32">Oxygen may cause hypofentilation in a subgroup of patients </span><span class="segment" data-start="96.0" data-end="104.0" title="1:36">with a chronically raised PACO2 and an established hypoxic drive to ventilation. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="104.0"><span class="t-timestamp">1:44</span></div>
+  <div class="t-body"><span class="segment" data-start="104.0" data-end="109.0" title="1:44">These patients should be given no more than 28% oxygen </span><span class="segment" data-start="109.0" data-end="113.0" title="1:49">and less being mechanically ventilated with a mandatory mode </span><span class="segment" data-start="113.0" data-end="117.0" title="1:53">or if their hypoxia is imminently life-threatening. </span><span class="segment" data-start="117.0" data-end="123.0" title="1:57">Absorption A tolectasis occurs due to the high solubility of oxygen in the blood. </span><span class="segment" data-start="123.0" data-end="127.0" title="2:03">Therefore, when administered in high concentrations, </span><span class="segment" data-start="127.0" data-end="132.0" title="2:07">it leaves the alveoli unsplinted and vulnerable to claps. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="132.0"><span class="t-timestamp">2:12</span></div>
+  <div class="t-body"><span class="segment" data-start="132.0" data-end="136.0" title="2:12">When breathing air, the insolubility of nitrogen in blood </span><span class="segment" data-start="136.0" data-end="140.0" title="2:16">results in nitrogen splinting the alveoli open. </span><span class="segment" data-start="140.0" data-end="145.0" title="2:20">Removal of nitrogen by administration of high concentrations of oxygen </span><span class="segment" data-start="145.0" data-end="150.0" title="2:25">causes oxygen to be absorbed faster than it can be replaced by ventilation </span><span class="segment" data-start="150.0" data-end="153.0" title="2:30">with consequent loss of alveoliol volume. </span><span class="segment" data-start="153.0" data-end="157.0" title="2:33">Can you tell me more about the specific problem of oxygen toxicity? </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="157.0"><span class="t-timestamp">2:37</span></div>
+  <div class="t-body"><span class="segment" data-start="157.0" data-end="160.0" title="2:37">Classify to add structure to your answer. </span><span class="segment" data-start="160.0" data-end="163.0" title="2:40">You can classify by system affected, </span><span class="segment" data-start="163.0" data-end="167.0" title="2:43">that is central nervous system, respiratory system and ocular </span><span class="segment" data-start="167.0" data-end="170.0" title="2:47">or into acute and chronic toxicity. </span><span class="segment" data-start="170.0" data-end="174.0" title="2:50">The latter form of classification will allow you to demonstrate your understanding </span><span class="segment" data-start="174.0" data-end="178.0" title="2:54">in the context of a clinical situation. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="178.0"><span class="t-timestamp">2:58</span></div>
+  <div class="t-body"><span class="segment" data-start="178.0" data-end="185.0" title="2:58">Oxygen toxicity can be divided into acute and chronic toxicity. </span><span class="segment" data-start="185.0" data-end="191.0" title="3:05">Acute toxicity can occur in patients exposed to very high concentrations of oxygen </span><span class="segment" data-start="191.0" data-end="197.0" title="3:11">for a short duration, for example in hyperbaric oxygen therapy. </span><span class="segment" data-start="197.0" data-end="203.0" title="3:17">This acute form of toxicity has mainly the central nervous system effects. </span><span class="segment" data-start="203.0" data-end="209.0" title="3:23">Chronic toxicity occurs in patients who exposed to lower concentrations of the gas </span><span class="segment" data-start="209.0" data-end="214.0" title="3:29">for a longer duration and they usually suffer the pulmonary effects. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="214.0"><span class="t-timestamp">3:34</span></div>
+  <div class="t-body"><span class="segment" data-start="214.0" data-end="219.0" title="3:34">Describe the effects of pulmonary oxygen toxicity. </span><span class="segment" data-start="219.0" data-end="226.0" title="3:39">Pulmonary toxicity can occur due to prolonged exposure or high concentrations of oxygen </span><span class="segment" data-start="226.0" data-end="231.0" title="3:46">causing damage to the pulmonary epithelium and inactivating surfactant. </span><span class="segment" data-start="231.0" data-end="238.0" title="3:51">This leads to intra-alveola edema and interstitial thickening which progresses to fibrosis. </span><span class="segment" data-start="238.0" data-end="241.0" title="3:58">Three phases have been described. </span><span class="segment" data-start="241.0" data-end="247.0" title="4:01">Firstly, tracheobroncitis, secondly, ARDS, </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="247.0"><span class="t-timestamp">4:07</span></div>
+  <div class="t-body"><span class="segment" data-start="247.0" data-end="251.0" title="4:07">and finally pulmonary interstitial fibrosis. </span><span class="segment" data-start="251.0" data-end="255.0" title="4:11">Bronco-pulmonary dysplasia can occur in infants. </span><span class="segment" data-start="255.0" data-end="260.0" title="4:15">The development of toxicity is time and dose-related, </span><span class="segment" data-start="260.0" data-end="264.0" title="4:20">although there is a lot of individual variation. </span><span class="segment" data-start="264.0" data-end="271.0" title="4:24">The threshold is 12 to 24 hours of exposure to oxygen above 50 kilopascals. </span><span class="segment" data-start="271.0" data-end="278.0" title="4:31">At sea level, 100% oxygen can be tolerated for 24 to 48 hours, </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="278.0"><span class="t-timestamp">4:38</span></div>
+  <div class="t-body"><span class="segment" data-start="278.0" data-end="283.0" title="4:38">after which definite tissue injury occurs. </span><span class="segment" data-start="283.0" data-end="288.0" title="4:43">Higher partial pressures lead to more rapid development of toxicity. </span><span class="segment" data-start="288.0" data-end="295.0" title="4:48">The symptoms and signs include tracheal irritation, a dry cough, chest pain, </span><span class="segment" data-start="295.0" data-end="299.0" title="4:55">reduced vital capacity and pulmonary edema. </span><span class="segment" data-start="299.0" data-end="305.0" title="4:59">You mentioned bronco-pulmonary dysplasia. Can you tell me more about it? </span><span class="segment" data-start="305.0" data-end="310.0" title="5:05">Bronco-pulmonary dysplasia occurs in mechanically ventilated children </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="310.0"><span class="t-timestamp">5:10</span></div>
+  <div class="t-body"><span class="segment" data-start="310.0" data-end="313.0" title="5:10">and usually premature neonates. </span><span class="segment" data-start="313.0" data-end="318.0" title="5:13">It occurs in 10 to 20% of those with respiratory distress syndrome </span><span class="segment" data-start="318.0" data-end="323.0" title="5:18">and is defined as an increased oxygen demand for more than 30 days </span><span class="segment" data-start="323.0" data-end="327.0" title="5:23">in the presence of typical radiological changes. </span><span class="segment" data-start="327.0" data-end="333.0" title="5:27">These are a diffuse fine reticular ground glass appearance of the lung. </span><span class="segment" data-start="333.0" data-end="338.0" title="5:33">The incidence is related to the severity of the respiratory distress syndrome, </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="338.0"><span class="t-timestamp">5:38</span></div>
+  <div class="t-body"><span class="segment" data-start="338.0" data-end="344.0" title="5:38">the degree of prematurity and to the high and prolonged oxygen concentrations. </span><span class="segment" data-start="344.0" data-end="351.0" title="5:44">The condition improves with age and alveolar growth improves respiratory function and reserves. </span><span class="segment" data-start="351.0" data-end="356.0" title="5:51">Describe the effects of oxygen toxicity on the central nervous system. </span><span class="segment" data-start="357.0" data-end="366.0" title="5:57">Central nervous system toxicity is a concern to those encountering oxygen at greater than atmospheric pressures, such as divers. </span><span class="segment" data-start="366.0" data-end="375.0" title="6:06">It is due mainly to oxidation and polymerization of enzymes leading to their inactivation and resulting in cellular damage. </span><span class="segment" data-start="375.0" data-end="385.0" title="6:15">Symptoms such as visual changes, particularly tunnel vision, tinnitus, nausea, twitching, irritability and dizziness can occur. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="385.0"><span class="t-timestamp">6:25</span></div>
+  <div class="t-body"><span class="segment" data-start="385.0" data-end="390.0" title="6:25">These can be followed by tonic clonic seizures and unconsciousness. </span><span class="segment" data-start="390.0" data-end="404.0" title="6:30">This occurs over a threshold of 150 kilopascals of oxygen and predisposing factors include exercise, cold, stress, fatigue, elevated PACO2, </span><span class="segment" data-start="404.0" data-end="410.0" title="6:44">dietary deficiency of trace elements and nitrogen narcosis. </span><span class="segment" data-start="410.0" data-end="419.0" title="6:50">At rest, in a dry environment, patients can tolerate up to 280 kilopascals of oxygen given intermittently. </span><span class="segment" data-start="419.0" data-end="426.0" title="6:59">What are the ocular effects of oxygen toxicity and when do they occur most commonly? </span><span class="segment" data-start="426.0" data-end="433.0" title="7:06">Ocular or retinopathic conditions include reversible constriction of the peripheral field of vision, </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="433.0"><span class="t-timestamp">7:13</span></div>
+  <div class="t-body"><span class="segment" data-start="433.0" data-end="438.0" title="7:13">a progressive reversible myopia and delayed cataract formation. </span><span class="segment" data-start="438.0" data-end="443.0" title="7:18">Retralental fibroplasia can occur in neonates. </span><span class="segment" data-start="443.0" data-end="451.0" title="7:23">Ocular effects are more common when the entire eye is exposed to high ambient oxygen concentrations and pressures. </span><span class="segment" data-start="451.0" data-end="460.0" title="7:31">For example, in an oxygen tent or hyperbaric chamber, rather than when there is a hyperoxia of the arterial circulation. </span><span class="segment" data-start="460.0" data-end="464.0" title="7:40">What is retralental fibroplasia? </span><span class="segment" data-start="464.0" data-end="472.0" title="7:44">Retralental fibroplasia was previously known as retinopathy of prematurity or ROP. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="472.0"><span class="t-timestamp">7:52</span></div>
+  <div class="t-body"><span class="segment" data-start="472.0" data-end="476.0" title="7:52">It is the formation of an opaque membrane behind the lens. </span><span class="segment" data-start="476.0" data-end="481.0" title="7:56">Usually, a retinal vascularization continues after birth. </span><span class="segment" data-start="481.0" data-end="488.0" title="8:01">But if vasoconstriction occurs, vessel lumens become obliterated due to anoxic endothelial damage. </span><span class="segment" data-start="489.0" data-end="495.0" title="8:09">The temporal portion of the retina is worst affected, as this is usually the last to be vascularized. </span><span class="segment" data-start="495.0" data-end="503.0" title="8:15">Once revascularization occurs, new vessel growth extends beyond the retina and into the vitrius. </span><span class="segment" data-start="503.0" data-end="508.0" title="8:23">High oxygen levels promote this new vessel growth. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="508.0"><span class="t-timestamp">8:28</span></div>
+  <div class="t-body"><span class="segment" data-start="508.0" data-end="514.0" title="8:28">These vessels are prone to dilatation and rupture, which leads to vitrius and retinal hemorrhages, </span><span class="segment" data-start="514.0" data-end="520.0" title="8:34">fibrosis and adhesions, causing retinal detachment and blindness. </span><span class="segment" data-start="520.0" data-end="525.0" title="8:40">Retralental fibroplasia is one of the leading causes of blindness in childhood. </span><span class="segment" data-start="525.0" data-end="532.0" title="8:45">The main risk factor for development of retralental fibroplasia is prematurity. </span><span class="segment" data-start="532.0" data-end="540.0" title="8:52">Premature infants of less than 30 weeks or 1.5 kilos birth weights are at greatest risk. </span><span class="segment" data-start="540.0" data-end="548.0" title="9:00">Many other factors can influence the disease progression, including general health and the stage of disease at diagnosis. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="548.0"><span class="t-timestamp">9:08</span></div>
+  <div class="t-body"><span class="segment" data-start="548.0" data-end="560.0" title="9:08">Supplemental oxygen exposure is a risk factor, but restricting oxygen will not necessarily reduce the rate of progression and may have systemic implications. </span><span class="segment" data-start="560.0" data-end="570.0" title="9:20">Concentrations of above 40% for one to two days after birth may be implicated and for neonates who develop retralental fibroplasia, </span><span class="segment" data-start="570.0" data-end="581.0" title="9:30">a PAO2 of greater than 10.4 kilopascals for more than six hours may cause progressive damage, so a saturation of 90% is aimed for. </span><span class="segment" data-start="581.0" data-end="584.0" title="9:41">Are there any other toxic effects of oxygen you know about? </span><span class="segment" data-start="584.0" data-end="592.0" title="9:44">The main effects have been covered. This is small print guys and you are doing well if you are asked this. </span><span class="segment" data-start="592.0" data-end="598.0" title="9:52">Oxygen toxicity can also affect red blood cell morphology. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="598.0"><span class="t-timestamp">9:58</span></div>
+  <div class="t-body"><span class="segment" data-start="598.0" data-end="605.0" title="9:58">A reduction in red cell mass can occur and hemolosis has been seen following hyperbaric oxygen therapy. </span><span class="segment" data-start="605.0" data-end="618.0" title="10:05">Serious otitis media and disparic osteonecrosis have been observed in astronauts and are thought to be partially attributable to high oxygen concentrations whilst in space flights. </span><span class="segment" data-start="618.0" data-end="623.0" title="10:18">What levels of oxygen carry risk? </span><span class="segment" data-start="623.0" data-end="634.0" title="10:23">At atmospheric pressure, oxygen toxicity is related to the dose and time. However, there is a lot of individual variation in the development of toxicity. </span><span class="segment" data-start="634.0" data-end="651.0" title="10:34">As a rough guide, 12 hours is the maximum length for a patient to be on 100% oxygen, 24 hours on 80% oxygen, 36 hours for 60% and indefinitely for 50%. </span><span class="segment" data-start="651.0" data-end="661.0" title="10:51">The safest policy is to wean patients of high oxygen concentrations as early as possible without compromising oxygen delivery. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="661.0"><span class="t-timestamp">11:01</span></div>
+  <div class="t-body"><span class="segment" data-start="661.0" data-end="666.0" title="11:01">What is the mechanism of oxygen toxicity? </span><span class="segment" data-start="666.0" data-end="679.0" title="11:06">The proposed mechanism of toxicity is complex and not fully understood. However, oxygen derived free radicals are the likely etiological factors in toxicity development. </span><span class="segment" data-start="679.0" data-end="694.0" title="11:19">Free radicals are produced as a result of mitochondrial oxy-reductive processes by xanthine oxidase at extra mitochondrial sites by auto-oxidative reactions and by phagocytes during bacterial killing. </span><span class="segment" data-start="694.0" data-end="706.0" title="11:34">The free radicals cause lipid peroxidation in cell membranes, inactivate cellular enzymes, cause nucleic acid inhibition and protein synthesis inhibition. </span><span class="segment" data-start="706.0" data-end="718.0" title="11:46">Under normal conditions, antioxidant enzymes such as glutathione peroxidase and catalyze and superoxide dismutase protect the body from these free radicals. </span><span class="segment" data-start="718.0" data-end="727.0" title="11:58">But hyperoxic situations allow explosive free radical production that outstrips antioxidant capacity. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="727.0"><span class="t-timestamp">12:07</span></div>
+  <div class="t-body"><span class="segment" data-start="727.0" data-end="737.0" title="12:07">Oxygen toxicity can also occur due to cellular metabolic alteration or enzyme inhibition that is not mediated by free radicals. </span><span class="segment" data-start="737.0" data-end="743.0" title="12:17">What are the indications for hyperbaric oxygen therapy? </span><span class="segment" data-start="743.0" data-end="772.0" title="12:23">Hyperbaric oxygen is oxygen administered at higher than atmospheric pressure. It is used in carbon monoxide poisoning, decompression sickness, respiratory distress of newborn and anaerobic infections, for example, gas gangrene caused by claustridium welshy, refractory chronic osteomyelitis with draining lesions, infected superficial burns and to sensitize tumors to radiotherapy. </span><span class="segment" data-start="772.0" data-end="786.0" title="12:52">The toxic effects are predominantly central nervous system effects. Under hyperbaric conditions, oxygen toxicity is again dose dependent and is the main limitation to treatment. </span><span class="segment" data-start="786.0" data-end="800.0" title="13:06">It affects the central nervous system, lung, myocardium, liver, kidneys and visual system. After eight hours of receiving 100% oxygen at a pressure of two atmospheres, </span><span class="segment" data-start="800.0" data-end="810.0" title="13:20">subjects may experience a decreased vital capacity, facial twitching, abnormal taste and smell and tonic chronic seizures. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="810.0"><span class="t-timestamp">13:30</span></div>
+  <div class="t-body"><span class="segment" data-start="810.0" data-end="820.0" title="13:30">It may cause cardiovascular problems, including vasoconstriction and myocardial depression. </span></div>
+</div>
+</div>
+
+<div class="subtitle-bar">
+  <span class="subtitle-text empty" id="subtitle-text">Play audio to see live subtitles&#8230;</span>
+</div>
+
+<script>
+
+const audio    = document.getElementById('audio');
+const allSegs  = Array.from(document.querySelectorAll('.segment'));
+const allBlocks = Array.from(document.querySelectorAll('.t-block'));
+const subtitleEl = document.getElementById('subtitle-text');
+let activeSegEl   = null;
+let activeBlockEl = null;
+let searchMatches = [];
+let searchIdx     = 0;
+
+// Duration display
+audio.addEventListener('loadedmetadata', () => {
+  const m = Math.floor(audio.duration / 60);
+  const s = Math.floor(audio.duration %% 60).toString().padStart(2,'0');
+  document.getElementById('dur').textContent = m + ':' + s;
+});
+
+// Seek helper
+function seekTo(t) {
+  audio.currentTime = t;
+  audio.play();
+}
+
+// Block gutter click
+document.querySelectorAll('.t-gutter').forEach(g => {
+  g.addEventListener('click', () => seekTo(parseFloat(g.dataset.start)));
+});
+
+// Segment click
+allSegs.forEach(s => {
+  s.addEventListener('click', e => {
+    e.stopPropagation();
+    seekTo(parseFloat(s.dataset.start));
+  });
+});
+
+// Real-time tracking
+audio.addEventListener('timeupdate', () => {
+  const t = audio.currentTime;
+
+  // Find active segment (last one whose start <= t)
+  let found = null;
+  for (let i = allSegs.length - 1; i >= 0; i--) {
+    if (parseFloat(allSegs[i].dataset.start) <= t) { found = allSegs[i]; break; }
+  }
+
+  if (found && found !== activeSegEl) {
+    // Clear previous
+    if (activeSegEl) activeSegEl.classList.remove('active');
+    if (activeBlockEl) {
+      activeBlockEl.classList.remove('block-active');
+      const pg = activeBlockEl.querySelector('.t-gutter');
+      if (pg) pg.classList.remove('gutter-active');
+    }
+    // Set new
+    found.classList.add('active');
+    const block = found.closest('.t-block');
+    if (block) {
+      block.classList.add('block-active');
+      const g = block.querySelector('.t-gutter');
+      if (g) g.classList.add('gutter-active');
+      activeBlockEl = block;
+    }
+    activeSegEl = found;
+
+    // Update subtitle
+    subtitleEl.textContent = found.textContent.trim();
+    subtitleEl.classList.remove('empty');
+
+    // Auto-scroll (only when not searching)
+    if (!document.getElementById('search').value) {
+      found.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }
+});
+
+// Search
+const searchInput = document.getElementById('search');
+searchInput.addEventListener('input', runSearch);
+searchInput.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && searchMatches.length) {
+    searchMatches[searchIdx].classList.remove('search-current');
+    searchIdx = (searchIdx + 1) %% searchMatches.length;
+    const el = searchMatches[searchIdx];
+    el.classList.add('search-current');
+    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+});
+
+function runSearch() {
+  const q = searchInput.value.trim().toLowerCase();
+  allSegs.forEach(s => s.classList.remove('search-match','search-current'));
+  searchMatches = [];
+  if (!q) return;
+  allSegs.forEach(s => {
+    if (s.textContent.toLowerCase().includes(q)) {
+      s.classList.add('search-match');
+      searchMatches.push(s);
+    }
+  });
+  if (!searchMatches.length) return;
+  searchIdx = 0;
+  searchMatches[0].classList.add('search-current');
+  searchMatches[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+</script>
+</body>
+</html>

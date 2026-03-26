@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Regional Anaesthesia — ANS Anatomy</title>
+<style>
+
+  :root {
+    --accent:    #2563eb;
+    --body-bg:   #f1f5f9;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: var(--body-bg);
+    color: #1e293b;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  /* ── Header ── */
+  .header {
+    background: #0f172a;
+    border-bottom: 3px solid var(--accent);
+    padding: 12px 20px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .header-left { flex: 1; min-width: 200px; }
+  .header h1 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #f1f5f9;
+    margin-bottom: 4px;
+    letter-spacing: 0.01em;
+  }
+  .header-sub {
+    font-size: 0.72rem;
+    color: #94a3b8;
+    font-style: italic;
+  }
+  audio {
+    height: 36px;
+    accent-color: var(--accent);
+    flex-shrink: 0;
+  }
+  .back-link {
+    font-size: 0.8rem;
+    color: #94a3b8;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .back-link:hover { color: #60a5fa; }
+
+  /* ── Toolbar ── */
+  .toolbar {
+    background: #1e293b;
+    padding: 7px 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-shrink: 0;
+    border-bottom: 1px solid #334155;
+  }
+  .toolbar input {
+    flex: 1;
+    max-width: 380px;
+    padding: 5px 11px;
+    border: 1px solid #475569;
+    border-radius: 6px;
+    background: #0f172a;
+    color: #e2e8f0;
+    font-size: 0.83rem;
+    outline: none;
+  }
+  .toolbar input:focus { border-color: var(--accent); }
+  .toolbar input::placeholder { color: #64748b; }
+  .stats {
+    font-size: 0.72rem;
+    color: #64748b;
+    white-space: nowrap;
+  }
+
+  /* ── Scroll area ── */
+  .scroll-area {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+  }
+  .scroll-area::-webkit-scrollbar { width: 6px; }
+  .scroll-area::-webkit-scrollbar-track { background: transparent; }
+  .scroll-area::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+
+  /* ── Subtitle bar ── */
+  .subtitle-bar {
+    background: #0f172a;
+    border-top: 2px solid var(--accent);
+    padding: 8px 20px;
+    flex-shrink: 0;
+    min-height: 42px;
+    display: flex;
+    align-items: center;
+  }
+  .subtitle-text {
+    font-size: 0.9rem;
+    color: #e2e8f0;
+    line-height: 1.5;
+    font-style: italic;
+  }
+  .subtitle-text.empty { color: #475569; }
+
+  /* ── Transcript blocks ── */
+  .t-block {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    margin-bottom: 14px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    display: flex;
+  }
+  .t-block.block-active {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px rgba(37,99,235,0.15);
+  }
+  .t-gutter {
+    background: #0f172a;
+    width: 52px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: 14px;
+    cursor: pointer;
+  }
+  .t-gutter:hover { background: #1e293b; }
+  .t-timestamp {
+    font-size: 0.7rem;
+    color: #64748b;
+    font-family: monospace;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+  .t-gutter.gutter-active .t-timestamp { color: var(--accent); }
+  .t-body {
+    flex: 1;
+    padding: 12px 16px;
+    line-height: 1.75;
+    font-size: 0.92rem;
+    color: #1e293b;
+  }
+
+  /* ── Segments ── */
+  .segment {
+    cursor: pointer;
+    border-radius: 3px;
+    transition: background 0.1s;
+  }
+  .segment:hover { background: #eff6ff; }
+  .segment.active {
+    background: #bfdbfe;
+    outline: 2px solid #3b82f6;
+    outline-offset: 1px;
+    border-radius: 3px;
+  }
+  .segment.search-match  { background: #fef9c3; }
+  .segment.search-current { background: #fde047; outline: 2px solid #ca8a04; }
+
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <h1>Regional Anaesthesia — ANS Anatomy</h1>
+    <div class="header-sub">Final FRCA &mdash; Exam Viva Simulation &mdash; Click any phrase to seek</div>
+  </div>
+  <audio id="audio" src="../FinalFRCARegional_Anaesthesia_ANS_Anatomy.mp3" controls preload="metadata"></audio>
+  <a class="back-link" href="index.html">&#8592; All Topics</a>
+</div>
+
+<div class="toolbar">
+  <input type="text" id="search" placeholder="Search transcript&#8230; (Enter = next match)">
+  <span class="stats" id="stats">225 segments &nbsp;|&nbsp; <span id="dur">loading&#8230;</span></span>
+</div>
+
+<div class="scroll-area" id="scroll-area">
+<div class="t-block">
+  <div class="t-gutter" data-start="0.0"><span class="t-timestamp">0:00</span></div>
+  <div class="t-body"><span class="segment" data-start="0.0" data-end="4.24" title="0:00">The anatomy of the autonomic nervous system. </span><span class="segment" data-start="4.24" data-end="6.54" title="0:04">This topic comes up a lot, folks. </span><span class="segment" data-start="6.54" data-end="11.08" title="0:06">Take your time because it's very easy to tell yourself up in knots. </span><span class="segment" data-start="11.08" data-end="14.18" title="0:11">Tell me what you know about the autonomic nervous system. </span><span class="segment" data-start="14.18" data-end="16.02" title="0:14">Start generally. </span><span class="segment" data-start="16.02" data-end="21.6" title="0:16">Define and classify and try to be systematic in your answer. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="21.6"><span class="t-timestamp">0:21</span></div>
+  <div class="t-body"><span class="segment" data-start="21.6" data-end="29.0" title="0:21">The autonomic nervous system maintains homeostasis in the body and is not under conscious control. </span><span class="segment" data-start="29.0" data-end="33.42" title="0:29">There's a sympathetic and a parasympathetic component. </span><span class="segment" data-start="33.42" data-end="39.44" title="0:33">These differ anatomically, pharmacologically and physiologically. </span><span class="segment" data-start="39.44" data-end="42.72" title="0:39">I will first talk about the anatomy. </span><span class="segment" data-start="42.72" data-end="49.0" title="0:42">Generally, efferent outflow comes from autonomic centres in the hypothalamus, medulla and </span><span class="segment" data-start="49.0" data-end="50.76" title="0:49">brainstem. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="50.76"><span class="t-timestamp">0:50</span></div>
+  <div class="t-body"><span class="segment" data-start="50.76" data-end="56.84" title="0:50">The autonomic nerves, unlike the somatic nervous system, leave the central nervous system </span><span class="segment" data-start="56.84" data-end="61.24" title="0:56">and synapse before reaching the effector organ. </span><span class="segment" data-start="61.24" data-end="68.32" title="1:01">Milinated first-order nerves synapse onto un-milinated second-order nerves which in turn </span><span class="segment" data-start="68.32" data-end="71.64" title="1:08">supply the effector organ. </span><span class="segment" data-start="71.64" data-end="77.4" title="1:11">Sympathetic nerves generally synapse distant to their effector site, whereas parasympathetic </span><span class="segment" data-start="77.4" data-end="81.32" title="1:17">nerves synapse close to the target organ. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="81.32"><span class="t-timestamp">1:21</span></div>
+  <div class="t-body"><span class="segment" data-start="81.32" data-end="87.0" title="1:21">Pharmacologically, the predominant effector neurotransmitter for the sympathetic nervous system </span><span class="segment" data-start="87.0" data-end="94.0" title="1:27">is noradrenaline, whereas for the parasympathetic system it is astyle-cooline. </span><span class="segment" data-start="94.0" data-end="100.44" title="1:34">Astyle-cooline is the neurotransmitter at all the synapses between first-order and second-order </span><span class="segment" data-start="100.44" data-end="102.24" title="1:40">neurons. </span><span class="segment" data-start="102.24" data-end="107.92" title="1:42">Of note, the principal exception to this is the sympathetic supply to the sweat glands </span><span class="segment" data-start="107.92" data-end="111.4" title="1:47">which is colonergic. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="111.4"><span class="t-timestamp">1:51</span></div>
+  <div class="t-body"><span class="segment" data-start="111.4" data-end="117.72" title="1:51">Physiologically, the sympathetic nervous system is responsible for the fight or flight response. </span><span class="segment" data-start="117.72" data-end="119.44" title="1:57">Don't worry about that. </span><span class="segment" data-start="119.44" data-end="122.2" title="1:59">Can you draw a diagram of the sympathetic nervous system? </span><span class="segment" data-start="122.2" data-end="126.44" title="2:02">The examiner will stop you if you're heading away from where the points are scored. </span><span class="segment" data-start="126.44" data-end="132.16" title="2:06">If asked to draw a diagram, keep it as simple as possible, utilize the whole sheet of paper, </span><span class="segment" data-start="132.16" data-end="136.52" title="2:12">don't be overly concerned keeping things to scale and talk whilst you're constructing </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="136.52"><span class="t-timestamp">2:16</span></div>
+  <div class="t-body"><span class="segment" data-start="136.52" data-end="137.52" title="2:16">it. </span><span class="segment" data-start="137.52" data-end="141.48" title="2:17">Talk about demonstrating your knowledge of the principles and not about winning any </span><span class="segment" data-start="141.48" data-end="144.36" title="2:21">turn or prize. </span><span class="segment" data-start="144.36" data-end="149.6" title="2:24">This is a cross-section of the spinal cord at the thoracic level. </span><span class="segment" data-start="149.6" data-end="155.32" title="2:29">The sympathetic outflow is from T1 to L2 or 3 of the cord. </span><span class="segment" data-start="155.32" data-end="164.64" title="2:35">The first-order neurons have their cell bodies in the lateral horn which is here. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="164.64"><span class="t-timestamp">2:44</span></div>
+  <div class="t-body"><span class="segment" data-start="164.64" data-end="169.88" title="2:44">They then run with the anterior nerve root but leave shortly after the root exits the </span><span class="segment" data-start="169.88" data-end="176.4" title="2:49">intervertebral for raymon to run anteriorly to the sympathetic chain. </span><span class="segment" data-start="176.4" data-end="182.4" title="2:56">These myelinated nerves connect from the cord to the sympathetic chain via white raymy </span><span class="segment" data-start="182.4" data-end="183.96" title="3:02">communicantes. </span><span class="segment" data-start="183.96" data-end="189.92" title="3:03">Usually, they sign up here on to second-order grey raymy communicantes. </span><span class="segment" data-start="189.92" data-end="195.28" title="3:09">These are un-myelinated fibers which can then run back towards the spinal nerve and follow </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="195.28"><span class="t-timestamp">3:15</span></div>
+  <div class="t-body"><span class="segment" data-start="195.28" data-end="197.08" title="3:15">its course. </span><span class="segment" data-start="197.08" data-end="203.24" title="3:17">Is there anything else that can happen to these neurons once they leave the spinal cord? </span><span class="segment" data-start="203.24" data-end="207.56" title="3:23">There are three possible fates of the first-order neurons. </span><span class="segment" data-start="207.56" data-end="212.36" title="3:27">They can sign up in the chain before running back to follow the path of their originating </span><span class="segment" data-start="212.36" data-end="214.36" title="3:32">spinal nerve. </span><span class="segment" data-start="214.36" data-end="219.4" title="3:34">They can run up or down the sympathetic chain to sign up in a more distant ganglion within </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="219.4"><span class="t-timestamp">3:39</span></div>
+  <div class="t-body"><span class="segment" data-start="219.4" data-end="226.12" title="3:39">the chain, or they can pass without sign up through the chain towards a peripheral ganglion. </span><span class="segment" data-start="226.12" data-end="232.64" title="3:46">This latter course occurs with the sympathetic supply to the abdominal and pelvic organs. </span><span class="segment" data-start="232.64" data-end="237.88" title="3:52">These pre-ganglionic sympathetic fibers run in the splank-nic nerves. </span><span class="segment" data-start="237.88" data-end="245.08" title="3:57">The greater splank-nic nerve arises from the T5 to T9 segments of the sympathetic chain. </span><span class="segment" data-start="245.08" data-end="250.56" title="4:05">The lesser splank-nic nerve runs from the T10 and T11 segments. </span><span class="segment" data-start="250.56" data-end="255.92" title="4:10">Sometimes there is a third least splank-nic nerve from T12. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="255.92"><span class="t-timestamp">4:15</span></div>
+  <div class="t-body"><span class="segment" data-start="255.92" data-end="262.52" title="4:15">All supply the celiac plexus, which is where they sign up onto un-myelinated nerves. </span><span class="segment" data-start="262.52" data-end="268.04" title="4:22">After they have sign up, all the sympathetic second-order un-myelinated nerves tend to </span><span class="segment" data-start="268.04" data-end="272.04" title="4:28">follow the arterial supply to their effector organs. </span><span class="segment" data-start="272.04" data-end="275.52" title="4:32">How is adrenal gland innovated? </span><span class="segment" data-start="275.52" data-end="278.8" title="4:35">The adrenal innovation is different. </span><span class="segment" data-start="278.8" data-end="284.8" title="4:38">White myelinated fibers pass through the celiac ganglion towards the adrenal gland and </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="284.8"><span class="t-timestamp">4:44</span></div>
+  <div class="t-body"><span class="segment" data-start="284.8" data-end="287.0" title="4:44">innovate the adrenal medulla. </span><span class="segment" data-start="287.0" data-end="293.4" title="4:47">Here they release astyle co-lean to stimulate the secretion of adrenaline and noradrenaline </span><span class="segment" data-start="293.4" data-end="295.6" title="4:53">from the medulla. </span><span class="segment" data-start="295.6" data-end="301.6" title="4:55">Embryologically, the adrenal medulla and the sympathetic nerves share a common origin. </span><span class="segment" data-start="302.32" data-end="304.8" title="5:02">You've mentioned the celiac plexus. </span><span class="segment" data-start="304.8" data-end="307.28" title="5:04">Do you know of any other plexi? </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="307.28"><span class="t-timestamp">5:07</span></div>
+  <div class="t-body"><span class="segment" data-start="307.28" data-end="309.76" title="5:07">Yes. </span><span class="segment" data-start="309.76" data-end="314.56" title="5:09">All of the thoracic and abdominal organs are innovated via plexi. </span><span class="segment" data-start="314.56" data-end="318.84" title="5:14">These plexi are simply clusters of post-ganglionic nerves. </span><span class="segment" data-start="318.84" data-end="323.68" title="5:18">There is a cardiac plexus supplied from T1 to T4. </span><span class="segment" data-start="323.68" data-end="325.96" title="5:23">This plexus supplies the heart. </span><span class="segment" data-start="325.96" data-end="330.28" title="5:25">It also supplies the lungs via a pulmonary plexus. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="330.28"><span class="t-timestamp">5:30</span></div>
+  <div class="t-body"><span class="segment" data-start="330.28" data-end="335.36" title="5:30">In the abdomen, there is an aortic plexus formed from the post-ganglionic fibers of the </span><span class="segment" data-start="335.36" data-end="338.12" title="5:35">celiac plexus. </span><span class="segment" data-start="338.12" data-end="343.48" title="5:38">This supplies further plexi, named after the organs which they supply, again following </span><span class="segment" data-start="343.48" data-end="345.36" title="5:43">the blood supply. </span><span class="segment" data-start="345.36" data-end="352.56" title="5:45">The hypogastric plexus forms from the aortic plexus and the lumbar sympathetic trunks. </span><span class="segment" data-start="352.56" data-end="358.48" title="5:52">This feeds right and left pelvic plexi and the pelvic organs. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="358.48"><span class="t-timestamp">5:58</span></div>
+  <div class="t-body"><span class="segment" data-start="358.48" data-end="362.4" title="5:58">Tell me more about the celiac plexus. </span><span class="segment" data-start="362.4" data-end="367.88" title="6:02">This is the largest of the sympathetic plexi and is at the level of L1, originating where </span><span class="segment" data-start="367.88" data-end="371.6" title="6:07">the celiac artery branches off the aorta. </span><span class="segment" data-start="371.6" data-end="376.84" title="6:11">It acts as a conduit for the sympathetic supply to most of the abdominal organs. </span><span class="segment" data-start="376.84" data-end="382.68" title="6:16">It can be blocked to stop pain pathways from the pancreas and upper GI tract. </span><span class="segment" data-start="382.68" data-end="385.56" title="6:22">Have you ever seen a celiac plexus block? </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="386.28"><span class="t-timestamp">6:26</span></div>
+  <div class="t-body"><span class="segment" data-start="386.28" data-end="388.92" title="6:26">No, but I know the principles. </span><span class="segment" data-start="388.92" data-end="392.64" title="6:28">You will need an image intensifier or CT scanner. </span><span class="segment" data-start="392.64" data-end="395.68" title="6:32">The patient is positioned prone. </span><span class="segment" data-start="395.68" data-end="402.48" title="6:35">At the level of L2, 8 to 10 centimeters from the midline, below the 12th rib, a needle </span><span class="segment" data-start="402.48" data-end="407.24" title="6:42">is directed towards the body of L1. </span><span class="segment" data-start="407.24" data-end="411.24" title="6:47">You should target the anterior lateral border of the vertebra. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="411.24"><span class="t-timestamp">6:51</span></div>
+  <div class="t-body"><span class="segment" data-start="411.24" data-end="416.76" title="6:51">On the left side, you should feel the aorta pulsating when you are in the correct place. </span><span class="segment" data-start="416.76" data-end="422.04" title="6:56">On the right side, you can advance the needle slightly further, anterior to the anterior </span><span class="segment" data-start="422.04" data-end="424.44" title="7:02">lateral border of the vertebra. </span><span class="segment" data-start="424.44" data-end="429.0" title="7:04">You need to confirm you are not in a vessel and in a reasonable tissue plane before you </span><span class="segment" data-start="429.0" data-end="430.72" title="7:09">inject. </span><span class="segment" data-start="430.72" data-end="433.72" title="7:10">Contrast medium may be injected first. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="433.72"><span class="t-timestamp">7:13</span></div>
+  <div class="t-body"><span class="segment" data-start="433.72" data-end="437.04" title="7:13">What is the stellate ganglion? </span><span class="segment" data-start="437.04" data-end="441.08" title="7:17">I haven't yet talked in detail about the sympathetic chain. </span><span class="segment" data-start="441.08" data-end="446.76" title="7:21">The efferent supply to the chain comes exclusively through the thoracic and upper lumber nerve </span><span class="segment" data-start="446.76" data-end="447.96" title="7:26">roots. </span><span class="segment" data-start="447.96" data-end="454.2" title="7:27">The chain, however, runs crannily to supply the head and neck via cervical ganglia. </span><span class="segment" data-start="454.2" data-end="460.6" title="7:34">It also runs cordily towards the sacrum, through usually four ganglia as the number sympathetic </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="460.6"><span class="t-timestamp">7:40</span></div>
+  <div class="t-body"><span class="segment" data-start="460.6" data-end="461.6" title="7:40">chain. </span><span class="segment" data-start="462.16" data-end="467.84" title="7:42">There are three cervical ganglia, superior, middle and inferior. </span><span class="segment" data-start="467.84" data-end="473.52" title="7:47">The inferior cervical ganglion is usually fused with the first thoracic ganglion forming </span><span class="segment" data-start="473.52" data-end="475.76" title="7:53">the stellate ganglion. </span><span class="segment" data-start="475.76" data-end="479.68" title="7:55">Where would you find the stellate ganglion? </span><span class="segment" data-start="479.68" data-end="485.68" title="7:59">The stellate ganglion sits anterior to the disc space between C7 and T1. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="485.68"><span class="t-timestamp">8:05</span></div>
+  <div class="t-body"><span class="segment" data-start="485.68" data-end="491.4" title="8:05">The surface landmark for performing a stellate ganglion block is Shasnax tubical. </span><span class="segment" data-start="491.4" data-end="494.88" title="8:11">The transverse process of C6. </span><span class="segment" data-start="494.88" data-end="500.08" title="8:14">This is found at the level of the crycoid cartilage with the neck extended, the mouth partially </span><span class="segment" data-start="500.08" data-end="506.24" title="8:20">open, and the corroded artery and sternoclider mastoid muscle retracted laterally. </span><span class="segment" data-start="506.24" data-end="510.04" title="8:26">A needle is passed to touch the transverse process. </span><span class="segment" data-start="510.04" data-end="515.84" title="8:30">Then it is withdrawn by two to three millimeters, aspirated, and the block administered slowly </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="515.84"><span class="t-timestamp">8:35</span></div>
+  <div class="t-body"><span class="segment" data-start="515.84" data-end="518.2" title="8:35">following a test dose. </span><span class="segment" data-start="518.2" data-end="522.96" title="8:38">The block is confirmed by the development of a horned syndrome. </span><span class="segment" data-start="522.96" data-end="526.44" title="8:42">Why end how would you perform a lumbar sympathetic to me? </span><span class="segment" data-start="526.44" data-end="530.48" title="8:46">It would be fair for the examiner to ask about any of the blocks you have spoken about </span><span class="segment" data-start="530.48" data-end="532.44" title="8:50">in more detail. </span><span class="segment" data-start="532.44" data-end="536.04" title="8:52">Always have a systematic approach to discussing any procedure. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="536.04"><span class="t-timestamp">8:56</span></div>
+  <div class="t-body"><span class="segment" data-start="536.04" data-end="540.8" title="8:56">It ensures you don't miss out on any easy marks. </span><span class="segment" data-start="540.8" data-end="546.36" title="9:00">The aim of a lumbar sympathetic to me is to block the distal lumbar sympathetic outflow, </span><span class="segment" data-start="546.36" data-end="551.88" title="9:06">as well as impair any conduction through afferent pain fibers that can relay through the </span><span class="segment" data-start="551.88" data-end="555.44" title="9:11">sympathetic chain. </span><span class="segment" data-start="555.44" data-end="561.6" title="9:15">Local anesthetic can be used for short-lasting effect, and phenol or alcohol can be used </span><span class="segment" data-start="561.6" data-end="566.32" title="9:21">if a longer duration of symptomatic treatment is felt appropriate. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="566.32"><span class="t-timestamp">9:26</span></div>
+  <div class="t-body"><span class="segment" data-start="566.32" data-end="572.96" title="9:26">There are indications, contraindications, and complications. </span><span class="segment" data-start="573.04" data-end="579.04" title="9:33">Conclusion indications include circulatory insufficiency, complex regional pain syndromes, </span><span class="segment" data-start="579.04" data-end="583.76" title="9:39">phantom pain, and frostbite to the lower limb. </span><span class="segment" data-start="583.76" data-end="590.24" title="9:43">Contraindications, as with most procedures, would be infection over the site of instrumentation, </span><span class="segment" data-start="590.24" data-end="599.16" title="9:50">lack of patient consent, allergy to any of the agents utilized, and coagulopathy. </span><span class="segment" data-start="599.16" data-end="603.4" title="9:59">Investigations would include those caused by the procedure, and those resulting from </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="603.4"><span class="t-timestamp">10:03</span></div>
+  <div class="t-body"><span class="segment" data-start="603.4" data-end="605.4" title="10:03">the procedure. </span><span class="segment" data-start="605.4" data-end="610.96" title="10:05">There might be damage to and bleeding from intercostal vessels, the aorta or inferior </span><span class="segment" data-start="610.96" data-end="613.28" title="10:10">vena caver. </span><span class="segment" data-start="613.28" data-end="618.24" title="10:13">Local hematoma and infection might also complicate the procedure. </span><span class="segment" data-start="618.24" data-end="624.4" title="10:18">As a result of the injection, the Ipsilateral leg will become subjectively and objectively </span><span class="segment" data-start="624.4" data-end="627.48" title="10:24">warmer and more erythematous. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="627.48"><span class="t-timestamp">10:27</span></div>
+  <div class="t-body"><span class="segment" data-start="627.48" data-end="632.32" title="10:27">Most sympathetic to mean your alger occurs, commonly manifesting as pain in the thigh </span><span class="segment" data-start="632.32" data-end="634.16" title="10:32">or groin. </span><span class="segment" data-start="634.16" data-end="638.72" title="10:34">There is also the potential for sexual dysfunction problems, especially if the block is </span><span class="segment" data-start="638.72" data-end="641.0" title="10:38">bilateral. </span><span class="segment" data-start="641.0" data-end="645.8" title="10:41">There is always the risk that the block does not produce the desired result. </span><span class="segment" data-start="645.8" data-end="651.72" title="10:45">As with every procedure, I would see the patient on the ward, ensure that the potential benefit </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="651.72"><span class="t-timestamp">10:51</span></div>
+  <div class="t-body"><span class="segment" data-start="651.72" data-end="657.44" title="10:51">of the procedure outweighed the risk, establish the absence of contraindications, </span><span class="segment" data-start="657.92" data-end="661.52" title="10:57">and ensure that full consent has been ascertained. </span><span class="segment" data-start="661.52" data-end="666.88" title="11:01">Personally, I would perform a number sympathetic to me under skilled supervision, as I have never </span><span class="segment" data-start="666.88" data-end="669.8" title="11:06">attempted this procedure before. </span><span class="segment" data-start="669.8" data-end="674.76" title="11:09">I would ensure trained anesthetic staff were present, that my emergency drugs were drawn </span><span class="segment" data-start="674.76" data-end="678.16" title="11:14">up, and full monitoring had been applied. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="678.16"><span class="t-timestamp">11:18</span></div>
+  <div class="t-body"><span class="segment" data-start="678.16" data-end="681.48" title="11:18">I would maintain strict asepsis. </span><span class="segment" data-start="681.48" data-end="688.48" title="11:21">As with the Celiac Plexus block, this procedure is usually performed under X-ray or CT guidance </span><span class="segment" data-start="688.48" data-end="691.12" title="11:28">with the patient in a prone position. </span><span class="segment" data-start="691.12" data-end="699.16" title="11:31">Again, the L2 vertebra is identified and a needle inserted 10-12cm from the midline. </span><span class="segment" data-start="699.16" data-end="705.28" title="11:39">This time, however, the body of the L2 vertebra is targeted, and the needle is targeted towards </span><span class="segment" data-start="705.28" data-end="708.6" title="11:45">the anterior lateral border. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="708.6"><span class="t-timestamp">11:48</span></div>
+  <div class="t-body"><span class="segment" data-start="708.6" data-end="713.56" title="11:48">The OAPC contrast can be injected to check that the injection will be made in the correct </span><span class="segment" data-start="713.56" data-end="714.88" title="11:53">tissue plane. </span><span class="segment" data-start="714.88" data-end="719.92" title="11:54">I believe that neurolithic blocks are made more effective by repeating the procedure at the </span><span class="segment" data-start="719.92" data-end="723.6" title="11:59">L3 and L4 vertebrae. </span><span class="segment" data-start="723.6" data-end="726.52" title="12:03">What about the parasympathetic nervous system? </span><span class="segment" data-start="726.52" data-end="731.12" title="12:06">How does that differ from the sympathetic nervous system? </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="731.12"><span class="t-timestamp">12:11</span></div>
+  <div class="t-body"><span class="segment" data-start="731.12" data-end="738.12" title="12:11">The parasympathetic nervous system differs anatomically, pharmacologically, and physiologically. </span><span class="segment" data-start="739.4" data-end="745.44" title="12:19">Anatomically, the parasympathetic efference leaves the central nervous system to synapse </span><span class="segment" data-start="745.44" data-end="751.04" title="12:25">onto second-order neurons close to the target organ. </span><span class="segment" data-start="751.04" data-end="755.4" title="12:31">There is a cranial component and a sacral component. </span><span class="segment" data-start="755.4" data-end="763.48" title="12:35">The cranial component is conveyed in cranial nerves 3, 7, 9 and 10 from specific nuclei </span><span class="segment" data-start="763.48" data-end="765.8" title="12:43">in the brainstem. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="765.8"><span class="t-timestamp">12:45</span></div>
+  <div class="t-body"><span class="segment" data-start="765.8" data-end="771.08" title="12:45">These follow the course of the respective cranial nerves to synapse at 4 ganglia. </span><span class="segment" data-start="771.08" data-end="777.76" title="12:51">The sacral component efference are termed the nerve-eye erygientase and arise from S2, </span><span class="segment" data-start="777.76" data-end="781.24" title="12:57">S3 and S4. </span><span class="segment" data-start="781.24" data-end="786.48" title="13:01">These join the pelvic plexae and are distributed to the pelvic organs. </span><span class="segment" data-start="786.48" data-end="792.4" title="13:06">Small ganglia in the visceral walls relay the post-ganglionic fibers. </span><span class="segment" data-start="792.4" data-end="799.88" title="13:12">As I have said, the neurotransmitter is astylecoline, which acts on muscarinic receptors </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="799.88"><span class="t-timestamp">13:19</span></div>
+  <div class="t-body"><span class="segment" data-start="799.88" data-end="803.48" title="13:19">at both the ganglion and effector organs. </span><span class="segment" data-start="803.48" data-end="809.44" title="13:23">Physiologically, the parasympathetic system antagonizes the effects of the fight-or-flight </span><span class="segment" data-start="809.44" data-end="811.48" title="13:29">sympathetic system. </span><span class="segment" data-start="811.48" data-end="820.68" title="13:31">Causes pupiloconstriction, bradycardias, bronchoconstriction, mucus production, peristalsis, pancreatic </span><span class="segment" data-start="820.68" data-end="823.2" title="13:40">and gastric secretions. </span><span class="segment" data-start="823.2" data-end="829.68" title="13:43">The nerve-eye erygientase are nerves of emptying, controlling the bladder and bowel function. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="829.68"><span class="t-timestamp">13:49</span></div>
+  <div class="t-body"><span class="segment" data-start="829.68" data-end="834.08" title="13:49">Do you know where the ganglia are for the cranial nerve outflow? </span><span class="segment" data-start="834.08" data-end="839.56" title="13:54">The third nerve transmits fibers from the edding of vesphal nucleus towards the silvery </span><span class="segment" data-start="839.56" data-end="840.96" title="13:59">ganglion. </span><span class="segment" data-start="840.96" data-end="844.96" title="14:00">Stimulation leads to pupiloconstriction. </span><span class="segment" data-start="844.96" data-end="851.72" title="14:04">The seventh nerve transmits fibers from the superior salivatory nucleus to two ganglia. </span><span class="segment" data-start="851.72" data-end="856.96" title="14:11">One is via the greater patrosal nerve to the terrogopalatine ganglion in the terrogopalatine </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="856.96"><span class="t-timestamp">14:16</span></div>
+  <div class="t-body"><span class="segment" data-start="856.96" data-end="861.44" title="14:16">fossa, which then runs on to supply the lacrimal glands. </span><span class="segment" data-start="861.44" data-end="866.88" title="14:21">The other is via the cordotimpiny to the secreto-motor supply to the salivaic glands through </span><span class="segment" data-start="866.88" data-end="870.44" title="14:26">the submandibular ganglion. </span><span class="segment" data-start="870.44" data-end="876.4" title="14:30">The submandibular ganglion is closely related to the lingual nerve in the floor of the mouth. </span><span class="segment" data-start="876.4" data-end="882.64" title="14:36">The ninth nerve transmits fibers from the inferior salivatory nucleus to the otic ganglion via </span><span class="segment" data-start="882.64" data-end="885.04" title="14:42">the lesser patrosal nerve. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="885.04"><span class="t-timestamp">14:45</span></div>
+  <div class="t-body"><span class="segment" data-start="885.04" data-end="888.8" title="14:45">The otic ganglion lies below the feramen ovale. </span><span class="segment" data-start="888.8" data-end="892.32" title="14:48">It supplies secreto-motor fibers to the parotid gland. </span><span class="segment" data-start="892.32" data-end="895.2" title="14:52">And the vagus? </span><span class="segment" data-start="895.2" data-end="901.64" title="14:55">The vagus conveys the most important and most widely distributed parasympathetic supply. </span><span class="segment" data-start="901.64" data-end="907.68" title="15:01">The parasympathetic neurons arise from the dorsal nucleus in the medulla oblongata, and are </span><span class="segment" data-start="907.68" data-end="913.16" title="15:07">carried with the vagus nerve through its long course, being distributed through the cardiac </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="913.16"><span class="t-timestamp">15:13</span></div>
+  <div class="t-body"><span class="segment" data-start="913.16" data-end="916.16" title="15:13">pulmonary and other organ plexi. </span><span class="segment" data-start="916.16" data-end="922.2" title="15:16">Again, the first order myelinated nerves pass through these plexi to small ganglia in </span><span class="segment" data-start="922.2" data-end="924.84" title="15:22">the walls of the target viscera. </span><span class="segment" data-start="924.84" data-end="930.68" title="15:24">It is responsible for parasympathetic autonomic tone in all abdominal and thoracic viscera </span><span class="segment" data-start="930.68" data-end="933.72" title="15:30">from the neck to the transverse colon. </span><span class="segment" data-start="933.72" data-end="939.36" title="15:33">The majority of the neurons running in the vagus are afferent, conveying sensory information </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="939.36"><span class="t-timestamp">15:39</span></div>
+  <div class="t-body"><span class="segment" data-start="939.36" data-end="941.2" title="15:39">from the viscera. </span><span class="segment" data-start="941.2" data-end="947.0" title="15:41">Significantly to us as anesthetists, it controls the motor and sensory supply to the larynx </span><span class="segment" data-start="947.0" data-end="949.0" title="15:47">and vocal cords. </span><span class="segment" data-start="949.0" data-end="952.76" title="15:49">Can you describe its path in more detail? </span><span class="segment" data-start="952.76" data-end="958.8" title="15:52">The vagus exits the skull via the jugular fraymon, where it enters the carotid sheath. </span><span class="segment" data-start="958.8" data-end="963.84" title="15:58">It runs, literally, to the carotid artery and internal jugular vein. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="963.84"><span class="t-timestamp">16:03</span></div>
+  <div class="t-body"><span class="segment" data-start="963.84" data-end="971.0" title="16:03">Both vagi give off a ricular, pharyngeal, superior laryngeal, and cervical branches as they run </span><span class="segment" data-start="971.0" data-end="972.52" title="16:11">down the sheath. </span><span class="segment" data-start="972.52" data-end="977.68" title="16:12">The right vagus enters the thoracic cavity, where the right recurrent laryngeal nerve loops </span><span class="segment" data-start="977.68" data-end="984.28" title="16:17">around the right subclavian artery to ascend between the esophagus and the trachea. </span><span class="segment" data-start="984.28" data-end="990.28" title="16:24">The right vagus crosses anterior to the right subclavian and runs posterior to the superior </span><span class="segment" data-start="990.28" data-end="992.28" title="16:30">venocaver. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="992.28"><span class="t-timestamp">16:32</span></div>
+  <div class="t-body"><span class="segment" data-start="992.28" data-end="998.04" title="16:32">It runs behind the right carina, contributes to the cardiac and pulmonary plexi, before </span><span class="segment" data-start="998.04" data-end="1003.68" title="16:38">forming the posterior vagal trunk at the lower end of the esophagus. </span><span class="segment" data-start="1003.68" data-end="1009.68" title="16:43">The left vagus nerve enters the thoracic cavity between the left carotid and the left subclavian </span><span class="segment" data-start="1009.68" data-end="1013.6" title="16:49">arteries and descends on the aortic arch. </span><span class="segment" data-start="1013.6" data-end="1019.72" title="16:53">The left recurrent laryngeal nerve branch hooks around the arch and ligamenta martyriosum </span><span class="segment" data-start="1019.72" data-end="1023.04" title="16:59">to ascend between the esophagus and trachea. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="1023.04"><span class="t-timestamp">17:03</span></div>
+  <div class="t-body"><span class="segment" data-start="1023.04" data-end="1028.6" title="17:03">As with the right vagus, it gives off branches to the cardiac, pulmonary, and esophageal </span><span class="segment" data-start="1028.6" data-end="1033.92" title="17:08">plexi, before continuing into the abdomen as the anterior vagal trunk, running with the </span><span class="segment" data-start="1033.92" data-end="1034.6" title="17:13">esophagus. </span></div>
+</div>
+</div>
+
+<div class="subtitle-bar">
+  <span class="subtitle-text empty" id="subtitle-text">Play audio to see live subtitles&#8230;</span>
+</div>
+
+<script>
+
+const audio    = document.getElementById('audio');
+const allSegs  = Array.from(document.querySelectorAll('.segment'));
+const allBlocks = Array.from(document.querySelectorAll('.t-block'));
+const subtitleEl = document.getElementById('subtitle-text');
+let activeSegEl   = null;
+let activeBlockEl = null;
+let searchMatches = [];
+let searchIdx     = 0;
+
+// Duration display
+audio.addEventListener('loadedmetadata', () => {
+  const m = Math.floor(audio.duration / 60);
+  const s = Math.floor(audio.duration %% 60).toString().padStart(2,'0');
+  document.getElementById('dur').textContent = m + ':' + s;
+});
+
+// Seek helper
+function seekTo(t) {
+  audio.currentTime = t;
+  audio.play();
+}
+
+// Block gutter click
+document.querySelectorAll('.t-gutter').forEach(g => {
+  g.addEventListener('click', () => seekTo(parseFloat(g.dataset.start)));
+});
+
+// Segment click
+allSegs.forEach(s => {
+  s.addEventListener('click', e => {
+    e.stopPropagation();
+    seekTo(parseFloat(s.dataset.start));
+  });
+});
+
+// Real-time tracking
+audio.addEventListener('timeupdate', () => {
+  const t = audio.currentTime;
+
+  // Find active segment (last one whose start <= t)
+  let found = null;
+  for (let i = allSegs.length - 1; i >= 0; i--) {
+    if (parseFloat(allSegs[i].dataset.start) <= t) { found = allSegs[i]; break; }
+  }
+
+  if (found && found !== activeSegEl) {
+    // Clear previous
+    if (activeSegEl) activeSegEl.classList.remove('active');
+    if (activeBlockEl) {
+      activeBlockEl.classList.remove('block-active');
+      const pg = activeBlockEl.querySelector('.t-gutter');
+      if (pg) pg.classList.remove('gutter-active');
+    }
+    // Set new
+    found.classList.add('active');
+    const block = found.closest('.t-block');
+    if (block) {
+      block.classList.add('block-active');
+      const g = block.querySelector('.t-gutter');
+      if (g) g.classList.add('gutter-active');
+      activeBlockEl = block;
+    }
+    activeSegEl = found;
+
+    // Update subtitle
+    subtitleEl.textContent = found.textContent.trim();
+    subtitleEl.classList.remove('empty');
+
+    // Auto-scroll (only when not searching)
+    if (!document.getElementById('search').value) {
+      found.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }
+});
+
+// Search
+const searchInput = document.getElementById('search');
+searchInput.addEventListener('input', runSearch);
+searchInput.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && searchMatches.length) {
+    searchMatches[searchIdx].classList.remove('search-current');
+    searchIdx = (searchIdx + 1) %% searchMatches.length;
+    const el = searchMatches[searchIdx];
+    el.classList.add('search-current');
+    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+});
+
+function runSearch() {
+  const q = searchInput.value.trim().toLowerCase();
+  allSegs.forEach(s => s.classList.remove('search-match','search-current'));
+  searchMatches = [];
+  if (!q) return;
+  allSegs.forEach(s => {
+    if (s.textContent.toLowerCase().includes(q)) {
+      s.classList.add('search-match');
+      searchMatches.push(s);
+    }
+  });
+  if (!searchMatches.length) return;
+  searchIdx = 0;
+  searchMatches[0].classList.add('search-current');
+  searchMatches[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+</script>
+</body>
+</html>

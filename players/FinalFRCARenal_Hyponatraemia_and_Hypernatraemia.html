@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Renal — Hyponatraemia and Hypernatraemia</title>
+<style>
+
+  :root {
+    --accent:    #0891b2;
+    --body-bg:   #f1f5f9;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: var(--body-bg);
+    color: #1e293b;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  /* ── Header ── */
+  .header {
+    background: #0f172a;
+    border-bottom: 3px solid var(--accent);
+    padding: 12px 20px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .header-left { flex: 1; min-width: 200px; }
+  .header h1 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #f1f5f9;
+    margin-bottom: 4px;
+    letter-spacing: 0.01em;
+  }
+  .header-sub {
+    font-size: 0.72rem;
+    color: #94a3b8;
+    font-style: italic;
+  }
+  audio {
+    height: 36px;
+    accent-color: var(--accent);
+    flex-shrink: 0;
+  }
+  .back-link {
+    font-size: 0.8rem;
+    color: #94a3b8;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .back-link:hover { color: #60a5fa; }
+
+  /* ── Toolbar ── */
+  .toolbar {
+    background: #1e293b;
+    padding: 7px 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-shrink: 0;
+    border-bottom: 1px solid #334155;
+  }
+  .toolbar input {
+    flex: 1;
+    max-width: 380px;
+    padding: 5px 11px;
+    border: 1px solid #475569;
+    border-radius: 6px;
+    background: #0f172a;
+    color: #e2e8f0;
+    font-size: 0.83rem;
+    outline: none;
+  }
+  .toolbar input:focus { border-color: var(--accent); }
+  .toolbar input::placeholder { color: #64748b; }
+  .stats {
+    font-size: 0.72rem;
+    color: #64748b;
+    white-space: nowrap;
+  }
+
+  /* ── Scroll area ── */
+  .scroll-area {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+  }
+  .scroll-area::-webkit-scrollbar { width: 6px; }
+  .scroll-area::-webkit-scrollbar-track { background: transparent; }
+  .scroll-area::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+
+  /* ── Subtitle bar ── */
+  .subtitle-bar {
+    background: #0f172a;
+    border-top: 2px solid var(--accent);
+    padding: 8px 20px;
+    flex-shrink: 0;
+    min-height: 42px;
+    display: flex;
+    align-items: center;
+  }
+  .subtitle-text {
+    font-size: 0.9rem;
+    color: #e2e8f0;
+    line-height: 1.5;
+    font-style: italic;
+  }
+  .subtitle-text.empty { color: #475569; }
+
+  /* ── Transcript blocks ── */
+  .t-block {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    margin-bottom: 14px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    display: flex;
+  }
+  .t-block.block-active {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px rgba(37,99,235,0.15);
+  }
+  .t-gutter {
+    background: #0f172a;
+    width: 52px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: 14px;
+    cursor: pointer;
+  }
+  .t-gutter:hover { background: #1e293b; }
+  .t-timestamp {
+    font-size: 0.7rem;
+    color: #64748b;
+    font-family: monospace;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+  .t-gutter.gutter-active .t-timestamp { color: var(--accent); }
+  .t-body {
+    flex: 1;
+    padding: 12px 16px;
+    line-height: 1.75;
+    font-size: 0.92rem;
+    color: #1e293b;
+  }
+
+  /* ── Segments ── */
+  .segment {
+    cursor: pointer;
+    border-radius: 3px;
+    transition: background 0.1s;
+  }
+  .segment:hover { background: #eff6ff; }
+  .segment.active {
+    background: #bfdbfe;
+    outline: 2px solid #3b82f6;
+    outline-offset: 1px;
+    border-radius: 3px;
+  }
+  .segment.search-match  { background: #fef9c3; }
+  .segment.search-current { background: #fde047; outline: 2px solid #ca8a04; }
+
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <h1>Renal — Hyponatraemia and Hypernatraemia</h1>
+    <div class="header-sub">Final FRCA &mdash; Exam Viva Simulation &mdash; Click any phrase to seek</div>
+  </div>
+  <audio id="audio" src="../FinalFRCARenal_Hyponatraemia_and_Hypernatraemia.mp3" controls preload="metadata"></audio>
+  <a class="back-link" href="index.html">&#8592; All Topics</a>
+</div>
+
+<div class="toolbar">
+  <input type="text" id="search" placeholder="Search transcript&#8230; (Enter = next match)">
+  <span class="stats" id="stats">106 segments &nbsp;|&nbsp; <span id="dur">loading&#8230;</span></span>
+</div>
+
+<div class="scroll-area" id="scroll-area">
+<div class="t-block">
+  <div class="t-gutter" data-start="0.0"><span class="t-timestamp">0:00</span></div>
+  <div class="t-body"><span class="segment" data-start="0.0" data-end="3.0" title="0:00">Hypernatremia and hypernatremia. </span><span class="segment" data-start="3.0" data-end="6.0" title="0:03">What are the causes of hypernatremia? </span><span class="segment" data-start="7.0" data-end="16.0" title="0:07">Hypernatremia is defined as a plasma sodium level of greater than 145 millimoles per liter. </span><span class="segment" data-start="17.0" data-end="26.0" title="0:17">This may be due to sodium excess, water depletion or sodium deficiency with proportionally greater water loss. </span><span class="segment" data-start="27.0" data-end="37.0" title="0:27">Causes of sodium excess include hyper-aldrosterinism, cushing's disease, and excessive administration of hypertonic saline. </span><span class="segment" data-start="38.0" data-end="45.0" title="0:38">Water depletion may be due to nephrogenic diabetes in sypedus, inadequate water intake and burns. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="46.0"><span class="t-timestamp">0:46</span></div>
+  <div class="t-body"><span class="segment" data-start="46.0" data-end="54.0" title="0:46">Water depletion greater than sodium loss might be caused by renal dioresis, secondary to osmotic diuretics, </span><span class="segment" data-start="54.0" data-end="58.0" title="0:54">for example, manitol, glucose or urea. </span><span class="segment" data-start="59.0" data-end="66.0" title="0:59">How does hyper-aldrestonearism, corms disease or cushing syndrome lead to hypernatremia? </span><span class="segment" data-start="67.0" data-end="75.0" title="1:07">Excessive mineralocorticoid levels lead to activation of aldosterone receptors in the distal convoluted tubule within the kidney. </span><span class="segment" data-start="76.0" data-end="81.0" title="1:16">This causes increased sodium retention with potassium loss. </span><span class="segment" data-start="81.0" data-end="86.0" title="1:21">Cushing's disease is caused by excess glucocorticoid excretion. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="87.0"><span class="t-timestamp">1:27</span></div>
+  <div class="t-body"><span class="segment" data-start="87.0" data-end="92.0" title="1:27">These hormones can have a weak mineralocorticoid action causing similar effect. </span><span class="segment" data-start="93.0" data-end="96.0" title="1:33">What can you tell me about diabetes in sypedus? </span><span class="segment" data-start="97.0" data-end="101.0" title="1:37">This question might form part of a clinical or physiology viable. </span><span class="segment" data-start="103.0" data-end="108.0" title="1:43">Diabetes in sypedus is due to impaired water reabsorption from the kidney. </span><span class="segment" data-start="108.0" data-end="113.0" title="1:48">It may be cranial or nephrogenic in origin. </span><span class="segment" data-start="113.0" data-end="120.0" title="1:53">Cranial diabetes in sypedus is caused by reduced ADH secretion from the posterior pituitary, </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="120.0"><span class="t-timestamp">2:00</span></div>
+  <div class="t-body"><span class="segment" data-start="120.0" data-end="126.0" title="2:00">and nephrogenic diabetes in sypedus is due to impaired response of the kidney to ADH. </span><span class="segment" data-start="127.0" data-end="135.0" title="2:07">Cranial diabetes in sypedus may develop after a head injury or infection, pituitary tumour or autoimmune disease. </span><span class="segment" data-start="136.0" data-end="146.0" title="2:16">Nephrogenic diabetes in sypedus may be due to infection of the kidney, hypokalemia or drugs such as lithium or domestic cyclin. </span><span class="segment" data-start="147.0" data-end="157.0" title="2:27">Investigations to confirm diabetes in sypedus should reveal hypernatremia with high plasma osmolality and low urine osmolality. </span><span class="segment" data-start="158.0" data-end="162.0" title="2:38">A water deprivation test should confirm the diagnosis. </span><span class="segment" data-start="163.0" data-end="168.0" title="2:43">A normal response to water deprivation would be an increase in urine osmolality, </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="168.0"><span class="t-timestamp">2:48</span></div>
+  <div class="t-body"><span class="segment" data-start="168.0" data-end="174.0" title="2:48">but a patient with diabetes in sypedus would have an abnormally dilute urine. </span><span class="segment" data-start="175.0" data-end="181.0" title="2:55">In cranial diabetes in sypedus, the administration of Desmopressin, synthetic ADH, </span><span class="segment" data-start="181.0" data-end="184.0" title="3:01">would cause an increase in urine osmolality, </span><span class="segment" data-start="184.0" data-end="189.0" title="3:04">whereas with an nephrogenic diabetes in sypedus, no such response should occur. </span><span class="segment" data-start="190.0" data-end="196.0" title="3:10">The treatments would depend on finding the cause of the diabetes in sypedus and attempting to cracked this. </span><span class="segment" data-start="196.0" data-end="202.0" title="3:16">Intravenous hypotonic fluids and Desmopressin might be required. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="202.0"><span class="t-timestamp">3:22</span></div>
+  <div class="t-body"><span class="segment" data-start="202.0" data-end="207.0" title="3:22">What other changes in sodium regulation might you observe after a head injury? </span><span class="segment" data-start="207.0" data-end="214.0" title="3:27">This question has the potential to get very confusing. Stick to basic physiology. </span><span class="segment" data-start="215.0" data-end="221.0" title="3:35">Both SIADH and cerebral salt wasting syndrome might occur. </span><span class="segment" data-start="221.0" data-end="225.0" title="3:41">In both of these diseases, the sodium level may fall. </span><span class="segment" data-start="225.0" data-end="236.0" title="3:45">In SIADH, the action of excess ADH would increase water reabsorption, causing a dilution or hyponatremia with increased total body water. </span><span class="segment" data-start="237.0" data-end="243.0" title="3:57">In cerebral salt wasting syndrome, excessive sodium and water loss occur together. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="243.0"><span class="t-timestamp">4:03</span></div>
+  <div class="t-body"><span class="segment" data-start="243.0" data-end="248.0" title="4:03">Moving back to hyponatremia, what are its effects? </span><span class="segment" data-start="249.0" data-end="255.0" title="4:09">The symptoms of hyponatremia depend upon the rate of rise of the sodium level. </span><span class="segment" data-start="255.0" data-end="266.0" title="4:15">The patients may present with effects of dehydration, including thirst, nausea, tachycardia, hypotension, confusion and lethargy. </span><span class="segment" data-start="266.0" data-end="276.0" title="4:26">Central nervous system effects may also include seizures, muscle spasms, hyperreflexia and possibly intracranial hemorrhage. </span><span class="segment" data-start="276.0" data-end="284.0" title="4:36">The patient may be hyperthermic. Pre-renal failure may occur due to a fall in cardiac output. </span><span class="segment" data-start="284.0" data-end="289.0" title="4:44">How should hyponatremia be treated? </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="289.0"><span class="t-timestamp">4:49</span></div>
+  <div class="t-body"><span class="segment" data-start="289.0" data-end="293.0" title="4:49">The treatment of hyponatremia depends on the cause. </span><span class="segment" data-start="293.0" data-end="298.0" title="4:53">If water excess is suspected, then diuretics would be appropriate. </span><span class="segment" data-start="298.0" data-end="306.0" title="4:58">If water depletion is evident, then rehydration with fluids containing minimal sodium would be required. </span><span class="segment" data-start="306.0" data-end="313.0" title="5:06">If sodium depletion is the cause, then treatment with 0.9% saline is necessary. </span><span class="segment" data-start="313.0" data-end="319.0" title="5:13">Patients suffering from diabetes in cipadas might need desmopressin. </span><span class="segment" data-start="319.0" data-end="324.0" title="5:19">What are the anaesthetic implications of hyponatremia? </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="324.0"><span class="t-timestamp">5:24</span></div>
+  <div class="t-body"><span class="segment" data-start="324.0" data-end="338.0" title="5:24">Elective surgery should be postponed if the sodium level is above 155 millimoles per litre due to the potential effects of sodium changes in intracerebral fluid compartments. </span><span class="segment" data-start="338.0" data-end="349.0" title="5:38">If the patient requires emergency surgery, then a central line should be placed and cautious correction of the sodium level with regular checks should be commenced. </span><span class="segment" data-start="349.0" data-end="353.0" title="5:49">What's the cause of hyponatremia? </span><span class="segment" data-start="353.0" data-end="360.0" title="5:53">Hyponatremia is defined as a plasma sodium level below 135 millimoles per litre. </span><span class="segment" data-start="360.0" data-end="373.0" title="6:00">This may be due to water excess, sodium redistribution, water excess disproportionate to sodium excess, or water depletion with greater sodium deficiency. </span><span class="segment" data-start="373.0" data-end="384.0" title="6:13">Water excess may be further split into causes of excess administration of hypotonic IV fluids, drinking too much water or TUR syndrome, </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="384.0"><span class="t-timestamp">6:24</span></div>
+  <div class="t-body"><span class="segment" data-start="384.0" data-end="395.0" title="6:24">or reduced water excretion in the case of SIADH, drugs such as oxytocin, or the normal physiological response to surgery. </span><span class="segment" data-start="395.0" data-end="405.0" title="6:35">Unbalanced sodium and water excess may be evident in patients with nephrotic syndrome, heart failure, or hepatic failure. </span><span class="segment" data-start="405.0" data-end="422.0" title="6:45">Unbalanced sodium and water deficiency is predominantly due to renal compromise due to diuretics, renal tubular acidosis, or hypodrenalism, but may be due to diarrhea and vomiting or pancreatitis. </span><span class="segment" data-start="422.0" data-end="431.0" title="7:02">Finally, redistribution of sodium into the intracellular space may be found in patients with hypoglycemia. </span><span class="segment" data-start="431.0" data-end="435.0" title="7:11">What are the effects of hyponatremia? </span><span class="segment" data-start="435.0" data-end="442.0" title="7:15">The speed of onset will have some impact on the speed and severity of the effects of hyponatremia. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="442.0"><span class="t-timestamp">7:22</span></div>
+  <div class="t-body"><span class="segment" data-start="442.0" data-end="452.0" title="7:22">Plasma sodium levels of 125 to 130 millimoles per litre tend to present with gastrointestinal upset. </span><span class="segment" data-start="452.0" data-end="464.0" title="7:32">Whilst levels below 125 millimoles per litre lead to neurological symptoms of lethargy, headache, seizures, psychosis and coma, </span><span class="segment" data-start="464.0" data-end="469.0" title="7:44">respiratory depression and muscle weakness may also occur. </span><span class="segment" data-start="469.0" data-end="473.0" title="7:49">How should hyponatremia be treated? </span><span class="segment" data-start="473.0" data-end="480.0" title="7:53">Management is aimed at treating the underlying cause and cautious correction of the hyponatremia. </span><span class="segment" data-start="480.0" data-end="485.0" title="8:00">This may include fluid restriction and diuretics. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="485.0"><span class="t-timestamp">8:05</span></div>
+  <div class="t-body"><span class="segment" data-start="485.0" data-end="490.0" title="8:05">In cases of SIADH, Demeculocycline may offer some relief. </span><span class="segment" data-start="490.0" data-end="501.0" title="8:10">The administration of hypotonic saline should be carefully considered due to the risk of inadvertent over or rapid correction. </span><span class="segment" data-start="501.0" data-end="507.0" title="8:21">Rapid correction of hyponatremia may lead to central pontine myelinolysis. </span><span class="segment" data-start="507.0" data-end="513.0" title="8:27">What are the anaesthetic implications of hyponatremia? </span><span class="segment" data-start="513.0" data-end="525.0" title="8:33">Severe hyponatremia, i.e. a sodium level of less than 125 millimoles per litre, is a contraindication to elective procedures. </span><span class="segment" data-start="525.0" data-end="536.0" title="8:45">In emergency cases, severe hyponatremia should be corrected cautiously with ECG monitoring and regular plasma levels to help guide resuscitation. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="536.0"><span class="t-timestamp">8:56</span></div>
+  <div class="t-body"><span class="segment" data-start="536.0" data-end="547.0" title="8:56">Invasive arterial and central venous pressure monitoring may also be indicated and to the patient nursed in a high dependency unit or intensive care. </span><span class="segment" data-start="547.0" data-end="552.0" title="9:07">What can you tell me about transuretial resection of the prostate or terps syndrome? </span><span class="segment" data-start="552.0" data-end="556.0" title="9:12">This is a surgical complication that you have to be aware of. </span><span class="segment" data-start="556.0" data-end="565.0" title="9:16">Try and explain the cause of the problem as this will indicate to the examiner that you really understand the condition. </span><span class="segment" data-start="565.0" data-end="573.0" title="9:25">TURP syndrome occurs in about 5% of operations of transuretial resection of the prostate. </span><span class="segment" data-start="573.0" data-end="587.0" title="9:33">The resection of vascular prostate tissue opens venous sinuses which allow absorption of hypotonic glycine 1.5% irrigation fluid into the systemic circulation. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="587.0"><span class="t-timestamp">9:47</span></div>
+  <div class="t-body"><span class="segment" data-start="587.0" data-end="598.0" title="9:47">The volume of fluid absorbed depends on the duration of the procedure, hydrostatic pressure of the irrigation fluid and vascularity of the prostate. </span><span class="segment" data-start="598.0" data-end="602.0" title="9:58">What are the features of TURP syndrome? </span><span class="segment" data-start="602.0" data-end="606.0" title="10:02">There are three classical features of TURP syndrome. </span><span class="segment" data-start="606.0" data-end="616.0" title="10:06">Firstly, a dilutional hyponatremia, secondly fluid overload and thirdly glycine toxicity. </span><span class="segment" data-start="616.0" data-end="624.0" title="10:16">The symptoms and signs of TURP syndrome are predominantly cardiovascular and neurological. </span><span class="segment" data-start="624.0" data-end="635.0" title="10:24">Cardiovascular effects include tachycardia and hypertension followed by hypotension, angina and cardiovascular collapse. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="635.0"><span class="t-timestamp">10:35</span></div>
+  <div class="t-body"><span class="segment" data-start="635.0" data-end="642.0" title="10:35">Neurological features include confusion, convulsions and coma. </span><span class="segment" data-start="642.0" data-end="655.0" title="10:42">A regional anaesthetic technique within a wake patient potentially allows the anesthetist to monitor the neurological features more closely when they might be masked by general anesthesia. </span><span class="segment" data-start="655.0" data-end="659.0" title="10:55">How would you treat TURP syndrome? </span><span class="segment" data-start="659.0" data-end="664.0" title="10:59">Treatment involves recognition and resuscitation of the patient. </span><span class="segment" data-start="664.0" data-end="670.0" title="11:04">Liaison with the surgeon to terminate surgery as soon as possible is essential. </span><span class="segment" data-start="670.0" data-end="680.0" title="11:10">Initial management would involve an airway breathing and circulation approach with assessment and treatment occurring simultaneously. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="680.0"><span class="t-timestamp">11:20</span></div>
+  <div class="t-body"><span class="segment" data-start="680.0" data-end="687.0" title="11:20">If the patient has airway compromised, the airway will need to be secured with an endratrochial tube. </span><span class="segment" data-start="687.0" data-end="695.0" title="11:27">Breathing complications such as pulmonary edema may also necessitate intubation and controlled ventilation. </span><span class="segment" data-start="695.0" data-end="699.0" title="11:35">Oxygen should be applied to the awake patient. </span><span class="segment" data-start="699.0" data-end="707.0" title="11:39">Treatment of fluid overload and hyponatremia involves stopping IV fluids and commencing fluid restriction. </span><span class="segment" data-start="707.0" data-end="714.0" title="11:47">Frusomide will promote a diuresis and is indicated if pulmonary edema is present. </span><span class="segment" data-start="714.0" data-end="721.0" title="11:54">Antirithmics and vasopressors may be needed to combat arrhythmias and hypotension. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="721.0"><span class="t-timestamp">12:01</span></div>
+  <div class="t-body"><span class="segment" data-start="721.0" data-end="733.0" title="12:01">Hyponatremia causing end-kephalopathy will require cautious correction of plasma sodium levels with fluid restriction and possibly hypotonic saline. </span><span class="segment" data-start="733.0" data-end="737.0" title="12:13">Invasive patient monitoring should be considered. </span><span class="segment" data-start="737.0" data-end="748.0" title="12:17">Due to the potential development of seizures and cerebral edema, anticonvulsive therapy and measures to reduce raised intra cranial pressure may be instituted. </span><span class="segment" data-start="748.0" data-end="751.0" title="12:28">Can you tell me more about hypotonic saline? </span><span class="segment" data-start="751.0" data-end="760.0" title="12:31">Hypotonic saline is indicated when several symptoms develop or serum sodium levels fall below 120 millimoles per liter. </span><span class="segment" data-start="760.0" data-end="767.0" title="12:40">Ideally, sodium levels should rise by 1 millimole per hour and not more than 20 millimoles over 48 hours. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="767.0"><span class="t-timestamp">12:47</span></div>
+  <div class="t-body"><span class="segment" data-start="767.0" data-end="776.0" title="12:47">Once sodium levels reach 125 millimoles per liter or symptom-susate, hypotonic saline should be discontinued. </span><span class="segment" data-start="776.0" data-end="780.0" title="12:56">The patient will need to be closely monitored during this treatment. </span><span class="segment" data-start="780.0" data-end="792.0" title="13:00">A suggested infusion regimen is 1 mill per kilogram per hour of 3% saline to produce a rise of 1 to 2 millimoles per liter per hour in a 70 kilo male adult. </span><span class="segment" data-start="792.0" data-end="800.0" title="13:12">I would need to check the correct infusion rate for the specific patient's weight before instigating treatment. </span></div>
+</div>
+</div>
+
+<div class="subtitle-bar">
+  <span class="subtitle-text empty" id="subtitle-text">Play audio to see live subtitles&#8230;</span>
+</div>
+
+<script>
+
+const audio    = document.getElementById('audio');
+const allSegs  = Array.from(document.querySelectorAll('.segment'));
+const allBlocks = Array.from(document.querySelectorAll('.t-block'));
+const subtitleEl = document.getElementById('subtitle-text');
+let activeSegEl   = null;
+let activeBlockEl = null;
+let searchMatches = [];
+let searchIdx     = 0;
+
+// Duration display
+audio.addEventListener('loadedmetadata', () => {
+  const m = Math.floor(audio.duration / 60);
+  const s = Math.floor(audio.duration %% 60).toString().padStart(2,'0');
+  document.getElementById('dur').textContent = m + ':' + s;
+});
+
+// Seek helper
+function seekTo(t) {
+  audio.currentTime = t;
+  audio.play();
+}
+
+// Block gutter click
+document.querySelectorAll('.t-gutter').forEach(g => {
+  g.addEventListener('click', () => seekTo(parseFloat(g.dataset.start)));
+});
+
+// Segment click
+allSegs.forEach(s => {
+  s.addEventListener('click', e => {
+    e.stopPropagation();
+    seekTo(parseFloat(s.dataset.start));
+  });
+});
+
+// Real-time tracking
+audio.addEventListener('timeupdate', () => {
+  const t = audio.currentTime;
+
+  // Find active segment (last one whose start <= t)
+  let found = null;
+  for (let i = allSegs.length - 1; i >= 0; i--) {
+    if (parseFloat(allSegs[i].dataset.start) <= t) { found = allSegs[i]; break; }
+  }
+
+  if (found && found !== activeSegEl) {
+    // Clear previous
+    if (activeSegEl) activeSegEl.classList.remove('active');
+    if (activeBlockEl) {
+      activeBlockEl.classList.remove('block-active');
+      const pg = activeBlockEl.querySelector('.t-gutter');
+      if (pg) pg.classList.remove('gutter-active');
+    }
+    // Set new
+    found.classList.add('active');
+    const block = found.closest('.t-block');
+    if (block) {
+      block.classList.add('block-active');
+      const g = block.querySelector('.t-gutter');
+      if (g) g.classList.add('gutter-active');
+      activeBlockEl = block;
+    }
+    activeSegEl = found;
+
+    // Update subtitle
+    subtitleEl.textContent = found.textContent.trim();
+    subtitleEl.classList.remove('empty');
+
+    // Auto-scroll (only when not searching)
+    if (!document.getElementById('search').value) {
+      found.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }
+});
+
+// Search
+const searchInput = document.getElementById('search');
+searchInput.addEventListener('input', runSearch);
+searchInput.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && searchMatches.length) {
+    searchMatches[searchIdx].classList.remove('search-current');
+    searchIdx = (searchIdx + 1) %% searchMatches.length;
+    const el = searchMatches[searchIdx];
+    el.classList.add('search-current');
+    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+});
+
+function runSearch() {
+  const q = searchInput.value.trim().toLowerCase();
+  allSegs.forEach(s => s.classList.remove('search-match','search-current'));
+  searchMatches = [];
+  if (!q) return;
+  allSegs.forEach(s => {
+    if (s.textContent.toLowerCase().includes(q)) {
+      s.classList.add('search-match');
+      searchMatches.push(s);
+    }
+  });
+  if (!searchMatches.length) return;
+  searchIdx = 0;
+  searchMatches[0].classList.add('search-current');
+  searchMatches[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+</script>
+</body>
+</html>

@@ -1,0 +1,5 @@
+_transcripts_cache/
+.claude/
+*.pdf
+__pycache__/
+*.pyc

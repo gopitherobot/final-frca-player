@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cardiac Anaesthesia — Cardiomyopathy</title>
+<style>
+
+  :root {
+    --accent:    #ef4444;
+    --body-bg:   #f1f5f9;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: var(--body-bg);
+    color: #1e293b;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  /* ── Header ── */
+  .header {
+    background: #0f172a;
+    border-bottom: 3px solid var(--accent);
+    padding: 12px 20px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .header-left { flex: 1; min-width: 200px; }
+  .header h1 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #f1f5f9;
+    margin-bottom: 4px;
+    letter-spacing: 0.01em;
+  }
+  .header-sub {
+    font-size: 0.72rem;
+    color: #94a3b8;
+    font-style: italic;
+  }
+  audio {
+    height: 36px;
+    accent-color: var(--accent);
+    flex-shrink: 0;
+  }
+  .back-link {
+    font-size: 0.8rem;
+    color: #94a3b8;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .back-link:hover { color: #60a5fa; }
+
+  /* ── Toolbar ── */
+  .toolbar {
+    background: #1e293b;
+    padding: 7px 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-shrink: 0;
+    border-bottom: 1px solid #334155;
+  }
+  .toolbar input {
+    flex: 1;
+    max-width: 380px;
+    padding: 5px 11px;
+    border: 1px solid #475569;
+    border-radius: 6px;
+    background: #0f172a;
+    color: #e2e8f0;
+    font-size: 0.83rem;
+    outline: none;
+  }
+  .toolbar input:focus { border-color: var(--accent); }
+  .toolbar input::placeholder { color: #64748b; }
+  .stats {
+    font-size: 0.72rem;
+    color: #64748b;
+    white-space: nowrap;
+  }
+
+  /* ── Scroll area ── */
+  .scroll-area {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+  }
+  .scroll-area::-webkit-scrollbar { width: 6px; }
+  .scroll-area::-webkit-scrollbar-track { background: transparent; }
+  .scroll-area::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+
+  /* ── Subtitle bar ── */
+  .subtitle-bar {
+    background: #0f172a;
+    border-top: 2px solid var(--accent);
+    padding: 8px 20px;
+    flex-shrink: 0;
+    min-height: 42px;
+    display: flex;
+    align-items: center;
+  }
+  .subtitle-text {
+    font-size: 0.9rem;
+    color: #e2e8f0;
+    line-height: 1.5;
+    font-style: italic;
+  }
+  .subtitle-text.empty { color: #475569; }
+
+  /* ── Transcript blocks ── */
+  .t-block {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    margin-bottom: 14px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    display: flex;
+  }
+  .t-block.block-active {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px rgba(37,99,235,0.15);
+  }
+  .t-gutter {
+    background: #0f172a;
+    width: 52px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: 14px;
+    cursor: pointer;
+  }
+  .t-gutter:hover { background: #1e293b; }
+  .t-timestamp {
+    font-size: 0.7rem;
+    color: #64748b;
+    font-family: monospace;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+  .t-gutter.gutter-active .t-timestamp { color: var(--accent); }
+  .t-body {
+    flex: 1;
+    padding: 12px 16px;
+    line-height: 1.75;
+    font-size: 0.92rem;
+    color: #1e293b;
+  }
+
+  /* ── Segments ── */
+  .segment {
+    cursor: pointer;
+    border-radius: 3px;
+    transition: background 0.1s;
+  }
+  .segment:hover { background: #eff6ff; }
+  .segment.active {
+    background: #bfdbfe;
+    outline: 2px solid #3b82f6;
+    outline-offset: 1px;
+    border-radius: 3px;
+  }
+  .segment.search-match  { background: #fef9c3; }
+  .segment.search-current { background: #fde047; outline: 2px solid #ca8a04; }
+
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <h1>Cardiac Anaesthesia — Cardiomyopathy</h1>
+    <div class="header-sub">Final FRCA &mdash; Exam Viva Simulation &mdash; Click any phrase to seek</div>
+  </div>
+  <audio id="audio" src="../FinalFRCACardiac_Anaesthesia_Cardiomyopathy.mp3" controls preload="metadata"></audio>
+  <a class="back-link" href="index.html">&#8592; All Topics</a>
+</div>
+
+<div class="toolbar">
+  <input type="text" id="search" placeholder="Search transcript&#8230; (Enter = next match)">
+  <span class="stats" id="stats">114 segments &nbsp;|&nbsp; <span id="dur">loading&#8230;</span></span>
+</div>
+
+<div class="scroll-area" id="scroll-area">
+<div class="t-block">
+  <div class="t-gutter" data-start="0.0"><span class="t-timestamp">0:00</span></div>
+  <div class="t-body"><span class="segment" data-start="0.0" data-end="2.0" title="0:00">Cardiomyopathy </span><span class="segment" data-start="2.0" data-end="7.8" title="0:02">This topic, as with many, may start in very broad general terms. </span><span class="segment" data-start="7.8" data-end="11.4" title="0:07">Be prepared to have a simple classification ready. </span><span class="segment" data-start="11.4" data-end="17.0" title="0:11">Although the three classical groups of cardiomyopathy are straightforward and known by most, we have </span><span class="segment" data-start="17.0" data-end="23.28" title="0:17">included the two other classifications, according to the WHO criteria, for completeness. </span><span class="segment" data-start="23.28" data-end="27.6" title="0:23">Tell me what you know about cardiomyopathy's. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="27.6"><span class="t-timestamp">0:27</span></div>
+  <div class="t-body"><span class="segment" data-start="27.6" data-end="31.92" title="0:27">A cardiomyopathy is a disease of the heart muscle. </span><span class="segment" data-start="31.92" data-end="37.72" title="0:31">Although the World Health Organization defines them as being cardiac muscle diseases without </span><span class="segment" data-start="37.72" data-end="44.24" title="0:37">an apparent precipitating cause, classically, they have been described as being idiopathic </span><span class="segment" data-start="44.24" data-end="47.92" title="0:44">or secondary to other disease processes. </span><span class="segment" data-start="47.92" data-end="53.16" title="0:47">The five main categories of cardiomyopathy's, according to the World Health Organization </span><span class="segment" data-start="53.16" data-end="60.8" title="0:53">and International Society and Federation of Cardiology Task Force, are dilated cardiomyopathy, </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="60.8"><span class="t-timestamp">1:00</span></div>
+  <div class="t-body"><span class="segment" data-start="60.8" data-end="67.88" title="1:00">hyper-traffic cardiomyopathy, restrictive cardiomyopathy, erythmogenic right ventricular </span><span class="segment" data-start="67.88" data-end="74.92" title="1:07">cardiomyopathy and left ventricular non-compaction cardiomyopathy. </span><span class="segment" data-start="74.92" data-end="80.04" title="1:14">Although they vary in their pathophysiology, any of the cardiomyopathy's can present with </span><span class="segment" data-start="80.04" data-end="83.68" title="1:20">erythmias and or heart failure. </span><span class="segment" data-start="83.68" data-end="89.56" title="1:23">The examiner may then ask you to focus on one particular type of cardiomyopathy. </span><span class="segment" data-start="89.56" data-end="94.32" title="1:29">Tell me about dilated cardiomyopathy. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="94.32"><span class="t-timestamp">1:34</span></div>
+  <div class="t-body"><span class="segment" data-start="94.32" data-end="99.8" title="1:34">Dilated cardiomyopathy has a prevalence of one in 2,500 people. </span><span class="segment" data-start="99.8" data-end="106.36" title="1:39">It is characterized by ventricular chamber enlargement, a normal left ventricle wall thickness </span><span class="segment" data-start="106.36" data-end="108.96" title="1:46">and systolic dysfunction. </span><span class="segment" data-start="108.96" data-end="113.6" title="1:48">All of which leads to a progressive decrease in effective contractile function of the </span><span class="segment" data-start="113.6" data-end="117.52" title="1:53">macardium and consequently heart failure. </span><span class="segment" data-start="117.52" data-end="124.88" title="1:57">The sequely of dilated cardiomyopathy include ventricular and superventricular erythmias, </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="124.88"><span class="t-timestamp">2:04</span></div>
+  <div class="t-body"><span class="segment" data-start="124.88" data-end="130.72" title="2:04">conduction system abnormalities, mitral regurgitation and thromboembolism. </span><span class="segment" data-start="130.72" data-end="138.52" title="2:10">The low cardiac output state also leads to activation of the renin and utensin system. </span><span class="segment" data-start="138.52" data-end="144.84" title="2:18">Eventually it leads to heart failure and or sudden cardiac death. </span><span class="segment" data-start="144.84" data-end="150.32" title="2:24">Dilated cardiomyopathy has a familial cause in 20 to 30% of cases. </span><span class="segment" data-start="150.32" data-end="157.84" title="2:30">It can also be caused by alcohol, infection for instance with a coccytivirus or HIV, </span><span class="segment" data-start="157.84" data-end="165.68" title="2:37">high cardiac output states such as pregnancy, thyrotoxicosis or anemia, drugs such as heavy </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="165.68"><span class="t-timestamp">2:45</span></div>
+  <div class="t-body"><span class="segment" data-start="165.68" data-end="172.12" title="2:45">metals and cocaine, thiamine deficiency and fiochromositomas. </span><span class="segment" data-start="172.12" data-end="176.6" title="2:52">The prognosis of dilated cardiomyopathy is quite poor. </span><span class="segment" data-start="176.6" data-end="182.12" title="2:56">The Framingham study showed that life expectancy is inversely proportional to the severity </span><span class="segment" data-start="182.12" data-end="184.76" title="3:02">of the disease at presentation. </span><span class="segment" data-start="184.76" data-end="192.8" title="3:04">The 5-year survival rate is between 40 and 50% once heart failure has been diagnosed. </span><span class="segment" data-start="192.8" data-end="198.08" title="3:12">Tell me about hypertrophic cardiomyopathy or HCM. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="198.08"><span class="t-timestamp">3:18</span></div>
+  <div class="t-body"><span class="segment" data-start="198.08" data-end="205.32" title="3:18">True hypertrophic cardiomyopathy is an inappropriate and asymmetrical change in the myocardium in </span><span class="segment" data-start="205.32" data-end="209.76" title="3:25">the absence of a stimulus which would usually cause hypertrophy. </span><span class="segment" data-start="209.76" data-end="215.96" title="3:29">It is the most common purely genetic cardiovascular disease and has a prevalence of approximately </span><span class="segment" data-start="215.96" data-end="218.76" title="3:35">one in 500 people. </span><span class="segment" data-start="218.76" data-end="226.16" title="3:38">60% of unexplained left ventricular hypertrophy is caused by hypertrophic cardiomyopathy. </span><span class="segment" data-start="226.16" data-end="232.16" title="3:46">It carries a mortality rate of 1% per year and is the most common cause of sudden cardiac </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="232.16"><span class="t-timestamp">3:52</span></div>
+  <div class="t-body"><span class="segment" data-start="232.16" data-end="235.6" title="3:52">death in young people. </span><span class="segment" data-start="235.6" data-end="242.0" title="3:55">Femennial hypertrophic cardiomyopathy occurs because of defects in the sarcomeric proteins. </span><span class="segment" data-start="242.0" data-end="249.4" title="4:02">This in turn leads to myocardial dysray and fibrosis, even in seemingly unaffected areas. </span><span class="segment" data-start="249.4" data-end="255.52" title="4:09">These areas can be pro-arithmogenic and lead to ventricular dysrhythmias. </span><span class="segment" data-start="255.52" data-end="262.28" title="4:15">Hypertrophic cardiomyopathy causes ventricular hypertrophy with preserved systolic function, </span><span class="segment" data-start="262.28" data-end="268.8" title="4:22">poor ventricular compliance, diastolic dysfunction and septal involvement without flow tract </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="268.8"><span class="t-timestamp">4:28</span></div>
+  <div class="t-body"><span class="segment" data-start="268.8" data-end="273.32" title="4:28">of obstruction in approximately 20% of cases. </span><span class="segment" data-start="273.32" data-end="279.72" title="4:33">The disease can be asymptomatic or can present in a range of ways, including with dysrhythmias </span><span class="segment" data-start="279.72" data-end="284.88" title="4:39">and jynar, heart failure or sudden death. </span><span class="segment" data-start="284.88" data-end="291.16" title="4:44">Myocardial ischemia can develop because of ventricular wall hypertrophy, elevated diastolic </span><span class="segment" data-start="291.16" data-end="295.32" title="4:51">pressures and increased oxygen demand. </span><span class="segment" data-start="295.32" data-end="301.92" title="4:55">The left ventricular outflow obstruction occurs because of interventricular septal hypertrophy. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="301.92"><span class="t-timestamp">5:01</span></div>
+  <div class="t-body"><span class="segment" data-start="301.92" data-end="307.36" title="5:01">The degree of outflow obstruction is often dynamic and can be affected by the patient's </span><span class="segment" data-start="307.36" data-end="309.92" title="5:07">volume status. </span><span class="segment" data-start="309.92" data-end="316.0" title="5:09">Predictors of sudden cardiac death in hypertrophic cardiomyopathy include having a first degree </span><span class="segment" data-start="316.0" data-end="322.84" title="5:16">relative that died of sudden cardiac death, unexplained syncopy, significant ventricular </span><span class="segment" data-start="322.84" data-end="330.96" title="5:22">ectopics, massive left ventricular hypertrophy and presence of the malignant genotype. </span><span class="segment" data-start="330.96" data-end="336.2" title="5:30">Tell me about restrictive cardiomyopathy or arcien. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="336.2"><span class="t-timestamp">5:36</span></div>
+  <div class="t-body"><span class="segment" data-start="336.2" data-end="339.96" title="5:36">This is the rarest of the three main cardiomyopathy's. </span><span class="segment" data-start="339.96" data-end="345.28" title="5:39">It is a progressive condition that leads to low cardiac output heart failure, liver </span><span class="segment" data-start="345.28" data-end="349.16" title="5:45">cirrhosis, thromboembolism and death. </span><span class="segment" data-start="349.16" data-end="355.76" title="5:49">As is implied by its name, the pathophysiology involves impaired diastolic filling which then </span><span class="segment" data-start="355.76" data-end="360.4" title="5:55">leads to pulmonary venous congestion and dilated atria. </span><span class="segment" data-start="360.4" data-end="365.2" title="6:00">However, normal systolic function is preserved. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="365.2"><span class="t-timestamp">6:05</span></div>
+  <div class="t-body"><span class="segment" data-start="365.2" data-end="369.04" title="6:05">Its causes can be idiopathic or secondary. </span><span class="segment" data-start="369.04" data-end="375.84" title="6:09">Secondary causes of restrictive cardiomyopathy include infiltrative diseases such as sarcoidosis </span><span class="segment" data-start="375.84" data-end="378.2" title="6:15">or amyloidosis. </span><span class="segment" data-start="378.2" data-end="388.24" title="6:18">Which diseases such as hemochromatosis, myocarditis, metastatic cancer or cardiac transplantation. </span><span class="segment" data-start="388.24" data-end="395.08" title="6:28">The commonest cause of restrictive cardiomyopathy worldwide is endomyocardial fibrosis. </span><span class="segment" data-start="395.08" data-end="401.2" title="6:35">This disease affects young adults in tropical and subtropical Africa. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="401.2"><span class="t-timestamp">6:41</span></div>
+  <div class="t-body"><span class="segment" data-start="401.2" data-end="406.84" title="6:41">The prognosis for restrictive cardiomyopathy depends largely on its cause. </span><span class="segment" data-start="406.84" data-end="413.28" title="6:46">The outlook for patients with restrictive cardiomyopathy secondary to amyloidosis is significantly </span><span class="segment" data-start="413.28" data-end="416.84" title="6:53">worse than those who have well managed hemochromatosis. </span><span class="segment" data-start="416.84" data-end="422.24" title="6:56">Death is usually due to progressive low cardiac output failure. </span><span class="segment" data-start="422.24" data-end="426.88" title="7:02">It is unlikely that you will be asked about any of the following two diseases. </span><span class="segment" data-start="426.88" data-end="429.88" title="7:06">They are here largely for completeness. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="429.88"><span class="t-timestamp">7:09</span></div>
+  <div class="t-body"><span class="segment" data-start="429.88" data-end="434.96" title="7:09">Tell me about a rhythmic genic right ventricular dysplasia. </span><span class="segment" data-start="434.96" data-end="440.44" title="7:14">This is a rare condition in which the right ventricular tissue becomes replaced by adipose </span><span class="segment" data-start="440.44" data-end="442.72" title="7:20">and fibrotic tissue. </span><span class="segment" data-start="442.72" data-end="449.08" title="7:22">This leads to ventricular arrhythmias, loss of function and or sudden cardiac death. </span><span class="segment" data-start="449.08" data-end="455.12" title="7:29">It has a prevalence of one in 5,000 people with a largely genetic predisposition. </span><span class="segment" data-start="455.12" data-end="460.08" title="7:35">It also has a striking incidence in athletes. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="460.08"><span class="t-timestamp">7:40</span></div>
+  <div class="t-body"><span class="segment" data-start="460.08" data-end="464.08" title="7:40">It is usually present in their 20s to early 40s. </span><span class="segment" data-start="464.08" data-end="469.24" title="7:44">80% will present with either syncopy or sudden cardiac death. </span><span class="segment" data-start="469.24" data-end="474.92" title="7:49">Other manifestations include palpitations or rarely chest pains. </span><span class="segment" data-start="474.92" data-end="481.28" title="7:54">Sequally of the fibrotic changes include a left bundle branch block on ECG, ventricular </span><span class="segment" data-start="481.28" data-end="488.08" title="8:01">tachycardia, a dilated right ventricle, often aneurysmal and involvement of the right ventricle </span><span class="segment" data-start="488.08" data-end="489.88" title="8:08">outflow tract. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="489.88"><span class="t-timestamp">8:09</span></div>
+  <div class="t-body"><span class="segment" data-start="489.88" data-end="495.4" title="8:09">This progresses to affect the left ventricle in 50% of patients. </span><span class="segment" data-start="495.4" data-end="501.4" title="8:15">Diagnosis is by echocardiography and cardiac MRI and the fulfilling of a certain number </span><span class="segment" data-start="501.4" data-end="504.56" title="8:21">of major and minor criteria. </span><span class="segment" data-start="504.56" data-end="512.84" title="8:24">Treatment is with implantable cardiac defibrillators, ACE inhibitors, beta blockers and anti-coagulation. </span><span class="segment" data-start="512.84" data-end="517.28" title="8:32">Tell me about left ventricular non-compaction. </span><span class="segment" data-start="517.28" data-end="521.48" title="8:37">This is a disease which has a greater prevalence than previously believed. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="521.48"><span class="t-timestamp">8:41</span></div>
+  <div class="t-body"><span class="segment" data-start="521.48" data-end="527.32" title="8:41">It has a genetic basis and consists of left ventricular walled thickening, spongiform </span><span class="segment" data-start="527.32" data-end="531.8" title="8:47">trebeculations and a hypokinetic ventricle. </span><span class="segment" data-start="531.8" data-end="537.28" title="8:51">During development, the wall of the ventricle goes through a process of compaction at approximately </span><span class="segment" data-start="537.28" data-end="542.96" title="8:57">5 to 8 weeks of fetal life, where the spongiform wall becomes packed. </span><span class="segment" data-start="542.96" data-end="546.96" title="9:02">In this cardiomyopathy, this process does not occur. </span><span class="segment" data-start="546.96" data-end="552.76" title="9:06">This leaves a bulky, ineffective ventricle with trebeculations within which blood can </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="552.76"><span class="t-timestamp">9:12</span></div>
+  <div class="t-body"><span class="segment" data-start="552.76" data-end="557.88" title="9:12">pull and form thrombi which lead to systemic complications. </span><span class="segment" data-start="557.88" data-end="565.08" title="9:17">The disease itself leads to progressive heart failure and can necessitate a heart transplant. </span><span class="segment" data-start="565.08" data-end="570.16" title="9:25">The examiner may ask about the anaesthetic management of patients with cardiomyopathies. </span><span class="segment" data-start="570.16" data-end="574.8" title="9:30">Again, it is important to remember to give an answer, which includes giving a safe </span><span class="segment" data-start="574.8" data-end="577.12" title="9:34">and balanced anaesthetic. </span><span class="segment" data-start="577.12" data-end="582.08" title="9:37">As well as mentioning the basics of safe anaesthesia, it is important to tailor your answer </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="582.08"><span class="t-timestamp">9:42</span></div>
+  <div class="t-body"><span class="segment" data-start="582.08" data-end="585.16" title="9:42">according to the particular cardiomyopathy. </span><span class="segment" data-start="585.16" data-end="589.76" title="9:45">The usual structure of taking a detailed history, examining the patients and arranging </span><span class="segment" data-start="589.76" data-end="592.8" title="9:49">investigations still stands. </span><span class="segment" data-start="592.8" data-end="597.32" title="9:52">Consider any underlying disease that may have caused the cardiomyopathy. </span><span class="segment" data-start="597.32" data-end="602.56" title="9:57">Manage any medications that they may be on such as diuretics or anti-coagulants. </span><span class="segment" data-start="602.56" data-end="606.48" title="10:02">But also that the patients may have implanted cardiac defibrillators. </span></div>
+</div>
+</div>
+
+<div class="subtitle-bar">
+  <span class="subtitle-text empty" id="subtitle-text">Play audio to see live subtitles&#8230;</span>
+</div>
+
+<script>
+
+const audio    = document.getElementById('audio');
+const allSegs  = Array.from(document.querySelectorAll('.segment'));
+const allBlocks = Array.from(document.querySelectorAll('.t-block'));
+const subtitleEl = document.getElementById('subtitle-text');
+let activeSegEl   = null;
+let activeBlockEl = null;
+let searchMatches = [];
+let searchIdx     = 0;
+
+// Duration display
+audio.addEventListener('loadedmetadata', () => {
+  const m = Math.floor(audio.duration / 60);
+  const s = Math.floor(audio.duration %% 60).toString().padStart(2,'0');
+  document.getElementById('dur').textContent = m + ':' + s;
+});
+
+// Seek helper
+function seekTo(t) {
+  audio.currentTime = t;
+  audio.play();
+}
+
+// Block gutter click
+document.querySelectorAll('.t-gutter').forEach(g => {
+  g.addEventListener('click', () => seekTo(parseFloat(g.dataset.start)));
+});
+
+// Segment click
+allSegs.forEach(s => {
+  s.addEventListener('click', e => {
+    e.stopPropagation();
+    seekTo(parseFloat(s.dataset.start));
+  });
+});
+
+// Real-time tracking
+audio.addEventListener('timeupdate', () => {
+  const t = audio.currentTime;
+
+  // Find active segment (last one whose start <= t)
+  let found = null;
+  for (let i = allSegs.length - 1; i >= 0; i--) {
+    if (parseFloat(allSegs[i].dataset.start) <= t) { found = allSegs[i]; break; }
+  }
+
+  if (found && found !== activeSegEl) {
+    // Clear previous
+    if (activeSegEl) activeSegEl.classList.remove('active');
+    if (activeBlockEl) {
+      activeBlockEl.classList.remove('block-active');
+      const pg = activeBlockEl.querySelector('.t-gutter');
+      if (pg) pg.classList.remove('gutter-active');
+    }
+    // Set new
+    found.classList.add('active');
+    const block = found.closest('.t-block');
+    if (block) {
+      block.classList.add('block-active');
+      const g = block.querySelector('.t-gutter');
+      if (g) g.classList.add('gutter-active');
+      activeBlockEl = block;
+    }
+    activeSegEl = found;
+
+    // Update subtitle
+    subtitleEl.textContent = found.textContent.trim();
+    subtitleEl.classList.remove('empty');
+
+    // Auto-scroll (only when not searching)
+    if (!document.getElementById('search').value) {
+      found.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }
+});
+
+// Search
+const searchInput = document.getElementById('search');
+searchInput.addEventListener('input', runSearch);
+searchInput.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && searchMatches.length) {
+    searchMatches[searchIdx].classList.remove('search-current');
+    searchIdx = (searchIdx + 1) %% searchMatches.length;
+    const el = searchMatches[searchIdx];
+    el.classList.add('search-current');
+    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+});
+
+function runSearch() {
+  const q = searchInput.value.trim().toLowerCase();
+  allSegs.forEach(s => s.classList.remove('search-match','search-current'));
+  searchMatches = [];
+  if (!q) return;
+  allSegs.forEach(s => {
+    if (s.textContent.toLowerCase().includes(q)) {
+      s.classList.add('search-match');
+      searchMatches.push(s);
+    }
+  });
+  if (!searchMatches.length) return;
+  searchIdx = 0;
+  searchMatches[0].classList.add('search-current');
+  searchMatches[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+</script>
+</body>
+</html>

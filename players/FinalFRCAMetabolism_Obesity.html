@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Metabolism — Obesity</title>
+<style>
+
+  :root {
+    --accent:    #10b981;
+    --body-bg:   #f1f5f9;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: var(--body-bg);
+    color: #1e293b;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  /* ── Header ── */
+  .header {
+    background: #0f172a;
+    border-bottom: 3px solid var(--accent);
+    padding: 12px 20px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .header-left { flex: 1; min-width: 200px; }
+  .header h1 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #f1f5f9;
+    margin-bottom: 4px;
+    letter-spacing: 0.01em;
+  }
+  .header-sub {
+    font-size: 0.72rem;
+    color: #94a3b8;
+    font-style: italic;
+  }
+  audio {
+    height: 36px;
+    accent-color: var(--accent);
+    flex-shrink: 0;
+  }
+  .back-link {
+    font-size: 0.8rem;
+    color: #94a3b8;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .back-link:hover { color: #60a5fa; }
+
+  /* ── Toolbar ── */
+  .toolbar {
+    background: #1e293b;
+    padding: 7px 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-shrink: 0;
+    border-bottom: 1px solid #334155;
+  }
+  .toolbar input {
+    flex: 1;
+    max-width: 380px;
+    padding: 5px 11px;
+    border: 1px solid #475569;
+    border-radius: 6px;
+    background: #0f172a;
+    color: #e2e8f0;
+    font-size: 0.83rem;
+    outline: none;
+  }
+  .toolbar input:focus { border-color: var(--accent); }
+  .toolbar input::placeholder { color: #64748b; }
+  .stats {
+    font-size: 0.72rem;
+    color: #64748b;
+    white-space: nowrap;
+  }
+
+  /* ── Scroll area ── */
+  .scroll-area {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+  }
+  .scroll-area::-webkit-scrollbar { width: 6px; }
+  .scroll-area::-webkit-scrollbar-track { background: transparent; }
+  .scroll-area::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+
+  /* ── Subtitle bar ── */
+  .subtitle-bar {
+    background: #0f172a;
+    border-top: 2px solid var(--accent);
+    padding: 8px 20px;
+    flex-shrink: 0;
+    min-height: 42px;
+    display: flex;
+    align-items: center;
+  }
+  .subtitle-text {
+    font-size: 0.9rem;
+    color: #e2e8f0;
+    line-height: 1.5;
+    font-style: italic;
+  }
+  .subtitle-text.empty { color: #475569; }
+
+  /* ── Transcript blocks ── */
+  .t-block {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    margin-bottom: 14px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    display: flex;
+  }
+  .t-block.block-active {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px rgba(37,99,235,0.15);
+  }
+  .t-gutter {
+    background: #0f172a;
+    width: 52px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: 14px;
+    cursor: pointer;
+  }
+  .t-gutter:hover { background: #1e293b; }
+  .t-timestamp {
+    font-size: 0.7rem;
+    color: #64748b;
+    font-family: monospace;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+  .t-gutter.gutter-active .t-timestamp { color: var(--accent); }
+  .t-body {
+    flex: 1;
+    padding: 12px 16px;
+    line-height: 1.75;
+    font-size: 0.92rem;
+    color: #1e293b;
+  }
+
+  /* ── Segments ── */
+  .segment {
+    cursor: pointer;
+    border-radius: 3px;
+    transition: background 0.1s;
+  }
+  .segment:hover { background: #eff6ff; }
+  .segment.active {
+    background: #bfdbfe;
+    outline: 2px solid #3b82f6;
+    outline-offset: 1px;
+    border-radius: 3px;
+  }
+  .segment.search-match  { background: #fef9c3; }
+  .segment.search-current { background: #fde047; outline: 2px solid #ca8a04; }
+
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <h1>Metabolism — Obesity</h1>
+    <div class="header-sub">Final FRCA &mdash; Exam Viva Simulation &mdash; Click any phrase to seek</div>
+  </div>
+  <audio id="audio" src="../FinalFRCAMetabolism_Obesity.mp3" controls preload="metadata"></audio>
+  <a class="back-link" href="index.html">&#8592; All Topics</a>
+</div>
+
+<div class="toolbar">
+  <input type="text" id="search" placeholder="Search transcript&#8230; (Enter = next match)">
+  <span class="stats" id="stats">144 segments &nbsp;|&nbsp; <span id="dur">loading&#8230;</span></span>
+</div>
+
+<div class="scroll-area" id="scroll-area">
+<div class="t-block">
+  <div class="t-gutter" data-start="0.0"><span class="t-timestamp">0:00</span></div>
+  <div class="t-body"><span class="segment" data-start="0.0" data-end="10.32" title="0:00">Obesity is a growing problem in the UK and worldwide, with a prevalence of over 20% among adults. </span><span class="segment" data-start="10.32" data-end="17.28" title="0:10">It presents unique challenges to Anisitists, which you will be expected to be familiar with for the final exam. </span><span class="segment" data-start="17.28" data-end="23.84" title="0:17">It is a topic well suited to both the SAQ and SOE, and comes up regularly. </span><span class="segment" data-start="23.84" data-end="29.28" title="0:23">The podcast on obstructive sleep apnea would be a recommended accompaniment to this one, </span><span class="segment" data-start="29.28" data-end="35.84" title="0:29">as would the AAGBI guidelines on the perioperative management of the morbidly obese patients </span><span class="segment" data-start="35.84" data-end="44.24" title="0:35">published in June 2007. You are asked to see a 45-year-old female having an unbalycal hernia repair </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="44.24"><span class="t-timestamp">0:44</span></div>
+  <div class="t-body"><span class="segment" data-start="44.24" data-end="53.36" title="0:44">preoperatively. She is 150cm tall and weighs 120 kg. She has no other comorbidities, </span><span class="segment" data-start="53.36" data-end="59.68" title="0:53">takes no regular medication and has no allergies. What system is used to classify a person's weight? </span><span class="segment" data-start="61.6" data-end="67.92" title="1:01">The body mass index is used as a tool to quantify whether a person is the right weight for their height. </span><span class="segment" data-start="68.88" data-end="73.76" title="1:08">The equation used is weight in kilograms divided by height in meters squared. </span><span class="segment" data-start="74.88" data-end="80.96" title="1:14">A BMI under 19 is considered under weight. 19 to 25 is optimal. </span><span class="segment" data-start="81.92" data-end="90.32" title="1:21">Above 25 is classified as overweight and above 30 is obese. The term morbid obesity </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="90.32"><span class="t-timestamp">1:30</span></div>
+  <div class="t-body"><span class="segment" data-start="90.32" data-end="98.56" title="1:30">can be used in a patient with a BMI of over 40 with no significant comorbidities or a BMI over 35 </span><span class="segment" data-start="98.56" data-end="107.2" title="1:38">with associated comorbidities. Super morbid obesity is a term recently introduced for people with a </span><span class="segment" data-start="107.2" data-end="114.32" title="1:47">BMI over 55. The association of anesthetists of Great Britain and Ireland have guidelines which </span><span class="segment" data-start="114.32" data-end="120.32" title="1:54">recommend all surgical patients should have their height and weight measured and recorded </span><span class="segment" data-start="120.32" data-end="127.12" title="2:00">and the BMI calculated preoperatively. Which category of BMI would this patient fall into? </span><span class="segment" data-start="127.12" data-end="131.36" title="2:07">In the long case you will be given all the clinical information beforehand, </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="131.36"><span class="t-timestamp">2:11</span></div>
+  <div class="t-body"><span class="segment" data-start="131.36" data-end="135.84" title="2:11">so make sure you work out the BMI if you are given the patient's height and weight. </span><span class="segment" data-start="137.68" data-end="144.96" title="2:17">This lady has a BMI of 53 and is therefore almost in the super morbidly obese category. </span><span class="segment" data-start="145.92" data-end="152.88" title="2:25">Despite having no reported comorbidities morbid obesity is a multi-system disorder and she will </span><span class="segment" data-start="152.88" data-end="159.28" title="2:32">be a high-risk patient to anesthetize. What do you know about fat distribution and the relevance </span><span class="segment" data-start="159.28" data-end="166.56" title="2:39">of this to morbidity risk? Obesity can be of a gynecoid or android fat </span><span class="segment" data-start="166.56" data-end="172.56" title="2:46">distribution. Gynecoid fat distribution is more common in women and involves peripheral fat </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="172.56"><span class="t-timestamp">2:52</span></div>
+  <div class="t-body"><span class="segment" data-start="172.56" data-end="179.76" title="2:52">distribution or a pair like appearance. An android distribution tends to predominate in males, </span><span class="segment" data-start="179.76" data-end="186.16" title="2:59">involves a more central or apple-like fat deposition and is associated with a higher morbidity. </span><span class="segment" data-start="187.12" data-end="194.0" title="3:07">For this reason the waist to hip ratio has been developed to further quantify cardiovascular risk. </span><span class="segment" data-start="194.96" data-end="203.28" title="3:14">A value of over 0.8 in women and 1.0 in men is typical of an android distribution </span><span class="segment" data-start="203.28" data-end="210.56" title="3:23">and signifies a higher risk. The latter results in fat deposition intrapiritoneally </span><span class="segment" data-start="210.56" data-end="216.88" title="3:30">and around the neck and airway, hence it presents greater challenges both to the surgeon and the </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="216.88"><span class="t-timestamp">3:36</span></div>
+  <div class="t-body"><span class="segment" data-start="216.88" data-end="221.68" title="3:36">anesthetist. Tell me more about the effects of obesity on the respiratory system. </span><span class="segment" data-start="224.0" data-end="231.6" title="3:44">Obesity causes a tendency to hypoxemia both at rest which is worsened by the supine position </span><span class="segment" data-start="231.6" data-end="238.72" title="3:51">and anesthesia due to the reduction of the functional residual capacity. Functional residual </span><span class="segment" data-start="238.72" data-end="246.72" title="3:58">capacity declines progressively with increasing BMI and a patient with a BMI of over 40 will most </span><span class="segment" data-start="246.72" data-end="255.28" title="4:06">likely have an FRC of less than 1 liter. Absolute oxygen consumption is increased and obese </span><span class="segment" data-start="255.28" data-end="261.92" title="4:15">patients tend to desaturate more rapidly when apneic than non-obes patients. In addition, </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="261.92"><span class="t-timestamp">4:21</span></div>
+  <div class="t-body"><span class="segment" data-start="261.92" data-end="269.84" title="4:21">there is decreased chest wall and lung compliance. The closing volume therefore encroaches on the FRC </span><span class="segment" data-start="269.84" data-end="275.84" title="4:29">leading to airway closure and ventilation perfusion mismatch which in term causes an </span><span class="segment" data-start="275.84" data-end="283.36" title="4:35">intrapulmonary shunt and hypoxemia. Laproscopic surgery and Trandelenberg positioning further </span><span class="segment" data-start="283.36" data-end="290.64" title="4:43">aggravates these altered mechanics of breathing in the obese patient. O-B's patients therefore </span><span class="segment" data-start="290.64" data-end="297.76" title="4:50">require a higher fraction of inspired oxygen and higher ventilatory pressures to prevent desaturation. </span><span class="segment" data-start="298.08" data-end="307.04" title="4:58">Positive end-expiratory pressure is especially useful to increase FRC and prevent airway collapse. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="308.48"><span class="t-timestamp">5:08</span></div>
+  <div class="t-body"><span class="segment" data-start="308.48" data-end="314.56" title="5:08">Added to this, obese patients are at increased risk of obstructive sleep apnea, </span><span class="segment" data-start="314.56" data-end="320.64" title="5:14">characterized by episodes of apnea during sleep, snoring and daytime somnolence. </span><span class="segment" data-start="321.44" data-end="328.4" title="5:21">They also have increased pharyngeal wall compliance resulting in a tendency of the latter to collapse. </span><span class="segment" data-start="329.36" data-end="335.28" title="5:29">Obstructive sleep apnea ultimately leads to desensitization of the respiratory </span><span class="segment" data-start="335.28" data-end="341.92" title="5:35">centers to hyper-capnea. These patients can therefore be dependent on their hypoxic drive. </span><span class="segment" data-start="342.48" data-end="348.08" title="5:42">They can also develop pulmonary hypertension. Tell me more about the cardiovascular problems </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="348.08"><span class="t-timestamp">5:48</span></div>
+  <div class="t-body"><span class="segment" data-start="348.08" data-end="355.2" title="5:48">encountered in obese patients. To meet the increased metabolic needs of being obese, </span><span class="segment" data-start="355.2" data-end="360.24" title="5:55">circulating volume, plasma volume and cardiac output are all increased. </span><span class="segment" data-start="361.04" data-end="367.6" title="6:01">This increased circulating volume can cause an increase in venous return which can eventually </span><span class="segment" data-start="367.6" data-end="375.2" title="6:07">lead to dilatation and hypertrophy of one or both ventricles. Left untreated these changes </span><span class="segment" data-start="375.2" data-end="380.96" title="6:15">can progress to systemic and pulmonary hypertension which can ultimately contribute to </span><span class="segment" data-start="380.96" data-end="387.6" title="6:20">conary heart disease and cardiac failure. They also have a higher risk of post-operative </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="387.6"><span class="t-timestamp">6:27</span></div>
+  <div class="t-body"><span class="segment" data-start="387.6" data-end="394.72" title="6:27">deep vein thrombosis. In addition, the risk of sudden death is also a feature of obesity. </span><span class="segment" data-start="395.52" data-end="399.52" title="6:35">What is the effect of obesity on the metabolic and gastrointestinal systems? </span><span class="segment" data-start="399.76" data-end="408.16" title="6:39">Obesity is a chronic metabolic disorder characterized predominantly by insulin resistance. </span><span class="segment" data-start="408.88" data-end="413.6" title="6:48">The latter is associated with diabetes mellitus and hyperliperipidemia. </span><span class="segment" data-start="414.48" data-end="421.04" title="6:54">Obest patients can also develop a fatty liver, sometimes termed stiato hepatitis. </span><span class="segment" data-start="421.92" data-end="428.16" title="7:01">This is a reversible condition with weight loss but if untreated can progress to cirrhosis and </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="428.16"><span class="t-timestamp">7:08</span></div>
+  <div class="t-body"><span class="segment" data-start="428.16" data-end="434.96" title="7:08">liver failure. Obes patients also have a higher risk of gastric aspiration due to increased </span><span class="segment" data-start="434.96" data-end="439.84" title="7:14">gastroesophageal reflux and an increased incidence of hiatus hernia. </span><span class="segment" data-start="440.88" data-end="443.68" title="7:20">How would you go about assessing this patient preoperatively? </span><span class="segment" data-start="445.76" data-end="449.44" title="7:25">I would want to do a thorough preoperative assessment on this patient. </span><span class="segment" data-start="450.16" data-end="456.08" title="7:30">In addition to a routine anaesthetic history, I would look specifically for symptoms or signs </span><span class="segment" data-start="456.08" data-end="462.64" title="7:36">suggestive of cardiovascular or a spiritory dysfunction as these can be masked by a sedentary </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="462.64"><span class="t-timestamp">7:42</span></div>
+  <div class="t-body"><span class="segment" data-start="462.64" data-end="467.92" title="7:42">lifestyle. I would also ask about symptoms of gastroesophageal reflux. </span><span class="segment" data-start="469.04" data-end="474.16" title="7:49">I would perform a detailed assessment of the airway. If the patient were male, </span><span class="segment" data-start="474.16" data-end="479.52" title="7:54">I would ascertain their collar size as a large collar increases the risk of obstructive sleep </span><span class="segment" data-start="479.68" data-end="486.4" title="7:59">apnea and difficult intubation. I would also examine her neck to see whether regional anaesthesia </span><span class="segment" data-start="486.4" data-end="493.12" title="8:06">would be feasible and assess veins for venous access. I would also look for previous anaesthetic </span><span class="segment" data-start="493.12" data-end="499.6" title="8:13">charts to check for evidence of airway problems. What investigations would you want for this patient? </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="501.6"><span class="t-timestamp">8:21</span></div>
+  <div class="t-body"><span class="segment" data-start="501.6" data-end="508.72" title="8:21">I would want a full blood count, urea creatinine and electrolytes, a glucose level, liver function </span><span class="segment" data-start="508.72" data-end="515.6" title="8:28">tests and a C-reactive protein. I would review her electrocardiogram and if the history was </span><span class="segment" data-start="515.6" data-end="522.08" title="8:35">suggestive of cardiovascular disease, I would request an echocardiogram and a cardiology review. </span><span class="segment" data-start="523.12" data-end="529.92" title="8:43">If I suspected respiratory disease, I would request an arterial blood gas analysis, lung function </span><span class="segment" data-start="529.92" data-end="535.92" title="8:49">tests and sleep studies, especially if there is ECG evidence of right heart strain. </span><span class="segment" data-start="536.4" data-end="542.32" title="8:56">What practical consideration should be taken into account when listing an obese patient for surgery? </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="544.32"><span class="t-timestamp">9:04</span></div>
+  <div class="t-body"><span class="segment" data-start="544.32" data-end="548.32" title="9:04">According to the Association of Anesthetists of Great Britain and Ireland, </span><span class="segment" data-start="548.32" data-end="554.48" title="9:08">all hospitals should have named consultant anesthetists and theatre nurses responsible for the </span><span class="segment" data-start="554.48" data-end="561.04" title="9:14">management of morbidly obese patients. These members of staff are responsible for training all </span><span class="segment" data-start="561.04" data-end="566.8" title="9:21">staff to care for these patients and for ensuring availability of specialized equipment. </span><span class="segment" data-start="567.84" data-end="573.52" title="9:27">All hospitals should also have local guidelines for the management of the morbidly obese patient. </span><span class="segment" data-start="575.84" data-end="581.68" title="9:35">The patient's BMI should be added to the theatre list so that theatre staff are forewarned. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="582.56"><span class="t-timestamp">9:42</span></div>
+  <div class="t-body"><span class="segment" data-start="582.56" data-end="587.84" title="9:42">The operating table and ward bed should be checked to ensure that the patient's weight </span><span class="segment" data-start="587.92" data-end="594.08" title="9:47">is below the maximum allowable. Additional personnel should be present in theatre to help with </span><span class="segment" data-start="594.08" data-end="600.8" title="9:54">positioning and to help turn the patient in an emergency. Armed boards should be available </span><span class="segment" data-start="600.8" data-end="606.08" title="10:00">for optimum positioning, especially if an extra wide table is not available. </span><span class="segment" data-start="608.56" data-end="613.44" title="10:08">Manual handling should be kept to a minimum, therefore ideally the patient should be </span><span class="segment" data-start="613.44" data-end="620.24" title="10:13">anesthetized in theatre on the operating table and if appropriate they should position themselves </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="620.24"><span class="t-timestamp">10:20</span></div>
+  <div class="t-body"><span class="segment" data-start="620.24" data-end="626.56" title="10:20">ready for surgery. Alternative equipment and monitoring devices should also be available. </span><span class="segment" data-start="627.36" data-end="632.8" title="10:27">An arterial line may need to be inserted in case the non-invasive blood pressure cuff does not </span><span class="segment" data-start="632.8" data-end="639.68" title="10:32">read accurately. Intravenous access can sometimes be difficult, therefore central venous access </span><span class="segment" data-start="639.76" data-end="646.64" title="10:39">equipment and an ultrasound machine should be immediately available. As both anesthesia and </span><span class="segment" data-start="646.64" data-end="652.72" title="10:46">surgery are more challenging in obese patients, additional time should be allowed for when booking </span><span class="segment" data-start="652.72" data-end="658.0" title="10:52">the theatre list. How would you go about anesthetizing this patient for surgery? </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="660.32"><span class="t-timestamp">11:00</span></div>
+  <div class="t-body"><span class="segment" data-start="660.32" data-end="666.32" title="11:00">Patient with a BMI of over 50 should always be anesthetized by an experienced anesthetist. </span><span class="segment" data-start="667.04" data-end="672.64" title="11:07">I would therefore discuss this case with the duty consultant following my preoperative assessment. </span><span class="segment" data-start="673.36" data-end="680.32" title="11:13">I would consider acid prophylaxis as she will be at increased risk of gastroesophageal reflux. </span><span class="segment" data-start="681.04" data-end="687.84" title="11:21">I would also discuss preoperative venothrombombolic prophylaxis with the surgeon if the planned </span><span class="segment" data-start="687.84" data-end="695.04" title="11:27">anesthetic does not involve regional anesthesia. My anesthetic technique would depend on the size of </span><span class="segment" data-start="695.2" data-end="701.04" title="11:35">the umbilical hernia. If the hernia is small, I would discuss the possibility of carrying out the </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="701.04"><span class="t-timestamp">11:41</span></div>
+  <div class="t-body"><span class="segment" data-start="701.04" data-end="707.92" title="11:41">surgery under local anesthesia with the surgical team. If the hernia was a considerable size, </span><span class="segment" data-start="707.92" data-end="713.6" title="11:47">I would opt for general anesthesia and consider an epidural for postoperative pain relief, </span><span class="segment" data-start="713.6" data-end="719.76" title="11:53">although I realized that this may be technically difficult. The latter would minimize the need for </span><span class="segment" data-start="719.76" data-end="727.44" title="11:59">opiates. I would have a low threshold for prescribing aspiration prophylaxis and if any symptoms </span><span class="segment" data-start="727.44" data-end="734.56" title="12:07">were present I would use a rapid sequence induction and intubate the patient. I would have equipment </span><span class="segment" data-start="734.56" data-end="740.96" title="12:14">available in case it was a difficult intubation. I would thoroughly preoxygenate the patient, </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="740.96"><span class="t-timestamp">12:20</span></div>
+  <div class="t-body"><span class="segment" data-start="740.96" data-end="747.44" title="12:20">monitoring nitrogen wash out and induce the patient in a head-up position with her arms out. </span><span class="segment" data-start="748.32" data-end="754.0" title="12:28">I would use pressure-controlled ventilation and apply some positive end-expiratory pressure. </span><span class="segment" data-start="754.88" data-end="760.08" title="12:34">I would fully monitor the patient in accordance with the association of anesthetists of Great Britain </span><span class="segment" data-start="760.08" data-end="768.16" title="12:40">and Ireland's guidelines. In addition, I would use bispectral index analysis and administer a volatile </span><span class="segment" data-start="768.16" data-end="775.68" title="12:48">anesthetic in oxygen and air. If I had been unsuccessful with regional anesthesia, I would ask </span><span class="segment" data-start="775.84" data-end="782.8" title="12:55">the surgeon to infiltrate the wound with local anesthetic. I would also administer intravenous parasitomal </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="782.8"><span class="t-timestamp">13:02</span></div>
+  <div class="t-body"><span class="segment" data-start="782.8" data-end="789.52" title="13:02">and fluid ensuring the patient was well hydrated. I would ensure intermittent calf compression </span><span class="segment" data-start="789.52" data-end="795.52" title="13:09">devices were applied intraoperatively to the patient and discuss starting prophylactic </span><span class="segment" data-start="795.52" data-end="802.8" title="13:15">fractionated heparin immediately postoperatively with the surgeon. I would extubate the patient awake </span><span class="segment" data-start="802.8" data-end="809.6" title="13:22">and sitting up. If the patient had a CPAP machine for sleep apnea, I would start this </span><span class="segment" data-start="809.6" data-end="815.92" title="13:29">immediately in recovery until they were fully awake. What special consideration should the B for </span><span class="segment" data-start="815.92" data-end="823.36" title="13:35">a beast patient's postoperatively? Depending on the extent of the hernia, the length of surgery </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="823.36"><span class="t-timestamp">13:43</span></div>
+  <div class="t-body"><span class="segment" data-start="823.36" data-end="828.88" title="13:43">and the patient's conduct during surgery, it may be necessary for them to be nursed on a high </span><span class="segment" data-start="828.96" data-end="835.92" title="13:48">dependency or intensive care unit postoperatively. It will be necessary for a multidisciplinary </span><span class="segment" data-start="835.92" data-end="842.24" title="13:55">approach to their care with the involvement of physiotherapists, dieticians and occupational </span><span class="segment" data-start="842.24" data-end="849.28" title="14:02">therapists if they have had major surgery. Initially, day-case surgery was thought to be unsuitable </span><span class="segment" data-start="849.28" data-end="855.84" title="14:09">for a beast patient's, but with careful patient selection, it is becoming more common and can be </span><span class="segment" data-start="855.92" data-end="863.12" title="14:15">very successful. The decision should be made on a case-by-case basis and depends on other </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="863.12"><span class="t-timestamp">14:23</span></div>
+  <div class="t-body"><span class="segment" data-start="863.12" data-end="871.2" title="14:23">comorbidities and the type of surgery. Respiratory problems may persist into the postoperative period, </span><span class="segment" data-start="871.2" data-end="877.92" title="14:31">therefore supplemental oxygen, breathing exercises, physiotherapy and occasionally non-invasive </span><span class="segment" data-start="877.92" data-end="885.6" title="14:37">ventilation may be required to alleviate atelectasis and retain secretions, and thus prevent the </span><span class="segment" data-start="885.6" data-end="892.56" title="14:45">development of a postoperative chest infection. If a patient with sleep apnea uses a CPAP </span><span class="segment" data-start="892.56" data-end="899.44" title="14:52">machine at home, they should be asked to bring this in. Analgesia should be multimodal, </span><span class="segment" data-start="899.44" data-end="906.24" title="14:59">including paracetamol, a non-steroidal anti-inflammatory drugs, which should be used routinely if there </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="906.24"><span class="t-timestamp">15:06</span></div>
+  <div class="t-body"><span class="segment" data-start="906.24" data-end="913.04" title="15:06">are no contraindications. Regional or peripheral nerve blockage should be used if possible and if </span><span class="segment" data-start="913.04" data-end="920.0" title="15:13">appropriate. Intramuscular injections are best avoided in obese patients as they are unpredictable. </span><span class="segment" data-start="921.28" data-end="926.72" title="15:21">Opiates can be used with care although they are best avoided in patients known to have sleep </span><span class="segment" data-start="926.72" data-end="934.8" title="15:26">apnea. Many obese patients are diabetic and will require blood glucose monitoring postoperatively. </span><span class="segment" data-start="935.68" data-end="942.32" title="15:35">In major surgery, a sliding scale with insulin and dextrose to maintain normal glycemia </span><span class="segment" data-start="942.32" data-end="948.96" title="15:42">may be required until the patient resumes a normal diet. This may also be necessary in some </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="948.96"><span class="t-timestamp">15:48</span></div>
+  <div class="t-body"><span class="segment" data-start="948.96" data-end="957.6" title="15:48">non-diabetic patients during the catabolic phase post-surgery. Obespecions should be nursed </span><span class="segment" data-start="957.6" data-end="964.48" title="15:57">postoperatively on special bariatric beds with pressure relieving mattresses and atropes. </span><span class="segment" data-start="964.64" data-end="971.28" title="16:04">Early mobilization is essential as is postoperative DVT prophylaxis. </span><span class="segment" data-start="972.24" data-end="979.04" title="16:12">Well-fitting TED stockings and subcutaneous fractionized heparin should be used routinely </span><span class="segment" data-start="979.04" data-end="987.76" title="16:19">even in minor surgery. In major pelvic or orthopedic surgery, continuation of DVT prophylaxis post </span><span class="segment" data-start="987.76" data-end="990.0" title="16:27">discharge should be considered. </span></div>
+</div>
+</div>
+
+<div class="subtitle-bar">
+  <span class="subtitle-text empty" id="subtitle-text">Play audio to see live subtitles&#8230;</span>
+</div>
+
+<script>
+
+const audio    = document.getElementById('audio');
+const allSegs  = Array.from(document.querySelectorAll('.segment'));
+const allBlocks = Array.from(document.querySelectorAll('.t-block'));
+const subtitleEl = document.getElementById('subtitle-text');
+let activeSegEl   = null;
+let activeBlockEl = null;
+let searchMatches = [];
+let searchIdx     = 0;
+
+// Duration display
+audio.addEventListener('loadedmetadata', () => {
+  const m = Math.floor(audio.duration / 60);
+  const s = Math.floor(audio.duration %% 60).toString().padStart(2,'0');
+  document.getElementById('dur').textContent = m + ':' + s;
+});
+
+// Seek helper
+function seekTo(t) {
+  audio.currentTime = t;
+  audio.play();
+}
+
+// Block gutter click
+document.querySelectorAll('.t-gutter').forEach(g => {
+  g.addEventListener('click', () => seekTo(parseFloat(g.dataset.start)));
+});
+
+// Segment click
+allSegs.forEach(s => {
+  s.addEventListener('click', e => {
+    e.stopPropagation();
+    seekTo(parseFloat(s.dataset.start));
+  });
+});
+
+// Real-time tracking
+audio.addEventListener('timeupdate', () => {
+  const t = audio.currentTime;
+
+  // Find active segment (last one whose start <= t)
+  let found = null;
+  for (let i = allSegs.length - 1; i >= 0; i--) {
+    if (parseFloat(allSegs[i].dataset.start) <= t) { found = allSegs[i]; break; }
+  }
+
+  if (found && found !== activeSegEl) {
+    // Clear previous
+    if (activeSegEl) activeSegEl.classList.remove('active');
+    if (activeBlockEl) {
+      activeBlockEl.classList.remove('block-active');
+      const pg = activeBlockEl.querySelector('.t-gutter');
+      if (pg) pg.classList.remove('gutter-active');
+    }
+    // Set new
+    found.classList.add('active');
+    const block = found.closest('.t-block');
+    if (block) {
+      block.classList.add('block-active');
+      const g = block.querySelector('.t-gutter');
+      if (g) g.classList.add('gutter-active');
+      activeBlockEl = block;
+    }
+    activeSegEl = found;
+
+    // Update subtitle
+    subtitleEl.textContent = found.textContent.trim();
+    subtitleEl.classList.remove('empty');
+
+    // Auto-scroll (only when not searching)
+    if (!document.getElementById('search').value) {
+      found.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }
+});
+
+// Search
+const searchInput = document.getElementById('search');
+searchInput.addEventListener('input', runSearch);
+searchInput.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && searchMatches.length) {
+    searchMatches[searchIdx].classList.remove('search-current');
+    searchIdx = (searchIdx + 1) %% searchMatches.length;
+    const el = searchMatches[searchIdx];
+    el.classList.add('search-current');
+    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+});
+
+function runSearch() {
+  const q = searchInput.value.trim().toLowerCase();
+  allSegs.forEach(s => s.classList.remove('search-match','search-current'));
+  searchMatches = [];
+  if (!q) return;
+  allSegs.forEach(s => {
+    if (s.textContent.toLowerCase().includes(q)) {
+      s.classList.add('search-match');
+      searchMatches.push(s);
+    }
+  });
+  if (!searchMatches.length) return;
+  searchIdx = 0;
+  searchMatches[0].classList.add('search-current');
+  searchMatches[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+</script>
+</body>
+</html>

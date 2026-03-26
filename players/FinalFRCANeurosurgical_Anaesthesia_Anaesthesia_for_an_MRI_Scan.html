@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Neurosurgical Anaesthesia — Anaesthesia for an MRI Scan</title>
+<style>
+
+  :root {
+    --accent:    #6366f1;
+    --body-bg:   #f1f5f9;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: var(--body-bg);
+    color: #1e293b;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  /* ── Header ── */
+  .header {
+    background: #0f172a;
+    border-bottom: 3px solid var(--accent);
+    padding: 12px 20px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .header-left { flex: 1; min-width: 200px; }
+  .header h1 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #f1f5f9;
+    margin-bottom: 4px;
+    letter-spacing: 0.01em;
+  }
+  .header-sub {
+    font-size: 0.72rem;
+    color: #94a3b8;
+    font-style: italic;
+  }
+  audio {
+    height: 36px;
+    accent-color: var(--accent);
+    flex-shrink: 0;
+  }
+  .back-link {
+    font-size: 0.8rem;
+    color: #94a3b8;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .back-link:hover { color: #60a5fa; }
+
+  /* ── Toolbar ── */
+  .toolbar {
+    background: #1e293b;
+    padding: 7px 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-shrink: 0;
+    border-bottom: 1px solid #334155;
+  }
+  .toolbar input {
+    flex: 1;
+    max-width: 380px;
+    padding: 5px 11px;
+    border: 1px solid #475569;
+    border-radius: 6px;
+    background: #0f172a;
+    color: #e2e8f0;
+    font-size: 0.83rem;
+    outline: none;
+  }
+  .toolbar input:focus { border-color: var(--accent); }
+  .toolbar input::placeholder { color: #64748b; }
+  .stats {
+    font-size: 0.72rem;
+    color: #64748b;
+    white-space: nowrap;
+  }
+
+  /* ── Scroll area ── */
+  .scroll-area {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+  }
+  .scroll-area::-webkit-scrollbar { width: 6px; }
+  .scroll-area::-webkit-scrollbar-track { background: transparent; }
+  .scroll-area::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+
+  /* ── Subtitle bar ── */
+  .subtitle-bar {
+    background: #0f172a;
+    border-top: 2px solid var(--accent);
+    padding: 8px 20px;
+    flex-shrink: 0;
+    min-height: 42px;
+    display: flex;
+    align-items: center;
+  }
+  .subtitle-text {
+    font-size: 0.9rem;
+    color: #e2e8f0;
+    line-height: 1.5;
+    font-style: italic;
+  }
+  .subtitle-text.empty { color: #475569; }
+
+  /* ── Transcript blocks ── */
+  .t-block {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    margin-bottom: 14px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    display: flex;
+  }
+  .t-block.block-active {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px rgba(37,99,235,0.15);
+  }
+  .t-gutter {
+    background: #0f172a;
+    width: 52px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: 14px;
+    cursor: pointer;
+  }
+  .t-gutter:hover { background: #1e293b; }
+  .t-timestamp {
+    font-size: 0.7rem;
+    color: #64748b;
+    font-family: monospace;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+  .t-gutter.gutter-active .t-timestamp { color: var(--accent); }
+  .t-body {
+    flex: 1;
+    padding: 12px 16px;
+    line-height: 1.75;
+    font-size: 0.92rem;
+    color: #1e293b;
+  }
+
+  /* ── Segments ── */
+  .segment {
+    cursor: pointer;
+    border-radius: 3px;
+    transition: background 0.1s;
+  }
+  .segment:hover { background: #eff6ff; }
+  .segment.active {
+    background: #bfdbfe;
+    outline: 2px solid #3b82f6;
+    outline-offset: 1px;
+    border-radius: 3px;
+  }
+  .segment.search-match  { background: #fef9c3; }
+  .segment.search-current { background: #fde047; outline: 2px solid #ca8a04; }
+
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <h1>Neurosurgical Anaesthesia — Anaesthesia for an MRI Scan</h1>
+    <div class="header-sub">Final FRCA &mdash; Exam Viva Simulation &mdash; Click any phrase to seek</div>
+  </div>
+  <audio id="audio" src="../FinalFRCANeurosurgical_Anaesthesia_Anaesthesia_for_an_MRI_Scan.mp3" controls preload="metadata"></audio>
+  <a class="back-link" href="index.html">&#8592; All Topics</a>
+</div>
+
+<div class="toolbar">
+  <input type="text" id="search" placeholder="Search transcript&#8230; (Enter = next match)">
+  <span class="stats" id="stats">133 segments &nbsp;|&nbsp; <span id="dur">loading&#8230;</span></span>
+</div>
+
+<div class="scroll-area" id="scroll-area">
+<div class="t-block">
+  <div class="t-gutter" data-start="0.0"><span class="t-timestamp">0:00</span></div>
+  <div class="t-body"><span class="segment" data-start="0.0" data-end="2.4" title="0:00">Anasthesia during an MRI scan. </span><span class="segment" data-start="3.28" data-end="6.64" title="0:03">This topic might be part of a clinical or a physics-viver, </span><span class="segment" data-start="6.64" data-end="11.8" title="0:06">an extensive, in-depth understanding of the workings of the MRI is not required. </span><span class="segment" data-start="12.56" data-end="17.04" title="0:12">The examiner is looking to see whether you have a basic grasp of the physical concepts </span><span class="segment" data-start="17.04" data-end="20.0" title="0:17">and whether you're aware of the safety issues that exist. </span><span class="segment" data-start="20.0" data-end="23.2" title="0:20">Can you start by telling me how an MRI scan works? </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="23.76"><span class="t-timestamp">0:23</span></div>
+  <div class="t-body"><span class="segment" data-start="23.76" data-end="27.76" title="0:23">Try to avoid getting bogged down with complicated physical principles. </span><span class="segment" data-start="28.4" data-end="33.6" title="0:28">The MRI machine produces an extremely strong magnetic field. </span><span class="segment" data-start="33.6" data-end="38.8" title="0:33">This causes the protons within the hydrogen atoms of water to become aligned, </span><span class="segment" data-start="38.8" data-end="43.92" title="0:38">either in the same direction as the magnetic field or in the opposite direction. </span><span class="segment" data-start="43.92" data-end="53.36" title="0:43">The high water content of the body makes these paramagnetic protons vital to the formation of a magnetic resonance image. </span><span class="segment" data-start="54.16" data-end="60.32" title="0:54">A pulse of electromagnetic radiation, in the form of radio waves, </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="60.32"><span class="t-timestamp">1:00</span></div>
+  <div class="t-body"><span class="segment" data-start="60.32" data-end="65.04" title="1:00">causes the hydrogen nuclei to rotate from their equilibrium position. </span><span class="segment" data-start="65.84" data-end="74.08" title="1:05">When this pulse is then removed, the nuclei emit radio waves as they return to their original equilibrium position. </span><span class="segment" data-start="74.96" data-end="82.4" title="1:14">This radio wave signal is detected by the coil in the MRI and processed by the computer system </span><span class="segment" data-start="82.48" data-end="84.24" title="1:22">to produce a visual display. </span><span class="segment" data-start="90.32" data-end="93.84" title="1:30">The MRI machine is composed of a primary magnet, </span><span class="segment" data-start="93.84" data-end="99.36" title="1:33">gradient magnets, a coil, and a computer system to analyze the data. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="104.72"><span class="t-timestamp">1:44</span></div>
+  <div class="t-body"><span class="segment" data-start="104.72" data-end="109.28" title="1:44">Magnetic fields are produced by ferromagnetic materials, </span><span class="segment" data-start="109.28" data-end="117.6" title="1:49">such as iron, cobalt, or nickel. A magnetic field may also be generated by passing a current through a wire. </span><span class="segment" data-start="118.64" data-end="125.36" title="1:58">The primary magnet in an MRI scanner consists of a coil of wire through which a current is passed. </span><span class="segment" data-start="126.24" data-end="129.2" title="2:06">The wire is made from a superconducting material. </span><span class="segment" data-start="130.4" data-end="135.04" title="2:10">This material has no electrical resistance below a certain temperature. </span><span class="segment" data-start="135.68" data-end="139.52" title="2:15">It is therefore able to produce a very large magnetic field. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="140.8"><span class="t-timestamp">2:20</span></div>
+  <div class="t-body"><span class="segment" data-start="140.8" data-end="147.2" title="2:20">The low temperature required is in the region of minus 260 degrees Celsius, </span><span class="segment" data-start="147.2" data-end="156.24" title="2:27">or also just above absolute zero. To achieve this temperature, the wire is kept in liquid nitrogen and helium. </span><span class="segment" data-start="157.28" data-end="159.84" title="2:37">What can you tell me about the gradient magnets in the coil? </span><span class="segment" data-start="160.24" data-end="167.68" title="2:40">There are three smaller magnets within an MRI machine called gradient magnets. </span><span class="segment" data-start="168.8" data-end="171.92" title="2:48">These magnets are much weaker than the primary magnet. </span><span class="segment" data-start="172.72" data-end="176.24" title="2:52">They allow precise alterations of the magnetic field, </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="177.04"><span class="t-timestamp">2:57</span></div>
+  <div class="t-body"><span class="segment" data-start="177.04" data-end="180.48" title="2:57">and they are important in generating the final images. </span><span class="segment" data-start="182.48" data-end="189.28" title="3:02">The coil is the part of the MRI machine that emits and receives the electromagnetic radiation </span><span class="segment" data-start="189.28" data-end="193.92" title="3:09">in the form of radio waves. How strong is the magnetic field produced? </span><span class="segment" data-start="196.0" data-end="202.0" title="3:16">The MRI scanner produces a magnetic field of 1.5 to 3 Tesla. </span><span class="segment" data-start="203.04" data-end="204.08" title="3:23">What does Tesla mean? </span><span class="segment" data-start="206.4" data-end="213.84" title="3:26">Tesla is the unit of magnetic flux density. This is a measure of the strength of a magnetic field. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="214.56"><span class="t-timestamp">3:34</span></div>
+  <div class="t-body"><span class="segment" data-start="214.56" data-end="221.28" title="3:34">Another unit used is the Gauss. 10,000 Gauss is equal to 1 Tesla. </span><span class="segment" data-start="222.32" data-end="227.76" title="3:42">The Earth's magnetic field is equal to between 0.5 and 1 Gauss. </span><span class="segment" data-start="229.12" data-end="230.72" title="3:49">What is the 50 Gauss line? </span><span class="segment" data-start="233.04" data-end="238.24" title="3:53">The magnetic field of 50 Gauss is marked around an MRI scanner with a line. </span><span class="segment" data-start="238.88" data-end="241.12" title="3:58">This is the 50 Gauss line. </span><span class="segment" data-start="241.36" data-end="248.0" title="4:01">The images produced are called either T1 or T2 weight dimmages. What does this mean? </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="250.32"><span class="t-timestamp">4:10</span></div>
+  <div class="t-body"><span class="segment" data-start="250.32" data-end="255.28" title="4:10">T1 and T2 are called the relaxation time constants. </span><span class="segment" data-start="256.0" data-end="262.0" title="4:16">They are different measures of how the hydrogen nuclei relax back to their original alignment. </span><span class="segment" data-start="262.88" data-end="268.64" title="4:22">Either T1 or T2 is used to provide extra contrast to an image. </span><span class="segment" data-start="269.44" data-end="275.6" title="4:29">In T1, fluid is seen as dark, whereas in T2, fluid is white. </span><span class="segment" data-start="276.32" data-end="280.32" title="4:36">This can be useful in deciding the type of tissue seen in an image. </span><span class="segment" data-start="281.84" data-end="285.92" title="4:41">What are the challenges of anesthetizing a patient in the MRI scanner? </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="285.92"><span class="t-timestamp">4:45</span></div>
+  <div class="t-body"><span class="segment" data-start="285.92" data-end="290.0" title="4:45">This question is testing your ability to recognise the many problems that might occur. </span><span class="segment" data-start="290.88" data-end="293.92" title="4:50">Try to give some broad categories before going into detail. </span><span class="segment" data-start="294.16" data-end="302.0" title="4:54">There are many potential problems associated with an anesthetising a patient in the MRI scanner. </span><span class="segment" data-start="302.64" data-end="306.56" title="5:02">These can be divided into patient associated problems, </span><span class="segment" data-start="307.2" data-end="311.52" title="5:07">problems with administering an anesthetic in a remote and unfamiliar site, </span><span class="segment" data-start="312.24" data-end="320.32" title="5:12">and MRI specific problems. The MRI problems can be subdivided into monitoring and equipment </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="320.4"><span class="t-timestamp">5:20</span></div>
+  <div class="t-body"><span class="segment" data-start="320.4" data-end="326.4" title="5:20">problems and safety issues. Can you tell me anything about the patient associated problems? </span><span class="segment" data-start="328.96" data-end="335.6" title="5:28">Yes. The patient-related factors are mainly due to the populations that require anesthetic </span><span class="segment" data-start="335.6" data-end="342.4" title="5:35">intervention for the scan to take place. These are generally children or adults who would otherwise </span><span class="segment" data-start="342.4" data-end="349.2" title="5:42">not stay still or have refused to have the scan without some form of anesthesia, either sedation </span><span class="segment" data-start="349.2" data-end="355.92" title="5:49">or general anesthesia. These patients may have multiple inherited or acquired conditions, </span><span class="segment" data-start="355.92" data-end="361.6" title="5:55">learning difficulties, difficult intravenous access, and a potentially difficult airway. </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="362.48"><span class="t-timestamp">6:02</span></div>
+  <div class="t-body"><span class="segment" data-start="362.48" data-end="368.96" title="6:02">Furthermore, the size of the patient is important since a beast patient may not actually fit into </span><span class="segment" data-start="368.96" data-end="376.4" title="6:08">the scanner. It is important to perform a thorough pre-scan assessment of the patient to allow adequate </span><span class="segment" data-start="376.4" data-end="381.52" title="6:16">planning and preparation of the anesthetic. Can you talk me through the monitoring and equipment </span><span class="segment" data-start="381.52" data-end="389.68" title="6:21">problems? The monitoring problems may be split into difficulties obtaining a reading and then </span><span class="segment" data-start="389.68" data-end="396.72" title="6:29">complications with interpretation of a value. All patients who require an anesthetic should be </span><span class="segment" data-start="396.72" data-end="404.64" title="6:36">monitored as per the AAGBI minimum monitoring standards. The MRI tube is narrow and it can be </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="404.64"><span class="t-timestamp">6:44</span></div>
+  <div class="t-body"><span class="segment" data-start="404.64" data-end="410.4" title="6:44">difficult to access the patient during the scan. The monitoring therefore needs to be secure. </span><span class="segment" data-start="411.2" data-end="417.2" title="6:51">The scan may take a variable length of time which can lead to hypothermia in some patients. </span><span class="segment" data-start="417.92" data-end="424.16" title="6:57">It is therefore important to consider warming devices and the ambient room temperature in certain </span><span class="segment" data-start="424.16" data-end="432.4" title="7:04">cases. The 50-gouse line is marked on the floor of the MRI. This is an important boundary. </span><span class="segment" data-start="433.12" data-end="440.16" title="7:13">Ferromagnetic items such as iron or molybdenum steel that are within this line will move and </span><span class="segment" data-start="440.16" data-end="446.8" title="7:20">potentially act as projectile objects. There are also other materials that can behave </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="446.8"><span class="t-timestamp">7:26</span></div>
+  <div class="t-body"><span class="segment" data-start="446.8" data-end="453.84" title="7:26">differently and unpredictably in a magnetic field. All monitoring devices need to be able to </span><span class="segment" data-start="453.84" data-end="461.92" title="7:33">function reliably under these conditions. The ECG electrodes are made of non-magnetic materials, </span><span class="segment" data-start="462.4" data-end="469.52" title="7:42">the cables connecting the pulse oximeter and ECG are fiber optic. Care should be taken to </span><span class="segment" data-start="469.52" data-end="476.24" title="7:49">avoid looping of cables and to pad the skin underneath them. This is to reduce the chances of </span><span class="segment" data-start="476.24" data-end="483.12" title="7:56">burns to the patient. Burns might occur if currents are induced in the cables causing an increase </span><span class="segment" data-start="483.12" data-end="487.52" title="8:03">in their temperature. Can you tell me about the problems that are interpreting the monitoring? </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="487.84"><span class="t-timestamp">8:07</span></div>
+  <div class="t-body"><span class="segment" data-start="487.84" data-end="497.84" title="8:07">With regards to interpreting the monitoring, MRI can have some important effects. Firstly, the ECG. </span><span class="segment" data-start="498.72" data-end="505.04" title="8:18">The magnetic field can generate currents within the aorta. This can result in artifact in the </span><span class="segment" data-start="505.04" data-end="511.92" title="8:25">ST region of the ECG. Monitoring for mycardial ischemia can therefore be unreliable. </span><span class="segment" data-start="512.4" data-end="519.2" title="8:32">Secondly, the capnography and gas analysis is affected. This is because of the length </span><span class="segment" data-start="519.2" data-end="525.2" title="8:39">of sampling tubing required to bring the gases out of the MRI scanner to the analysing equipment. </span><span class="segment" data-start="525.76" data-end="536.0" title="8:45">Delays of up to 20 seconds can occur. Finally, the MRI is extremely noisy. Acoustic protection </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="536.16"><span class="t-timestamp">8:56</span></div>
+  <div class="t-body"><span class="segment" data-start="536.16" data-end="542.8" title="8:56">is required and so audible alarms are useless. The monitoring therefore needs to have visible alarms. </span><span class="segment" data-start="543.44" data-end="549.6" title="9:03">The ennecetist needs to ensure that they have an unobstructed view of the screen at all times. </span><span class="segment" data-start="550.72" data-end="555.12" title="9:10">What is the difference between MRI safe and MRI compatible equipment? </span><span class="segment" data-start="557.6" data-end="564.16" title="9:17">MRI safe means that there will be no safety issues when the equipment is taken into the MRI. </span><span class="segment" data-start="564.88" data-end="570.32" title="9:24">It does not guarantee that the equipment will function normally or not in to fear with the correct </span><span class="segment" data-start="570.32" data-end="579.04" title="9:30">operation of the MRI. MRI compatible equipment is MRI safe and does not interfere with the operation </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="579.04"><span class="t-timestamp">9:39</span></div>
+  <div class="t-body"><span class="segment" data-start="579.04" data-end="584.72" title="9:39">of the MRI. Is the anaesthetic machine used for MRI safe or compatible? </span><span class="segment" data-start="584.88" data-end="595.2" title="9:44">The anaesthetic machine used in the MRI room must be MRI compatible. This includes the vaporisers </span><span class="segment" data-start="595.2" data-end="599.04" title="9:55">and the gas cylinders. What about your infusion pumps? </span><span class="segment" data-start="600.8" data-end="607.92" title="10:00">These should be MRI compatible. Some pumps will fail if the field strength is greater than 100 </span><span class="segment" data-start="608.0" data-end="617.68" title="10:08">gals. What type of circuit do we commonly use in the MRI scanner? A Bane circuit is frequently used </span><span class="segment" data-start="617.68" data-end="625.12" title="10:17">in an MRI scanner. It can be up to 5.4 metres in length whilst maintaining low dead space and </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="625.12"><span class="t-timestamp">10:25</span></div>
+  <div class="t-body"><span class="segment" data-start="625.12" data-end="632.64" title="10:25">resistance. What are the hazards posed to staff and patients when in the MRI? Try to structure your </span><span class="segment" data-start="633.36" data-end="637.28" title="10:33">answer so that the examiners are aware that you know there are many possible complications. </span><span class="segment" data-start="639.44" data-end="646.48" title="10:39">The hazards may be due to the magnetic field, the noise, the anaesthetic gases and the potential </span><span class="segment" data-start="646.48" data-end="655.6" title="10:46">for MRI malfunction. Magnetic field hazards may be further divided into projectile effects and burns. </span><span class="segment" data-start="656.16" data-end="663.44" title="10:56">The patient and staff need to be screened for implanted ferromagnetic objects since they can act </span><span class="segment" data-start="663.44" data-end="671.6" title="11:03">as projectile objects. Ferromagnetic objects include pacemakers, aneurysm clips and metal foreign </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="671.6"><span class="t-timestamp">11:11</span></div>
+  <div class="t-body"><span class="segment" data-start="671.6" data-end="678.8" title="11:11">bodies in the eye. The staff and patient also need to remove any ferromagnetic items. </span><span class="segment" data-start="679.76" data-end="689.04" title="11:19">For example, jewelry, ID budgets or credit cards. The MRI can cause burns by inducing currents </span><span class="segment" data-start="689.04" data-end="696.4" title="11:29">in the monitoring cables which will then heat up. The current maximum safe level for exposure </span><span class="segment" data-start="696.4" data-end="704.96" title="11:36">to the intense magnetic field is 200 megatezlar within an 8 hour period. MRI should be avoided </span><span class="segment" data-start="705.04" data-end="712.48" title="11:45">during the first trimester of pregnancy. A magnetic field of greater than 3 Tesla will increase </span><span class="segment" data-start="712.48" data-end="719.04" title="11:52">the risk of current induction and potentially fatal arrhythmias. This field strength is not used </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="719.04"><span class="t-timestamp">11:59</span></div>
+  <div class="t-body"><span class="segment" data-start="719.04" data-end="729.52" title="11:59">in hospitals. The MRI produces a large amount of acoustic noise and so protection should be worn. </span><span class="segment" data-start="730.16" data-end="733.68" title="12:10">This may be in the form of ear plugs or ear defenders. </span><span class="segment" data-start="736.24" data-end="742.4" title="12:16">During administration of an anaesthetic there is the risk of anaesthetic gas inhalation </span><span class="segment" data-start="742.4" data-end="749.04" title="12:22">if the scavenging equipment is not effective as that used in theatre. There are MRI compatible </span><span class="segment" data-start="749.04" data-end="757.92" title="12:29">systems produced that should be used wherever possible. If the MRI malfunctions or needs to be </span><span class="segment" data-start="757.92" data-end="768.0" title="12:37">shut down there is a risk of hypoxia. Why is this? When the MRI is shut down the liquid helium </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="768.0"><span class="t-timestamp">12:48</span></div>
+  <div class="t-body"><span class="segment" data-start="768.0" data-end="774.8" title="12:48">and nitrogen that surrounds and calls the superconductor is allowed to rapidly evaporate and escape </span><span class="segment" data-start="774.8" data-end="780.8" title="12:54">from inside the magnet. If there is inadequate ventilation of the area, a fall in the oxygen </span><span class="segment" data-start="780.88" data-end="787.92" title="13:00">concentration will occur. This can lead to a hypoxic environment. Given all the risks of the MRI, </span><span class="segment" data-start="788.48" data-end="791.84" title="13:08">why do we not just use CT for all cases that require imaging? </span><span class="segment" data-start="793.92" data-end="801.44" title="13:13">The CT is also not without risk. The same challenges of remote site anaesthesia, patient and </span><span class="segment" data-start="801.44" data-end="809.04" title="13:21">procedure related factors still occur. In addition, the patient is being exposed to x-ray radiation </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="809.04"><span class="t-timestamp">13:29</span></div>
+  <div class="t-body"><span class="segment" data-start="809.04" data-end="816.4" title="13:29">that can predispose to menlignancy. The radiation exposure for a CT chest is approximately </span><span class="segment" data-start="816.4" data-end="826.0" title="13:36">50 times that of a plane x-ray. The images produced by CT and MRI are different. The techniques </span><span class="segment" data-start="826.0" data-end="833.92" title="13:46">are therefore used to view and diagnose different conditions. MRI is particularly good at imaging </span><span class="segment" data-start="834.0" data-end="840.4" title="13:54">the nervous system and pelvic disease. CT is useful for imaging bony deformities. </span><span class="segment" data-start="841.52" data-end="849.76" title="14:01">Do both techniques use contrast medium? Yes, in both techniques the radiologist may require </span><span class="segment" data-start="849.76" data-end="858.4" title="14:09">contrast medium to be given. This can cause anaphylaxis. The MRI contrast most commonly used is </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="858.4"><span class="t-timestamp">14:18</span></div>
+  <div class="t-body"><span class="segment" data-start="858.4" data-end="864.64" title="14:18">gadolinium DTPA which can cause nausea, vomiting and pain on injection. </span><span class="segment" data-start="866.4" data-end="873.68" title="14:26">The CT contrast mediums often contain iodine. This can cause acute renal failure in susceptible </span><span class="segment" data-start="873.68" data-end="879.04" title="14:33">patients. The patient should be well hydrated prior to administration of the medium. </span><span class="segment" data-start="879.6" data-end="885.2" title="14:39">If the patient has renal impairment or diabetes, then the contrast medium may be avoided. </span><span class="segment" data-start="886.08" data-end="890.32" title="14:46">Are you aware of any guidelines regarding an sanitizing patient's in the radiology suite? </span><span class="segment" data-start="892.56" data-end="900.0" title="14:52">The AAGBI have produced online guidelines regarding the provision of anesthetic services in the MRI </span></div>
+</div><div class="t-block">
+  <div class="t-gutter" data-start="900.0"><span class="t-timestamp">15:00</span></div>
+  <div class="t-body"><span class="segment" data-start="900.0" data-end="902.0" title="15:00">scanner. </span></div>
+</div>
+</div>
+
+<div class="subtitle-bar">
+  <span class="subtitle-text empty" id="subtitle-text">Play audio to see live subtitles&#8230;</span>
+</div>
+
+<script>
+
+const audio    = document.getElementById('audio');
+const allSegs  = Array.from(document.querySelectorAll('.segment'));
+const allBlocks = Array.from(document.querySelectorAll('.t-block'));
+const subtitleEl = document.getElementById('subtitle-text');
+let activeSegEl   = null;
+let activeBlockEl = null;
+let searchMatches = [];
+let searchIdx     = 0;
+
+// Duration display
+audio.addEventListener('loadedmetadata', () => {
+  const m = Math.floor(audio.duration / 60);
+  const s = Math.floor(audio.duration %% 60).toString().padStart(2,'0');
+  document.getElementById('dur').textContent = m + ':' + s;
+});
+
+// Seek helper
+function seekTo(t) {
+  audio.currentTime = t;
+  audio.play();
+}
+
+// Block gutter click
+document.querySelectorAll('.t-gutter').forEach(g => {
+  g.addEventListener('click', () => seekTo(parseFloat(g.dataset.start)));
+});
+
+// Segment click
+allSegs.forEach(s => {
+  s.addEventListener('click', e => {
+    e.stopPropagation();
+    seekTo(parseFloat(s.dataset.start));
+  });
+});
+
+// Real-time tracking
+audio.addEventListener('timeupdate', () => {
+  const t = audio.currentTime;
+
+  // Find active segment (last one whose start <= t)
+  let found = null;
+  for (let i = allSegs.length - 1; i >= 0; i--) {
+    if (parseFloat(allSegs[i].dataset.start) <= t) { found = allSegs[i]; break; }
+  }
+
+  if (found && found !== activeSegEl) {
+    // Clear previous
+    if (activeSegEl) activeSegEl.classList.remove('active');
+    if (activeBlockEl) {
+      activeBlockEl.classList.remove('block-active');
+      const pg = activeBlockEl.querySelector('.t-gutter');
+      if (pg) pg.classList.remove('gutter-active');
+    }
+    // Set new
+    found.classList.add('active');
+    const block = found.closest('.t-block');
+    if (block) {
+      block.classList.add('block-active');
+      const g = block.querySelector('.t-gutter');
+      if (g) g.classList.add('gutter-active');
+      activeBlockEl = block;
+    }
+    activeSegEl = found;
+
+    // Update subtitle
+    subtitleEl.textContent = found.textContent.trim();
+    subtitleEl.classList.remove('empty');
+
+    // Auto-scroll (only when not searching)
+    if (!document.getElementById('search').value) {
+      found.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }
+});
+
+// Search
+const searchInput = document.getElementById('search');
+searchInput.addEventListener('input', runSearch);
+searchInput.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && searchMatches.length) {
+    searchMatches[searchIdx].classList.remove('search-current');
+    searchIdx = (searchIdx + 1) %% searchMatches.length;
+    const el = searchMatches[searchIdx];
+    el.classList.add('search-current');
+    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+});
+
+function runSearch() {
+  const q = searchInput.value.trim().toLowerCase();
+  allSegs.forEach(s => s.classList.remove('search-match','search-current'));
+  searchMatches = [];
+  if (!q) return;
+  allSegs.forEach(s => {
+    if (s.textContent.toLowerCase().includes(q)) {
+      s.classList.add('search-match');
+      searchMatches.push(s);
+    }
+  });
+  if (!searchMatches.length) return;
+  searchIdx = 0;
+  searchMatches[0].classList.add('search-current');
+  searchMatches[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+</script>
+</body>
+</html>
